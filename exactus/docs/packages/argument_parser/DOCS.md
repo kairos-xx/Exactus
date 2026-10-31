@@ -40,7 +40,6 @@ Public API for the dash/underscore-folding argument parser.
 
 Shared argument parser accepting ``-`` and ``_`` interchangeably.
 
-- `_N` = `TypeVar(name='_N')`
 - `normalized_option(*, argument: str) -> str` — Fold dashes to underscores in the name part of a long option.
 - `class ExactusArgumentParser` — ``ArgumentParser`` accepting ``-``/``_`` long-option spellings.
   - `parse_known_args(self, args: Iterable[str] | None=None, namespace: None=None) -> tuple[Namespace, list[str]]`
