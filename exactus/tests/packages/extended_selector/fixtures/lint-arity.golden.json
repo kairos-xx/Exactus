@@ -1,0 +1,1111 @@
+[
+	{
+		"expression": "not()",
+		"messages": [
+			"not() expects 1 arguments; received 0."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "not(.a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "not(.a, .a)",
+		"messages": [
+			"not() expects 1 arguments; received 2."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "apply(.a)",
+		"messages": [
+			"apply() expects 2 arguments; received 1."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "apply(.a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "apply(.a, .a, .a)",
+		"messages": [
+			"apply() expects 2 arguments; received 3."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "has(.a)",
+		"messages": [
+			"has() expects 2 arguments; received 1."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "has(.a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "has(.a, .a, .a)",
+		"messages": [
+			"has() expects 2 arguments; received 3."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "sibling(.a)",
+		"messages": [
+			"sibling() expects 2 arguments; received 1."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "sibling(.a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "sibling(.a, .a, .a)",
+		"messages": [
+			"sibling() expects 2 arguments; received 3."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "siblings(.a)",
+		"messages": [
+			"siblings() expects 2 arguments; received 1."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "siblings(.a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "siblings(.a, .a, .a)",
+		"messages": [
+			"siblings() expects 2 arguments; received 3."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "prev(.a)",
+		"messages": [
+			"prev() expects 2 arguments; received 1."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "prev(.a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "prev(.a, .a, .a)",
+		"messages": [
+			"prev() expects 2 arguments; received 3."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "next(.a)",
+		"messages": [
+			"next() expects 2 arguments; received 1."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "next(.a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "next(.a, .a, .a)",
+		"messages": [
+			"next() expects 2 arguments; received 3."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "parent(.a)",
+		"messages": [
+			"parent() expects 2 arguments; received 1."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "parent(.a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "parent(.a, .a, .a)",
+		"messages": [
+			"parent() expects 2 arguments; received 3."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "ancestor(.a)",
+		"messages": [
+			"ancestor() expects 2 arguments; received 1."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "ancestor(.a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "ancestor(.a, .a, .a)",
+		"messages": [
+			"ancestor() expects 2 arguments; received 3."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "closest(.a)",
+		"messages": [
+			"closest() expects 2 arguments; received 1."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "closest(.a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "closest(.a, .a, .a)",
+		"messages": [
+			"closest() expects 2 arguments; received 3."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "child(.a, .a)",
+		"messages": [
+			"child() expects 3 arguments; received 2."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "child(.a, .a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "child(.a, .a, .a, .a)",
+		"messages": [
+			"child() expects 3 arguments; received 4."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "before(.a)",
+		"messages": [
+			"before() expects 2 arguments; received 1."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "before(.a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "before(.a, .a, .a)",
+		"messages": [
+			"before() expects 2 arguments; received 3."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "after(.a)",
+		"messages": [
+			"after() expects 2 arguments; received 1."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "after(.a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "after(.a, .a, .a)",
+		"messages": [
+			"after() expects 2 arguments; received 3."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "any(.a, .a)",
+		"messages": [
+			"any() expects 3 arguments; received 2."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "any(.a, .a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "any(.a, .a, .a, .a)",
+		"messages": [
+			"any() expects 3 arguments; received 4."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "all(.a, .a)",
+		"messages": [
+			"all() expects 3 arguments; received 2."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "all(.a, .a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "all(.a, .a, .a, .a)",
+		"messages": [
+			"all() expects 3 arguments; received 4."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "none(.a, .a)",
+		"messages": [
+			"none() expects 3 arguments; received 2."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "none(.a, .a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "none(.a, .a, .a, .a)",
+		"messages": [
+			"none() expects 3 arguments; received 4."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "shadow(.a)",
+		"messages": [
+			"shadow() expects 2 arguments; received 1."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "shadow(.a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "shadow(.a, .a, .a)",
+		"messages": [
+			"shadow() expects 2 arguments; received 3."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "slot(.a)",
+		"messages": [
+			"slot() expects 2 arguments; received 1."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "slot(.a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "slot(.a, .a, .a)",
+		"messages": [
+			"slot() expects 2 arguments; received 3."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "pseudo(.a, .a)",
+		"messages": [
+			"pseudo() expects 3 arguments; received 2."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "pseudo(.a, .a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "pseudo(.a, .a, .a, .a)",
+		"messages": [
+			"pseudo() expects 3 arguments; received 4."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "and(.a)",
+		"messages": [
+			"and() expects 2–∞ arguments; received 1."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "and(.a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "and(.a, .a, .a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "and(.a, .a, .a, .a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "or(.a)",
+		"messages": [
+			"or() expects 2–∞ arguments; received 1."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "or(.a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "or(.a, .a, .a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "or(.a, .a, .a, .a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "nand(.a)",
+		"messages": [
+			"nand() expects 2–∞ arguments; received 1."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "nand(.a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "nand(.a, .a, .a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "nand(.a, .a, .a, .a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "nor(.a)",
+		"messages": [
+			"nor() expects 2–∞ arguments; received 1."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "nor(.a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "nor(.a, .a, .a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "nor(.a, .a, .a, .a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "xor(.a)",
+		"messages": [
+			"xor() expects 2–∞ arguments; received 1."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "xor(.a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "xor(.a, .a, .a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "xor(.a, .a, .a, .a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "xnor(.a)",
+		"messages": [
+			"xnor() expects 2–∞ arguments; received 1."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "xnor(.a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "xnor(.a, .a, .a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "xnor(.a, .a, .a, .a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "children(.a)",
+		"messages": [
+			"children() expects 2–∞ arguments; received 1."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "children(.a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "children(.a, .a, .a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "children(.a, .a, .a, .a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "left_of(.a)",
+		"messages": [
+			"left_of() expects 2–3 arguments; received 1."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "left_of(.a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "left_of(.a, .a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "left_of(.a, .a, .a, .a)",
+		"messages": [
+			"left_of() expects 2–3 arguments; received 4."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "right_of(.a)",
+		"messages": [
+			"right_of() expects 2–3 arguments; received 1."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "right_of(.a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "right_of(.a, .a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "right_of(.a, .a, .a, .a)",
+		"messages": [
+			"right_of() expects 2–3 arguments; received 4."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "above(.a)",
+		"messages": [
+			"above() expects 2–3 arguments; received 1."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "above(.a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "above(.a, .a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "above(.a, .a, .a, .a)",
+		"messages": [
+			"above() expects 2–3 arguments; received 4."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "below(.a)",
+		"messages": [
+			"below() expects 2–3 arguments; received 1."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "below(.a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "below(.a, .a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "below(.a, .a, .a, .a)",
+		"messages": [
+			"below() expects 2–3 arguments; received 4."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "overlaps(.a)",
+		"messages": [
+			"overlaps() expects 2–3 arguments; received 1."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "overlaps(.a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "overlaps(.a, .a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "overlaps(.a, .a, .a, .a)",
+		"messages": [
+			"overlaps() expects 2–3 arguments; received 4."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "inside(.a)",
+		"messages": [
+			"inside() expects 2–3 arguments; received 1."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "inside(.a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "inside(.a, .a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "inside(.a, .a, .a, .a)",
+		"messages": [
+			"inside() expects 2–3 arguments; received 4."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "near(.a)",
+		"messages": [
+			"near() expects 2–3 arguments; received 1."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "near(.a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "near(.a, .a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "near(.a, .a, .a, .a)",
+		"messages": [
+			"near() expects 2–3 arguments; received 4."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "aligned_left(.a)",
+		"messages": [
+			"aligned_left() expects 2–3 arguments; received 1."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "aligned_left(.a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "aligned_left(.a, .a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "aligned_left(.a, .a, .a, .a)",
+		"messages": [
+			"aligned_left() expects 2–3 arguments; received 4."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "aligned_center_x(.a)",
+		"messages": [
+			"aligned_center_x() expects 2–3 arguments; received 1."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "aligned_center_x(.a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "aligned_center_x(.a, .a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "aligned_center_x(.a, .a, .a, .a)",
+		"messages": [
+			"aligned_center_x() expects 2–3 arguments; received 4."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "sort(.a)",
+		"messages": [
+			"sort() expects 2–∞ arguments; received 1.",
+			"sort() needs at least one key after the reference."
+		],
+		"codes": [
+			"arity",
+			"sort-keys"
+		]
+	},
+	{
+		"expression": "sort(.a, .a)",
+		"messages": [
+			"Invalid sort key \".a\"."
+		],
+		"codes": [
+			"sort-keys"
+		]
+	},
+	{
+		"expression": "sort(.a, .a, .a, .a)",
+		"messages": [
+			"Invalid sort key \".a\"."
+		],
+		"codes": [
+			"sort-keys"
+		]
+	},
+	{
+		"expression": "sort(.a, .a, .a, .a, .a)",
+		"messages": [
+			"Invalid sort key \".a\"."
+		],
+		"codes": [
+			"sort-keys"
+		]
+	},
+	{
+		"expression": "nearest(.a)",
+		"messages": [
+			"nearest() expects 2–3 arguments; received 1."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "nearest(.a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "nearest(.a, .a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "nearest(.a, .a, .a, .a)",
+		"messages": [
+			"nearest() expects 2–3 arguments; received 4."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "nearest_above(.a)",
+		"messages": [
+			"nearest_above() expects 2–3 arguments; received 1."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "nearest_above(.a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "nearest_above(.a, .a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "nearest_above(.a, .a, .a, .a)",
+		"messages": [
+			"nearest_above() expects 2–3 arguments; received 4."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "nearest_below(.a)",
+		"messages": [
+			"nearest_below() expects 2–3 arguments; received 1."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "nearest_below(.a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "nearest_below(.a, .a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "nearest_below(.a, .a, .a, .a)",
+		"messages": [
+			"nearest_below() expects 2–3 arguments; received 4."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "nearest_left(.a)",
+		"messages": [
+			"nearest_left() expects 2–3 arguments; received 1."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "nearest_left(.a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "nearest_left(.a, .a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "nearest_left(.a, .a, .a, .a)",
+		"messages": [
+			"nearest_left() expects 2–3 arguments; received 4."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "nearest_right(.a)",
+		"messages": [
+			"nearest_right() expects 2–3 arguments; received 1."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "nearest_right(.a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "nearest_right(.a, .a, .a)",
+		"messages": [],
+		"codes": []
+	},
+	{
+		"expression": "nearest_right(.a, .a, .a, .a)",
+		"messages": [
+			"nearest_right() expects 2–3 arguments; received 4."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "media()",
+		"messages": [
+			"media() expects 1 arguments; received 0."
+		],
+		"codes": [
+			"arity"
+		]
+	},
+	{
+		"expression": "media(.a)",
+		"messages": [
+			"Invalid media query: .a"
+		],
+		"codes": [
+			"invalid-media"
+		]
+	},
+	{
+		"expression": "media(.a, .a)",
+		"messages": [
+			"media() expects 1 arguments; received 2.",
+			"Invalid media query: .a"
+		],
+		"codes": [
+			"arity",
+			"invalid-media"
+		]
+	},
+	{
+		"expression": "bogus(.a, .b)",
+		"messages": [
+			"Unknown operator \"bogus\"."
+		],
+		"codes": [
+			"unknown-operator"
+		]
+	},
+	{
+		"expression": "has(.a",
+		"messages": [
+			"Unclosed \"(\"."
+		],
+		"codes": [
+			"unclosed-delimiter"
+		]
+	},
+	{
+		"expression": "and(.a, .b))",
+		"messages": [
+			"Unexpected \")\"."
+		],
+		"codes": [
+			"unexpected-close"
+		]
+	},
+	{
+		"expression": ".a:hovr",
+		"messages": [
+			"Unknown pseudo \":hovr\"; did you mean \":hover\"?"
+		],
+		"codes": [
+			"unknown-pseudo"
+		]
+	},
+	{
+		"expression": "",
+		"messages": [
+			"Expression must not be empty."
+		],
+		"codes": [
+			"empty"
+		]
+	}
+]

@@ -1,0 +1,99 @@
+<!doctype html>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="fixture.css" />
+<div
+  id="stage"
+  class="stage"
+  data-left="0"
+  data-top="0"
+  data-width="800"
+  data-height="600"
+>
+  <div
+    id="ref"
+    class="box"
+    data-left="300"
+    data-top="300"
+    data-width="100"
+    data-height="40"
+  ></div>
+  <div
+    id="above-far"
+    class="box item"
+    data-priority="3"
+    data-left="300"
+    data-top="50"
+    data-width="100"
+    data-height="40"
+  >
+    A
+  </div>
+  <div
+    id="above-near"
+    class="box item"
+    data-priority="1"
+    data-left="300"
+    data-top="200"
+    data-width="200"
+    data-height="40"
+  >
+    B
+  </div>
+  <div
+    id="below-near"
+    class="box item"
+    data-priority="2"
+    data-left="300"
+    data-top="380"
+    data-width="50"
+    data-height="40"
+  >
+    C
+  </div>
+  <div
+    id="left-near"
+    class="box item"
+    data-priority="10"
+    data-left="100"
+    data-top="300"
+    data-width="100"
+    data-height="40"
+  >
+    D
+  </div>
+  <div
+    id="right-near"
+    class="box item"
+    data-priority="9"
+    data-left="500"
+    data-top="300"
+    data-width="100"
+    data-height="40"
+  >
+    E
+  </div>
+  <a
+    id="link"
+    href="/x"
+    data-testid="save"
+    class="box"
+    data-left="600"
+    data-top="500"
+    data-width="60"
+    data-height="20"
+    >Save</a
+  >
+  <input
+    id="field"
+    type="text"
+    name="q"
+    class="box"
+    data-left="10"
+    data-top="550"
+    data-width="80"
+    data-height="20"
+  />
+</div>
+<div id="host"></div>
+<div id="host2"></div>
+<script type="module" src="fixture.js"></script>

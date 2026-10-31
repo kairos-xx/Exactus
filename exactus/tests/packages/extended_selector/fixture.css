@@ -1,0 +1,14 @@
+:root {
+  --catalog-layout-measure-sel-body-margin: 0;
+  --sel-body-margin: var(--catalog-layout-measure-sel-body-margin);
+}
+body {
+  margin: var(--sel-body-margin);
+}
+.stage {
+  position: relative;
+}
+.box {
+  position: absolute;
+  box-sizing: border-box;
+}
