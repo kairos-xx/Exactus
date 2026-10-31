@@ -1,0 +1,135 @@
+/**
+ * Test browser, disclosure rows and the Properties form.
+ *
+ * Sources: 33-sidebars.
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+/* Scope: custom properties set by 33-sidebars */
+:root {
+  --sidebars-edit-checks-summary-chevron-transition: var(
+    --catalog-icon-motion-summary-chevron-transition
+  );
+}
+/* Source: 33-sidebars */
+/* Value-preserving design tokens for the compact editor. */ /* Disclosure rows draw their own chevron from the owned icon set. */
+.edit-checks > summary,
+.recipe-menu > summary {
+  display: flex;
+  align-items: center;
+  gap: var(--sidebars-edit-checks-summary-gap);
+  padding-block: var(--sidebars-edit-checks-summary-padding-block);
+  color: var(--text);
+  font-size: var(--sidebars-edit-checks-summary-font-size);
+  font-weight: var(--sidebars-edit-checks-summary-font-weight);
+}
+.edit-checks > summary > .summary-chevron,
+.recipe-menu > summary > .summary-chevron {
+  --studio-icon-size: var(--catalog-icon-measure-small-plus-micro-width);
+  --primary-icon-size: 0.875rem;
+  flex: var(--sidebars-edit-checks-summary-chevron-flex);
+  color: var(--muted);
+  transition: var(--sidebars-edit-checks-summary-chevron-transition);
+}
+.edit-checks[open] > summary > .summary-chevron,
+.recipe-menu[open] > summary > .summary-chevron {
+  transform: var(--sidebars-edit-checks-open-summary-chevron-transform);
+}
+.edit-inspector-mark {
+  display: grid;
+  width: var(--sidebars-edit-inspector-mark-width);
+  height: var(--sidebars-edit-inspector-mark-height);
+  flex: var(--sidebars-edit-inspector-mark-flex);
+  place-items: center;
+  border: var(--sidebars-edit-inspector-mark-border);
+  border-radius: var(--sidebars-edit-inspector-mark-border-radius);
+  background: var(--shell-button-background);
+  color: var(--accent);
+}
+.edit-inspector-mark > .studio-icon {
+  width: var(--sidebars-edit-inspector-mark-icon-width);
+  height: var(--sidebars-edit-inspector-mark-icon-height);
+  flex-basis: var(--sidebars-edit-inspector-mark-icon-flex-basis);
+}
+/* Properties */
+.studio .inspector-content {
+  padding: var(--sidebars-inspector-content-padding);
+}
+.studio .edit-inspector-heading {
+  gap: var(--sidebars-edit-inspector-heading-gap);
+  padding: var(--sidebars-edit-inspector-heading-padding);
+}
+.edit-inspector-heading h2 {
+  color: var(--text-strong);
+  font-size: var(--sidebars-edit-inspector-heading-h2-font-size);
+  font-weight: var(--sidebars-edit-inspector-heading-h2-font-weight);
+}
+.edit-inspector-heading small {
+  color: var(--muted);
+}
+.inspector-content form {
+  display: grid;
+  gap: var(--sidebars-inspector-content-form-gap);
+}
+.inspector-content label:not(.check) {
+  display: grid;
+  gap: var(--sidebars-inspector-content-label-not-check-gap);
+  color: var(--muted);
+  font-size: var(--sidebars-inspector-content-label-not-check-font-size);
+  font-weight: var(--sidebars-inspector-content-label-not-check-font-weight);
+}
+.inspector-content input:not([type="checkbox"], [type="radio"]),
+.inspector-content select {
+  height: var(--sidebars-inspector-content-input-not-type-checkbox-height);
+  padding-inline: var(
+    --sidebars-inspector-content-input-not-type-checkbox-padding-inline
+  );
+}
+.inspector-content textarea {
+  min-height: var(--sidebars-inspector-content-textarea-min-height);
+  padding: var(--sidebars-inspector-content-textarea-padding);
+  line-height: var(--sidebars-inspector-content-textarea-line-height);
+  resize: vertical;
+}
+.inspector-content .check {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sidebars-inspector-content-check-gap);
+  color: var(--text);
+  font-size: var(--sidebars-inspector-content-check-font-size);
+}
+.studio .edit-save {
+  justify-content: center;
+  background: var(--primary);
+  color: var(--brand-ink);
+  font-weight: var(--sidebars-edit-save-font-weight);
+}
+.studio .inspector-back {
+  justify-content: flex-start;
+  background: var(--sidebars-inspector-back-background);
+  color: var(--muted);
+  font-size: var(--sidebars-inspector-back-font-size);
+  font-weight: var(--sidebars-inspector-back-font-weight);
+}
+.studio .edit-step-operations {
+  gap: var(--sidebars-edit-step-operations-gap);
+}
+.studio .edit-step-operations button {
+  height: var(--sidebars-edit-step-operations-button-height);
+}
+.studio .edit-step-operations .step-delete {
+  background: var(--sidebars-edit-step-operations-step-delete-background);
+  border-color: var(--sidebars-edit-step-operations-step-delete-border-color);
+  color: var(--sidebars-edit-step-operations-step-delete-color);
+}
+.studio .edit-save:hover {
+  background: var(--brand-hover);
+  color: var(--brand-ink);
+}
+.studio .inspector-back:hover {
+  background: var(--sidebars-inspector-back-hover-background);
+  color: var(--text-strong);
+}
+.studio .edit-step-operations .step-delete:hover {
+  background: var(--sidebars-edit-step-operations-step-delete-hover-background);
+}

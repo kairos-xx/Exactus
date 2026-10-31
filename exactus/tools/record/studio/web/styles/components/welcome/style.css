@@ -1,0 +1,214 @@
+/**
+ * Rules of the welcome component.
+ *
+ * Sources: 49-welcome.
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+/* Source: 49-welcome */
+/* The first-run screen: it covers the editor until there is a project.
+ *
+ * Left-aligned and anchored to the top, like the tool around it. The one
+ * memorable thing is the sample timeline: a playhead crosses it once and each
+ * step turns "played" as it passes. Everything else stays quiet. */
+.studio > .welcome {
+  position: absolute;
+  z-index: var(--welcome-z-index);
+  grid-area: var(--welcome-grid-area);
+  inset: var(--welcome-inset);
+  min-height: var(--welcome-min-height);
+  overflow: auto;
+  padding: var(--welcome-padding);
+  background: var(--surface);
+}
+.studio > .welcome[hidden] {
+  display: none;
+}
+.welcome-body {
+  display: grid;
+  gap: var(--welcome-body-gap);
+  justify-items: start;
+  max-width: var(--welcome-body-max-width);
+}
+.welcome-body h2 {
+  max-width: var(--welcome-body-h2-max-width);
+  margin: var(--welcome-body-h2-margin);
+  color: var(--text-strong);
+  font-size: var(--welcome-body-h2-font-size);
+  font-weight: var(--welcome-body-h2-font-weight);
+  letter-spacing: var(--welcome-body-h2-letter-spacing);
+  line-height: var(--welcome-body-h2-line-height);
+}
+.welcome-lede {
+  max-width: var(--welcome-lede-max-width);
+  margin: var(--welcome-lede-margin);
+  color: var(--muted);
+  font-size: var(--welcome-lede-font-size);
+  line-height: var(--welcome-lede-line-height);
+  white-space: var(--welcome-lede-white-space);
+}
+.welcome-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--welcome-actions-gap);
+  margin-block: var(--welcome-actions-margin-block);
+}
+.welcome-note,
+.welcome-caption {
+  max-width: var(--welcome-note-max-width);
+  margin: var(--welcome-note-margin);
+  color: var(--text-subtle);
+  font-size: var(--welcome-note-font-size);
+  line-height: var(--welcome-note-line-height);
+  white-space: var(--welcome-note-white-space);
+}
+/* The sample timeline. */
+.welcome-timeline {
+  position: relative;
+  width: var(--welcome-timeline-width);
+  max-width: var(--welcome-timeline-max-width);
+  margin-top: var(--welcome-timeline-margin-top);
+}
+.welcome-ruler {
+  position: relative;
+  height: var(--welcome-ruler-height);
+  --base-welcome-welcome-ruler-border-bottom: calc(
+      var(--primary-dimension-pixel) * 1
+    )
+    solid var(--primary-line);
+  --catalog-edge-border-ruler-border-bottom: var(
+    --base-welcome-welcome-ruler-border-bottom
+  );
+  --welcome-ruler-border-bottom: var(--catalog-edge-border-ruler-border-bottom);
+  border-bottom: var(--welcome-ruler-border-bottom);
+}
+.welcome-tick {
+  position: absolute;
+  --base-welcome-welcome-tick-left: var(--dynamic-at);
+  --catalog-offset-measure-tick-left: var(--base-welcome-welcome-tick-left);
+  --welcome-tick-left: var(--catalog-offset-measure-tick-left);
+  left: var(--welcome-tick-left);
+  height: var(--welcome-tick-height);
+  padding-left: var(--welcome-tick-padding-left);
+  --base-welcome-welcome-tick-border-left: calc(
+      var(--primary-dimension-pixel) * 1
+    )
+    solid var(--primary-line);
+  --catalog-edge-border-tick-border-left: var(
+    --base-welcome-welcome-tick-border-left
+  );
+  --welcome-tick-border-left: var(--catalog-edge-border-tick-border-left);
+  border-left: var(--welcome-tick-border-left);
+  color: var(--text-subtle);
+  font-family: var(--welcome-tick-font-family);
+  font-size: var(--welcome-tick-font-size);
+}
+.welcome-track {
+  position: relative;
+  height: var(--welcome-track-height);
+  margin-top: var(--welcome-track-margin-top);
+}
+.welcome-clip {
+  position: absolute;
+  top: var(--welcome-clip-top);
+  --base-welcome-welcome-clip-left: var(--dynamic-from);
+  --catalog-offset-measure-clip-left: var(--base-welcome-welcome-clip-left);
+  --welcome-clip-left: var(--catalog-offset-measure-clip-left);
+  left: var(--welcome-clip-left);
+  display: flex;
+  gap: var(--welcome-clip-gap);
+  align-items: center;
+  box-sizing: border-box;
+  --base-welcome-welcome-clip-width: var(--dynamic-span);
+  --catalog-size-measure-clip-width: var(--base-welcome-welcome-clip-width);
+  --welcome-clip-width: var(--catalog-size-measure-clip-width);
+  width: var(--welcome-clip-width);
+  height: var(--welcome-clip-height);
+  padding-inline: var(--welcome-clip-padding-inline);
+  overflow: hidden;
+  --base-welcome-welcome-clip-border: calc(var(--primary-dimension-pixel) * 1)
+    solid var(--primary-line);
+  --catalog-edge-border-clip-border: var(--base-welcome-welcome-clip-border);
+  --welcome-clip-border: var(--catalog-edge-border-clip-border);
+  border: var(--welcome-clip-border);
+  border-radius: var(--welcome-clip-border-radius);
+  background: var(--shell-button-background);
+  color: var(--muted);
+  font-size: var(--welcome-clip-font-size);
+  white-space: var(--welcome-clip-white-space);
+  --base-welcome-welcome-clip-animation: welcome-played
+    calc(var(--primary-duration-unit) * 0.4) ease-out var(--dynamic-played-at)
+    both;
+  --catalog-timing-motion-clip-animation: var(
+    --base-welcome-welcome-clip-animation
+  );
+  --welcome-clip-animation: var(--catalog-timing-motion-clip-animation);
+  animation: var(--welcome-clip-animation);
+}
+.welcome-clip > .studio-icon {
+  flex: var(--welcome-clip-icon-flex);
+}
+.welcome-playhead {
+  position: absolute;
+  top: var(--welcome-playhead-top);
+  bottom: var(--welcome-playhead-bottom);
+  left: var(--welcome-playhead-left);
+  width: var(--welcome-playhead-width);
+  background: var(--accent);
+  animation: var(--welcome-playhead-animation);
+}
+@keyframes welcome-sweep {
+  to {
+    left: var(--welcome-to-left-keyframes-welcome-sweep);
+  }
+}
+@keyframes welcome-out {
+  to {
+    opacity: var(--welcome-to-opacity-keyframes-welcome-out);
+  }
+}
+@keyframes welcome-played {
+  from {
+    border-color: var(--line);
+    background: var(--shell-button-background);
+    color: var(--muted);
+  }
+  to {
+    border-color: var(--welcome-to-border-color-keyframes-welcome-played);
+    background: var(--welcome-to-background-keyframes-welcome-played);
+    color: var(--text);
+  }
+}
+.studio .welcome-skip {
+  height: var(--welcome-skip-height);
+  margin-top: var(--welcome-skip-margin-top);
+  padding: var(--welcome-skip-padding);
+  border-color: var(--welcome-skip-border-color);
+  background: var(--welcome-skip-background);
+  color: var(--text-subtle);
+  text-decoration: var(--welcome-skip-text-decoration);
+}
+.studio .welcome-skip:hover {
+  color: var(--text);
+}
+@media (prefers-reduced-motion: reduce) {
+  .welcome-clip {
+    animation: var(
+      --welcome-clip-animation-media-prefers-reduced-motion-reduce
+    );
+    border-color: var(
+      --welcome-clip-border-color-media-prefers-reduced-motion-reduce
+    );
+    background: var(
+      --welcome-clip-background-media-prefers-reduced-motion-reduce
+    );
+    color: var(--text);
+  }
+  .welcome-playhead {
+    display: none;
+  }
+}
+@media (width <= 600px) {
+  .welcome-clip > span:not(.studio-icon) {
+    display: none;
+  }
+}

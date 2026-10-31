@@ -1,0 +1,51 @@
+/**
+ * Execution graph, overview and resource charts.
+ *
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+@layer perf-base {
+  .graph-scroll {
+    position: relative;
+    max-height: var(--perf-graph-height);
+    overflow: auto;
+    border: var(--perf-panel-edge);
+    border-radius: var(--perf-radius-shell);
+    background: var(--perf-shell-fill);
+  }
+  .graph-chart,
+  .overview-chart,
+  .resource-chart {
+    display: block;
+    width: var(--perf-chart-width);
+    touch-action: none;
+    user-select: none;
+  }
+  .overview-chart {
+    height: var(--perf-overview-height);
+    margin-bottom: var(--perf-bar-gap);
+    cursor: var(--perf-crosshair);
+  }
+  .resource-chart {
+    height: var(--perf-resource-height);
+    cursor: var(--perf-crosshair);
+  }
+  .graph-measures {
+    margin: var(--perf-drill-gap);
+    font: var(--perf-type-tip);
+    white-space: var(--perf-wrap-line);
+    color: var(--text);
+  }
+  .graph-hint {
+    margin: var(--perf-drill-gap);
+    font: var(--perf-type-badge);
+  }
+  .graph-color {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--perf-crumb-gap);
+    color: var(--muted);
+  }
+  .viewport-bar {
+    padding: var(--perf-panel-padding);
+  }
+}

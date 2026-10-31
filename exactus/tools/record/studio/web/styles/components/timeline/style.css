@@ -1,0 +1,147 @@
+/**
+ * Timeline tracks and clips.
+ *
+ * Sources: 13-timeline.
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+@layer studio-base {
+  /* Source: 13-timeline */
+  .composition-link text {
+    fill: var(--timeline-composition-link-text-fill);
+    stroke: var(--timeline-composition-link-text-stroke);
+    font: var(--timeline-composition-link-text-font);
+    paint-order: stroke;
+  }
+  .composition-links marker path {
+    fill: var(--timeline-composition-links-marker-path-fill);
+    stroke: var(--timeline-composition-links-marker-path-stroke);
+  }
+  .composition-preview-links {
+    stroke: var(--timeline-composition-preview-links-stroke);
+    stroke-dasharray: var(
+      --timeline-composition-preview-links-stroke-dasharray
+    );
+  }
+  /* One continuous time scale shared by ruler and every lane. */
+  /* The calc sits here, not in a :root token: --dynamic-timeline-duration is set
+   on the timeline element, so a token resolved at :root would be invalid. */
+  .timeline-ruler,
+  .track {
+    --base-timeline-timeline-ruler-min-width: calc(
+      var(--dynamic-timeline-duration) + calc(var(--primary-dimension-unit) * 9)
+    );
+    --catalog-size-measure-ruler-min-width: var(
+      --base-timeline-timeline-ruler-min-width
+    );
+    --timeline-ruler-min-width: var(--catalog-size-measure-ruler-min-width);
+    min-width: var(--timeline-ruler-min-width);
+  }
+  .ruler-ticks,
+  .clips {
+    position: relative;
+    display: block;
+    --base-timeline-ruler-ticks-width: var(--dynamic-timeline-duration);
+    --catalog-size-measure-ruler-ticks-width: var(
+      --base-timeline-ruler-ticks-width
+    );
+    --timeline-ruler-ticks-width: var(--catalog-size-measure-ruler-ticks-width);
+    width: var(--timeline-ruler-ticks-width);
+    min-height: var(--studio-ruler-ticks-clips-min-height);
+    background-image: var(--studio-ruler-ticks-clips-background-image);
+  }
+  .timeline-playhead,
+  .timeline-marker {
+    position: absolute;
+    z-index: var(--timeline-playhead-z-index);
+    top: var(--timeline-playhead-top);
+    bottom: var(--timeline-playhead-bottom);
+    width: var(--timeline-playhead-width);
+    pointer-events: none;
+  }
+  .timeline-playhead {
+    background: var(--accent);
+    box-shadow: var(--timeline-playhead-box-shadow);
+  }
+  .timeline-playhead::before {
+    content: var(--timeline-playhead-before-content);
+    position: absolute;
+    top: var(--timeline-playhead-before-top);
+    left: var(--timeline-playhead-before-left);
+    border-top: var(--timeline-playhead-before-border-top);
+    border-right: var(--timeline-playhead-before-border-right);
+    border-left: var(--timeline-playhead-before-border-left);
+  }
+  .timeline-marker {
+    border-left: var(--timeline-marker-border-left);
+  }
+  .timeline-marker small {
+    position: absolute;
+    top: var(--timeline-marker-small-top);
+    left: var(--timeline-marker-small-left);
+    padding: var(--timeline-marker-small-padding);
+    background: var(--shell-button-background);
+    color: var(--timeline-marker-small-color);
+    font: var(--timeline-marker-small-font);
+    white-space: var(--timeline-marker-small-white-space);
+  }
+  .clip.diagnostics {
+    border-color: var(--timeline-clip-diagnostics-border-color);
+  }
+  /* Keep primary transport in the header; target settings live beside the target. */
+  .topbar {
+    border-bottom: var(--panels-panel-border-bottom);
+    padding: var(--timeline-topbar-padding);
+    align-items: center;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: var(--timeline-topbar-gap);
+  }
+  .right-stack {
+    min-height: var(--timeline-right-stack-min-height);
+    display: grid;
+    grid-template-rows: var(--timeline-right-stack-grid-template-rows);
+  }
+  .preview {
+    overflow: auto;
+  }
+  .clips .clip {
+    min-height: var(--studio-clips-clip-min-height);
+    width: var(--timeline-clips-clip-width);
+    position: absolute;
+    --base-timeline-clips-clip-top: var(--dynamic-clip-top, 0.25rem);
+    --catalog-offset-measure-clips-clip-top: var(
+      --base-timeline-clips-clip-top
+    );
+    --timeline-clips-clip-top: var(--catalog-offset-measure-clips-clip-top);
+    top: var(--timeline-clips-clip-top);
+  }
+  @media (width <=1000px) {
+    .topbar {
+      flex-wrap: wrap;
+    }
+    .right-stack {
+      grid-template-rows: var(
+        --timeline-right-stack-grid-template-rows-max-width-1000px
+      );
+    }
+  }
+  .screenshot-dialog {
+    width: var(--timeline-screenshot-dialog-width);
+    height: var(--timeline-screenshot-dialog-height);
+    background: var(--surface);
+    color: var(--text);
+    border: var(--studio-screenshot-dialog-border);
+    padding: var(--timeline-screenshot-dialog-padding);
+  }
+  .screenshot-dialog::backdrop {
+    background: var(--timeline-screenshot-dialog-backdrop-background);
+  }
+  .screenshot-dialog > header,
+  .screenshot-tools {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--timeline-screenshot-dialog-header-gap);
+    margin-bottom: var(--timeline-screenshot-dialog-header-margin-bottom);
+  }
+}

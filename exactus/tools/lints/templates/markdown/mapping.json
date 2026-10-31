@@ -1,0 +1,105 @@
+{
+	"severity_levels": {
+		"$literal": [
+			"error",
+			"warning",
+			"information"
+		]
+	},
+	"findings": {
+		"$path": "findings"
+	},
+	"source_label": {
+		"$literal": "Linter"
+	},
+	"all_lints_summary": {
+		"$path": "all_lints.summary",
+		"$default": {}
+	},
+	"group_final_summary": {
+		"$path": "group_final",
+		"$default": {}
+	},
+	"lint_overview": {
+		"$when": {
+			"$path": "extension.metrics",
+			"$op": "not_empty"
+		},
+		"$then": [
+			{
+				"metric": {
+					"$literal": "Linters run"
+				},
+				"value": "extension.metrics.overview.linters_run"
+			},
+			{
+				"metric": {
+					"$literal": "Linters unavailable"
+				},
+				"value": "extension.metrics.overview.linters_unavailable"
+			},
+			{
+				"metric": {
+					"$literal": "Files analyzed"
+				},
+				"value": "extension.metrics.overview.files_analyzed"
+			},
+			{
+				"metric": {
+					"$literal": "Files with findings"
+				},
+				"value": "extension.metrics.overview.files_with_findings"
+			},
+			{
+				"metric": {
+					"$literal": "Rules triggered"
+				},
+				"value": "extension.metrics.overview.rules_triggered"
+			},
+			{
+				"metric": {
+					"$literal": "Findings"
+				},
+				"value": "extension.metrics.overview.findings"
+			}
+		],
+		"$else": []
+	},
+	"linters": {
+		"$path": "extension.metrics.linters",
+		"$default": [],
+		"$each": {
+			"linter": "linter",
+			"status": "status",
+			"version": "version",
+			"files": "files",
+			"findings": "findings",
+			"errors": "errors",
+			"warnings": "warnings",
+			"information": "information",
+			"exit_code": "exit_code",
+			"duration_seconds": "duration_seconds"
+		}
+	},
+	"top_rules": {
+		"$path": "extension.metrics.top_rules",
+		"$default": [],
+		"$each": {
+			"rule": "rule",
+			"linter": "linter",
+			"count": "count"
+		}
+	},
+	"top_files": {
+		"$path": "extension.metrics.top_files",
+		"$default": [],
+		"$each": {
+			"path": "path",
+			"count": "count"
+		}
+	},
+	"rules": {
+		"$path": "extension.rules",
+		"$default": []
+	}
+}

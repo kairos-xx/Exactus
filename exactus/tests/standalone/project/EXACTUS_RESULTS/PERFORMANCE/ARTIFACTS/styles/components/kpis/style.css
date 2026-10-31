@@ -1,0 +1,35 @@
+/**
+ * Run summary cards.
+ *
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+@layer perf-base {
+  .kpis {
+    display: grid;
+    grid-template-columns: var(--perf-kpi-grid);
+    gap: var(--perf-card-gap);
+    margin-bottom: var(--perf-block-gap);
+  }
+  .kpis article,
+  .panel {
+    background: var(--surface);
+    border: var(--perf-panel-edge);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+  .kpis article {
+    padding: var(--perf-card-padding);
+  }
+  .kpis span,
+  .kpis small {
+    display: block;
+    color: var(--muted);
+    font-size: var(--perf-size-note);
+  }
+  .kpis strong {
+    display: block;
+    font-size: var(--perf-size-stat);
+    letter-spacing: var(--perf-track-snug);
+    margin: var(--perf-stat-gap);
+  }
+}

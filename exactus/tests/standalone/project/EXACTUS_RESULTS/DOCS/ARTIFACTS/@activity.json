@@ -1,0 +1,79 @@
+{
+  "activity": {
+    "count": 3,
+    "dropped": 0,
+    "events": [
+      {
+        "at": "2026-10-31T02:56:19.725859+00:00",
+        "level": "info",
+        "message": "started: Docs"
+      },
+      {
+        "at": "2026-10-31T02:56:19.727148+00:00",
+        "level": "info",
+        "message": "step: starting (Docs)"
+      },
+      {
+        "at": "2026-10-31T02:56:20.547049+00:00",
+        "level": "info",
+        "message": "finished: DONE (exit status 0) in 0.821s"
+      }
+    ],
+    "limit": 50
+  },
+  "elapsed_seconds": 0.821,
+  "extra": {
+    "exit_code": 0,
+    "previous_duration_seconds": 0.647
+  },
+  "finished_at": "2026-10-31T02:56:20.547088+00:00",
+  "heartbeat": {
+    "alive": false,
+    "interval_seconds": 1.0,
+    "last_beat": "2026-10-31T02:56:20.547095+00:00",
+    "phase": "finished",
+    "pid": 85841
+  },
+  "items": [],
+  "kind": "tool",
+  "name": "docs",
+  "pipeline_run_id": "f9656595c8b74d23b2b6aec3bd0db7de",
+  "progress": {
+    "completed": 8,
+    "current": "Docs",
+    "fraction": 1.0,
+    "hierarchy": {
+      "children": [
+        {
+          "children": [],
+          "completed": 8,
+          "current": "Docs",
+          "error": null,
+          "fraction": 1.0,
+          "id": "complete",
+          "level": "activity",
+          "state": "DONE",
+          "step": "complete",
+          "total": 8
+        }
+      ],
+      "completed": 8,
+      "current": "Docs",
+      "error": null,
+      "fraction": 1.0,
+      "id": "docs",
+      "level": "task",
+      "state": "DONE",
+      "step": "complete",
+      "total": 8
+    },
+    "percent": 100.0,
+    "step": "complete",
+    "total": 8
+  },
+  "run_id": "f9656595c8b74d23b2b6aec3bd0db7de:docs",
+  "schema": "exactus/activity/v1",
+  "started_at": "2026-10-31T02:56:19.725729+00:00",
+  "status": "DONE",
+  "updated_at": "2026-10-31T02:56:20.547095+00:00"
+}

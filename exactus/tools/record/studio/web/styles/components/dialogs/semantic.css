@@ -1,0 +1,137 @@
+/**
+ * Contextual aliases of the dialogs component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  /* 14-dialogs */
+  --dialogs-action-grid-button-font-size: var(
+    --catalog-button-typography-action-font-size
+  );
+  --dialogs-action-grid-button-font-weight: var(
+    --catalog-button-typography-action-font-weight
+  );
+  --dialogs-action-library-body-p-font-size: var(
+    --catalog-surface-typography-small-minus-hairline-font-size
+  );
+  --dialogs-action-library-body-p-line-height: var(
+    --catalog-surface-typography-height-control-line-height
+  );
+  --dialogs-action-library-body-p-text-overflow: var(
+    --catalog-surface-typography-body-p-text-overflow
+  );
+  --dialogs-action-library-body-p-white-space: var(
+    --catalog-surface-typography-body-p-white-space
+  );
+  --dialogs-action-library-h2-font-size: var(
+    --catalog-header-typography-small-plus-hairline-font-size
+  );
+  --dialogs-action-library-h2-font-weight: var(
+    --catalog-header-typography-library-h2-font-weight
+  );
+  --dialogs-action-library-h2-line-height: var(
+    --catalog-header-typography-height-tight-line-height
+  );
+  --dialogs-actions-dialog-max-height: var(
+    --catalog-dialog-measure-default-xlarge-max-height
+  );
+  --dialogs-actions-dialog-padding: var(
+    --catalog-dialog-measure-normal-padding
+  );
+  --dialogs-actions-dialog-width: var(
+    --catalog-dialog-measure-default-higher-width
+  );
+  --dialogs-actions-form-gap: var(--catalog-toolbar-measure-small-gap);
+  --dialogs-actions-source-font-family: var(
+    --catalog-toolbar-typography-source-font-family
+  );
+  --dialogs-actions-source-min-height: var(
+    --catalog-toolbar-measure-page-plus-huge-min-height
+  );
+  --dialogs-actions-source-padding: var(
+    --catalog-toolbar-measure-small-padding
+  );
+  --dialogs-actions-source-width: var(--catalog-toolbar-measure-full-width);
+  --dialogs-dialog-actions-gap: var(--catalog-dialog-measure-compact-gap);
+  --dialogs-flow-node-title-border: var(
+    --catalog-header-border-node-title-border
+  );
+  --dialogs-flow-node-title-border-radius: var(
+    --catalog-header-border-node-title-border-radius
+  );
+  --dialogs-flow-node-title-font-size: var(
+    --catalog-header-typography-node-title-font-size
+  );
+  --dialogs-flow-node-title-font-weight: var(
+    --catalog-header-typography-node-title-font-weight
+  );
+  --dialogs-flow-node-title-padding: var(
+    --catalog-header-measure-node-title-padding
+  );
+  --dialogs-flow-node-title-width: var(--catalog-header-measure-full-width);
+  --dialogs-menu-button-font-size: var(
+    --catalog-button-typography-small-font-size
+  );
+  --dialogs-menu-button-font-weight: var(
+    --catalog-button-typography-menu-font-weight
+  );
+  --dialogs-panel-header-composition-title-font-size: var(
+    --catalog-header-typography-title-font-size
+  );
+  --dialogs-panel-header-composition-title-font-weight: var(
+    --catalog-header-typography-title-font-weight
+  );
+  --dialogs-panel-header-composition-title-letter-spacing: var(
+    --catalog-header-typography-spacing-wider-letter-spacing
+  );
+  --dialogs-panel-header-not-panel-title-font-size: var(
+    --catalog-header-typography-small-minus-hairline-font-size
+  );
+  --dialogs-panel-header-not-panel-title-font-weight: var(
+    --catalog-header-typography-weight-medium-font-weight
+  );
+  --dialogs-panel-header-panel-title-font-size: var(
+    --catalog-header-typography-title-font-size
+  );
+  --dialogs-panel-header-panel-title-font-weight: var(
+    --catalog-header-typography-title-font-weight
+  );
+  --dialogs-panel-header-panel-title-letter-spacing: var(
+    --catalog-header-typography-spacing-wider-letter-spacing
+  );
+  --dialogs-panel-header-panel-title-white-space: var(
+    --catalog-header-typography-title-white-space
+  );
+  --dialogs-recipe-menu-summary-border-radius: var(
+    --catalog-menu-border-tiny-border-radius
+  );
+  --dialogs-recipe-menu-summary-cursor: var(
+    --catalog-menu-cursor-recipe-summary-cursor
+  );
+  --dialogs-recipe-menu-summary-min-height: var(
+    --catalog-menu-measure-xlarge-plus-small-min-height
+  );
+  --dialogs-recipe-menu-summary-padding: var(
+    --catalog-menu-measure-compact-small-padding
+  );
+  --dialogs-run-response-overflow-wrap: var(
+    --catalog-control-measure-response-overflow-wrap
+  );
+  --dialogs-run-response-white-space: var(
+    --catalog-control-typography-response-white-space
+  );
+  --dialogs-screenshot-canvas-height: var(
+    --catalog-control-measure-screenshot-canvas-height
+  );
+  --dialogs-screenshot-dialog-h2-font-size: var(
+    --catalog-dialog-typography-normal-font-size
+  );
+  --dialogs-screenshot-dialog-h2-margin: var(
+    --catalog-dialog-measure-screenshot-h2-margin
+  );
+  --dialogs-screenshot-preview-max-width: var(
+    --catalog-surface-measure-screenshot-preview-max-width
+  );
+  --dialogs-screenshot-tools-label-gap: var(
+    --catalog-button-measure-compact-gap
+  );
+}

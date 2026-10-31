@@ -1,0 +1,1354 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Flow Studio</title>
+    <link rel="stylesheet" href="/styles_new/style.css" />
+    <script type="module" src="editor.js?v=refine-20261009y"></script>
+  </head>
+  <body>
+    <main
+      id="app"
+      class="studio app-root"
+      data-mobile-panel="steps"
+      data-workspace-mode="edit"
+      aria-label="Flow Studio"
+    >
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand-mark"
+            ><svg
+              class="studio-icon"
+              data-icon="layout"
+              aria-hidden="true"
+              viewBox="0 0 24 24"
+              focusable="false"
+            ></svg
+          ></span>
+          <h1><span>Exactus</span><i aria-hidden="true">/</i> Flow Studio</h1>
+        </div>
+        <div class="project-context">
+          <i aria-hidden="true">/</i>
+          <button
+            type="button"
+            id="project-name"
+            class="project-name"
+            data-bar="project"
+            title="Project details"
+          >
+            Untitled project
+          </button>
+        </div>
+        <div class="bar-actions" role="toolbar" aria-label="Project actions">
+          <span
+            id="project-save-state"
+            class="save-pill"
+            data-state="saved"
+            role="status"
+            title="All changes are saved"
+            ><span class="save-led" aria-hidden="true"></span
+            ><span class="save-text">Saved</span></span
+          >
+          <span class="bar-gap" aria-hidden="true"></span>
+          <button type="button" class="bar-button" data-bar="new">
+            <svg
+              class="studio-icon"
+              data-icon="plus"
+              aria-hidden="true"
+              viewBox="0 0 24 24"
+              focusable="false"
+            ></svg
+            ><span class="bar-label">New project</span>
+          </button>
+          <button
+            type="button"
+            class="bar-button"
+            data-bar="save"
+            title="Save project"
+          >
+            <svg
+              class="studio-icon"
+              data-icon="device-floppy"
+              aria-hidden="true"
+              viewBox="0 0 24 24"
+              focusable="false"
+            ></svg
+            ><span class="bar-label">Save project</span>
+          </button>
+          <span class="bar-split">
+            <button
+              type="button"
+              class="bar-button bar-split-main"
+              data-bar="open"
+              title="Open the project gallery"
+            >
+              <svg
+                class="studio-icon"
+                data-icon="folder-open"
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                focusable="false"
+              ></svg
+              ><span class="bar-label">Open project</span>
+            </button>
+            <button
+              type="button"
+              class="bar-button bar-split-arrow"
+              data-bar="open-menu"
+              aria-haspopup="menu"
+              aria-expanded="false"
+              aria-label="Recent projects and more ways to open"
+              title="Recent projects, import, demo"
+            >
+              <svg
+                class="studio-icon"
+                data-icon="chevron-down"
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                focusable="false"
+              ></svg>
+            </button>
+          </span>
+          <button
+            type="button"
+            class="bar-button"
+            data-bar="export"
+            title="Export project"
+          >
+            <svg
+              class="studio-icon"
+              data-icon="download"
+              aria-hidden="true"
+              viewBox="0 0 24 24"
+              focusable="false"
+            ></svg
+            ><span class="bar-label">Export project</span>
+          </button>
+          <span class="bar-gap" aria-hidden="true"></span>
+          <button
+            type="button"
+            id="command-palette-open"
+            class="bar-button bar-icon-only"
+            data-bar="commands"
+            aria-label="Commands"
+            title="Commands (⌘K)"
+          >
+            <svg
+              class="studio-icon"
+              data-icon="keyboard"
+              aria-hidden="true"
+              viewBox="0 0 24 24"
+              focusable="false"
+            ></svg>
+          </button>
+        </div>
+        <button
+          type="button"
+          class="bar-button bar-icon-only bar-overflow"
+          data-bar="overflow"
+          aria-haspopup="menu"
+          aria-expanded="false"
+          aria-label="More actions"
+          title="More actions"
+        >
+          <svg
+            class="studio-icon"
+            data-icon="dots"
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            focusable="false"
+          ></svg>
+        </button>
+      </header>
+      <nav class="section-nav" aria-label="Studio sections">
+        <select
+          id="workspace-view-select"
+          class="section-view-select"
+          aria-label="Workspace view"
+        >
+          <option value="edit">Flow editor</option>
+          <option value="graph">Graph</option>
+          <option value="play">Play</option>
+          <option value="compare">Compare</option>
+          <option value="settings">Settings</option>
+        </select>
+        <button class="active" data-workspace-view="edit" aria-current="page">
+          Flow editor
+        </button>
+        <button data-workspace-view="graph">Graph</button>
+        <button data-workspace-view="play">Play</button>
+        <button data-workspace-view="compare">Compare</button>
+        <button data-workspace-view="settings">Settings</button>
+      </nav>
+      <nav class="mobile-panel-tabs" aria-label="Workspace panels">
+        <button data-mobile-panel="flows" aria-pressed="false">Flows</button>
+        <button class="active" data-mobile-panel="steps" aria-pressed="true">
+          Steps
+        </button>
+        <button data-mobile-panel="browser" aria-pressed="false">
+          Browser
+        </button>
+        <button data-mobile-panel="properties" aria-pressed="false">
+          Properties
+        </button>
+        <button data-mobile-panel="runs" aria-pressed="false">Runs</button>
+      </nav>
+      <section
+        id="welcome"
+        class="welcome"
+        aria-labelledby="welcome-title"
+        hidden
+      ></section>
+      <section
+        class="workbench dock-grid"
+        id="workbench"
+        aria-label="Panel workspace"
+      >
+        <aside class="panel workspace" data-panel-id="workspace">
+          <header>
+            <span class="panel-title"
+              ><svg
+                class="studio-icon"
+                data-icon="folder-open"
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                focusable="false"
+              ></svg
+              ><span class="panel-title-text">Flows</span></span
+            >
+            <button
+              class="workspace-add button-small"
+              data-cmd="flow.create"
+              aria-label="New flow"
+              title="New flow"
+            >
+              <svg
+                class="studio-icon"
+                data-icon="plus"
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                focusable="false"
+              ></svg>
+            </button>
+          </header>
+          <div id="flows" class="tree"></div>
+          <div class="side-section" data-section="selectors">
+            <div class="side-section-header">
+              <span class="side-section-title"
+                ><svg
+                  class="studio-icon"
+                  data-icon="crosshair"
+                  aria-hidden="true"
+                  viewBox="0 0 24 24"
+                  focusable="false"
+                ></svg
+                >Selectors</span
+              >
+              <button
+                id="selector-new"
+                type="button"
+                class="workspace-add button-small"
+                aria-label="New selector"
+                title="New selector"
+              >
+                <svg
+                  class="studio-icon"
+                  data-icon="plus"
+                  aria-hidden="true"
+                  viewBox="0 0 24 24"
+                  focusable="false"
+                ></svg>
+              </button>
+            </div>
+            <div id="selectors" class="tree"></div>
+          </div>
+        </aside>
+        <aside
+          class="panel action-library"
+          data-panel-id="actions"
+          aria-label="Action library"
+        >
+          <header>
+            <span class="panel-title"
+              ><svg
+                class="studio-icon"
+                data-icon="list-check"
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                focusable="false"
+              ></svg
+              ><span class="panel-title-text">Actions</span></span
+            >
+          </header>
+          <div class="action-library-body">
+            <p>Build a vertical action chain</p>
+            <label class="action-search"
+              ><span>Find an action</span
+              ><input
+                id="action-search"
+                type="search"
+                placeholder="Click, swipe, request, wait for…"
+            /></label>
+            <div id="action-catalog"></div>
+            <footer id="action-help" class="action-help" aria-live="polite">
+              <span
+                id="action-help-icon"
+                class="action-help-icon"
+                aria-hidden="true"
+              ></span>
+              <span
+                ><strong id="action-help-title">Choose an action</strong
+                ><small id="action-help-copy"
+                  >Point to or focus an action to see what it adds to the
+                  chain.</small
+                ></span
+              >
+            </footer>
+            <form id="action-form" hidden>
+              <h2 id="action-title">Add action</h2>
+              <div id="action-fields"></div>
+              <div class="action-form-buttons">
+                <button type="submit">
+                  <svg
+                    class="studio-icon"
+                    data-icon="plus"
+                    aria-hidden="true"
+                    viewBox="0 0 24 24"
+                    focusable="false"
+                  ></svg>
+                  Add to chain</button
+                ><button id="action-cancel" type="button">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </aside>
+        <section class="panel table-panel" data-panel-id="steps">
+          <header class="table-panel-header">
+            <span class="panel-title"
+              ><svg
+                class="studio-icon"
+                data-icon="list-numbers"
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                focusable="false"
+              ></svg
+              ><span class="panel-title-text">Flow</span></span
+            >
+          </header>
+          <div class="flow-bar" role="toolbar" aria-label="Flow steps">
+            <strong id="edit-step-count" class="flow-bar-count">Steps</strong>
+            <button
+              id="step-duplicate"
+              type="button"
+              class="flow-bar-icon button-small"
+              aria-label="Duplicate step"
+              title="Select a step to duplicate it"
+              disabled
+            >
+              <svg
+                class="studio-icon"
+                data-icon="copy"
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                focusable="false"
+              ></svg>
+            </button>
+            <button
+              id="step-remove"
+              type="button"
+              class="flow-bar-icon button-small"
+              aria-label="Remove step"
+              title="Select a step to remove it"
+              disabled
+            >
+              <svg
+                class="studio-icon"
+                data-icon="trash"
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                focusable="false"
+              ></svg>
+            </button>
+            <button
+              id="add-action"
+              type="button"
+              class="flow-bar-add"
+              title="Open the action library"
+            >
+              <svg
+                class="studio-icon"
+                data-icon="square-rounded-plus"
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                focusable="false"
+              ></svg>
+              <span class="flow-bar-add-label">Add action</span>
+            </button>
+          </div>
+          <div id="table" class="table-content"></div>
+          <section
+            id="action-chain-composer"
+            class="action-chain"
+            aria-labelledby="action-chain-title"
+            hidden
+          >
+            <div class="action-chain-heading">
+              <h2 id="action-chain-title">Action chain</h2>
+              <input
+                id="action-chain-name"
+                value="Action chain"
+                aria-label="Chain name"
+              />
+            </div>
+            <ol id="action-chain-steps"></ol>
+            <p id="action-chain-empty">Variables flow from top to bottom.</p>
+            <button id="action-insert-chain" type="button" disabled>
+              <svg
+                class="studio-icon"
+                data-icon="plus"
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                focusable="false"
+              ></svg>
+              Insert chain
+            </button>
+          </section>
+        </section>
+        <section class="panel graph" data-panel-id="composition">
+          <header>
+            <span class="panel-title"
+              ><svg
+                class="studio-icon"
+                data-icon="arrows-join"
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                focusable="false"
+              ></svg
+              ><span class="panel-title-text">Flow network</span></span
+            >
+          </header>
+          <div class="graph-toolbar" role="toolbar" aria-label="Graph view">
+            <span id="flow-title" hidden>FLOW</span>
+            <span id="flow-summary"></span>
+            <output id="graph-zoom-label" aria-label="Graph zoom">100%</output>
+            <button id="graph-fit" title="Fit graph">Fit</button>
+            <details class="graph-view-options">
+              <summary
+                title="Graph view options"
+                aria-label="Graph view options"
+              >
+                <svg
+                  class="studio-icon"
+                  data-icon="dots"
+                  aria-hidden="true"
+                  viewBox="0 0 24 24"
+                  focusable="false"
+                ></svg>
+              </summary>
+              <div class="graph-options-menu">
+                <button id="graph-zoom-out">
+                  <svg
+                    class="studio-icon"
+                    data-icon="zoom-out"
+                    aria-hidden="true"
+                    viewBox="0 0 24 24"
+                    focusable="false"
+                  ></svg
+                  >Zoom out
+                </button>
+                <button id="graph-zoom-in">
+                  <svg
+                    class="studio-icon"
+                    data-icon="zoom-in"
+                    aria-hidden="true"
+                    viewBox="0 0 24 24"
+                    focusable="false"
+                  ></svg
+                  >Zoom in
+                </button>
+              </div>
+            </details>
+          </div>
+          <div
+            id="graph"
+            class="graph-canvas"
+            tabindex="0"
+            role="region"
+            aria-label="Flow graph canvas"
+          ></div>
+          <div class="composition-footer">
+            <span>Drag to pan · Connect ports with Enter · Esc cancels</span>
+          </div>
+        </section>
+        <section class="panel preview" data-panel-id="target">
+          <header>
+            <span class="panel-title"
+              ><svg
+                class="studio-icon"
+                data-icon="world"
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                focusable="false"
+              ></svg
+              ><span class="panel-title-text">Browser</span></span
+            >
+            <span id="browser-status" class="target-status"
+              >Recorder disconnected</span
+            >
+          </header>
+          <div class="panel-body">
+            <div class="browser-bar">
+              <label class="browser-profile">
+                <svg
+                  class="studio-icon"
+                  data-icon="device-imac"
+                  aria-hidden="true"
+                  viewBox="0 0 24 24"
+                  focusable="false"
+                ></svg>
+                <span class="sr-only">Profile</span>
+                <select id="device" aria-label="Browser profile"></select>
+              </label>
+              <button
+                id="browser-profiles"
+                type="button"
+                class="browser-icon-button"
+                aria-label="Edit profiles"
+                title="Edit profiles"
+              >
+                <svg
+                  class="studio-icon"
+                  data-icon="settings"
+                  aria-hidden="true"
+                  viewBox="0 0 24 24"
+                  focusable="false"
+                ></svg>
+              </button>
+              <button id="browser-toggle" type="button" class="browser-open">
+                Open browser
+              </button>
+            </div>
+            <p id="browser-address" class="browser-address" role="status">
+              <span id="viewport-summary">1440×900</span>
+              <span id="browser-address-text"></span>
+            </p>
+            <div id="edit-evidence" class="edit-evidence"></div>
+            <div
+              class="live-target-tools"
+              role="toolbar"
+              aria-label="Browser tools"
+            >
+              <button
+                id="browser-record"
+                type="button"
+                data-cmd="recorder.record"
+                title="Record actions in the browser"
+                aria-label="Record"
+              >
+                <svg
+                  class="studio-icon"
+                  data-icon="player-record"
+                  aria-hidden="true"
+                  viewBox="0 0 24 24"
+                  focusable="false"
+                ></svg
+                ><span class="tool-label">Record</span>
+              </button>
+              <button
+                type="button"
+                data-cmd="recorder.pause"
+                title="Pause recording"
+                aria-label="Pause recording"
+              >
+                <svg
+                  class="studio-icon"
+                  data-icon="player-pause"
+                  aria-hidden="true"
+                  viewBox="0 0 24 24"
+                  focusable="false"
+                ></svg
+                ><span class="tool-label">Pause</span>
+              </button>
+              <button
+                type="button"
+                data-cmd="run.cancel"
+                title="Stop recording or the running test"
+                aria-label="Stop"
+              >
+                <svg
+                  class="studio-icon"
+                  data-icon="square"
+                  aria-hidden="true"
+                  viewBox="0 0 24 24"
+                  focusable="false"
+                ></svg
+                ><span class="tool-label">Stop</span>
+              </button>
+              <button
+                id="browser-crawl"
+                type="button"
+                title="Discover flows by exploring the page"
+                aria-label="Crawl"
+              >
+                <svg
+                  class="studio-icon"
+                  data-icon="arrows-join"
+                  aria-hidden="true"
+                  viewBox="0 0 24 24"
+                  focusable="false"
+                ></svg
+                ><span class="tool-label">Crawl</span>
+              </button>
+              <button
+                id="live-target-pick"
+                type="button"
+                aria-pressed="false"
+                aria-label="Pick element"
+              >
+                <svg
+                  class="studio-icon"
+                  data-icon="pointer"
+                  aria-hidden="true"
+                  viewBox="0 0 24 24"
+                  focusable="false"
+                ></svg
+                ><span class="tool-label">Pick element</span>
+              </button>
+              <button
+                id="live-target-maximize"
+                type="button"
+                aria-pressed="false"
+                aria-label="Maximize browser"
+              >
+                <svg
+                  class="studio-icon"
+                  data-icon="app-window"
+                  aria-hidden="true"
+                  viewBox="0 0 24 24"
+                  focusable="false"
+                ></svg
+                ><span class="tool-label">Maximize</span>
+              </button>
+            </div>
+            <div
+              id="live-target-selection"
+              class="live-target-selection"
+              hidden
+            >
+              <input
+                id="live-target-selector"
+                aria-label="Picked element selector"
+                readonly
+                placeholder="Pick an element to get its selector"
+              />
+              <select
+                id="live-target-strategy"
+                aria-label="Selector strategy"
+                hidden
+              ></select>
+              <button id="live-target-use" type="button" disabled>
+                Use selector
+              </button>
+            </div>
+            <p
+              id="live-target-identity"
+              class="live-target-identity"
+              role="status"
+              aria-live="polite"
+              hidden
+            ></p>
+            <div class="live-target-stage">
+              <div class="live-target-frame">
+                <img
+                  id="live-target-image"
+                  class="live-target-image"
+                  tabindex="0"
+                  alt="Live view of the test browser. Click to interact, then type or scroll."
+                  draggable="false"
+                  hidden
+                />
+                <div
+                  id="live-target-highlight"
+                  class="live-target-highlight"
+                  hidden
+                  aria-hidden="true"
+                ></div>
+                <div
+                  id="live-target-matches"
+                  class="live-target-matches"
+                  hidden
+                  aria-hidden="true"
+                ></div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="panel inspector" data-panel-id="properties">
+          <header>
+            <span class="panel-title"
+              ><svg
+                class="studio-icon"
+                data-icon="settings"
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                focusable="false"
+              ></svg
+              ><span class="panel-title-text">Properties</span></span
+            >
+          </header>
+          <div id="inspector" class="inspector-content"></div>
+        </section>
+        <section class="panel timeline" data-panel-id="timeline">
+          <header>
+            <span class="panel-title"
+              ><svg
+                class="studio-icon"
+                data-icon="timeline"
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                focusable="false"
+              ></svg
+              ><span class="panel-title-text">Sequence timeline</span></span
+            >
+            <div
+              class="timeline-toolbar"
+              role="toolbar"
+              aria-label="Timeline controls"
+            >
+              <div class="timeline-cluster timeline-cluster-start">
+                <div
+                  class="timeline-group timeline-transport"
+                  role="group"
+                  aria-label="Playback"
+                >
+                  <button
+                    id="timeline-rewind"
+                    class="timeline-icon-button"
+                    type="button"
+                    title="Go to first step"
+                    aria-label="Go to first step"
+                  >
+                    <svg
+                      class="studio-icon"
+                      data-icon="player-skip-back"
+                      aria-hidden="true"
+                      viewBox="0 0 24 24"
+                      focusable="false"
+                    ></svg>
+                  </button>
+                  <button
+                    id="timeline-play"
+                    class="timeline-icon-button timeline-play"
+                    type="button"
+                    title="Run this flow"
+                    aria-label="Run this flow"
+                  >
+                    <svg
+                      class="studio-icon"
+                      data-icon="player-play"
+                      aria-hidden="true"
+                      viewBox="0 0 24 24"
+                      focusable="false"
+                    ></svg>
+                  </button>
+                  <button
+                    id="timeline-stop"
+                    class="timeline-icon-button"
+                    type="button"
+                    title="Stop the active run"
+                    aria-label="Stop the active run"
+                  >
+                    <svg
+                      class="studio-icon"
+                      data-icon="player-stop"
+                      aria-hidden="true"
+                      viewBox="0 0 24 24"
+                      focusable="false"
+                    ></svg>
+                  </button>
+                </div>
+                <div
+                  class="timeline-group timeline-tools"
+                  role="group"
+                  aria-label="Tools"
+                >
+                  <button
+                    class="active"
+                    data-timeline-tool="select"
+                    title="Select: click a step, Shift for a range, Ctrl or ⌘ to add or remove, drag an empty area to select several"
+                  >
+                    <svg
+                      class="studio-icon"
+                      data-icon="pointer"
+                      aria-hidden="true"
+                      viewBox="0 0 24 24"
+                      focusable="false"
+                    ></svg
+                    ><span>Select</span>
+                  </button>
+                  <button data-timeline-tool="marker">
+                    <svg
+                      class="studio-icon"
+                      data-icon="flag"
+                      aria-hidden="true"
+                      viewBox="0 0 24 24"
+                      focusable="false"
+                    ></svg
+                    ><span>Marker</span>
+                  </button>
+                  <button id="timeline-snap" aria-pressed="true" class="active">
+                    <svg
+                      class="studio-icon"
+                      data-icon="magnet"
+                      aria-hidden="true"
+                      viewBox="0 0 24 24"
+                      focusable="false"
+                    ></svg
+                    ><span>Snap</span>
+                  </button>
+                </div>
+              </div>
+              <div
+                id="timecode"
+                class="timeline-timecode timeline-timecode--segments"
+                aria-label="Playhead time"
+              ></div>
+              <div class="timeline-cluster timeline-cluster-end">
+                <div
+                  class="timeline-group timeline-zoom-group"
+                  role="group"
+                  aria-label="Zoom"
+                >
+                  <button
+                    id="timeline-zoom-out"
+                    class="timeline-icon-button"
+                    type="button"
+                    title="Zoom out"
+                    aria-label="Zoom out"
+                  >
+                    <svg
+                      class="studio-icon"
+                      data-icon="zoom-out"
+                      aria-hidden="true"
+                      viewBox="0 0 24 24"
+                      focusable="false"
+                    ></svg>
+                  </button>
+                  <input
+                    id="timeline-zoom"
+                    aria-label="Timeline zoom"
+                    type="range"
+                    min="0"
+                    max="70"
+                    step="1"
+                    value="36"
+                  />
+                  <button
+                    id="timeline-zoom-in"
+                    class="timeline-icon-button"
+                    type="button"
+                    title="Zoom in"
+                    aria-label="Zoom in"
+                  >
+                    <svg
+                      class="studio-icon"
+                      data-icon="zoom-in"
+                      aria-hidden="true"
+                      viewBox="0 0 24 24"
+                      focusable="false"
+                    ></svg>
+                  </button>
+                  <button
+                    id="timeline-fit-all"
+                    type="button"
+                    title="Fit all: zoom so every step is visible"
+                  >
+                    <svg
+                      class="studio-icon"
+                      data-icon="fit-all"
+                      aria-hidden="true"
+                      viewBox="0 0 24 24"
+                      focusable="false"
+                    ></svg
+                    ><span>Fit all</span>
+                  </button>
+                  <button
+                    id="timeline-fit-selection"
+                    type="button"
+                    title="Fit selection: zoom to the selected steps"
+                    disabled
+                  >
+                    <svg
+                      class="studio-icon"
+                      data-icon="fit-selection"
+                      aria-hidden="true"
+                      viewBox="0 0 24 24"
+                      focusable="false"
+                    ></svg
+                    ><span>Fit selection</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </header>
+          <div id="timeline" class="timeline-content"></div>
+        </section>
+        <section class="panel runs" data-panel-id="runs">
+          <header>
+            <span class="panel-title"
+              ><svg
+                class="studio-icon"
+                data-icon="list-check"
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                focusable="false"
+              ></svg
+              ><span class="panel-title-text">Runs and screenshots</span></span
+            >
+          </header>
+          <div id="runs" class="runs-content"></div>
+        </section>
+      </section>
+      <section id="workspace-surface" class="workspace-surface" hidden>
+        <header class="workspace-surface-header">
+          <div>
+            <span id="workspace-surface-kicker" class="surface-kicker"
+              >Workspace</span
+            >
+            <h2 id="workspace-surface-title">Studio workspace</h2>
+            <p id="workspace-surface-description"></p>
+          </div>
+          <div
+            id="workspace-surface-actions"
+            class="workspace-surface-actions"
+          ></div>
+        </header>
+        <div
+          id="workspace-surface-content"
+          class="workspace-surface-content"
+        ></div>
+      </section>
+      <footer>
+        <span id="status" class="status-text" role="status" aria-live="polite"
+          >Connecting editor bridge…</span
+        ><span>Record, add checks, then run the test</span>
+      </footer>
+    </main>
+    <template id="edit-steps-template">
+      <div class="data-table edit-step-list" aria-label="Flow steps"></div>
+      <div class="edit-empty" hidden>
+        <svg
+          class="studio-icon"
+          data-icon="list-numbers"
+          aria-hidden="true"
+          viewBox="0 0 24 24"
+          focusable="false"
+        ></svg>
+        <h2>Build your flow</h2>
+        <p>Add an action or record interactions in your browser.</p>
+      </div>
+    </template>
+    <template id="edit-step-inspector-template">
+      <button id="back-settings" class="inspector-back">
+        <svg
+          class="studio-icon"
+          data-icon="arrow-left"
+          aria-hidden="true"
+          viewBox="0 0 24 24"
+          focusable="false"
+        ></svg
+        >Flow settings
+      </button>
+      <div class="edit-inspector-heading">
+        <span class="edit-inspector-mark"
+          ><svg
+            class="studio-icon"
+            data-inspector-icon
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            focusable="false"
+          ></svg
+        ></span>
+        <div>
+          <h2 data-inspector-title></h2>
+          <small data-inspector-subtitle></small>
+        </div>
+      </div>
+      <form id="step-form">
+        <label>Label<input name="label" required /></label>
+        <label
+          >URL<input name="url" spellcheck="false" placeholder="https&#58;//…"
+        /></label>
+        <fieldset class="step-target" data-field="target">
+          <legend>Target</legend>
+          <label data-field="selector-ref"
+            >Use selector<select name="selector_id"></select
+          ></label>
+          <label data-field="selector-inline"
+            >Inline expression<input
+              name="selector"
+              spellcheck="false"
+              placeholder="#submit"
+          /></label>
+          <p class="step-note" data-field="scope-warning" hidden></p>
+          <button type="button" id="save-as-selector" class="step-link" hidden>
+            Add as new selector
+          </button>
+          <label data-field="scope"
+            >Applies to<select name="targets">
+              <option value="first">First match</option>
+              <option value="all">Every match</option>
+            </select></label
+          >
+          <label data-field="run"
+            >Run<select name="run_mode">
+              <option value="sequential">One after another</option>
+              <option value="parallel">All at once</option>
+            </select></label
+          >
+          <label data-field="pause"
+            >Pause between matches (ms)<input
+              name="pace_delay"
+              type="number"
+              min="0"
+              step="50"
+          /></label>
+          <label data-field="pause-until"
+            >Wait until<input
+              name="pace_until"
+              spellcheck="false"
+              placeholder="sel_card_count &gt;= 3"
+          /></label>
+        </fieldset>
+        <label
+          >Value or payload<textarea
+            name="payload"
+            spellcheck="false"
+          ></textarea>
+        </label>
+        <fieldset class="step-policy">
+          <legend>If it goes wrong</legend>
+          <label class="check"
+            ><input type="checkbox" name="continue_on_failure" />Continue with
+            the next action</label
+          >
+          <label data-field="after"
+            >Pause after this action (ms)<input
+              name="after_delay"
+              type="number"
+              min="0"
+              step="50"
+          /></label>
+          <label data-field="after-until"
+            >Wait until<input
+              name="after_until"
+              spellcheck="false"
+              placeholder="sel_banner_visible"
+          /></label>
+          <label class="check" data-field="sandbox"
+            ><input type="checkbox" name="sandbox" />Run in the sandbox</label
+          >
+        </fieldset>
+        <section class="last-run" data-field="last-run" hidden></section>
+        <button type="submit" class="edit-save">
+          <svg
+            class="studio-icon"
+            data-icon="check"
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            focusable="false"
+          ></svg
+          >Save step
+        </button>
+      </form>
+      <div class="step-tools edit-step-operations">
+        <button id="step-up" title="Move step up">
+          <svg
+            class="studio-icon"
+            data-icon="arrow-up"
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            focusable="false"
+          ></svg
+          >Move up</button
+        ><button id="step-down" title="Move step down">
+          <svg
+            class="studio-icon"
+            data-icon="arrow-down"
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            focusable="false"
+          ></svg
+          >Move down</button
+        ><button
+          id="step-delete"
+          class="step-delete"
+          aria-label="Delete step"
+          title="Delete step"
+        >
+          <svg
+            class="studio-icon"
+            data-icon="trash"
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            focusable="false"
+          ></svg>
+        </button>
+      </div>
+      <details class="edit-checks">
+        <summary>
+          <svg
+            class="studio-icon summary-chevron"
+            data-icon="chevron-right"
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            focusable="false"
+          ></svg
+          >Add a check after this step
+        </summary>
+        <form id="assert-form">
+          <label
+            >Check<select name="kind">
+              <option value="dom_visible">Element is visible</option>
+              <option value="dom_text">Element contains text</option>
+              <option value="url">URL contains</option>
+              <option value="title">Title contains</option>
+            </select></label
+          >
+          <div class="assert-selector" data-check-target>
+            <label
+              >Use selector<select name="target_selector_id"></select
+            ></label>
+            <label
+              >Inline expression<input name="target" spellcheck="false"
+            /></label>
+            <button type="button" class="step-link" data-add-check-selector>
+              Add as new selector
+            </button>
+          </div>
+          <label>Expected text<input name="expected" /></label
+          ><button type="submit">Add check</button>
+        </form>
+      </details>
+      <ul class="edit-check-list"></ul>
+    </template>
+    <template id="edit-flow-inspector-template">
+      <div class="edit-inspector-heading">
+        <span class="edit-inspector-mark"
+          ><svg
+            class="studio-icon"
+            data-icon="folder-open"
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            focusable="false"
+          ></svg
+        ></span>
+        <div>
+          <h2>Flow settings</h2>
+          <small data-flow-summary></small>
+        </div>
+      </div>
+      <form id="flow-form">
+        <label>Flow name<input name="name" required /></label
+        ><label
+          >Task<textarea
+            name="task_description"
+            placeholder="What should this flow do?"
+          ></textarea></label
+        ><label
+          >Expected result<textarea
+            name="expected_behavior"
+            placeholder="What does success look like?"
+          ></textarea></label
+        ><label class="check"
+          ><input
+            type="checkbox"
+            role="switch"
+            name="capture_record_images"
+          />Screenshots while recording</label
+        ><label class="check"
+          ><input
+            type="checkbox"
+            role="switch"
+            name="capture_play_images"
+          />Screenshots while testing</label
+        >
+        <fieldset class="flow-scope" data-flow-scope>
+          <legend>Recording scope</legend>
+          <div data-flow-scope-options></div>
+        </fieldset>
+        <button type="submit" class="edit-save">
+          <svg
+            class="studio-icon"
+            data-icon="check"
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            focusable="false"
+          ></svg
+          >Save flow settings
+        </button>
+        <div class="flow-danger">
+          <button type="button" id="flow-delete" class="link-danger">
+            Delete flow
+          </button>
+          <small id="flow-delete-note"></small>
+        </div>
+      </form>
+    </template>
+    <dialog id="replace-dialog" aria-labelledby="replace-title">
+      <form method="dialog">
+        <h2 id="replace-title">Replace this workspace?</h2>
+        <p>Save or export first to keep unsaved changes.</p>
+        <button value="cancel">Keep workspace</button
+        ><button value="replace">Replace</button>
+      </form>
+    </dialog>
+    <dialog
+      id="screenshot-dialog"
+      class="screenshot-dialog"
+      aria-labelledby="screenshot-title"
+    >
+      <header>
+        <h2 id="screenshot-title">Screenshot</h2>
+        <button id="screenshot-close" type="button">Close</button>
+      </header>
+      <div class="screenshot-tools">
+        <label
+          >Zoom
+          <input
+            id="screenshot-zoom"
+            type="range"
+            min="25"
+            max="200"
+            value="100" /></label
+        ><a id="screenshot-download" download="screenshot.png">Download PNG</a>
+      </div>
+      <div class="screenshot-canvas">
+        <img
+          id="screenshot-preview"
+          class="screenshot-preview"
+          alt="Captured test screenshot"
+        />
+      </div>
+    </dialog>
+    <dialog id="actions-dialog" class="actions-dialog">
+      <form id="actions-form" class="actions-form">
+        <h2>Actions recipe</h2>
+        <p>Discover across environments, then replay the generated projects.</p>
+        <label
+          >Tool sequence<textarea
+            id="actions-source"
+            class="actions-source"
+            spellcheck="false"
+            rows="16"
+          ></textarea>
+        </label>
+        <p id="actions-error" role="alert"></p>
+        <div class="dialog-actions">
+          <button type="button" id="actions-close">Close</button>
+          <details class="recipe-menu">
+            <summary>
+              <svg
+                class="studio-icon summary-chevron"
+                data-icon="chevron-right"
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                focusable="false"
+              ></svg
+              >Recipe file
+            </summary>
+            <div>
+              <button type="button" id="actions-import">Open recipe</button
+              ><button type="button" id="actions-export">Save recipe</button>
+            </div>
+          </details>
+          <button type="submit" class="accent">Run Actions</button>
+        </div>
+      </form>
+    </dialog>
+    <dialog
+      id="command-palette"
+      class="command-palette"
+      aria-labelledby="command-palette-title"
+    >
+      <form method="dialog" class="command-palette-shell">
+        <header>
+          <div>
+            <h2 id="command-palette-title">Commands</h2>
+            <p>Open a workspace or run its next action.</p>
+          </div>
+          <button value="close" aria-label="Close command palette">
+            Close
+          </button>
+        </header>
+        <label class="command-search">
+          <svg
+            class="studio-icon"
+            data-icon="keyboard"
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            focusable="false"
+          ></svg>
+          <span class="sr-only">Search commands</span>
+          <input
+            id="command-search"
+            type="search"
+            placeholder="Search commands…"
+            autocomplete="off"
+          />
+        </label>
+        <div id="command-list" class="command-list">
+          <button type="button" data-palette-command="run">
+            Run flow<small>Replay the active flow as a test</small>
+          </button>
+          <button type="button" data-palette-command="record">
+            Start recording<small>Capture actions in the target browser</small>
+          </button>
+          <button type="button" data-palette-command="screenshot">
+            Add screenshot checkpoint<small
+              >Capture the page at this point in the flow</small
+            >
+          </button>
+          <button type="button" data-palette-command="save">
+            Save project<small>Write the current workspace to disk</small>
+          </button>
+          <button type="button" data-palette-command="new-project">
+            New project<small>Start a project with its own folder</small>
+          </button>
+          <button type="button" data-palette-command="open-gallery">
+            Open project gallery<small
+              >Search, open, duplicate, export or delete projects</small
+            >
+          </button>
+          <button type="button" data-palette-command="edit">
+            Open flow editor<small>Steps, timeline and the live browser</small>
+          </button>
+          <button type="button" data-palette-command="play">
+            Open play<small>Run a flow or the graph and inspect results</small>
+          </button>
+          <button type="button" data-palette-command="settings">
+            Open settings<small
+              >Project details, target, browser profiles and recovery</small
+            >
+          </button>
+          <button type="button" data-palette-command="crawl">
+            Open crawl setup<small
+              >Discover flows from the target application</small
+            >
+          </button>
+          <button type="button" data-palette-command="compare">
+            Open screenshots<small
+              >Review run captures and visual evidence</small
+            >
+          </button>
+          <button type="button" data-palette-command="reset-layout">
+            Reset panel layout<small
+              >Dock and expand every panel in its default position</small
+            >
+          </button>
+        </div>
+      </form>
+    </dialog>
+  </body>
+</html>

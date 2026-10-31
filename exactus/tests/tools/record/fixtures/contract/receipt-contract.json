@@ -1,0 +1,38 @@
+{
+  "contract_version": 1,
+  "file_extension": ".exactus-receipt.json",
+  "manifest_fields": [
+    "receipt_id", "version", "name", "summary", "tags", "root_flow_id",
+    "included_flow_ids", "minimum_schema_version", "context_requirements",
+    "content_hash"
+  ],
+  "install_record_fields": [
+    "install_id", "receipt_id", "receipt_version", "receipt_content_hash",
+    "installed_root_flow_id", "installed_flow_ids", "installed_at_utc"
+  ],
+  "package_may_contain": [
+    "root_flow", "included_flows", "selectors", "variable_definitions",
+    "context_requirements", "minimum_versions", "documentation",
+    "content_hash"
+  ],
+  "package_must_not_contain": [
+    "project_context", "profile", "base_url", "credential_value",
+    "environment_value", "storage_state", "cookies", "accepted_baseline",
+    "candidate_evidence", "screenshot", "run_record", "graph_placement",
+    "graph_layout", "absolute_path", "service_command"
+  ],
+  "hash_scope": "All executable and documentation content; never the transport filename.",
+  "device_ownership": {
+    "initial_profile_owner": "project_context",
+    "runtime_state_owner": "RuntimeDeviceState",
+    "flows_may_override_initial_profile": false
+  },
+  "builtin_receipts": [
+    "Open page and verify heading",
+    "Fill and submit a form",
+    "Collect page links",
+    "Request and branch",
+    "Sign in safely",
+    "Rotate and resize viewport"
+  ]
+}

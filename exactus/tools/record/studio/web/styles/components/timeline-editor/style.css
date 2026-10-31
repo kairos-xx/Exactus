@@ -1,0 +1,228 @@
+/* Source: 34-timeline */
+/* Value-preserving design tokens for the compact editor. */
+/* Timeline: a video-editor header (transport and tools at the start, a large
+   centered timecode, zoom and ticks at the end), a compact ruler, and clips. */
+.studio .panel.timeline > header {
+  height: var(--timeline-panel-timeline-header-height);
+  min-height: var(--timeline-panel-timeline-header-min-height);
+  overflow: visible;
+  padding-inline: var(--timeline-panel-timeline-header-padding-inline);
+  gap: var(--timeline-panel-timeline-header-gap);
+}
+.timeline > header .panel-title {
+  flex: var(--timeline-header-panel-title-flex);
+}
+.studio .timeline-toolbar {
+  display: grid;
+  height: var(--timeline-toolbar-height);
+  max-height: var(--timeline-toolbar-max-height);
+  grid-template-columns: var(--timeline-toolbar-grid-template-columns);
+  align-items: center;
+  flex: var(--timeline-toolbar-flex);
+  gap: var(--timeline-toolbar-gap);
+  min-width: var(--timeline-toolbar-min-width);
+  overflow: hidden;
+}
+.timeline-cluster {
+  display: flex;
+  align-items: center;
+  gap: var(--timeline-cluster-gap);
+  min-width: var(--timeline-cluster-min-width);
+}
+.timeline-cluster-end {
+  justify-content: flex-end;
+}
+.timeline-group {
+  display: flex;
+  align-items: center;
+  flex: var(--timeline-group-flex);
+  gap: var(--timeline-group-gap);
+  padding: var(--timeline-group-padding);
+  border: var(--timeline-group-border);
+  border-radius: var(--timeline-group-border-radius);
+  background: var(--timeline-group-background);
+}
+.studio .timeline-group > button {
+  border-radius: var(--timeline-group-button-border-radius);
+  background: var(--timeline-group-button-background);
+  color: var(--muted);
+  font-size: var(--timeline-group-button-font-size);
+  font-weight: var(--timeline-group-button-font-weight);
+}
+.studio .timeline-group > .timeline-icon-button {
+  background: var(--timeline-group-timeline-icon-button-background);
+}
+.studio .timeline-group > .timeline-play {
+  color: var(--text-strong);
+}
+.studio .timeline-group > button:hover {
+  color: var(--text-strong);
+}
+.studio .timeline-group > button.active,
+.studio .timeline-group > button[aria-pressed="true"] {
+  color: var(--text-strong);
+}
+.timeline-timecode {
+  display: grid;
+  min-width: var(--timeline-timecode-min-width);
+  height: var(--timeline-timecode-height);
+  padding: var(--timeline-timecode-padding);
+  place-items: center;
+  border: var(--timeline-group-border);
+  border-radius: var(--timeline-timecode-border-radius);
+  background: var(--timeline-timecode-background);
+  color: var(--text-strong);
+  font-family: var(--timeline-timecode-font-family);
+  font-size: var(--timeline-timecode-font-size);
+  font-variant-numeric: var(--timeline-timecode-font-variant-numeric);
+  font-weight: var(--timeline-timecode-font-weight);
+  letter-spacing: var(--timeline-timecode-letter-spacing);
+  line-height: var(--timeline-timecode-line-height);
+  text-align: var(--timeline-timecode-text-align);
+}
+.timeline-zoom-group > input[type="range"] {
+  width: var(--timeline-zoom-group-input-type-range-width);
+  height: var(--timeline-zoom-group-input-type-range-height);
+  padding: var(--timeline-zoom-group-input-type-range-padding);
+  border: var(--timeline-zoom-group-input-type-range-border);
+  background: var(--timeline-zoom-group-input-type-range-background);
+  accent-color: var(--accent);
+  box-shadow: var(--timeline-zoom-group-input-type-range-box-shadow);
+}
+.timeline-ticks {
+  display: flex;
+  align-items: center;
+  flex: var(--timeline-ticks-flex);
+  gap: var(--timeline-ticks-gap);
+  color: var(--muted);
+  font-size: var(--timeline-ticks-font-size);
+}
+.timeline-ticks select {
+  height: var(--timeline-ticks-select-height);
+  padding-inline: var(--timeline-ticks-select-padding-inline);
+  font-size: var(--timeline-ticks-select-font-size);
+}
+/* Ruler and lanes */
+.studio .timeline-content {
+  background: var(--timeline-content-background);
+}
+.studio .timeline .timeline-ruler {
+  min-height: var(--timeline-ruler-min-height);
+  background: var(--timeline-ruler-background);
+  border-bottom: var(--timeline-ruler-border-bottom);
+}
+.timeline-ruler > .ruler-label,
+.timeline-ruler > .ruler-ticks {
+  height: var(--timeline-ruler-label-height);
+  min-height: var(--timeline-ruler-label-min-height);
+  line-height: var(--timeline-ruler-label-line-height);
+}
+.timeline .ruler-label {
+  color: var(--text-subtle);
+  font-size: var(--timeline-ruler-label-font-size);
+}
+.timeline .ruler-ticks > span {
+  color: var(--text-subtle);
+  font-family: var(--timeline-ruler-ticks-span-font-family);
+  font-size: var(--timeline-ruler-ticks-span-font-size);
+}
+.studio .timeline .track {
+  border-bottom: var(--timeline-track-border-bottom);
+}
+.studio .timeline .track-label {
+  gap: var(--timeline-track-label-gap);
+  padding-inline: var(--timeline-track-label-padding-inline);
+  background: var(--timeline-track-label-background);
+  color: var(--muted);
+  font-size: var(--timeline-track-label-font-size);
+  font-weight: var(--timeline-track-label-font-weight);
+}
+.timeline .track:nth-child(even) {
+  background-color: var(--timeline-track-nth-child-even-background-color);
+}
+.studio .timeline .clips {
+  background-color: var(--timeline-clips-background-color);
+}
+.timeline .track-label > .studio-icon {
+  color: var(--text-subtle);
+}
+/* Clips stay neutral; the accent marks only the selected one. */
+.studio .timeline .clip {
+  height: var(--timeline-clip-height);
+  min-height: var(--timeline-clip-min-height);
+  gap: var(--timeline-clip-gap);
+  padding: var(--timeline-clip-padding);
+  border: var(--timeline-clip-border);
+  border-radius: var(--timeline-clip-border-radius);
+  background: var(--data-tables-selected-data-step-background);
+  color: var(--text);
+  font-size: var(--timeline-clip-font-size);
+  font-weight: var(--timeline-clip-font-weight);
+  cursor: var(--timeline-clip-cursor);
+  touch-action: none;
+}
+.timeline .clip > span:not(.studio-icon) {
+  min-width: var(--timeline-clip-span-not-icon-min-width);
+  overflow: hidden;
+  text-overflow: var(--timeline-clip-span-not-icon-text-overflow);
+  white-space: var(--timeline-clip-span-not-icon-white-space);
+}
+.timeline .clip > .studio-icon {
+  width: var(--timeline-clip-icon-width);
+  height: var(--timeline-clip-icon-height);
+  flex-basis: var(--timeline-clip-icon-flex-basis);
+}
+.studio .timeline .clip:hover {
+  background: var(--timeline-clip-hover-background);
+  color: var(--text-strong);
+}
+.studio .timeline .clip.selected {
+  background: var(--brand-soft);
+  border-color: var(--brand-edge);
+  box-shadow: var(--timeline-clip-selected-box-shadow);
+  color: var(--text-strong);
+}
+.studio .timeline .clip.diagnostics {
+  border-color: var(--timeline-timeline-clip-diagnostics-border-color);
+  background: var(--timeline-clip-diagnostics-background);
+}
+.studio .timeline .clip.is-dragging {
+  z-index: var(--timeline-clip-is-dragging-z-index);
+  opacity: var(--timeline-clip-is-dragging-opacity);
+  box-shadow: var(--timeline-clip-is-dragging-box-shadow);
+  cursor: var(--timeline-clip-is-dragging-cursor);
+}
+.timeline .timeline-playhead {
+  background: var(--accent);
+  box-shadow: var(--timeline-clip-selected-box-shadow);
+}
+.timeline .timeline-drop-line {
+  position: absolute;
+  z-index: var(--timeline-drop-line-z-index);
+  top: var(--timeline-drop-line-top);
+  bottom: var(--timeline-drop-line-bottom);
+  width: var(--timeline-drop-line-width);
+  background: var(--accent);
+  box-shadow: var(--timeline-drop-line-box-shadow);
+  pointer-events: none;
+}
+/* Selecting on the timeline: an area drag, and several clips at once. */
+.studio .timeline .timeline-content {
+  position: relative;
+}
+.studio .timeline .timeline-content.is-marquee {
+  cursor: var(--timeline-content-is-marquee-cursor);
+  user-select: none;
+}
+.timeline-marquee {
+  position: absolute;
+  z-index: var(--timeline-marquee-z-index);
+  pointer-events: none;
+  border: unset;
+  border-radius: unset;
+  background: unset;
+}
+.studio .timeline .clip.is-marquee-hit {
+  border-color: var(--accent);
+  box-shadow: unset;
+}

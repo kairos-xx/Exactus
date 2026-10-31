@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "name": "Demo frontend discovery and replay",
+  "actions": [
+    {
+      "id": "discover",
+      "tool": "record.crawl",
+      "arguments": {
+        "entrypoint": "../server.py",
+        "url": "http://127.0.0.1/",
+        "port": 0,
+        "screenshots": true,
+        "server_errors": true,
+        "javascript": [
+          "() => ({title: document.title, url: location.href})"
+        ],
+        "max_depth": 2,
+        "max_states": 5,
+        "environments": [
+          {
+            "width": 390,
+            "height": 844,
+            "theme": "light"
+          },
+          {
+            "width": 390,
+            "height": 844,
+            "theme": "dark"
+          },
+          {
+            "width": 1440,
+            "height": 900,
+            "theme": "light"
+          },
+          {
+            "width": 1440,
+            "height": 900,
+            "theme": "dark"
+          },
+          {
+            "width": 1728,
+            "height": 1000,
+            "theme": "light"
+          },
+          {
+            "width": 1728,
+            "height": 1000,
+            "theme": "dark"
+          }
+        ]
+      }
+    },
+    {
+      "id": "verify",
+      "tool": "frontend.run",
+      "arguments": {
+        "projects": "$discover.projects",
+        "server_log": "$discover.server_log",
+        "fail_on_findings": false
+      }
+    }
+  ]
+}

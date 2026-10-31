@@ -1,0 +1,147 @@
+/**
+ * Forms, fields, and action editors.
+ *
+ * Sources: 09-forms.
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+@layer studio-base {
+  /* Source: 09-forms */
+  .node-actions > small {
+    color: var(--muted);
+  }
+  .connection-strip > span {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--forms-connection-strip-span-gap);
+    padding: var(--flow-panel-padding);
+    background: var(--surface);
+    border: var(--shell-textarea-border);
+    font-size: var(--forms-connection-strip-span-font-size);
+  }
+  .connection-strip small {
+    color: var(--accent);
+  }
+  .composition-footer > span {
+    font-size: var(--forms-composition-footer-span-font-size);
+    color: var(--muted);
+  }
+  .composition-footer button {
+    border: var(--forms-composition-footer-button-border);
+    background: var(--forms-composition-footer-button-background);
+    padding: var(--forms-composition-footer-button-padding);
+    font-size: var(--forms-composition-footer-button-font-size);
+  }
+  .connection-form label {
+    display: grid;
+    gap: var(--forms-connection-form-label-gap);
+    font-size: var(--forms-connection-form-label-font-size);
+    color: var(--muted);
+    flex: var(--forms-connection-form-label-flex);
+    min-width: var(--forms-connection-form-label-min-width);
+  }
+  .connection-form select {
+    width: var(--forms-connection-form-select-width);
+    min-width: var(--forms-connection-form-select-min-width);
+    padding: var(--forms-connection-form-select-padding);
+  }
+  .connection-form input {
+    width: var(--forms-connection-form-input-width);
+    min-width: var(--forms-connection-form-input-min-width);
+    padding: var(--forms-connection-form-input-padding);
+  }
+  .preview > header {
+    flex-wrap: nowrap;
+  }
+  .timeline-toolbar label {
+    color: var(--muted);
+    font-weight: var(--forms-timeline-toolbar-label-font-weight);
+    font-size: var(--forms-timeline-toolbar-label-font-size);
+  }
+  .track-label small {
+    color: var(--muted);
+    font-family: var(--forms-track-label-small-font-family);
+  }
+  .ruler-ticks small {
+    display: block;
+    color: var(--muted);
+    font-size: var(--forms-ruler-ticks-small-font-size);
+    margin-top: var(--forms-ruler-ticks-small-margin-top);
+  }
+  .recipe-menu > div {
+    position: absolute;
+    bottom: var(--forms-recipe-menu-div-bottom);
+    right: var(--forms-recipe-menu-div-right);
+    display: grid;
+    gap: var(--forms-recipe-menu-div-gap);
+    background: var(--shell-button-background);
+    padding: var(--forms-recipe-menu-div-padding);
+    border: var(--studio-recipe-menu-div-border);
+    z-index: var(--forms-recipe-menu-div-z-index);
+  }
+  .graph header div {
+    display: flex;
+    gap: var(--forms-graph-header-div-gap);
+  }
+  .ruler-ticks > span {
+    color: var(--text);
+    font: var(--forms-ruler-ticks-span-font);
+    border-left: var(--shell-textarea-border);
+    padding: var(--forms-ruler-ticks-span-padding);
+    position: absolute;
+    top: var(--forms-ruler-ticks-span-top);
+    padding-inline: var(--forms-ruler-ticks-span-padding-inline);
+    font-variant-numeric: var(--forms-ruler-ticks-span-font-variant-numeric);
+  }
+  .topbar button {
+    white-space: var(--forms-topbar-button-white-space);
+  }
+  .data-table td button {
+    justify-content: flex-start;
+    background: var(--forms-data-table-td-button-background);
+    border: var(--forms-data-table-td-button-border);
+    padding: var(--forms-data-table-td-button-padding);
+  }
+  :where(
+    html,
+    body,
+    main,
+    header,
+    nav,
+    section,
+    aside,
+    footer,
+    div,
+    form,
+    label,
+    button,
+    input,
+    select,
+    textarea,
+    dialog,
+    table,
+    th,
+    td
+  ) {
+    box-sizing: inherit;
+  }
+  .tree-item:hover {
+    background: var(--forms-tree-item-hover-background);
+  }
+  .tree-item.active {
+    box-shadow: var(--studio-selection-shadow);
+  }
+  .node.assert {
+    border-color: var(--forms-node-assert-border-color);
+  }
+  .node.http {
+    border-color: var(--forms-node-http-border-color);
+  }
+  .node::after {
+    content: var(--forms-node-after-content);
+    position: absolute;
+    right: var(--forms-node-after-right);
+    top: var(--forms-node-after-top);
+    width: var(--forms-node-after-width);
+    border-top: var(--forms-node-after-border-top);
+  }
+}

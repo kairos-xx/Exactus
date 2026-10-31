@@ -1,0 +1,95 @@
+/**
+ * Shared Studio design tokens.
+ *
+ * Sources: 01-tokens.
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+@layer studio-base {
+  /* Scope: custom properties set by 01-tokens */
+  :root {
+    --button-height: var(--catalog-button-measure-large-plus-tiny-height);
+    --button-gap: var(--catalog-button-measure-tiny-plus-micro-gap);
+    --studio-icon-size: var(--catalog-icon-measure-normal-width);
+    --studio-select-padding: var(--catalog-field-measure-xlarge-min-height);
+    --bottom-dock-height: var(
+      --catalog-surface-measure-page-plus-normal-plus-huge-min-height
+    );
+    --switch-track: var(--catalog-field-measure-large-plus-tiny-width);
+    --property-text-height: var(
+      --catalog-field-measure-huge-plus-normal-min-height
+    );
+    --studio-status-padding: var(
+      --catalog-field-measure-micro-tiny-plus-micro-padding
+    );
+    --bg: var(--catalog-surface-color-body-dark-background);
+    --surface: var(--catalog-panel-color-default-light-background);
+    --shell-button-background: var(
+      --catalog-button-color-default-darkest-background
+    );
+    --data-tables-selected-data-step-background: var(
+      --catalog-control-color-step-dark-background
+    );
+    --line: var(--catalog-button-border-action-lightest-border-color);
+    --data-tables-clip-network-border-color: var(
+      --catalog-track-border-clip-network-light-border-color
+    );
+    --text: var(--catalog-surface-color-body-light-color);
+    --text-strong: var(--catalog-button-color-tools-lightest-color);
+    --muted: var(--catalog-control-color-number-unit-dark-color);
+    --text-subtle: var(--catalog-button-color-tools-darkest-color);
+    --accent: var(--catalog-panel-color-resizer-dark-background);
+    --h: var(--catalog-field-measure-xlarge-plus-micro-height);
+    --shell-body-font: var(
+      --catalog-surface-typography-body-small-plus-hairline-font
+    );
+    --panels-center-grid-template-rows: var(
+      --catalog-control-measure-center-minmax-zero-grid-template-rows
+    );
+    --flow-panel-header-table-panel-header-min-height: var(
+      --catalog-header-measure-xlarge-plus-micro-min-height
+    );
+    --docks-workspace-is-collapsed-header-width: var(
+      --catalog-header-measure-xlarge-width
+    );
+    --flow-min-height-2: var(
+      --catalog-item-measure-xlarge-plus-micro-min-height
+    );
+    --flow-card-heading-height: var(
+      --catalog-item-measure-xlarge-plus-small-min-height
+    );
+    --flow-panel-padding: var(--catalog-surface-measure-compact-small-padding);
+    --flow-track-min-height: var(
+      --catalog-track-measure-xlarge-plus-compact-min-height
+    );
+    --studio-ruler-ticks-clips-min-height: var(
+      --catalog-track-measure-xlarge-plus-compact-min-height
+    );
+    --studio-clips-clip-min-height: var(
+      --catalog-track-measure-xlarge-min-height
+    );
+    --dock-canvas: var(--catalog-control-color-canvas-background-color);
+    --panel-header-surface: var(--catalog-header-color-default-dark-background);
+    --panel-content-surface: var(
+      --catalog-panel-color-floating-light-background
+    );
+    --panel-header-active-surface: var(
+      --catalog-header-color-within-light-background
+    );
+    --docks-data-workspace-mode-timeline-grid-template-rows: var(
+      --catalog-control-measure-mode-xlarge-plus-small-grid-template-rows
+    );
+    --section-row-grid-template-rows: var(
+      --catalog-control-measure-default-xlarge-grid-template-rows
+    );
+    --primary-button-pad-y: 0.3125rem;
+    --primary-button-pad-x: 0.625rem;
+    --primary-icon-size: 1rem;
+    --primary-bg: #191a1cff;
+    --primary-surface: #242527ff;
+    --primary-shell-button-background: #2c2e31ff;
+    --primary-line: #393b3eff;
+    --primary-text: #e0e2e5ff;
+    --primary-accent: #9abbd8ff;
+  }
+  /* Source: 01-tokens */
+}

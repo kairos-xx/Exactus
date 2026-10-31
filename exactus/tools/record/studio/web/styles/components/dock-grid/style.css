@@ -1,0 +1,309 @@
+/**
+ * Dock grid, collapsed bars, resize handles and drop preview.
+ *
+ * Sources: 35-dock-grid.
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+/* Scope: custom properties set by 35-dock-grid */
+:root {
+  --docks-dock-handle-after-transition: var(
+    --catalog-panel-motion-handle-transition
+  );
+  --docks-dock-drop-transition: var(--catalog-panel-motion-drop-transition);
+}
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --panels-panel-tool-icon-transition: var(
+      --catalog-button-motion-tool-none-transition
+    );
+    --sidebars-edit-checks-summary-chevron-transition: var(
+      --catalog-icon-motion-summary-summary-chevron-transition
+    );
+    --docks-dock-handle-after-transition: var(
+      --catalog-panel-motion-handle-none-transition
+    );
+    --docks-dock-drop-transition: var(
+      --catalog-panel-motion-drop-none-transition
+    );
+  }
+}
+/* Source: 35-dock-grid */
+/* Value-preserving design tokens for the compact editor. */
+/* Dock grid: every panel is a cell range of one shared CSS grid, so rows and
+   columns line up across the whole workspace. Tracks are sized from
+   dock-grid.js; this file only draws the result. */
+.studio > .workbench {
+  display: none;
+}
+.studio[data-workspace-mode="edit"] > .workbench,
+.studio[data-workspace-mode="record"] > .workbench,
+.studio[data-workspace-mode="timeline"] > .workbench,
+.studio[data-workspace-mode="graph"] > .workbench {
+  position: relative;
+  display: grid;
+  gap: var(--docks-data-workspace-mode-edit-workbench-gap);
+  min-width: var(--docks-data-workspace-mode-edit-workbench-min-width);
+  min-height: var(--docks-data-workspace-mode-edit-workbench-min-height);
+  overflow: hidden;
+  background: var(--docks-data-workspace-mode-edit-workbench-background);
+}
+.workbench > .panel[data-panel-id] {
+  display: flex;
+  flex-direction: column;
+  min-width: var(--docks-workbench-panel-data-panel-id-min-width);
+  min-height: var(--docks-workbench-panel-data-panel-id-min-height);
+  overflow: hidden;
+  /* Both axes: panels answer to their height as well as their width. */
+  container: panel / size;
+}
+/* A docked Flows panel spans its tracks; the stacked layout's height cap
+   from 11-composition.css must not shorten it. */
+.workbench > .panel[data-panel-id="workspace"]:not(.is-floating) {
+  max-height: var(--docks-panel-id-workspace-not-is-floating-max-height);
+}
+.workbench > .panel.is-unplaced {
+  display: none;
+}
+.panel-tools {
+  position: relative;
+}
+/* A collapsed panel keeps its header and nothing else: the chevron that
+   expands it and the panel icon. The title shows as a tooltip. A horizontal
+   bar results when the panel collapses vertically, a vertical bar when it
+   collapses sideways. */
+.panel.is-collapsed > :not(header) {
+  display: none;
+}
+.panel.is-collapsed > header {
+  justify-content: flex-start;
+  border-bottom: var(--docks-panel-is-collapsed-header-border-bottom);
+}
+.panel.is-collapsed > header > :where(:not(.panel-title, .panel-tools)) {
+  display: none;
+}
+.is-collapsed .panel-title-text,
+.is-collapsed .panel-tool-reveal {
+  display: none;
+}
+.is-collapsed .panel-tools {
+  order: var(--docks-is-collapsed-panel-tools-order);
+  margin: var(--docks-is-collapsed-panel-tools-margin);
+}
+.panel.is-collapsed[data-collapse="h"] > header {
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: var(--docks-is-collapsed-data-collapse-h-header-width);
+  height: var(--docks-is-collapsed-data-collapse-h-header-height);
+  max-height: var(--docks-is-collapsed-data-collapse-h-header-max-height);
+  padding: var(--docks-is-collapsed-data-collapse-h-header-padding);
+  gap: var(--docks-is-collapsed-data-collapse-h-header-gap);
+}
+/* Resize handles sit on the shared track lines. */
+.dock-handles {
+  position: absolute;
+  inset: var(--docks-dock-handles-inset);
+  z-index: var(--docks-dock-handles-z-index);
+  pointer-events: none;
+}
+.dock-handle {
+  position: absolute;
+  z-index: var(--docks-dock-handle-z-index);
+  pointer-events: auto;
+  touch-action: none;
+}
+.dock-handle[data-axis="c"] {
+  --base-docks-dock-handle-data-axis-c-top: var(--dynamic-from);
+  --catalog-offset-measure-handle-axis-c-top: var(
+    --base-docks-dock-handle-data-axis-c-top
+  );
+  --docks-dock-handle-data-axis-c-top: var(
+    --catalog-offset-measure-handle-axis-c-top
+  );
+  top: var(--docks-dock-handle-data-axis-c-top);
+  --base-docks-dock-handle-data-axis-c-left: var(--dynamic-along);
+  --catalog-offset-measure-handle-axis-c-left: var(
+    --base-docks-dock-handle-data-axis-c-left
+  );
+  --docks-dock-handle-data-axis-c-left: var(
+    --catalog-offset-measure-handle-axis-c-left
+  );
+  left: var(--docks-dock-handle-data-axis-c-left);
+  width: var(--docks-dock-handle-data-axis-c-width);
+  --base-docks-dock-handle-data-axis-c-height: var(--dynamic-length);
+  --catalog-size-measure-handle-axis-c-height: var(
+    --base-docks-dock-handle-data-axis-c-height
+  );
+  --docks-dock-handle-data-axis-c-height: var(
+    --catalog-size-measure-handle-axis-c-height
+  );
+  height: var(--docks-dock-handle-data-axis-c-height);
+  transform: var(--docks-dock-handle-data-axis-c-transform);
+  cursor: var(--docks-dock-handle-data-axis-c-cursor);
+}
+.dock-handle[data-axis="r"] {
+  --base-docks-dock-handle-data-axis-r-top: var(--dynamic-along);
+  --catalog-offset-measure-handle-axis-r-top: var(
+    --base-docks-dock-handle-data-axis-r-top
+  );
+  --docks-dock-handle-data-axis-r-top: var(
+    --catalog-offset-measure-handle-axis-r-top
+  );
+  top: var(--docks-dock-handle-data-axis-r-top);
+  --base-docks-dock-handle-data-axis-r-left: var(--dynamic-from);
+  --catalog-offset-measure-handle-axis-r-left: var(
+    --base-docks-dock-handle-data-axis-r-left
+  );
+  --docks-dock-handle-data-axis-r-left: var(
+    --catalog-offset-measure-handle-axis-r-left
+  );
+  left: var(--docks-dock-handle-data-axis-r-left);
+  --base-docks-dock-handle-data-axis-r-width: var(--dynamic-length);
+  --catalog-size-measure-handle-axis-r-width: var(
+    --base-docks-dock-handle-data-axis-r-width
+  );
+  --docks-dock-handle-data-axis-r-width: var(
+    --catalog-size-measure-handle-axis-r-width
+  );
+  width: var(--docks-dock-handle-data-axis-r-width);
+  height: var(--docks-dock-handle-data-axis-r-height);
+  transform: var(--docks-dock-handle-data-axis-r-transform);
+  cursor: var(--docks-dock-handle-data-axis-r-cursor);
+}
+.dock-handle::after {
+  content: var(--docks-dock-handle-after-content);
+  position: absolute;
+  background: var(--accent);
+  opacity: var(--docks-dock-handle-after-opacity);
+  transition: var(--docks-dock-handle-after-transition);
+}
+.dock-handle[data-axis="c"]::after {
+  inset: var(--docks-dock-handle-data-axis-c-after-inset);
+}
+.dock-handle[data-axis="r"]::after {
+  inset: var(--docks-dock-handle-data-axis-r-after-inset);
+}
+.dock-handle:hover::after,
+.dock-handle:focus-visible::after,
+.dock-handle.is-active::after {
+  opacity: var(--docks-dock-handle-hover-after-opacity);
+}
+.dock-handle:focus-visible {
+  outline: var(--docks-dock-handle-focus-visible-outline);
+}
+body.dock-resizing-x {
+  cursor: var(--docks-body-dock-resizing-x-cursor);
+}
+body.dock-resizing-y {
+  cursor: var(--docks-body-dock-resizing-y-cursor);
+}
+/* Drop preview and drag ghost */
+.dock-drop {
+  position: absolute;
+  z-index: var(--docks-dock-drop-z-index);
+  box-sizing: border-box;
+  border: var(--docks-dock-drop-border);
+  border-radius: var(--docks-dock-drop-border-radius);
+  background: var(--brand-soft);
+  pointer-events: none;
+  transition: var(--docks-dock-drop-transition);
+}
+.dock-drop[hidden] {
+  display: none;
+}
+.dock-drop[data-kind="swap"] {
+  border-style: dashed;
+}
+.dock-drop[data-blocked] {
+  border-color: var(--docks-dock-drop-data-blocked-border-color);
+  background: var(--docks-dock-drop-data-blocked-background);
+}
+.dock-ghost {
+  position: fixed;
+  top: var(--docks-dock-ghost-top);
+  left: var(--docks-dock-ghost-left);
+  z-index: var(--docks-dock-ghost-z-index);
+  padding: var(--docks-dock-ghost-padding);
+  border: var(--docks-dock-ghost-border);
+  border-radius: var(--docks-dock-ghost-border-radius);
+  background: var(--docks-dock-ghost-background);
+  box-shadow: var(--docks-dock-ghost-box-shadow);
+  color: var(--text-strong);
+  font-size: var(--docks-dock-ghost-font-size);
+  font-weight: var(--docks-dock-ghost-font-weight);
+  pointer-events: none;
+}
+/* Floating windows */
+.panel.is-floating {
+  position: fixed;
+  z-index: var(--docks-panel-is-floating-z-index);
+  min-width: var(--docks-panel-is-floating-min-width);
+  min-height: var(--docks-panel-is-floating-min-height);
+  overflow: auto;
+  border: var(--docks-panel-is-floating-border-dock-grid);
+  border-radius: var(--docks-panel-is-floating-border-radius);
+  box-shadow: var(--docks-panel-is-floating-box-shadow-dock-grid);
+  resize: both;
+}
+.panel.is-floating.is-collapsed {
+  /* Header height plus the window border, whatever the panel's box model. */
+  box-sizing: content-box;
+  min-height: var(--docks-panel-is-floating-is-collapsed-min-height);
+  resize: none;
+}
+/* A collapsed window is a title bar, not a docked strip: it keeps its title
+ * and tools so it can be recognised, moved, expanded or docked again. */
+.panel.is-floating.is-collapsed .panel-title-text,
+.panel.is-floating.is-collapsed .panel-tool-reveal {
+  display: inline-flex;
+}
+.panel.is-floating.is-collapsed > header {
+  justify-content: space-between;
+}
+.panel.is-floating.is-collapsed .panel-tools {
+  order: var(--docks-is-floating-is-collapsed-panel-tools-order);
+  margin-left: var(--docks-is-floating-is-collapsed-panel-tools-margin-left);
+}
+.panel.is-dragging {
+  opacity: var(--docks-panel-is-dragging-opacity);
+}
+/* Compact screens show one group of panels at a time. */
+@media (width <= 600px) {
+  .studio > .workbench {
+    display: flex;
+    flex-direction: column;
+    gap: var(--docks-workbench-gap-max-width-600px);
+    overflow: auto;
+  }
+  .workbench > .panel[data-panel-id] {
+    display: none;
+    flex: var(--docks-workbench-panel-data-panel-id-flex-max-width-600px);
+    width: var(--docks-workbench-panel-data-panel-id-width-max-width-600px);
+  }
+  .studio[data-mobile-panel="flows"] .workbench > [data-panel-id="workspace"],
+  .studio[data-mobile-panel="steps"] .workbench > [data-panel-id="steps"],
+  .studio[data-mobile-panel="browser"] .workbench > [data-panel-id="target"],
+  .studio[data-mobile-panel="properties"]
+    .workbench
+    > [data-panel-id="properties"],
+  .studio[data-mobile-panel="runs"] .workbench > [data-panel-id="timeline"],
+  .studio[data-mobile-panel="runs"] .workbench > [data-panel-id="runs"],
+  .workbench > [data-panel-id="actions"][data-open] {
+    display: flex;
+  }
+  .studio .panel-tools,
+  .dock-handles {
+    display: none;
+  }
+  /* Task tabs own the whole screen. This must out-rank the compact
+     workbench rules above and in 26-edit-workspace.css. */
+  .studio:is(
+      [data-workspace-mode="play"],
+      [data-workspace-mode="compare"],
+      [data-workspace-mode="crawl"],
+      [data-workspace-mode="settings"]
+    )
+    > :is(.workbench, .bottom, .mobile-panel-tabs) {
+    display: none;
+  }
+}

@@ -1,0 +1,24 @@
+/**
+ * Nested dock groups.
+ *
+ * Sources: 20-dock-groups.
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+@layer studio-base {
+  /* Source: 20-dock-groups */
+  /* A nested group owns the separator between sibling panels. */
+  [data-panel-id="composition"]:not(.is-floating),
+  [data-panel-id="timeline"]:not(.is-floating) {
+    flex-grow: var(--docks-panel-id-composition-not-is-floating-flex-grow);
+  }
+  [data-panel-id="steps"]:not(.is-floating),
+  [data-panel-id="runs"]:not(.is-floating) {
+    flex-grow: var(--docks-panel-id-steps-not-is-floating-flex-grow);
+  }
+  [data-panel-id="target"]:not(.is-floating) {
+    flex-grow: var(--docks-panel-id-target-not-is-floating-flex-grow);
+  }
+  [data-panel-id="properties"]:not(.is-floating) {
+    flex-grow: var(--docks-panel-id-properties-not-is-floating-flex-grow);
+  }
+}

@@ -1,0 +1,347 @@
+/**
+ * Contextual aliases of the selectors component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  --selectors-live-tools-background: var(--catalog-item-color-step-background);
+  --selectors-live-tools-border: var(--catalog-button-border-default-border);
+  --selectors-live-tools-border-radius: var(
+    --catalog-item-border-compact-border-radius
+  );
+  --selectors-live-tools-gap: var(--catalog-toolbar-measure-compact-gap);
+  --selectors-live-tools-padding: var(
+    --catalog-control-measure-compact-padding
+  );
+  --selectors-live-tools-count-color: var(
+    --catalog-control-color-variable-color
+  );
+  --selectors-live-tools-empty-color: var(
+    --catalog-control-color-form-state-color
+  );
+  --selectors-live-tools-control-height: var(
+    --catalog-control-measure-selector-test-min-height
+  );
+  --selectors-live-tools-control-padding: var(
+    --catalog-control-measure-selector-tool-padding
+  );
+  --selectors-live-tools-width: var(--catalog-field-measure-full-width);
+  --selectors-bookmark-label-color: var(
+    --catalog-control-color-form-state-color
+  );
+  /* 43-selectors */
+  --selectors-live-target-match-border-radius: var(
+    --catalog-control-border-pixel-micro-border-radius
+  );
+  --selectors-live-target-match-span-color: var(
+    --catalog-text-color-match-span-color
+  );
+  --selectors-live-target-match-span-font-size: var(
+    --catalog-text-typography-compact-plus-micro-font-size
+  );
+  --selectors-live-target-match-span-font-weight: var(
+    --catalog-text-typography-match-span-font-weight
+  );
+  --selectors-live-target-match-span-height: var(
+    --catalog-text-measure-normal-height
+  );
+  --selectors-live-target-match-span-left: var(
+    --catalog-text-measure-match-span-left
+  );
+  --selectors-live-target-match-span-line-height: var(
+    --catalog-text-typography-normal-line-height
+  );
+  --selectors-live-target-match-span-min-width: var(
+    --catalog-text-measure-normal-min-width
+  );
+  --selectors-live-target-match-span-padding: var(
+    --catalog-text-measure-match-span-padding
+  );
+  --selectors-live-target-match-span-text-align: var(
+    --catalog-text-typography-match-span-text-align
+  );
+  --selectors-live-target-match-span-top: var(
+    --catalog-text-measure-match-span-top
+  );
+  --selectors-live-target-matches-inset: var(
+    --catalog-control-measure-matches-inset
+  );
+  --selectors-live-target-matches-z-index: var(
+    --catalog-control-measure-matches-z-index
+  );
+  --selectors-selector-actions-gap: var(--catalog-toolbar-measure-compact-gap);
+  --selectors-selector-actions-selector-icon-height: var(
+    --catalog-icon-measure-large-height
+  );
+  --selectors-selector-actions-selector-icon-last-child-margin-left: var(
+    --catalog-icon-measure-selector-margin-left
+  );
+  --selectors-selector-actions-selector-icon-min-height: var(
+    --catalog-icon-measure-selector-min-height
+  );
+  --selectors-selector-actions-selector-icon-padding: var(
+    --catalog-icon-measure-selector-padding
+  );
+  --selectors-selector-actions-selector-icon-width: var(
+    --catalog-icon-measure-large-width
+  );
+  --selectors-selector-count-gap: var(--catalog-label-measure-compact-gap);
+  --selectors-selector-count-input-width: var(
+    --catalog-field-measure-huge-plus-compact-width
+  );
+  --selectors-selector-count-select-flex: var(
+    --catalog-field-measure-count-select-flex
+  );
+  --selectors-selector-diagnostic-font-size: var(
+    --catalog-control-typography-small-font-size
+  );
+  --selectors-selector-diagnostic-line-height: var(
+    --catalog-control-typography-height-loose-line-height
+  );
+  --selectors-selector-diagnostic-margin: var(
+    --catalog-control-measure-selector-diagnostic-margin
+  );
+  --selectors-selector-editor-is-small-text-overflow: var(
+    --catalog-label-typography-editor-small-text-overflow
+  );
+  --selectors-selector-editor-is-small-white-space: var(
+    --catalog-label-typography-editor-small-white-space
+  );
+  --selectors-selector-editor-label-font-weight: var(
+    --catalog-label-typography-weight-medium-font-weight
+  );
+  --selectors-selector-editor-label-letter-spacing: var(
+    --catalog-label-typography-selector-editor-letter-spacing
+  );
+  --selectors-selector-editor-label-text-transform: var(
+    --catalog-label-typography-selector-editor-text-transform
+  );
+  --selectors-selector-form-gap: var(
+    --catalog-control-measure-compact-plus-micro-gap
+  );
+  --selectors-selector-form-label-font-size: var(
+    --catalog-label-typography-small-font-size
+  );
+  --selectors-selector-form-label-gap: var(--catalog-label-measure-tiny-gap);
+  --selectors-selector-form-textarea-name-expression-font-family: var(
+    --catalog-field-typography-form-textarea-font-family
+  );
+  --selectors-selector-form-textarea-name-expression-font-size: var(
+    --catalog-field-typography-small-font-size
+  );
+  --selectors-selector-form-textarea-name-expression-min-height: var(
+    --catalog-field-measure-xxlarge-plus-compact-min-height
+  );
+  --selectors-selector-hint-font-size: var(
+    --catalog-label-typography-small-font-size
+  );
+  --selectors-selector-hint-line-height: var(
+    --catalog-label-typography-height-loose-line-height
+  );
+  --selectors-selector-hint-margin: var(
+    --catalog-label-measure-selector-hint-margin
+  );
+  --selectors-selector-link-background: var(
+    --catalog-link-color-selector-background
+  );
+  --selectors-selector-link-border: var(--catalog-link-border-selector-border);
+  --selectors-selector-link-font-size: var(
+    --catalog-link-typography-small-font-size
+  );
+  --selectors-selector-link-padding: var(
+    --catalog-link-measure-selector-padding
+  );
+  --selectors-selector-match-body-gap: var(--catalog-surface-measure-micro-gap);
+  --selectors-selector-match-body-min-width: var(
+    --catalog-surface-measure-match-body-min-width
+  );
+  --selectors-selector-match-css-font-size: var(
+    --catalog-control-typography-small-minus-hairline-font-size
+  );
+  --selectors-selector-match-css-overflow-wrap: var(
+    --catalog-control-measure-match-css-overflow-wrap
+  );
+  --selectors-selector-match-failed-color: var(
+    --catalog-control-color-match-failed-color
+  );
+  --selectors-selector-match-failed-font-size: var(
+    --catalog-control-typography-small-minus-hairline-font-size
+  );
+  --selectors-selector-match-gap: var(--catalog-control-measure-compact-gap);
+  --selectors-selector-match-grid-template-columns: var(
+    --catalog-control-measure-selector-match-grid-template-columns
+  );
+  --selectors-selector-match-n-border-radius: var(
+    --catalog-control-border-tiny-border-radius
+  );
+  --selectors-selector-match-n-color: var(
+    --catalog-control-color-match-n-color
+  );
+  --selectors-selector-match-n-font-size: var(
+    --catalog-control-typography-small-minus-hairline-font-size
+  );
+  --selectors-selector-match-n-font-weight: var(
+    --catalog-control-typography-weight-semibold-font-weight
+  );
+  --selectors-selector-match-n-height: var(
+    --catalog-control-measure-medium-height
+  );
+  --selectors-selector-match-n-width: var(
+    --catalog-control-measure-medium-width
+  );
+  --selectors-selector-match-text-font-size: var(
+    --catalog-text-typography-small-font-size
+  );
+  --selectors-selector-match-text-overflow: var(
+    --catalog-text-typography-selector-match-text-overflow
+  );
+  --selectors-selector-match-text-white-space: var(
+    --catalog-text-typography-selector-match-white-space
+  );
+  --selectors-selector-matches-gap: var(
+    --catalog-control-measure-tiny-plus-micro-gap
+  );
+  --selectors-selector-matches-list-style: var(
+    --catalog-control-measure-selector-matches-list-style
+  );
+  --selectors-selector-matches-margin: var(
+    --catalog-control-measure-selector-matches-margin
+  );
+  --selectors-selector-matches-padding: var(
+    --catalog-control-measure-selector-matches-padding
+  );
+  --selectors-selector-note-warn-color: var(
+    --catalog-control-color-note-warn-color
+  );
+  --selectors-selector-open-background: var(
+    --catalog-control-color-selector-open-background
+  );
+  --selectors-selector-open-border: var(
+    --catalog-control-border-selector-open-border
+  );
+  --selectors-selector-open-font-size: var(
+    --catalog-control-typography-small-font-size
+  );
+  --selectors-selector-open-padding: var(
+    --catalog-control-measure-selector-open-padding
+  );
+  --selectors-selector-open-text-align: var(
+    --catalog-control-typography-selector-open-text-align
+  );
+  --selectors-selector-page-url-text-overflow: var(
+    --catalog-control-typography-page-url-text-overflow
+  );
+  --selectors-selector-page-url-white-space: var(
+    --catalog-control-typography-page-url-white-space
+  );
+  --selectors-selector-pages-li-font-size: var(
+    --catalog-item-typography-small-font-size
+  );
+  --selectors-selector-pages-li-gap: var(--catalog-item-measure-compact-gap);
+  --selectors-selector-result-gap: var(--catalog-control-measure-compact-gap);
+  --selectors-selector-result-margin-top: var(
+    --catalog-control-measure-normal-margin-top
+  );
+  --selectors-selector-save-color: var(
+    --catalog-control-color-selector-save-color
+  );
+  --selectors-selector-seen-h3-font-size: var(
+    --catalog-header-typography-small-font-size
+  );
+  --selectors-selector-seen-h3-font-weight: var(
+    --catalog-header-typography-weight-semibold-font-weight
+  );
+  --selectors-selector-seen-h3-margin: var(
+    --catalog-header-measure-seen-h3-margin
+  );
+  --selectors-selector-test-gap: var(
+    --catalog-control-measure-tiny-plus-micro-gap
+  );
+  --selectors-selector-test-height: var(
+    --catalog-control-measure-large-plus-tiny-height
+  );
+  --selectors-selector-test-min-height: var(
+    --catalog-control-measure-selector-test-min-height
+  );
+  --selectors-selector-test-padding: var(
+    --catalog-control-measure-selector-test-padding
+  );
+  --selectors-selector-verdict-border-radius: var(
+    --catalog-control-border-compact-border-radius
+  );
+  --selectors-selector-verdict-column-gap: var(
+    --catalog-control-measure-compact-column-gap
+  );
+  --selectors-selector-verdict-fail-icon-color: var(
+    --catalog-icon-color-verdict-fail-color
+  );
+  --selectors-selector-verdict-grid-template-columns: var(
+    --catalog-control-measure-selector-verdict-grid-template-columns
+  );
+  --selectors-selector-verdict-padding: var(
+    --catalog-control-measure-compact-plus-micro-padding
+  );
+  --selectors-selector-verdict-pass-icon-color: var(
+    --catalog-icon-color-verdict-pass-color
+  );
+  --selectors-selector-verdict-small-grid-column: var(
+    --catalog-label-measure-verdict-small-grid-column
+  );
+  --selectors-side-empty-font-size: var(
+    --catalog-control-typography-small-font-size
+  );
+  --selectors-side-empty-line-height: var(
+    --catalog-control-typography-height-loose-line-height
+  );
+  --selectors-side-empty-margin: var(
+    --catalog-control-measure-side-empty-margin
+  );
+  --selectors-side-empty-padding: var(
+    --catalog-control-measure-tiny-small-padding
+  );
+  --selectors-side-section-header-min-height: var(
+    --catalog-header-measure-xlarge-plus-tiny-min-height
+  );
+  --selectors-side-section-header-padding: var(
+    --catalog-header-measure-side-padding
+  );
+  --selectors-side-section-margin-top: var(
+    --catalog-surface-measure-small-margin-top
+  );
+  --selectors-side-section-title-font-size: var(
+    --catalog-header-typography-small-font-size
+  );
+  --selectors-side-section-title-font-weight: var(
+    --catalog-header-typography-weight-semibold-font-weight
+  );
+  --selectors-side-section-title-gap: var(
+    --catalog-header-measure-tiny-plus-micro-gap
+  );
+  --selectors-tree-item-count-border-radius: var(
+    --catalog-label-border-item-count-border-radius
+  );
+  --selectors-tree-item-count-font-size: var(
+    --catalog-label-typography-small-minus-hairline-font-size
+  );
+  --selectors-tree-item-count-margin-left: var(
+    --catalog-label-measure-item-count-margin-left
+  );
+  --selectors-tree-item-count-min-width: var(
+    --catalog-label-measure-medium-min-width
+  );
+  --selectors-tree-item-count-padding: var(
+    --catalog-label-measure-item-count-padding
+  );
+  --selectors-tree-item-count-text-align: var(
+    --catalog-label-typography-item-count-text-align
+  );
+  --selectors-tree-item-flag-color: var(--catalog-item-color-tree-flag-color);
+  --selectors-tree-item-flag-margin-left: var(
+    --catalog-item-measure-tree-flag-margin-left
+  );
+  --selectors-tree-item-flag-tree-item-count-margin-left: var(
+    --catalog-label-measure-tiny-margin-left
+  );
+  --selectors-live-tools-count-margin-inline-start: var(
+    --catalog-label-measure-live-count-margin-inline-start
+  );
+}

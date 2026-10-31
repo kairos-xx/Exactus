@@ -1,0 +1,168 @@
+/**
+ * Contextual aliases of the responsive component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  /* 12-responsive-base */
+  --responsive-action-grid-button-font-size-max-width-600px: var(
+    --catalog-button-typography-small-minus-hairline-font-size
+  );
+  --responsive-action-grid-button-columns-max-width-600px: var(
+    --catalog-button-measure-shortcut-columns
+  );
+  --responsive-action-grid-button-padding-max-width-600px: var(
+    --catalog-button-measure-compact-tiny-padding
+  );
+  --responsive-action-library-flex-max-width-600px: var(
+    --catalog-control-measure-action-library-flex
+  );
+  --responsive-bottom-height-max-width-600px: var(
+    --catalog-control-measure-bottom-height
+  );
+  --responsive-brand-flex-max-width-600px: var(
+    --catalog-header-measure-brand-flex
+  );
+  --responsive-center-grid-template-rows-max-width-600px: var(
+    --catalog-control-measure-center-max-width-600px-grid-template-rows
+  );
+  --responsive-composition-footer-gap-max-width-600px: var(
+    --catalog-toolbar-measure-footer-gap
+  );
+  --responsive-composition-link-path-filter: var(
+    --catalog-link-effect-path-drop-shadow-filter
+  );
+  --responsive-composition-links-fill: var(--catalog-control-color-links-fill);
+  --responsive-composition-links-inset: var(
+    --catalog-control-measure-links-inset
+  );
+  --responsive-composition-links-stroke: var(
+    --catalog-control-color-links-stroke
+  );
+  --responsive-composition-links-stroke-width: var(
+    --catalog-control-measure-links-higher-stroke-width
+  );
+  --responsive-composition-links-z-index: var(
+    --catalog-control-measure-links-z-index
+  );
+  --responsive-composition-nodes-gap-max-width-600px: var(
+    --catalog-control-measure-normal-gap
+  );
+  --responsive-composition-nodes-min-width-max-width-600px: var(
+    --catalog-control-measure-default-zero-min-width
+  );
+  --responsive-data-table-button-overflow-wrap-max-width-600px: var(
+    --catalog-button-measure-table-overflow-wrap
+  );
+  --responsive-data-table-button-white-space-max-width-600px: var(
+    --catalog-button-typography-table-white-space
+  );
+  --responsive-data-table-td-overflow-wrap-max-width-600px: var(
+    --catalog-table-measure-td-overflow-wrap
+  );
+  --responsive-data-table-td-white-space-max-width-600px: var(
+    --catalog-table-typography-td-white-space
+  );
+  --responsive-data-table-th-overflow-wrap-max-width-600px: var(
+    --catalog-table-measure-th-overflow-wrap
+  );
+  --responsive-data-table-th-white-space-max-width-600px: var(
+    --catalog-table-typography-th-white-space-normal
+  );
+  --responsive-flow-node-width-max-width-600px: var(
+    --catalog-item-measure-full-width
+  );
+  --responsive-flow-node-z-index-max-width-600px: var(
+    --catalog-item-measure-node-z-index
+  );
+  --responsive-graph-canvas-gap-max-width-600px: var(
+    --catalog-control-measure-normal-gap
+  );
+  --responsive-graph-canvas-node-min-width-max-width-600px: var(
+    --catalog-item-measure-canvas-node-min-width
+  );
+  --responsive-graph-canvas-node-width-max-width-600px: var(
+    --catalog-item-measure-full-width
+  );
+  --responsive-graph-canvas-padding-max-width-600px: var(
+    --catalog-control-measure-normal-padding
+  );
+  --responsive-id-flow-summary-font-size-max-width-600px: var(
+    --catalog-control-typography-compact-plus-micro-font-size
+  );
+  --responsive-right-stack-grid-template-columns-max-width-600px: var(
+    --catalog-list-measure-right-stack-max-width-600px-grid-template-columns
+  );
+  --responsive-runs-max-height-max-width-600px: var(
+    --catalog-control-measure-page-plus-page-max-height
+  );
+  --responsive-timeline-header-padding-top-max-width-600px: var(
+    --catalog-header-measure-compact-padding-top
+  );
+  --responsive-timeline-height-max-width-600px: var(
+    --catalog-track-measure-default-height
+  );
+  --responsive-timeline-toolbar-width-max-width-600px: var(
+    --catalog-track-measure-full-width
+  );
+  --responsive-topbar-gap-max-width-600px: var(
+    --catalog-header-measure-compact-gap
+  );
+  --responsive-tree-flex-max-width-600px: var(
+    --catalog-list-measure-tree-max-width-600px-flex
+  );
+  --responsive-tree-max-height-max-width-600px: var(
+    --catalog-list-measure-massive-plus-normal-max-height
+  );
+  --responsive-workbench-grid-template-columns-max-width-600px: var(
+    --catalog-panel-measure-workbench-max-width-600px-grid-template-columns
+  );
+  --responsive-workspace-max-height-max-width-600px: var(
+    --catalog-control-measure-default-max-width-600px-max-height
+  );
+  /* 36-responsive */
+  --responsive-grid-template-columns-max-width-600px: var(
+    --catalog-control-measure-default-grid-template-columns
+  );
+  --responsive-mobile-panel-tabs-grid-auto-columns-max-width-600px: var(
+    --catalog-tab-measure-mobile-tabs-grid-auto-columns
+  );
+  --responsive-mobile-panel-tabs-grid-template-columns-max-width-600px: var(
+    --catalog-tab-measure-mobile-tabs-max-width-600px-grid-template-columns
+  );
+  --responsive-table-panel-header-panel-title-margin-right-panel-below-width-420px: var(
+    --catalog-header-measure-tiny-margin-right
+  );
+  --responsive-target-status-font-size-panel-below-width-320px: var(
+    --catalog-label-typography-default-font-size
+  );
+  --responsive-target-status-padding-inline-panel-below-width-320px: var(
+    --catalog-label-measure-compact-minus-hairline-padding-inline
+  );
+  --responsive-timeline-timecode-font-size-panel-below-width-1180px: var(
+    --catalog-track-typography-medium-plus-micro-font-size
+  );
+  --responsive-timeline-timecode-font-size-panel-below-width-480px: var(
+    --catalog-track-typography-normal-font-size
+  );
+  --responsive-timeline-timecode-height-panel-below-width-480px: var(
+    --catalog-track-measure-xlarge-height
+  );
+  --responsive-timeline-timecode-min-width-panel-below-width-1180px: var(
+    --catalog-track-measure-massive-plus-large-min-width
+  );
+  --responsive-timeline-timecode-min-width-panel-below-width-480px: var(
+    --catalog-track-measure-massive-minus-compact-min-width
+  );
+  --responsive-timeline-timecode-padding-inline-panel-below-width-480px: var(
+    --catalog-track-measure-compact-padding-inline
+  );
+  --responsive-timeline-toolbar-gap-panel-below-width-960px: var(
+    --catalog-track-measure-compact-gap
+  );
+  --responsive-timeline-toolbar-grid-template-columns-panel-below-width-700px: var(
+    --catalog-track-measure-toolbar-panel-below-width-700px-grid-template-columns
+  );
+  --responsive-workbench-min-width-max-width-600px: var(
+    --catalog-panel-measure-workbench-min-width
+  );
+}

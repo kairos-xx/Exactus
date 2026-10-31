@@ -1,0 +1,302 @@
+/**
+ * Contextual aliases of the mock fidelity component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  /* 25-mock-fidelity */
+  --mock-fidelity-action-grid-button-background-above-width-600px: var(
+    --catalog-button-color-action-above-width-600px-background
+  );
+  --mock-fidelity-action-grid-button-border-radius-above-width-600px: var(
+    --catalog-item-border-compact-border-radius
+  );
+  --mock-fidelity-action-grid-gap-above-width-600px: var(
+    --catalog-list-measure-compact-gap
+  );
+  --mock-fidelity-action-library-body-p-font-size-above-width-600px: var(
+    --catalog-surface-typography-small-minus-hairline-font-size
+  );
+  --mock-fidelity-body-letter-spacing-above-width-600px: var(
+    --catalog-surface-typography-body-letter-spacing
+  );
+  --mock-fidelity-brand-flex-max-width-600px: var(
+    --catalog-header-measure-brand-max-width-600px-flex
+  );
+  --mock-fidelity-brand-h1-font-size-above-width-600px: var(
+    --catalog-header-typography-small-plus-hairline-font-size
+  );
+  --mock-fidelity-brand-h1-font-weight-above-width-600px: var(
+    --catalog-header-typography-brand-h1-above-width-600px-font-weight
+  );
+  --mock-fidelity-brand-h1-gap-above-width-600px: var(
+    --catalog-header-measure-compact-gap
+  );
+  --mock-fidelity-brand-h1-i-font-style-above-width-600px: var(
+    --catalog-header-typography-h1-i-font-style
+  );
+  --mock-fidelity-brand-h1-i-font-weight-above-width-600px: var(
+    --catalog-header-typography-weight-normal-font-weight
+  );
+  --mock-fidelity-brand-h1-margin-above-width-600px: var(
+    --catalog-header-measure-brand-h1-margin
+  );
+  --mock-fidelity-brand-h1-span-color-above-width-600px: var(
+    --catalog-header-color-h1-span-color
+  );
+  --mock-fidelity-brand-h1-span-font-weight-above-width-600px: var(
+    --catalog-header-typography-h1-span-font-weight
+  );
+  --mock-fidelity-brand-height-above-width-600px: var(
+    --catalog-header-measure-full-height
+  );
+  --mock-fidelity-brand-height-max-width-600px: var(
+    --catalog-header-measure-full-height
+  );
+  --mock-fidelity-brand-icon-height-above-width-600px: var(
+    --catalog-header-measure-normal-plus-micro-height
+  );
+  --mock-fidelity-brand-icon-width-above-width-600px: var(
+    --catalog-header-measure-normal-plus-micro-width
+  );
+  --mock-fidelity-brand-padding-inline-above-width-600px: var(
+    --catalog-header-measure-small-padding-inline
+  );
+  --mock-fidelity-brand-padding-inline-max-width-600px: var(
+    --catalog-header-measure-compact-plus-micro-padding-inline
+  );
+  --mock-fidelity-clip-background-above-width-600px: var(
+    --catalog-track-color-clip-above-width-600px-background
+  );
+  --mock-fidelity-clip-border-color-above-width-600px: var(
+    --catalog-track-border-clip-border-color
+  );
+  --mock-fidelity-clip-color-above-width-600px: var(
+    --catalog-track-color-clip-color
+  );
+  --mock-fidelity-clip-selected-background-above-width-600px: var(
+    --catalog-track-color-clip-selected-above-width-600px-background
+  );
+  --mock-fidelity-clip-selected-border-color-above-width-600px: var(
+    --catalog-track-border-clip-selected-above-width-600px-border-color
+  );
+  --mock-fidelity-data-panel-id-focus-within-header-border-bottom-color-above-width-600px: var(
+    --catalog-header-border-within-border-bottom-color
+  );
+  --mock-fidelity-data-panel-id-not-is-floating-border-color-above-width-600px: var(
+    --catalog-panel-border-floating-above-width-600px-border-color
+  );
+  --mock-fidelity-data-table-tbody-tr-hover-td-background-above-width-600px: var(
+    --catalog-table-color-tbody-tr-td-background
+  );
+  --mock-fidelity-data-table-td-font-size-above-width-600px: var(
+    --catalog-table-typography-small-font-size
+  );
+  --mock-fidelity-data-workspace-mode-edit-timeline-height-above-width-600px: var(
+    --catalog-track-measure-full-height
+  );
+  --mock-fidelity-data-workspace-mode-edit-timeline-width-above-width-600px: var(
+    --catalog-track-measure-full-width
+  );
+  --mock-fidelity-flow-node-active-box-shadow-above-width-600px: var(
+    --catalog-item-effect-node-active-above-width-600px-box-shadow
+  );
+  --mock-fidelity-flow-node-box-shadow-above-width-600px: var(
+    --catalog-item-effect-node-above-width-600px-box-shadow
+  );
+  --mock-fidelity-footer-color-above-width-600px: var(
+    --catalog-toolbar-color-footer-dark-color
+  );
+  --mock-fidelity-footer-font-size-above-width-600px: var(
+    --catalog-toolbar-typography-small-minus-hairline-font-size
+  );
+  --mock-fidelity-footer-padding-inline-above-width-600px: var(
+    --catalog-toolbar-measure-small-padding-inline
+  );
+  --mock-fidelity-inspector-content-label-color-above-width-600px: var(
+    --catalog-label-color-content-above-width-600px-color
+  );
+  --mock-fidelity-inspector-content-label-font-size-above-width-600px: var(
+    --catalog-label-typography-compact-plus-micro-font-size
+  );
+  --mock-fidelity-inspector-content-label-font-weight-above-width-600px: var(
+    --catalog-label-typography-content-font-weight
+  );
+  --mock-fidelity-inspector-content-label-letter-spacing-above-width-600px: var(
+    --catalog-label-typography-spacing-widest-letter-spacing
+  );
+  --mock-fidelity-inspector-content-label-text-transform-above-width-600px: var(
+    --catalog-label-typography-content-text-transform
+  );
+  --mock-fidelity-nav-button-data-workspace-view-active-background-above-width-600px: var(
+    --catalog-button-color-nav-active-above-width-600px-background
+  );
+  --mock-fidelity-nav-button-data-workspace-view-active-background-max-width-600px: var(
+    --catalog-button-color-nav-active-max-width-600px-background
+  );
+  --mock-fidelity-nav-button-data-workspace-view-active-font-weight-above-width-600px: var(
+    --catalog-button-typography-nav-font-weight
+  );
+  --mock-fidelity-panel-data-panel-id-header-border-bottom-color-above-width-600px: var(
+    --catalog-header-border-default-border-bottom-color
+  );
+  --mock-fidelity-panel-data-panel-id-header-padding-above-width-600px: var(
+    --catalog-header-measure-default-above-width-600px-padding
+  );
+  --mock-fidelity-panel-is-input-background-above-width-600px: var(
+    --catalog-field-color-input-background
+  );
+  --mock-fidelity-section-nav-button-data-workspace-view-background-above-width-600px: var(
+    --catalog-button-color-nav-background
+  );
+  --mock-fidelity-section-nav-button-data-workspace-view-background-max-width-600px: var(
+    --catalog-button-color-nav-background
+  );
+  --mock-fidelity-section-nav-button-data-workspace-view-border-above-width-600px: var(
+    --catalog-button-border-nav-border
+  );
+  --mock-fidelity-section-nav-button-data-workspace-view-border-bottom-above-width-600px: var(
+    --catalog-button-border-nav-border-bottom
+  );
+  --mock-fidelity-section-nav-button-data-workspace-view-border-bottom-max-width-600px: var(
+    --catalog-button-border-nav-border-bottom
+  );
+  --mock-fidelity-section-nav-button-data-workspace-view-border-max-width-600px: var(
+    --catalog-button-border-nav-border
+  );
+  --mock-fidelity-section-nav-button-data-workspace-view-border-radius-above-width-600px: var(
+    --catalog-button-border-nav-border-radius
+  );
+  --mock-fidelity-section-nav-button-data-workspace-view-border-radius-max-width-600px: var(
+    --catalog-button-border-nav-border-radius
+  );
+  --mock-fidelity-section-nav-button-data-workspace-view-flex-above-width-600px: var(
+    --catalog-button-measure-nav-flex
+  );
+  --mock-fidelity-section-nav-button-data-workspace-view-flex-max-width-600px: var(
+    --catalog-button-measure-nav-flex
+  );
+  --mock-fidelity-section-nav-button-data-workspace-view-font-size-above-width-600px: var(
+    --catalog-button-typography-small-minus-hairline-font-size
+  );
+  --mock-fidelity-section-nav-button-data-workspace-view-font-size-max-width-600px: var(
+    --catalog-button-typography-small-minus-hairline-font-size
+  );
+  --mock-fidelity-section-nav-button-data-workspace-view-font-weight-above-width-600px: var(
+    --catalog-button-typography-weight-medium-font-weight
+  );
+  --mock-fidelity-section-nav-button-data-workspace-view-height-above-width-600px: var(
+    --catalog-button-measure-full-height
+  );
+  --mock-fidelity-section-nav-button-data-workspace-view-height-max-width-600px: var(
+    --catalog-button-measure-full-height
+  );
+  --mock-fidelity-section-nav-button-data-workspace-view-min-height-above-width-600px: var(
+    --catalog-button-measure-full-min-height
+  );
+  --mock-fidelity-section-nav-button-data-workspace-view-min-height-max-width-600px: var(
+    --catalog-button-measure-full-min-height
+  );
+  --mock-fidelity-section-nav-button-data-workspace-view-padding-inline-above-width-600px: var(
+    --catalog-button-measure-compact-padding-inline
+  );
+  --mock-fidelity-section-nav-button-data-workspace-view-padding-inline-max-width-600px: var(
+    --catalog-button-measure-compact-plus-micro-padding-inline
+  );
+  --mock-fidelity-section-nav-button-data-workspace-view-white-space-max-width-600px: var(
+    --catalog-button-typography-nav-white-space
+  );
+  --mock-fidelity-section-nav-flex-above-width-600px: var(
+    --catalog-tab-measure-nav-flex
+  );
+  --mock-fidelity-section-nav-flex-max-width-600px: var(
+    --catalog-tab-measure-nav-flex
+  );
+  --mock-fidelity-section-nav-min-width-above-width-600px: var(
+    --catalog-tab-measure-nav-min-width
+  );
+  --mock-fidelity-section-nav-min-width-max-width-600px: var(
+    --catalog-tab-measure-nav-min-width
+  );
+  --mock-fidelity-section-nav-scrollbar-width-above-width-600px: var(
+    --catalog-tab-measure-nav-thin-scrollbar-width
+  );
+  --mock-fidelity-section-nav-scrollbar-width-max-width-600px: var(
+    --catalog-tab-measure-nav-max-width-600px-scrollbar-width
+  );
+  --mock-fidelity-section-view-select-clip-path-above-width-600px: var(
+    --catalog-field-measure-half-clip-path
+  );
+  --mock-fidelity-section-view-select-clip-path-max-width-600px: var(
+    --catalog-field-measure-half-clip-path
+  );
+  --mock-fidelity-section-view-select-height-above-width-600px: var(
+    --catalog-field-measure-pixel-hairline-height
+  );
+  --mock-fidelity-section-view-select-height-max-width-600px: var(
+    --catalog-field-measure-pixel-hairline-height
+  );
+  --mock-fidelity-section-view-select-width-above-width-600px: var(
+    --catalog-field-measure-pixel-hairline-width
+  );
+  --mock-fidelity-section-view-select-width-max-width-600px: var(
+    --catalog-field-measure-pixel-hairline-width
+  );
+  --mock-fidelity-timeline-toolbar-gap-above-width-600px: var(
+    --catalog-track-measure-tiny-gap
+  );
+  --mock-fidelity-timeline-toolbar-is-button-background-above-width-600px: var(
+    --catalog-button-color-toolbar-above-width-600px-background
+  );
+  --mock-fidelity-timeline-toolbar-is-button-font-size-above-width-600px: var(
+    --catalog-button-typography-small-minus-hairline-font-size
+  );
+  --mock-fidelity-topbar-background-above-width-600px: var(
+    --catalog-header-color-topbar-background
+  );
+  --mock-fidelity-topbar-background-max-width-600px: var(
+    --catalog-header-color-topbar-background
+  );
+  --mock-fidelity-topbar-border-bottom-above-width-600px: var(
+    --catalog-header-border-topbar-pixel-hairline-border-bottom
+  );
+  --mock-fidelity-topbar-box-shadow-above-width-600px: var(
+    --catalog-header-effect-topbar-box-shadow
+  );
+  --mock-fidelity-topbar-gap-above-width-600px: var(
+    --catalog-header-measure-topbar-gap
+  );
+  --mock-fidelity-topbar-gap-max-width-600px: var(
+    --catalog-header-measure-topbar-gap
+  );
+  --mock-fidelity-topbar-min-width-above-width-600px: var(
+    --catalog-header-measure-topbar-min-width
+  );
+  --mock-fidelity-topbar-padding-above-width-600px: var(
+    --catalog-header-measure-topbar-padding
+  );
+  --mock-fidelity-topbar-padding-max-width-600px: var(
+    --catalog-header-measure-topbar-padding
+  );
+  --mock-fidelity-tree-item-active-background-above-width-600px: var(
+    --catalog-item-color-tree-active-selected-above-width-600px-background
+  );
+  --mock-fidelity-tree-item-background-above-width-600px: var(
+    --catalog-item-color-tree-dark-background
+  );
+  --mock-fidelity-tree-item-border-color-above-width-600px: var(
+    --catalog-item-border-tree-border-color
+  );
+  --mock-fidelity-tree-item-border-radius-above-width-600px: var(
+    --catalog-item-border-tree-border-radius
+  );
+  --mock-fidelity-workspace-tree-flex-above-width-600px: var(
+    --catalog-list-measure-tree-above-width-600px-flex
+  );
+  --mock-fidelity-workspace-tree-padding-bottom-above-width-600px: var(
+    --catalog-list-measure-tiny-padding-bottom
+  );
+  /* 01-tokens */
+  --mock-fidelity-tree-item-active-box-shadow: var(
+    --catalog-item-effect-tree-step-box-shadow
+  );
+}

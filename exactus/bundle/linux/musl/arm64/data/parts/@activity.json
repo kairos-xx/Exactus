@@ -1,0 +1,151 @@
+{
+  "completed": 8,
+  "detail": "",
+  "elapsed_seconds": 41.1,
+  "extra": {
+    "build_seconds": 41.03737133300001,
+    "catalog_bytes": 8532195,
+    "chunk_references": 16748,
+    "components_built": 6,
+    "components_removed": 0,
+    "components_reused": 5,
+    "delta_bytes": 66618961,
+    "entry_count": 18945,
+    "limits": {
+      "part_bytes_max": 90000000,
+      "part_size_max": "90MB"
+    },
+    "logical_payload_bytes": 399300607,
+    "membership_partition_count": 22,
+    "object_count": 14213,
+    "pack_count": 52,
+    "packs_built": 5,
+    "packs_reused": 47,
+    "physical_pack_bytes": 96157058,
+    "plan": {
+      "basedpyright_coverage_pyrefly_pytest_ruff": "REUSE",
+      "build_twine": "BUILD",
+      "defusedxml": "REUSE",
+      "eslint_htmlhint_jslint_prettier_stylelint_tsc": "REUSE",
+      "fastapi_httpx_httpx2_mcp_pydantic_uvicorn": "BUILD",
+      "hypothesis_mutmut": "BUILD",
+      "jinja2": "BUILD",
+      "node": "REUSE",
+      "pillow": "BUILD",
+      "psutil": "BUILD",
+      "zstd-cli": "REUSE"
+    },
+    "shared_object_bytes": 11055961,
+    "shared_object_count": 805,
+    "target": {
+      "arch": "arm64",
+      "libc": "musl",
+      "name": "linux-musl-arm64",
+      "os": "linux"
+    },
+    "unique_object_bytes": 372226966
+  },
+  "finished_at": "2026-10-29T08:46:11.709099+00:00",
+  "items": [
+    {
+      "detail": "",
+      "elapsed_seconds": 3.0,
+      "finished_at": "2026-10-29T08:45:33.626952+00:00",
+      "name": "fingerprint",
+      "progress": 1.0,
+      "run_id": null,
+      "started_at": "2026-10-29T08:45:30.651295+00:00",
+      "status": "DONE",
+      "step": ""
+    },
+    {
+      "detail": "",
+      "elapsed_seconds": 13.4,
+      "finished_at": "2026-10-29T08:45:55.332424+00:00",
+      "name": "stage",
+      "progress": 1.0,
+      "run_id": null,
+      "started_at": "2026-10-29T08:45:33.626952+00:00",
+      "status": "DONE",
+      "step": ""
+    },
+    {
+      "detail": "",
+      "elapsed_seconds": 8.3,
+      "finished_at": "2026-10-29T08:45:55.332387+00:00",
+      "name": "scan",
+      "progress": 1.0,
+      "run_id": null,
+      "started_at": "2026-10-29T08:45:36.621108+00:00",
+      "status": "DONE",
+      "step": ""
+    },
+    {
+      "detail": "",
+      "elapsed_seconds": 0.0,
+      "finished_at": "2026-10-29T08:45:55.332963+00:00",
+      "name": "membership",
+      "progress": 1.0,
+      "run_id": null,
+      "started_at": "2026-10-29T08:45:55.332424+00:00",
+      "status": "DONE",
+      "step": ""
+    },
+    {
+      "detail": "",
+      "elapsed_seconds": 13.8,
+      "finished_at": "2026-10-29T08:46:09.097102+00:00",
+      "name": "pack",
+      "progress": 1.0,
+      "run_id": null,
+      "started_at": "2026-10-29T08:45:55.332963+00:00",
+      "status": "DONE",
+      "step": ""
+    },
+    {
+      "detail": "",
+      "elapsed_seconds": 1.1,
+      "finished_at": "2026-10-29T08:46:10.203411+00:00",
+      "name": "catalog",
+      "progress": 1.0,
+      "run_id": null,
+      "started_at": "2026-10-29T08:46:09.097102+00:00",
+      "status": "DONE",
+      "step": ""
+    },
+    {
+      "detail": "",
+      "elapsed_seconds": 0.0,
+      "finished_at": "2026-10-29T08:46:10.213597+00:00",
+      "name": "launcher",
+      "progress": 1.0,
+      "run_id": null,
+      "started_at": "2026-10-29T08:46:10.203411+00:00",
+      "status": "DONE",
+      "step": ""
+    },
+    {
+      "detail": "",
+      "elapsed_seconds": 0,
+      "finished_at": null,
+      "name": "delta",
+      "progress": 1.0,
+      "run_id": null,
+      "started_at": null,
+      "status": "DONE",
+      "step": ""
+    }
+  ],
+  "kind": "build",
+  "name": "linux-musl-arm64",
+  "pid": 71496,
+  "pipeline_run_id": null,
+  "progress": 1.0,
+  "run_id": "664f1d4580bb40919f0f31ccc2de0e39",
+  "schema": "exactus-run/v1",
+  "started_at": "2026-10-29T08:45:30.650675+00:00",
+  "status": "DONE",
+  "step": "delta",
+  "total": 8,
+  "updated_at": "2026-10-29T08:46:11.709123+00:00"
+}

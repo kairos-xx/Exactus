@@ -1,0 +1,209 @@
+/**
+ * Application shell and global controls.
+ *
+ * Sources: 02-shell.
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+@layer studio-base {
+  /* Scope: custom properties set by 02-shell */
+  @media (width <= 600px) {
+    :root {
+      --button-height: var(--catalog-button-measure-xlarge-plus-micro-height);
+    }
+  }
+  .button-small {
+    --button-height: var(--catalog-button-measure-medium-plus-micro-height);
+    --button-gap: var(--catalog-button-measure-tiny-gap);
+    --primary-button-pad-y: 0.1875rem;
+    --primary-button-pad-x: 0.375rem;
+  }
+  /* Source: 02-shell */
+  :where(
+    html,
+    body,
+    main,
+    section,
+    aside,
+    header,
+    footer,
+    nav,
+    div,
+    span,
+    article,
+    button,
+    input,
+    select,
+    textarea,
+    form,
+    label,
+    table,
+    thead,
+    tbody,
+    tr,
+    th,
+    td,
+    figure,
+    figcaption,
+    dialog,
+    details,
+    summary,
+    h1,
+    h2,
+    p,
+    ul,
+    li,
+    pre,
+    small
+  ) {
+    box-sizing: border-box;
+  }
+  html {
+    box-sizing: border-box;
+    width: var(--shell-html-width);
+    height: var(--shell-html-height);
+    margin: var(--shell-html-margin);
+    overflow: hidden;
+  }
+  body {
+    width: var(--shell-body-width);
+    height: var(--shell-body-height);
+    margin: var(--shell-body-margin);
+    overflow: hidden;
+    background: var(--bg);
+    color: var(--text);
+    font: var(--shell-body-font);
+  }
+  /* One button. Height, padding and the gap between icon and label come from the
+ * button alone, so a button with an icon, with text or with both is the same
+ * size; an icon is as tall as the button's content box, never sized itself.
+ * `.button-small` swaps in the smaller metrics, for panel headers. */
+  button {
+    box-sizing: border-box;
+    height: var(--button-height);
+    min-width: var(--shell-button-min-width);
+    min-height: var(--shell-button-min-height);
+    --base-shell-button-padding: var(--primary-button-pad-y)
+      var(--primary-button-pad-x);
+    --catalog-padding-measure-button-padding: var(--base-shell-button-padding);
+    --shell-button-padding: var(--catalog-padding-measure-button-padding);
+    padding: var(--shell-button-padding);
+    border: var(--shell-button-border);
+    border-radius: var(--shell-button-border-radius);
+    background: var(--shell-button-background);
+    color: var(--text);
+    font: inherit;
+    line-height: var(--shell-button-line-height);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--button-gap);
+    box-shadow: var(--shell-button-box-shadow);
+    cursor: var(--shell-button-cursor);
+  }
+  /* Touch screens get taller buttons, still one height for every kind of button. */
+  input {
+    height: var(--h);
+    border: var(--shell-button-border);
+    border-radius: var(--shell-input-border-radius);
+    background: var(--shell-button-background);
+    color: var(--text);
+    font: inherit;
+  }
+  select {
+    height: var(--h);
+    border: var(--shell-button-border);
+    border-radius: var(--shell-select-border-radius);
+    background: var(--shell-button-background);
+    color: var(--text);
+    font: var(--shell-body-font);
+    font-weight: var(--shell-select-font-weight);
+  }
+  textarea {
+    font: var(--shell-body-font);
+    font-weight: var(--shell-textarea-font-weight);
+    min-height: var(--shell-textarea-min-height);
+    resize: vertical;
+    border: var(--shell-textarea-border);
+    border-radius: var(--shell-textarea-border-radius);
+    background: var(--shell-button-background);
+    color: var(--text);
+  }
+  footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--shell-footer-padding);
+    background: var(--bg);
+    color: var(--shell-footer-color);
+    border-top: var(--shell-textarea-border);
+    font-size: var(--shell-footer-font-size);
+  }
+  summary {
+    cursor: var(--shell-summary-cursor);
+    padding-block: var(--shell-summary-padding-block);
+  }
+  h2 {
+    font-size: var(--shell-h2-font-size);
+    margin: var(--shell-h2-margin);
+  }
+  .app-root {
+    width: var(--shell-app-root-width);
+    height: var(--shell-app-root-height);
+    margin: var(--shell-app-root-margin);
+    overflow: hidden;
+  }
+  .studio-icon {
+    display: inline-block;
+    width: var(--studio-icon-size);
+    height: var(--studio-icon-size);
+    --base-shell-icon-flex: calc(var(--primary-number-unit) * 0)
+      calc(var(--primary-number-unit) * 0) var(--primary-icon-size);
+    --catalog-flex-measure-flex: var(--base-shell-icon-flex);
+    --shell-icon-flex: var(--catalog-flex-measure-flex);
+    flex: var(--shell-icon-flex);
+    fill: var(--shell-icon-fill);
+    stroke: var(--shell-icon-stroke);
+    stroke-width: var(--shell-icon-stroke-width);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    pointer-events: none;
+  }
+  /* In a button the icon is as tall as the button's content box. */
+  button > .studio-icon {
+    flex: var(--shell-button-icon-flex);
+    width: var(--shell-button-icon-width);
+    height: var(--shell-button-icon-height);
+    aspect-ratio: var(--shell-button-icon-aspect-ratio);
+  }
+  .number-control {
+    display: grid;
+    grid-template-columns: var(--shell-number-control-grid-template-columns);
+    align-items: center;
+    border: var(--shell-button-border);
+    border-radius: var(--shell-number-control-border-radius);
+    background: var(--shell-button-background);
+  }
+  .number-unit {
+    font-size: var(--shell-number-unit-font-size);
+    color: var(--muted);
+  }
+  .studio {
+    display: grid;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    white-space: var(--shell-brand-white-space);
+  }
+  .brand-mark {
+    display: grid;
+    place-items: center;
+  }
+  .version {
+    padding: var(--shell-version-padding);
+    border: var(--shell-version-border);
+    border-radius: var(--shell-version-border-radius);
+    color: var(--shell-version-color);
+    font: var(--shell-version-font);
+  }
+}

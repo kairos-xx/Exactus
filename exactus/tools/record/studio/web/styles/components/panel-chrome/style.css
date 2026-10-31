@@ -1,0 +1,228 @@
+/**
+ * Panel headers, panel tools, the dock menu and the flow tree.
+ *
+ * Sources: 31-panels.
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+/* Scope: custom properties set by 31-panels */
+:root {
+  --panels-panel-tool-icon-transition: var(
+    --catalog-button-motion-tool-transition
+  );
+}
+/* Source: 31-panels */
+/* Value-preserving design tokens for the compact editor. */
+/* Panels, panel tools, the dock menu, drop previews and the flow tree. */
+.studio .panel[data-panel-id] {
+  background: var(--panels-panel-data-panel-id-background);
+}
+.studio .dock-zone-left .panel[data-panel-id],
+.studio .right-stack .panel[data-panel-id] {
+  background: var(--panels-zone-left-panel-data-panel-id-background);
+}
+.studio .panel[data-panel-id] > header {
+  height: var(--panels-panel-data-panel-id-header-height);
+  min-height: var(--panels-panel-data-panel-id-header-min-height);
+  justify-content: flex-start;
+  padding: var(--panels-panel-data-panel-id-header-padding);
+  gap: var(--panels-panel-data-panel-id-header-gap);
+  background: var(--panels-panel-data-panel-id-header-background);
+  border-bottom: var(--panels-panel-data-panel-id-header-border-bottom);
+  box-shadow: var(--panels-panel-data-panel-id-header-box-shadow);
+  cursor: var(--panels-panel-data-panel-id-header-cursor);
+}
+.studio .panel-title {
+  gap: var(--panels-panel-title-gap);
+  font-size: var(--panels-panel-title-font-size);
+  font-weight: var(--panels-panel-title-font-weight);
+  color: var(--text-strong);
+}
+.panel-title > .studio-icon {
+  color: var(--muted);
+}
+/* Header controls stay visible; hover changes their surface, not visibility. */
+.studio .panel-tools {
+  display: flex;
+  align-items: center;
+  order: var(--panels-panel-tools-order);
+  gap: var(--panels-studio-panel-tools-gap);
+  margin-left: var(--panels-studio-panel-tools-margin-left);
+}
+.studio .panel-tool {
+  display: grid;
+  place-items: center;
+  border-radius: var(--panels-panel-tool-border-radius);
+  background: var(--panels-panel-tool-background);
+  color: var(--muted);
+}
+.panel-tool > .studio-icon {
+  flex-basis: var(--panels-panel-tool-icon-flex-basis);
+  transition: var(--panels-panel-tool-icon-transition);
+}
+.panel-tool-always > .studio-icon {
+  --base-panels-panel-tool-always-icon-transform: rotate(
+    var(--dynamic-chevron-turn, 0deg)
+  );
+  --catalog-treatment-effect-tool-always-transform: var(
+    --base-panels-panel-tool-always-icon-transform
+  );
+  --panels-panel-tool-always-icon-transform: var(
+    --catalog-treatment-effect-tool-always-transform
+  );
+  transform: var(--panels-panel-tool-always-icon-transform);
+}
+.studio .panel-tools > .panel-tool {
+  opacity: var(--panels-panel-tools-panel-tool-opacity);
+}
+.studio .panel-tool:hover {
+  color: var(--text-strong);
+}
+/* Dock menu: every row is an icon, then a verb phrase, left aligned. */
+.studio .panel-dock-menu {
+  top: var(--panels-panel-dock-menu-top);
+  width: var(--panels-panel-dock-menu-width);
+  padding: var(--panels-panel-dock-menu-padding);
+  border: var(--panels-panel-dock-menu-border);
+  border-radius: var(--panels-panel-dock-menu-border-radius);
+  background: var(--shell-button-background);
+  box-shadow: var(--panels-panel-dock-menu-box-shadow);
+}
+.panel-dock-menu .panel-menu-caption {
+  display: block;
+  padding: var(--panels-panel-dock-menu-panel-menu-caption-padding);
+  color: var(--text-subtle);
+  font-size: var(--panels-panel-dock-menu-panel-menu-caption-font-size);
+  font-weight: var(--panels-panel-dock-menu-panel-menu-caption-font-weight);
+}
+.panel-dock-menu .panel-split-edges {
+  display: grid;
+  grid-template-columns: var(
+    --panels-panel-dock-menu-panel-split-edges-grid-template-columns
+  );
+  gap: var(--panels-panel-dock-menu-panel-split-edges-gap);
+}
+.studio .panel-menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--panels-panel-menu-item-gap);
+  width: var(--panels-panel-menu-item-width);
+  height: var(--panels-panel-menu-item-height);
+  min-height: var(--panels-panel-menu-item-min-height);
+  padding: var(--panels-panel-menu-item-padding);
+  border: var(--panels-panel-menu-item-border);
+  border-radius: var(--panels-panel-menu-item-border-radius);
+  background: var(--panels-panel-menu-item-background);
+  color: var(--text);
+  font-size: var(--panels-panel-menu-item-font-size);
+  font-weight: var(--panels-panel-menu-item-font-weight);
+  text-align: var(--panels-panel-menu-item-text-align);
+}
+.panel-menu-item > .studio-icon {
+  width: var(--panels-panel-menu-item-icon-width);
+  height: var(--panels-panel-menu-item-icon-height);
+  flex-basis: var(--panels-panel-menu-item-icon-flex-basis);
+  color: var(--text-subtle);
+}
+.studio .panel-dock-menu select {
+  width: var(--panels-panel-dock-menu-select-width);
+  height: var(--panels-panel-dock-menu-select-height);
+  margin: var(--panels-panel-dock-menu-select-margin);
+  font-size: var(--panels-panel-dock-menu-select-font-size);
+}
+.studio .panel-menu-item:hover {
+  background: var(--brand-soft);
+  color: var(--text-strong);
+}
+/* Drop previews show where the panel will land. */
+.dock-zone.is-drop-target.is-drop-local::after,
+.dock-zone.is-drop-target.is-drop-local-vertical::after {
+  border: var(--panels-drop-target-is-drop-local-after-border);
+  border-radius: var(--panels-drop-target-is-drop-local-after-border-radius);
+  background: var(--brand-soft);
+  box-shadow: var(--panels-drop-target-is-drop-local-after-box-shadow);
+}
+.dock-zone[data-drop-edge="top"]::after {
+  height: unset;
+}
+.dock-zone[data-drop-edge="bottom"]::after {
+  inset-block-start: unset;
+  height: unset;
+}
+.dock-zone[data-drop-edge="left"]::after {
+  width: unset;
+}
+.dock-zone[data-drop-edge="right"]::after {
+  inset-inline-start: unset;
+  width: unset;
+}
+.studio .panel.is-dragging {
+  opacity: var(--panels-panel-is-dragging-opacity);
+}
+/* Flow tree: every row shares one grid, so icons and labels line up. */
+.studio .workspace .tree {
+  padding: var(--panels-workspace-tree-padding);
+}
+.studio .tree-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--panels-tree-item-gap);
+  width: var(--panels-tree-item-width);
+  height: var(--panels-tree-item-height);
+  min-height: var(--panels-tree-item-min-height);
+  padding: var(--panels-tree-item-padding);
+  border: var(--panels-tree-item-border);
+  border-radius: var(--panels-tree-item-border-radius);
+  background: var(--panels-tree-item-background);
+  box-shadow: var(--panels-tree-item-box-shadow);
+  color: var(--text);
+  font-size: var(--panels-tree-item-font-size);
+  font-weight: var(--panels-tree-item-font-weight);
+  text-align: var(--panels-tree-item-text-align);
+}
+.studio .tree-item > span:not(.studio-icon) {
+  min-width: var(--panels-tree-item-span-not-icon-min-width);
+  overflow: hidden;
+  text-overflow: var(--panels-tree-item-span-not-icon-text-overflow);
+  white-space: var(--panels-tree-item-span-not-icon-white-space);
+}
+.tree-item > .studio-icon {
+  width: var(--panels-tree-item-icon-width);
+  height: var(--panels-tree-item-icon-height);
+  flex-basis: var(--panels-tree-item-icon-flex-basis);
+  color: var(--text-subtle);
+}
+.studio .tree-item.active > .studio-icon {
+  color: var(--accent);
+}
+.studio .tree-item:hover {
+  background: var(--panels-tree-item-hover-background);
+  color: var(--text-strong);
+}
+.tree-item-more {
+  display: grid;
+  flex: var(--panels-tree-item-more-flex);
+  place-items: center;
+  margin-inline-start: var(--panels-tree-item-more-margin-inline-start);
+  width: var(--panels-tree-item-more-width);
+  height: var(--panels-tree-item-more-height);
+  color: var(--text-subtle);
+  border-radius: var(--panels-tree-item-more-border-radius);
+  opacity: var(--panels-tree-item-more-opacity);
+}
+.tree-item-more:hover {
+  color: var(--text-strong);
+}
+.tree-item-more:focus-visible {
+  opacity: var(--panels-tree-item-more-focus-visible-opacity);
+}
+.tree-item:hover .tree-item-more,
+.tree-item.active .tree-item-more {
+  opacity: var(--panels-tree-item-hover-tree-item-more-opacity);
+}
+.studio .tree-item.active {
+  background: var(--brand-soft);
+  box-shadow: var(--panels-tree-item-active-box-shadow);
+  color: var(--text-strong);
+}

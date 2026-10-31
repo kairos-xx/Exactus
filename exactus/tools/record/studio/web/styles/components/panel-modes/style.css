@@ -1,0 +1,488 @@
+.timeline .timeline-content {
+  --dynamic-lane-h: 1.75rem;
+}
+.timeline .timeline-content[data-lanes="roomy"] {
+  --dynamic-lane-h: 3rem;
+}
+.clip.navigation {
+  --primary-clip-line: #86cccfff;
+}
+.clip.interaction {
+  --primary-clip-line: #a4c9e8ff;
+}
+.clip.javascript {
+  --primary-clip-line: #d8c294ff;
+}
+.clip.assertion {
+  --primary-clip-line: #a2c9aeff;
+}
+.clip.screenshots {
+  --primary-clip-line: #d2b0daff;
+}
+.clip.network {
+  --primary-clip-line: #a0b0c1ff;
+}
+.clip.timing {
+  --primary-clip-line: #9a9fa5ff;
+}
+.clip.diagnostics {
+  --primary-clip-line: #ed756eff;
+}
+@container panel (height < 170px) {
+  .timeline .timeline-content {
+    --dynamic-lane-h: 0.9375rem;
+  }
+}
+/* Source: 41-panel-modes */
+/* Panel density: every panel answers to BOTH its width and its height.
+
+   A panel is a size container (see 35-dock-grid.css), so what it shows follows
+   the room it was given, not the window. Three height steps and two width
+   steps, applied the same way everywhere:
+
+     height < 340px  short   secondary lines and captions give way
+     height < 240px  tight   toolbars merge onto one row, forms go inline
+     height < 150px  micro   headers and the main content only
+
+   The timeline has its own, lower steps (boxes need about 170px for two
+   lanes): below 170px its items become lines, below 130px it keeps one row.
+
+     width  < 340px  narrow  labels shrink to icons, row menus appear on hover
+     width  < 240px  slim    only the essentials remain
+
+   Compact (phone) layout stacks panels with no fixed height, so it keeps the
+   width-only container from 35-dock-grid.css. */
+@media (width <= 600px) {
+  .workbench > .panel[data-panel-id] {
+    container: panel / inline-size;
+  }
+}
+/* ── Steps ───────────────────────────────────────────────────────────── */
+/* A row has five children (grip, kind, text, checks, menu). Column
+   templates that count children break when one is hidden, so each child
+   names its own column and a hidden one simply collapses its track. */
+@container panel (width < 600px) {
+  .studio .panel .edit-step-row {
+    grid-template-columns: var(
+      --panels-panel-edit-step-row-grid-template-columns-panel-below-width-600px
+    );
+  }
+  .edit-step-row > .edit-step-grip {
+    grid-column: var(
+      --panels-edit-step-row-edit-step-grip-grid-column-panel-below-width-600px
+    );
+  }
+  .edit-step-row > .edit-step-kind {
+    grid-column: var(
+      --panels-edit-step-row-edit-step-kind-grid-column-panel-below-width-600px
+    );
+  }
+  .edit-step-row > .edit-step-text {
+    grid-column: var(
+      --panels-edit-step-row-edit-step-text-grid-column-panel-below-width-600px
+    );
+  }
+  .edit-step-row > .edit-step-checks {
+    grid-column: var(
+      --panels-edit-step-row-edit-step-checks-grid-column-panel-below-width-600px
+    );
+  }
+  .edit-step-row > .edit-step-more {
+    grid-column: var(
+      --panels-edit-step-row-edit-step-more-grid-column-panel-below-width-600px
+    );
+  }
+}
+@container panel (width < 340px) {
+  .studio .panel .edit-step-row {
+    grid-template-columns: var(
+      --panels-panel-edit-step-row-grid-template-columns-panel-below-width-340px
+    );
+  }
+  .edit-step-row > :is(.edit-step-grip, .edit-step-more, .edit-step-checks) {
+    display: none;
+  }
+}
+@container panel (height < 340px) {
+  .studio .panel .edit-step-row {
+    min-height: var(
+      --panels-panel-edit-step-row-min-height-panel-below-height-340px
+    );
+    padding-block: var(
+      --panels-panel-edit-step-row-padding-block-panel-below-height-340px
+    );
+  }
+  .studio .panel .edit-step-row .edit-step-text :where(small) {
+    display: none;
+  }
+  .studio .panel .edit-step-kind {
+    width: var(--panels-panel-edit-step-kind-width-panel-below-height-340px);
+    height: var(--panels-panel-edit-step-kind-height-panel-below-height-340px);
+  }
+}
+/* ── Browser ─────────────────────────────────────────────────────────── */
+/* A container query restyles only what is inside the container, never the
+   container itself, so the panel's content sits in a body the queries can
+   rearrange. */
+.preview[data-panel-id="target"] > .panel-body {
+  display: flex;
+  flex: var(--panels-data-panel-id-target-panel-body-flex);
+  flex-direction: column;
+  min-width: var(--panels-data-panel-id-target-panel-body-min-width);
+  min-height: var(--panels-data-panel-id-target-panel-body-min-height);
+}
+/* Nothing here may refuse to shrink: the live stage takes what is left, and
+   a captured step (evidence) shares it only while there is room. */
+.panel-body > .live-target-stage {
+  flex: var(--panels-panel-body-live-target-stage-flex);
+  min-height: var(--panels-panel-body-live-target-stage-min-height);
+}
+.panel-body > .edit-evidence {
+  display: flex;
+  flex: var(--panels-panel-body-edit-evidence-flex);
+  flex-direction: column;
+  min-height: var(--panels-panel-body-edit-evidence-min-height);
+  overflow: hidden;
+}
+.panel-body > .edit-evidence img {
+  flex: var(--panels-panel-body-edit-evidence-img-flex);
+  min-height: var(--panels-panel-body-edit-evidence-img-min-height);
+  max-height: var(--panels-panel-body-edit-evidence-img-max-height);
+  object-fit: contain;
+}
+.panel-body > .edit-evidence:empty {
+  display: none;
+}
+/* The live stage matters more than a captured step: the thumbnail only
+   shares the panel while there is plenty of room for both. */
+@container panel (height < 400px) {
+  .panel-body > .edit-evidence {
+    display: none;
+  }
+}
+@container panel (height < 300px) {
+  .panel-body > .browser-address {
+    display: none;
+  }
+}
+@container panel (height < 240px) {
+  /* Profile choice and the tools share one row. */
+  .preview[data-panel-id="target"] > .panel-body {
+    display: grid;
+    grid-template-columns: var(
+      --panels-data-panel-id-target-panel-body-grid-template-columns-panel-below-height-240px
+    );
+    grid-template-rows: var(
+      --panels-data-panel-id-target-panel-body-grid-template-rows-panel-below-height-240px
+    );
+  }
+  .panel-body > .browser-bar {
+    grid-column: var(
+      --panels-panel-body-browser-bar-grid-column-panel-below-height-240px
+    );
+    grid-row: var(
+      --panels-panel-body-browser-bar-grid-row-panel-below-height-240px
+    );
+  }
+  .panel-body > .live-target-tools {
+    grid-column: var(
+      --panels-panel-body-live-target-tools-grid-column-panel-below-height-240px
+    );
+    grid-row: var(
+      --panels-panel-body-live-target-tools-grid-row-panel-below-height-240px
+    );
+    align-self: center;
+  }
+  .panel-body > .live-target-stage {
+    grid-column: var(
+      --panels-panel-body-live-target-stage-grid-column-panel-below-height-240px
+    );
+    grid-row: var(
+      --panels-panel-body-live-target-stage-grid-row-panel-below-height-240px
+    );
+  }
+  .panel-body > .live-target-selection,
+  .panel-body > .live-target-identity {
+    grid-column: var(
+      --panels-panel-body-live-target-selection-grid-column-panel-below-height-240px
+    );
+    grid-row: var(
+      --panels-panel-body-live-target-selection-grid-row-panel-below-height-240px
+    );
+  }
+  .panel-body .browser-open-label {
+    display: none;
+  }
+  .panel-body .browser-open {
+    min-width: var(
+      --panels-panel-body-browser-open-min-width-panel-below-height-240px
+    );
+    padding-inline: var(
+      --panels-panel-body-browser-open-padding-inline-panel-below-height-240px
+    );
+  }
+  .panel-body [id="browser-profiles"] {
+    display: none;
+  }
+}
+@container panel (height < 150px) {
+  .panel-body > :is(.browser-bar, .live-target-tools) {
+    display: none;
+  }
+}
+@container panel (width < 300px) {
+  .panel-body .browser-open-label {
+    display: none;
+  }
+  .panel-body .browser-open {
+    min-width: var(
+      --panels-panel-body-browser-open-min-width-panel-below-width-300px
+    );
+    padding-inline: var(
+      --panels-panel-body-browser-open-padding-inline-panel-below-width-300px
+    );
+  }
+}
+/* ── Properties ──────────────────────────────────────────────────────── */
+@container panel (height < 340px) {
+  .inspector .inspector-content {
+    padding: var(--panels-inspector-content-padding-panel-below-height-340px);
+  }
+  .inspector .edit-inspector-heading > div > :not(:first-child) {
+    display: none;
+  }
+  .inspector .edit-inspector-heading {
+    gap: var(
+      --panels-inspector-edit-inspector-heading-gap-panel-below-height-340px
+    );
+    min-height: var(
+      --panels-inspector-edit-inspector-heading-min-height-panel-below-height-340px
+    );
+    margin-block: var(
+      --panels-inspector-edit-inspector-heading-margin-block-panel-below-height-340px
+    );
+  }
+  .inspector .edit-inspector-mark {
+    width: var(
+      --panels-inspector-edit-inspector-mark-width-panel-below-height-340px
+    );
+    height: var(
+      --panels-inspector-edit-inspector-mark-height-panel-below-height-340px
+    );
+  }
+}
+/* Tight and wide enough: label and field share a line. */
+@container panel (height < 340px) and (width >= 300px) {
+  .inspector [id="inspector"] > form > label,
+  .inspector [id="inspector"] :is(form, .step-form) > label {
+    grid-template-columns: var(
+      --panels-inspector-id-inspector-form-label-grid-template-columns-container-panel-height-below-340px-and-width-min-300px
+    );
+    align-items: center;
+    gap: var(
+      --panels-inspector-id-inspector-form-label-gap-container-panel-height-below-340px-and-width-min-300px
+    );
+  }
+}
+@container panel (height < 240px) {
+  .inspector .edit-inspector-heading {
+    display: none;
+  }
+}
+/* ── Timeline ────────────────────────────────────────────────────────── */
+/* Lane height is a variable (see renderTimeline), so a short panel can
+   shrink it and the stacked rows with it. */
+/* The toolbar is a container of its own, so it knows how much room the
+   header left it and drops the clock instead of drawing it over the buttons. */
+.timeline .timeline-toolbar {
+  container: tl / inline-size;
+  flex: var(--panels-timeline-toolbar-flex);
+  min-width: var(--panels-timeline-toolbar-min-width);
+}
+.timeline-toolbar > .timeline-cluster-start {
+  grid-column: var(
+    --panels-timeline-toolbar-timeline-cluster-start-grid-column
+  );
+}
+.timeline-toolbar > .timeline-timecode {
+  grid-column: var(--panels-timeline-toolbar-timeline-timecode-grid-column);
+}
+.timeline-toolbar > .timeline-cluster-end {
+  grid-column: var(--panels-timeline-toolbar-timeline-cluster-end-grid-column);
+  justify-self: end;
+}
+@container tl (width < 300px) {
+  /* Match the segment clock's component specificity so its later base rule
+     cannot make the hidden compact clock visible again. */
+  .studio .timeline-toolbar > .timeline-timecode--segments {
+    display: none;
+  }
+}
+@container tl (width < 140px) {
+  .timeline-transport > button:not(.timeline-play) {
+    display: none;
+  }
+}
+/* Each lane gets its own colour, used when items shrink to lines. */
+@container panel (height < 190px) {
+  .timeline .timeline-timecode {
+    zoom: var(--panels-timeline-timecode-zoom-panel-below-height-190px);
+  }
+}
+/* Tight: short on height. Lanes shrink and every step becomes a thin line
+   in its lane's colour instead of a labelled box. Hovering or focusing one
+   opens it back into a box with its name. */
+@container panel (height < 170px) {
+  .timeline .timeline-timecode {
+    display: none;
+  }
+  .timeline > header,
+  .timeline .timeline-toolbar {
+    min-height: var(
+      --panels-timeline-header-min-height-panel-below-height-170px
+    );
+  }
+  .timeline-ruler > .ruler-label,
+  .timeline-ruler > .ruler-ticks {
+    height: var(--panels-timeline-ruler-label-height-panel-below-height-170px);
+    min-height: var(
+      --panels-timeline-ruler-label-min-height-panel-below-height-170px
+    );
+    line-height: var(
+      --panels-timeline-ruler-label-line-height-panel-below-height-170px
+    );
+  }
+  .studio .timeline .track-label {
+    gap: var(--panels-timeline-track-label-gap-panel-below-height-170px);
+    padding-inline: var(
+      --panels-timeline-track-label-padding-inline-panel-below-height-170px
+    );
+    font-size: var(
+      --panels-timeline-track-label-font-size-panel-below-height-170px
+    );
+    line-height: var(
+      --panels-timeline-track-label-line-height-panel-below-height-170px
+    );
+  }
+  .studio .timeline .clips {
+    min-height: var(
+      --panels-timeline-clips-min-height-panel-below-height-170px
+    );
+  }
+  .studio .timeline .clip {
+    width: var(--panels-timeline-clip-width-panel-below-height-170px);
+    height: var(--panels-timeline-clip-height-panel-below-height-170px);
+    min-height: var(--panels-timeline-clip-min-height-panel-below-height-170px);
+    padding: var(--panels-timeline-clip-padding-panel-below-height-170px);
+    border: var(--panels-timeline-clip-border-panel-below-height-170px);
+    border-radius: var(
+      --panels-timeline-clip-border-radius-panel-below-height-170px
+    );
+    --base-panels-timeline-clip-background-panel-below-height-170px: var(
+      --primary-clip-line,
+      var(--primary-accent)
+    );
+    --catalog-surface-color-clip-background-below-height-170px: var(
+      --base-panels-timeline-clip-background-panel-below-height-170px
+    );
+    --panels-timeline-clip-background-panel-below-height-170px: var(
+      --catalog-surface-color-clip-background-below-height-170px
+    );
+    background: var(--panels-timeline-clip-background-panel-below-height-170px);
+    box-shadow: var(--panels-timeline-clip-box-shadow-panel-below-height-170px);
+    font-size: var(--panels-timeline-clip-font-size-panel-below-height-170px);
+    overflow: visible;
+  }
+  .studio .timeline .clip > span {
+    display: none;
+  }
+  /* A line is a small target: reach a little beyond it. */
+  .studio .timeline .clip::after {
+    content: var(--panels-timeline-clip-after-content-panel-below-height-170px);
+    position: absolute;
+    inset: var(--panels-timeline-clip-after-inset-panel-below-height-170px);
+  }
+  .studio .timeline .clip.selected,
+  .studio .timeline .clip.is-marquee-hit {
+    height: var(
+      --panels-timeline-clip-selected-height-panel-below-height-170px
+    );
+    background: var(--accent);
+    box-shadow: var(--panels-timeline-clip-marquee-hit-box-shadow);
+  }
+  .studio .timeline .clip:is(:hover, :focus-visible) {
+    z-index: var(
+      --panels-timeline-clip-is-hover-z-index-panel-below-height-170px
+    );
+    display: inline-flex;
+    gap: var(--panels-timeline-clip-is-hover-gap-panel-below-height-170px);
+    align-items: center;
+    width: var(--panels-timeline-clip-is-hover-width-panel-below-height-170px);
+    max-width: var(
+      --panels-timeline-clip-is-hover-max-width-panel-below-height-170px
+    );
+    height: var(
+      --panels-timeline-clip-is-hover-height-panel-below-height-170px
+    );
+    padding-inline: var(
+      --panels-timeline-clip-is-hover-padding-inline-panel-below-height-170px
+    );
+    border: var(--panels-timeline-clip-hover-border);
+    border-radius: var(
+      --panels-timeline-clip-is-hover-border-radius-panel-below-height-170px
+    );
+    background: var(--data-tables-selected-data-step-background);
+    font-size: var(
+      --panels-timeline-clip-is-hover-font-size-panel-below-height-170px
+    );
+    transform: var(
+      --panels-timeline-clip-is-hover-transform-panel-below-height-170px
+    );
+  }
+  .studio .timeline .clip:is(:hover, :focus-visible) > :where(span) {
+    display: inline-flex;
+  }
+}
+@container panel (height < 130px) {
+  .timeline > header,
+  .timeline .timeline-toolbar {
+    min-height: var(
+      --panels-timeline-header-min-height-panel-below-height-130px
+    );
+  }
+  .timeline :is(.timeline-cluster-end, .timeline-tools) {
+    display: none;
+  }
+}
+/* ── Browser, slim ──────────────────────────────────────────────────── */
+/* With the gear and the close label gone, the profile select and the close
+   icon share one row; the tools share the next, each taking an equal part. */
+@container panel (width < 260px) {
+  /* Slim beats short: merging the two rows would overlay them. */
+  .preview[data-panel-id="target"] > .panel-body {
+    display: flex;
+    flex-direction: column;
+  }
+  .panel-body [id="browser-profiles"] {
+    display: none;
+  }
+  .panel-body > .browser-bar {
+    grid-template-columns: var(
+      --panels-panel-body-browser-bar-grid-template-columns-panel-below-width-260px
+    );
+  }
+  .panel-body > .live-target-tools {
+    gap: var(--panels-panel-body-live-target-tools-gap-panel-below-width-260px);
+  }
+  .panel-body > .live-target-tools > button {
+    flex: var(
+      --panels-panel-body-live-target-tools-button-flex-panel-below-width-260px
+    );
+    justify-content: center;
+  }
+}
+@container panel (width < 220px) {
+  .action-library .action-result {
+    display: none;
+  }
+}

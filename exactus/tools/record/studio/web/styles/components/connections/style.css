@@ -1,0 +1,185 @@
+/**
+ * Connection and target controls.
+ *
+ * Sources: 07-connections.
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+@layer studio-base {
+  /* Source: 07-connections */
+  .flow-node-port-input {
+    left: var(--connections-flow-node-port-input-left);
+  }
+  .flow-node-port-output {
+    right: var(--connections-flow-node-port-output-right);
+  }
+  .flow-node-port:hover,
+  .flow-node-port:focus-visible,
+  .flow-node.is-connection-source .flow-node-port-output,
+  .graph-canvas[data-connecting] .flow-node-port-input {
+    border-color: var(--connections-flow-node-port-hover-border-color);
+    background: var(--accent);
+    box-shadow: var(--connections-flow-node-port-hover-box-shadow);
+  }
+  .flow-node-meta {
+    padding: var(--flow-panel-padding);
+    color: var(--muted);
+    font-size: var(--connections-flow-node-meta-font-size);
+    border-bottom: var(--shell-textarea-border);
+  }
+  .node-actions {
+    padding: var(--flow-panel-padding);
+    display: grid;
+    gap: var(--connections-node-actions-gap);
+    font-size: var(--connections-node-actions-font-size);
+  }
+  .node-empty {
+    color: var(--muted);
+  }
+  .node-port {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--connections-node-port-gap);
+    padding: var(--flow-panel-padding);
+    font-size: var(--connections-node-port-font-size);
+    color: var(--accent);
+    border-top: var(--shell-textarea-border);
+  }
+  .connection-strip {
+    margin-top: var(--connections-connection-strip-margin-top);
+    display: flex;
+    gap: var(--connections-connection-strip-gap);
+    flex-wrap: wrap;
+  }
+  .canvas-hint {
+    font-size: var(--connections-canvas-hint-font-size);
+    color: var(--muted);
+    margin: var(--connections-canvas-hint-margin);
+    max-width: var(--connections-canvas-hint-max-width);
+  }
+  .composition-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--connections-composition-footer-gap);
+    padding: var(--connections-composition-footer-padding);
+    border-top: var(--shell-textarea-border);
+  }
+  .connection-form {
+    display: flex;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: var(--connections-connection-form-gap);
+    padding: var(--connections-connection-form-padding);
+    border-bottom: var(--shell-textarea-border);
+  }
+  .connection-arrow {
+    height: var(--flow-min-height-2);
+    display: flex;
+    align-items: center;
+    color: var(--accent);
+  }
+  .empty-panel {
+    padding: var(--connections-empty-panel-padding);
+    color: var(--muted);
+  }
+  [id="browser-status"][data-state="disconnected"] {
+    color: var(--connections-id-browser-status-data-state-disconnected-color);
+  }
+  [id="browser-status"] {
+    font-weight: var(--connections-id-browser-status-font-weight);
+    font-size: var(--connections-id-browser-status-font-size);
+    color: var(--muted);
+  }
+  .timeline-toolbar {
+    display: flex;
+    align-items: center;
+    gap: var(--connections-timeline-toolbar-gap);
+  }
+  [id="timeline-zoom"] {
+    width: var(--connections-id-timeline-zoom-width);
+    min-height: var(--flow-min-height-2);
+    accent-color: var(--accent);
+    background: var(--connections-id-timeline-zoom-background);
+    border: var(--connections-id-timeline-zoom-border);
+    padding: var(--connections-id-timeline-zoom-padding);
+  }
+  .timeline-ruler {
+    display: grid;
+    grid-template-columns: var(
+      --connections-timeline-ruler-grid-template-columns
+    );
+    min-width: var(--connections-timeline-ruler-min-width);
+    position: sticky;
+    top: var(--connections-timeline-ruler-top);
+    z-index: var(--connections-timeline-ruler-z-index);
+    background: var(--bg);
+    border-bottom: var(--flow-track-label-border-right);
+  }
+  .ruler-label {
+    position: sticky;
+    left: var(--connections-ruler-label-left);
+    background: var(--surface);
+    border-right: var(--flow-track-label-border-right);
+    z-index: var(--connections-ruler-label-z-index);
+    padding: var(--flow-panel-padding);
+    font-size: var(--connections-ruler-label-font-size);
+    display: flex;
+    align-items: center;
+  }
+  .ruler-ticks {
+    display: grid;
+    grid-template-columns: unset;
+    gap: var(--connections-ruler-ticks-gap);
+  }
+  .number-control button {
+    border: var(--connections-number-control-button-border);
+    box-shadow: var(--connections-number-control-button-box-shadow);
+    background: var(--connections-number-control-button-background);
+    padding: var(--connections-number-control-button-padding);
+  }
+  .number-control input {
+    appearance: textfield;
+    width: var(--connections-number-control-input-width);
+    min-width: var(--connections-number-control-input-min-width);
+    padding: var(--connections-number-control-input-padding);
+    border: var(--connections-number-control-input-border);
+    background: var(--connections-number-control-input-background);
+    font-family: var(--connections-number-control-input-font-family);
+  }
+  button:focus-visible {
+    outline: var(--connections-button-focus-visible-outline);
+    outline-offset: var(--connections-button-focus-visible-outline-offset);
+  }
+  input:focus-visible {
+    outline: var(--connections-button-focus-visible-outline);
+    outline-offset: var(--connections-input-focus-visible-outline-offset);
+  }
+  select:focus-visible {
+    outline: var(--connections-button-focus-visible-outline);
+    outline-offset: var(--connections-select-focus-visible-outline-offset);
+  }
+  .menu button {
+    border: var(--connections-menu-button-border);
+    background: var(--connections-menu-button-background);
+    color: var(--connections-menu-button-color);
+    padding: var(--connections-menu-button-padding);
+  }
+  .panel > header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    overflow: hidden;
+    border-bottom: var(--panels-panel-border-bottom);
+    background: var(--surface);
+    color: var(--connections-panel-header-color);
+    font-size: var(--connections-panel-header-font-size);
+    font-weight: var(--connections-panel-header-font-weight);
+    letter-spacing: var(--connections-panel-header-letter-spacing);
+    flex-shrink: var(--connections-panel-header-flex-shrink);
+    height: var(--connections-panel-header-height);
+    min-height: var(--docks-workspace-is-collapsed-header-width);
+    gap: var(--connections-panel-header-gap);
+    padding: var(--connections-panel-header-padding);
+  }
+}

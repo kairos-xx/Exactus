@@ -1,0 +1,115 @@
+/**
+ * Contextual aliases of the icon buttons component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  /* 48-icon-buttons */
+  --icon-buttons-button-active-scale-media-prefers-reduced-motion-reduce: var(
+    --catalog-button-effect-default-active-media-prefers-reduced-motion-reduce-scale
+  );
+  --icon-buttons-button-data-kind-icon-active-background: var(
+    --catalog-button-color-default-active-background
+  );
+  --icon-buttons-button-data-kind-icon-active-border-color: var(
+    --catalog-button-border-default-active-border-color
+  );
+  --icon-buttons-button-data-kind-icon-active-box-shadow: var(
+    --catalog-button-effect-default-box-shadow
+  );
+  --icon-buttons-button-data-kind-icon-active-scale: var(
+    --catalog-button-effect-default-active-scale
+  );
+  --icon-buttons-button-data-kind-icon-background: var(
+    --catalog-button-color-kind-background
+  );
+  --icon-buttons-button-data-kind-icon-border-color: var(
+    --catalog-button-border-kind-border-color
+  );
+  --icon-buttons-button-data-kind-icon-box-shadow: var(
+    --catalog-button-effect-default-box-shadow
+  );
+  --icon-buttons-button-data-kind-icon-disabled-opacity: var(
+    --catalog-button-effect-half-opacity
+  );
+  --icon-buttons-button-data-kind-icon-hover-background: var(
+    --catalog-button-color-default-hover-background
+  );
+  --icon-buttons-button-data-kind-icon-hover-border-color: var(
+    --catalog-button-border-default-hover-border-color
+  );
+  --icon-buttons-button-icon-transition: var(
+    --catalog-button-motion-default-lower-transition
+  );
+  --icon-buttons-button-not-disabled-active-scale: var(
+    --catalog-button-effect-default-scale
+  );
+  --icon-buttons-button-transition: var(
+    --catalog-button-motion-default-higher-transition
+  );
+  --icon-buttons-button-transition-media-prefers-reduced-motion-reduce: var(
+    --catalog-button-motion-default-media-prefers-reduced-motion-reduce-transition
+  );
+  --icon-buttons-data-kind-icon-aria-pressed-true-background: var(
+    --catalog-button-color-default-pressed-expanded-active-background
+  );
+  --icon-buttons-data-kind-icon-aria-pressed-true-border-color: var(
+    --catalog-button-border-default-pressed-expanded-active-border-color
+  );
+  --icon-buttons-data-kind-icon-aria-pressed-true-box-shadow: var(
+    --catalog-button-effect-default-box-shadow
+  );
+  --icon-buttons-data-kind-icon-disabled-icon-scale: var(
+    --catalog-icon-effect-button-disabled-scale
+  );
+  --icon-buttons-data-kind-icon-text-not-accent-background: var(
+    --catalog-button-color-accent-background
+  );
+  --icon-buttons-data-kind-icon-text-not-accent-border-color: var(
+    --catalog-button-border-accent-border-color
+  );
+  --icon-buttons-data-kind-icon-text-not-accent-border-color-panel-below-width-1180px: var(
+    --catalog-button-border-tools-accent-border-color
+  );
+  --icon-buttons-data-kind-icon-text-not-accent-border-color-panel-below-width-440px: var(
+    --catalog-button-border-tools-accent-border-color
+  );
+  --icon-buttons-data-kind-icon-text-not-accent-box-shadow: var(
+    --catalog-button-effect-accent-box-shadow
+  );
+  --icon-buttons-data-kind-icon-text-not-accent-opacity: var(
+    --catalog-button-effect-half-opacity
+  );
+  --icon-buttons-icon-active-child-icon-where-not-data-icon-chevron-also-data-icon-plus-scale: var(
+    --catalog-icon-effect-button-active-scale
+  );
+  --icon-buttons-icon-text-icon-first-child-translate: var(
+    --catalog-icon-effect-button-translate
+  );
+  --icon-buttons-icon-text-not-accent-icon-translate-panel-below-width-1180px: var(
+    --catalog-icon-effect-tools-accent-translate
+  );
+  --icon-buttons-icon-text-not-accent-icon-translate-panel-below-width-440px: var(
+    --catalog-icon-effect-tools-accent-translate
+  );
+  --icon-buttons-icon-where-data-icon-chevron-stroke-width: var(
+    --catalog-icon-measure-button-stroke-width
+  );
+  --icon-buttons-icon-where-not-data-icon-chevron-scale: var(
+    --catalog-icon-effect-button-scale
+  );
+  --icon-buttons-kind-icon-text-not-accent-active-border-color-panel-below-width-1180px: var(
+    --catalog-button-border-tools-accent-border-color
+  );
+  --icon-buttons-kind-icon-text-not-accent-active-border-color-panel-below-width-440px: var(
+    --catalog-button-border-tools-accent-border-color
+  );
+  --icon-buttons-kind-icon-text-not-accent-hover-border-color-panel-below-width-1180px: var(
+    --catalog-button-border-tools-accent-border-color
+  );
+  --icon-buttons-kind-icon-text-not-accent-hover-border-color-panel-below-width-440px: var(
+    --catalog-button-border-tools-accent-border-color
+  );
+  --icon-buttons-not-disabled-active-child-icon-where-data-icon-chevron-also-data-icon-plus-stroke-width: var(
+    --catalog-icon-measure-button-disabled-active-stroke-width
+  );
+}

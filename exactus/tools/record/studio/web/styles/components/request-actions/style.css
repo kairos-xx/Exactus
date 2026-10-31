@@ -1,0 +1,136 @@
+/** REST action-inspired request composition inside Studio action forms. */
+.request-action-widget,
+.request-panels,
+.request-tab-panel,
+.request-pair-rows,
+.response-capture-rows,
+.rest-rows {
+  display: grid;
+  gap: var(--request-actions-gap);
+}
+.request-action-widget {
+  padding: var(--request-actions-padding);
+  border: var(--request-actions-border);
+  border-radius: var(--request-actions-radius);
+  background: var(--request-actions-background);
+}
+.request-action-line,
+.request-tabs,
+.request-action-options,
+.request-pair-row,
+.response-check-row,
+.response-capture-row,
+.request-inline-check {
+  display: flex;
+  align-items: center;
+  gap: var(--request-actions-tight-gap);
+}
+.request-action-line > .variable-field,
+.request-pair-row > .variable-field,
+.response-check-row > .variable-field {
+  flex: var(--request-actions-flex-grow);
+  min-width: var(--request-actions-zero-min-width);
+}
+.request-tabs {
+  border-bottom: var(--request-actions-border);
+  overflow-x: auto;
+}
+.request-tab {
+  padding: var(--request-actions-tab-padding);
+  min-height: var(--request-actions-touch-size);
+  border: var(--request-actions-tab-border);
+  border-bottom: var(--request-actions-tab-border-bottom);
+  background: var(--request-actions-tab-background);
+  color: var(--request-actions-muted-color);
+  white-space: var(--request-actions-tab-white-space);
+}
+.request-tab[aria-selected="true"] {
+  border-bottom-color: var(--request-actions-accent-color);
+  color: var(--request-actions-accent-color);
+}
+.request-tab-panel {
+  padding-block: var(--request-actions-small-padding);
+}
+.request-tab-panel[hidden] {
+  display: none;
+}
+.request-pair-row,
+.response-check-row,
+.response-capture-row {
+  padding: var(--request-actions-row-padding);
+  border: var(--request-actions-border);
+  border-radius: var(--request-actions-radius);
+  background: var(--request-actions-card-background);
+}
+.request-pair-row > :is(input, select),
+.response-check-row > :is(input, select),
+.response-capture-row > :is(input, select),
+.request-action-line > select,
+.request-action-options input,
+.request-action-widget textarea {
+  min-height: var(--request-actions-control-height);
+  border: var(--request-actions-field-border);
+  border-radius: var(--request-actions-radius);
+  background: var(--request-actions-field-background);
+}
+.request-action-widget textarea {
+  min-height: var(--request-actions-body-height);
+  font-family: var(--request-actions-code-font);
+}
+.request-row-remove,
+.request-add-row {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--request-actions-tight-gap);
+  padding: var(--request-actions-small-padding);
+  border: var(--request-actions-border);
+  border-radius: var(--request-actions-radius);
+  background: var(--request-actions-field-background);
+  min-height: var(--request-actions-touch-size);
+}
+.request-row-remove {
+  color: var(--request-actions-danger-color);
+  min-width: var(--request-actions-touch-size);
+}
+.request-row-remove .studio-icon,
+.request-add-row .studio-icon {
+  width: var(--request-actions-icon-size);
+  height: var(--request-actions-icon-size);
+}
+.request-panel-help,
+.request-action-note,
+.request-field-label {
+  color: var(--request-actions-muted-color);
+  font-size: var(--request-actions-small-font-size);
+}
+.request-action-options {
+  flex-wrap: wrap;
+  padding-top: var(--request-actions-small-padding);
+  border-top: var(--request-actions-border);
+}
+.request-compact-field {
+  display: grid;
+  gap: var(--request-actions-tight-gap);
+}
+.request-action-widget > label > select,
+.request-action-widget .variable-editor {
+  min-height: var(--request-actions-touch-size);
+}
+.request-action-widget .variable-pill > .studio-icon {
+  border-radius: var(--request-actions-inner-radius);
+}
+@media (width <= 600px) {
+  .request-action-line,
+  .request-pair-row,
+  .response-check-row,
+  .response-capture-row {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .request-pair-row > :is(input, select),
+  .response-check-row > :is(input, select),
+  .response-capture-row > :is(input, select) {
+    width: var(--request-actions-full-width);
+  }
+}

@@ -1,0 +1,13 @@
+[tool.ruff]
+line-length = 79
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = ["COM812", "D203", "D213"]
+
+[tool.basedpyright]
+typeCheckingMode = "strict"
+include = []
+
+[tool.pyrefly]
+project-includes = []

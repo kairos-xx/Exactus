@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Performance Exactus</title>
+    <link rel="stylesheet" href="cerulean.css" />
+    <link rel="stylesheet" href="report.css" />
+  </head>
+  <body>
+    <div class="ds report-root" id="app">
+      <a class="skip-link" href="#report-view">Skip to results</a>
+      <header class="report-header">
+        <div class="report-heading">
+          <h1 class="ds-display" id="report-title">Performance Exactus</h1>
+          <span id="report-status"></span>
+        </div>
+        <p class="ds-supporting" id="report-resume"></p>
+        <dl class="metrics" id="report-metrics"></dl>
+      </header>
+      <main class="report-main">
+        <section
+          class="report-view"
+          id="report-view"
+          aria-label="Results"
+          tabindex="-1"
+        ></section>
+        <details class="ds-card disclosure">
+          <summary class="disclosure-summary">Full report</summary>
+          <article class="markdown" id="report"></article>
+        </details>
+        <details class="ds-card disclosure">
+          <summary class="disclosure-summary">Run context</summary>
+          <dl class="context" id="report-context"></dl>
+        </details>
+      </main>
+      <dialog
+        class="ds-card lightbox"
+        id="lightbox"
+        aria-labelledby="lightbox-title"
+      >
+        <div class="lightbox-bar">
+          <h2 class="ds-section-title" id="lightbox-title">Screenshot</h2>
+          <button
+            class="ds-btn ds-btn-outline ds-btn-sm"
+            type="button"
+            id="lightbox-close"
+          >
+            Close
+          </button>
+        </div>
+        <div class="lightbox-body" id="lightbox-body"></div>
+      </dialog>
+    </div>
+    <script src="data.js"></script>
+    <script src="report.js"></script>
+  </body>
+</html>

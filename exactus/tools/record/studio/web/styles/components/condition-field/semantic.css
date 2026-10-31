@@ -1,0 +1,529 @@
+/**
+ * Contextual aliases of the condition field component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  /* 45-condition-field */
+  --condition-field-condition-compare-color: var(
+    --catalog-control-color-compare-color
+  );
+  --condition-field-condition-compare-font-weight: var(
+    --catalog-control-typography-weight-semibold-font-weight
+  );
+  --condition-field-condition-editor-data-collapsed-height: var(
+    --catalog-field-measure-pixel-hairline-height
+  );
+  --condition-field-condition-editor-data-collapsed-inset: var(
+    --catalog-field-measure-editor-inset
+  );
+  --condition-field-condition-editor-data-collapsed-opacity: var(
+    --catalog-field-effect-zero-opacity
+  );
+  --condition-field-condition-editor-data-collapsed-width: var(
+    --catalog-field-measure-pixel-hairline-width
+  );
+  --condition-field-condition-editor-min-width: var(
+    --catalog-control-measure-editor-min-width
+  );
+  --condition-field-condition-function-color: var(
+    --catalog-control-color-function-color
+  );
+  --condition-field-condition-input--webkit-text-fill-color: var(
+    --catalog-field-measure-input-webkit-text-fill-color
+  );
+  --condition-field-condition-input-aria-invalid-true-border-color: var(
+    --catalog-field-border-input-border-color
+  );
+  --condition-field-condition-input-color: var(
+    --catalog-field-color-input-dark-color
+  );
+  --condition-field-condition-input-font-family: var(
+    --catalog-field-typography-input-font-family
+  );
+  --condition-field-condition-input-font-size: var(
+    --catalog-field-typography-small-font-size
+  );
+  --condition-field-condition-input-letter-spacing: var(
+    --catalog-field-typography-input-letter-spacing
+  );
+  --condition-field-condition-input-width: var(
+    --catalog-field-measure-full-width
+  );
+  --condition-field-condition-issue-background: var(
+    --catalog-control-color-issue-background
+  );
+  --condition-field-condition-issue-border-radius: var(
+    --catalog-control-border-tiny-plus-micro-border-radius
+  );
+  --condition-field-condition-issue-data-level-warning-background: var(
+    --catalog-control-color-issue-level-warning-background
+  );
+  --condition-field-condition-issue-font-size: var(
+    --catalog-control-typography-small-font-size
+  );
+  --condition-field-condition-issue-padding: var(
+    --catalog-control-measure-tiny-compact-padding
+  );
+  --condition-field-condition-issue-white-space: var(
+    --catalog-control-typography-issue-white-space
+  );
+  --condition-field-condition-issues-gap: var(
+    --catalog-control-measure-tiny-gap
+  );
+  --condition-field-condition-issues-list-style: var(
+    --catalog-control-measure-issues-list-style
+  );
+  --condition-field-condition-issues-margin: var(
+    --catalog-control-measure-issues-margin
+  );
+  --condition-field-condition-issues-padding: var(
+    --catalog-control-measure-issues-padding
+  );
+  --condition-field-condition-literal-color: var(
+    --catalog-control-color-literal-color
+  );
+  --condition-field-condition-logic-color: var(
+    --catalog-control-color-logic-color
+  );
+  --condition-field-condition-logic-font-weight: var(
+    --catalog-control-typography-weight-semibold-font-weight
+  );
+  --condition-field-condition-membership-color: var(
+    --catalog-control-color-membership-color
+  );
+  --condition-field-condition-membership-font-weight: var(
+    --catalog-control-typography-weight-semibold-font-weight
+  );
+  --condition-field-condition-menu-border-radius: var(
+    --catalog-field-border-tiny-plus-micro-border-radius
+  );
+  --condition-field-condition-menu-box-shadow: var(
+    --catalog-field-effect-menu-box-shadow
+  );
+  --condition-field-condition-menu-item-background: var(
+    --catalog-menu-color-item-background
+  );
+  --condition-field-condition-menu-item-border: var(
+    --catalog-menu-border-item-border
+  );
+  --condition-field-condition-menu-item-border-radius: var(
+    --catalog-menu-border-tiny-plus-micro-border-radius
+  );
+  --condition-field-condition-menu-item-cursor: var(
+    --catalog-menu-cursor-item-cursor
+  );
+  --condition-field-condition-menu-item-gap: var(
+    --catalog-menu-measure-micro-gap
+  );
+  --condition-field-condition-menu-item-height: var(
+    --catalog-menu-measure-item-height
+  );
+  --condition-field-condition-menu-item-hover-outline: var(
+    --catalog-menu-border-item-outline
+  );
+  --condition-field-condition-menu-item-min-height: var(
+    --catalog-menu-measure-item-min-height
+  );
+  --condition-field-condition-menu-item-padding: var(
+    --catalog-menu-measure-tiny-plus-micro-compact-padding
+  );
+  --condition-field-condition-menu-item-small-font-size: var(
+    --catalog-menu-typography-small-font-size
+  );
+  --condition-field-condition-menu-item-small-white-space: var(
+    --catalog-menu-typography-item-small-white-space
+  );
+  --condition-field-condition-menu-item-strong-font-family: var(
+    --catalog-menu-typography-item-strong-font-family
+  );
+  --condition-field-condition-menu-item-strong-font-size: var(
+    --catalog-menu-typography-small-font-size
+  );
+  --condition-field-condition-menu-item-strong-font-weight: var(
+    --catalog-menu-typography-weight-semibold-font-weight
+  );
+  --condition-field-condition-menu-item-text-align: var(
+    --catalog-menu-typography-item-text-align
+  );
+  --condition-field-condition-menu-item-width: var(
+    --catalog-menu-measure-full-width
+  );
+  --condition-field-condition-menu-max-height: var(
+    --catalog-field-measure-page-plus-huge-max-height
+  );
+  --condition-field-condition-menu-max-width: var(
+    --catalog-field-measure-full-max-width
+  );
+  --condition-field-condition-menu-padding: var(
+    --catalog-field-measure-tiny-padding
+  );
+  --condition-field-condition-menu-z-index: var(
+    --catalog-field-measure-menu-z-index
+  );
+  --condition-field-condition-mode-background: var(
+    --catalog-field-color-mode-background
+  );
+  --condition-field-condition-mode-border: var(
+    --catalog-field-border-mode-border
+  );
+  --condition-field-condition-mode-cursor: var(
+    --catalog-field-cursor-mode-cursor
+  );
+  --condition-field-condition-mode-font-size: var(
+    --catalog-field-typography-small-font-size
+  );
+  --condition-field-condition-mode-padding: var(
+    --catalog-field-measure-mode-padding
+  );
+  --condition-field-condition-mode-text-decoration: var(
+    --catalog-field-typography-mode-text-decoration
+  );
+  --condition-field-condition-number-color: var(
+    --catalog-control-color-number-color
+  );
+  --condition-field-condition-option-border-radius: var(
+    --catalog-field-border-tiny-plus-micro-border-radius
+  );
+  --condition-field-condition-option-cursor: var(
+    --catalog-field-cursor-option-cursor
+  );
+  --condition-field-condition-option-gap: var(
+    --catalog-field-measure-micro-gap
+  );
+  --condition-field-condition-option-padding: var(
+    --catalog-field-measure-tiny-plus-micro-compact-padding
+  );
+  --condition-field-condition-option-small-font-size: var(
+    --catalog-field-typography-small-font-size
+  );
+  --condition-field-condition-option-small-white-space: var(
+    --catalog-field-typography-option-small-white-space
+  );
+  --condition-field-condition-option-strong-font-family: var(
+    --catalog-field-typography-option-strong-font-family
+  );
+  --condition-field-condition-option-strong-font-size: var(
+    --catalog-field-typography-small-font-size
+  );
+  --condition-field-condition-option-strong-font-weight: var(
+    --catalog-field-typography-weight-semibold-font-weight
+  );
+  --condition-field-condition-options-above-inset: var(
+    --catalog-control-measure-options-above-inset
+  );
+  --condition-field-condition-options-above-margin: var(
+    --catalog-control-measure-options-above-margin
+  );
+  --condition-field-condition-options-border-radius: var(
+    --catalog-control-border-tiny-plus-micro-border-radius
+  );
+  --condition-field-condition-options-box-shadow: var(
+    --catalog-control-effect-options-box-shadow
+  );
+  --condition-field-condition-options-inset: var(
+    --catalog-control-measure-options-inset
+  );
+  --condition-field-condition-options-list-style: var(
+    --catalog-control-measure-options-list-style
+  );
+  --condition-field-condition-options-margin: var(
+    --catalog-control-measure-options-margin
+  );
+  --condition-field-condition-options-padding: var(
+    --catalog-control-measure-tiny-padding
+  );
+  --condition-field-condition-options-z-index: var(
+    --catalog-control-measure-options-z-index
+  );
+  --condition-field-condition-output-color: var(
+    --catalog-text-color-output-color
+  );
+  --condition-field-condition-paint-font-family: var(
+    --catalog-control-typography-paint-font-family
+  );
+  --condition-field-condition-paint-font-size: var(
+    --catalog-control-typography-small-font-size
+  );
+  --condition-field-condition-paint-inset: var(
+    --catalog-control-measure-paint-inset
+  );
+  --condition-field-condition-paint-letter-spacing: var(
+    --catalog-control-typography-paint-letter-spacing
+  );
+  --condition-field-condition-paint-padding-right: var(
+    --catalog-control-measure-compact-padding-right
+  );
+  --condition-field-condition-paint-white-space: var(
+    --catalog-control-typography-paint-white-space
+  );
+  --condition-field-condition-paren-color: var(
+    --catalog-control-color-paren-color
+  );
+  --condition-field-condition-pills-border-radius: var(
+    --catalog-field-border-tiny-plus-micro-border-radius
+  );
+  --condition-field-condition-pills-font-size: var(
+    --catalog-field-typography-pill-font-size
+  );
+  --condition-field-condition-pills-gap: var(--catalog-field-measure-tiny-gap);
+  --condition-field-condition-pills-min-height: var(
+    --catalog-field-measure-pills-min-height
+  );
+  --condition-field-condition-pills-background: var(
+    --catalog-field-color-pills-background
+  );
+  --condition-field-condition-pills-color: var(
+    --catalog-field-color-pills-text
+  );
+  --condition-field-condition-pills-padding: var(
+    --catalog-field-measure-tiny-plus-micro-padding
+  );
+  --condition-field-condition-probe-color: var(
+    --catalog-control-color-probe-color
+  );
+  --condition-field-condition-string-color: var(
+    --catalog-control-color-string-color
+  );
+  --condition-field-condition-system-color: var(
+    --catalog-control-color-system-color
+  );
+  --condition-field-condition-token-data-issue-error-text-decoration: var(
+    --catalog-control-typography-token-text-decoration
+  );
+  --condition-field-condition-token-data-issue-error-text-underline-offset: var(
+    --catalog-control-typography-token-text-underline-offset
+  );
+  --condition-field-condition-token-data-issue-warning-text-decoration: var(
+    --catalog-control-typography-token-issue-warning-text-decoration
+  );
+  --condition-field-condition-token-data-issue-warning-text-underline-offset: var(
+    --catalog-control-typography-token-text-underline-offset
+  );
+  --condition-field-condition-unknown-color: var(
+    --catalog-control-color-unknown-color
+  );
+  --condition-field-data-disabled-condition-pills-opacity: var(
+    --catalog-field-effect-pills-opacity
+  );
+  --condition-field-data-issue-error-box-shadow: var(
+    --catalog-field-effect-default-box-shadow
+  );
+  --condition-field-data-issue-warning-box-shadow: var(
+    --catalog-field-effect-issue-warning-box-shadow
+  );
+  --condition-field-gap: var(--catalog-field-measure-tiny-plus-micro-gap);
+  --condition-field-min-width: var(--catalog-field-measure-default-min-width);
+  --condition-field-pill-add-padding: var(
+    --catalog-field-measure-pill-add-padding
+  );
+  --condition-field-pill-add-width: var(--catalog-field-measure-large-width);
+  --condition-field-pill-arrow-border-left: var(
+    --catalog-field-border-pill-arrow-border-left
+  );
+  --condition-field-pill-arrow-border-right: var(
+    --catalog-field-border-pill-arrow-border-right
+  );
+  --condition-field-pill-arrow-border-top: var(
+    --catalog-field-border-pill-arrow-border-top
+  );
+  --condition-field-pill-arrow-height: var(
+    --catalog-field-measure-pill-arrow-height
+  );
+  --condition-field-pill-arrow-opacity: var(
+    --catalog-field-effect-pill-arrow-opacity
+  );
+  --condition-field-pill-arrow-width: var(
+    --catalog-field-measure-pill-arrow-width
+  );
+  --condition-field-pill-background: var(--catalog-field-color-pill-background);
+  --condition-field-pill-binary-gap: var(--catalog-field-measure-tiny-gap);
+  --condition-field-pill-binary-min-width: var(
+    --catalog-field-measure-pill-binary-min-width
+  );
+  --condition-field-pill-border: var(--catalog-field-border-pill-border);
+  --condition-field-pill-border-radius: var(
+    --catalog-field-border-pill-border-radius
+  );
+  --condition-field-pill-call-border-radius: var(
+    --catalog-field-border-pill-call-border-radius
+  );
+  --condition-field-pill-call-color: var(--catalog-field-color-pill-call-color);
+  --condition-field-pill-call-background: var(
+    --catalog-field-color-pill-call-background
+  );
+  --condition-field-pill-call-cursor: var(
+    --catalog-field-cursor-pill-call-cursor
+  );
+  --condition-field-pill-call-gap: var(--catalog-field-measure-tiny-gap);
+  --condition-field-pill-call-height: var(
+    --catalog-field-measure-pill-call-height
+  );
+  --condition-field-pill-call-min-height: var(
+    --catalog-field-measure-large-min-height
+  );
+  --condition-field-pill-call-padding: var(
+    --catalog-field-measure-pill-call-padding
+  );
+  --condition-field-pill-call-pill-remove-margin-left: var(
+    --catalog-label-measure-pill-remove-margin-left
+  );
+  --condition-field-pill-cap-end-width: var(
+    --catalog-field-measure-pill-cap-end-width
+  );
+  --condition-field-pill-cap-full-height: var(
+    --catalog-field-measure-pill-cap-full-height
+  );
+  --condition-field-pill-cap-full-width: var(
+    --catalog-field-measure-pill-cap-full-width
+  );
+  --condition-field-pill-cap-inset: var(--catalog-field-measure-pill-cap-inset);
+  --condition-field-pill-cap-overlap: var(
+    --catalog-field-measure-pill-cap-overlap
+  );
+  --condition-field-pill-cap-start-width: var(
+    --catalog-field-measure-pill-cap-start-width
+  );
+  --condition-field-pill-compare-color: var(
+    --catalog-field-color-pill-compare-color
+  );
+  --condition-field-pill-compare-font-family: var(
+    --catalog-field-typography-pill-compare-font-family
+  );
+  --condition-field-pill-compare-font-weight: var(
+    --catalog-field-typography-weight-semibold-font-weight
+  );
+  --condition-field-pill-compare-padding: var(
+    --catalog-field-measure-pill-compare-padding
+  );
+  --condition-field-pill-cursor: var(--catalog-field-cursor-pill-cursor);
+  --condition-field-pill-disabled-cursor: var(
+    --catalog-field-cursor-pill-disabled-cursor
+  );
+  --condition-field-pill-end-gap: var(--catalog-field-measure-micro-gap);
+  --condition-field-pill-end-white-space: var(
+    --catalog-field-typography-pill-end-white-space
+  );
+  --condition-field-pill-focus-visible-outline-offset: var(
+    --catalog-label-border-pixel-hairline-outline-offset
+  );
+  --condition-field-pill-gap: var(--catalog-field-measure-tiny-gap);
+  --condition-field-pill-height: var(--catalog-field-measure-large-height);
+  --condition-field-pill-hint-padding: var(
+    --catalog-field-measure-pill-hint-padding
+  );
+  --condition-field-pill-hover-filter: var(--catalog-field-effect-pill-filter);
+  --condition-field-pill-literal-background: var(
+    --catalog-field-color-pill-literal-background
+  );
+  --condition-field-pill-literal-color: var(
+    --catalog-field-color-pill-literal-color
+  );
+  --condition-field-pill-literal-font-family: var(
+    --catalog-field-typography-pill-literal-font-family
+  );
+  --condition-field-pill-logic-border-color: var(
+    --catalog-field-border-pill-logic-border-color
+  );
+  --condition-field-pill-logic-background: var(
+    --catalog-field-color-pill-logic-background
+  );
+  --condition-field-pill-logic-font-weight: var(
+    --catalog-field-typography-weight-semibold-font-weight
+  );
+  --condition-field-pill-margin: var(--catalog-field-measure-pill-margin);
+  --condition-field-pill-name-color: var(--catalog-field-color-pill-name-color);
+  --condition-field-pill-name-font-weight: var(
+    --catalog-field-typography-weight-semibold-font-weight
+  );
+  --condition-field-pill-name-text-transform: var(
+    --catalog-field-typography-pill-name-text-transform
+  );
+  --condition-field-pill-name-padding: var(
+    --catalog-field-measure-pill-name-padding
+  );
+  --condition-field-pill-not-gap: var(--catalog-field-measure-tiny-gap);
+  --condition-field-pill-not-height: var(--catalog-field-measure-pill-height);
+  --condition-field-pill-not-padding: var(--catalog-field-measure-pill-padding);
+  --condition-field-pill-output-border-color: var(
+    --catalog-field-border-pill-output-border-color
+  );
+  --condition-field-pill-output-background: var(
+    --catalog-field-color-pill-output-background
+  );
+  --condition-field-pill-padding: var(
+    --catalog-field-measure-pill-compact-padding
+  );
+  --condition-field-pill-paren-padding: var(
+    --catalog-field-measure-pill-paren-padding
+  );
+  --condition-field-pill-raw-color: var(--catalog-field-color-pill-raw-color);
+  --condition-field-pill-raw-font-family: var(
+    --catalog-field-typography-pill-raw-font-family
+  );
+  --condition-field-pill-raw-text-decoration: var(
+    --catalog-field-typography-pill-raw-text-decoration
+  );
+  --condition-field-pill-ref-border-color: var(
+    --catalog-field-border-pill-ref-border-color
+  );
+  --condition-field-pill-probe-background: var(
+    --catalog-field-color-pill-probe-background
+  );
+  --condition-field-pill-remove-background: var(
+    --catalog-field-color-pill-remove-background
+  );
+  --condition-field-pill-remove-border: var(
+    --catalog-field-border-pill-remove-border
+  );
+  --condition-field-pill-remove-border-radius: var(
+    --catalog-field-border-pill-remove-border-radius
+  );
+  --condition-field-pill-remove-cursor: var(
+    --catalog-field-cursor-pill-remove-cursor
+  );
+  --condition-field-pill-remove-height: var(
+    --catalog-field-measure-normal-height
+  );
+  --condition-field-pill-remove-line-height: var(
+    --catalog-field-typography-normal-line-height
+  );
+  --condition-field-pill-remove-margin: var(
+    --catalog-field-measure-pill-remove-margin
+  );
+  --condition-field-pill-remove-padding: var(
+    --catalog-field-measure-pill-remove-padding
+  );
+  --condition-field-pill-remove-width: var(
+    --catalog-field-measure-normal-width
+  );
+  --condition-field-pill-sep-color: var(--catalog-field-color-pill-sep-color);
+  --condition-field-pill-slot-background: var(
+    --catalog-field-color-pill-slot-background
+  );
+  --condition-field-pill-slot-border-color: var(
+    --catalog-field-border-pill-slot-border-color
+  );
+  --condition-field-pill-slot-color: var(--catalog-field-color-pill-slot-color);
+  --condition-field-pill-slot-font-style: var(
+    --catalog-field-typography-pill-slot-font-style
+  );
+  --condition-field-pill-system-border-color: var(
+    --catalog-field-border-pill-system-border-color
+  );
+  --condition-field-pill-system-background: var(
+    --catalog-field-color-pill-system-background
+  );
+  --condition-field-pill-unknown-border-color: var(
+    --catalog-field-border-pill-unknown-border-color
+  );
+  --condition-field-pill-unknown-background: var(
+    --catalog-field-color-pill-unknown-background
+  );
+  --condition-field-pill-white-space: var(
+    --catalog-field-typography-pill-white-space
+  );
+  --condition-field-pill-word-color: var(--catalog-field-color-pill-word-color);
+  --condition-field-pill-word-font-weight: var(
+    --catalog-field-typography-weight-semibold-font-weight
+  );
+}

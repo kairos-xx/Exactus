@@ -1,0 +1,154 @@
+/**
+ * Tonal grey ladder, semantic aliases, selection policy and scrollbars.
+ *
+ * Sources: 29-tokens.
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+/* Scope: custom properties set by 29-tokens */
+:root {
+  --primary: var(--catalog-button-color-empty-dark-background);
+  --brand-hover: var(--catalog-control-color-save-mid-background);
+  --brand-ink: var(--catalog-button-color-empty-light-color);
+  --brand-soft: var(--catalog-header-color-brand-mark-dark-background);
+  --brand-edge: var(--catalog-control-border-dialog-field-dark-border-color);
+}
+:root,
+.studio,
+dialog {
+  --bg: var(--catalog-surface-color-body-mid-background);
+  --surface: var(--catalog-panel-color-default-mid-background);
+  --shell-button-background: var(
+    --catalog-button-color-default-light-background
+  );
+  --data-tables-selected-data-step-background: var(
+    --catalog-control-color-step-light-background
+  );
+  --panel-content-surface: var(--catalog-panel-color-floating-dark-background);
+  --panel-header-surface: var(--catalog-header-color-default-mid-background);
+  --panel-header-active-surface: var(
+    --catalog-header-color-within-dark-background
+  );
+  --dock-canvas: var(--catalog-control-color-placeholder-dark-background-color);
+  --line: var(--catalog-button-border-action-dark-border-color);
+  --data-tables-clip-network-border-color: var(
+    --catalog-track-border-clip-network-dark-border-color
+  );
+  --primary-bg: #1a1c1fff;
+  --primary-surface: #212326ff;
+  --primary-shell-button-background: #313439ff;
+  --primary-line: #ffffff12;
+}
+.studio {
+  --primary: var(--catalog-button-color-empty-light-background);
+  --brand-hover: var(--catalog-control-color-save-light-background);
+  --brand-ink: var(--catalog-button-color-empty-dark-color);
+  --brand-soft: var(--catalog-header-color-brand-mark-light-background);
+  --brand-edge: var(--catalog-control-border-dialog-field-light-border-color);
+  --primary-brand-edge: #a4c9e880;
+}
+dialog {
+  --primary: var(--catalog-button-color-empty-dark-background);
+  --brand-hover: var(--catalog-control-color-save-mid-background);
+  --brand-ink: var(--catalog-button-color-empty-light-color);
+  --brand-soft: var(--catalog-header-color-brand-mark-dark-background);
+  --brand-edge: var(--catalog-control-border-dialog-field-dark-border-color);
+  --primary-brand-edge: #9abbd880;
+}
+/* Source: 29-tokens */
+/* Value-preserving design tokens for the compact editor. */
+/* Refinement tokens, selection policy and scrollbars.
+   The established charcoal surfaces and pastel accent stay untouched. These
+   aliases only give the refinement rules semantic names over that palette. */
+/* Selection policy: this is an application surface, not a document. Text is
+   never selectable except where a person edits or copies a value, and never
+   during a drag. The selectstart guard in editor.js enforces the same rule
+   where a component style would otherwise re-enable selection. */
+html,
+body,
+dialog {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+dialog input,
+dialog textarea,
+dialog pre,
+dialog code,
+.studio input,
+.studio textarea,
+.studio pre,
+.studio code,
+.studio .runs-content,
+.studio .selectable {
+  -webkit-user-select: text;
+  user-select: text;
+}
+body.panel-dock-dragging,
+body.step-dragging,
+body.clip-dragging {
+  cursor: var(--theme-body-panel-dock-dragging-cursor);
+}
+body.panel-dock-dragging input,
+body.panel-dock-dragging textarea,
+body.panel-dock-dragging pre,
+body.panel-dock-dragging code,
+body.step-dragging input,
+body.step-dragging textarea,
+body.step-dragging pre,
+body.step-dragging code,
+body.clip-dragging input,
+body.clip-dragging textarea,
+body.clip-dragging pre,
+body.clip-dragging code {
+  -webkit-user-select: none;
+  user-select: none;
+}
+dialog select:enabled,
+.studio select:enabled {
+  cursor: var(--theme-dialog-select-enabled-cursor);
+}
+/* Scrollbars: a hairline rail with a thin thumb. The standard properties are
+   only used where ::-webkit-scrollbar is unavailable, because they would
+   otherwise override it. */
+::-webkit-scrollbar {
+  width: var(--theme-webkit-scrollbar-width);
+  height: var(--theme-webkit-scrollbar-height);
+}
+::-webkit-scrollbar-corner {
+  background: var(--theme-webkit-scrollbar-corner-background);
+}
+::-webkit-scrollbar-track {
+  background: var(--theme-webkit-scrollbar-track-background);
+}
+::-webkit-scrollbar-track:vertical {
+  background: var(--theme-webkit-scrollbar-track-vertical-background);
+}
+::-webkit-scrollbar-track:horizontal {
+  background: var(--theme-webkit-scrollbar-track-horizontal-background);
+}
+::-webkit-scrollbar-thumb {
+  min-width: var(--theme-webkit-scrollbar-thumb-min-width);
+  min-height: var(--theme-webkit-scrollbar-thumb-min-height);
+  border: var(--theme-webkit-scrollbar-thumb-border);
+  border-radius: var(--theme-webkit-scrollbar-thumb-border-radius);
+  background-color: var(--theme-webkit-scrollbar-thumb-background-color);
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--theme-webkit-scrollbar-thumb-hover-background-color);
+}
+::-webkit-scrollbar-thumb:active {
+  background-color: var(--theme-webkit-scrollbar-thumb-active-background-color);
+}
+@supports not selector(::-webkit-scrollbar) {
+  :root,
+  .studio,
+  dialog {
+    scrollbar-color: var(
+      --theme-root-scrollbar-color-supports-not-selector-webkit-scrollbar
+    );
+    scrollbar-width: var(
+      --theme-root-scrollbar-width-supports-not-selector-webkit-scrollbar
+    );
+  }
+}

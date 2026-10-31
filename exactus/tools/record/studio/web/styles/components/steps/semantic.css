@@ -1,0 +1,244 @@
+/**
+ * Contextual aliases of the steps component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  /* 32-steps */
+  --steps-edit-empty-button-border: var(--catalog-button-border-empty-border);
+  --steps-edit-empty-button-font-weight: var(
+    --catalog-button-typography-weight-semibold-font-weight
+  );
+  --steps-edit-empty-button-height: var(--catalog-button-measure-xlarge-height);
+  --steps-edit-empty-button-margin-top: var(
+    --catalog-button-measure-compact-margin-top
+  );
+  --steps-edit-empty-button-padding-inline: var(
+    --catalog-button-measure-normal-padding-inline
+  );
+  --steps-edit-empty-gap: var(--catalog-control-measure-compact-gap);
+  --steps-edit-empty-h2-font-size: var(
+    --catalog-header-typography-normal-minus-hairline-font-size
+  );
+  --steps-edit-empty-h2-font-weight: var(
+    --catalog-header-typography-weight-semibold-font-weight
+  );
+  --steps-edit-empty-icon-height: var(--catalog-icon-measure-xlarge-height);
+  --steps-edit-empty-icon-width: var(--catalog-icon-measure-xlarge-width);
+  --steps-edit-empty-padding: var(
+    --catalog-control-measure-xxlarge-large-padding
+  );
+  --steps-edit-step-checks-background: var(
+    --catalog-item-color-step-checks-background
+  );
+  --steps-edit-step-checks-border-radius: var(
+    --catalog-item-border-step-checks-border-radius
+  );
+  --steps-edit-step-checks-color: var(
+    --catalog-item-color-step-checks-light-color
+  );
+  --steps-edit-step-checks-font-size: var(
+    --catalog-item-typography-small-minus-hairline-font-size
+  );
+  --steps-edit-step-checks-font-weight: var(
+    --catalog-item-typography-weight-medium-font-weight
+  );
+  --steps-edit-step-checks-padding: var(
+    --catalog-item-measure-micro-compact-minus-hairline-padding
+  );
+  --steps-edit-step-grip-cursor: var(--catalog-item-cursor-step-grip-cursor);
+  --steps-edit-step-grip-height: var(--catalog-item-measure-full-height);
+  --steps-edit-step-grip-opacity: var(--catalog-item-effect-zero-opacity);
+  --steps-edit-step-kind-height: var(--catalog-item-measure-tile-size);
+  --steps-edit-step-kind-icon-flex-basis: var(
+    --catalog-icon-measure-normal-plus-hairline-flex-basis
+  );
+  --steps-edit-step-kind-icon-height: var(
+    --catalog-icon-measure-normal-plus-hairline-height
+  );
+  --steps-edit-step-kind-icon-width: var(
+    --catalog-icon-measure-normal-plus-hairline-width
+  );
+  --steps-edit-step-kind-width: var(--catalog-item-measure-tile-size);
+  --steps-edit-step-list-gap: var(--catalog-item-measure-tiny-gap);
+  --steps-edit-step-list-padding: var(
+    --catalog-item-measure-tiny-small-small-padding
+  );
+  --steps-edit-step-text-gap: var(--catalog-item-measure-micro-gap);
+  --steps-edit-step-text-small-font-family: var(
+    --catalog-label-typography-text-small-font-family
+  );
+  --steps-edit-step-text-small-font-size: var(
+    --catalog-label-typography-small-minus-hairline-font-size
+  );
+  --steps-edit-step-text-strong-font-size: var(
+    --catalog-item-typography-small-plus-hairline-font-size
+  );
+  --steps-edit-step-text-strong-font-weight: var(
+    --catalog-item-typography-weight-semibold-font-weight
+  );
+  --steps-edit-step-toolbar-min-height: var(
+    --catalog-item-measure-xlarge-plus-compact-min-height
+  );
+  --steps-edit-step-toolbar-padding: var(
+    --catalog-item-measure-step-toolbar-padding
+  );
+  --steps-edit-step-toolbar-strong-font-size: var(
+    --catalog-item-typography-small-font-size
+  );
+  --steps-edit-step-toolbar-strong-font-weight: var(
+    --catalog-item-typography-weight-medium-font-weight
+  );
+  --steps-panel-edit-step-row-background: var(
+    --catalog-item-color-step-background
+  );
+  --steps-panel-edit-step-row-border: var(
+    --catalog-item-border-card-ring-border
+  );
+  --steps-panel-edit-step-row-border-radius: var(
+    --catalog-item-border-compact-border-radius
+  );
+  --steps-panel-edit-step-row-cursor: var(--catalog-item-cursor-step-cursor);
+  --steps-panel-edit-step-row-gap: var(--catalog-item-measure-compact-gap);
+  --steps-panel-edit-step-row-grid-template-columns: var(
+    --catalog-item-measure-card-columns
+  );
+  --steps-panel-edit-step-row-hover-background: var(
+    --catalog-item-color-card-background
+  );
+  --steps-panel-edit-step-row-is-dragging-box-shadow: var(
+    --catalog-item-effect-step-dragging-box-shadow
+  );
+  --steps-panel-edit-step-row-is-dragging-cursor: var(
+    --catalog-item-cursor-step-dragging-cursor
+  );
+  --steps-panel-edit-step-row-is-dragging-opacity: var(
+    --catalog-item-effect-step-dragging-opacity
+  );
+  --steps-panel-edit-step-row-is-dragging-z-index: var(
+    --catalog-item-measure-step-dragging-z-index
+  );
+  --steps-panel-edit-step-row-margin: var(--catalog-item-measure-step-margin);
+  --steps-panel-edit-step-row-min-height: var(
+    --catalog-item-measure-card-min-height
+  );
+  --steps-panel-edit-step-row-padding: var(--catalog-item-measure-step-padding);
+  --steps-recording-band-background: var(
+    --catalog-control-color-recording-band-background
+  );
+  --steps-recording-band-border-radius: var(
+    --catalog-control-border-pixel-tiny-border-radius
+  );
+  --steps-recording-band-inset-block: var(
+    --catalog-control-measure-recording-band-inset-block
+  );
+  --steps-recording-children-padding-left: var(
+    --catalog-control-measure-pixel-small-padding-left
+  );
+  --steps-recording-empty-color: var(--catalog-label-color-summary-small-color);
+  --steps-recording-empty-font-size: var(
+    --catalog-label-typography-pixel-small-minus-hairline-font-size
+  );
+  --steps-recording-empty-padding: var(
+    --catalog-label-measure-pixel-tiny-plus-micro-pixel-compact-plus-micro-padding
+  );
+  --steps-recording-group-background: var(
+    --catalog-list-color-recording-group-background
+  );
+  --steps-recording-group-border-radius: var(
+    --catalog-list-border-pixel-tiny-border-radius
+  );
+  --steps-recording-group-margin: var(
+    --catalog-list-measure-recording-group-margin
+  );
+  --steps-recording-group-open-recording-disclosure-transform: var(
+    --catalog-list-effect-quarter-turn-transform
+  );
+  --steps-recording-group-summary-cursor: var(
+    --catalog-label-cursor-group-summary-cursor
+  );
+  --steps-recording-group-summary-gap: var(--catalog-label-measure-compact-gap);
+  --steps-recording-group-summary-padding: var(
+    --catalog-label-measure-pixel-tiny-plus-micro-pixel-compact-plus-micro-padding
+  );
+  --steps-recording-group-summary-small-color: var(
+    --catalog-label-color-summary-small-color
+  );
+  --steps-recording-group-summary-small-flex: var(
+    --catalog-label-measure-summary-small-flex
+  );
+  --steps-recording-group-summary-small-font-size: var(
+    --catalog-label-typography-pixel-small-minus-hairline-font-size
+  );
+  --steps-recording-group-summary-small-margin-left: var(
+    --catalog-label-measure-pixel-small-margin-left
+  );
+  --steps-recording-group-summary-strong-font-size: var(
+    --catalog-label-typography-pixel-small-font-size
+  );
+  --steps-recording-group-summary-strong-min-width: var(
+    --catalog-label-measure-summary-strong-min-width
+  );
+  --steps-recording-group-summary-strong-text-overflow: var(
+    --catalog-label-typography-summary-strong-text-overflow
+  );
+  --steps-recording-group-summary-white-space: var(
+    --catalog-label-typography-group-summary-white-space
+  );
+  --steps-row-edit-step-grip-icon-height: var(
+    --catalog-icon-measure-small-plus-micro-height
+  );
+  --steps-row-edit-step-grip-icon-width: var(
+    --catalog-icon-measure-small-plus-micro-width
+  );
+  --steps-step-row-data-drop-after-bottom: var(
+    --catalog-item-measure-minus-micro-plus-hairline-bottom
+  );
+  --steps-step-row-data-drop-before-border-radius: var(
+    --catalog-item-border-micro-border-radius
+  );
+  --steps-step-row-data-drop-before-box-shadow: var(
+    --catalog-item-effect-step-drop-box-shadow
+  );
+  --steps-step-row-data-drop-before-content: var(
+    --catalog-item-typography-step-content
+  );
+  --steps-step-row-data-drop-before-height: var(
+    --catalog-item-measure-micro-height
+  );
+  --steps-step-row-data-drop-before-left: var(--catalog-item-measure-step-left);
+  --steps-step-row-data-drop-before-right: var(
+    --catalog-item-measure-step-right
+  );
+  --steps-step-row-data-drop-before-top: var(
+    --catalog-item-measure-minus-micro-plus-hairline-top
+  );
+  --steps-step-row-hover-edit-step-grip-opacity: var(
+    --catalog-item-effect-full-opacity
+  );
+  --steps-table-panel-header-panel-title-margin-right: var(
+    --catalog-header-measure-small-margin-right
+  );
+  --steps-card-radius: var(--catalog-item-border-pill-border-radius);
+  --steps-card-background: var(--catalog-item-color-card-background);
+  --steps-card-selected-border-color: var(
+    --catalog-item-color-card-selected-border-color
+  );
+  --steps-card-gap: var(--catalog-item-measure-card-gap);
+  --steps-card-padding: var(--catalog-item-measure-pill-padding);
+  --steps-card-connector-width: var(--catalog-item-border-card-connector-width);
+  --steps-card-connector-length: var(
+    --catalog-item-measure-card-connector-offset
+  );
+  --steps-card-param-padding: var(--catalog-item-measure-card-param-padding);
+  --steps-card-param-radius: var(--catalog-item-border-compact-border-radius);
+  --steps-card-text-gap: var(--catalog-item-measure-card-text-gap);
+  --steps-card-connector-block-start: var(
+    --catalog-item-measure-card-connector-block-start
+  );
+  --steps-card-connector-inline-start: var(
+    --catalog-item-measure-card-connector-inline-start
+  );
+  --steps-card-connector-content: var(
+    --catalog-item-typography-card-connector-content
+  );
+}

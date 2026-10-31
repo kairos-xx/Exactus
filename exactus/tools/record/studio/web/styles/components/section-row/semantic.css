@@ -1,0 +1,43 @@
+/**
+ * Contextual aliases of the section row component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  /* 27-section-row */
+  --section-row-bottom-grid-row-max-width-600px: var(
+    --catalog-control-measure-bottom-grid-row
+  );
+  --section-row-footer-grid-row-max-width-600px: var(
+    --catalog-toolbar-measure-footer-grid-row
+  );
+  --section-row-footer-min-height-max-width-600px: var(
+    --catalog-toolbar-measure-footer-min-height
+  );
+  --section-row-footer-padding-block-max-width-600px: var(
+    --catalog-toolbar-measure-footer-padding-block
+  );
+  --section-row-footer-white-space-max-width-600px: var(
+    --catalog-toolbar-typography-footer-white-space
+  );
+  --section-row-grid-template-rows-max-width-600px: var(
+    --catalog-control-measure-default-xlarge-plus-small-grid-template-rows
+  );
+  --section-row-height: var(--catalog-control-measure-default-height);
+  --section-row-min-height: var(
+    --catalog-control-measure-default-zero-min-height
+  );
+  --section-row-section-nav-button-flex: var(--catalog-button-measure-nav-flex);
+  --section-row-section-nav-button-white-space: var(
+    --catalog-button-typography-nav-white-space
+  );
+  --section-row-section-nav-min-width: var(--catalog-tab-measure-nav-min-width);
+  --section-row-section-nav-scrollbar-width: var(
+    --catalog-tab-measure-nav-none-scrollbar-width
+  );
+  --section-row-topbar-height: var(
+    --catalog-header-measure-xlarge-plus-micro-plus-tiny-height
+  );
+  --section-row-topbar-min-height: var(
+    --catalog-header-measure-xlarge-plus-micro-plus-tiny-min-height
+  );
+}

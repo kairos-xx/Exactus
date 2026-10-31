@@ -1,0 +1,258 @@
+/**
+ * Contextual aliases of the project bar component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  /* 46-project-bar */
+  --project-bar-actions-flex: var(--catalog-toolbar-measure-default-flex);
+  --project-bar-actions-gap: var(--catalog-toolbar-measure-tiny-gap);
+  --project-bar-actions-min-width: var(
+    --catalog-toolbar-measure-default-min-width
+  );
+  --project-bar-actions-padding-inline: var(
+    --catalog-toolbar-measure-compact-padding-inline
+  );
+  --project-bar-button-flex: var(--catalog-button-measure-default-flex);
+  --project-bar-button-font-size: var(
+    --catalog-button-typography-small-font-size
+  );
+  --project-bar-button-white-space: var(
+    --catalog-button-typography-default-white-space
+  );
+  --project-bar-gap-flex: var(--catalog-toolbar-measure-gap-flex);
+  --project-bar-gap-width: var(--catalog-toolbar-measure-small-width);
+  --project-bar-menu-border-radius: var(
+    --catalog-menu-border-tiny-plus-micro-border-radius
+  );
+  --project-bar-menu-box-shadow: var(
+    --catalog-menu-effect-default-inset-box-shadow
+  );
+  --project-bar-menu-gap-flex: var(--catalog-menu-measure-gap-flex);
+  --project-bar-menu-heading-font-size: var(
+    --catalog-menu-typography-small-minus-hairline-font-size
+  );
+  --project-bar-menu-heading-font-weight: var(
+    --catalog-menu-typography-weight-semibold-font-weight
+  );
+  --project-bar-menu-heading-letter-spacing: var(
+    --catalog-menu-typography-spacing-wide-letter-spacing
+  );
+  --project-bar-menu-heading-margin: var(--catalog-menu-measure-heading-margin);
+  --project-bar-menu-heading-padding: var(
+    --catalog-menu-measure-compact-plus-micro-tiny-padding
+  );
+  --project-bar-menu-heading-text-transform: var(
+    --catalog-menu-typography-heading-text-transform
+  );
+  --project-bar-menu-item-background: var(--catalog-menu-color-item-background);
+  --project-bar-menu-item-border: var(--catalog-menu-border-item-border);
+  --project-bar-menu-item-border-radius: var(
+    --catalog-menu-border-tiny-plus-micro-border-radius
+  );
+  --project-bar-menu-item-disabled-cursor: var(
+    --catalog-menu-cursor-item-disabled-cursor
+  );
+  --project-bar-menu-item-disabled-hover-background: var(
+    --catalog-item-color-menu-background
+  );
+  --project-bar-menu-item-focus-visible-outline: var(
+    --catalog-item-border-menu-outline
+  );
+  --project-bar-menu-item-font-size: var(
+    --catalog-menu-typography-small-font-size
+  );
+  --project-bar-menu-item-gap: var(--catalog-menu-measure-compact-gap);
+  --project-bar-menu-item-height: var(--catalog-menu-measure-item-height);
+  --project-bar-menu-item-min-height: var(
+    --catalog-menu-measure-xlarge-minus-micro-min-height
+  );
+  --project-bar-menu-item-padding: var(
+    --catalog-menu-measure-tiny-compact-plus-micro-padding
+  );
+  --project-bar-menu-item-small-flex: var(
+    --catalog-menu-measure-item-small-flex
+  );
+  --project-bar-menu-item-text-align: var(
+    --catalog-menu-typography-item-text-align
+  );
+  --project-bar-menu-item-width: var(--catalog-menu-measure-full-width);
+  --project-bar-menu-label-flex: var(--catalog-menu-measure-label-flex);
+  --project-bar-menu-label-text-overflow: var(
+    --catalog-menu-typography-label-text-overflow
+  );
+  --project-bar-menu-label-white-space: var(
+    --catalog-menu-typography-label-white-space
+  );
+  --project-bar-menu-max-height: var(
+    --catalog-menu-measure-default-huge-max-height
+  );
+  --project-bar-menu-max-width: var(--catalog-menu-measure-default-max-width);
+  --project-bar-menu-min-width: var(
+    --catalog-menu-measure-page-plus-normal-plus-huge-min-width
+  );
+  --project-bar-menu-padding: var(--catalog-menu-measure-tiny-padding);
+  --project-bar-menu-z-index: var(
+    --catalog-menu-measure-default-higher-z-index
+  );
+  --project-bar-overflow-flex: var(--catalog-toolbar-measure-overflow-flex);
+  --project-bar-overflow-margin-inline: var(
+    --catalog-toolbar-measure-overflow-margin-inline
+  );
+  --project-bar-pill-data-state-dirty-save-led-background: var(
+    --catalog-label-color-save-led-background
+  );
+  --project-bar-pill-data-state-dirty-save-led-outline: var(
+    --catalog-label-border-save-led-outline
+  );
+  --project-bar-pill-data-state-dirty-save-led-outline-offset: var(
+    --catalog-label-border-pixel-hairline-outline-offset
+  );
+  --project-bar-project-context-flex: var(
+    --catalog-control-measure-context-flex
+  );
+  --project-bar-project-context-gap: var(
+    --catalog-control-measure-tiny-plus-micro-gap
+  );
+  --project-bar-project-context-min-width: var(
+    --catalog-control-measure-context-min-width
+  );
+  --project-bar-project-context-padding-inline: var(
+    --catalog-control-measure-context-padding-inline
+  );
+  --project-bar-project-form-is-input-max-width: var(
+    --catalog-field-measure-form-input-max-width
+  );
+  --project-bar-project-form-is-input-width: var(
+    --catalog-field-measure-full-width
+  );
+  --project-bar-project-name-background: var(
+    --catalog-control-color-name-background
+  );
+  --project-bar-project-name-border: var(--catalog-control-border-name-border);
+  --project-bar-project-name-font-weight: var(
+    --catalog-control-typography-weight-semibold-font-weight
+  );
+  --project-bar-project-name-max-width: var(
+    --catalog-control-measure-name-max-width
+  );
+  --project-bar-project-name-text-overflow: var(
+    --catalog-control-typography-name-text-overflow
+  );
+  --project-bar-project-name-white-space: var(
+    --catalog-control-typography-name-white-space
+  );
+  --project-bar-save-led-background: var(
+    --catalog-control-color-save-led-background
+  );
+  --project-bar-save-led-border-radius: var(
+    --catalog-control-border-half-border-radius
+  );
+  --project-bar-save-led-height: var(--catalog-control-measure-compact-height);
+  --project-bar-save-led-width: var(--catalog-control-measure-compact-width);
+  --project-bar-save-pill-border-radius: var(
+    --catalog-label-border-save-pill-border-radius
+  );
+  --project-bar-save-pill-data-state-dirty-background: var(
+    --catalog-label-color-save-pill-background
+  );
+  --project-bar-save-pill-flex: var(--catalog-label-measure-save-pill-flex);
+  --project-bar-save-pill-font-size: var(
+    --catalog-label-typography-small-font-size
+  );
+  --project-bar-save-pill-gap: var(--catalog-label-measure-tiny-plus-micro-gap);
+  --project-bar-save-pill-height: var(
+    --catalog-label-measure-medium-plus-micro-height
+  );
+  --project-bar-save-pill-padding: var(
+    --catalog-label-measure-save-pill-padding
+  );
+  --project-bar-save-pill-white-space: var(
+    --catalog-label-typography-save-pill-white-space
+  );
+  --project-bar-split-arrow-padding-inline: var(
+    --catalog-toolbar-measure-micro-plus-hairline-tiny-plus-micro-padding-inline
+  );
+  --project-bar-split-bar-button-border: var(
+    --catalog-button-border-split-border
+  );
+  --project-bar-split-bar-button-border-radius: var(
+    --catalog-button-border-split-border-radius
+  );
+  --project-bar-split-bar-button-height: var(
+    --catalog-button-measure-split-height
+  );
+  --project-bar-split-border: var(--catalog-toolbar-border-split-border);
+  --project-bar-split-border-radius: var(
+    --catalog-toolbar-border-micro-border-radius
+  );
+  --project-bar-split-flex: var(--catalog-toolbar-measure-split-flex);
+  --project-bar-split-main-active-scale: var(
+    --catalog-toolbar-effect-split-main-active-scale
+  );
+  --project-bar-split-main-disabled-scale: var(
+    --catalog-toolbar-effect-split-main-disabled-scale
+  );
+  --project-bar-split-main-hover-scale: var(
+    --catalog-toolbar-effect-split-main-scale
+  );
+  --project-bar-split-main-padding-right: var(
+    --catalog-toolbar-measure-tiny-padding-right
+  );
+  --project-bar-tier-icons-bar-button-icon-translate: var(
+    --catalog-button-effect-topbar-translate
+  );
+  --project-bar-tier-icons-bar-button-is-hover-background: var(
+    --catalog-button-color-topbar-background
+  );
+  --project-bar-tier-icons-bar-button-is-hover-border-color: var(
+    --catalog-button-border-topbar-border-color
+  );
+  --project-bar-tier-icons-bar-button-is-hover-box-shadow: var(
+    --catalog-button-effect-topbar-box-shadow
+  );
+  --project-bar-topbar-data-tier-icons-bar-button-border-color: var(
+    --catalog-button-border-topbar-border-color
+  );
+  --project-bar-topbar-data-tier-icons-bar-label-clip-path: var(
+    --catalog-header-measure-half-clip-path
+  );
+  --project-bar-topbar-data-tier-icons-bar-label-height: var(
+    --catalog-header-measure-pixel-hairline-height
+  );
+  --project-bar-topbar-data-tier-icons-bar-label-white-space: var(
+    --catalog-header-typography-topbar-label-white-space
+  );
+  --project-bar-topbar-data-tier-icons-bar-label-width: var(
+    --catalog-header-measure-pixel-hairline-width
+  );
+  --project-bar-topbar-data-tier-icons-bar-split-border-color: var(
+    --catalog-header-border-topbar-split-border-color
+  );
+  --project-bar-topbar-data-tier-icons-save-pill-padding: var(
+    --catalog-header-measure-save-pill-padding
+  );
+  --project-bar-topbar-data-tier-icons-save-pill-width: var(
+    --catalog-header-measure-medium-plus-micro-width
+  );
+  --project-bar-topbar-data-tier-menu-bar-label-clip-path: var(
+    --catalog-header-measure-half-clip-path
+  );
+  --project-bar-topbar-data-tier-menu-bar-label-height: var(
+    --catalog-header-measure-pixel-hairline-height
+  );
+  --project-bar-topbar-data-tier-menu-bar-label-white-space: var(
+    --catalog-header-typography-topbar-label-white-space
+  );
+  --project-bar-topbar-data-tier-menu-bar-label-width: var(
+    --catalog-header-measure-pixel-hairline-width
+  );
+  --project-bar-topbar-data-tier-menu-project-name-max-width: var(
+    --catalog-header-measure-topbar-name-max-width
+  );
+  --project-bar-topbar-data-tier-menu-save-pill-padding: var(
+    --catalog-header-measure-save-pill-padding
+  );
+  --project-bar-topbar-data-tier-menu-save-pill-width: var(
+    --catalog-header-measure-medium-plus-micro-width
+  );
+}

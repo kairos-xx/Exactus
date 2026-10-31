@@ -1,0 +1,250 @@
+/**
+ * Flow composition details.
+ *
+ * Sources: 11-composition.
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+@layer studio-base {
+  /* Source: 11-composition */
+  .check input::before {
+    content: var(--composition-check-input-before-content);
+    position: absolute;
+    top: var(--composition-check-input-before-top);
+    left: var(--composition-check-input-before-left);
+    width: var(--switch-track);
+    height: var(--composition-check-input-before-height);
+    border-radius: var(--composition-check-input-before-border-radius);
+    background: var(--data-tables-clip-network-border-color);
+    transform: var(--composition-check-input-before-transform);
+  }
+  .number-control input:focus-visible {
+    outline: var(--composition-number-control-input-focus-visible-outline);
+  }
+  .workspace-add span:last-child {
+    font-size: var(--composition-workspace-add-span-last-child-font-size);
+  }
+  .action-grid button:hover {
+    background: var(--data-tables-selected-data-step-background);
+    border-color: var(--line);
+  }
+  .flow-node-title > span:nth-child(2) {
+    flex: var(--composition-node-title-span-nth-child-2-flex);
+    overflow: hidden;
+    text-overflow: var(--composition-node-title-span-nth-child-2-text-overflow);
+    text-align: var(--composition-node-title-span-nth-child-2-text-align);
+  }
+  .node-port span:last-child {
+    overflow-wrap: var(--composition-node-port-span-last-child-overflow-wrap);
+  }
+  .data-table td:first-child {
+    color: var(--muted);
+    font-family: var(--composition-data-table-td-first-child-font-family);
+    width: var(--flow-min-height-2);
+  }
+  .data-table td:nth-child(3) {
+    font-family: var(--composition-data-table-td-nth-child-3-font-family);
+    font-size: var(--composition-data-table-td-nth-child-3-font-size);
+    color: var(--muted);
+  }
+  .track-label > span:nth-child(2) {
+    flex: var(--composition-track-label-span-nth-child-2-flex);
+  }
+  .clip > span:last-child {
+    overflow: hidden;
+    text-overflow: var(--composition-clip-span-last-child-text-overflow);
+  }
+  .data-table tr:hover td {
+    background: var(--composition-data-table-tr-hover-td-background);
+  }
+  .node-actions > div span:last-child {
+    overflow: hidden;
+    white-space: var(
+      --composition-node-actions-div-span-last-child-white-space
+    );
+    text-overflow: var(
+      --composition-node-actions-div-span-last-child-text-overflow
+    );
+  }
+  .data-table td button.selected {
+    color: var(--accent);
+    background: var(--composition-data-table-td-button-selected-background);
+  }
+  .node:last-child::after {
+    display: none;
+  }
+  .node.selected .node-head {
+    border-bottom-color: var(--data-tables-clip-network-border-color);
+  }
+  .flow-node.active .flow-node-title {
+    background: var(--composition-flow-node-active-flow-node-title-background);
+  }
+  .check input:checked::before {
+    background: var(--composition-check-input-checked-before-background);
+  }
+  .check input:checked::after {
+    transform: var(--composition-check-input-checked-after-transform);
+    background: var(--bg);
+  }
+  .inspector-content input:not([type="checkbox"]) {
+    width: var(--composition-inspector-content-input-not-type-checkbox-width);
+    padding: var(
+      --composition-inspector-content-input-not-type-checkbox-padding
+    );
+    background: var(--bg);
+  }
+  @media (width <=900px) {
+    html {
+      height: var(--composition-html-height-max-width-900px);
+      overflow: auto;
+    }
+    body {
+      height: var(--composition-body-height-max-width-900px);
+      overflow: auto;
+    }
+    .workbench {
+      grid-template-columns: var(
+        --composition-workbench-grid-template-columns-max-width-900px
+      );
+    }
+    .right-stack {
+      grid-column: var(--composition-right-stack-grid-column-max-width-900px);
+      grid-template-columns: var(
+        --composition-right-stack-grid-template-columns-max-width-900px
+      );
+      grid-template-rows: var(
+        --composition-right-stack-grid-template-rows-max-width-900px
+      );
+    }
+    .studio {
+      display: block;
+    }
+    .app-root {
+      height: var(--composition-app-root-height-max-width-900px);
+      overflow: auto;
+    }
+    .topbar {
+      flex-wrap: wrap;
+      padding: var(--flow-panel-padding);
+      gap: var(--composition-topbar-gap-max-width-900px);
+    }
+    .center {
+      grid-template-rows: var(
+        --composition-center-grid-template-rows-max-width-900px
+      );
+    }
+    .bottom {
+      grid-template-columns: var(
+        --composition-bottom-grid-template-columns-max-width-900px
+      );
+      height: var(--composition-bottom-height-max-width-900px);
+    }
+    .workspace {
+      max-height: var(--composition-workspace-max-height-max-width-900px);
+    }
+  }
+  @media (width <=800px) {
+    html {
+      height: var(--composition-html-height-max-width-800px);
+      min-height: var(--composition-html-min-height-max-width-800px);
+      overflow: auto;
+    }
+    body {
+      height: var(--composition-body-height-max-width-800px);
+      min-height: var(--composition-body-min-height-max-width-800px);
+      overflow: auto;
+    }
+    footer {
+      flex-wrap: wrap;
+      gap: var(--composition-footer-gap-max-width-800px);
+      padding: var(--composition-footer-padding-max-width-800px);
+    }
+    .app-root {
+      height: var(--composition-app-root-height-max-width-800px);
+      min-height: var(--composition-app-root-min-height-max-width-800px);
+      overflow: auto;
+    }
+    .studio {
+      display: block;
+    }
+    .topbar {
+      flex-wrap: wrap;
+      gap: var(--composition-topbar-gap-max-width-800px);
+      padding: var(--composition-topbar-padding-max-width-800px);
+    }
+    .workbench {
+      grid-template-columns: var(
+        --composition-workbench-grid-template-columns-max-width-800px
+      );
+    }
+    .center {
+      grid-template-rows: var(
+        --composition-center-grid-template-rows-max-width-800px
+      );
+    }
+    .right-stack {
+      grid-column: var(--composition-right-stack-grid-column-max-width-800px);
+      grid-template-columns: var(
+        --composition-right-stack-grid-template-columns-max-width-800px
+      );
+      grid-template-rows: var(
+        --composition-right-stack-grid-template-rows-max-width-800px
+      );
+    }
+    .inspector-content {
+      max-height: var(
+        --composition-inspector-content-max-height-max-width-800px
+      );
+    }
+    .bottom {
+      height: var(--composition-bottom-height-max-width-800px);
+      grid-template-columns: var(
+        --composition-bottom-grid-template-columns-max-width-800px
+      );
+    }
+    .timeline-content {
+      max-height: var(
+        --composition-timeline-content-max-height-max-width-800px
+      );
+    }
+    .runs-content {
+      max-height: var(--composition-runs-content-max-height-max-width-800px);
+    }
+    .workspace-surface {
+      min-height: var(
+        --composition-workspace-surface-min-height-max-width-800px
+      );
+      overflow: visible;
+    }
+    .workspace-surface-content {
+      height: var(
+        --composition-workspace-surface-content-height-max-width-800px
+      );
+      overflow: visible;
+    }
+    .surface-grid,
+    .surface-grid-record,
+    .surface-grid-debug,
+    .surface-grid-compare,
+    .surface-grid-crawl,
+    .surface-grid-inspector,
+    .surface-grid-controls,
+    .surface-grid-recovery {
+      grid-template-columns: var(
+        --composition-surface-grid-template-columns-max-width-800px
+      );
+      grid-template-rows: var(
+        --composition-surface-grid-template-rows-max-width-800px
+      );
+    }
+    .surface-grid-debug .surface-console {
+      grid-column: var(
+        --composition-surface-grid-debug-surface-console-grid-column-max-width-800px
+      );
+    }
+    .profile-grid {
+      grid-template-columns: var(
+        --composition-profile-grid-template-columns-max-width-800px
+      );
+    }
+  }
+}

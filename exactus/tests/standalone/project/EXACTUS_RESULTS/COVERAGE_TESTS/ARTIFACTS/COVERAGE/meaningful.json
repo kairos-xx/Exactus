@@ -1,0 +1,277 @@
+{
+  "counts": {
+    "TEST-0": 1,
+    "TEST-1": 0,
+    "TEST-2": 0,
+    "TEST-3": 0,
+    "actionable": 0,
+    "filtered": 1,
+    "unclassified": 0
+  },
+  "failures": [],
+  "findings": [
+    {
+      "category": "structural",
+      "decision_tree": [
+        {
+          "evidence_ids": [],
+          "level_after": "TEST-0",
+          "level_before": "TEST-0",
+          "outcome": false,
+          "question": "Does the file contain substantive behavior?",
+          "rule": "promote-test-0-to-1",
+          "score": 0.067857,
+          "threshold": 0.25
+        }
+      ],
+      "evidence": [],
+      "level": "TEST-0",
+      "metadata": {
+        "duration_seconds": 0.0008085410081548616,
+        "finished_at": "2026-10-31T02:56:34.480178+00:00",
+        "size_bytes": 295,
+        "source_lines": 10,
+        "started_at": "2026-10-31T02:56:34.479376+00:00",
+        "worker_name": "meaningful_0"
+      },
+      "metrics": {
+        "behavioral_statements": 2,
+        "boolean_decisions": 0,
+        "branches": 1,
+        "comprehension_decisions": 0,
+        "computations": 3,
+        "cyclomatic_complexity": 2,
+        "exception_handlers": 0,
+        "loops": 0,
+        "max_control_nesting": 1,
+        "module_runtime_statements": 2,
+        "mutations": 1,
+        "public_behavioral_members": 0,
+        "raises": 0,
+        "runtime_calls": 5,
+        "side_effects": 0,
+        "substantive_callables": 0,
+        "trivial_callables": 0
+      },
+      "path": "conftest.py",
+      "reasons": [
+        "Promoted to TEST-0 by normalized policy evidence.",
+        "1 state mutations.",
+        "1 branches and 0 loops.",
+        "2 behavioral statements."
+      ],
+      "scores": {
+        "test_0_to_1": 0.067857,
+        "test_1_to_2": 0.65,
+        "test_2_to_3": 0.05249
+      },
+      "should_be_visited": false
+    }
+  ],
+  "metadata": {
+    "analysis_seconds": 0.0016580419905949384,
+    "duration_seconds": 0.0018026670004474,
+    "failed": 0,
+    "filtered": 1,
+    "finished_at": "2026-10-31T02:56:34.480761+00:00",
+    "kept": 0,
+    "platform": "macOS-26.3.2-arm64-arm-64bit-Mach-O",
+    "python_version": "3.13.9",
+    "requested_workers": null,
+    "resolution_seconds": 6.529099482577294e-05,
+    "started_at": "2026-10-31T02:56:34.478963+00:00",
+    "succeeded": 1,
+    "test_0": 1,
+    "test_1": 0,
+    "test_2": 0,
+    "test_3": 0,
+    "total_bytes": 295,
+    "total_files": 1,
+    "total_source_lines": 10,
+    "workers_used": 1,
+    "working_directory": "."
+  },
+  "progress": [
+    {
+      "completed": 0,
+      "current_level": null,
+      "current_path": "conftest.py",
+      "elapsed_seconds": 0.00028145899705123156,
+      "estimated_remaining_seconds": null,
+      "evidence_count": 0,
+      "failed": 0,
+      "files_per_second": 0.0,
+      "filtered": 0,
+      "kept": 0,
+      "percent": 0.0,
+      "remaining": 1,
+      "stage": "file_started",
+      "succeeded": 0,
+      "total": 1
+    },
+    {
+      "completed": 0,
+      "current_level": "TEST-0",
+      "current_path": "conftest.py",
+      "elapsed_seconds": 0.0008783340017544106,
+      "estimated_remaining_seconds": null,
+      "evidence_count": 0,
+      "failed": 0,
+      "files_per_second": 0.0,
+      "filtered": 0,
+      "kept": 0,
+      "percent": 0.0,
+      "remaining": 1,
+      "stage": "fast_scan",
+      "succeeded": 0,
+      "total": 1
+    },
+    {
+      "completed": 0,
+      "current_level": "TEST-0",
+      "current_path": "conftest.py",
+      "elapsed_seconds": 0.001077833992894739,
+      "estimated_remaining_seconds": null,
+      "evidence_count": 0,
+      "failed": 0,
+      "files_per_second": 0.0,
+      "filtered": 0,
+      "kept": 0,
+      "percent": 0.0,
+      "remaining": 1,
+      "stage": "evidence",
+      "succeeded": 0,
+      "total": 1
+    },
+    {
+      "completed": 1,
+      "current_level": "TEST-0",
+      "current_path": "conftest.py",
+      "elapsed_seconds": 0.0014500419929390773,
+      "estimated_remaining_seconds": 0.0,
+      "evidence_count": 0,
+      "failed": 0,
+      "files_per_second": 689.6352001317623,
+      "filtered": 1,
+      "kept": 0,
+      "percent": 100.0,
+      "remaining": 0,
+      "stage": "decision",
+      "succeeded": 1,
+      "total": 1
+    }
+  ],
+  "rows": [
+    {
+      "actionable": false,
+      "analysis_error": false,
+      "category": "structural",
+      "decision_tree": [
+        {
+          "evidence_ids": [],
+          "level_after": "TEST-0",
+          "level_before": "TEST-0",
+          "outcome": false,
+          "question": "Does the file contain substantive behavior?",
+          "rule": "promote-test-0-to-1",
+          "score": 0.067857,
+          "threshold": 0.25
+        }
+      ],
+      "evidence": [],
+      "level": "TEST-0",
+      "metadata": {
+        "duration_seconds": 0.0008085410081548616,
+        "finished_at": "2026-10-31T02:56:34.480178+00:00",
+        "size_bytes": 295,
+        "source_lines": 10,
+        "started_at": "2026-10-31T02:56:34.479376+00:00",
+        "worker_name": "meaningful_0"
+      },
+      "metrics": {
+        "behavioral_statements": 2,
+        "boolean_decisions": 0,
+        "branches": 1,
+        "comprehension_decisions": 0,
+        "computations": 3,
+        "cyclomatic_complexity": 2,
+        "exception_handlers": 0,
+        "loops": 0,
+        "max_control_nesting": 1,
+        "module_runtime_statements": 2,
+        "mutations": 1,
+        "public_behavioral_members": 0,
+        "raises": 0,
+        "runtime_calls": 5,
+        "side_effects": 0,
+        "substantive_callables": 0,
+        "trivial_callables": 0
+      },
+      "origin": "unreached",
+      "path": "conftest.py",
+      "reason": "no test imports or executes this file",
+      "reasons": [
+        "Promoted to TEST-0 by normalized policy evidence.",
+        "1 state mutations.",
+        "1 branches and 0 loops.",
+        "2 behavioral statements."
+      ],
+      "scores": {
+        "test_0_to_1": 0.067857,
+        "test_1_to_2": 0.65,
+        "test_2_to_3": 0.05249
+      },
+      "should_be_visited": false,
+      "source": "meaningful",
+      "status": "filtered",
+      "target": "conftest.py"
+    }
+  ],
+  "schema": "exactus.coverage_tests.meaningful/v1",
+  "selected_paths": [
+    "conftest.py"
+  ],
+  "settings": {
+    "minimum_level": "TEST-2",
+    "mode": "require",
+    "policy": {
+      "caps": {
+        "behavioral_statements": 30,
+        "computations": 40,
+        "decisions": 12,
+        "errors": 5,
+        "mutations": 5,
+        "nesting": 5,
+        "public_members": 10,
+        "side_effects": 5,
+        "source_lines": 300
+      },
+      "evidence_context": 2,
+      "floors": {
+        "error_test_1_to_2": 0.7,
+        "high_complexity_test_2_to_3": 0.75,
+        "import_runtime_test_1_to_2": 0.65,
+        "mutation_test_1_to_2": 0.65,
+        "side_effect_test_1_to_2": 0.7
+      },
+      "thresholds": {
+        "test_0_to_1": 0.25,
+        "test_1_to_2": 0.5,
+        "test_2_to_3": 0.7
+      },
+      "weights": {
+        "behavior": 1.0,
+        "computations": 0.8,
+        "decisions": 1.2,
+        "errors": 1.3,
+        "mutations": 1.3,
+        "nesting": 1.0,
+        "public_surface": 1.1,
+        "side_effects": 1.4,
+        "size": 0.9
+      }
+    },
+    "unclassified": "filtered",
+    "workers": null
+  }
+}

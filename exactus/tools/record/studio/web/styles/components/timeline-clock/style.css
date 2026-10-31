@@ -1,0 +1,165 @@
+/* Source: 40-timeline-clock */
+.studio .timeline-timecode--segments {
+  --timeline-clock-off: var(--catalog-palette-color-off);
+  display: block;
+  width: var(--timeline-timecode-segments-width);
+  min-width: var(--timeline-timecode-segments-min-width);
+  height: var(--button-height);
+  --base-timeline-timeline-timecode-segments-aspect-ratio: var(
+    --dynamic-analog-clock-aspect,
+    8
+  );
+  --catalog-aspect-measure-timecode-segments-aspect-ratio: var(
+    --base-timeline-timeline-timecode-segments-aspect-ratio
+  );
+  --timeline-timecode-segments-aspect-ratio: var(
+    --catalog-aspect-measure-timecode-segments-aspect-ratio
+  );
+  aspect-ratio: var(--timeline-timecode-segments-aspect-ratio);
+  padding: var(--timeline-timecode-segments-padding);
+  border: var(--timeline-timecode-segments-border);
+  border-radius: var(--timeline-timecode-segments-border-radius);
+  background: var(--timeline-timecode-segments-background);
+  overflow: hidden;
+}
+/* The mount matches transport buttons; the clock fits that mount automatically. */
+.studio .timeline-zoom-group > [id="timeline-zoom"] {
+  appearance: none;
+  -webkit-appearance: none;
+  height: var(--button-height);
+  min-height: var(--timeline-zoom-group-id-timeline-zoom-min-height);
+  padding: var(--timeline-zoom-group-id-timeline-zoom-padding);
+  border: var(--timeline-zoom-group-id-timeline-zoom-border);
+  border-radius: var(--timeline-zoom-group-id-timeline-zoom-border-radius);
+  background: var(--timeline-zoom-group-id-timeline-zoom-background);
+  cursor: var(--timeline-zoom-group-id-timeline-zoom-cursor);
+}
+.studio [id="timeline-zoom"]::-webkit-slider-runnable-track {
+  height: var(--timeline-zoom-webkit-slider-runnable-track-height);
+  border: var(--timeline-zoom-webkit-slider-runnable-track-border);
+  border-radius: var(
+    --timeline-zoom-webkit-slider-runnable-track-border-radius
+  );
+  background: var(--timeline-zoom-webkit-slider-runnable-track-background);
+}
+.studio [id="timeline-zoom"]::-moz-range-track {
+  height: var(--timeline-id-timeline-zoom-moz-range-track-height);
+  border: var(--timeline-id-timeline-zoom-moz-range-track-border);
+  border-radius: var(--timeline-id-timeline-zoom-moz-range-track-border-radius);
+  background: var(--timeline-zoom-webkit-slider-runnable-track-background);
+}
+.studio [id="timeline-zoom"]::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: var(--timeline-id-timeline-zoom-webkit-slider-thumb-width);
+  height: var(--timeline-id-timeline-zoom-webkit-slider-thumb-height);
+  margin-top: var(--timeline-id-timeline-zoom-webkit-slider-thumb-margin-top);
+  --base-timeline-id-timeline-zoom-webkit-slider-thumb-border: calc(
+      var(--primary-dimension-unit) * 0.0625
+    )
+    solid var(--primary-timeline-zoom-thumb-border-color);
+  --catalog-edge-border-id-zoom-webkit-slider-thumb-border: var(
+    --base-timeline-id-timeline-zoom-webkit-slider-thumb-border
+  );
+  --timeline-id-timeline-zoom-webkit-slider-thumb-border: var(
+    --catalog-edge-border-id-zoom-webkit-slider-thumb-border
+  );
+  border: var(--timeline-id-timeline-zoom-webkit-slider-thumb-border);
+  border-radius: var(
+    --timeline-id-timeline-zoom-webkit-slider-thumb-border-radius
+  );
+  background: var(--accent);
+  box-shadow: var(--timeline-id-timeline-zoom-webkit-slider-thumb-box-shadow);
+}
+.studio [id="timeline-zoom"]::-moz-range-thumb {
+  width: var(--timeline-id-timeline-zoom-moz-range-thumb-width);
+  height: var(--timeline-id-timeline-zoom-moz-range-thumb-height);
+  box-sizing: border-box;
+  --base-timeline-id-timeline-zoom-moz-range-thumb-border: calc(
+      var(--primary-dimension-unit) * 0.0625
+    )
+    solid var(--primary-timeline-zoom-thumb-border-color);
+  --catalog-edge-border-id-zoom-moz-range-thumb-border: var(
+    --base-timeline-id-timeline-zoom-moz-range-thumb-border
+  );
+  --timeline-id-timeline-zoom-moz-range-thumb-border: var(
+    --catalog-edge-border-id-zoom-moz-range-thumb-border
+  );
+  border: var(--timeline-id-timeline-zoom-moz-range-thumb-border);
+  border-radius: var(--timeline-id-timeline-zoom-moz-range-thumb-border-radius);
+  background: var(--accent);
+  box-shadow: var(--timeline-id-timeline-zoom-moz-range-thumb-box-shadow);
+}
+.studio [id="timeline-zoom"]:focus-visible {
+  --base-timeline-id-timeline-zoom-focus-visible-outline: calc(
+      var(--primary-dimension-unit) * 0.125
+    )
+    solid var(--primary-accent);
+  --catalog-edge-border-id-zoom-focus-visible-outline: var(
+    --base-timeline-id-timeline-zoom-focus-visible-outline
+  );
+  --timeline-id-timeline-zoom-focus-visible-outline: var(
+    --catalog-edge-border-id-zoom-focus-visible-outline
+  );
+  outline: var(--timeline-id-timeline-zoom-focus-visible-outline);
+  outline-offset: var(--timeline-id-timeline-zoom-focus-visible-outline-offset);
+}
+/* Keep optional tools inside their own track, never over the time display. */
+.studio .timeline-cluster-end {
+  overflow: hidden;
+}
+@container panel (width < 1320px) {
+  .timeline-zoom-group
+    > button:not(.timeline-icon-button)
+    > span:not(.studio-icon) {
+    display: none;
+  }
+}
+.studio [id="timeline"] {
+  position: relative;
+}
+.studio .timeline-cursor {
+  position: absolute;
+  top: var(--timeline-cursor-top);
+  width: var(--timeline-cursor-width);
+  margin-left: var(--timeline-cursor-margin-left);
+  z-index: var(--timeline-cursor-z-index);
+  cursor: var(--timeline-cursor);
+  touch-action: none;
+  user-select: none;
+}
+.studio .timeline-cursor::before {
+  content: var(--timeline-cursor-before-content);
+  position: absolute;
+  inset: var(--timeline-cursor-before-inset);
+  width: var(--timeline-cursor-before-width);
+  background: var(--accent);
+}
+.studio .timeline-cursor-grip {
+  display: block;
+  position: sticky;
+  top: var(--timeline-cursor-grip-top);
+  margin-left: var(--timeline-cursor-grip-margin-left);
+  width: var(--timeline-cursor-grip-width);
+  height: var(--timeline-cursor-grip-height);
+  background: var(--accent);
+  clip-path: var(--timeline-cursor-grip-clip-path);
+}
+.studio .timeline-cursor:focus-visible {
+  --base-timeline-timeline-cursor-focus-visible-outline: calc(
+      var(--primary-dimension-pixel) * 1
+    )
+    solid var(--primary-accent);
+  --catalog-edge-border-cursor-focus-visible-outline: var(
+    --base-timeline-timeline-cursor-focus-visible-outline
+  );
+  --timeline-cursor-focus-visible-outline: var(
+    --catalog-edge-border-cursor-focus-visible-outline
+  );
+  outline: var(--timeline-cursor-focus-visible-outline);
+  outline-offset: var(--timeline-cursor-focus-visible-outline-offset);
+}
+.studio [id="timeline"].is-scrubbing {
+  cursor: var(--timeline-id-timeline-is-scrubbing-cursor);
+  user-select: none;
+}

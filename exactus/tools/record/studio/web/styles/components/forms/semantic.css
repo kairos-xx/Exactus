@@ -1,0 +1,114 @@
+/**
+ * Contextual aliases of the forms component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  /* 09-forms */
+  --forms-composition-footer-button-background: var(
+    --catalog-button-color-footer-background
+  );
+  --forms-composition-footer-button-border: var(
+    --catalog-button-border-footer-border
+  );
+  --forms-composition-footer-button-font-size: var(
+    --catalog-button-typography-small-font-size
+  );
+  --forms-composition-footer-button-padding: var(
+    --catalog-button-measure-footer-padding
+  );
+  --forms-composition-footer-span-font-size: var(
+    --catalog-toolbar-typography-small-minus-hairline-font-size
+  );
+  --forms-connection-form-input-min-width: var(
+    --catalog-field-measure-form-input-min-width
+  );
+  --forms-connection-form-input-padding: var(
+    --catalog-field-measure-compact-padding
+  );
+  --forms-connection-form-input-width: var(--catalog-field-measure-full-width);
+  --forms-connection-form-label-flex: var(
+    --catalog-label-measure-connection-form-flex
+  );
+  --forms-connection-form-label-font-size: var(
+    --catalog-label-typography-small-minus-hairline-font-size
+  );
+  --forms-connection-form-label-gap: var(--catalog-label-measure-tiny-gap);
+  --forms-connection-form-label-min-width: var(
+    --catalog-label-measure-massive-minus-large-min-width
+  );
+  --forms-connection-form-select-min-width: var(
+    --catalog-field-measure-form-select-min-width
+  );
+  --forms-connection-form-select-padding: var(
+    --catalog-field-measure-compact-padding
+  );
+  --forms-connection-form-select-width: var(--catalog-field-measure-full-width);
+  --forms-connection-strip-span-font-size: var(
+    --catalog-text-typography-small-font-size
+  );
+  --forms-connection-strip-span-gap: var(--catalog-text-measure-compact-gap);
+  --forms-data-table-td-button-background: var(
+    --catalog-button-color-table-td-background
+  );
+  --forms-data-table-td-button-border: var(
+    --catalog-button-border-table-td-border
+  );
+  --forms-data-table-td-button-padding: var(
+    --catalog-button-measure-table-td-padding
+  );
+  --forms-graph-header-div-gap: var(--catalog-header-measure-micro-gap);
+  --forms-node-after-border-top: var(--catalog-item-border-node-border-top);
+  --forms-node-after-content: var(--catalog-item-typography-node-content);
+  --forms-node-after-right: var(
+    --catalog-item-measure-minus-large-minus-hairline-right
+  );
+  --forms-node-after-top: var(--catalog-item-measure-half-top);
+  --forms-node-after-width: var(--catalog-item-measure-medium-plus-micro-width);
+  --forms-node-assert-border-color: var(
+    --catalog-item-border-node-assert-border-color
+  );
+  --forms-node-http-border-color: var(
+    --catalog-item-border-node-http-border-color
+  );
+  --forms-recipe-menu-div-bottom: var(--catalog-menu-measure-recipe-div-bottom);
+  --forms-recipe-menu-div-gap: var(--catalog-menu-measure-compact-gap);
+  --forms-recipe-menu-div-padding: var(--catalog-menu-measure-compact-padding);
+  --forms-recipe-menu-div-right: var(--catalog-menu-measure-recipe-div-right);
+  --forms-recipe-menu-div-z-index: var(
+    --catalog-menu-measure-recipe-div-z-index
+  );
+  --forms-ruler-ticks-small-font-size: var(
+    --catalog-label-typography-compact-plus-micro-font-size
+  );
+  --forms-ruler-ticks-small-margin-top: var(
+    --catalog-label-measure-tiny-margin-top
+  );
+  --forms-ruler-ticks-span-font: var(
+    --catalog-track-typography-ticks-span-font
+  );
+  --forms-ruler-ticks-span-font-variant-numeric: var(
+    --catalog-track-typography-ticks-span-font-variant-numeric
+  );
+  --forms-ruler-ticks-span-padding: var(
+    --catalog-track-measure-tiny-compact-padding
+  );
+  --forms-ruler-ticks-span-padding-inline: var(
+    --catalog-track-measure-tiny-padding-inline
+  );
+  --forms-ruler-ticks-span-top: var(--catalog-track-measure-ticks-span-top);
+  --forms-timeline-toolbar-label-font-size: var(
+    --catalog-label-typography-small-minus-hairline-font-size
+  );
+  --forms-timeline-toolbar-label-font-weight: var(
+    --catalog-label-typography-weight-normal-font-weight
+  );
+  --forms-topbar-button-white-space: var(
+    --catalog-button-typography-topbar-white-space
+  );
+  --forms-track-label-small-font-family: var(
+    --catalog-label-typography-track-small-font-family
+  );
+  --forms-tree-item-hover-background: var(
+    --catalog-item-color-tree-hover-light-background
+  );
+}

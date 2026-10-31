@@ -1,0 +1,16 @@
+/* Standalone fixture page styling. */
+/* Static literal inputs. */
+:root {
+  --primary-hue: 214;
+  --base-card-fill: hsl(var(--primary-hue) 45% 96%);
+  --base-card-ink: hsl(var(--primary-hue) 40% 22%);
+  --catalog-card-color-background: var(--base-card-fill);
+  --catalog-card-color-foreground: var(--base-card-ink);
+  --result-card-fill: var(--catalog-card-color-background);
+  --result-card-ink: var(--catalog-card-color-foreground);
+}
+/* Contextual aliases consumed by the result card. */
+.result-card {
+  background: var(--result-card-fill);
+  color: var(--result-card-ink);
+}

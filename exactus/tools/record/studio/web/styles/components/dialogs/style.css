@@ -1,0 +1,153 @@
+/**
+ * Dialog and preview surfaces.
+ *
+ * Sources: 14-dialogs.
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+@layer studio-base {
+  /* Source: 14-dialogs */
+  .screenshot-dialog h2 {
+    margin: var(--dialogs-screenshot-dialog-h2-margin);
+    font-size: var(--dialogs-screenshot-dialog-h2-font-size);
+  }
+  .screenshot-tools label {
+    display: flex;
+    align-items: center;
+    gap: var(--dialogs-screenshot-tools-label-gap);
+  }
+  .screenshot-tools a {
+    color: var(--accent);
+  }
+  .screenshot-canvas {
+    overflow: auto;
+    height: var(--dialogs-screenshot-canvas-height);
+  }
+  .screenshot-preview {
+    max-width: var(--dialogs-screenshot-preview-max-width);
+    --base-dialogs-screenshot-preview-width: var(
+      --dynamic-screenshot-width,
+      100%
+    );
+    --catalog-size-measure-screenshot-preview-width: var(
+      --base-dialogs-screenshot-preview-width
+    );
+    --dialogs-screenshot-preview-width: var(
+      --catalog-size-measure-screenshot-preview-width
+    );
+    width: var(--dialogs-screenshot-preview-width);
+  }
+  .actions-dialog {
+    width: var(--dialogs-actions-dialog-width);
+    max-height: var(--dialogs-actions-dialog-max-height);
+    background: var(--surface);
+    color: var(--text);
+    border: var(--studio-actions-dialog-border);
+    padding: var(--dialogs-actions-dialog-padding);
+  }
+  .actions-form {
+    display: grid;
+    gap: var(--dialogs-actions-form-gap);
+  }
+  .actions-source {
+    width: var(--dialogs-actions-source-width);
+    min-height: var(--dialogs-actions-source-min-height);
+    resize: vertical;
+    font-family: var(--dialogs-actions-source-font-family);
+    padding: var(--dialogs-actions-source-padding);
+  }
+  .dialog-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--dialogs-dialog-actions-gap);
+    justify-content: flex-end;
+  }
+  .run-response {
+    white-space: var(--dialogs-run-response-white-space);
+    overflow-wrap: var(--dialogs-run-response-overflow-wrap);
+  }
+  .recipe-menu {
+    position: relative;
+  }
+  .recipe-menu > summary {
+    cursor: var(--dialogs-recipe-menu-summary-cursor);
+    padding: var(--dialogs-recipe-menu-summary-padding);
+    border: var(--studio-recipe-menu-summary-border);
+    border-radius: var(--dialogs-recipe-menu-summary-border-radius);
+    min-height: var(--dialogs-recipe-menu-summary-min-height);
+    display: flex;
+    align-items: center;
+  }
+  .accent {
+    background: var(--accent);
+    color: var(--bg);
+  }
+  /* Mockup-led workspace context, timeline controls, and narrow dock navigation. */
+  .brand h1,
+  .panel > header .panel-title,
+  .action-library h2,
+  .flow-node-title,
+  .run-item > strong {
+    color: var(--text-strong);
+  }
+  .menu button {
+    font-size: var(--dialogs-menu-button-font-size);
+    font-weight: var(--dialogs-menu-button-font-weight);
+  }
+  .panel > header .panel-title {
+    font-size: var(--dialogs-panel-header-panel-title-font-size);
+    font-weight: var(--dialogs-panel-header-panel-title-font-weight);
+    letter-spacing: var(--dialogs-panel-header-panel-title-letter-spacing);
+    white-space: var(--dialogs-panel-header-panel-title-white-space);
+  }
+  .panel > header .composition-title {
+    color: var(--text-strong);
+    font-size: var(--dialogs-panel-header-composition-title-font-size);
+    font-weight: var(--dialogs-panel-header-composition-title-font-weight);
+    letter-spacing: var(
+      --dialogs-panel-header-composition-title-letter-spacing
+    );
+  }
+  .panel > header > :not(.panel-title),
+  .panel > header small {
+    color: var(--text-subtle);
+    font-size: var(--dialogs-panel-header-not-panel-title-font-size);
+    font-weight: var(--dialogs-panel-header-not-panel-title-font-weight);
+  }
+  .action-library h2 {
+    font-size: var(--dialogs-action-library-h2-font-size);
+    font-weight: var(--dialogs-action-library-h2-font-weight);
+    line-height: var(--dialogs-action-library-h2-line-height);
+  }
+  .action-library-body > p,
+  .canvas-hint,
+  .preview-note,
+  .empty-panel {
+    color: var(--text-subtle);
+    font-size: var(--dialogs-action-library-body-p-font-size);
+    line-height: var(--dialogs-action-library-body-p-line-height);
+  }
+  .action-grid button,
+  .composition-footer button {
+    color: var(--text);
+    font-size: var(--dialogs-action-grid-button-font-size);
+    font-weight: var(--dialogs-action-grid-button-font-weight);
+  }
+  .action-library-body > p,
+  .action-grid button {
+    overflow: hidden;
+    text-overflow: var(--dialogs-action-library-body-p-text-overflow);
+    white-space: var(--dialogs-action-library-body-p-white-space);
+  }
+  .flow-node-title {
+    font-size: var(--dialogs-flow-node-title-font-size);
+    font-weight: var(--dialogs-flow-node-title-font-weight);
+    display: flex;
+    justify-content: flex-start;
+    width: var(--dialogs-flow-node-title-width);
+    padding: var(--dialogs-flow-node-title-padding);
+    border: var(--dialogs-flow-node-title-border);
+    border-bottom: var(--shell-textarea-border);
+    background: var(--shell-button-background);
+    border-radius: var(--dialogs-flow-node-title-border-radius);
+  }
+}

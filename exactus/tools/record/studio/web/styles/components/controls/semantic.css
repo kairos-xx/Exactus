@@ -1,0 +1,194 @@
+/**
+ * Contextual aliases of the controls component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  /* 18-surface-controls */
+  --controls-assertion-card-gap: var(--catalog-surface-measure-tiny-gap);
+  --controls-assertion-card-padding: var(
+    --catalog-surface-measure-compact-plus-micro-padding
+  );
+  --controls-compare-image-border: var(
+    --catalog-control-border-compare-image-border
+  );
+  --controls-compare-image-gap: var(--catalog-control-measure-compact-gap);
+  --controls-compare-image-height: var(
+    --catalog-control-measure-compare-image-height
+  );
+  --controls-compare-image-img-max-height: var(
+    --catalog-control-measure-full-max-height
+  );
+  --controls-compare-image-img-max-width: var(
+    --catalog-control-measure-full-max-width
+  );
+  --controls-compare-image-min-height: var(
+    --catalog-control-measure-page-plus-page-min-height
+  );
+  --controls-compare-image-min-width: var(
+    --catalog-control-measure-compare-image-min-width
+  );
+  --controls-compare-image-span-left: var(--catalog-text-measure-compact-left);
+  --controls-compare-image-span-top: var(--catalog-text-measure-compact-top);
+  --controls-compare-pair-flex: var(
+    --catalog-control-measure-compare-pair-flex
+  );
+  --controls-compare-pair-gap: var(
+    --catalog-control-measure-pixel-hairline-gap
+  );
+  --controls-compare-pair-grid-template-columns: var(
+    --catalog-control-measure-compare-pair-grid-template-columns
+  );
+  --controls-crawl-main-fieldset-check-gap: var(
+    --catalog-control-measure-tiny-plus-micro-gap
+  );
+  --controls-crawl-main-fieldset-gap: var(--catalog-control-measure-small-gap);
+  --controls-crawl-main-fieldset-margin: var(
+    --catalog-control-measure-small-margin
+  );
+  --controls-crawl-main-fieldset-padding: var(
+    --catalog-control-measure-small-padding
+  );
+  --controls-data-mode-overlay-where-compare-image-height: var(
+    --catalog-control-measure-full-height
+  );
+  --controls-data-mode-overlay-where-compare-image-inset: var(
+    --catalog-control-measure-compare-image-inset
+  );
+  --controls-data-mode-overlay-where-compare-image-width: var(
+    --catalog-control-measure-full-width
+  );
+  --controls-pair-data-mode-difference-last-child-opacity: var(
+    --catalog-control-effect-compare-pair-opacity
+  );
+  --controls-pair-data-mode-overlay-last-child-opacity: var(
+    --catalog-control-effect-half-opacity
+  );
+  --controls-pair-data-mode-wipe-last-child-clip-path: var(
+    --catalog-control-measure-compare-pair-clip-path
+  );
+  --controls-profile-card-box-shadow: var(
+    --catalog-surface-effect-profile-card-transparent-box-shadow
+  );
+  --controls-profile-card-button-margin: var(
+    --catalog-button-measure-compact-plus-micro-margin
+  );
+  --controls-profile-card-strong-font: var(
+    --catalog-surface-typography-card-strong-font
+  );
+  --controls-profile-card-strong-padding: var(
+    --catalog-surface-measure-normal-compact-plus-micro-padding
+  );
+  --controls-profile-grid-gap: var(--catalog-list-measure-small-gap);
+  --controls-profile-grid-template-columns: var(
+    --catalog-list-measure-profile-higher-grid-template-columns
+  );
+  --controls-surface-form-grid-gap: var(--catalog-list-measure-compact-gap);
+  --controls-surface-form-grid-label-font-size: var(
+    --catalog-label-typography-small-minus-hairline-font-size
+  );
+  --controls-surface-form-grid-label-font-weight: var(
+    --catalog-label-typography-weight-semibold-font-weight
+  );
+  --controls-surface-form-grid-label-gap: var(--catalog-label-measure-tiny-gap);
+  --controls-surface-form-grid-padding: var(
+    --catalog-list-measure-small-padding
+  );
+  --controls-surface-form-grid-template-columns: var(
+    --catalog-list-measure-form-grid-template-columns
+  );
+  --controls-surface-form-grid-where-input-min-width: var(
+    --catalog-field-measure-form-input-min-width
+  );
+  --controls-surface-form-grid-where-input-padding-inline: var(
+    --catalog-field-measure-compact-padding-inline
+  );
+  --controls-surface-form-grid-where-input-width: var(
+    --catalog-field-measure-full-width
+  );
+  --controls-surface-grid-controls-grid-template-columns: var(
+    --catalog-list-measure-default-page-plus-massive-plus-page-grid-template-columns
+  );
+  --controls-surface-grid-crawl-grid-template-columns: var(
+    --catalog-list-measure-crawl-grid-template-columns
+  );
+  --controls-surface-grid-inspector-grid-template-columns: var(
+    --catalog-list-measure-default-page-plus-huge-grid-template-columns
+  );
+  --controls-where-profile-card-header-span-margin-left: var(
+    --catalog-header-measure-card-span-margin-left
+  );
+  /* 19-control-specimens */
+  --controls-command-preview-grid-template-columns: var(
+    --catalog-surface-measure-preview-grid-template-columns
+  );
+  --controls-command-preview-height: var(
+    --catalog-surface-measure-preview-height
+  );
+  --controls-command-preview-margin: var(
+    --catalog-surface-measure-small-margin
+  );
+  --controls-command-preview-small-grid-column: var(
+    --catalog-label-measure-preview-small-grid-column
+  );
+  --controls-command-preview-text-align: var(
+    --catalog-surface-typography-preview-text-align
+  );
+  --controls-command-preview-width: var(
+    --catalog-surface-measure-preview-width
+  );
+  --controls-control-specimen-div-gap: var(
+    --catalog-control-measure-compact-gap
+  );
+  --controls-control-specimen-div-padding: var(
+    --catalog-control-measure-compact-padding
+  );
+  --controls-control-specimen-gap: var(
+    --catalog-control-measure-pixel-hairline-gap
+  );
+  --controls-control-specimen-padding: var(
+    --catalog-control-measure-small-padding
+  );
+  --controls-control-specimen-small-width: var(
+    --catalog-label-measure-huge-plus-normal-width
+  );
+  --controls-history-list-div-gap: var(--catalog-list-measure-micro-gap);
+  --controls-history-list-div-padding: var(
+    --catalog-list-measure-compact-plus-micro-padding
+  );
+  --controls-main-h3-padding: var(--catalog-header-measure-main-h3-padding);
+  --controls-recovery-columns-article-gap: var(
+    --catalog-control-measure-tiny-plus-micro-gap
+  );
+  --controls-recovery-columns-gap: var(
+    --catalog-control-measure-pixel-hairline-gap
+  );
+  --controls-recovery-columns-grid-template-columns: var(
+    --catalog-control-measure-recovery-columns-grid-template-columns
+  );
+  --controls-recovery-summary-p-margin: var(
+    --catalog-label-measure-summary-p-margin
+  );
+  --controls-recovery-summary-p-padding: var(
+    --catalog-label-measure-small-padding
+  );
+  --controls-status-specimens-gap: var(--catalog-label-measure-compact-gap);
+  --controls-status-specimens-padding: var(
+    --catalog-label-measure-small-padding
+  );
+  --controls-status-specimens-span-border: var(
+    --catalog-label-border-span-border
+  );
+  --controls-status-specimens-span-padding: var(
+    --catalog-label-measure-tiny-compact-padding
+  );
+  --controls-surface-grid-recovery-grid-template-columns: var(
+    --catalog-list-measure-recovery-grid-template-columns
+  );
+  --controls-workbench-grid-template-rows: var(
+    --catalog-panel-measure-workbench-grid-template-rows
+  );
+  /* 01-tokens */
+  --controls-profile-card-selected-box-shadow: var(
+    --catalog-surface-effect-profile-card-box-shadow
+  );
+}

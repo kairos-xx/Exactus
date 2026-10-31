@@ -1,0 +1,138 @@
+{
+	"findings": {
+		"$path": "findings"
+	},
+	"source_label": {
+		"$literal": "Gate"
+	},
+	"tests_summary": {
+		"$when": {
+			"$path": "extension.tests",
+			"$op": "not_empty"
+		},
+		"$then": [
+			{
+				"metric": {
+					"$literal": "Tests run"
+				},
+				"value": "extension.tests.total"
+			},
+			{
+				"metric": {
+					"$literal": "Passed"
+				},
+				"value": "extension.tests.passed"
+			},
+			{
+				"metric": {
+					"$literal": "Failed"
+				},
+				"value": "extension.tests.failed"
+			},
+			{
+				"metric": {
+					"$literal": "Errors"
+				},
+				"value": "extension.tests.errors"
+			},
+			{
+				"metric": {
+					"$literal": "Skipped"
+				},
+				"value": "extension.tests.skipped"
+			},
+			{
+				"metric": {
+					"$literal": "Expected failures (xfail)"
+				},
+				"value": "extension.tests.xfailed"
+			},
+			{
+				"metric": {
+					"$literal": "Unexpected passes (xpass)"
+				},
+				"value": "extension.tests.xpassed"
+			},
+			{
+				"metric": {
+					"$literal": "Duration (s)"
+				},
+				"value": "extension.tests.duration_seconds"
+			},
+			{
+				"metric": {
+					"$literal": "Python test files"
+				},
+				"value": "extension.tests.test_files"
+			},
+			{
+				"metric": {
+					"$literal": "JavaScript test files"
+				},
+				"value": "extension.tests.javascript_test_files"
+			},
+			{
+				"metric": {
+					"$literal": "JavaScript failed tests"
+				},
+				"value": "extension.tests.javascript_failed"
+			}
+		],
+		"$else": []
+	},
+	"test_groups": {
+		"$path": "extension.tests.groups",
+		"$default": [],
+		"$each": {
+			"group": "group",
+			"files": "files",
+			"tests": "tests",
+			"passed": "passed",
+			"failed": "failed",
+			"skipped": "skipped",
+			"report": "report"
+		}
+	},
+	"coverage_summary": {
+		"$path": "extension.coverage.languages",
+		"$default": [],
+		"$each": {
+			"language": "language",
+			"percent": "percent",
+			"lines": "lines",
+			"covered": "covered",
+			"missing": "missing",
+			"files": "files",
+			"basis": "basis"
+		}
+	},
+	"coverage_gates": {
+		"$path": "extension.coverage.gates",
+		"$default": [],
+		"$each": {
+			"gate": "gate",
+			"option": "option",
+			"required": "required",
+			"measured": "measured",
+			"status": "status"
+		}
+	},
+	"files_below_minimum": {
+		"$path": "extension.coverage.files_below_minimum",
+		"$default": [],
+		"$each": {
+			"path": "path",
+			"percent": "percent",
+			"required": "required"
+		}
+	},
+	"sub_reports": {
+		"$path": "extension.reports",
+		"$default": [],
+		"$each": {
+			"name": "name",
+			"report": "report",
+			"description": "description"
+		}
+	}
+}

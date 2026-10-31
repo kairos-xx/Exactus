@@ -1,0 +1,75 @@
+{
+	"severity_levels": {
+		"$literal": [
+			"error",
+			"warning"
+		]
+	},
+	"rules": {
+		"$path": "extension.rules",
+		"$default": []
+	},
+	"session": {
+		"$when": {
+			"$path": "extension.metrics",
+			"$op": "not_empty"
+		},
+		"$then": [
+			{
+				"fact": {
+					"$literal": "Mode"
+				},
+				"value": "extension.metrics.mode"
+			},
+			{
+				"fact": {
+					"$literal": "URL"
+				},
+				"value": "extension.metrics.url"
+			},
+			{
+				"fact": {
+					"$literal": "Actions"
+				},
+				"value": "extension.metrics.actions"
+			},
+			{
+				"fact": {
+					"$literal": "Exactus Record events exported"
+				},
+				"value": "extension.metrics.exported_events"
+			},
+			{
+				"fact": {
+					"$literal": "Replay failures"
+				},
+				"value": "extension.metrics.failures"
+			},
+			{
+				"fact": {
+					"$literal": "Duration (seconds)"
+				},
+				"value": "extension.metrics.elapsed_seconds"
+			},
+			{
+				"fact": {
+					"$literal": "Workspace"
+				},
+				"value": "extension.metrics.workspace"
+			}
+		],
+		"$else": []
+	},
+	"action_types": {
+		"$path": "extension.metrics.by_type",
+		"$default": []
+	},
+	"studio": {
+		"$path": "extension.metrics.studio",
+		"$default": []
+	},
+	"produced_files": {
+		"$path": "extension.metrics.produced_files",
+		"$default": []
+	}
+}

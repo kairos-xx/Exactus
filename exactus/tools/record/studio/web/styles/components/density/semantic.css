@@ -1,0 +1,49 @@
+/**
+ * Contextual aliases of the density component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  /* 24-density */
+  --density-action-library-body-p-margin-above-width-600px: var(
+    --catalog-surface-measure-library-body-p-margin
+  );
+  --density-action-library-body-padding-above-width-600px: var(
+    --catalog-surface-measure-compact-padding
+  );
+  --density-brand-gap-above-width-600px: var(
+    --catalog-header-measure-tiny-plus-micro-gap
+  );
+  --density-data-table-th-padding-block-above-width-600px: var(
+    --catalog-table-measure-tiny-padding-block
+  );
+  --density-empty-panel-padding-above-width-600px: var(
+    --catalog-panel-measure-tiny-plus-micro-compact-padding
+  );
+  --density-flow-node-meta-padding-block-above-width-600px: var(
+    --catalog-label-measure-tiny-padding-block
+  );
+  --density-id-flow-form-gap-above-width-600px: var(
+    --catalog-control-measure-compact-gap
+  );
+  --density-id-flow-form-label-gap-above-width-600px: var(
+    --catalog-label-measure-tiny-gap
+  );
+  --density-panel-id-not-is-collapsed-header-gap-above-width-600px: var(
+    --catalog-header-measure-tiny-plus-micro-gap
+  );
+  --density-panel-summary-padding-block-above-width-600px: var(
+    --catalog-label-measure-tiny-plus-micro-padding-block
+  );
+  --density-panel-tools-gap-above-width-600px: var(
+    --catalog-button-measure-tools-gap
+  );
+  --density-step-tools-gap-above-width-600px: var(
+    --catalog-button-measure-tiny-plus-micro-gap
+  );
+  --density-step-tools-padding-block-above-width-600px: var(
+    --catalog-button-measure-tiny-padding-block
+  );
+  --density-topbar-padding-block-above-width-600px: var(
+    --catalog-header-measure-micro-padding-block
+  );
+}

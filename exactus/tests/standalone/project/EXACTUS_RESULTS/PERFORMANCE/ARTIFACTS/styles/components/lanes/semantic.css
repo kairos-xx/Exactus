@@ -1,0 +1,17 @@
+/**
+ * Contextual aliases of the lanes component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  --perf-sidebar-padding: var(--catalog-layout-measure-sidebar-padding);
+  --perf-sidebar-offset: var(--catalog-layout-measure-sidebar-offset);
+  --perf-toollist-gap: var(--catalog-layout-measure-toollist-gap);
+  --perf-card-pad: var(--catalog-layout-measure-card-pad);
+  --perf-marker-height: var(--catalog-layout-measure-marker-height);
+  --perf-layout-grid: var(--catalog-layout-measure-layout-grid);
+  --perf-card-grid: var(--catalog-layout-measure-card-grid);
+  --perf-card-edge: var(--catalog-field-border-card-edge);
+  --perf-radius-marker: var(--catalog-field-border-radius-marker);
+  --perf-align-start: var(--catalog-text-typography-align-start);
+  --perf-case-title: var(--catalog-text-typography-case-title);
+}

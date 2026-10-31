@@ -1,0 +1,126 @@
+/**
+ * Workspace and panel foundations.
+ *
+ * Sources: 03-panels.
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+@layer studio-base {
+  /* Source: 03-panels */
+  .menu {
+    display: flex;
+    flex: var(--panels-menu-flex);
+    min-width: var(--panels-menu-min-width);
+    gap: var(--panels-menu-gap);
+  }
+  .workbench {
+    display: grid;
+    grid-template-columns: var(--panels-workbench-grid-template-columns);
+    min-height: var(--panels-workbench-min-height);
+    position: relative;
+  }
+  @media (width <= 600px) {
+    .workbench {
+      grid-template-columns: var(
+        --panels-workbench-grid-template-columns-max-width-600px
+      );
+    }
+  }
+  @media (width > 600px) {
+    .workbench {
+      grid-template-columns: var(
+        --panels-workbench-grid-template-columns-above-width-600px
+      );
+    }
+  }
+  @media (width <= 1100px) and (width > 600px) {
+    .workbench {
+      grid-template-columns: var(
+        --panels-workbench-grid-template-columns-media-width-max-1100px-and-width-above-600px
+      );
+    }
+  }
+  .center {
+    min-height: var(--panels-center-min-height);
+    display: grid;
+    grid-template-rows: var(--panels-center-grid-template-rows);
+    min-width: var(--panels-center-min-width);
+  }
+  .panel {
+    min-width: var(--panels-panel-min-width);
+    min-height: var(--panels-panel-min-height);
+    border-right: var(--panels-panel-border-right);
+    border-bottom: var(--panels-panel-border-bottom);
+    background: var(--surface);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .panel-tools {
+    display: inline-flex;
+    flex: var(--panels-panel-tools-flex);
+    align-items: center;
+    gap: var(--panels-panel-tools-gap);
+    margin-left: var(--panels-panel-tools-margin-left);
+  }
+  .panel-tools button {
+    background: var(--panels-panel-tools-button-background);
+    box-shadow: var(--panels-panel-tools-button-box-shadow);
+    color: var(--text-subtle);
+  }
+  .panel-tools button:hover {
+    color: var(--text-strong);
+  }
+  .panel.is-collapsed > :not(header) {
+    display: none;
+  }
+  .panel.is-collapsed [data-panel-action="collapse"] .studio-icon {
+    transform: var(--panels-data-panel-action-collapse-icon-transform);
+  }
+  .panel.is-floating {
+    position: fixed;
+    max-width: var(--panels-panel-is-floating-max-width);
+    max-height: var(--panels-panel-is-floating-max-height);
+    resize: both;
+  }
+  .panel.is-floating > header {
+    cursor: var(--panels-panel-is-floating-header-cursor);
+    background: var(--shell-button-background);
+  }
+  .panel.is-floating > header:active,
+  .panel-dragging .panel.is-floating > header {
+    cursor: var(--panels-panel-is-floating-header-active-cursor);
+  }
+  .panel-dragging {
+    user-select: none;
+  }
+  .dock-resizer {
+    position: absolute;
+    z-index: var(--panels-dock-resizer-z-index);
+    padding: var(--panels-dock-resizer-padding);
+    border: var(--panels-dock-resizer-border);
+    background: var(--panels-dock-resizer-background);
+    box-shadow: var(--panels-dock-resizer-box-shadow);
+  }
+  .dock-resizer::after {
+    content: var(--panels-dock-resizer-after-content);
+    position: absolute;
+    background: var(--panels-dock-resizer-after-background);
+    transition: var(--panels-dock-resizer-after-transition);
+  }
+  .dock-resizer:hover::after,
+  .dock-resizer:focus-visible::after,
+  .dock-resizer.is-active::after {
+    background: var(--accent);
+  }
+  .dock-resizer-left,
+  .dock-resizer-right {
+    top: var(--panels-dock-resizer-left-top);
+    bottom: var(--panels-dock-resizer-left-bottom);
+    width: var(--panels-dock-resizer-left-width);
+    min-width: var(--panels-dock-resizer-left-min-width);
+    height: var(--panels-dock-resizer-left-height);
+    min-height: var(--panels-dock-resizer-left-min-height);
+    cursor: var(--panels-dock-resizer-left-cursor);
+    transform: var(--panels-dock-resizer-left-transform);
+  }
+}

@@ -1,0 +1,106 @@
+/**
+ * Panel drag, split, and resize behavior.
+ *
+ * Sources: 21-panel-docking.
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+@layer studio-base {
+  /* Source: 21-panel-docking */
+  .panel.is-dragging {
+    pointer-events: none;
+  }
+  .timeline > header {
+    overflow: hidden;
+  }
+  .panel > header {
+    cursor: var(--docks-panel-header-cursor);
+  }
+  .panel > header:active {
+    cursor: var(--docks-panel-header-active-cursor);
+  }
+  .panel-tools {
+    position: relative;
+  }
+  .panel-dock-menu {
+    position: absolute;
+    z-index: var(--docks-panel-dock-menu-z-index);
+    top: var(--docks-panel-dock-menu-top);
+    right: var(--docks-panel-dock-menu-right);
+    display: none;
+    width: var(--docks-panel-dock-menu-width);
+    padding: var(--docks-panel-dock-menu-padding);
+    border: var(--panels-panel-is-floating-border);
+    background: var(--shell-button-background);
+    box-shadow: var(--docks-panel-dock-menu-box-shadow);
+  }
+  .graph header .panel-dock-menu {
+    display: none;
+  }
+  .panel-dock-menu.is-open,
+  .graph header .panel-dock-menu.is-open {
+    display: grid;
+  }
+  .panel:has(.panel-dock-menu.is-open) {
+    z-index: var(--docks-has-panel-dock-menu-is-open-z-index);
+    overflow: visible;
+  }
+  .panel-dock-menu > span {
+    padding: var(--docks-panel-dock-menu-span-padding);
+    color: var(--text-subtle);
+    font-size: var(--docks-panel-dock-menu-span-font-size);
+    font-weight: var(--docks-panel-dock-menu-span-font-weight);
+    letter-spacing: var(--docks-panel-dock-menu-span-letter-spacing);
+    text-transform: var(--docks-panel-dock-menu-span-text-transform);
+  }
+  .panel-dock-menu button {
+    width: var(--docks-panel-dock-menu-button-width);
+    justify-content: flex-start;
+    padding-inline: var(--docks-panel-dock-menu-button-padding-inline);
+    color: var(--text);
+    text-align: var(--docks-panel-dock-menu-button-text-align);
+  }
+  .panel-dock-menu select {
+    width: var(--docks-panel-dock-menu-select-width);
+    min-width: var(--docks-panel-dock-menu-select-min-width);
+    height: var(--switch-track);
+    padding: var(--studio-status-padding);
+    border-color: var(--data-tables-clip-network-border-color);
+    background: var(--bg);
+    color: var(--text);
+    font-size: var(--docks-panel-dock-menu-select-font-size);
+  }
+  .panel-split-edges {
+    display: grid;
+    grid-template-columns: var(--docks-panel-split-edges-grid-template-columns);
+    gap: var(--docks-panel-split-edges-gap);
+  }
+  .timeline-toolbar {
+    flex: var(--docks-timeline-toolbar-flex);
+    min-width: var(--docks-timeline-toolbar-min-width);
+    justify-content: flex-start;
+    overflow: auto hidden;
+    white-space: var(--docks-timeline-toolbar-white-space);
+    scrollbar-width: var(--docks-timeline-toolbar-scrollbar-width);
+  }
+  .timeline-toolbar > :is(button, input, label, select, span) {
+    flex: var(--docks-timeline-toolbar-is-button-flex);
+  }
+  .timeline > header > .panel-title {
+    flex: var(--docks-timeline-header-panel-title-flex);
+  }
+  .panel > header > :not(.panel-tools) {
+    min-width: var(--docks-panel-header-not-panel-tools-min-width);
+  }
+  .panel > header .panel-title-text {
+    min-width: var(--docks-panel-header-panel-title-text-min-width);
+    overflow: hidden;
+    text-overflow: var(--docks-panel-header-panel-title-text-overflow);
+    white-space: var(--docks-panel-header-panel-title-text-white-space);
+  }
+  .panel > header > :is([id="browser-status"], small) {
+    flex: var(--docks-panel-header-is-id-browser-status-flex);
+    overflow: hidden;
+    text-overflow: var(--docks-panel-header-is-id-browser-status-text-overflow);
+    white-space: var(--docks-panel-header-is-id-browser-status-white-space);
+  }
+}

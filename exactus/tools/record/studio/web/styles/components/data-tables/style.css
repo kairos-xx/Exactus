@@ -1,0 +1,107 @@
+/**
+ * Tables and tabular panels.
+ *
+ * Sources: 10-data-tables.
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+@layer studio-base {
+  /* Source: 10-data-tables */
+  .timeline .timeline-content {
+    height: var(--data-tables-timeline-content-height);
+    overflow: auto;
+    padding: var(--data-tables-timeline-content-padding);
+    background: var(--bg);
+    flex: var(--data-tables-timeline-content-flex);
+    min-height: var(--data-tables-timeline-content-min-height);
+  }
+  .clip.network {
+    border-color: var(--data-tables-clip-network-border-color);
+    background: var(--shell-button-background);
+  }
+  .clip.assertion {
+    border-color: var(--data-tables-clip-network-border-color);
+    background: var(--shell-button-background);
+  }
+  .runs .runs-content {
+    padding: var(--data-tables-runs-content-padding);
+    overflow: auto;
+    height: var(--data-tables-runs-content-height);
+  }
+  .graph-canvas .node {
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: var(--data-tables-graph-canvas-node-gap);
+    display: flex;
+    flex-direction: column;
+    min-width: var(--data-tables-graph-canvas-node-min-width);
+    height: var(--data-tables-graph-canvas-node-height);
+    text-align: var(--data-tables-graph-canvas-node-text-align);
+    padding: var(--data-tables-graph-canvas-node-padding);
+    white-space: var(--data-tables-graph-canvas-node-white-space);
+  }
+  .inspector-content .check {
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+    min-height: var(--flow-min-height-2);
+  }
+  .delete-dialog::backdrop {
+    background: var(--bg);
+    opacity: var(--data-tables-delete-dialog-backdrop-opacity);
+  }
+  .panel-title .studio-icon {
+    color: var(--muted);
+  }
+  .selected[data-step] {
+    border-color: var(--accent);
+    background: var(--brand-soft);
+  }
+  .number-control:focus-within {
+    outline: var(--connections-button-focus-visible-outline);
+    outline-offset: var(
+      --data-tables-number-control-focus-within-outline-offset
+    );
+  }
+  .brand > .studio-icon {
+    color: var(--accent);
+  }
+  .action-grid .studio-icon {
+    color: var(--accent);
+  }
+  .flow-node.active {
+    border-color: var(--accent);
+  }
+  .node-actions .studio-icon {
+    color: var(--muted);
+  }
+  .clip.selected {
+    background: var(--brand-soft);
+    border-color: var(--accent);
+  }
+  input:not([type="checkbox"]) {
+    font: var(--shell-body-font);
+    font-weight: var(--data-tables-input-not-type-checkbox-font-weight);
+  }
+  .number-control input::-webkit-inner-spin-button {
+    appearance: none;
+    margin: var(--data-tables-control-input-webkit-inner-spin-button-margin);
+  }
+  .number-control input::-webkit-outer-spin-button {
+    appearance: none;
+    margin: var(--data-tables-control-input-webkit-outer-spin-button-margin);
+  }
+  .field span:first-child {
+    color: var(--muted);
+  }
+  .check input::after {
+    content: var(--data-tables-check-input-after-content);
+    position: absolute;
+    top: var(--data-tables-check-input-after-top);
+    left: var(--data-tables-check-input-after-left);
+    width: var(--data-tables-check-input-after-width);
+    height: var(--data-tables-check-input-after-height);
+    border-radius: var(--data-tables-check-input-after-border-radius);
+    background: var(--text);
+    transform: var(--data-tables-check-input-after-transform);
+  }
+}

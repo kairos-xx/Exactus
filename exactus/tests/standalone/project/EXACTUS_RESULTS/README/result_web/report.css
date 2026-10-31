@@ -1,0 +1,1735 @@
+:root {
+  --primary-rem-unit: 1rem;
+  --primary-number-unit: 1;
+  --primary-viewport-width-unit: 1vw;
+  --primary-viewport-height-unit: 1vh;
+  --primary-rep-css-anywhere: anywhere;
+  --primary-percent-base: 1%;
+  --primary-angle-unit: 1deg;
+  --primary-fraction-unit: 1fr;
+  --primary-rep-css-auto-minus-fill: auto-fill;
+  --primary-clk-css-auto-minus-fit: auto-fit;
+  --primary-rep-css-open-meta-close: [meta];
+  --primary-esd-css-auto: auto;
+  --primary-rep-css-open-content-close: [content];
+  --primary-rep-css-max-minus-content: max-content;
+  --primary-clk-css-nowrap: nowrap;
+  --primary-esd-css-pre-minus-wrap: pre-wrap;
+  --primary-rep-css-right: right;
+  --primary-cer-css-none: none;
+  --primary-ese-css-pre: pre;
+  --primary-ese-color-named-transparent: transparent;
+  --primary-ese-css-in: in;
+  --primary-rep-css-oklch: oklch;
+  --primary-esd-css-ui-minus-monospace: ui-monospace;
+  --primary-cer-css-quote-sf-x-mono-quote: "SF Mono";
+  --primary-ese-css-menlo: menlo;
+  --primary-rep-css-consolas: consolas;
+  --primary-esd-css-monospace: monospace;
+  --primary-rep-css-default: default;
+  --primary-rep-css-italic: italic;
+  --primary-cer-css-uppercase: uppercase;
+  --primary-em-unit: 1em;
+  --primary-rep-css-tabular-minus-nums: tabular-nums;
+  --primary-rep-css-normal: normal;
+  --primary-rep-css-quote-backslash-2191-quote: "\2191";
+  --primary-rep-css-quote-backslash-2193-quote: "\2193";
+  --primary-rep-css-quote-backslash-2195-quote: "\2195";
+  --primary-cer-css-left: left;
+  --primary-esd-css-solid: solid;
+  --primary-app-css-pointer: pointer;
+  --primary-rep-css-content: content;
+  --primary-rep-css-zoom-minus-in: zoom-in;
+  --primary-rep-css-top: top;
+  --primary-ese-css-inset: inset;
+  --base-rep-dimension-seven-eight-rem: calc(78 * var(--primary-rem-unit));
+  --base-app-dimension-one-rem: var(--primary-rem-unit);
+  --base-app-dimension-two-rem: calc(2 * var(--primary-rem-unit));
+  --base-app-number-two: calc(2 * var(--primary-number-unit));
+  --base-cer-dimension-zero-point-two-five-rem: calc(
+    0.25 * var(--primary-rem-unit)
+  );
+  --base-app-dimension-zero-point-five-rem: calc(0.5 * var(--primary-rem-unit));
+  --base-app-dimension-zero-point-seven-five-rem: calc(
+    0.75 * var(--primary-rem-unit)
+  );
+  --base-rep-dimension-one-point-five-rem: calc(1.5 * var(--primary-rem-unit));
+  --base-app-dimension-two-point-five-rem: calc(2.5 * var(--primary-rem-unit));
+  --base-clk-dimension-nine-rem: calc(9 * var(--primary-rem-unit));
+  --base-ese-number-six-zero-zero: calc(600 * var(--primary-number-unit));
+  --base-cer-dimension-zero-point-eight-one-two-five-rem: calc(
+    0.8125 * var(--primary-rem-unit)
+  );
+  --base-rep-number-one-point-three: calc(1.3 * var(--primary-number-unit));
+  --base-esd-number-one-point-five: calc(1.5 * var(--primary-number-unit));
+  --base-rep-dimension-two-two-rem: calc(22 * var(--primary-rem-unit));
+  --base-rep-dimension-one-seven-rem: calc(17 * var(--primary-rem-unit));
+  --base-rep-dimension-one-three-rem: calc(13 * var(--primary-rem-unit));
+  --base-clk-dimension-one-eight-rem: calc(18 * var(--primary-rem-unit));
+  --base-rep-dimension-nine-six-viewport-width: calc(
+    96 * var(--primary-viewport-width-unit)
+  );
+  --base-rep-dimension-nine-two-viewport-height: calc(
+    92 * var(--primary-viewport-height-unit)
+  );
+  --base-rep-dimension-seven-rem: calc(7 * var(--primary-rem-unit));
+  --base-app-dimension-zero-point-zero-six-two-five-rem: calc(
+    0.0625 * var(--primary-rem-unit)
+  );
+  --base-cer-dimension-zero-point-one-two-five-rem: calc(
+    0.125 * var(--primary-rem-unit)
+  );
+  --base-rep-dimension-minus-one-zero-rem: calc(-10 * var(--primary-rem-unit));
+  --base-rep-css-anywhere: var(--primary-rep-css-anywhere);
+  --base-rep-color-oklch-zero-zero-zero-six-zero: oklch(
+    calc(var(--primary-percent-base) * 0) calc(var(--primary-number-unit) * 0)
+      calc(var(--primary-angle-unit) * 0) /
+      calc(var(--primary-percent-base) * 60)
+  );
+  --base-clk-fraction-one-fraction: var(--primary-fraction-unit);
+  --base-rep-css-auto-minus-fill: var(--primary-rep-css-auto-minus-fill);
+  --base-rep-dimension-one-six-rem: calc(16 * var(--primary-rem-unit));
+  --base-clk-css-auto-minus-fit: var(--primary-clk-css-auto-minus-fit);
+  --base-cer-percent-five-zero: calc(50 * var(--primary-percent-base));
+  --base-rep-css-open-meta-close: var(--primary-rep-css-open-meta-close);
+  --base-esd-css-auto: var(--primary-esd-css-auto);
+  --base-rep-css-open-content-close: var(--primary-rep-css-open-content-close);
+  --base-rep-css-max-minus-content: var(--primary-rep-css-max-minus-content);
+  --base-clk-css-nowrap: var(--primary-clk-css-nowrap);
+  --base-esd-css-pre-minus-wrap: var(--primary-esd-css-pre-minus-wrap);
+  --base-rep-css-right: var(--primary-rep-css-right);
+  --base-app-dimension-one-two-rem: calc(12 * var(--primary-rem-unit));
+  --base-cer-css-none: var(--primary-cer-css-none);
+  --base-rep-percent-one: var(--primary-percent-base);
+  --base-ese-css-pre: var(--primary-ese-css-pre);
+  --base-ese-color-named-transparent: var(
+    --primary-ese-color-named-transparent
+  );
+  --base-ese-css-in: var(--primary-ese-css-in);
+  --base-rep-css-oklch: var(--primary-rep-css-oklch);
+  --base-rep-rep-destructive: var(--dynamic-rep-destructive);
+  --base-rep-percent-one-six: calc(16 * var(--primary-percent-base));
+  --base-app-dimension-zero-point-one-eight-seven-five-rem: calc(
+    0.1875 * var(--primary-rem-unit)
+  );
+  --base-rep-rep-link: var(--dynamic-rep-link);
+  --base-rep-percent-one-eight: calc(18 * var(--primary-percent-base));
+  --base-esd-css-ui-minus-monospace: var(--primary-esd-css-ui-minus-monospace);
+  --base-cer-css-quote-sf-x-mono-quote: var(
+    --primary-cer-css-quote-sf-x-mono-quote
+  );
+  --base-ese-css-menlo: var(--primary-ese-css-menlo);
+  --base-rep-css-consolas: var(--primary-rep-css-consolas);
+  --base-esd-css-monospace: var(--primary-esd-css-monospace);
+  --base-rep-number-zero-point-four-five: calc(
+    0.45 * var(--primary-number-unit)
+  );
+  --base-rep-css-default: var(--primary-rep-css-default);
+  --base-rep-css-italic: var(--primary-rep-css-italic);
+  --base-rep-rep-pop-green-foreground: var(--dynamic-rep-pop-green-foreground);
+  --base-rep-rep-pop-orange-foreground: var(
+    --dynamic-rep-pop-orange-foreground
+  );
+  --base-cer-css-uppercase: var(--primary-cer-css-uppercase);
+  --base-cer-dimension-zero-point-zero-four-em: calc(
+    0.04 * var(--primary-em-unit)
+  );
+  --base-rep-dimension-one-four-rem: calc(14 * var(--primary-rem-unit));
+  --base-cer-dimension-one-point-two-five-rem: calc(
+    1.25 * var(--primary-rem-unit)
+  );
+  --base-rep-css-tabular-minus-nums: var(--primary-rep-css-tabular-minus-nums);
+  --base-cer-number-four-zero-zero: calc(400 * var(--primary-number-unit));
+  --base-cer-dimension-zero-point-eight-seven-five-rem: calc(
+    0.875 * var(--primary-rem-unit)
+  );
+  --base-cer-percent-three-five: calc(35 * var(--primary-percent-base));
+  --base-rep-css-normal: var(--primary-rep-css-normal);
+  --base-rep-css-quote-backslash-2191-quote: var(
+    --primary-rep-css-quote-backslash-2191-quote
+  );
+  --base-rep-css-quote-backslash-2193-quote: var(
+    --primary-rep-css-quote-backslash-2193-quote
+  );
+  --base-rep-css-quote-backslash-2195-quote: var(
+    --primary-rep-css-quote-backslash-2195-quote
+  );
+  --base-cer-css-left: var(--primary-cer-css-left);
+  --base-rep-dimension-two-point-seven-five-rem: calc(
+    2.75 * var(--primary-rem-unit)
+  );
+  --base-rep-percent-eight: calc(8 * var(--primary-percent-base));
+  --base-rep-percent-six: calc(6 * var(--primary-percent-base));
+  --base-cer-cer-destructive: var(--dynamic-cer-destructive);
+  --base-rep-code-miss-fill: color-mix(
+    in oklch,
+    var(--dynamic-cer-destructive) 16%,
+    transparent
+  );
+  --base-rep-code-target-fill: color-mix(
+    in oklch,
+    var(--dynamic-rep-link) 18%,
+    transparent
+  );
+  --base-rep-color-oklch-zero-point-seven-eight-zero-point-one-one-one-five-five: oklch(
+    calc(var(--primary-percent-base) * 0.78)
+      calc(var(--primary-number-unit) * 0.11)
+      calc(var(--primary-angle-unit) * 155)
+  );
+  --base-rep-color-oklch-zero-point-seven-six-zero-point-one-three-three-one-zero: oklch(
+    calc(var(--primary-percent-base) * 0.76)
+      calc(var(--primary-number-unit) * 0.13)
+      calc(var(--primary-angle-unit) * 310)
+  );
+  --base-rep-color-oklch-zero-point-seven-eight-zero-point-one-two-zero-zero: oklch(
+    calc(var(--primary-percent-base) * 0.78)
+      calc(var(--primary-number-unit) * 0.1)
+      calc(var(--primary-angle-unit) * 200)
+  );
+  --base-rep-color-oklch-zero-point-eight-zero-point-one-two-six-five: oklch(
+    calc(var(--primary-percent-base) * 0.8)
+      calc(var(--primary-number-unit) * 0.12)
+      calc(var(--primary-angle-unit) * 65)
+  );
+  --base-rep-color-oklch-zero-point-seven-nine-zero-point-one-two-three-three-zero: oklch(
+    calc(var(--primary-percent-base) * 0.79)
+      calc(var(--primary-number-unit) * 0.12)
+      calc(var(--primary-angle-unit) * 330)
+  );
+  --base-cer-cer-pop-green-foreground: var(--dynamic-cer-pop-green-foreground);
+  --base-cer-cer-pop-orange-foreground: var(
+    --dynamic-cer-pop-orange-foreground
+  );
+  --base-rep-selected-fill: color-mix(
+    in oklch,
+    var(--dynamic-rep-link) 8%,
+    transparent
+  );
+  --base-rep-row-hover-fill: color-mix(
+    in oklch,
+    var(--dynamic-rep-link) 6%,
+    transparent
+  );
+  --base-rep-color-oklch-zero-point-five-two-zero-point-one-nine-two-five: oklch(
+    calc(var(--primary-percent-base) * 0.52)
+      calc(var(--primary-number-unit) * 0.19)
+      calc(var(--primary-angle-unit) * 25)
+  );
+  --base-rep-color-oklch-zero-point-five-two-zero-point-one-four-two-two-four-eight: oklch(
+    calc(var(--primary-percent-base) * 0.52)
+      calc(var(--primary-number-unit) * 0.142)
+      calc(var(--primary-angle-unit) * 248)
+  );
+  --base-cer-cer-primary: var(--dynamic-cer-primary);
+  --base-rep-color-oklch-zero-point-four-seven-zero-point-one-two-one-five-five: oklch(
+    calc(var(--primary-percent-base) * 0.47)
+      calc(var(--primary-number-unit) * 0.12)
+      calc(var(--primary-angle-unit) * 155)
+  );
+  --base-rep-color-oklch-zero-point-four-seven-zero-point-one-six-three-one-zero: oklch(
+    calc(var(--primary-percent-base) * 0.47)
+      calc(var(--primary-number-unit) * 0.16)
+      calc(var(--primary-angle-unit) * 310)
+  );
+  --base-rep-color-oklch-zero-point-four-seven-zero-point-one-two-two-zero: oklch(
+    calc(var(--primary-percent-base) * 0.47)
+      calc(var(--primary-number-unit) * 0.1)
+      calc(var(--primary-angle-unit) * 220)
+  );
+  --base-rep-color-oklch-zero-point-five-zero-point-one-three-five-five: oklch(
+    calc(var(--primary-percent-base) * 0.5)
+      calc(var(--primary-number-unit) * 0.13)
+      calc(var(--primary-angle-unit) * 55)
+  );
+  --base-rep-color-oklch-zero-point-four-eight-zero-point-one-five-three-three-zero: oklch(
+    calc(var(--primary-percent-base) * 0.48)
+      calc(var(--primary-number-unit) * 0.15)
+      calc(var(--primary-angle-unit) * 330)
+  );
+  --base-app-app-background: var(--dynamic-app-background);
+  --base-cer-cer-muted-foreground: var(--dynamic-cer-muted-foreground);
+  --base-esd-css-solid: var(--primary-esd-css-solid);
+  --base-app-app-border: var(--dynamic-app-border);
+  --base-app-css-pointer: var(--primary-app-css-pointer);
+  --base-rep-css-content: var(--primary-rep-css-content);
+  --base-app-app-muted: var(--dynamic-app-muted);
+  --base-rep-css-zoom-minus-in: var(--primary-rep-css-zoom-minus-in);
+  --base-cer-cer-ring: var(--dynamic-cer-ring);
+  --base-rep-css-top: var(--primary-rep-css-top);
+  --base-ese-css-inset: var(--primary-ese-css-inset);
+  --base-app-app-foreground: var(--dynamic-app-foreground);
+  --catalog-layout-measure-rep-page-width: var(
+    --base-rep-dimension-seven-eight-rem
+  );
+  --catalog-layout-measure-app-space: var(--base-app-dimension-one-rem);
+  --catalog-layout-measure-app-space-double: var(--base-app-dimension-two-rem);
+  --catalog-layout-measure-rep-gutter-pair: calc(
+    var(--base-app-dimension-one-rem) * var(--base-app-number-two)
+  );
+  --catalog-layout-measure-rep-gutter-wide-pair: calc(
+    var(--base-app-dimension-two-rem) * var(--base-app-number-two)
+  );
+  --catalog-layout-measure-cer-cerulean-zerozeroone: var(
+    --base-cer-dimension-zero-point-two-five-rem
+  );
+  --catalog-layout-measure-app-space-half: var(
+    --base-app-dimension-zero-point-five-rem
+  );
+  --catalog-field-border-app-radius: var(
+    --base-app-dimension-zero-point-seven-five-rem
+  );
+  --catalog-layout-measure-rep-gap-large: var(
+    --base-rep-dimension-one-point-five-rem
+  );
+  --catalog-layout-measure-app-bar-width: var(
+    --base-app-dimension-two-point-five-rem
+  );
+  --catalog-layout-measure-rep-metric-min: var(--base-clk-dimension-nine-rem);
+  --catalog-layout-measure-ese-ese-paren-weight: var(
+    --base-ese-number-six-zero-zero
+  );
+  --catalog-layout-measure-cer-cerulean-zerothreesix: var(
+    --base-cer-dimension-zero-point-eight-one-two-five-rem
+  );
+  --catalog-layout-typography-rep-line-height-tight: var(
+    --base-rep-number-one-point-three
+  );
+  --catalog-layout-measure-cer-cerulean-zerotwoone: var(
+    --base-esd-number-one-point-five
+  );
+  --catalog-layout-measure-rep-search-width: var(
+    --base-rep-dimension-two-two-rem
+  );
+  --catalog-layout-measure-rep-card-min: var(
+    --base-rep-dimension-one-seven-rem
+  );
+  --catalog-layout-measure-rep-thumb-height: var(
+    --base-rep-dimension-one-three-rem
+  );
+  --catalog-layout-measure-clk-demo-min-inline-size-fivethree: var(
+    --base-clk-dimension-one-eight-rem
+  );
+  --catalog-layout-measure-rep-lightbox-width: var(
+    --base-rep-dimension-nine-six-viewport-width
+  );
+  --catalog-layout-measure-rep-lightbox-height: var(
+    --base-rep-dimension-nine-two-viewport-height
+  );
+  --catalog-layout-measure-rep-bar-width: var(--base-rep-dimension-seven-rem);
+  --catalog-field-border-app-border-width: var(
+    --base-app-dimension-zero-point-zero-six-two-five-rem
+  );
+  --catalog-layout-measure-rep-focus-width: var(
+    --base-cer-dimension-zero-point-one-two-five-rem
+  );
+  --catalog-layout-measure-rep-skip-offset: var(
+    --base-rep-dimension-minus-one-zero-rem
+  );
+  --catalog-layout-measure-rep-wrap: var(--base-rep-css-anywhere);
+  --catalog-layout-color-rep-scrim: var(
+    --base-rep-color-oklch-zero-zero-zero-six-zero
+  );
+  --catalog-layout-measure-clk-demo-grid-template-columns-threeone: minmax(
+    0,
+    var(--base-clk-fraction-one-fraction)
+  );
+  --catalog-layout-measure-rep-metrics-columns: repeat(
+    var(--base-rep-css-auto-minus-fill),
+    minmax(
+      var(--base-clk-dimension-nine-rem),
+      var(--base-clk-fraction-one-fraction)
+    )
+  );
+  --catalog-layout-measure-rep-gate-part-min: var(
+    --base-rep-dimension-one-six-rem
+  );
+  --catalog-layout-measure-rep-gate-parts-columns: repeat(
+    var(--base-clk-css-auto-minus-fit),
+    minmax(
+      min(100%, var(--base-rep-dimension-one-six-rem)),
+      var(--base-clk-fraction-one-fraction)
+    )
+  );
+  --catalog-layout-measure-rep-clip-hide: inset(
+    var(--base-cer-percent-five-zero)
+  );
+  --catalog-layout-measure-rep-finding-columns: var(
+      --base-rep-css-open-meta-close
+    )
+    var(--base-esd-css-auto) var(--base-rep-css-open-content-close)
+    var(--base-clk-fraction-one-fraction);
+  --catalog-layout-measure-rep-gallery-columns: repeat(
+    var(--base-rep-css-auto-minus-fill),
+    minmax(
+      var(--base-rep-dimension-one-seven-rem),
+      var(--base-clk-fraction-one-fraction)
+    )
+  );
+  --catalog-layout-typography-rep-context-columns: var(
+      --base-rep-css-max-minus-content
+    )
+    var(--base-clk-fraction-one-fraction);
+  --catalog-layout-measure-rep-lightbox-columns: repeat(
+    var(--base-clk-css-auto-minus-fit),
+    minmax(
+      var(--base-clk-dimension-one-eight-rem),
+      var(--base-clk-fraction-one-fraction)
+    )
+  );
+  --catalog-layout-measure-clk-demo-white-space-twonine: var(
+    --base-clk-css-nowrap
+  );
+  --catalog-layout-measure-esd-demo-pre-wrap: var(
+    --base-esd-css-pre-minus-wrap
+  );
+  --catalog-layout-measure-rep-align-end: var(--base-rep-css-right);
+  --catalog-layout-measure-app-bars-height: var(
+    --base-app-dimension-one-two-rem
+  );
+  --catalog-text-typography-vca-nav-text-decoration: var(--base-cer-css-none);
+  --catalog-layout-measure-rep-gutter-column-width: var(--base-rep-percent-one);
+  --catalog-layout-measure-ese-ese-pre: var(--base-ese-css-pre);
+  --catalog-layout-measure-ese-ese-surface: var(
+    --base-ese-color-named-transparent
+  );
+  --catalog-layout-measure-rep-comparison-columns: repeat(
+    var(--base-clk-css-auto-minus-fit),
+    minmax(
+      min(100%, var(--base-rep-dimension-two-two-rem)),
+      var(--base-clk-fraction-one-fraction)
+    )
+  );
+  --catalog-layout-measure-rep-comparison-list-columns: var(--base-esd-css-auto)
+    var(--base-clk-fraction-one-fraction);
+  --catalog-layout-measure-app-page-gutter-multiplier: var(
+    --base-app-number-two
+  );
+  --catalog-layout-color-rep-code-miss-fill: var(--base-rep-code-miss-fill);
+  --catalog-layout-measure-app-focus-width: var(
+    --base-app-dimension-zero-point-one-eight-seven-five-rem
+  );
+  --catalog-layout-color-rep-code-target-fill: var(--base-rep-code-target-fill);
+  --catalog-text-typography-rep-code-font:
+    var(--base-esd-css-ui-minus-monospace),
+    var(--base-cer-css-quote-sf-x-mono-quote), var(--base-ese-css-menlo),
+    var(--base-rep-css-consolas), var(--base-esd-css-monospace);
+  --catalog-layout-effect-rep-disabled-opacity: var(
+    --base-rep-number-zero-point-four-five
+  );
+  --catalog-layout-cursor-rep-default-cursor: var(--base-rep-css-default);
+  --catalog-layout-measure-rep-italic: var(--base-rep-css-italic);
+  --catalog-layout-color-rep-tok-string: var(
+    --base-rep-color-oklch-zero-point-seven-eight-zero-point-one-one-one-five-five
+  );
+  --catalog-layout-color-rep-tok-keyword: var(
+    --base-rep-color-oklch-zero-point-seven-six-zero-point-one-three-three-one-zero
+  );
+  --catalog-layout-color-rep-tok-builtin: var(
+    --base-rep-color-oklch-zero-point-seven-eight-zero-point-one-two-zero-zero
+  );
+  --catalog-layout-color-rep-tok-number: var(
+    --base-rep-color-oklch-zero-point-eight-zero-point-one-two-six-five
+  );
+  --catalog-layout-color-rep-tok-decorator: var(
+    --base-rep-color-oklch-zero-point-seven-nine-zero-point-one-two-three-three-zero
+  );
+  --catalog-palette-color-cer-ds-badge-safe-color: var(
+    --base-cer-cer-pop-green-foreground
+  );
+  --catalog-palette-color-cer-ds-badge-danger-background: var(
+    --base-cer-cer-destructive
+  );
+  --catalog-palette-color-cer-ds-badge-warn-color: var(
+    --base-cer-cer-pop-orange-foreground
+  );
+  --catalog-layout-measure-cer-cerulean-zerosixone: var(
+    --base-cer-css-uppercase
+  );
+  --catalog-layout-measure-cer-cerulean-zerosixtwo: var(
+    --base-cer-dimension-zero-point-zero-four-em
+  );
+  --catalog-layout-measure-rep-scope-min: var(
+    --base-rep-dimension-one-four-rem
+  );
+  --catalog-layout-measure-rep-scope-columns: repeat(
+    var(--base-clk-css-auto-minus-fit),
+    minmax(
+      var(--base-rep-dimension-one-four-rem),
+      var(--base-clk-fraction-one-fraction)
+    )
+  );
+  --catalog-layout-measure-cer-cerulean-zerotwoeight: var(
+    --base-cer-dimension-one-point-two-five-rem
+  );
+  --catalog-layout-measure-rep-tabular: var(--base-rep-css-tabular-minus-nums);
+  --catalog-layout-measure-cer-cerulean-zerothreeone: var(
+    --base-cer-number-four-zero-zero
+  );
+  --catalog-layout-measure-cer-cerulean-zeroonezero: var(
+    --base-cer-dimension-zero-point-eight-seven-five-rem
+  );
+  --catalog-layout-measure-rep-kv-label-width: var(
+    --base-cer-percent-three-five
+  );
+  --catalog-layout-measure-rep-kv-label-tracking: var(--base-rep-css-normal);
+  --catalog-layout-measure-rep-sort-asc: var(
+    --base-rep-css-quote-backslash-2191-quote
+  );
+  --catalog-layout-measure-rep-sort-desc: var(
+    --base-rep-css-quote-backslash-2193-quote
+  );
+  --catalog-layout-measure-rep-sort-idle: var(
+    --base-rep-css-quote-backslash-2195-quote
+  );
+  --catalog-layout-measure-rep-inherit: inherit;
+  --catalog-layout-measure-cer-cerulean-zerofiveeight: var(--base-cer-css-left);
+  --catalog-layout-measure-rep-touch-min: var(
+    --base-rep-dimension-two-point-seven-five-rem
+  );
+  --catalog-layout-color-rep-selected-fill: var(--base-rep-selected-fill);
+  --catalog-layout-color-rep-row-hover-fill: var(--base-rep-row-hover-fill);
+  --catalog-layout-color-rep-danger-fill: var(
+    --base-rep-color-oklch-zero-point-five-two-zero-point-one-nine-two-five
+  );
+  --catalog-layout-color-rep-pressed-fill: var(
+    --base-rep-color-oklch-zero-point-five-two-zero-point-one-four-two-two-four-eight
+  );
+  --catalog-palette-color-cer-ds-color: var(--base-cer-cer-primary);
+  --catalog-layout-color-rep-tok-string-media-prefers-color-scheme-light: var(
+    --base-rep-color-oklch-zero-point-four-seven-zero-point-one-two-one-five-five
+  );
+  --catalog-layout-color-rep-tok-keyword-media-prefers-color-scheme-light: var(
+    --base-rep-color-oklch-zero-point-four-seven-zero-point-one-six-three-one-zero
+  );
+  --catalog-layout-color-rep-tok-builtin-media-prefers-color-scheme-light: var(
+    --base-rep-color-oklch-zero-point-four-seven-zero-point-one-two-two-zero
+  );
+  --catalog-layout-color-rep-tok-number-media-prefers-color-scheme-light: var(
+    --base-rep-color-oklch-zero-point-five-zero-point-one-three-five-five
+  );
+  --catalog-layout-color-rep-tok-decorator-media-prefers-color-scheme-light: var(
+    --base-rep-color-oklch-zero-point-four-eight-zero-point-one-five-three-three-zero
+  );
+  --catalog-layout-measure-app-body-margin: 0;
+  --catalog-palette-color-app-body-background: var(--base-app-app-background);
+  --catalog-palette-color-rep-ds-color: var(--base-rep-rep-link);
+  --catalog-layout-measure-esd-textarea-width: 100%;
+  --catalog-layout-measure-rep-report-main-width: min(
+    var(--base-rep-dimension-seven-eight-rem),
+    calc(
+      100% -
+        calc(var(--base-app-dimension-one-rem) * var(--base-app-number-two))
+    )
+  );
+  --catalog-layout-measure-app-page-margin-inline: var(--base-esd-css-auto);
+  --catalog-layout-measure-rep-report-header-padding-block: var(
+      --base-app-dimension-two-point-five-rem
+    )
+    var(--base-rep-dimension-one-point-five-rem);
+  --catalog-palette-color-cer-ds-supporting-color: var(
+    --base-cer-cer-muted-foreground
+  );
+  --catalog-layout-measure-rep-search-flex: 0 1
+    var(--base-rep-dimension-two-two-rem);
+  --catalog-field-border-app-card-border: var(
+      --base-app-dimension-zero-point-zero-six-two-five-rem
+    )
+    var(--base-esd-css-solid) var(--base-app-app-border);
+  --catalog-layout-measure-rep-disclosure-summary-padding: var(
+      --base-app-dimension-zero-point-seven-five-rem
+    )
+    var(--base-app-dimension-zero-point-five-rem);
+  --catalog-control-cursor-app-switch-cursor: var(--base-app-css-pointer);
+  --catalog-layout-measure-rep-finding-list-padding: 0 0
+    var(--base-app-dimension-zero-point-seven-five-rem);
+  --catalog-layout-measure-rep-finding-gap: var(
+      --base-cer-dimension-zero-point-two-five-rem
+    )
+    var(--base-app-dimension-zero-point-seven-five-rem);
+  --catalog-layout-measure-rep-finding-message-grid-column: var(
+    --base-rep-css-content
+  );
+  --catalog-layout-measure-cer-cerulean-zerofivenine: var(
+      --base-app-dimension-zero-point-five-rem
+    )
+    var(--base-app-dimension-zero-point-seven-five-rem);
+  --catalog-palette-color-app-lede-color: var(--base-app-app-muted);
+  --catalog-layout-measure-rep-disclosure-padding: 0
+    var(--base-app-dimension-zero-point-seven-five-rem)
+    var(--base-app-dimension-zero-point-seven-five-rem);
+  --catalog-layout-measure-rep-context-gap: var(
+      --base-cer-dimension-zero-point-two-five-rem
+    )
+    var(--base-rep-dimension-one-point-five-rem);
+  --catalog-control-cursor-rep-thumb-button-cursor: var(
+    --base-rep-css-zoom-minus-in
+  );
+  --catalog-field-border-rep-thumb-button-outline: var(
+      --base-cer-dimension-zero-point-one-two-five-rem
+    )
+    var(--base-esd-css-solid) var(--base-cer-cer-ring);
+  --catalog-layout-measure-rep-thumb-object-position: var(--base-rep-css-top);
+  --catalog-layout-measure-rep-snippet-blocks-padding: 0
+    var(--base-app-dimension-zero-point-five-rem)
+    var(--base-app-dimension-zero-point-seven-five-rem);
+  --catalog-layer-effect-rep-code-line-box-shadow: var(--base-ese-css-inset)
+    var(--base-app-dimension-zero-point-one-eight-seven-five-rem) 0
+    var(--base-cer-cer-destructive);
+  --catalog-palette-color-app-body-color: var(--base-app-app-foreground);
+  --catalog-layer-effect-rep-code-line-code-line-box-shadow: var(
+      --base-ese-css-inset
+    )
+    var(--base-app-dimension-zero-point-one-eight-seven-five-rem) 0
+    var(--base-rep-rep-link);
+  --catalog-layout-measure-rep-snippet-view-margin: var(
+      --base-cer-dimension-zero-point-two-five-rem
+    )
+    0 0;
+  --catalog-field-border-rep-gate-border-left: var(
+      --base-cer-dimension-zero-point-two-five-rem
+    )
+    var(--base-esd-css-solid) var(--base-rep-rep-pop-orange-foreground);
+  --catalog-layout-measure-rep-glob-list-gap: var(
+      --base-cer-dimension-zero-point-two-five-rem
+    )
+    var(--base-app-dimension-zero-point-five-rem);
+  --catalog-layout-measure-rep-select-filter-flex: 0 1
+    var(--base-rep-dimension-one-four-rem);
+  --catalog-layout-measure-rep-report-main-report-main-width: min(
+    var(--base-rep-dimension-seven-eight-rem),
+    calc(
+      100% -
+        calc(var(--base-app-dimension-two-rem) * var(--base-app-number-two))
+    )
+  );
+  --catalog-layer-effect-rep-is-selected-box-shadow: var(--base-ese-css-inset)
+    var(--base-app-dimension-zero-point-one-eight-seven-five-rem) 0 0 0
+    var(--base-rep-rep-link);
+  --rep-body-margin: var(--catalog-layout-measure-app-body-margin);
+  --rep-body-background: var(--catalog-palette-color-app-body-background);
+  --rep-ds-color: var(--catalog-palette-color-rep-ds-color);
+  --rep-report-root-min-height: var(
+    --catalog-layout-measure-esd-textarea-width
+  );
+  --rep-report-main-width: var(--catalog-layout-measure-rep-report-main-width);
+  --rep-report-main-margin-inline: var(
+    --catalog-layout-measure-app-page-margin-inline
+  );
+  --rep-report-header-padding-block: var(
+    --catalog-layout-measure-rep-report-header-padding-block
+  );
+  --rep-metric-label-color: var(
+    --catalog-palette-color-cer-ds-supporting-color
+  );
+  --rep-report-view-min-width: var(--catalog-layout-measure-app-body-margin);
+  --rep-report-view-outline: var(
+    --catalog-text-typography-vca-nav-text-decoration
+  );
+  --rep-search-flex: var(--catalog-layout-measure-rep-search-flex);
+  --rep-file-group-border-top: var(--catalog-field-border-app-card-border);
+  --rep-disclosure-summary-padding: var(
+    --catalog-layout-measure-rep-disclosure-summary-padding
+  );
+  --rep-disclosure-summary-cursor: var(
+    --catalog-control-cursor-app-switch-cursor
+  );
+  --rep-finding-list-padding: var(
+    --catalog-layout-measure-rep-finding-list-padding
+  );
+  --rep-finding-list-list-style: var(
+    --catalog-text-typography-vca-nav-text-decoration
+  );
+  --rep-finding-gap: var(--catalog-layout-measure-rep-finding-gap);
+  --rep-finding-message-grid-column: var(
+    --catalog-layout-measure-rep-finding-message-grid-column
+  );
+  --rep-markdown-padding: var(
+    --catalog-layout-measure-cer-cerulean-zerofivenine
+  );
+  --rep-markdown-background: var(--catalog-palette-color-app-lede-color);
+  --rep-disclosure-padding: var(
+    --catalog-layout-measure-rep-disclosure-padding
+  );
+  --rep-context-gap: var(--catalog-layout-measure-rep-context-gap);
+  --rep-thumb-button-width: var(--catalog-layout-measure-esd-textarea-width);
+  --rep-thumb-button-padding: var(--catalog-layout-measure-app-body-margin);
+  --rep-thumb-button-border: var(--catalog-field-border-app-card-border);
+  --rep-thumb-button-cursor: var(
+    --catalog-control-cursor-rep-thumb-button-cursor
+  );
+  --rep-thumb-button-outline: var(
+    --catalog-field-border-rep-thumb-button-outline
+  );
+  --rep-thumb-height: var(--catalog-layout-measure-esd-textarea-width);
+  --rep-thumb-object-position: var(
+    --catalog-layout-measure-rep-thumb-object-position
+  );
+  --rep-lightbox-bar-border-bottom: var(--catalog-field-border-app-card-border);
+  --rep-shot-image-height: var(--catalog-layout-measure-app-page-margin-inline);
+  --rep-shot-marker-inset: var(--catalog-layout-measure-app-body-margin);
+  --rep-marker-ring-fill: var(
+    --catalog-text-typography-vca-nav-text-decoration
+  );
+  --rep-marker-ring-stroke: var(
+    --catalog-palette-color-cer-ds-badge-danger-background
+  );
+  --rep-marker-dot-fill: var(
+    --catalog-palette-color-cer-ds-badge-danger-background
+  );
+  --rep-snippet-blocks-padding: var(
+    --catalog-layout-measure-rep-snippet-blocks-padding
+  );
+  --rep-code-snippet-vertical-align: var(
+    --catalog-layout-measure-rep-thumb-object-position
+  );
+  --rep-code-gutter-border-right: var(--catalog-field-border-app-card-border);
+  --rep-code-gutter-color: var(
+    --catalog-palette-color-cer-ds-badge-danger-background
+  );
+  --rep-code-line-box-shadow: var(
+    --catalog-layer-effect-rep-code-line-box-shadow
+  );
+  --rep-code-gutter-color-two: var(--catalog-palette-color-app-body-color);
+  --rep-code-line-box-shadow-two: var(
+    --catalog-layer-effect-rep-code-line-code-line-box-shadow
+  );
+  --rep-snippet-view-margin: var(
+    --catalog-layout-measure-rep-snippet-view-margin
+  );
+  --rep-snippet-controls-margin-inline-start: var(
+    --catalog-layout-measure-app-page-margin-inline
+  );
+  --rep-gate-border-left: var(--catalog-field-border-rep-gate-border-left);
+  --rep-gate-border-radius: var(--catalog-layout-measure-app-body-margin);
+  --rep-glob-list-gap: var(--catalog-layout-measure-rep-glob-list-gap);
+  --rep-select-filter-flex: var(
+    --catalog-layout-measure-rep-select-filter-flex
+  );
+  --rep-finding-message-grid-column-two: var(
+    --catalog-layout-measure-app-page-margin-inline
+  );
+  --rep-sort-button-border: var(--catalog-layout-measure-app-body-margin);
+  --rep-report-main-width-two: var(
+    --catalog-layout-measure-rep-report-main-report-main-width
+  );
+  --rep-is-selected-box-shadow: var(
+    --catalog-layer-effect-rep-is-selected-box-shadow
+  );
+  --rep-finding-return-margin-left: var(
+    --catalog-layout-measure-app-page-margin-inline
+  );
+  --rep-section-max-width: var(--catalog-layout-measure-esd-textarea-width);
+  --page-width: var(--catalog-layout-measure-rep-page-width);
+  --gutter: var(--catalog-layout-measure-app-space);
+  --gutter-wide: var(--catalog-layout-measure-app-space-double);
+  --gutter-pair: var(--catalog-layout-measure-rep-gutter-pair);
+  --gutter-wide-pair: var(--catalog-layout-measure-rep-gutter-wide-pair);
+  --gap-xs: var(--catalog-layout-measure-cer-cerulean-zerozeroone);
+  --gap-sm: var(--catalog-layout-measure-app-space-half);
+  --gap-md: var(--catalog-field-border-app-radius);
+  --gap-lg: var(--catalog-layout-measure-rep-gap-large);
+  --gap-xl: var(--catalog-layout-measure-app-bar-width);
+  --metric-min: var(--catalog-layout-measure-rep-metric-min);
+  --metric-value-size: var(--catalog-layout-measure-rep-gap-large);
+  --metric-label-size: var(--catalog-field-border-app-radius);
+  --metric-weight: var(--catalog-layout-measure-ese-ese-paren-weight);
+  --code-size: var(--catalog-layout-measure-cer-cerulean-zerothreesix);
+  --line-height-tight: var(--catalog-layout-typography-rep-line-height-tight);
+  --line-height-code: var(--catalog-layout-measure-cer-cerulean-zerotwoone);
+  --search-width: var(--catalog-layout-measure-rep-search-width);
+  --card-min: var(--catalog-layout-measure-rep-card-min);
+  --thumb-height: var(--catalog-layout-measure-rep-thumb-height);
+  --thumb-height-phone: var(
+    --catalog-layout-measure-clk-demo-min-inline-size-fivethree
+  );
+  --lightbox-width: var(--catalog-layout-measure-rep-lightbox-width);
+  --lightbox-height: var(--catalog-layout-measure-rep-lightbox-height);
+  --lightbox-pane-min: var(
+    --catalog-layout-measure-clk-demo-min-inline-size-fivethree
+  );
+  --marker-size: var(--catalog-layout-measure-rep-gap-large);
+  --rep-bar-width: var(--catalog-layout-measure-rep-bar-width);
+  --hairline: var(--catalog-field-border-app-border-width);
+  --rep-focus-width: var(--catalog-layout-measure-rep-focus-width);
+  --skip-offset: var(--catalog-layout-measure-rep-skip-offset);
+  --breakpoint-gap: var(--catalog-layout-measure-app-space-half);
+  --file-weight: var(--catalog-layout-measure-ese-ese-paren-weight);
+  --summary-weight: var(--catalog-layout-measure-ese-ese-paren-weight);
+  --wrap: var(--catalog-layout-measure-rep-wrap);
+  --scrim: var(--catalog-layout-color-rep-scrim);
+  --content-columns: var(
+    --catalog-layout-measure-clk-demo-grid-template-columns-threeone
+  );
+  --metrics-columns: var(--catalog-layout-measure-rep-metrics-columns);
+  --gate-part-min: var(--catalog-layout-measure-rep-gate-part-min);
+  --gate-parts-columns: var(--catalog-layout-measure-rep-gate-parts-columns);
+  --clip-hide: var(--catalog-layout-measure-rep-clip-hide);
+  --finding-columns: var(--catalog-layout-measure-rep-finding-columns);
+  --gallery-columns: var(--catalog-layout-measure-rep-gallery-columns);
+  --context-columns: var(--catalog-layout-typography-rep-context-columns);
+  --lightbox-columns: var(--catalog-layout-measure-rep-lightbox-columns);
+  --nowrap: var(--catalog-layout-measure-clk-demo-white-space-twonine);
+  --pre-wrap: var(--catalog-layout-measure-esd-demo-pre-wrap);
+  --align-end: var(--catalog-layout-measure-rep-align-end);
+  --index-max-height: var(--catalog-layout-measure-app-bars-height);
+  --no-decoration: var(--catalog-text-typography-vca-nav-text-decoration);
+  --stepper-range-width: var(--catalog-layout-measure-rep-metric-min);
+  --gutter-column-width: var(--catalog-layout-measure-rep-gutter-column-width);
+  --pre: var(--catalog-layout-measure-ese-ese-pre);
+  --transparent: var(--catalog-layout-measure-ese-ese-surface);
+  --comparison-columns: var(--catalog-layout-measure-rep-comparison-columns);
+  --comparison-list-columns: var(
+    --catalog-layout-measure-rep-comparison-list-columns
+  );
+  --comparison-column: var(--catalog-layout-measure-app-page-gutter-multiplier);
+  --comparison-wrap: var(--catalog-layout-measure-rep-wrap);
+  --code-miss-fill: var(--catalog-layout-color-rep-code-miss-fill);
+  --code-miss-bar: var(--catalog-layout-measure-app-focus-width);
+  --code-target-fill: var(--catalog-layout-color-rep-code-target-fill);
+  --code-font: var(--catalog-text-typography-rep-code-font);
+  --disabled-opacity: var(--catalog-layout-effect-rep-disabled-opacity);
+  --default-cursor: var(--catalog-layout-cursor-rep-default-cursor);
+  --italic: var(--catalog-layout-measure-rep-italic);
+  --tok-string: var(--catalog-layout-color-rep-tok-string);
+  --tok-keyword: var(--catalog-layout-color-rep-tok-keyword);
+  --tok-builtin: var(--catalog-layout-color-rep-tok-builtin);
+  --tok-number: var(--catalog-layout-color-rep-tok-number);
+  --tok-decorator: var(--catalog-layout-color-rep-tok-decorator);
+  --card-pad: var(--catalog-field-border-app-radius);
+  --card-pad-wide: var(--catalog-layout-measure-rep-gap-large);
+  --gate-bar: var(--catalog-layout-measure-cer-cerulean-zerozeroone);
+  --gate-pass: var(--catalog-palette-color-cer-ds-badge-safe-color);
+  --gate-fail: var(--catalog-palette-color-cer-ds-badge-danger-background);
+  --gate-other: var(--catalog-palette-color-cer-ds-badge-warn-color);
+  --label-title-size: var(--catalog-field-border-app-radius);
+  --label-title-weight: var(--catalog-layout-measure-ese-ese-paren-weight);
+  --label-title-case: var(--catalog-layout-measure-cer-cerulean-zerosixone);
+  --label-title-tracking: var(--catalog-layout-measure-cer-cerulean-zerosixtwo);
+  --scope-min: var(--catalog-layout-measure-rep-scope-min);
+  --scope-columns: var(--catalog-layout-measure-rep-scope-columns);
+  --rule-width: var(--catalog-layout-measure-rep-scope-min);
+  --count-size: var(--catalog-layout-measure-cer-cerulean-zerotwoeight);
+  --count-weight: var(--catalog-layout-measure-ese-ese-paren-weight);
+  --tabular: var(--catalog-layout-measure-rep-tabular);
+  --finding-id-weight: var(--catalog-layout-measure-ese-ese-paren-weight);
+  --finding-title-size: var(--catalog-layout-measure-app-space);
+  --group-count-weight: var(--catalog-layout-measure-cer-cerulean-zerothreeone);
+  --subsection-size: var(--catalog-layout-measure-cer-cerulean-zeroonezero);
+  --subsection-weight: var(--catalog-layout-measure-ese-ese-paren-weight);
+  --kv-label-width: var(--catalog-layout-measure-rep-kv-label-width);
+  --kv-label-case: var(--catalog-text-typography-vca-nav-text-decoration);
+  --kv-label-tracking: var(--catalog-layout-measure-rep-kv-label-tracking);
+  --kv-label-size: var(--catalog-layout-measure-cer-cerulean-zerothreesix);
+  --sort-asc: var(--catalog-layout-measure-rep-sort-asc);
+  --sort-desc: var(--catalog-layout-measure-rep-sort-desc);
+  --sort-idle: var(--catalog-layout-measure-rep-sort-idle);
+  --inherit: var(--catalog-layout-measure-rep-inherit);
+  --start: var(--catalog-layout-measure-cer-cerulean-zerofiveeight);
+  --touch-min: var(--catalog-layout-measure-rep-touch-min);
+  --target-min: var(--catalog-layout-measure-rep-gap-large);
+  --selected-bar: var(--catalog-layout-measure-app-focus-width);
+  --selected-fill: var(--catalog-layout-color-rep-selected-fill);
+  --row-hover-fill: var(--catalog-layout-color-rep-row-hover-fill);
+  /* The kit's dark primary and destructive fills miss WCAG AA for text
+     (links 4.0:1, white on danger 3.8:1, white on pressed chips 4.4:1);
+     these dark-theme values reach 5.2:1 or more. */
+  /* The kit's dark primary and destructive fills miss WCAG AA for text
+     (links 4.0:1, white on danger 3.8:1, white on pressed chips 4.4:1);
+     these dark-theme values reach 5.2:1 or more. */
+  --dynamic-rep-link: #4fa8e1ff;
+  --danger-fill: var(--catalog-layout-color-rep-danger-fill);
+  --pressed-fill: var(--catalog-layout-color-rep-pressed-fill);
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    --dynamic-rep-link: #1778c3ff;
+    --danger-fill: var(--catalog-palette-color-cer-ds-badge-danger-background);
+    --pressed-fill: var(--catalog-palette-color-cer-ds-color);
+    /* The token hues above are tuned for the dark code background; on
+       the light one they need darker values to reach 4.5:1. */
+    /* The token hues above are tuned for the dark code background; on
+       the light one they need darker values to reach 4.5:1. */
+    --tok-string: var(
+      --catalog-layout-color-rep-tok-string-media-prefers-color-scheme-light
+    );
+    --tok-keyword: var(
+      --catalog-layout-color-rep-tok-keyword-media-prefers-color-scheme-light
+    );
+    --tok-builtin: var(
+      --catalog-layout-color-rep-tok-builtin-media-prefers-color-scheme-light
+    );
+    --tok-number: var(
+      --catalog-layout-color-rep-tok-number-media-prefers-color-scheme-light
+    );
+    --tok-decorator: var(
+      --catalog-layout-color-rep-tok-decorator-media-prefers-color-scheme-light
+    );
+  }
+}
+body {
+  margin: var(--rep-body-margin);
+  background: var(--rep-body-background);
+}
+.ds a {
+  color: var(--rep-ds-color);
+}
+.ds-badge-danger {
+  background: var(--danger-fill);
+}
+.ds .ds-chip[aria-pressed="true"],
+.ds .ds-chip[aria-pressed="true"]:hover {
+  border-color: var(--pressed-fill);
+  background: var(--pressed-fill);
+}
+.report-root {
+  min-height: var(--rep-report-root-min-height);
+}
+.skip-link {
+  position: absolute;
+  top: var(--skip-offset);
+  left: var(--gutter);
+}
+.skip-link:focus {
+  top: var(--gutter);
+}
+.report-header,
+.report-main {
+  width: var(--rep-report-main-width);
+  margin-inline: var(--rep-report-main-margin-inline);
+}
+.report-header {
+  display: grid;
+  gap: var(--gap-md);
+  padding-block: var(--rep-report-header-padding-block);
+}
+.report-heading {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap-md);
+  align-items: center;
+}
+.metrics {
+  display: grid;
+  grid-template-columns: var(--metrics-columns);
+  gap: var(--gap-md);
+  margin: var(--rep-body-margin);
+}
+.metric {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: var(--gap-xs);
+  margin: var(--rep-body-margin);
+}
+.metric-value {
+  margin: var(--rep-body-margin);
+  font-size: var(--metric-value-size);
+  font-weight: var(--metric-weight);
+  line-height: var(--line-height-tight);
+}
+.metric-label {
+  color: var(--rep-metric-label-color);
+  font-size: var(--metric-label-size);
+}
+.report-main {
+  grid-template-columns: var(--content-columns);
+  display: grid;
+  gap: var(--gap-lg);
+  padding-bottom: var(--gap-xl);
+}
+.report-view {
+  min-width: var(--rep-report-view-min-width);
+  grid-template-columns: var(--content-columns);
+  display: grid;
+  gap: var(--gap-lg);
+}
+.report-view:focus {
+  outline: var(--rep-report-view-outline);
+}
+.section {
+  min-width: var(--rep-report-view-min-width);
+  grid-template-columns: var(--content-columns);
+  display: grid;
+  gap: var(--gap-md);
+}
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap-md);
+  align-items: end;
+}
+.search {
+  flex: var(--rep-search-flex);
+}
+.search .ds-label,
+.search .ds-input {
+  margin: var(--rep-body-margin);
+}
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap-sm);
+}
+.result-count {
+  margin: var(--rep-body-margin);
+}
+.file-group {
+  border-top: var(--rep-file-group-border-top);
+}
+.file-summary,
+.disclosure-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap-sm);
+  align-items: center;
+  padding: var(--rep-disclosure-summary-padding);
+  cursor: var(--rep-disclosure-summary-cursor);
+  font-weight: var(--summary-weight);
+}
+.file-path {
+  font-weight: var(--file-weight);
+  overflow-wrap: var(--wrap);
+}
+.finding-list {
+  display: grid;
+  margin: var(--rep-body-margin);
+  padding: var(--rep-finding-list-padding);
+  list-style: var(--rep-finding-list-list-style);
+}
+.finding {
+  display: grid;
+  grid-template-columns: var(--finding-columns);
+  gap: var(--rep-finding-gap);
+  padding: var(--gap-sm);
+  border-top: var(--rep-file-group-border-top);
+}
+.finding-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap-sm);
+  align-items: center;
+}
+.finding-message {
+  grid-column: var(--rep-finding-message-grid-column);
+  margin: var(--rep-body-margin);
+  overflow-wrap: var(--wrap);
+}
+.finding-detail {
+  grid-column: var(--rep-finding-message-grid-column);
+}
+.location {
+  color: var(--rep-metric-label-color);
+  font-size: var(--code-size);
+  white-space: var(--nowrap);
+}
+.code,
+.markdown pre {
+  margin: var(--rep-body-margin);
+  padding: var(--rep-markdown-padding);
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+  background: var(--rep-markdown-background);
+  font-size: var(--code-size);
+  line-height: var(--line-height-code);
+  white-space: var(--pre-wrap);
+}
+.disclosure > :not(summary) {
+  padding: var(--rep-disclosure-padding);
+}
+.markdown {
+  overflow-wrap: var(--wrap);
+}
+.table-wrap {
+  overflow-x: auto;
+}
+.cell-number {
+  text-align: var(--align-end);
+  white-space: var(--nowrap);
+}
+.bar-cell {
+  width: var(--rep-bar-width);
+}
+.context {
+  display: grid;
+  grid-template-columns: var(--context-columns);
+  gap: var(--rep-context-gap);
+  margin: var(--rep-body-margin);
+}
+.context dt {
+  color: var(--rep-metric-label-color);
+}
+.context dd {
+  margin: var(--rep-body-margin);
+  overflow-wrap: var(--wrap);
+}
+.lane-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap-md);
+  align-items: center;
+}
+.gallery {
+  display: grid;
+  grid-template-columns: var(--gallery-columns);
+  gap: var(--gap-md);
+}
+.state-card {
+  display: grid;
+  align-content: start;
+  gap: var(--gap-sm);
+  padding: var(--gap-sm);
+}
+.thumb-button {
+  display: block;
+  width: var(--rep-thumb-button-width);
+  height: var(--thumb-height);
+  padding: var(--rep-thumb-button-padding);
+  overflow: hidden;
+  border: var(--rep-thumb-button-border);
+  border-radius: var(--radius-md);
+  background: var(--rep-markdown-background);
+  cursor: var(--rep-thumb-button-cursor);
+}
+.thumb-button:focus-visible {
+  outline: var(--rep-thumb-button-outline);
+}
+.thumb-phone .thumb-button {
+  height: var(--thumb-height-phone);
+}
+.thumb {
+  display: block;
+  width: var(--rep-thumb-button-width);
+  height: var(--rep-thumb-height);
+  object-fit: cover;
+  object-position: var(--rep-thumb-object-position);
+}
+.state-title {
+  margin: var(--rep-body-margin);
+}
+.steps {
+  display: grid;
+  gap: var(--gap-xs);
+  margin: var(--rep-body-margin);
+  padding-left: var(--gap-lg);
+}
+.lightbox {
+  width: var(--lightbox-width);
+  max-width: var(--lightbox-width);
+  max-height: var(--lightbox-height);
+  padding: var(--rep-thumb-button-padding);
+}
+.lightbox:not([open]) {
+  display: none;
+}
+.lightbox::backdrop {
+  background: var(--scrim);
+}
+.lightbox-bar {
+  display: flex;
+  gap: var(--gap-md);
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--gap-md);
+  border-bottom: var(--rep-lightbox-bar-border-bottom);
+}
+.lightbox-body {
+  display: grid;
+  grid-template-columns: var(--lightbox-columns);
+  gap: var(--gap-md);
+  padding: var(--gap-md);
+  overflow: auto;
+}
+.shot {
+  display: grid;
+  gap: var(--gap-sm);
+  align-content: start;
+  margin: var(--rep-body-margin);
+}
+.shot-frame {
+  position: relative;
+}
+.shot-image {
+  display: block;
+  width: var(--rep-thumb-button-width);
+  height: var(--rep-shot-image-height);
+}
+.shot-marker {
+  position: absolute;
+  inset: var(--rep-shot-marker-inset);
+  width: var(--rep-thumb-button-width);
+  height: var(--rep-thumb-height);
+  pointer-events: none;
+}
+.marker-ring {
+  fill: var(--rep-marker-ring-fill);
+  stroke: var(--rep-marker-ring-stroke);
+}
+.marker-dot {
+  fill: var(--rep-marker-dot-fill);
+}
+.tool-link {
+  font-weight: var(--file-weight);
+}
+.code-index {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap-sm);
+  max-height: var(--index-max-height);
+  overflow-y: auto;
+}
+.index-chip {
+  display: inline-flex;
+  gap: var(--gap-xs);
+  align-items: center;
+  text-decoration: var(--no-decoration);
+}
+.chip-count {
+  font-weight: var(--summary-weight);
+  color: var(--rep-metric-label-color);
+}
+.context-stepper {
+  display: flex;
+  gap: var(--gap-sm);
+  align-items: center;
+}
+.context-stepper input[type="range"] {
+  width: var(--stepper-range-width);
+}
+.snippet-dir {
+  display: grid;
+  gap: var(--gap-xs);
+  padding-top: var(--gap-sm);
+  border-top: var(--rep-file-group-border-top);
+}
+.snippet-dir-title {
+  margin: var(--rep-body-margin);
+}
+.snippet-dir > .ds-supporting {
+  margin: var(--rep-body-margin);
+}
+.snippet-blocks {
+  display: grid;
+  gap: var(--gap-md);
+  padding: var(--rep-snippet-blocks-padding);
+}
+.snippet-scroll {
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+}
+.code-snippet {
+  width: var(--rep-thumb-button-width);
+  border-collapse: collapse;
+  border-radius: var(--radius-md);
+  background: var(--rep-markdown-background);
+  font-family: var(--code-font);
+  font-size: var(--code-size);
+  line-height: var(--line-height-code);
+}
+.code-snippet td {
+  padding: var(--rep-thumb-button-padding);
+  vertical-align: var(--rep-code-snippet-vertical-align);
+}
+.code-snippet .code-gutter {
+  width: var(--gutter-column-width);
+  padding-inline: var(--gap-sm);
+  border-right: var(--rep-code-gutter-border-right);
+  color: var(--rep-metric-label-color);
+  text-align: var(--align-end);
+  white-space: var(--nowrap);
+  user-select: none;
+}
+.code-snippet .code-line {
+  padding-inline: var(--gap-md);
+  white-space: var(--pre);
+}
+.code-line code {
+  background: var(--transparent);
+}
+.code-miss {
+  background: var(--code-miss-fill);
+}
+.code-miss .code-gutter {
+  color: var(--rep-code-gutter-color);
+  font-weight: var(--summary-weight);
+}
+.code-miss .code-line {
+  box-shadow: var(--rep-code-line-box-shadow);
+}
+.code-target {
+  background: var(--code-target-fill);
+}
+.code-target .code-gutter {
+  color: var(--rep-code-gutter-color-two);
+  font-weight: var(--summary-weight);
+}
+.code-target .code-line {
+  box-shadow: var(--rep-code-line-box-shadow-two);
+}
+.visually-hidden {
+  position: absolute;
+  width: var(--hairline);
+  height: var(--hairline);
+  overflow: hidden;
+  clip-path: var(--clip-hide);
+  white-space: var(--nowrap);
+}
+.snippet-view {
+  display: grid;
+  gap: var(--gap-sm);
+  margin: var(--rep-snippet-view-margin);
+}
+.snippet-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap-sm);
+  align-items: center;
+}
+.snippet-range {
+  color: var(--rep-metric-label-color);
+  font-size: var(--kv-label-size);
+  font-variant-numeric: var(--tabular);
+}
+.snippet-controls {
+  display: flex;
+  gap: var(--gap-sm);
+  margin-inline-start: var(--rep-snippet-controls-margin-inline-start);
+}
+.snippet-controls [aria-disabled="true"] {
+  opacity: var(--disabled-opacity);
+  cursor: var(--default-cursor);
+}
+.snippet-note {
+  margin: var(--rep-body-margin);
+}
+.code-gap .code-line {
+  color: var(--rep-metric-label-color);
+}
+.tok-comment {
+  color: var(--rep-metric-label-color);
+  font-style: var(--italic);
+}
+.tok-string {
+  color: var(--tok-string);
+}
+.tok-keyword {
+  color: var(--tok-keyword);
+}
+.tok-builtin {
+  color: var(--tok-builtin);
+}
+.tok-number {
+  color: var(--tok-number);
+}
+.tok-decorator {
+  color: var(--tok-decorator);
+}
+.section-nav-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap-sm);
+  margin: var(--rep-body-margin);
+  padding: var(--rep-thumb-button-padding);
+  list-style: var(--rep-finding-list-list-style);
+}
+.section-nav-list .ds-chip {
+  text-decoration: var(--no-decoration);
+}
+.view-card {
+  display: grid;
+  gap: var(--gap-md);
+  padding: var(--card-pad);
+  scroll-margin-top: var(--gap-md);
+}
+.view-card h3,
+.view-card h4,
+.view-card p {
+  margin: var(--rep-body-margin);
+}
+.subsection-title {
+  margin: var(--rep-body-margin);
+  font-size: var(--subsection-size);
+  font-weight: var(--subsection-weight);
+}
+.gate {
+  display: grid;
+  min-width: var(--rep-report-view-min-width);
+  gap: var(--gap-sm);
+  overflow-wrap: var(--wrap);
+  padding: var(--gap-md);
+  border: var(--rep-thumb-button-border);
+  border-left: var(--rep-gate-border-left);
+  border-radius: var(--rep-gate-border-radius);
+  background: var(--rep-markdown-background);
+}
+.gate[data-gate="pass"] {
+  border-left-color: var(--gate-pass);
+}
+.gate[data-gate="fail"],
+.gate[data-gate="error"] {
+  border-left-color: var(--gate-fail);
+}
+.gate-title {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap-sm);
+  align-items: center;
+  margin: var(--rep-body-margin);
+}
+.label-title {
+  margin: var(--rep-body-margin);
+  color: var(--rep-metric-label-color);
+  font-size: var(--label-title-size);
+  font-weight: var(--label-title-weight);
+  letter-spacing: var(--label-title-tracking);
+  text-transform: var(--label-title-case);
+}
+.gate-reason {
+  font-weight: var(--subsection-weight);
+}
+.gate-parts {
+  display: grid;
+  grid-template-columns: var(--gate-parts-columns);
+  gap: var(--gap-sm);
+  margin: var(--rep-body-margin);
+  padding: var(--rep-thumb-button-padding);
+  list-style: var(--rep-finding-list-list-style);
+}
+.gate-part {
+  display: grid;
+  align-content: start;
+  gap: var(--gap-xs);
+  padding: var(--gap-md);
+  border: var(--rep-thumb-button-border);
+  border-left: var(--rep-gate-border-left);
+  background: var(--rep-body-background);
+}
+.gate-part[data-gate="pass"] {
+  border-left-color: var(--gate-pass);
+}
+.gate-part[data-gate="fail"],
+.gate-part[data-gate="error"] {
+  border-left-color: var(--gate-fail);
+}
+.gate-part-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap-sm);
+  align-items: center;
+  justify-content: space-between;
+}
+.gate-part-name {
+  margin: var(--rep-body-margin);
+  font-size: var(--subsection-size);
+  font-weight: var(--subsection-weight);
+}
+.gate-part-link {
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  min-height: var(--target-min);
+  font-size: var(--kv-label-size);
+}
+@media (pointer: coarse) {
+  .gate-part-link {
+    min-height: var(--touch-min);
+  }
+}
+.gate-list {
+  display: grid;
+  gap: var(--gap-xs);
+  margin: var(--rep-body-margin);
+  padding-left: var(--gap-lg);
+}
+.glob-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--rep-glob-list-gap);
+  margin: var(--rep-body-margin);
+  padding: var(--rep-thumb-button-padding);
+  list-style: var(--rep-finding-list-list-style);
+}
+.summary-lead {
+  margin: var(--rep-body-margin);
+}
+.severity-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap-md);
+  margin: var(--rep-body-margin);
+  padding: var(--rep-thumb-button-padding);
+  list-style: var(--rep-finding-list-list-style);
+}
+.severity-item {
+  display: inline-flex;
+  gap: var(--gap-sm);
+  align-items: center;
+}
+.severity-count {
+  font-size: var(--count-size);
+  font-weight: var(--count-weight);
+  font-variant-numeric: var(--tabular);
+}
+.severity-none .severity-count {
+  color: var(--rep-metric-label-color);
+}
+.scope-grid {
+  display: grid;
+  grid-template-columns: var(--scope-columns);
+  gap: var(--gap-md);
+}
+.scope-part {
+  display: grid;
+  align-content: start;
+  gap: var(--gap-sm);
+}
+.select-filter {
+  flex: var(--rep-select-filter-flex);
+}
+.select-filter .ds-label,
+.select-filter .ds-select {
+  margin: var(--rep-body-margin);
+}
+.empty-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap-sm);
+  align-items: center;
+}
+.empty-filter[hidden],
+.finding-group[hidden],
+.vfinding[hidden] {
+  display: none;
+}
+.findings-body {
+  display: grid;
+  gap: var(--gap-lg);
+}
+.finding-group {
+  display: grid;
+  scroll-margin-top: var(--gap-md);
+}
+.group-title {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap-sm);
+  align-items: baseline;
+  padding-bottom: var(--gap-sm);
+  font-size: var(--subsection-size);
+  font-weight: var(--subsection-weight);
+}
+.group-count {
+  font-weight: var(--group-count-weight);
+  font-variant-numeric: var(--tabular);
+}
+.comparison-summary,
+.comparison-details {
+  min-width: var(--rep-report-view-min-width);
+  display: grid;
+  gap: var(--gap-lg);
+}
+.comparison-details {
+  grid-template-columns: var(--comparison-columns);
+}
+.comparison-list {
+  display: grid;
+  gap: var(--gap-sm);
+  margin: var(--rep-body-margin);
+  padding: var(--rep-thumb-button-padding);
+  list-style: var(--rep-finding-list-list-style);
+}
+.comparison-list li {
+  display: grid;
+  grid-template-columns: var(--comparison-list-columns);
+  gap: var(--rep-glob-list-gap);
+  align-items: start;
+}
+.comparison-list .ds-muted {
+  grid-column: var(--comparison-column);
+  overflow-wrap: var(--comparison-wrap);
+}
+.findings-list {
+  display: grid;
+  margin: var(--rep-body-margin);
+  padding: var(--rep-thumb-button-padding);
+  list-style: var(--rep-finding-list-list-style);
+}
+.vfinding {
+  display: grid;
+  gap: var(--gap-xs);
+  padding-block: var(--gap-md);
+  border-top: var(--rep-file-group-border-top);
+  scroll-margin-top: var(--gap-md);
+}
+.vfinding:target {
+  outline: var(--rep-thumb-button-outline);
+  outline-offset: var(--gap-xs);
+}
+.finding-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap-sm);
+  align-items: center;
+}
+.finding-id {
+  font-weight: var(--finding-id-weight);
+  font-variant-numeric: var(--tabular);
+}
+.finding-title {
+  margin: var(--rep-body-margin);
+  font-size: var(--finding-title-size);
+}
+.vfinding .location,
+.vfinding .finding-message {
+  grid-column: var(--rep-finding-message-grid-column-two);
+  margin: var(--rep-body-margin);
+  overflow-wrap: var(--wrap);
+  white-space: var(--inherit);
+}
+.finding-extra-summary {
+  color: var(--rep-metric-label-color);
+  cursor: var(--rep-disclosure-summary-cursor);
+}
+.finding-extra .context {
+  padding-top: var(--gap-sm);
+}
+.record-table .cell-number,
+.kv-table td {
+  font-variant-numeric: var(--tabular);
+}
+.record-table .cell-number {
+  text-align: var(--align-end);
+}
+.ds-chip[aria-pressed="true"] .chip-count {
+  color: var(--inherit);
+}
+.kv-table th {
+  width: var(--kv-label-width);
+  font-size: var(--kv-label-size);
+  letter-spacing: var(--kv-label-tracking);
+  text-transform: var(--kv-label-case);
+}
+.kv-table td {
+  overflow-wrap: var(--wrap);
+}
+.table-wrap:focus-visible,
+.section-nav-list .ds-chip:focus-visible {
+  outline: var(--rep-thumb-button-outline);
+  outline-offset: var(--rep-focus-width);
+}
+.sort-button {
+  display: inline-flex;
+  gap: var(--gap-xs);
+  align-items: center;
+  padding: var(--rep-thumb-button-padding);
+  border: var(--rep-sort-button-border);
+  background: var(--transparent);
+  color: var(--inherit);
+  font: var(--inherit);
+  letter-spacing: var(--inherit);
+  text-align: var(--start);
+  text-transform: var(--inherit);
+  cursor: var(--rep-disclosure-summary-cursor);
+}
+.comparison-summary .sort-button {
+  min-width: var(--touch-min);
+  min-height: var(--touch-min);
+}
+.sort-button::after {
+  color: var(--rep-metric-label-color);
+  content: var(--sort-idle);
+}
+[aria-sort="ascending"] > .sort-button::after {
+  color: var(--rep-code-gutter-color-two);
+  content: var(--sort-asc);
+}
+[aria-sort="descending"] > .sort-button::after {
+  color: var(--rep-code-gutter-color-two);
+  content: var(--sort-desc);
+}
+.sort-button:focus-visible {
+  outline: var(--rep-thumb-button-outline);
+  outline-offset: var(--rep-focus-width);
+}
+@media (pointer: coarse) {
+  .sort-button {
+    min-height: var(--touch-min);
+  }
+}
+@media (width >=64rem) {
+  .report-header,
+  .report-main {
+    width: var(--rep-report-main-width-two);
+  }
+  .view-card {
+    padding: var(--card-pad-wide);
+  }
+}
+.note-list {
+  display: grid;
+  gap: var(--gap-sm);
+  margin: var(--rep-body-margin);
+  padding-left: var(--gap-lg);
+}
+.record-table .row-link {
+  cursor: var(--rep-disclosure-summary-cursor);
+}
+.vfinding.is-selected {
+  padding-inline: var(--gap-md);
+  border-radius: var(--radius-md);
+  background: var(--selected-fill);
+  box-shadow: var(--rep-is-selected-box-shadow);
+}
+.vfinding.is-selected:focus {
+  outline: var(--rep-report-view-outline);
+}
+.record-table .row-link:focus-visible,
+.vfinding.is-selected:focus-visible {
+  outline: var(--rep-thumb-button-outline);
+  outline-offset: var(--hairline);
+}
+.finding-return {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--target-min);
+  margin-left: var(--rep-finding-return-margin-left);
+  font-size: var(--kv-label-size);
+}
+@media (pointer: coarse) {
+  .finding-return {
+    min-height: var(--touch-min);
+  }
+}
+@media (hover: hover) {
+  .record-table .row-link:hover {
+    background: var(--row-hover-fill);
+  }
+}
+.section > h2,
+.flow-step p {
+  overflow-wrap: var(--wrap);
+}
+.flow-step {
+  min-width: var(--rep-report-view-min-width);
+  margin-block: var(--gap-sm);
+  padding: var(--gap-md);
+  border: var(--rep-thumb-button-border);
+  border-radius: var(--gap-xs);
+}
+.flow-step > summary {
+  cursor: var(--rep-disclosure-summary-cursor);
+  font-weight: var(--summary-weight);
+  overflow-wrap: var(--wrap);
+}
+.flow-step pre,
+.section > pre,
+.section details > pre {
+  max-width: var(--rep-section-max-width);
+  white-space: var(--pre-wrap);
+  overflow-wrap: var(--wrap);
+  overflow-x: auto;
+  font-size: var(--code-size);
+}
+.flow-step img {
+  display: block;
+  max-width: var(--rep-section-max-width);
+  height: var(--rep-shot-image-height);
+}

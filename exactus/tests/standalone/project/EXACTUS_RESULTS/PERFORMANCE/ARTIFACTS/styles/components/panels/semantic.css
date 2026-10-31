@@ -1,0 +1,13 @@
+/**
+ * Contextual aliases of the panels component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  --perf-panel-gap: var(--catalog-layout-measure-panel-gap);
+  --perf-dot-size: var(--catalog-layout-measure-dot-size);
+  --perf-dot-margin: var(--catalog-layout-measure-dot-margin);
+  --perf-radius-round: var(--catalog-field-border-radius-round);
+  --perf-size-panel: var(--catalog-text-typography-size-panel);
+  --perf-size-sub: var(--catalog-text-typography-size-sub);
+  --perf-track-firm: var(--catalog-text-typography-track-firm);
+}

@@ -1,0 +1,53 @@
+/**
+ * Stage breakdown rows.
+ *
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+@layer perf-base {
+  .stage-list {
+    display: grid;
+  }
+  .stage-row {
+    display: grid;
+    grid-template-columns: var(--perf-stage-grid);
+    gap: var(--perf-stage-gap);
+    align-items: center;
+    padding: var(--perf-stage-pad);
+    border-top: var(--perf-row-rule);
+    cursor: var(--perf-pointer);
+    transition: var(--perf-row-motion);
+  }
+  .stage-row:first-child {
+    border-top: var(--perf-no-edge);
+  }
+  .stage-time strong,
+  .stage-time small,
+  .stage-copy strong,
+  .stage-copy small {
+    display: block;
+  }
+  .stage-time strong {
+    font: var(--perf-type-clock);
+  }
+  .stage-time small,
+  .stage-copy small {
+    color: var(--muted);
+    font-size: var(--perf-size-micro);
+    margin-top: var(--perf-note-gap);
+  }
+  .stage-track {
+    height: var(--perf-track-thick);
+    background: var(--line);
+    border-radius: var(--perf-radius-track);
+    overflow: hidden;
+  }
+  .stage-track i {
+    height: var(--perf-flow-width);
+    display: block;
+    background: var(--accent);
+    border-radius: var(--perf-radius-track);
+  }
+  .stage-copy strong {
+    font-size: var(--perf-size-body);
+  }
+}

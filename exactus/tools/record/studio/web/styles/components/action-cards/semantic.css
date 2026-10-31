@@ -1,0 +1,85 @@
+/**
+ * Contextual aliases of the action cards component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  --action-cards-tile-radius: var(--catalog-item-border-tile-border-radius);
+  --action-cards-tile-color: var(--catalog-item-color-tile-color);
+  --action-cards-tile-blue-background: var(
+    --catalog-item-color-tile-blue-background
+  );
+  --action-cards-tile-yellow-background: var(
+    --catalog-item-color-tile-yellow-background
+  );
+  --action-cards-tile-orange-background: var(
+    --catalog-item-color-tile-orange-background
+  );
+  --action-cards-tile-green-background: var(
+    --catalog-item-color-tile-green-background
+  );
+  --action-cards-tile-silver-background: var(
+    --catalog-item-color-tile-silver-background
+  );
+  --action-cards-tile-size: var(--catalog-item-measure-tile-size);
+  --action-cards-tile-block-grid-column: var(
+    --catalog-item-measure-tile-block-grid-column
+  );
+  --action-cards-field-flex: var(--catalog-field-measure-fluid-flex);
+  --action-cards-field-min-width: var(
+    --catalog-field-measure-shrinkable-min-width
+  );
+  --action-cards-sentence-gap: var(--catalog-item-measure-card-text-gap);
+  --action-cards-token-color: var(--catalog-label-color-token-color);
+  --action-cards-token-background: var(--catalog-label-color-token-background);
+  --action-cards-token-empty-color: var(
+    --catalog-label-color-token-empty-color
+  );
+  --action-cards-token-empty-background: var(
+    --catalog-label-color-token-empty-background
+  );
+  --action-cards-token-padding: var(--catalog-label-measure-token-padding);
+  --action-cards-token-radius: var(--catalog-label-border-token-border-radius);
+  --action-cards-token-weight: var(
+    --catalog-item-typography-weight-semibold-font-weight
+  );
+  --action-cards-token-cursor: var(--catalog-label-cursor-token-cursor);
+  --action-cards-pill-gap: var(--catalog-label-measure-token-gap);
+  --action-cards-pill-icon-size: var(--catalog-label-measure-pill-icon-size);
+  --action-cards-pill-icon-radius: var(
+    --catalog-label-border-pill-icon-border-radius
+  );
+  --action-cards-code-background: var(--catalog-field-color-code-background);
+  --action-cards-code-border: var(--catalog-field-border-code-border);
+  --action-cards-code-radius: var(--catalog-field-border-code-border-radius);
+  --action-cards-code-padding: var(--catalog-field-measure-code-padding);
+  --action-cards-code-max-height: var(--catalog-field-measure-code-max-height);
+  --action-cards-code-grid-column: var(
+    --catalog-field-measure-code-grid-column
+  );
+  --action-cards-code-flex-basis: var(--catalog-field-measure-code-flex-basis);
+  --action-cards-code-font-family: var(
+    --catalog-label-typography-text-small-font-family
+  );
+  --action-cards-code-font-size: var(
+    --catalog-label-typography-small-minus-hairline-font-size
+  );
+  --action-cards-code-cursor: var(--catalog-field-cursor-code-cursor);
+  --action-cards-code-text-align: var(
+    --catalog-field-typography-code-text-align
+  );
+  --action-cards-code-white-space: var(
+    --catalog-field-typography-code-white-space
+  );
+  --action-cards-produces-background: var(--catalog-item-color-step-background);
+  --action-cards-nested-width: var(--catalog-item-measure-card-nested-width);
+  --action-cards-nested-margin: var(--catalog-item-measure-card-nested-margin);
+  --action-cards-editor-padding: var(--catalog-control-measure-compact-padding);
+  --action-cards-editor-background: var(--catalog-item-color-card-background);
+  --action-cards-editor-border: var(--catalog-button-border-default-border);
+  --action-cards-editor-radius: var(--catalog-item-border-card-border-radius);
+  --action-cards-editor-shadow: var(
+    --catalog-item-effect-step-dragging-box-shadow
+  );
+  --action-cards-editor-layer: var(--catalog-control-measure-options-z-index);
+  --action-cards-editor-code-width: var(--catalog-field-measure-full-width);
+}

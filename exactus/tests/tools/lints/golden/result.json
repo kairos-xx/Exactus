@@ -1,0 +1,1085 @@
+{
+	"analyzer": "lints",
+	"artifacts": [
+		{
+			"bytes": 0,
+			"name": "stderr.log",
+			"path": "ARTIFACTS/stderr.log"
+		},
+		{
+			"bytes": 145,
+			"name": "stdout.log",
+			"path": "ARTIFACTS/stdout.log"
+		}
+	],
+	"duration_seconds": 4.25,
+	"environment": {
+		"cpu_count": 8,
+		"node": "v22.4.0",
+		"os": "Linux 6.8.0",
+		"python": "3.13.1",
+		"variables": [
+			{
+				"name": "EXACTUS_ORCHESTRATED",
+				"value": "1"
+			},
+			{
+				"name": "CI",
+				"value": "true"
+			}
+		]
+	},
+	"extension": {
+		"metrics": {
+			"linters": [
+				{
+					"duration_seconds": 0.25,
+					"errors": 0,
+					"exit_code": 0,
+					"files": 1,
+					"findings": 1,
+					"information": 0,
+					"linter": "custom_python",
+					"status": "ran",
+					"version": "built-in",
+					"warnings": 1
+				},
+				{
+					"duration_seconds": 0.25,
+					"errors": 0,
+					"exit_code": 0,
+					"files": 2,
+					"findings": 1,
+					"information": 0,
+					"linter": "custom_javascript",
+					"status": "ran",
+					"version": "built-in",
+					"warnings": 1
+				},
+				{
+					"duration_seconds": 0.25,
+					"errors": 0,
+					"exit_code": 0,
+					"files": 0,
+					"findings": 0,
+					"information": 0,
+					"linter": "custom_css",
+					"status": "ran",
+					"version": "built-in",
+					"warnings": 0
+				},
+				{
+					"duration_seconds": 0.25,
+					"errors": 0,
+					"exit_code": 0,
+					"files": 0,
+					"findings": 0,
+					"information": 0,
+					"linter": "custom_html",
+					"status": "ran",
+					"version": "built-in",
+					"warnings": 0
+				},
+				{
+					"duration_seconds": 0.25,
+					"errors": 0,
+					"exit_code": 1,
+					"files": 1,
+					"findings": 3,
+					"information": 0,
+					"linter": "ruff",
+					"status": "ran",
+					"version": "0.12.0",
+					"warnings": 3
+				},
+				{
+					"duration_seconds": 0.25,
+					"errors": 0,
+					"exit_code": 0,
+					"files": 1,
+					"findings": 0,
+					"information": 0,
+					"linter": "ruff_docs",
+					"status": "ran",
+					"version": "0.12.0",
+					"warnings": 0
+				},
+				{
+					"duration_seconds": 0.25,
+					"errors": 1,
+					"exit_code": 1,
+					"files": 1,
+					"findings": 2,
+					"information": 0,
+					"linter": "basedpyright",
+					"status": "ran",
+					"version": "1.39.0",
+					"warnings": 1
+				},
+				{
+					"duration_seconds": 0.25,
+					"errors": 0,
+					"exit_code": 0,
+					"files": 1,
+					"findings": 0,
+					"information": 0,
+					"linter": "pyrefly",
+					"status": "ran",
+					"version": "0.40.0",
+					"warnings": 0
+				},
+				{
+					"duration_seconds": 0.25,
+					"errors": 0,
+					"exit_code": 0,
+					"files": 2,
+					"findings": 1,
+					"information": 0,
+					"linter": "eslint",
+					"status": "ran",
+					"version": "9.12.0",
+					"warnings": 1
+				},
+				{
+					"duration_seconds": 0.25,
+					"errors": 0,
+					"exit_code": 0,
+					"files": 2,
+					"findings": 0,
+					"information": 0,
+					"linter": "typescript",
+					"status": "ran",
+					"version": "5.9.3",
+					"warnings": 0
+				},
+				{
+					"duration_seconds": null,
+					"errors": 0,
+					"exit_code": null,
+					"files": 0,
+					"findings": 0,
+					"information": 0,
+					"linter": "stylelint",
+					"status": "missing",
+					"version": null,
+					"warnings": 0
+				},
+				{
+					"duration_seconds": null,
+					"errors": 0,
+					"exit_code": null,
+					"files": 0,
+					"findings": 0,
+					"information": 0,
+					"linter": "htmlhint",
+					"status": "not run",
+					"version": null,
+					"warnings": 0
+				}
+			],
+			"overview": {
+				"files_analyzed": 3,
+				"files_with_findings": 2,
+				"findings": 8,
+				"linters_run": 10,
+				"linters_unavailable": 1,
+				"rules_triggered": 8
+			},
+			"severity_by_linter": [
+				{
+					"count": 1,
+					"linter": "custom_python",
+					"severity": "warning"
+				},
+				{
+					"count": 1,
+					"linter": "custom_javascript",
+					"severity": "warning"
+				},
+				{
+					"count": 3,
+					"linter": "ruff",
+					"severity": "warning"
+				},
+				{
+					"count": 1,
+					"linter": "basedpyright",
+					"severity": "error"
+				},
+				{
+					"count": 1,
+					"linter": "basedpyright",
+					"severity": "warning"
+				},
+				{
+					"count": 1,
+					"linter": "eslint",
+					"severity": "warning"
+				}
+			],
+			"top_files": [
+				{
+					"count": 6,
+					"path": "pkg/app.py"
+				},
+				{
+					"count": 2,
+					"path": "web/app.js"
+				}
+			],
+			"top_rules": [
+				{
+					"count": 1,
+					"linter": "custom_python",
+					"rule": "PY002"
+				},
+				{
+					"count": 1,
+					"linter": "custom_javascript",
+					"rule": "JS005"
+				},
+				{
+					"count": 1,
+					"linter": "ruff",
+					"rule": "ANN001"
+				},
+				{
+					"count": 1,
+					"linter": "ruff",
+					"rule": "PTH123"
+				},
+				{
+					"count": 1,
+					"linter": "ruff",
+					"rule": "SIM115"
+				},
+				{
+					"count": 1,
+					"linter": "basedpyright",
+					"rule": "reportMissingParameterType"
+				},
+				{
+					"count": 1,
+					"linter": "basedpyright",
+					"rule": "reportUnusedCallResult"
+				},
+				{
+					"count": 1,
+					"linter": "eslint",
+					"rule": "prefer-const"
+				}
+			]
+		},
+		"rules": [
+			{
+				"rule": "CMP000",
+				"title": "Module does not parse",
+				"category": "Parsing",
+				"count": 0
+			},
+			{
+				"rule": "CMP001",
+				"title": "Suppression marker",
+				"category": "Suppression",
+				"count": 0
+			},
+			{
+				"rule": "CMP002",
+				"title": "typing.Any usage",
+				"category": "Typing",
+				"count": 0
+			},
+			{
+				"rule": "CMP003",
+				"title": "object annotation",
+				"category": "Typing",
+				"count": 0
+			},
+			{
+				"rule": "CMP004",
+				"title": "Lint ignore configuration",
+				"category": "Configuration",
+				"count": 0
+			},
+			{
+				"rule": "CMP005",
+				"title": "Type-check suppression",
+				"category": "Configuration",
+				"count": 0
+			},
+			{
+				"rule": "CMP006",
+				"title": "pyproject.toml missing",
+				"category": "Configuration",
+				"count": 0
+			},
+			{
+				"rule": "PY002",
+				"title": "Module global `LIMIT` is uppercase but is not declared Final.",
+				"category": "custom_python",
+				"count": 1
+			},
+			{
+				"rule": "JS005",
+				"title": "Static inline style `color` is assigned directly.",
+				"category": "custom_javascript",
+				"count": 1
+			},
+			{
+				"rule": "ANN001",
+				"title": "Missing type annotation for function argument `path`",
+				"category": "ruff",
+				"count": 1
+			},
+			{
+				"rule": "PTH123",
+				"title": "`open()` should be replaced by `Path.open()`",
+				"category": "ruff",
+				"count": 1
+			},
+			{
+				"rule": "SIM115",
+				"title": "Use a context manager for opening files",
+				"category": "ruff",
+				"count": 1
+			},
+			{
+				"rule": "reportMissingParameterType",
+				"title": "Type annotation is missing for parameter \"path\"",
+				"category": "basedpyright",
+				"count": 1
+			},
+			{
+				"rule": "reportUnusedCallResult",
+				"title": "Result of call expression is of type \"None\"",
+				"category": "basedpyright",
+				"count": 1
+			},
+			{
+				"rule": "prefer-const",
+				"title": "'box' is never reassigned.",
+				"category": "eslint",
+				"count": 1
+			}
+		]
+	},
+	"findings": [
+		{
+			"blocking": false,
+			"column": 1,
+			"end_column": 1,
+			"end_line": 4,
+			"excerpt": {
+				"clipped": false,
+				"context": 3,
+				"end": 7,
+				"language": "python",
+				"line": 4,
+				"lines": [
+					{
+						"n": 1,
+						"target": false,
+						"text": "\"\"\"Demo application.\"\"\""
+					},
+					{
+						"n": 2,
+						"target": false,
+						"text": ""
+					},
+					{
+						"n": 3,
+						"target": false,
+						"text": "import os"
+					},
+					{
+						"n": 4,
+						"target": true,
+						"text": "LIMIT = 3"
+					},
+					{
+						"n": 5,
+						"target": false,
+						"text": ""
+					},
+					{
+						"n": 6,
+						"target": false,
+						"text": ""
+					},
+					{
+						"n": 7,
+						"target": false,
+						"text": "def load(path):"
+					}
+				],
+				"start": 1
+			},
+			"file": "/work/project/pkg/app.py",
+			"id": "LINTS-001",
+			"line": 4,
+			"message": "Module global `LIMIT` is uppercase but is not declared Final. Use an immutable constant or move mutable state to an explicit instance dependency.",
+			"path": "pkg/app.py",
+			"rule": "PY002",
+			"severity": "warning",
+			"source": "custom_python",
+			"title": "Module global `LIMIT` is uppercase but is not declared Final.",
+			"tool": "custom_python"
+		},
+		{
+			"blocking": false,
+			"column": 1,
+			"end_column": 1,
+			"end_line": 2,
+			"excerpt": {
+				"clipped": false,
+				"context": 3,
+				"end": 2,
+				"language": "javascript",
+				"line": 2,
+				"lines": [
+					{
+						"n": 1,
+						"target": false,
+						"text": "const box = document.querySelector(\"#box\");"
+					},
+					{
+						"n": 2,
+						"target": true,
+						"text": "box.style.color = \"red\";"
+					}
+				],
+				"start": 1
+			},
+			"file": "/work/project/web/app.js",
+			"id": "LINTS-002",
+			"line": 2,
+			"message": "Static inline style `color` is assigned directly.",
+			"path": "web/app.js",
+			"rule": "JS005",
+			"severity": "warning",
+			"source": "custom_javascript",
+			"title": "Static inline style `color` is assigned directly.",
+			"tool": "custom_javascript"
+		},
+		{
+			"blocking": true,
+			"column": 10,
+			"end_column": 10,
+			"end_line": 7,
+			"excerpt": {
+				"clipped": false,
+				"context": 3,
+				"end": 10,
+				"language": "python",
+				"line": 7,
+				"lines": [
+					{
+						"n": 4,
+						"target": false,
+						"text": "LIMIT = 3"
+					},
+					{
+						"n": 5,
+						"target": false,
+						"text": ""
+					},
+					{
+						"n": 6,
+						"target": false,
+						"text": ""
+					},
+					{
+						"n": 7,
+						"target": true,
+						"text": "def load(path):"
+					},
+					{
+						"n": 8,
+						"target": false,
+						"text": "    \"\"\"Load one file.\"\"\""
+					},
+					{
+						"n": 9,
+						"target": false,
+						"text": "    return open(path).read()"
+					},
+					{
+						"n": 10,
+						"target": false,
+						"text": ""
+					}
+				],
+				"start": 4
+			},
+			"file": "/work/project/pkg/app.py",
+			"id": "LINTS-003",
+			"line": 7,
+			"message": "Missing type annotation for function argument `path`",
+			"path": "pkg/app.py",
+			"rule": "ANN001",
+			"severity": "warning",
+			"source": "ruff",
+			"title": "Missing type annotation for function argument `path`",
+			"tool": "ruff"
+		},
+		{
+			"blocking": true,
+			"column": 12,
+			"end_column": 12,
+			"end_line": 9,
+			"excerpt": {
+				"clipped": false,
+				"context": 3,
+				"end": 12,
+				"language": "python",
+				"line": 9,
+				"lines": [
+					{
+						"n": 6,
+						"target": false,
+						"text": ""
+					},
+					{
+						"n": 7,
+						"target": false,
+						"text": "def load(path):"
+					},
+					{
+						"n": 8,
+						"target": false,
+						"text": "    \"\"\"Load one file.\"\"\""
+					},
+					{
+						"n": 9,
+						"target": true,
+						"text": "    return open(path).read()"
+					},
+					{
+						"n": 10,
+						"target": false,
+						"text": ""
+					},
+					{
+						"n": 11,
+						"target": false,
+						"text": ""
+					},
+					{
+						"n": 12,
+						"target": false,
+						"text": "print(os.sep, LIMIT)"
+					}
+				],
+				"start": 6
+			},
+			"file": "/work/project/pkg/app.py",
+			"id": "LINTS-004",
+			"line": 9,
+			"message": "`open()` should be replaced by `Path.open()`",
+			"path": "pkg/app.py",
+			"rule": "PTH123",
+			"severity": "warning",
+			"source": "ruff",
+			"title": "`open()` should be replaced by `Path.open()`",
+			"tool": "ruff"
+		},
+		{
+			"blocking": true,
+			"column": 12,
+			"end_column": 12,
+			"end_line": 9,
+			"excerpt": {
+				"clipped": false,
+				"context": 3,
+				"end": 12,
+				"language": "python",
+				"line": 9,
+				"lines": [
+					{
+						"n": 6,
+						"target": false,
+						"text": ""
+					},
+					{
+						"n": 7,
+						"target": false,
+						"text": "def load(path):"
+					},
+					{
+						"n": 8,
+						"target": false,
+						"text": "    \"\"\"Load one file.\"\"\""
+					},
+					{
+						"n": 9,
+						"target": true,
+						"text": "    return open(path).read()"
+					},
+					{
+						"n": 10,
+						"target": false,
+						"text": ""
+					},
+					{
+						"n": 11,
+						"target": false,
+						"text": ""
+					},
+					{
+						"n": 12,
+						"target": false,
+						"text": "print(os.sep, LIMIT)"
+					}
+				],
+				"start": 6
+			},
+			"file": "/work/project/pkg/app.py",
+			"id": "LINTS-005",
+			"line": 9,
+			"message": "Use a context manager for opening files",
+			"path": "pkg/app.py",
+			"rule": "SIM115",
+			"severity": "warning",
+			"source": "ruff",
+			"title": "Use a context manager for opening files",
+			"tool": "ruff"
+		},
+		{
+			"blocking": true,
+			"column": 10,
+			"end_column": 10,
+			"end_line": 7,
+			"excerpt": {
+				"clipped": false,
+				"context": 3,
+				"end": 10,
+				"language": "python",
+				"line": 7,
+				"lines": [
+					{
+						"n": 4,
+						"target": false,
+						"text": "LIMIT = 3"
+					},
+					{
+						"n": 5,
+						"target": false,
+						"text": ""
+					},
+					{
+						"n": 6,
+						"target": false,
+						"text": ""
+					},
+					{
+						"n": 7,
+						"target": true,
+						"text": "def load(path):"
+					},
+					{
+						"n": 8,
+						"target": false,
+						"text": "    \"\"\"Load one file.\"\"\""
+					},
+					{
+						"n": 9,
+						"target": false,
+						"text": "    return open(path).read()"
+					},
+					{
+						"n": 10,
+						"target": false,
+						"text": ""
+					}
+				],
+				"start": 4
+			},
+			"file": "/work/project/pkg/app.py",
+			"id": "LINTS-006",
+			"line": 7,
+			"message": "Type annotation is missing for parameter \"path\"\n  Parameter \"path\" is unannotated",
+			"path": "pkg/app.py",
+			"rule": "reportMissingParameterType",
+			"severity": "error",
+			"source": "basedpyright",
+			"title": "Type annotation is missing for parameter \"path\"",
+			"tool": "basedpyright"
+		},
+		{
+			"blocking": false,
+			"column": 1,
+			"end_column": 1,
+			"end_line": 12,
+			"excerpt": {
+				"clipped": false,
+				"context": 3,
+				"end": 12,
+				"language": "python",
+				"line": 12,
+				"lines": [
+					{
+						"n": 9,
+						"target": false,
+						"text": "    return open(path).read()"
+					},
+					{
+						"n": 10,
+						"target": false,
+						"text": ""
+					},
+					{
+						"n": 11,
+						"target": false,
+						"text": ""
+					},
+					{
+						"n": 12,
+						"target": true,
+						"text": "print(os.sep, LIMIT)"
+					}
+				],
+				"start": 9
+			},
+			"file": "/work/project/pkg/app.py",
+			"id": "LINTS-007",
+			"line": 12,
+			"message": "Result of call expression is of type \"None\"",
+			"path": "pkg/app.py",
+			"rule": "reportUnusedCallResult",
+			"severity": "warning",
+			"source": "basedpyright",
+			"title": "Result of call expression is of type \"None\"",
+			"tool": "basedpyright"
+		},
+		{
+			"blocking": false,
+			"column": 7,
+			"end_column": 7,
+			"end_line": 1,
+			"excerpt": {
+				"clipped": false,
+				"context": 3,
+				"end": 2,
+				"language": "javascript",
+				"line": 1,
+				"lines": [
+					{
+						"n": 1,
+						"target": true,
+						"text": "const box = document.querySelector(\"#box\");"
+					},
+					{
+						"n": 2,
+						"target": false,
+						"text": "box.style.color = \"red\";"
+					}
+				],
+				"start": 1
+			},
+			"file": "/work/project/web/app.js",
+			"id": "LINTS-008",
+			"line": 1,
+			"message": "'box' is never reassigned. Use 'const' instead.",
+			"path": "web/app.js",
+			"rule": "prefer-const",
+			"severity": "warning",
+			"source": "eslint",
+			"title": "'box' is never reassigned.",
+			"tool": "eslint"
+		}
+	],
+	"gate": {
+		"reason": "4 blocking findings",
+		"status": "FAIL"
+	},
+	"invocation": {
+		"arguments": [
+			".",
+			"--dry"
+		],
+		"command": "python exactus/tools/lints/main.py . --dry",
+		"cwd": "/work/project"
+	},
+	"passed": false,
+	"pipeline_run_id": null,
+	"resume": "FAIL: analyzer completed with exit status 1.",
+	"run": {
+		"duration_human": "4.2 s",
+		"duration_seconds": 4.25,
+		"exit_code": 1,
+		"finished_at": "2026-10-03T09:00:04+00:00",
+		"id": "0123456789abcdef0123456789abcdef",
+		"pipeline_id": null,
+		"started_at": "2026-10-03T09:00:00+00:00",
+		"status": "FAIL"
+	},
+	"run_id": "0123456789abcdef0123456789abcdef",
+	"scope": {
+		"exclude": [
+			"exactus/packages/**",
+			"**/__pycache__/**"
+		],
+		"include": [
+			"."
+		],
+		"skipped": [
+			{
+				"reason": "eslint: File ignored because of a matching ignore pattern.",
+				"target": "web/exactus.packages.min.js"
+			}
+		]
+	},
+	"status": "FAIL",
+	"summary": {
+		"analysis": {
+			"files": {
+				"css": 0,
+				"html": 0,
+				"javascript_jsx": 2,
+				"python": 1,
+				"unique_analyzed": 3,
+				"with_findings": 2
+			},
+			"ignore_patterns": [
+				"exactus/packages/**",
+				"**/__pycache__/**"
+			],
+			"targets": [
+				"."
+			]
+		},
+		"clean": false,
+		"findings_total": 8,
+		"severity": {
+			"error": 1,
+			"warning": 7
+		},
+		"targets_analyzed": 3,
+		"targets_eligible": 3
+	},
+	"title": "Lint Exactus",
+	"tool": {
+		"display_name": "Lint Exactus",
+		"name": "lints",
+		"version": "0.5.0"
+	},
+	"tools": {
+		"basedpyright": {
+			"command": [
+				"basedpyright"
+			],
+			"count": 2,
+			"duration_seconds": 0.25,
+			"findings": [
+				{
+					"column": 10,
+					"end_column": 10,
+					"end_line": 7,
+					"file": "/work/project/pkg/app.py",
+					"line": 7,
+					"message": "Type annotation is missing for parameter \"path\"\n  Parameter \"path\" is unannotated",
+					"rule": "reportMissingParameterType",
+					"severity": "error",
+					"tool": "basedpyright"
+				},
+				{
+					"column": 1,
+					"end_column": 1,
+					"end_line": 12,
+					"file": "/work/project/pkg/app.py",
+					"line": 12,
+					"message": "Result of call expression is of type \"None\"",
+					"rule": "reportUnusedCallResult",
+					"severity": "warning",
+					"tool": "basedpyright"
+				}
+			],
+			"returncode": 1,
+			"stderr": "",
+			"tool": "basedpyright",
+			"version": "1.39.0"
+		},
+		"custom_css": {
+			"command": [],
+			"count": 0,
+			"duration_seconds": 0.25,
+			"findings": [],
+			"returncode": 0,
+			"stderr": "",
+			"tool": "custom_css"
+		},
+		"custom_html": {
+			"command": [],
+			"count": 0,
+			"duration_seconds": 0.25,
+			"findings": [],
+			"returncode": 0,
+			"stderr": "",
+			"tool": "custom_html"
+		},
+		"custom_javascript": {
+			"command": [],
+			"count": 1,
+			"duration_seconds": 0.25,
+			"findings": [
+				{
+					"column": 1,
+					"end_column": 1,
+					"end_line": 2,
+					"file": "/work/project/web/app.js",
+					"line": 2,
+					"message": "Static inline style `color` is assigned directly.",
+					"rule": "JS005",
+					"severity": "warning",
+					"tool": "custom_javascript"
+				}
+			],
+			"returncode": 0,
+			"stderr": "",
+			"tool": "custom_javascript"
+		},
+		"custom_python": {
+			"command": [],
+			"count": 1,
+			"duration_seconds": 0.25,
+			"findings": [
+				{
+					"column": 1,
+					"end_column": 1,
+					"end_line": 4,
+					"file": "/work/project/pkg/app.py",
+					"line": 4,
+					"message": "Module global `LIMIT` is uppercase but is not declared Final. Use an immutable constant or move mutable state to an explicit instance dependency.",
+					"rule": "PY002",
+					"severity": "warning",
+					"tool": "custom_python"
+				}
+			],
+			"returncode": 0,
+			"stderr": "",
+			"tool": "custom_python"
+		},
+		"eslint": {
+			"command": [
+				"eslint"
+			],
+			"count": 1,
+			"duration_seconds": 0.25,
+			"findings": [
+				{
+					"column": 7,
+					"end_column": 7,
+					"end_line": 1,
+					"file": "/work/project/web/app.js",
+					"line": 1,
+					"message": "'box' is never reassigned. Use 'const' instead.",
+					"rule": "prefer-const",
+					"severity": "warning",
+					"tool": "eslint"
+				}
+			],
+			"returncode": 0,
+			"skipped_files": [
+				{
+					"file": "/work/project/web/exactus.packages.min.js",
+					"reason": "File ignored because of a matching ignore pattern."
+				}
+			],
+			"stderr": "",
+			"tool": "eslint",
+			"version": "9.12.0"
+		},
+		"pyrefly": {
+			"command": [
+				"pyrefly"
+			],
+			"count": 0,
+			"duration_seconds": 0.25,
+			"findings": [],
+			"returncode": 0,
+			"stderr": "",
+			"tool": "pyrefly",
+			"version": "0.40.0"
+		},
+		"ruff": {
+			"command": [
+				"ruff"
+			],
+			"count": 3,
+			"duration_seconds": 0.25,
+			"findings": [
+				{
+					"column": 10,
+					"end_column": 10,
+					"end_line": 7,
+					"file": "/work/project/pkg/app.py",
+					"line": 7,
+					"message": "Missing type annotation for function argument `path`",
+					"rule": "ANN001",
+					"severity": "warning",
+					"tool": "ruff"
+				},
+				{
+					"column": 12,
+					"end_column": 12,
+					"end_line": 9,
+					"file": "/work/project/pkg/app.py",
+					"line": 9,
+					"message": "`open()` should be replaced by `Path.open()`",
+					"rule": "PTH123",
+					"severity": "warning",
+					"tool": "ruff"
+				},
+				{
+					"column": 12,
+					"end_column": 12,
+					"end_line": 9,
+					"file": "/work/project/pkg/app.py",
+					"line": 9,
+					"message": "Use a context manager for opening files",
+					"rule": "SIM115",
+					"severity": "warning",
+					"tool": "ruff"
+				}
+			],
+			"returncode": 1,
+			"stderr": "",
+			"tool": "ruff",
+			"version": "0.12.0"
+		},
+		"ruff_docs": {
+			"command": [
+				"ruff_docs"
+			],
+			"count": 0,
+			"duration_seconds": 0.25,
+			"findings": [],
+			"returncode": 0,
+			"stderr": "",
+			"tool": "ruff_docs",
+			"version": "0.12.0"
+		},
+		"stylelint": {
+			"command": [],
+			"count": 0,
+			"findings": [],
+			"returncode": 0,
+			"skipped": true,
+			"stderr": "stylelint is not installed.",
+			"tool": "stylelint"
+		},
+		"typescript": {
+			"command": [
+				"typescript"
+			],
+			"count": 0,
+			"duration_seconds": 0.25,
+			"findings": [],
+			"returncode": 0,
+			"stderr": "",
+			"tool": "typescript",
+			"version": "5.9.3"
+		}
+	},
+	"version": 1
+}

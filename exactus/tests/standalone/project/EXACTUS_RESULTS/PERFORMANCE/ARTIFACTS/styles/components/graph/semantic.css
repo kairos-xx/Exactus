@@ -1,0 +1,10 @@
+/**
+ * Contextual aliases of the graph component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  --perf-graph-height: var(--catalog-layout-measure-plotted-height);
+  --perf-overview-height: var(--catalog-layout-measure-overview-height);
+  --perf-resource-height: var(--catalog-layout-measure-resource-height);
+  --perf-wrap-line: var(--catalog-text-typography-wrap-line);
+}

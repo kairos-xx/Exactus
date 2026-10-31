@@ -1,0 +1,82 @@
+/**
+ * Contextual aliases of the shell component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  /* 02-shell */
+  --shell-app-root-height: var(--catalog-control-measure-full-height);
+  --shell-app-root-margin: var(--catalog-control-measure-app-margin);
+  --shell-app-root-width: var(--catalog-control-measure-full-width);
+  --shell-body-height: var(--catalog-surface-measure-full-height);
+  --shell-body-margin: var(--catalog-surface-measure-body-margin);
+  --shell-body-width: var(--catalog-surface-measure-full-width);
+  --shell-brand-white-space: var(--catalog-header-typography-brand-white-space);
+  --shell-button-border-radius: var(
+    --catalog-button-border-micro-border-radius
+  );
+  --shell-button-box-shadow: var(--catalog-button-effect-default-box-shadow);
+  --shell-button-cursor: var(--catalog-button-cursor-default-cursor);
+  --shell-button-icon-aspect-ratio: var(
+    --catalog-button-measure-default-aspect-ratio
+  );
+  --shell-button-icon-flex: var(--catalog-button-measure-default-flex);
+  --shell-button-icon-height: var(--catalog-button-measure-full-height);
+  --shell-button-icon-width: var(--catalog-button-measure-default-width);
+  --shell-button-line-height: var(
+    --catalog-button-typography-default-line-height
+  );
+  --shell-button-min-height: var(--catalog-button-measure-default-min-height);
+  --shell-button-min-width: var(--catalog-button-measure-default-min-width);
+  --shell-footer-font-size: var(
+    --catalog-toolbar-typography-small-minus-hairline-font-size
+  );
+  --shell-footer-padding: var(--catalog-toolbar-measure-footer-padding);
+  --shell-h2-font-size: var(
+    --catalog-header-typography-small-plus-micro-font-size
+  );
+  --shell-h2-margin: var(--catalog-header-measure-h2-margin);
+  --shell-html-height: var(--catalog-control-measure-full-height);
+  --shell-html-margin: var(--catalog-control-measure-html-margin);
+  --shell-html-width: var(--catalog-control-measure-full-width);
+  --shell-icon-fill: var(--catalog-icon-color-default-fill);
+  --shell-icon-stroke: var(--catalog-icon-color-default-stroke);
+  --shell-icon-stroke-width: var(--catalog-icon-measure-default-stroke-width);
+  --shell-input-border-radius: var(--catalog-field-border-micro-border-radius);
+  --shell-number-control-border-radius: var(
+    --catalog-control-border-micro-border-radius
+  );
+  --shell-number-control-grid-template-columns: var(
+    --catalog-control-measure-number-grid-template-columns
+  );
+  --shell-number-unit-font-size: var(
+    --catalog-control-typography-small-font-size
+  );
+  --shell-select-border-radius: var(--catalog-field-border-micro-border-radius);
+  --shell-select-font-weight: var(
+    --catalog-field-typography-select-font-weight
+  );
+  --shell-summary-cursor: var(--catalog-label-cursor-summary-cursor);
+  --shell-summary-padding-block: var(
+    --catalog-label-measure-small-padding-block
+  );
+  --shell-textarea-border-radius: var(
+    --catalog-field-border-micro-border-radius
+  );
+  --shell-textarea-font-weight: var(
+    --catalog-field-typography-textarea-font-weight
+  );
+  --shell-textarea-min-height: var(--catalog-field-measure-huge-min-height);
+  --shell-version-border: var(--catalog-control-border-version-border);
+  --shell-version-border-radius: var(
+    --catalog-control-border-compact-border-radius
+  );
+  --shell-version-color: var(--catalog-control-color-version-color);
+  --shell-version-font: var(--catalog-control-typography-version-font);
+  --shell-version-padding: var(
+    --catalog-control-measure-hairline-tiny-plus-hairline-padding
+  );
+  /* 01-tokens */
+  --shell-button-border: var(--catalog-button-border-default-border);
+  --shell-footer-color: var(--catalog-toolbar-color-footer-light-color);
+  --shell-textarea-border: var(--catalog-field-border-textarea-border);
+}

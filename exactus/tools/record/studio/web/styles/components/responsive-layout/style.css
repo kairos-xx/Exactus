@@ -1,0 +1,165 @@
+/**
+ * Container-query and window-width adaptations.
+ *
+ * Sources: 36-responsive.
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+/* Source: 36-responsive */
+/* Value-preserving design tokens for the compact editor. */
+/* Responsive content. Panels resize freely inside the dock grid, so their
+   content answers to the width of the panel itself (container queries), not
+   to the window. Page chrome answers to the window. */
+/* Any panel: titles give way to the icon, then the extra tools go. */
+@container panel (width < 200px) {
+  .panel-title-text {
+    display: none;
+  }
+}
+@container panel (width < 170px) {
+  .panel-tool-reveal,
+  .target-status {
+    display: none;
+  }
+}
+/* Timeline header: drop labels, then groups, as the panel narrows. */
+@container panel (width < 1180px) {
+  .timeline-ticks > span,
+  .timeline-tools > button > span:not(.studio-icon),
+  .timeline-zoom-group
+    > button:not(.timeline-icon-button)
+    > span:not(.studio-icon) {
+    display: none;
+  }
+  .timeline-timecode {
+    min-width: var(
+      --responsive-timeline-timecode-min-width-panel-below-width-1180px
+    );
+    font-size: var(
+      --responsive-timeline-timecode-font-size-panel-below-width-1180px
+    );
+  }
+}
+@container panel (width < 960px) {
+  .timeline-zoom-group > button:not(.timeline-icon-button),
+  .timeline-zoom-group > input[type="range"],
+  .timeline-tools {
+    display: none;
+  }
+  .timeline-toolbar {
+    gap: var(--responsive-timeline-toolbar-gap-panel-below-width-960px);
+  }
+}
+@container panel (width < 700px) {
+  /* .studio matches the specificity of the three-column default in
+     34-timeline.css; without it this narrower layout never applies. */
+  .studio .timeline-toolbar {
+    grid-template-columns: var(
+      --responsive-timeline-toolbar-grid-template-columns-panel-below-width-700px
+    );
+  }
+  .timeline-cluster-end,
+  .timeline-tools {
+    display: none;
+  }
+  .timeline-timecode {
+    justify-self: end;
+  }
+}
+@container panel (width < 480px) {
+  .timeline-transport > button:not(.timeline-play) {
+    display: none;
+  }
+  .timeline-timecode {
+    min-width: var(
+      --responsive-timeline-timecode-min-width-panel-below-width-480px
+    );
+    height: var(--responsive-timeline-timecode-height-panel-below-width-480px);
+    padding-inline: var(
+      --responsive-timeline-timecode-padding-inline-panel-below-width-480px
+    );
+    font-size: var(
+      --responsive-timeline-timecode-font-size-panel-below-width-480px
+    );
+  }
+  .timeline .ruler-label {
+    display: none;
+  }
+}
+/* Steps: detail lines and chips make way before the names do. */
+@container panel (width < 600px) {
+  .table-panel-header > .panel-title > .panel-title-text,
+  .edit-step-checks {
+    display: none;
+  }
+}
+@container panel (width < 420px) {
+  .table-panel-header > .panel-title {
+    margin-right: var(
+      --responsive-table-panel-header-panel-title-margin-right-panel-below-width-420px
+    );
+  }
+  .edit-step-toolbar > strong {
+    display: none;
+  }
+}
+@container panel (width < 340px) {
+  .edit-step-text small,
+  .edit-step-grip {
+    display: none;
+  }
+}
+/* Test browser: icon-only buttons and a status dot in a narrow panel. */
+@container panel (width < 320px) {
+  .target-status {
+    font-size: var(
+      --responsive-target-status-font-size-panel-below-width-320px
+    );
+    padding-inline: var(
+      --responsive-target-status-padding-inline-panel-below-width-320px
+    );
+  }
+}
+/* Flow tree and Properties */
+@container panel (width < 200px) {
+  .edit-inspector-heading small {
+    display: none;
+  }
+}
+/* Page chrome follows the window. */
+@media (width <= 1000px) {
+  .brand h1 > span,
+  .brand h1 > i {
+    display: none;
+  }
+}
+@media (width <= 760px) {
+  .transport-target > span:not(.status-dot) {
+    display: none;
+  }
+}
+@media (width <= 600px) {
+  .mobile-panel-tabs {
+    grid-auto-columns: var(
+      --responsive-mobile-panel-tabs-grid-auto-columns-max-width-600px
+    );
+    grid-auto-flow: column;
+    grid-template-columns: var(
+      --responsive-mobile-panel-tabs-grid-template-columns-max-width-600px
+    );
+  }
+  .studio > footer > span:not(.status-text) {
+    display: none;
+  }
+  .studio {
+    grid-template-columns: var(
+      --responsive-grid-template-columns-max-width-600px
+    );
+  }
+  .studio > .topbar {
+    flex-wrap: nowrap;
+    overflow: hidden;
+  }
+  .studio > .workbench {
+    min-width: var(--responsive-workbench-min-width-max-width-600px);
+  }
+}

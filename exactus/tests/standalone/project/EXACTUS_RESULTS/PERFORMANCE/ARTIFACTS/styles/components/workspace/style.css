@@ -1,0 +1,55 @@
+/**
+ * Tool header, mode switch, views and column layout.
+ *
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+@layer perf-base {
+  .workspace {
+    min-width: var(--perf-flush);
+    display: grid;
+    gap: var(--perf-card-gap);
+  }
+  .tool-header {
+    padding: var(--perf-panel-padding);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .tool-header h2 {
+    margin: var(--perf-heading-gap);
+    font-size: var(--perf-size-heading);
+  }
+  .segmented {
+    display: flex;
+    background: var(--surface2);
+    border: var(--perf-panel-edge);
+    border-radius: var(--perf-radius-segment);
+    padding: var(--perf-segment-pad);
+  }
+  .segmented button {
+    height: var(--perf-segment-height);
+    border: var(--perf-no-edge);
+    background: var(--perf-clear);
+    font-size: var(--perf-size-note);
+  }
+  .segmented button.active {
+    background: var(--surface);
+    box-shadow: var(--perf-chip-shadow);
+  }
+  .view {
+    display: none;
+  }
+  .view.active {
+    display: grid;
+    gap: var(--perf-card-gap);
+  }
+  .two-col {
+    display: grid;
+    grid-template-columns: var(--perf-split-grid);
+    gap: var(--perf-card-gap);
+  }
+  .two-col > .panel,
+  .view > .panel {
+    padding: var(--perf-panel-padding);
+  }
+}

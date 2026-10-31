@@ -1,0 +1,49 @@
+/**
+ * Contextual aliases of the foundation component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  /* 28-foundation */
+  --foundation-where-also-dialog-is-input-also-select-also-textarea-transition: var(
+    --catalog-control-motion-dialog-field-transition
+  );
+  --foundation-where-also-dialog-select-cursor: var(
+    --catalog-control-cursor-dialog-select-cursor
+  );
+  --foundation-where-background-color: var(
+    --catalog-control-color-default-background-color
+  );
+  --foundation-where-border: var(--catalog-control-border-dialog-button-border);
+  --foundation-where-border-color: var(
+    --catalog-control-border-default-border-color
+  );
+  --foundation-where-border-radius: var(
+    --catalog-control-border-tiny-plus-micro-border-radius
+  );
+  --foundation-where-box-shadow: var(
+    --catalog-control-effect-default-box-shadow
+  );
+  --foundation-where-cursor: var(--catalog-control-cursor-default-cursor);
+  --foundation-where-font-size: var(
+    --catalog-control-typography-small-plus-hairline-font-size
+  );
+  --foundation-where-font-weight: var(
+    --catalog-control-typography-weight-medium-font-weight
+  );
+  --foundation-where-line-height: var(
+    --catalog-control-typography-default-line-height
+  );
+  --foundation-where-list-style: var(
+    --catalog-control-measure-default-list-style
+  );
+  --foundation-where-opacity: var(
+    --catalog-control-effect-default-disabled-opacity
+  );
+  --foundation-where-outline: var(--catalog-control-border-default-outline);
+  --foundation-where-outline-offset: var(
+    --catalog-control-border-hairline-outline-offset
+  );
+  --foundation-where-transition: var(
+    --catalog-control-motion-default-transition
+  );
+}

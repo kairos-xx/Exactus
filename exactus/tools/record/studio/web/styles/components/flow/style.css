@@ -1,0 +1,151 @@
+/**
+ * Flow graph nodes and connectors.
+ *
+ * Sources: 05-flow-nodes.
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+@layer studio-base {
+  /* Source: 05-flow-nodes */
+  .node-head {
+    font-size: var(--flow-node-head-font-size);
+    min-height: var(--flow-card-heading-height);
+    padding: var(--flow-node-head-padding);
+    border-bottom: var(--flow-node-head-border-bottom);
+    font-weight: var(--flow-node-head-font-weight);
+    display: flex;
+    align-items: center;
+    gap: var(--flow-node-head-gap);
+  }
+  .node-body {
+    flex: var(--flow-node-body-flex);
+    padding: var(--flow-node-body-padding);
+    color: var(--muted);
+    font: var(--flow-node-body-font);
+    overflow: hidden;
+    text-overflow: var(--flow-node-body-text-overflow);
+    overflow-wrap: var(--flow-node-body-overflow-wrap);
+  }
+  .panel > header.table-panel-header {
+    min-height: var(--flow-panel-header-table-panel-header-min-height);
+    height: var(--flow-panel-header-table-panel-header-min-height);
+    padding: var(--flow-panel-header-table-panel-header-padding);
+    background: var(--flow-panel-header-table-panel-header-background);
+  }
+  .data-table {
+    table-layout: fixed;
+    width: var(--flow-data-table-width);
+    border-collapse: collapse;
+    font-size: var(--flow-data-table-font-size);
+  }
+  .preview-note {
+    display: block;
+    place-items: center;
+    text-align: var(--flow-preview-note-text-align);
+    color: var(--muted);
+    background: var(--surface);
+    height: var(--flow-preview-note-height);
+    flex: var(--flow-preview-note-flex);
+    padding: var(--flow-panel-padding);
+    min-height: var(--flow-preview-note-min-height);
+    overflow: auto;
+    font-size: var(--flow-preview-note-font-size);
+  }
+  .field {
+    display: grid;
+    grid-template-columns: var(--flow-field-grid-template-columns);
+    gap: var(--flow-field-gap);
+    align-items: center;
+    min-height: var(--flow-field-min-height);
+    border-bottom: var(--flow-field-border-bottom);
+  }
+  .bottom {
+    display: grid;
+    grid-template-columns: var(--flow-bottom-grid-template-columns);
+    min-height: var(--flow-bottom-min-height);
+    position: relative;
+  }
+  .track {
+    display: grid;
+    grid-template-columns: var(--flow-track-grid-template-columns);
+    min-height: var(--flow-track-min-height);
+    border-bottom: var(--shell-textarea-border);
+    min-width: var(--flow-track-min-width);
+  }
+  .track-label {
+    display: flex;
+    align-items: center;
+    gap: var(--flow-track-label-gap);
+    padding: var(--flow-panel-padding);
+    color: var(--flow-track-label-color);
+    min-width: var(--flow-track-label-min-width);
+    position: sticky;
+    left: var(--flow-track-label-left);
+    background: var(--surface);
+    border-right: var(--flow-track-label-border-right);
+    z-index: var(--flow-track-label-z-index);
+    font-size: var(--flow-track-label-font-size);
+  }
+  .clips {
+    display: grid;
+    gap: var(--flow-clips-gap);
+    align-items: center;
+    grid-template-columns: unset;
+    background: var(--flow-clips-background);
+  }
+  .clip {
+    min-width: var(--flow-clip-min-width);
+    max-width: var(--flow-clip-max-width);
+    border: var(--flow-track-label-border-right);
+    border-radius: var(--flow-clip-border-radius);
+    background: var(--shell-button-background);
+    overflow: hidden;
+    text-overflow: var(--flow-clip-text-overflow);
+    height: var(--flow-min-height-2);
+    min-height: var(--flow-min-height-2);
+    padding: var(--flow-clip-padding);
+    white-space: var(--flow-clip-white-space);
+    overflow-wrap: var(--flow-clip-overflow-wrap);
+    margin: var(--flow-clip-margin);
+    border-left: var(--flow-clip-border-left);
+    justify-content: flex-start;
+  }
+  .runs-content {
+    flex: var(--flow-runs-content-flex);
+    min-height: var(--flow-runs-content-min-height);
+    height: var(--flow-runs-content-height);
+    overflow: auto;
+  }
+  .run-item {
+    display: grid;
+    grid-template-columns: var(--flow-run-item-grid-template-columns);
+    gap: var(--flow-run-item-gap);
+    padding: var(--flow-run-item-padding);
+    border-bottom: var(--panels-panel-border-bottom);
+    margin: var(--flow-run-item-margin);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--flow-webkit-scrollbar-thumb-background);
+  }
+  .inspector-content {
+    flex: var(--flow-inspector-content-flex);
+    min-height: var(--flow-inspector-content-min-height);
+    overflow: auto;
+    padding: var(--flow-inspector-content-padding);
+  }
+  .table-content {
+    flex: var(--flow-table-content-flex);
+    min-height: var(--flow-table-content-min-height);
+    overflow: auto;
+  }
+  .step-tools {
+    align-items: flex-end;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--flow-step-tools-gap);
+    padding: var(--flow-panel-padding);
+    border-bottom: var(--shell-textarea-border);
+  }
+  .step-delete {
+    color: var(--flow-step-delete-color);
+  }
+}

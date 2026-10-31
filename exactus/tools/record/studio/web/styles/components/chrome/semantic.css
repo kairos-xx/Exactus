@@ -1,0 +1,170 @@
+/**
+ * Contextual aliases of the chrome component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  /* 30-chrome */
+  --chrome-brand-flex: var(--catalog-header-measure-brand-zero-flex);
+  --chrome-brand-gap: var(--catalog-header-measure-compact-plus-micro-gap);
+  --chrome-brand-h1-font-size: var(
+    --catalog-header-typography-small-plus-micro-font-size
+  );
+  --chrome-brand-h1-font-weight: var(
+    --catalog-header-typography-weight-semibold-font-weight
+  );
+  --chrome-brand-h1-gap: var(--catalog-header-measure-tiny-plus-micro-gap);
+  --chrome-brand-h1-i-font-style: var(
+    --catalog-header-typography-h1-i-font-style
+  );
+  --chrome-brand-h1-i-font-weight: var(
+    --catalog-header-typography-weight-normal-font-weight
+  );
+  --chrome-brand-h1-letter-spacing: var(
+    --catalog-header-typography-spacing-faint-letter-spacing
+  );
+  --chrome-brand-h1-margin: var(--catalog-header-measure-brand-h1-margin);
+  --chrome-brand-h1-span-font-weight: var(
+    --catalog-header-typography-weight-medium-font-weight
+  );
+  --chrome-brand-h1-white-space: var(
+    --catalog-header-typography-brand-h1-white-space
+  );
+  --chrome-brand-mark-border-radius: var(
+    --catalog-header-border-tiny-plus-micro-border-radius
+  );
+  --chrome-brand-mark-flex: var(--catalog-header-measure-brand-mark-flex);
+  --chrome-brand-mark-height: var(
+    --catalog-header-measure-large-plus-tiny-height
+  );
+  --chrome-brand-mark-icon-flex-basis: var(
+    --catalog-icon-measure-normal-plus-micro-flex-basis
+  );
+  --chrome-brand-mark-icon-height: var(
+    --catalog-icon-measure-normal-plus-micro-height
+  );
+  --chrome-brand-mark-icon-width: var(
+    --catalog-icon-measure-normal-plus-micro-width
+  );
+  --chrome-brand-mark-width: var(
+    --catalog-header-measure-large-plus-tiny-width
+  );
+  --chrome-footer-border-top: var(
+    --catalog-toolbar-border-footer-hairline-border-top
+  );
+  --chrome-footer-font-size: var(--catalog-toolbar-typography-small-font-size);
+  --chrome-footer-padding-inline: var(
+    --catalog-toolbar-measure-small-padding-inline
+  );
+  --chrome-grid-template-rows-above-width-600px: var(
+    --catalog-control-measure-default-above-width-600px-grid-template-rows
+  );
+  --chrome-section-nav-button-active-after-border-radius: var(
+    --catalog-button-border-nav-active-border-radius
+  );
+  --chrome-section-nav-button-active-after-bottom: var(
+    --catalog-button-measure-nav-bottom
+  );
+  --chrome-section-nav-button-active-after-content: var(
+    --catalog-button-typography-nav-content
+  );
+  --chrome-section-nav-button-active-after-height: var(
+    --catalog-button-measure-micro-height
+  );
+  --chrome-section-nav-button-active-after-left: var(
+    --catalog-button-measure-compact-left
+  );
+  --chrome-section-nav-button-active-after-right: var(
+    --catalog-button-measure-compact-right
+  );
+  --chrome-section-nav-button-background: var(
+    --catalog-button-color-nav-background
+  );
+  --chrome-section-nav-button-border: var(--catalog-button-border-nav-border);
+  --chrome-section-nav-button-border-radius: var(
+    --catalog-button-border-nav-border-radius
+  );
+  --chrome-section-nav-button-font-size: var(
+    --catalog-button-typography-small-plus-hairline-font-size
+  );
+  --chrome-section-nav-button-font-weight: var(
+    --catalog-button-typography-weight-medium-font-weight
+  );
+  --chrome-section-nav-button-height: var(--catalog-button-measure-nav-height);
+  --chrome-section-nav-button-hover-background: var(
+    --catalog-button-color-nav-background
+  );
+  --chrome-section-nav-button-padding: var(
+    --catalog-button-measure-nav-padding
+  );
+  --chrome-section-nav-gap: var(--catalog-tab-measure-micro-gap);
+  --chrome-section-nav-padding-inline: var(
+    --catalog-tab-measure-compact-padding-inline
+  );
+  --chrome-status-dot-border-radius: var(
+    --catalog-label-border-half-border-radius
+  );
+  --chrome-status-dot-data-state-succeeded-background: var(
+    --catalog-label-color-dot-background
+  );
+  --chrome-status-dot-data-state-succeeded-box-shadow: var(
+    --catalog-label-effect-dot-box-shadow
+  );
+  --chrome-status-dot-height: var(--catalog-label-measure-compact-height);
+  --chrome-status-dot-width: var(--catalog-label-measure-compact-width);
+  --chrome-target-status-background: var(
+    --catalog-label-color-default-background
+  );
+  --chrome-target-status-before-border-radius: var(
+    --catalog-label-border-half-border-radius
+  );
+  --chrome-target-status-before-content: var(
+    --catalog-label-typography-default-content
+  );
+  --chrome-target-status-before-height: var(
+    --catalog-label-measure-tiny-plus-micro-height
+  );
+  --chrome-target-status-before-width: var(
+    --catalog-label-measure-tiny-plus-micro-width
+  );
+  --chrome-target-status-border-radius: var(
+    --catalog-label-border-default-border-radius
+  );
+  --chrome-target-status-data-state-succeeded-before-background: var(
+    --catalog-label-color-state-succeeded-background
+  );
+  --chrome-target-status-flex: var(--catalog-label-measure-default-flex);
+  --chrome-target-status-font-size: var(
+    --catalog-label-typography-small-minus-hairline-font-size
+  );
+  --chrome-target-status-font-weight: var(
+    --catalog-label-typography-weight-medium-font-weight
+  );
+  --chrome-target-status-gap: var(--catalog-label-measure-tiny-plus-micro-gap);
+  --chrome-target-status-height: var(--catalog-label-measure-medium-height);
+  --chrome-target-status-padding: var(
+    --catalog-label-measure-default-compact-padding
+  );
+  --chrome-topbar-border-bottom: var(
+    --catalog-header-border-topbar-hairline-border-bottom
+  );
+  --chrome-topbar-gap: var(--catalog-header-measure-small-gap);
+  --chrome-topbar-height-above-width-600px: var(
+    --catalog-header-measure-xlarge-plus-small-height
+  );
+  --chrome-topbar-min-height-above-width-600px: var(
+    --catalog-header-measure-xlarge-plus-small-min-height
+  );
+  --chrome-topbar-padding-inline: var(
+    --catalog-header-measure-small-padding-inline
+  );
+  --chrome-transport-target-font-size: var(
+    --catalog-control-typography-small-font-size
+  );
+  --chrome-transport-target-gap: var(--catalog-control-measure-compact-gap);
+  --chrome-transport-target-margin-left: var(
+    --catalog-control-measure-transport-margin-left
+  );
+  --chrome-transport-target-white-space: var(
+    --catalog-control-typography-transport-white-space
+  );
+}

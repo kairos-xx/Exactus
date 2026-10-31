@@ -1,0 +1,338 @@
+{
+	"analyzer": "docs",
+	"artifacts": [
+		{
+			"bytes": 0,
+			"name": "stderr.log",
+			"path": "ARTIFACTS/stderr.log"
+		},
+		{
+			"bytes": 145,
+			"name": "stdout.log",
+			"path": "ARTIFACTS/stdout.log"
+		}
+	],
+	"duration_seconds": 0.75,
+	"environment": {
+		"cpu_count": 8,
+		"node": "v22.4.0",
+		"os": "Linux 6.8.0",
+		"python": "3.13.1",
+		"variables": [
+			{
+				"name": "EXACTUS_ORCHESTRATED",
+				"value": "1"
+			},
+			{
+				"name": "CI",
+				"value": "true"
+			}
+		]
+	},
+	"extension": {
+		"fail_on": "warning",
+		"languages": [
+			{
+				"coverage_percent": null,
+				"discovered": 1,
+				"documented": 0,
+				"failed": 0,
+				"findings": 0,
+				"language": "javascript",
+				"parsed": 1,
+				"symbols": 0
+			},
+			{
+				"coverage_percent": 60,
+				"discovered": 2,
+				"documented": 3,
+				"failed": 0,
+				"findings": 2,
+				"language": "python",
+				"parsed": 2,
+				"symbols": 5
+			}
+		],
+		"metrics": {
+			"languages": [
+				{
+					"files_analyzed": 1,
+					"language": "javascript",
+					"lines_analyzed": 14
+				},
+				{
+					"files_analyzed": 2,
+					"language": "python",
+					"lines_analyzed": 46
+				}
+			]
+		},
+		"rules": [
+			{
+				"count": 1,
+				"rule": "DOC001",
+				"title": "Missing documentation"
+			},
+			{
+				"count": 1,
+				"rule": "DOC002",
+				"title": "Missing parameter documentation"
+			},
+			{
+				"count": 0,
+				"rule": "DOC003",
+				"title": "Stale parameter documentation"
+			},
+			{
+				"count": 0,
+				"rule": "DOC004",
+				"title": "Missing return documentation"
+			},
+			{
+				"count": 0,
+				"rule": "DOC005",
+				"title": "Return and yield mismatch"
+			},
+			{
+				"count": 0,
+				"rule": "DOC006",
+				"title": "Missing exception documentation"
+			},
+			{
+				"count": 0,
+				"rule": "DOC007",
+				"title": "Missing attribute documentation"
+			},
+			{
+				"count": 0,
+				"rule": "DOC008",
+				"title": "Malformed documentation"
+			},
+			{
+				"count": 0,
+				"rule": "DOC009",
+				"title": "Analysis failure"
+			},
+			{
+				"count": 0,
+				"rule": "DOC010",
+				"title": "Missing description"
+			},
+			{
+				"count": 0,
+				"rule": "DOC011",
+				"title": "Stale exception documentation"
+			},
+			{
+				"count": 0,
+				"rule": "DOC012",
+				"title": "Stale attribute documentation"
+			}
+		]
+	},
+	"findings": [
+		{
+			"blocking": true,
+			"code": "DOC002",
+			"column": 1,
+			"confidence": "high",
+			"excerpt": {
+				"clipped": false,
+				"context": 3,
+				"end": 12,
+				"language": "python",
+				"line": 9,
+				"lines": [
+					{
+						"n": 6,
+						"target": false,
+						"text": "ENCODING = \"utf-8\""
+					},
+					{
+						"n": 7,
+						"target": false,
+						"text": ""
+					},
+					{
+						"n": 8,
+						"target": false,
+						"text": ""
+					},
+					{
+						"n": 9,
+						"target": true,
+						"text": "def load(path: str) -> str:"
+					},
+					{
+						"n": 10,
+						"target": false,
+						"text": "    \"\"\"Load a file."
+					},
+					{
+						"n": 11,
+						"target": false,
+						"text": ""
+					},
+					{
+						"n": 12,
+						"target": false,
+						"text": "    Returns:"
+					}
+				],
+				"start": 6
+			},
+			"file": "pkg/util.py",
+			"id": "DOCS-001",
+			"kind": "function",
+			"language": "python",
+			"line": 9,
+			"message": "Parameter `path` is undocumented.",
+			"path": "pkg/util.py",
+			"qualname": "load",
+			"reason": "The parameter exists in the callable signature but not in Args.",
+			"rule": "DOC002",
+			"severity": "warning",
+			"signature": "load(path: str) -> str",
+			"suggestion": "\"\"\"Load a file.\n\nArgs:\n    path: Path to read.\n\nReturns:\n    The file text.\n\"\"\"",
+			"title": "Missing parameter documentation: load"
+		},
+		{
+			"blocking": false,
+			"code": "DOC001",
+			"column": 1,
+			"confidence": "medium",
+			"excerpt": {
+				"clipped": false,
+				"context": 3,
+				"end": 21,
+				"language": "python",
+				"line": 20,
+				"lines": [
+					{
+						"n": 17,
+						"target": false,
+						"text": ""
+					},
+					{
+						"n": 18,
+						"target": false,
+						"text": "# Called by the CLI entry point."
+					},
+					{
+						"n": 19,
+						"target": false,
+						"text": "@lru_cache(maxsize=1)"
+					},
+					{
+						"n": 20,
+						"target": true,
+						"text": "def helper() -> None:"
+					},
+					{
+						"n": 21,
+						"target": false,
+						"text": "    print(load(path=\"README.md\"))"
+					}
+				],
+				"start": 17
+			},
+			"file": "pkg/util.py",
+			"id": "DOCS-002",
+			"kind": "function",
+			"language": "python",
+			"line": 20,
+			"message": "Missing docstring.",
+			"path": "pkg/util.py",
+			"qualname": "helper",
+			"reason": "The callable has no runtime docstring.",
+			"rule": "DOC001",
+			"severity": "info",
+			"signature": "helper() -> None",
+			"suggestion": "\"\"\"Describe helper.\"\"\"",
+			"title": "Missing documentation: helper"
+		}
+	],
+	"gate": {
+		"reason": "1 blocking finding",
+		"status": "FAIL"
+	},
+	"invocation": {
+		"arguments": [
+			".",
+			"--exclude",
+			"exactus/packages/**"
+		],
+		"command": "python exactus/tools/docs/main.py . --exclude 'exactus/packages/**'",
+		"cwd": "/work/project"
+	},
+	"passed": false,
+	"pipeline_run_id": null,
+	"resume": "FAIL: analyzer completed with exit status 1.",
+	"root": "/work/project",
+	"run": {
+		"duration_human": "0.8 s",
+		"duration_seconds": 0.75,
+		"exit_code": 1,
+		"finished_at": "2026-10-03T09:00:01+00:00",
+		"id": "0123456789abcdef0123456789abcdef",
+		"pipeline_id": null,
+		"started_at": "2026-10-03T09:00:00+00:00",
+		"status": "FAIL"
+	},
+	"run_id": "0123456789abcdef0123456789abcdef",
+	"scope": {
+		"exclude": [
+			"exactus/packages/**",
+			"**/build/**",
+			"**/node_modules/**",
+			"**/.*/**",
+			"**/*.min.js"
+		],
+		"include": [
+			"**/*.js",
+			"**/*.mjs",
+			"**/*.cjs",
+			"**/*.py"
+		],
+		"skipped": [
+			{
+				"reason": "excluded by include/exclude rules",
+				"target": "exactus/packages/lib.py"
+			}
+		]
+	},
+	"statistics": {
+		"javascript": {
+			"discovered": 1,
+			"documented": 0,
+			"failed": 0,
+			"findings": 0,
+			"parsed": 1,
+			"symbols": 0
+		},
+		"python": {
+			"discovered": 2,
+			"documented": 3,
+			"failed": 0,
+			"findings": 2,
+			"parsed": 2,
+			"symbols": 5
+		}
+	},
+	"status": "FAIL",
+	"summary": {
+		"findings_total": 2,
+		"severity": {
+			"info": 1,
+			"warning": 1
+		},
+		"targets_analyzed": 3,
+		"targets_eligible": 4
+	},
+	"title": "Documentation Exactus",
+	"tool": {
+		"display_name": "Documentation Exactus",
+		"name": "docs",
+		"version": "0.5.0"
+	}
+}

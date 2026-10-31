@@ -1,0 +1,161 @@
+/**
+ * The latest run on a step: row badge and the "Last run" section.
+ *
+ * Sources: 44-run-status.
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+/* Source: 44-run-status */
+/* How the latest run is shown on a step: a badge in its row and a "Last run"
+ * section in its form. Warnings are amber, failures red. */
+.studio .edit-step-checks[data-state="failed"] {
+  display: inline-block;
+  background: var(--run-status-edit-step-checks-data-state-failed-background);
+  color: var(--run-status-edit-step-checks-data-state-failed-color);
+}
+.studio .edit-step-checks[data-state="warning"] {
+  display: inline-block;
+  background: var(--run-status-edit-step-checks-data-state-warning-background);
+  color: var(--run-status-edit-step-checks-data-state-warning-color);
+}
+.step-target,
+.step-policy {
+  display: grid;
+  gap: var(--run-status-step-target-gap);
+  margin: var(--run-status-step-target-margin);
+  padding: var(--run-status-step-target-padding);
+  border: var(--run-status-step-target-border);
+  --base-run-status-step-target-border-top: calc(
+      var(--primary-dimension-pixel) * 1
+    )
+    solid var(--primary-line);
+  --catalog-edge-border-step-border-top: var(
+    --base-run-status-step-target-border-top
+  );
+  --run-status-step-target-border-top: var(
+    --catalog-edge-border-step-border-top
+  );
+  border-top: var(--run-status-step-target-border-top);
+}
+.step-target > legend,
+.step-policy > legend {
+  padding: var(--run-status-step-target-legend-padding);
+  color: var(--text-strong);
+  font-size: var(--run-status-step-target-legend-font-size);
+  font-weight: var(--run-status-step-target-legend-font-weight);
+}
+.step-note,
+.step-link {
+  margin: var(--run-status-step-note-margin);
+  color: var(--muted);
+  font-size: var(--run-status-step-note-font-size);
+  white-space: var(--run-status-step-note-white-space);
+}
+.step-note {
+  padding: var(--run-status-step-note-padding);
+  border-radius: var(--run-status-step-note-border-radius);
+  background: var(--run-status-step-note-background);
+  color: var(--text);
+}
+.step-note[hidden],
+.step-target [hidden],
+.step-policy [hidden] {
+  display: none;
+}
+.last-run {
+  display: grid;
+  gap: var(--run-status-last-run-gap);
+  padding-top: var(--run-status-last-run-padding-top);
+  --base-run-status-last-run-border-top: calc(
+      var(--primary-dimension-pixel) * 1
+    )
+    solid var(--primary-line);
+  --catalog-edge-border-last-border-top: var(
+    --base-run-status-last-run-border-top
+  );
+  --run-status-last-run-border-top: var(--catalog-edge-border-last-border-top);
+  border-top: var(--run-status-last-run-border-top);
+}
+.last-run > h3 {
+  margin: var(--run-status-last-run-h3-margin);
+  color: var(--text-strong);
+  font-size: var(--run-status-last-run-h3-font-size);
+  font-weight: var(--run-status-last-run-h3-font-weight);
+}
+.last-run-item {
+  display: grid;
+  gap: var(--run-status-last-run-item-gap);
+  padding: var(--run-status-last-run-item-padding);
+  border-radius: var(--run-status-last-run-item-border-radius);
+  background: var(--shell-button-background);
+}
+.last-run-item[data-state="failed"] {
+  box-shadow: var(--run-status-last-run-item-data-state-failed-box-shadow);
+}
+.last-run-item[data-state="warning"] {
+  box-shadow: var(--run-status-last-run-item-data-state-warning-box-shadow);
+}
+.last-run-head {
+  display: flex;
+  gap: var(--run-status-last-run-head-gap);
+  align-items: baseline;
+  text-transform: var(--run-status-last-run-head-text-transform);
+}
+.last-run-head small,
+.last-run-summary,
+.last-run-line {
+  margin: var(--run-status-last-run-head-small-margin);
+  color: var(--muted);
+  font-size: var(--run-status-last-run-head-small-font-size);
+  white-space: var(--run-status-last-run-head-small-white-space);
+  overflow-wrap: var(--run-status-last-run-head-small-overflow-wrap);
+}
+.last-run-summary {
+  color: var(--text);
+}
+.last-run-facts {
+  display: grid;
+  grid-template-columns: var(--run-status-last-run-facts-grid-template-columns);
+  gap: var(--run-status-last-run-facts-gap);
+  margin: var(--run-status-last-run-facts-margin);
+  font-size: var(--run-status-last-run-facts-font-size);
+}
+.last-run-facts dt {
+  color: var(--muted);
+}
+.last-run-facts dd {
+  margin: var(--run-status-last-run-facts-dd-margin);
+  font-family: var(--run-status-last-run-facts-dd-font-family);
+  overflow-wrap: var(--run-status-last-run-facts-dd-overflow-wrap);
+}
+.last-run-line.error {
+  color: var(--run-status-last-run-line-error-color);
+}
+.last-run-line.warn {
+  color: var(--run-status-last-run-line-warn-color);
+}
+/* Same tight layout as the form's own labels (41-panel-modes.css): the
+ * fieldset labels sit one level deeper, so that rule does not reach them. */
+@container panel (height < 340px) and (width >= 300px) {
+  .inspector :is(.step-target, .step-policy) > label:not(.check) {
+    grid-template-columns: var(
+      --run-status-inspector-is-step-target-grid-template-columns-container-panel-height-below-340px-and-width-min-300px
+    );
+    align-items: center;
+    gap: var(
+      --run-status-inspector-is-step-target-gap-container-panel-height-below-340px-and-width-min-300px
+    );
+  }
+}
+/* Console lines a snippet wrote, shown under its result in the Runs list. */
+.run-item .run-line {
+  padding-left: var(--run-status-run-item-run-line-padding-left);
+  color: var(--muted);
+  font-family: var(--run-status-run-item-run-line-font-family);
+  white-space: var(--run-status-run-item-run-line-white-space);
+}
+.run-item .run-line[data-level="warn"] {
+  color: var(--run-status-item-run-line-data-level-warn-color);
+}
+.run-item .run-line[data-level="error"] {
+  color: var(--run-status-item-run-line-data-level-error-color);
+}

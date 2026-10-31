@@ -1,0 +1,31 @@
+export default [
+  {
+    files: ["**/*.js"],
+    languageOptions: {
+      ecmaVersion: "latest",
+      sourceType: "script",
+    },
+    rules: {
+      "constructor-super": "error",
+      "for-direction": "error",
+      "getter-return": "error",
+      "no-class-assign": "error",
+      "no-const-assign": "error",
+      "no-dupe-args": "error",
+      "no-dupe-class-members": "error",
+      "no-dupe-keys": "error",
+      "no-func-assign": "error",
+      "no-import-assign": "error",
+      "no-new-native-nonconstructor": "error",
+      "no-obj-calls": "error",
+      "no-redeclare": "error",
+      "no-setter-return": "error",
+      "no-this-before-super": "error",
+      "no-unreachable": "error",
+      "no-unsafe-finally": "error",
+      "no-unsafe-negation": "error",
+      "no-unsafe-optional-chaining": "error",
+      "valid-typeof": "error",
+    },
+  },
+];

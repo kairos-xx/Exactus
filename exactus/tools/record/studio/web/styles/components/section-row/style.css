@@ -1,0 +1,55 @@
+/**
+ * Rules of the section row component.
+ *
+ * Sources: 27-section-row.
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+/* Source: 27-section-row */
+/* Project identity, workspace sections, and commands each own one compact row. */
+.studio {
+  --section-row-grid-template-rows: var(
+    --catalog-control-measure-single-row-grid-template-rows
+  );
+  position: relative;
+  display: grid;
+  height: var(--section-row-height);
+  min-height: var(--section-row-min-height);
+  /* Scoped copy: var(--bottom-dock-height) must resolve on .studio so dock
+     resizer overrides on #app apply instead of the baked :root token value. */
+  grid-template-rows: var(--section-row-grid-template-rows);
+}
+.studio > .topbar {
+  height: var(--section-row-topbar-height);
+  min-height: var(--section-row-topbar-min-height);
+  overflow: visible;
+}
+.studio > .section-nav {
+  display: flex;
+  align-items: stretch;
+  min-width: var(--section-row-section-nav-min-width);
+  overflow: auto hidden;
+  scrollbar-width: var(--section-row-section-nav-scrollbar-width);
+}
+.studio > .section-nav > button {
+  flex: var(--section-row-section-nav-button-flex);
+  white-space: var(--section-row-section-nav-button-white-space);
+}
+@media (width <= 600px) {
+  .studio {
+    grid-template-rows: var(--section-row-grid-template-rows-max-width-600px);
+  }
+  .studio > .bottom {
+    grid-row: var(--section-row-bottom-grid-row-max-width-600px);
+  }
+  .studio > footer {
+    grid-row: var(--section-row-footer-grid-row-max-width-600px);
+    min-height: var(--section-row-footer-min-height-max-width-600px);
+    padding-block: var(--section-row-footer-padding-block-max-width-600px);
+    flex-wrap: nowrap;
+    overflow: hidden;
+    white-space: var(--section-row-footer-white-space-max-width-600px);
+  }
+  .studio > .section-nav > button {
+    min-height: var(--flow-card-heading-height);
+  }
+}

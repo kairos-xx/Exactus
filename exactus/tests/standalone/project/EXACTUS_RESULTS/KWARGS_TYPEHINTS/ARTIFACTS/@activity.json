@@ -1,0 +1,84 @@
+{
+  "activity": {
+    "count": 4,
+    "dropped": 0,
+    "events": [
+      {
+        "at": "2026-10-31T02:56:29.212537+00:00",
+        "level": "info",
+        "message": "started: Kwargs_Typehints"
+      },
+      {
+        "at": "2026-10-31T02:56:29.213364+00:00",
+        "level": "info",
+        "message": "step: starting (Kwargs_Typehints)"
+      },
+      {
+        "at": "2026-10-31T02:56:30.222886+00:00",
+        "level": "info",
+        "message": "step: fuzzing builtins"
+      },
+      {
+        "at": "2026-10-31T02:56:30.880114+00:00",
+        "level": "info",
+        "message": "finished: DONE (exit status 0) in 1.668s"
+      }
+    ],
+    "limit": 50
+  },
+  "elapsed_seconds": 1.668,
+  "extra": {
+    "exit_code": 0,
+    "previous_duration_seconds": 1.682
+  },
+  "finished_at": "2026-10-31T02:56:30.880148+00:00",
+  "heartbeat": {
+    "alive": false,
+    "interval_seconds": 1.0,
+    "last_beat": "2026-10-31T02:56:30.880151+00:00",
+    "phase": "finished",
+    "pid": 85859
+  },
+  "items": [],
+  "kind": "tool",
+  "name": "kwargs_typehints",
+  "pipeline_run_id": "f9656595c8b74d23b2b6aec3bd0db7de",
+  "progress": {
+    "completed": 1,
+    "current": "Kwargs_Typehints",
+    "fraction": 1.0,
+    "hierarchy": {
+      "children": [
+        {
+          "children": [],
+          "completed": 1,
+          "current": "Kwargs_Typehints",
+          "error": null,
+          "fraction": 1.0,
+          "id": "complete",
+          "level": "activity",
+          "state": "DONE",
+          "step": "complete",
+          "total": 1
+        }
+      ],
+      "completed": 1,
+      "current": "Kwargs_Typehints",
+      "error": null,
+      "fraction": 1.0,
+      "id": "kwargs_typehints",
+      "level": "task",
+      "state": "DONE",
+      "step": "complete",
+      "total": 1
+    },
+    "percent": 100.0,
+    "step": "complete",
+    "total": 1
+  },
+  "run_id": "f9656595c8b74d23b2b6aec3bd0db7de:kwargs_typehints",
+  "schema": "exactus/activity/v1",
+  "started_at": "2026-10-31T02:56:29.212389+00:00",
+  "status": "DONE",
+  "updated_at": "2026-10-31T02:56:30.880151+00:00"
+}

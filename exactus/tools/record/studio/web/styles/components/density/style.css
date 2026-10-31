@@ -1,0 +1,103 @@
+/**
+ * Rules of the density component.
+ *
+ * Sources: 24-density.
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+@layer studio-base {
+  /* Scope: custom properties set by 24-density */
+  @media (width > 600px) {
+    :root {
+      --h: var(--catalog-field-measure-large-plus-tiny-height);
+      --flow-min-height-2: var(
+        --catalog-item-measure-large-plus-tiny-min-height
+      );
+      --flow-card-heading-height: var(--catalog-item-measure-xlarge-min-height);
+      --flow-panel-padding: var(--catalog-surface-measure-tiny-compact-padding);
+      --property-text-height: var(--catalog-field-measure-xxlarge-min-height);
+      --studio-select-padding: var(
+        --catalog-field-measure-large-plus-tiny-min-height
+      );
+      --studio-status-padding: var(
+        --catalog-field-measure-hairline-tiny-padding
+      );
+      --switch-track: var(--catalog-field-measure-large-width);
+      --docks-data-workspace-mode-timeline-grid-template-rows: var(
+        --catalog-control-measure-mode-xlarge-plus-tiny-grid-template-rows
+      );
+    }
+  }
+  /* Source: 24-density */
+  /* Desktop editor density. Touch layouts retain their larger targets. */
+  @media (width > 600px) {
+    .topbar {
+      padding-block: var(--density-topbar-padding-block-above-width-600px);
+    }
+    .brand,
+    .menu {
+      gap: var(--density-brand-gap-above-width-600px);
+    }
+    .panel[data-panel-id]:not(.is-collapsed) > header {
+      gap: var(
+        --density-panel-id-not-is-collapsed-header-gap-above-width-600px
+      );
+    }
+    .panel-tools {
+      gap: var(--density-panel-tools-gap-above-width-600px);
+    }
+    .action-library-body,
+    .inspector-content {
+      padding: var(--density-action-library-body-padding-above-width-600px);
+    }
+    .action-library-body > p {
+      margin: var(--density-action-library-body-p-margin-above-width-600px);
+    }
+    [id="flow-form"] {
+      gap: var(--density-id-flow-form-gap-above-width-600px);
+    }
+    [id="flow-form"] > label {
+      gap: var(--density-id-flow-form-label-gap-above-width-600px);
+    }
+    [id="flow-form"] > .check {
+      min-height: var(--switch-track);
+    }
+    .flow-node-meta,
+    .node-actions,
+    .node-port,
+    .ruler-label,
+    .track-label {
+      padding-block: var(
+        --density-flow-node-meta-padding-block-above-width-600px
+      );
+    }
+    .flow-node-title,
+    .panel > header.table-panel-header {
+      height: var(--switch-track);
+      min-height: var(--switch-track);
+    }
+    .step-tools,
+    .connection-form {
+      gap: var(--density-step-tools-gap-above-width-600px);
+      padding-block: var(--density-step-tools-padding-block-above-width-600px);
+    }
+    .panel summary {
+      padding-block: var(
+        --density-panel-summary-padding-block-above-width-600px
+      );
+    }
+    .empty-panel,
+    .run-item {
+      padding: var(--density-empty-panel-padding-above-width-600px);
+    }
+    .composition-footer {
+      min-height: var(--switch-track);
+    }
+    .data-table th,
+    .data-table td {
+      height: var(--switch-track);
+      padding-block: var(
+        --density-data-table-th-padding-block-above-width-600px
+      );
+    }
+  }
+}

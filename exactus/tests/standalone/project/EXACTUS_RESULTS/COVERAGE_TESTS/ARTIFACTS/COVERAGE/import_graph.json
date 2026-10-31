@@ -1,0 +1,108 @@
+{
+  "excused_sources": [],
+  "ignored_non_local_imports": [
+    "__future__",
+    "typing"
+  ],
+  "meaningful": {
+    "artifact": "ARTIFACTS/COVERAGE/meaningful.json",
+    "counts": {
+      "TEST-0": 1,
+      "TEST-1": 0,
+      "TEST-2": 0,
+      "TEST-3": 0,
+      "actionable": 0,
+      "filtered": 1,
+      "unclassified": 0
+    },
+    "failures": [],
+    "minimum_level": "TEST-2",
+    "mode": "require",
+    "rows": [
+      {
+        "actionable": false,
+        "analysis_error": false,
+        "category": "structural",
+        "decision_tree": [
+          {
+            "evidence_ids": [],
+            "level_after": "TEST-0",
+            "level_before": "TEST-0",
+            "outcome": false,
+            "question": "Does the file contain substantive behavior?",
+            "rule": "promote-test-0-to-1",
+            "score": 0.067857,
+            "threshold": 0.25
+          }
+        ],
+        "evidence": [],
+        "level": "TEST-0",
+        "metadata": {
+          "duration_seconds": 0.0008085410081548616,
+          "finished_at": "2026-10-31T02:56:34.480178+00:00",
+          "size_bytes": 295,
+          "source_lines": 10,
+          "started_at": "2026-10-31T02:56:34.479376+00:00",
+          "worker_name": "meaningful_0"
+        },
+        "metrics": {
+          "behavioral_statements": 2,
+          "boolean_decisions": 0,
+          "branches": 1,
+          "comprehension_decisions": 0,
+          "computations": 3,
+          "cyclomatic_complexity": 2,
+          "exception_handlers": 0,
+          "loops": 0,
+          "max_control_nesting": 1,
+          "module_runtime_statements": 2,
+          "mutations": 1,
+          "public_behavioral_members": 0,
+          "raises": 0,
+          "runtime_calls": 5,
+          "side_effects": 0,
+          "substantive_callables": 0,
+          "trivial_callables": 0
+        },
+        "origin": "unreached",
+        "path": "conftest.py",
+        "reason": "no test imports or executes this file",
+        "reasons": [
+          "Promoted to TEST-0 by normalized policy evidence.",
+          "1 state mutations.",
+          "1 branches and 0 loops.",
+          "2 behavioral statements."
+        ],
+        "scores": {
+          "test_0_to_1": 0.067857,
+          "test_1_to_2": 0.65,
+          "test_2_to_3": 0.05249
+        },
+        "should_be_visited": false,
+        "source": "meaningful",
+        "status": "filtered",
+        "target": "conftest.py"
+      }
+    ],
+    "unclassified": "filtered"
+  },
+  "omitted_sources": [
+    "conftest.py"
+  ],
+  "targets": [
+    {
+      "file": "python/__init__.py",
+      "module": "python"
+    },
+    {
+      "file": "python/calc.py",
+      "module": "python.calc"
+    }
+  ],
+  "tests": [
+    "tests/test_calc.py"
+  ],
+  "unreached_sources": [
+    "conftest.py"
+  ]
+}

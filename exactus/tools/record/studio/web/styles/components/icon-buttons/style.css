@@ -1,0 +1,342 @@
+/* Source: 48-icon-buttons */
+/* Buttons, everywhere in the app.
+ *
+ * `watchIcons()` in icons.js sets `data-kind` from what a button really holds:
+ *   icon       an icon and nothing else
+ *   icon-text  an icon and a label
+ * Buttons with no icon have no `data-kind`.
+ *
+ * An icon-only button has no box at all, in any state: the glyph is the button,
+ * drawn bright. Any other button that is not filled changes colour and nothing
+ * else on hover and press; an icon-and-text one also has an almost invisible
+ * border and slightly dimmed text and icon. Pressing gives a touch of scale. The
+ * inline SVG takes `currentColor`, so one colour change moves text and icon.
+ * Keyboard focus keeps its outline. Primary (`.accent`, `.flow-bar-add`) buttons
+ * keep their fill. Rows, tiles, clips, tabs and graph ports that happen to be
+ * `<button>`s are not command buttons and keep their own look. */
+/* Movement: never layout, only a little give when pressed, and an icon-only
+ * glyph that grows slightly under the pointer. */
+button {
+  transition: var(--icon-buttons-button-transition);
+}
+button > .studio-icon {
+  transition: var(--icon-buttons-button-icon-transition);
+}
+/* Text only, not filled: the colour changes and nothing else. */
+button:where(
+    :not(
+      [data-kind],
+      .accent,
+      .flow-bar-add,
+      .edit-save,
+      .clip,
+      .tree-item,
+      .surface-row,
+      .flow-node-title,
+      .flow-node-port,
+      .compare-image,
+      .profile-item,
+      .pd-chip,
+      .pd-danger,
+      .link-danger,
+      .step-delete,
+      [data-workspace-view],
+      [data-mobile-panel],
+      .profile-chips button,
+      .tabs button
+    )
+  ):hover {
+  color: var(--accent);
+}
+button:where(
+    :not(
+      [data-kind],
+      .accent,
+      .flow-bar-add,
+      .edit-save,
+      .clip,
+      .tree-item,
+      .surface-row,
+      .flow-node-title,
+      .flow-node-port,
+      .compare-image,
+      .profile-item,
+      .pd-chip,
+      .pd-danger,
+      .link-danger,
+      .step-delete,
+      [data-workspace-view],
+      [data-mobile-panel],
+      .profile-chips button,
+      .tabs button
+    )
+  ):active {
+  color: var(--button-press-text);
+}
+button:where(
+    :not(
+      [data-kind],
+      .accent,
+      .flow-bar-add,
+      .edit-save,
+      .clip,
+      .tree-item,
+      .surface-row,
+      .flow-node-title,
+      .flow-node-port,
+      .compare-image,
+      .profile-item,
+      .pd-chip,
+      .pd-danger,
+      .link-danger,
+      .step-delete,
+      [data-workspace-view],
+      [data-mobile-panel],
+      .profile-chips button,
+      .tabs button
+    )
+  )[aria-pressed="true"],
+button:where(
+    :not(
+      [data-kind],
+      .accent,
+      .flow-bar-add,
+      .edit-save,
+      .clip,
+      .tree-item,
+      .surface-row,
+      .flow-node-title,
+      .flow-node-port,
+      .compare-image,
+      .profile-item,
+      .pd-chip,
+      .pd-danger,
+      .link-danger,
+      .step-delete,
+      [data-workspace-view],
+      [data-mobile-panel],
+      .profile-chips button,
+      .tabs button
+    )
+  ).active {
+  color: var(--accent);
+}
+button:not(:disabled):active {
+  scale: var(--icon-buttons-button-not-disabled-active-scale);
+}
+/* Icon only. */
+button[data-kind="icon"] {
+  border-color: var(--icon-buttons-button-data-kind-icon-border-color);
+  background: var(--icon-buttons-button-data-kind-icon-background);
+  box-shadow: var(--icon-buttons-button-data-kind-icon-box-shadow);
+  color: var(--text);
+}
+button[data-kind="icon"]:hover {
+  border-color: var(--icon-buttons-button-data-kind-icon-hover-border-color);
+  background: var(--icon-buttons-button-data-kind-icon-hover-background);
+  color: var(--accent);
+}
+button[data-kind="icon"]:hover
+  > .studio-icon:where(:not([data-icon^="chevron"], [data-icon$="plus"])) {
+  scale: var(--icon-buttons-icon-where-not-data-icon-chevron-scale);
+}
+button[data-kind="icon"]:active {
+  border-color: var(--icon-buttons-button-data-kind-icon-active-border-color);
+  background: var(--icon-buttons-button-data-kind-icon-active-background);
+  box-shadow: var(--icon-buttons-button-data-kind-icon-active-box-shadow);
+  color: var(--button-press-icon);
+  scale: var(--icon-buttons-button-data-kind-icon-active-scale);
+}
+button[data-kind="icon"]:active
+  > .studio-icon:where(:not([data-icon^="chevron"], [data-icon$="plus"])) {
+  scale: var(
+    --icon-buttons-icon-active-child-icon-where-not-data-icon-chevron-also-data-icon-plus-scale
+  );
+}
+button[data-kind="icon"][aria-pressed="true"],
+button[data-kind="icon"][aria-expanded="true"],
+button[data-kind="icon"].active {
+  border-color: var(
+    --icon-buttons-data-kind-icon-aria-pressed-true-border-color
+  );
+  background: var(--icon-buttons-data-kind-icon-aria-pressed-true-background);
+  box-shadow: var(--icon-buttons-data-kind-icon-aria-pressed-true-box-shadow);
+  color: var(--accent);
+}
+button[data-kind="icon"]:disabled {
+  color: var(--text-subtle);
+  opacity: var(--icon-buttons-button-data-kind-icon-disabled-opacity);
+}
+button[data-kind="icon"]:disabled > .studio-icon {
+  scale: var(--icon-buttons-data-kind-icon-disabled-icon-scale);
+}
+/* Chevrons and plus marks never change size: they answer to hover and press
+ * by getting heavier, and the change is animated like the colour. */
+button:not(:disabled):hover
+  > .studio-icon:where([data-icon^="chevron"], [data-icon$="plus"]) {
+  stroke-width: var(--icon-buttons-icon-where-data-icon-chevron-stroke-width);
+}
+button:not(:disabled):active
+  > .studio-icon:where([data-icon^="chevron"], [data-icon$="plus"]) {
+  stroke-width: var(
+    --icon-buttons-not-disabled-active-child-icon-where-data-icon-chevron-also-data-icon-plus-stroke-width
+  );
+}
+/* Icon and text. */
+button[data-kind="icon-text"]:not(
+    .accent,
+    .flow-bar-add,
+    .clip,
+    .flow-node-title,
+    .surface-row,
+    .tree-item,
+    .edit-save
+  ) {
+  border-color: var(--icon-buttons-data-kind-icon-text-not-accent-border-color);
+  background: var(--icon-buttons-data-kind-icon-text-not-accent-background);
+  box-shadow: var(--icon-buttons-data-kind-icon-text-not-accent-box-shadow);
+  color: var(--button-dim);
+}
+button[data-kind="icon-text"]:not(
+    .accent,
+    .flow-bar-add,
+    .clip,
+    .flow-node-title,
+    .surface-row,
+    .tree-item,
+    .edit-save
+  ):hover {
+  border-color: var(--icon-buttons-data-kind-icon-text-not-accent-border-color);
+  background: var(--icon-buttons-data-kind-icon-text-not-accent-background);
+  color: var(--accent);
+}
+button[data-kind="icon-text"]:not(
+    .accent,
+    .flow-bar-add,
+    .clip,
+    .flow-node-title,
+    .surface-row,
+    .tree-item,
+    .edit-save
+  ):active {
+  border-color: var(--icon-buttons-data-kind-icon-text-not-accent-border-color);
+  background: var(--icon-buttons-data-kind-icon-text-not-accent-background);
+  box-shadow: var(--icon-buttons-data-kind-icon-text-not-accent-box-shadow);
+  color: var(--button-press-text);
+}
+button[data-kind="icon-text"]:not(
+    .accent,
+    .flow-bar-add,
+    .clip,
+    .flow-node-title,
+    .surface-row,
+    .tree-item,
+    .edit-save
+  )[aria-pressed="true"],
+button[data-kind="icon-text"]:not(
+    .accent,
+    .flow-bar-add,
+    .clip,
+    .flow-node-title,
+    .surface-row,
+    .tree-item,
+    .edit-save
+  ).active {
+  border-color: var(--icon-buttons-data-kind-icon-text-not-accent-border-color);
+  background: var(--icon-buttons-data-kind-icon-text-not-accent-background);
+  box-shadow: var(--icon-buttons-data-kind-icon-text-not-accent-box-shadow);
+  color: var(--accent);
+}
+button[data-kind="icon-text"]:not(
+    .accent,
+    .flow-bar-add,
+    .clip,
+    .flow-node-title,
+    .surface-row,
+    .tree-item,
+    .edit-save
+  ):disabled {
+  opacity: var(--icon-buttons-data-kind-icon-text-not-accent-opacity);
+}
+/* The icon beside a label sits a little higher than the box centre, which is
+ * where its glyph looks level with the capital letters of the text. */
+button[data-kind="icon-text"] > .studio-icon:first-child {
+  translate: var(--icon-buttons-icon-text-icon-first-child-translate);
+}
+/* A button whose label is hidden to save room is an icon-only button to the
+ * eye, so it drops the border and brightens like one. */
+@container panel (width < 440px) {
+  .live-target-tools > [data-kind="icon-text"]:not(.accent) {
+    border-color: var(
+      --icon-buttons-data-kind-icon-text-not-accent-border-color-panel-below-width-440px
+    );
+    color: var(--text);
+  }
+  .live-target-tools > [data-kind="icon-text"]:not(.accent) > .studio-icon {
+    translate: var(
+      --icon-buttons-icon-text-not-accent-icon-translate-panel-below-width-440px
+    );
+  }
+  .live-target-tools > [data-kind="icon-text"]:not(.accent):hover {
+    border-color: var(
+      --icon-buttons-kind-icon-text-not-accent-hover-border-color-panel-below-width-440px
+    );
+    color: var(--accent);
+  }
+  .live-target-tools > [data-kind="icon-text"]:not(.accent):active {
+    border-color: var(
+      --icon-buttons-kind-icon-text-not-accent-active-border-color-panel-below-width-440px
+    );
+    color: var(--button-press-icon);
+  }
+}
+/* The timeline tools drop their labels in a narrower panel (see 36-responsive),
+ * and then they are icon-only buttons too. */
+@container panel (width < 1180px) {
+  .timeline-tools > [data-kind="icon-text"]:not(.accent) {
+    border-color: var(
+      --icon-buttons-data-kind-icon-text-not-accent-border-color-panel-below-width-1180px
+    );
+    color: var(--text);
+  }
+  .timeline-tools > [data-kind="icon-text"]:not(.accent) > .studio-icon {
+    translate: var(
+      --icon-buttons-icon-text-not-accent-icon-translate-panel-below-width-1180px
+    );
+  }
+  .timeline-tools > [data-kind="icon-text"]:not(.accent):hover {
+    border-color: var(
+      --icon-buttons-kind-icon-text-not-accent-hover-border-color-panel-below-width-1180px
+    );
+    color: var(--accent);
+  }
+  .timeline-tools > [data-kind="icon-text"]:not(.accent):active {
+    border-color: var(
+      --icon-buttons-kind-icon-text-not-accent-active-border-color-panel-below-width-1180px
+    );
+    color: var(--button-press-icon);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  button,
+  button > .studio-icon {
+    transition: var(
+      --icon-buttons-button-transition-media-prefers-reduced-motion-reduce
+    );
+  }
+  button:active,
+  button > .studio-icon {
+    scale: var(
+      --icon-buttons-button-active-scale-media-prefers-reduced-motion-reduce
+    );
+  }
+}
+/* Text buttons whose own rule sets a colour still answer with colour only. */
+.studio .project-name:hover,
+.studio .graph-toolbar button:hover {
+  color: var(--accent);
+}
+.studio .project-name:active,
+.studio .graph-toolbar button:active {
+  color: var(--button-press-text);
+}

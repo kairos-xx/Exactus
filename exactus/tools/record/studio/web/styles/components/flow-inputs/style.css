@@ -1,0 +1,30 @@
+/**
+ * The list of inputs a flow takes, edited in the flow settings.
+ *
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+@layer studio-base {
+  .flow-inputs,
+  .flow-inputs-list {
+    display: grid;
+    gap: var(--flow-inputs-gap);
+  }
+  .flow-input {
+    display: grid;
+    gap: var(--flow-inputs-row-gap);
+    padding: var(--flow-inputs-row-padding);
+    border: var(--flow-inputs-row-border);
+    border-radius: var(--flow-inputs-row-border-radius);
+    background: var(--flow-inputs-row-background);
+  }
+  .flow-input-line {
+    display: flex;
+    align-items: center;
+    gap: var(--flow-inputs-row-gap);
+  }
+  .flow-input-line > input[type="text"],
+  .flow-input-line > select {
+    flex: var(--flow-inputs-field-flex);
+    min-width: var(--flow-inputs-field-min-width);
+  }
+}

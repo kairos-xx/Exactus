@@ -1,0 +1,243 @@
+{
+	"edges": [
+		{
+			"source": "a",
+			"target": "b",
+			"mode": "condition",
+			"condition_expression": "search.items.length > 0",
+			"priority": 10,
+			"max_traversals": 1
+		},
+		{
+			"source": "a",
+			"target": "c",
+			"mode": "fallback",
+			"condition_expression": null,
+			"priority": 0,
+			"max_traversals": 1
+		},
+		{
+			"source": "b",
+			"target": "c",
+			"mode": "always",
+			"condition_expression": null,
+			"priority": 0,
+			"max_traversals": 1
+		},
+		{
+			"source": "c",
+			"target": "d",
+			"mode": "always",
+			"condition_expression": null,
+			"priority": 0,
+			"max_traversals": 1
+		},
+		{
+			"source": "d",
+			"target": "a",
+			"mode": "always",
+			"condition_expression": null,
+			"priority": 0,
+			"max_traversals": 2
+		}
+	],
+	"flows": [
+		{
+			"capture_play_images": true,
+			"capture_record_images": true,
+			"parameters": [],
+			"outputs": [],
+			"device_modes": [
+				"shared"
+			],
+			"events": [
+				{
+					"caused_by_event_id": null,
+					"elapsed_ms": 250,
+					"end_x": null,
+					"end_y": null,
+					"expectations": [
+						{
+							"body_match": "json_contains",
+							"expected_body": "{\"ok\":true}",
+							"expected_headers": [
+								{
+									"name": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"expected_status": 200,
+							"id": "expect-search",
+							"json_conditions": [
+								{
+									"operator": "exists",
+									"path": "$.items[0].id",
+									"value": null
+								}
+							],
+							"label": "Search returns requested page",
+							"method": "GET",
+							"query_conditions": [
+								{
+									"name": "page",
+									"operator": "equals",
+									"value": "1"
+								}
+							],
+							"timeout_ms": 5000,
+							"url_match": "contains",
+							"url_pattern": "/api/search"
+						}
+					],
+					"contract": {
+						"preconditions": [],
+						"postconditions": [],
+						"outputs": [],
+						"retry_count": 0,
+						"retry_delay_ms": 0,
+						"continue_on_failure": false,
+						"pace": null
+					},
+					"initiator_stack": [],
+					"attribution_reasons": [],
+					"headers": [],
+					"id": "a-search",
+					"kind": "click",
+					"label": "Run search",
+					"layer": "interaction",
+					"method": null,
+					"payload": null,
+					"position_action": null,
+					"selector": "button[data-action='search']",
+					"sequence": 0,
+					"share_session_cookies": false,
+					"status": null,
+					"url": null,
+					"x": null,
+					"y": null
+				}
+			],
+			"expected_behavior": "Search returns page 1 and renders matching results.",
+			"id": "a",
+			"name": "Flow A · Shared search",
+			"notes": "Shared branch point: continue to B or C.",
+			"task_description": "Search from the initial application state."
+		},
+		{
+			"capture_play_images": true,
+			"capture_record_images": false,
+			"parameters": [],
+			"outputs": [],
+			"device_modes": [
+				"desktop"
+			],
+			"events": [
+				{
+					"caused_by_event_id": null,
+					"elapsed_ms": 400,
+					"end_x": null,
+					"end_y": null,
+					"expectations": [
+						{
+							"body_match": "json_contains",
+							"expected_body": "{\"created\":true}",
+							"expected_headers": [],
+							"expected_status": 201,
+							"id": "expect-create",
+							"json_conditions": [
+								{
+									"operator": "exists",
+									"path": "$.id",
+									"value": null
+								}
+							],
+							"label": "Draft creation succeeds",
+							"method": "POST",
+							"query_conditions": [],
+							"timeout_ms": 5000,
+							"url_match": "contains",
+							"url_pattern": "/api/drafts"
+						}
+					],
+					"contract": {
+						"preconditions": [],
+						"postconditions": [],
+						"outputs": [],
+						"retry_count": 0,
+						"retry_delay_ms": 0,
+						"continue_on_failure": false,
+						"pace": null
+					},
+					"initiator_stack": [],
+					"attribution_reasons": [],
+					"headers": [
+						{
+							"name": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"name": "X-Flow",
+							"value": "draft-create"
+						}
+					],
+					"id": "b-create",
+					"kind": "http_call",
+					"label": "Create draft",
+					"layer": "network",
+					"method": "POST",
+					"payload": "{\"title\":\"Example\"}",
+					"position_action": null,
+					"selector": null,
+					"sequence": 0,
+					"share_session_cookies": true,
+					"status": null,
+					"url": "https://example.test/api/drafts",
+					"x": null,
+					"y": null
+				}
+			],
+			"expected_behavior": "The draft endpoint returns 201 with a created object.",
+			"id": "b",
+			"name": "Flow B · Desktop API create",
+			"notes": "Desktop-only Flow that demonstrates explicit POST execution.",
+			"task_description": "Create a draft through an authenticated API action."
+		},
+		{
+			"capture_play_images": false,
+			"capture_record_images": true,
+			"parameters": [],
+			"outputs": [],
+			"device_modes": [
+				"mobile",
+				"tablet"
+			],
+			"events": [],
+			"expected_behavior": "The same semantic result opens on mobile or tablet.",
+			"id": "c",
+			"name": "Flow C · Responsive convergence",
+			"notes": "Reachable directly from A or after B.",
+			"task_description": "Continue through the shared responsive result path."
+		},
+		{
+			"capture_play_images": false,
+			"capture_record_images": false,
+			"parameters": [],
+			"outputs": [],
+			"device_modes": [
+				"shared"
+			],
+			"events": [],
+			"expected_behavior": "Completion state is visible and the graph can return to A.",
+			"id": "d",
+			"name": "Flow D · Shared completion",
+			"notes": "Shared to demonstrate an intentional D -> A cycle.",
+			"task_description": "Complete the cycle and return to the initial Flow."
+		}
+	],
+	"variables": [],
+	"checkpoint_definitions": [],
+	"checkpoint_artifacts": [],
+	"runs": [],
+	"screenshots": [],
+	"version": 3
+}

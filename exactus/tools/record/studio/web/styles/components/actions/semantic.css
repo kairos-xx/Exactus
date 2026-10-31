@@ -1,0 +1,126 @@
+/**
+ * Contextual aliases of the actions component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  /* 15-actions */
+  --actions-command-palette-border-radius: var(
+    --catalog-menu-border-tiny-plus-micro-border-radius
+  );
+  --actions-command-palette-box-shadow: var(
+    --catalog-menu-effect-default-large-box-shadow
+  );
+  --actions-command-palette-max-height: var(
+    --catalog-menu-measure-default-min-max-height
+  );
+  --actions-command-palette-padding: var(
+    --catalog-menu-measure-default-padding
+  );
+  --actions-command-palette-width: var(--catalog-menu-measure-default-width);
+  --actions-data-table-th-border-bottom: var(
+    --catalog-table-border-th-border-bottom
+  );
+  --actions-data-table-th-font-size: var(
+    --catalog-table-typography-compact-plus-micro-font-size
+  );
+  --actions-data-table-th-font-weight: var(
+    --catalog-table-typography-th-font-weight
+  );
+  --actions-data-table-th-height: var(
+    --catalog-table-measure-large-plus-tiny-height
+  );
+  --actions-data-table-th-letter-spacing: var(
+    --catalog-table-typography-spacing-widest-letter-spacing
+  );
+  --actions-data-table-th-padding: var(--catalog-table-measure-th-padding);
+  --actions-data-table-th-text-align: var(
+    --catalog-table-typography-th-text-align
+  );
+  --actions-data-table-th-text-overflow: var(
+    --catalog-table-typography-th-text-overflow
+  );
+  --actions-data-table-th-text-transform: var(
+    --catalog-table-typography-th-text-transform
+  );
+  --actions-data-table-th-white-space: var(
+    --catalog-table-typography-th-white-space-nowrap
+  );
+  --actions-flow-node-meta-font-size: var(
+    --catalog-label-typography-small-minus-hairline-font-size
+  );
+  --actions-flow-node-meta-font-weight: var(
+    --catalog-label-typography-weight-medium-font-weight
+  );
+  --actions-id-flow-title-font-size: var(
+    --catalog-control-typography-small-font-size
+  );
+  --actions-id-flow-title-font-weight: var(
+    --catalog-control-typography-weight-semibold-font-weight
+  );
+  --actions-id-timecode-font-family: var(
+    --catalog-control-typography-default-font-family
+  );
+  --actions-id-timecode-font-size: var(
+    --catalog-control-typography-small-minus-hairline-font-size
+  );
+  --actions-id-timecode-font-weight: var(
+    --catalog-control-typography-default-font-weight
+  );
+  --actions-inspector-content-label-font-size: var(
+    --catalog-label-typography-small-minus-hairline-font-size
+  );
+  --actions-inspector-content-label-font-weight: var(
+    --catalog-label-typography-content-font-weight
+  );
+  --actions-inspector-content-label-gap: var(
+    --catalog-label-measure-compact-gap
+  );
+  --actions-inspector-content-label-letter-spacing: var(
+    --catalog-label-typography-spacing-extra-wide-letter-spacing
+  );
+  --actions-inspector-content-where-input-font-size: var(
+    --catalog-field-typography-small-font-size
+  );
+  --actions-inspector-content-where-input-font-weight: var(
+    --catalog-field-typography-content-input-font-weight
+  );
+  --actions-node-actions-font-size: var(
+    --catalog-item-typography-small-font-size
+  );
+  --actions-ruler-ticks-span-font: var(
+    --catalog-track-typography-ruler-ticks-span-font
+  );
+  --actions-ruler-ticks-span-height: var(--catalog-track-measure-full-height);
+  --actions-ruler-ticks-span-padding: var(
+    --catalog-track-measure-ticks-span-padding
+  );
+  --actions-ruler-ticks-span-top: var(--catalog-track-measure-ticks-span-top);
+  --actions-ruler-ticks-span-white-space: var(
+    --catalog-track-typography-ticks-span-white-space
+  );
+  --actions-sr-only-border: var(--catalog-control-border-sr-only-border);
+  --actions-sr-only-clip-path: var(--catalog-control-measure-half-clip-path);
+  --actions-sr-only-height: var(
+    --catalog-control-measure-pixel-hairline-height
+  );
+  --actions-sr-only-margin: var(
+    --catalog-control-measure-pixel-minus-hairline-margin
+  );
+  --actions-sr-only-padding: var(--catalog-control-measure-sr-only-padding);
+  --actions-sr-only-white-space: var(
+    --catalog-control-typography-sr-only-white-space
+  );
+  --actions-sr-only-width: var(--catalog-control-measure-pixel-hairline-width);
+  --actions-timeline-toolbar-select-padding: var(
+    --catalog-field-measure-toolbar-select-padding
+  );
+  --actions-where-button-white-space: var(
+    --catalog-button-typography-default-white-space
+  );
+  --actions-where-tree-item-min-width: var(
+    --catalog-item-measure-tree-min-width
+  );
+  --actions-where-tree-item-text-overflow: var(
+    --catalog-item-typography-tree-text-overflow
+  );
+}

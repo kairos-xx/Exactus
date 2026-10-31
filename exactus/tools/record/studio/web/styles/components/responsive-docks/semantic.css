@@ -1,0 +1,21 @@
+/** Contextual aliases used only by responsive dock adaptations. */
+:root {
+  --responsive-docks-action-library-open-height: var(
+    --catalog-panel-measure-floating-max-height
+  );
+  --responsive-docks-action-library-open-inset: var(
+    --catalog-panel-measure-workbench-inset
+  );
+  --responsive-docks-action-library-open-max-width: var(
+    --catalog-panel-measure-full-max-width
+  );
+  --responsive-docks-action-library-open-min-width: var(
+    --catalog-panel-measure-default-min-width
+  );
+  --responsive-docks-action-library-open-width: var(
+    --catalog-panel-measure-full-width
+  );
+  --responsive-docks-action-library-open-z-index: var(
+    --catalog-panel-measure-floating-z-index
+  );
+}

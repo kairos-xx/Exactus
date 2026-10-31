@@ -1,0 +1,163 @@
+{
+	"title": "Record Exactus",
+	"status": "FAIL",
+	"tool": {
+		"display_name": "Record Exactus",
+		"name": "record",
+		"version": "0.5.0"
+	},
+	"summary": {
+		"targets_eligible": 3,
+		"targets_analyzed": 3,
+		"findings_total": 2,
+		"severity": {
+			"error": 1,
+			"warning": 1
+		},
+		"mode": "replay",
+		"url": "http://127.0.0.1:8000",
+		"actions": 3,
+		"exported_events": 3,
+		"failures": 1,
+		"findings": 2,
+		"elapsed_seconds": 1.234,
+		"workspace": "recording.pwflow.json"
+	},
+	"analyzer": "record",
+	"artifacts": [
+		{
+			"bytes": 21,
+			"name": "stdout.log",
+			"path": "ARTIFACTS/stdout.log"
+		},
+		{
+			"bytes": 0,
+			"name": "stderr.log",
+			"path": "ARTIFACTS/stderr.log"
+		}
+	],
+	"duration_seconds": 1.234,
+	"environment": {
+		"cpu_count": 8,
+		"node": "v22.4.0",
+		"os": "Linux 6.8.0",
+		"python": "3.13.1",
+		"variables": [
+			{
+				"name": "AUDIT_ORCHESTRATED",
+				"value": "1"
+			},
+			{
+				"name": "CI",
+				"value": "true"
+			}
+		]
+	},
+	"extension": {
+		"rules": [
+			{
+				"rule": "REC001",
+				"title": "Replay action failed",
+				"count": 1
+			},
+			{
+				"rule": "REC002",
+				"title": "Empty recording",
+				"count": 0
+			},
+			{
+				"rule": "REC003",
+				"title": "Actions without Exactus Record equivalent",
+				"count": 0
+			}
+		],
+		"metrics": {
+			"mode": "replay",
+			"url": "http://127.0.0.1:8000",
+			"actions": 3,
+			"exported_events": 3,
+			"failures": 1,
+			"elapsed_seconds": 1.234,
+			"workspace": "recording.pwflow.json",
+			"by_type": [
+				{
+					"type": "click",
+					"count": 2
+				},
+				{
+					"type": "key",
+					"count": 1
+				}
+			],
+			"produced_files": [
+				"replay.py"
+			],
+			"studio": []
+		}
+	},
+	"findings": [
+		{
+			"blocking": true,
+			"id": "RECORD-001",
+			"line": null,
+			"message": "1 click: boom",
+			"path": "recording.pwflow.json",
+			"rule": "REC001",
+			"severity": "error",
+			"title": "Replay action failed"
+		},
+		{
+			"blocking": false,
+			"id": "RECORD-002",
+			"line": null,
+			"message": "1 action(s) have no selector-addressable Exactus Record equivalent and were not exported",
+			"path": "recording.pwflow.json",
+			"rule": "REC003",
+			"severity": "warning",
+			"title": "Actions without Exactus Record equivalent"
+		}
+	],
+	"gate": {
+		"reason": "1 blocking finding",
+		"status": "FAIL"
+	},
+	"invocation": {
+		"arguments": [
+			"--url",
+			"http://127.0.0.1:8000"
+		],
+		"command": "python exactus/tools/record/main.py --url http://127.0.0.1:8000",
+		"cwd": "/work/project"
+	},
+	"passed": false,
+	"pipeline_run_id": "ffffffffffffffffffffffffffffffff",
+	"resume": "FAIL: 1 blocking finding",
+	"run": {
+		"at_human": "05 October 2026, 06:00:00 UTC",
+		"duration_human": "1.2 s",
+		"duration_seconds": 1.234,
+		"error": null,
+		"exit_code": 1,
+		"finished_at": "2026-10-05T06:00:01+00:00",
+		"finished_at_human": "05 October 2026, 06:00:01 UTC",
+		"id": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+		"pipeline_id": "ffffffffffffffffffffffffffffffff",
+		"started_at": "2026-10-05T06:00:00+00:00",
+		"started_at_human": "05 October 2026, 06:00:00 UTC",
+		"status": "FAIL"
+	},
+	"run_id": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+	"scope": {
+		"exclude": [],
+		"include": [
+			"http://127.0.0.1:8000",
+			"recording.pwflow.json"
+		],
+		"skipped": [
+			{
+				"target": "1 action(s)",
+				"reason": "no selector-addressable Exactus Record equivalent"
+			}
+		]
+	}
+}

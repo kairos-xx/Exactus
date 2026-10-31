@@ -1,0 +1,153 @@
+/**
+ * Contextual aliases of the flow component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  /* 05-flow-nodes */
+  --flow-bottom-min-height: var(--catalog-control-measure-bottom-min-height);
+  --flow-clip-border-radius: var(
+    --catalog-track-border-micro-plus-hairline-border-radius
+  );
+  --flow-clip-margin: var(--catalog-track-measure-micro-tiny-margin);
+  --flow-clip-max-width: var(--catalog-track-measure-clip-max-width);
+  --flow-clip-min-width: var(--catalog-track-measure-clip-min-width);
+  --flow-clip-overflow-wrap: var(--catalog-track-measure-clip-overflow-wrap);
+  --flow-clip-padding: var(--catalog-track-measure-clip-padding);
+  --flow-clip-text-overflow: var(--catalog-track-typography-clip-text-overflow);
+  --flow-clip-white-space: var(--catalog-track-typography-clip-white-space);
+  --flow-clips-gap: var(--catalog-track-measure-clips-gap);
+  --flow-data-table-font-size: var(--catalog-table-typography-small-font-size);
+  --flow-data-table-width: var(--catalog-table-measure-full-width);
+  --flow-field-border-bottom: var(--catalog-field-border-default-border-bottom);
+  --flow-field-gap: var(--catalog-field-measure-compact-minus-hairline-gap);
+  --flow-field-grid-template-columns: var(
+    --catalog-field-measure-default-huge-plus-large-grid-template-columns
+  );
+  --flow-field-min-height: var(
+    --catalog-field-measure-large-plus-hairline-plus-micro-min-height
+  );
+  --flow-inspector-content-flex: var(--catalog-surface-measure-content-flex);
+  --flow-inspector-content-min-height: var(
+    --catalog-surface-measure-content-min-height
+  );
+  --flow-inspector-content-padding: var(
+    --catalog-surface-measure-small-padding
+  );
+  --flow-node-body-flex: var(--catalog-item-measure-node-body-flex);
+  --flow-node-body-font: var(--catalog-item-typography-node-body-font);
+  --flow-node-body-overflow-wrap: var(
+    --catalog-item-measure-node-body-overflow-wrap
+  );
+  --flow-node-body-padding: var(--catalog-item-measure-compact-small-padding);
+  --flow-node-body-text-overflow: var(
+    --catalog-item-typography-node-body-text-overflow
+  );
+  --flow-node-head-border-bottom: var(
+    --catalog-item-border-node-head-border-bottom
+  );
+  --flow-node-head-font-size: var(
+    --catalog-item-typography-small-plus-micro-font-size
+  );
+  --flow-node-head-font-weight: var(
+    --catalog-item-typography-weight-semibold-font-weight
+  );
+  --flow-node-head-gap: var(--catalog-item-measure-compact-gap);
+  --flow-node-head-padding: var(--catalog-item-measure-compact-small-padding);
+  --flow-panel-header-table-panel-header-background: var(
+    --catalog-header-color-table-background
+  );
+  --flow-panel-header-table-panel-header-padding: var(
+    --catalog-header-measure-table-padding
+  );
+  --flow-preview-note-flex: var(--catalog-surface-measure-preview-note-flex);
+  --flow-preview-note-font-size: var(
+    --catalog-surface-typography-small-font-size
+  );
+  --flow-preview-note-height: var(
+    --catalog-surface-measure-preview-note-height
+  );
+  --flow-preview-note-min-height: var(
+    --catalog-surface-measure-preview-note-min-height
+  );
+  --flow-preview-note-text-align: var(
+    --catalog-surface-typography-preview-note-text-align
+  );
+  --flow-run-item-gap: var(--catalog-item-measure-tiny-compact-gap);
+  --flow-run-item-grid-template-columns: var(
+    --catalog-item-measure-default-grid-template-columns
+  );
+  --flow-run-item-margin: var(--catalog-item-measure-default-margin);
+  --flow-run-item-padding: var(--catalog-item-measure-small-padding);
+  --flow-runs-content-flex: var(--catalog-surface-measure-runs-content-flex);
+  --flow-runs-content-height: var(
+    --catalog-surface-measure-runs-content-height
+  );
+  --flow-runs-content-min-height: var(
+    --catalog-surface-measure-runs-content-min-height
+  );
+  --flow-step-delete-color: var(--catalog-item-color-step-delete-color);
+  --flow-step-tools-gap: var(--catalog-button-measure-compact-gap);
+  --flow-table-content-flex: var(--catalog-table-measure-content-flex);
+  --flow-table-content-min-height: var(
+    --catalog-table-measure-content-min-height
+  );
+  --flow-track-grid-template-columns: var(
+    --catalog-track-measure-massive-plus-normal-grid-template-columns
+  );
+  --flow-track-label-font-size: var(
+    --catalog-label-typography-small-minus-hairline-font-size
+  );
+  --flow-track-label-gap: var(--catalog-label-measure-compact-gap);
+  --flow-track-label-left: var(--catalog-label-measure-track-left);
+  --flow-track-label-min-width: var(--catalog-label-measure-track-min-width);
+  --flow-track-label-z-index: var(--catalog-label-measure-track-z-index);
+  --flow-track-min-width: var(--catalog-track-measure-default-min-width);
+  --flow-webkit-scrollbar-thumb-background: var(
+    --catalog-control-color-scrollbar-thumb-background
+  );
+  /* 42-flow-bar */
+  --flow-bar-add-border-radius: var(
+    --catalog-toolbar-border-tiny-plus-micro-border-radius
+  );
+  --flow-bar-add-color: var(--catalog-toolbar-color-add-color);
+  --flow-bar-add-font-size: var(
+    --catalog-toolbar-typography-small-plus-hairline-font-size
+  );
+  --flow-bar-add-font-weight: var(
+    --catalog-toolbar-typography-weight-medium-font-weight
+  );
+  --flow-bar-add-white-space: var(--catalog-toolbar-typography-add-white-space);
+  --flow-bar-button-flex: var(--catalog-button-measure-default-flex);
+  --flow-bar-count-flex: var(--catalog-label-measure-count-flex);
+  --flow-bar-count-font-size: var(--catalog-label-typography-small-font-size);
+  --flow-bar-count-font-weight: var(
+    --catalog-label-typography-weight-medium-font-weight
+  );
+  --flow-bar-count-min-width: var(--catalog-label-measure-count-min-width);
+  --flow-bar-count-text-overflow: var(
+    --catalog-label-typography-count-text-overflow
+  );
+  --flow-bar-count-white-space: var(
+    --catalog-label-typography-count-white-space
+  );
+  --flow-bar-flex-shrink: var(--catalog-toolbar-measure-default-flex-shrink);
+  --flow-bar-gap: var(--catalog-toolbar-measure-compact-gap);
+  --flow-bar-icon-disabled-cursor: var(--catalog-icon-cursor-default-cursor);
+  --flow-bar-icon-disabled-opacity: var(--catalog-icon-effect-default-opacity);
+  --flow-bar-min-height: var(
+    --catalog-toolbar-measure-xlarge-plus-compact-min-height
+  );
+  --flow-bar-padding: var(
+    --catalog-toolbar-measure-tiny-plus-micro-small-padding
+  );
+  /* 01-tokens */
+  --flow-bottom-grid-template-columns: var(
+    --catalog-control-measure-bottom-grid-template-columns
+  );
+  --flow-clip-border-left: var(--catalog-track-border-clip-border-left);
+  --flow-clips-background: var(--catalog-track-color-clips-background);
+  --flow-track-label-border-right: var(
+    --catalog-label-border-track-border-right
+  );
+  --flow-track-label-color: var(--catalog-label-color-track-color);
+}

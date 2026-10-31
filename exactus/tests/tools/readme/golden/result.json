@@ -1,0 +1,212 @@
+{
+	"analyzer": "readme",
+	"artifacts": [
+		{
+			"bytes": 0,
+			"name": "stderr.log",
+			"path": "ARTIFACTS/stderr.log"
+		},
+		{
+			"bytes": 145,
+			"name": "stdout.log",
+			"path": "ARTIFACTS/stdout.log"
+		}
+	],
+	"directories": [
+		"docs",
+		"exactus/docs/guides",
+		"src",
+		"src/pkg"
+	],
+	"duration_seconds": 0.75,
+	"environment": {
+		"cpu_count": 8,
+		"node": "v22.4.0",
+		"os": "Linux 6.8.0",
+		"python": "3.13.1",
+		"variables": [
+			{
+				"name": "EXACTUS_ORCHESTRATED",
+				"value": "1"
+			},
+			{
+				"name": "CI",
+				"value": "true"
+			}
+		]
+	},
+	"extension": {
+		"directories": [
+			{
+				"documented": 2,
+				"entries": 3,
+				"has_readme": true,
+				"missing": 1,
+				"path": "docs",
+				"readme_bytes": 412
+			},
+			{
+				"documented": 0,
+				"entries": 2,
+				"has_readme": false,
+				"missing": 2,
+				"path": "exactus/docs/guides",
+				"readme_bytes": 0
+			},
+			{
+				"documented": 1,
+				"entries": 2,
+				"has_readme": true,
+				"missing": 1,
+				"path": "src",
+				"readme_bytes": 230
+			},
+			{
+				"documented": 1,
+				"entries": 1,
+				"has_readme": true,
+				"missing": 0,
+				"path": "src/pkg",
+				"readme_bytes": 98
+			}
+		],
+		"rules": [
+			{
+				"count": 1,
+				"rule": "RDM001",
+				"title": "Missing README.md"
+			},
+			{
+				"count": 1,
+				"rule": "RDM002",
+				"title": "Undocumented subdirectory"
+			},
+			{
+				"count": 1,
+				"rule": "RDM003",
+				"title": "Undocumented file"
+			}
+		]
+	},
+	"findings": [
+		{
+			"blocking": true,
+			"file": "exactus/docs/guides",
+			"id": "README-001",
+			"line": 0,
+			"message": "missing README.md",
+			"path": "exactus/docs/guides",
+			"rule": "RDM001",
+			"severity": "error",
+			"title": "Missing README.md"
+		},
+		{
+			"blocking": true,
+			"file": "exactus/docs/README.md",
+			"id": "README-002",
+			"line": 0,
+			"message": "does not document file setup.md",
+			"path": "exactus/docs/README.md",
+			"rule": "RDM003",
+			"severity": "error",
+			"title": "Undocumented file"
+		},
+		{
+			"blocking": true,
+			"file": "src/README.md",
+			"id": "README-003",
+			"line": 0,
+			"message": "does not document subdirectory pkg/",
+			"path": "src/README.md",
+			"rule": "RDM002",
+			"severity": "error",
+			"title": "Undocumented subdirectory"
+		}
+	],
+	"gate": {
+		"reason": "3 blocking findings",
+		"status": "FAIL"
+	},
+	"invocation": {
+		"arguments": [
+			".",
+			"--exclude",
+			"exactus/docs/archive/**"
+		],
+		"command": "python exactus/tools/readme/main.py . --exclude 'exactus/docs/archive/**'",
+		"cwd": "/work/project"
+	},
+	"passed": false,
+	"pipeline_run_id": null,
+	"resume": "FAIL: analyzer completed with exit status 1.",
+	"run": {
+		"duration_human": "0.8 s",
+		"duration_seconds": 0.75,
+		"exit_code": 1,
+		"finished_at": "2026-10-03T09:00:01+00:00",
+		"id": "0123456789abcdef0123456789abcdef",
+		"pipeline_id": null,
+		"started_at": "2026-10-03T09:00:00+00:00",
+		"status": "FAIL",
+		"started_at_human": "03 October 2026, 09:00:00 UTC",
+		"finished_at_human": "03 October 2026, 09:00:01 UTC"
+	},
+	"run_id": "0123456789abcdef0123456789abcdef",
+	"scope": {
+		"exclude": [
+			"exactus/docs/archive/**",
+			"**/.git/**",
+			"**/EXACTUS_RESULTS/**",
+			"**/DEBUG.txt/**",
+			"**/__pycache__/**",
+			"**/build/**",
+			"**/debug/**",
+			"**/dist/**",
+			"**/node_modules/**",
+			"**/site-packages/**",
+			"**/venv/**",
+			"**/.*",
+			"**/*.egg-info/**",
+			"**/*.dist-info/**"
+		],
+		"include": [
+			"src/**",
+			"tests/**",
+			"examples/**",
+			"scripts/**",
+			"resources/**",
+			"docs/**",
+			"**/README.md"
+		],
+		"skipped": [
+			{
+				"reason": "excluded by include/exclude rules",
+				"target": "exactus/docs/archive"
+			}
+		]
+	},
+	"status": "FAIL",
+	"summary": {
+		"by_rule": {
+			"RDM001": 1,
+			"RDM002": 1,
+			"RDM003": 1
+		},
+		"directories": 4,
+		"findings": 3,
+		"findings_total": 3,
+		"severity": {
+			"error": 3
+		},
+		"targets_analyzed": 4,
+		"targets_eligible": 5
+	},
+	"title": "README Exactus",
+	"tool": {
+		"display_name": "README Exactus",
+		"name": "readme",
+		"version": "0.5.0"
+	},
+	"started_at_human": "03 October 2026, 09:00:00 UTC",
+	"finished_at_human": "03 October 2026, 09:00:01 UTC"
+}

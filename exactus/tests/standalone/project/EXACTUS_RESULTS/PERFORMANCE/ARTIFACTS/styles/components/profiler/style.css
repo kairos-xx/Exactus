@@ -1,0 +1,73 @@
+/**
+ * Profiler legend, scrub state and chart tooltip.
+ *
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+@layer perf-base {
+  .profiler-legend {
+    display: flex;
+    gap: var(--perf-legend-gap);
+    align-items: center;
+    flex-wrap: wrap;
+    margin: var(--perf-legend-margin);
+    color: var(--muted);
+    font-size: var(--perf-size-compact);
+  }
+  .profiler-legend span {
+    display: inline-flex;
+    gap: var(--perf-crumb-gap);
+    align-items: center;
+  }
+  .profiler-legend i {
+    display: inline-block;
+    width: var(--perf-swatch-width);
+    height: var(--perf-swatch-height);
+    border-radius: var(--perf-radius-swatch);
+  }
+  .legend-stage {
+    background: var(--accent);
+  }
+  .legend-density {
+    background: var(--accent2);
+  }
+  .legend-event {
+    background: var(--warn);
+  }
+  .legend-gap {
+    background: var(--danger);
+  }
+  .legend-cursor {
+    background: var(--text);
+  }
+  .timeline-shell.scrubbing {
+    outline: var(--perf-scrub-ring);
+    outline-offset: var(--perf-scrub-inset);
+  }
+  .timeline-tooltip {
+    position: absolute;
+    z-index: var(--perf-bubble-layer);
+    pointer-events: none;
+    max-width: var(--perf-bubble-max);
+    padding: var(--perf-bubble-pad);
+    border: var(--perf-panel-edge);
+    border-radius: var(--perf-radius-action);
+    background: var(--perf-tooltip-fill);
+    box-shadow: var(--shadow);
+    font: var(--perf-type-tip);
+    white-space: var(--perf-wrap-pre);
+  }
+  .timeline-tooltip[hidden] {
+    display: none;
+  }
+  .rank-row.cursor-related,
+  .stage-row.cursor-related {
+    background: var(--perf-select-tint);
+    box-shadow: var(--perf-accent-wash);
+  }
+  .compact .meter i {
+    background: var(--accent2);
+  }
+  .timeline-toolbar button:active {
+    transform: var(--perf-press);
+  }
+}

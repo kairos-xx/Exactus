@@ -1,0 +1,401 @@
+/* Source: 37-surfaces */
+/* Task workspaces (Play, Compare, Crawl, Settings) follow the editor's rhythm:
+   a quiet header, cards that look like panels, and rows that look like steps. */
+.studio > .workspace-surface {
+  grid-row: var(--workspace-surface-grid-row);
+  background: var(--workspace-surface-background);
+  border-bottom: var(--workspace-surface-border-bottom);
+}
+@media (width <= 600px) {
+  .studio > .workspace-surface {
+    grid-row: var(--workspace-surface-grid-row-max-width-600px);
+    min-height: var(--workspace-surface-min-height-max-width-600px);
+    overflow: auto;
+  }
+  .studio:is(
+    [data-workspace-mode="play"],
+    [data-workspace-mode="compare"],
+    [data-workspace-mode="crawl"],
+    [data-workspace-mode="settings"]
+  ) {
+    grid-template-rows: var(
+      --workspace-is-data-workspace-mode-play-grid-template-rows-max-width-600px
+    );
+  }
+  .studio .workspace-surface-actions {
+    flex-wrap: wrap;
+  }
+  .studio .workspace-surface-actions > button {
+    flex: var(--workspace-surface-actions-button-flex-max-width-600px);
+    width: var(--workspace-surface-actions-button-width-max-width-600px);
+  }
+}
+.studio > .workspace-surface:not([hidden]) {
+  display: flex;
+  flex-direction: column;
+}
+.workspace-surface-header {
+  min-height: var(--workspace-surface-header-min-height);
+  padding: var(--workspace-surface-header-padding);
+  background: var(--workspace-surface-header-background);
+  border-bottom: var(--workspace-surface-header-border-bottom);
+}
+.workspace-surface-header > :first-child {
+  display: grid;
+  grid-template-columns: var(
+    --workspace-surface-header-first-child-grid-template-columns
+  );
+  align-items: baseline;
+  gap: var(--workspace-surface-header-first-child-gap);
+}
+.surface-kicker {
+  grid-column: var(--workspace-surface-kicker-grid-column);
+  grid-row: var(--workspace-surface-kicker-grid-row);
+  overflow: hidden;
+  color: var(--text-subtle);
+  font-size: var(--workspace-surface-kicker-font-size);
+  font-weight: var(--workspace-surface-kicker-font-weight);
+  letter-spacing: var(--workspace-surface-kicker-letter-spacing);
+  text-overflow: var(--workspace-surface-kicker-text-overflow);
+  text-transform: var(--workspace-surface-kicker-text-transform);
+  white-space: var(--workspace-surface-kicker-white-space);
+}
+.workspace-surface-header h2 {
+  color: var(--text-strong);
+  font-size: var(--workspace-surface-header-h2-font-size);
+  font-weight: var(--workspace-surface-header-h2-font-weight);
+}
+.workspace-surface-header p {
+  grid-column: var(--workspace-surface-header-p-grid-column);
+  color: var(--muted);
+  font-size: var(--workspace-surface-header-p-font-size);
+}
+.workspace-surface-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--workspace-surface-actions-gap);
+}
+.workspace-surface-actions > button {
+  height: var(--workspace-surface-actions-button-height);
+  min-height: var(--workspace-surface-actions-button-min-height);
+}
+.studio .workspace-surface-content {
+  flex: var(--workspace-surface-content-flex);
+  height: var(--workspace-surface-content-height);
+  min-height: var(--workspace-surface-content-min-height);
+  padding: var(--workspace-surface-content-padding);
+  background: var(--workspace-surface-content-background);
+}
+/* Cards share one hairline gap, like docked panels. */
+.studio .surface-grid {
+  gap: var(--workspace-surface-grid-gap);
+}
+.studio .surface-card {
+  background: var(--workspace-surface-card-background);
+  border: var(--workspace-surface-card-border);
+  border-radius: var(--workspace-surface-card-border-radius);
+  box-shadow: var(--workspace-surface-card-box-shadow);
+}
+.surface-card > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--workspace-surface-card-header-gap);
+  height: var(--workspace-surface-card-header-height);
+  min-height: var(--workspace-surface-card-header-min-height);
+  padding: var(--workspace-surface-card-header-padding);
+  background: var(--workspace-surface-card-header-background);
+  border-bottom: var(--workspace-surface-card-header-border-bottom);
+}
+.surface-card > header > h3 {
+  display: flex;
+  flex: var(--workspace-surface-card-header-h3-flex);
+  align-items: center;
+  gap: var(--workspace-surface-card-header-h3-gap);
+  margin: var(--workspace-surface-card-header-h3-margin);
+  color: var(--text-strong);
+  font-size: var(--workspace-surface-card-header-h3-font-size);
+  font-weight: var(--workspace-surface-card-header-h3-font-weight);
+}
+.surface-card > header > span {
+  color: var(--text-subtle);
+  font-size: var(--workspace-surface-card-header-span-font-size);
+}
+/* Rows: the name keeps its room and the detail yields. */
+.surface-list {
+  display: grid;
+  gap: var(--workspace-surface-list-gap);
+  padding: var(--workspace-surface-list-padding);
+}
+.surface-row {
+  display: grid;
+  grid-template-columns: var(--workspace-surface-row-grid-template-columns);
+  align-items: center;
+  gap: var(--workspace-surface-row-gap);
+  min-height: var(--workspace-surface-row-min-height);
+  padding: var(--workspace-surface-row-padding);
+  border: var(--workspace-surface-row-border);
+  border-radius: var(--workspace-surface-row-border-radius);
+  background: var(--workspace-surface-row-background);
+  text-align: var(--workspace-surface-row-text-align);
+}
+.surface-row > .studio-icon {
+  width: var(--workspace-surface-row-icon-width);
+  height: var(--workspace-surface-row-icon-height);
+  flex-basis: var(--workspace-surface-row-icon-flex-basis);
+  color: var(--muted);
+}
+.surface-row strong {
+  min-width: var(--workspace-surface-row-strong-min-width);
+  overflow: hidden;
+  text-overflow: var(--workspace-surface-row-strong-text-overflow);
+  white-space: var(--workspace-surface-row-strong-white-space);
+  color: var(--text-strong);
+  font-size: var(--workspace-surface-row-strong-font-size-surfaces);
+  font-weight: var(--workspace-surface-row-strong-font-weight);
+}
+.surface-row small {
+  max-width: var(--workspace-surface-row-small-max-width);
+  min-width: var(--workspace-surface-row-small-min-width);
+  overflow: hidden;
+  color: var(--muted);
+  font-family: var(--workspace-surface-row-small-font-family);
+  font-size: var(--workspace-surface-row-small-font-size);
+  text-align: var(--workspace-surface-row-small-text-align);
+  text-overflow: var(--workspace-surface-row-small-text-overflow);
+  white-space: var(--workspace-surface-row-small-white-space);
+}
+.surface-row:hover {
+  background: var(--workspace-surface-row-hover-background);
+}
+.surface-row.selected {
+  background: var(--brand-soft);
+  box-shadow: var(--workspace-surface-row-selected-box-shadow);
+}
+.surface-status {
+  justify-self: end;
+  color: var(--muted);
+  font-size: var(--workspace-surface-status-font-size-surfaces);
+  text-transform: var(--workspace-surface-status-text-transform-surfaces);
+}
+/* Labels and values read as a form, not as spec sheet captions. */
+.surface-properties > div {
+  min-height: var(--workspace-surface-properties-div-min-height);
+  border-bottom: var(--workspace-surface-properties-row-border-bottom);
+}
+.surface-properties dt {
+  color: var(--muted);
+  font-size: var(--workspace-surface-properties-dt-font-size-surfaces);
+  font-weight: var(--workspace-surface-properties-dt-font-weight-surfaces);
+}
+.surface-properties dd {
+  color: var(--text);
+  font-size: var(--workspace-surface-properties-dd-font-size-surfaces);
+}
+.studio .surface-code {
+  background: var(--workspace-studio-surface-code-background);
+  font-size: var(--workspace-surface-code-font-size);
+  line-height: var(--workspace-surface-code-line-height);
+}
+.studio .target-stage-placeholder {
+  background-color: var(--workspace-target-stage-placeholder-background-color);
+}
+.edit-step-more {
+  display: grid;
+  place-items: center;
+  width: var(--workspace-edit-step-more-width);
+  height: var(--workspace-edit-step-more-height);
+  border-radius: var(--workspace-edit-step-more-border-radius);
+  color: var(--muted);
+  opacity: var(--workspace-edit-step-more-opacity);
+}
+.edit-step-more:hover {
+  color: var(--text-strong);
+}
+.edit-step-row:hover .edit-step-more,
+.edit-step-row.selected .edit-step-more,
+.edit-step-row:focus-visible .edit-step-more {
+  opacity: var(--workspace-step-row-hover-edit-step-more-opacity);
+}
+.step-menu {
+  position: fixed;
+  z-index: var(--workspace-step-menu-z-index);
+  display: grid;
+  min-width: var(--workspace-step-menu-min-width);
+  padding: var(--workspace-step-menu-padding);
+  background: var(--data-tables-selected-data-step-background);
+  border: var(--workspace-step-menu-border);
+  border-radius: var(--workspace-step-menu-border-radius);
+  box-shadow: var(--workspace-step-menu-box-shadow);
+}
+.step-menu-item {
+  display: flex;
+  align-items: center;
+  gap: var(--workspace-step-menu-item-gap);
+  justify-content: start;
+  min-height: var(--workspace-step-menu-item-min-height);
+  padding: var(--workspace-step-menu-item-padding);
+  background: var(--workspace-step-menu-item-background);
+  border: var(--workspace-step-menu-item-border);
+  color: var(--text);
+}
+.step-menu-item:disabled {
+  color: var(--muted);
+}
+.step-menu-item > .studio-icon {
+  width: var(--workspace-step-menu-item-icon-width);
+  height: var(--workspace-step-menu-item-icon-height);
+  flex: var(--workspace-step-menu-item-icon-flex);
+}
+.step-menu-item:hover:not(:disabled) {
+  background: unset;
+}
+/* Transitions are rows in the same list style as steps, so dragging matches. */
+.edge-table {
+  --edge-columns: var(--catalog-item-measure-edge-head-grid-template-columns);
+  display: grid;
+}
+.edge-head,
+.edge-row {
+  display: grid;
+  grid-template-columns: var(--edge-columns);
+  align-items: center;
+  gap: var(--workspace-edge-head-gap);
+  padding: var(--workspace-edge-head-padding);
+}
+.edge-head {
+  min-height: var(--workspace-edge-head-min-height);
+  border-bottom: var(--workspace-edge-border-bottom);
+  color: var(--muted);
+  font-size: var(--workspace-edge-head-font-size);
+  font-weight: var(--workspace-edge-head-font-weight);
+}
+.edge-row {
+  position: relative;
+  min-height: var(--workspace-edge-row-min-height);
+  border-bottom: var(--workspace-edge-border-bottom);
+}
+.edge-row .edit-step-grip {
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  cursor: var(--workspace-edge-row-edit-step-grip-cursor);
+}
+.edge-row .edit-step-grip > .studio-icon {
+  width: var(--workspace-row-edit-step-grip-icon-width);
+  height: var(--workspace-row-edit-step-grip-icon-height);
+}
+.edge-row select,
+.edge-row input {
+  min-width: var(--workspace-edge-row-select-min-width);
+  width: var(--workspace-edge-row-select-width);
+}
+.edge-actions {
+  display: flex;
+  gap: var(--workspace-edge-actions-gap);
+}
+.edge-actions > button {
+  width: var(--workspace-edge-actions-button-width);
+  min-height: var(--workspace-edge-actions-button-min-height);
+  padding: var(--workspace-edge-actions-button-padding);
+}
+.recording-more:focus-visible,
+.recording-group > summary:hover .recording-more,
+.recording-group > summary:focus-within .recording-more {
+  opacity: var(--workspace-recording-more-focus-visible-opacity);
+}
+.recording-more[aria-disabled] {
+  cursor: var(--workspace-recording-more-aria-disabled-cursor);
+}
+.recording-rename {
+  flex: var(--workspace-recording-rename-flex);
+  min-width: var(--workspace-recording-rename-min-width);
+}
+/* Three columns need about 50rem; below that the cards stack. */
+@media (width <= 820px) {
+  /* Later, equally specific rules restore the wide columns; stack them. */
+  .studio
+    .surface-grid:is(
+      .surface-grid-debug,
+      .surface-grid-compare,
+      .surface-grid-crawl
+    ) {
+    grid-template-columns: var(
+      --workspace-surface-grid-is-surface-grid-debug-grid-template-columns-max-width-820px
+    );
+    grid-template-rows: var(
+      --workspace-surface-grid-is-surface-grid-debug-grid-template-rows-max-width-820px
+    );
+  }
+  .studio .surface-grid-debug .surface-console {
+    grid-column: var(
+      --workspace-surface-grid-debug-surface-console-grid-column-max-width-820px
+    );
+  }
+  .studio .surface-grid-compare {
+    height: var(--workspace-surface-grid-compare-height-max-width-820px);
+  }
+  .surface-grid-compare .surface-list {
+    max-height: var(
+      --workspace-surface-grid-compare-surface-list-max-height-max-width-820px
+    );
+  }
+}
+/* Play: the page as it looked after the selected action. */
+.surface-evidence {
+  overflow: auto;
+}
+.evidence-shot {
+  display: grid;
+  gap: var(--workspace-evidence-shot-gap);
+  justify-items: center;
+  margin: var(--workspace-evidence-shot-margin);
+  padding: var(--workspace-evidence-shot-padding);
+}
+.evidence-shot img {
+  max-width: var(--workspace-evidence-shot-img-max-width);
+  height: var(--workspace-evidence-shot-img-height);
+  border: var(--workspace-evidence-shot-image-border);
+  border-radius: var(--workspace-evidence-shot-img-border-radius);
+}
+.evidence-shot figcaption {
+  color: var(--text-subtle);
+  font-size: var(--workspace-evidence-shot-figcaption-font-size);
+}
+/* Compare: the capture list scrolls by itself, and each image sits at the top
+   of its pane instead of the middle of a pane as tall as the list. */
+.studio .surface-grid-compare {
+  height: var(--workspace-surface-grid-compare-height);
+  grid-template-rows: var(--workspace-surface-grid-compare-grid-template-rows);
+}
+.surface-grid-compare > .surface-card {
+  min-height: var(--workspace-surface-grid-compare-surface-card-min-height);
+  overflow: hidden;
+}
+.surface-grid-compare .surface-list {
+  min-height: var(--workspace-surface-grid-compare-surface-list-min-height);
+  overflow: auto;
+}
+.surface-grid-compare .compare-pair {
+  min-height: var(--workspace-surface-grid-compare-pair-min-height);
+  overflow: auto;
+  align-content: start;
+}
+.surface-grid-compare .compare-image {
+  place-content: start center;
+}
+.surface-grid-compare .compare-image img {
+  max-width: var(--workspace-surface-grid-compare-image-img-max-width);
+  height: var(--workspace-surface-grid-compare-image-img-height);
+}
+.surface-row.surface-row-capture {
+  grid-template-columns: var(
+    --workspace-surface-row-capture-grid-template-columns
+  );
+  row-gap: var(--workspace-surface-row-capture-row-gap);
+}
+.surface-row-capture small {
+  grid-column: var(--workspace-surface-row-capture-small-grid-column);
+  max-width: var(--workspace-surface-row-capture-small-max-width);
+  text-align: var(--workspace-surface-row-capture-small-text-align);
+}

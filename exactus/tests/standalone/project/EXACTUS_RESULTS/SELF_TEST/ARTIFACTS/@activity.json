@@ -1,0 +1,309 @@
+{
+  "activity": {
+    "count": 49,
+    "dropped": 0,
+    "events": [
+      {
+        "at": "2026-10-29T02:09:33.043880+00:00",
+        "level": "info",
+        "message": "started: Self_Test"
+      },
+      {
+        "at": "2026-10-29T02:09:33.044445+00:00",
+        "level": "info",
+        "message": "step: starting (Self_Test)"
+      },
+      {
+        "at": "2026-10-29T02:09:34.052578+00:00",
+        "level": "info",
+        "message": "step: self_test: cli probe"
+      },
+      {
+        "at": "2026-10-29T02:09:35.061724+00:00",
+        "level": "info",
+        "message": "step: cli: exactus"
+      },
+      {
+        "at": "2026-10-29T02:09:38.087173+00:00",
+        "level": "info",
+        "message": "step: stage: materialization"
+      },
+      {
+        "at": "2026-10-29T02:09:39.110704+00:00",
+        "level": "info",
+        "message": "step: tool: acorn"
+      },
+      {
+        "at": "2026-10-29T02:09:40.122162+00:00",
+        "level": "info",
+        "message": "step: tool: basedpyright"
+      },
+      {
+        "at": "2026-10-29T02:09:53.217418+00:00",
+        "level": "info",
+        "message": "step: tool: basedpyright-langserver"
+      },
+      {
+        "at": "2026-10-29T02:09:55.234978+00:00",
+        "level": "info",
+        "message": "step: tool: build"
+      },
+      {
+        "at": "2026-10-29T02:09:56.242878+00:00",
+        "level": "info",
+        "message": "step: tool: certifi"
+      },
+      {
+        "at": "2026-10-29T02:09:57.251487+00:00",
+        "level": "info",
+        "message": "step: tool: charset_normalizer"
+      },
+      {
+        "at": "2026-10-29T02:09:58.259922+00:00",
+        "level": "info",
+        "message": "step: tool: chromium"
+      },
+      {
+        "at": "2026-10-29T02:09:59.265569+00:00",
+        "level": "info",
+        "message": "step: tool: coverage-3.13"
+      },
+      {
+        "at": "2026-10-29T02:10:00.270953+00:00",
+        "level": "info",
+        "message": "step: tool: eslint"
+      },
+      {
+        "at": "2026-10-29T02:10:06.307393+00:00",
+        "level": "info",
+        "message": "step: tool: exactus-mcp"
+      },
+      {
+        "at": "2026-10-29T02:10:11.337547+00:00",
+        "level": "info",
+        "message": "step: tool: htmlhint"
+      },
+      {
+        "at": "2026-10-29T02:10:12.343129+00:00",
+        "level": "info",
+        "message": "step: tool: idna"
+      },
+      {
+        "at": "2026-10-29T02:10:13.350992+00:00",
+        "level": "info",
+        "message": "step: tool: jsonschema"
+      },
+      {
+        "at": "2026-10-29T02:10:14.362412+00:00",
+        "level": "info",
+        "message": "step: tool: markdown-it"
+      },
+      {
+        "at": "2026-10-29T02:10:15.366448+00:00",
+        "level": "info",
+        "message": "step: tool: markdown_it_py"
+      },
+      {
+        "at": "2026-10-29T02:10:17.386618+00:00",
+        "level": "info",
+        "message": "step: tool: mutmut"
+      },
+      {
+        "at": "2026-10-29T02:10:18.402119+00:00",
+        "level": "info",
+        "message": "step: tool: node"
+      },
+      {
+        "at": "2026-10-29T02:10:23.437898+00:00",
+        "level": "info",
+        "message": "step: tool: node-which"
+      },
+      {
+        "at": "2026-10-29T02:10:25.454682+00:00",
+        "level": "info",
+        "message": "step: tool: nodejs_wheel"
+      },
+      {
+        "at": "2026-10-29T02:10:28.474823+00:00",
+        "level": "info",
+        "message": "step: tool: normalizer"
+      },
+      {
+        "at": "2026-10-29T02:10:29.482989+00:00",
+        "level": "info",
+        "message": "step: tool: pillow"
+      },
+      {
+        "at": "2026-10-29T02:10:30.489067+00:00",
+        "level": "info",
+        "message": "step: tool: prettier"
+      },
+      {
+        "at": "2026-10-29T02:10:31.499416+00:00",
+        "level": "info",
+        "message": "step: tool: pygmentize"
+      },
+      {
+        "at": "2026-10-29T02:10:34.522509+00:00",
+        "level": "info",
+        "message": "step: tool: pygments"
+      },
+      {
+        "at": "2026-10-29T02:10:35.532951+00:00",
+        "level": "info",
+        "message": "step: tool: pytest"
+      },
+      {
+        "at": "2026-10-29T02:10:37.544329+00:00",
+        "level": "info",
+        "message": "step: tool: readme_renderer"
+      },
+      {
+        "at": "2026-10-29T02:10:39.555285+00:00",
+        "level": "info",
+        "message": "step: tool: rst2man"
+      },
+      {
+        "at": "2026-10-29T02:10:40.564001+00:00",
+        "level": "info",
+        "message": "step: tool: semver"
+      },
+      {
+        "at": "2026-10-29T02:10:41.567678+00:00",
+        "level": "info",
+        "message": "step: tool: stylelint"
+      },
+      {
+        "at": "2026-10-29T02:18:41.324012+00:00",
+        "level": "info",
+        "message": "step: tool: tsserver"
+      },
+      {
+        "at": "2026-10-29T02:18:42.333385+00:00",
+        "level": "info",
+        "message": "step: tool: twine"
+      },
+      {
+        "at": "2026-10-29T02:18:44.362532+00:00",
+        "level": "info",
+        "message": "step: tool: uvicorn"
+      },
+      {
+        "at": "2026-10-29T02:18:49.395269+00:00",
+        "level": "info",
+        "message": "step: tool: zstd"
+      },
+      {
+        "at": "2026-10-29T02:18:50.402813+00:00",
+        "level": "info",
+        "message": "step: stage: xvfb"
+      },
+      {
+        "at": "2026-10-29T02:18:55.438242+00:00",
+        "level": "info",
+        "message": "step: pipeline: unified (5s elapsed)"
+      },
+      {
+        "at": "2026-10-29T02:19:00.478806+00:00",
+        "level": "info",
+        "message": "step: pipeline: unified (10s elapsed)"
+      },
+      {
+        "at": "2026-10-29T02:19:05.511673+00:00",
+        "level": "info",
+        "message": "step: pipeline: unified (15s elapsed)"
+      },
+      {
+        "at": "2026-10-29T02:19:10.549816+00:00",
+        "level": "info",
+        "message": "step: pipeline: unified (20s elapsed)"
+      },
+      {
+        "at": "2026-10-29T02:19:15.584021+00:00",
+        "level": "info",
+        "message": "step: pipeline: unified (25s elapsed)"
+      },
+      {
+        "at": "2026-10-29T02:19:20.664651+00:00",
+        "level": "info",
+        "message": "step: pipeline: unified (30s elapsed)"
+      },
+      {
+        "at": "2026-10-29T02:19:25.693669+00:00",
+        "level": "info",
+        "message": "step: pipeline: unified (35s elapsed)"
+      },
+      {
+        "at": "2026-10-29T02:19:30.733302+00:00",
+        "level": "info",
+        "message": "step: pipeline: unified (40s elapsed)"
+      },
+      {
+        "at": "2026-10-29T02:19:35.770603+00:00",
+        "level": "info",
+        "message": "step: report: report PIPELINES/UNIFIED"
+      },
+      {
+        "at": "2026-10-29T02:19:36.294321+00:00",
+        "level": "warning",
+        "message": "finished: FAIL (exit status 1) in 603.248s"
+      }
+    ],
+    "limit": 50
+  },
+  "elapsed_seconds": 603.248,
+  "extra": {
+    "exit_code": 1,
+    "previous_duration_seconds": 131.924
+  },
+  "finished_at": "2026-10-29T02:19:36.294352+00:00",
+  "heartbeat": {
+    "alive": false,
+    "interval_seconds": 1.0,
+    "last_beat": "2026-10-29T02:19:36.294355+00:00",
+    "phase": "finished",
+    "pid": 47422
+  },
+  "items": [],
+  "kind": "tool",
+  "name": "self_test",
+  "pipeline_run_id": "61ab712d969a472ab9f2f21e44d17288",
+  "progress": {
+    "completed": 86,
+    "current": "Self_Test",
+    "fraction": 1.0,
+    "hierarchy": {
+      "children": [
+        {
+          "children": [],
+          "completed": 86,
+          "current": "Self_Test",
+          "error": null,
+          "fraction": 1.0,
+          "id": "complete",
+          "level": "activity",
+          "state": "FAIL",
+          "step": "complete",
+          "total": 86
+        }
+      ],
+      "completed": 86,
+      "current": "Self_Test",
+      "error": null,
+      "fraction": 1.0,
+      "id": "self_test",
+      "level": "task",
+      "state": "FAIL",
+      "step": "complete",
+      "total": 86
+    },
+    "percent": 100.0,
+    "step": "complete",
+    "total": 86
+  },
+  "run_id": "61ab712d969a472ab9f2f21e44d17288:self_test",
+  "schema": "exactus/activity/v1",
+  "started_at": "2026-10-29T02:09:33.043774+00:00",
+  "status": "FAIL",
+  "updated_at": "2026-10-29T02:19:36.294355+00:00"
+}

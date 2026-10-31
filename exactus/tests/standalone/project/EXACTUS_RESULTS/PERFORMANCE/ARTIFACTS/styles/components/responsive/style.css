@@ -1,0 +1,70 @@
+/**
+ * Viewport breakpoints for the base layout.
+ *
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+@layer perf-base {
+  @media (width <=1050px) {
+    .kpis {
+      grid-template-columns: var(--perf-kpi-grid-wide);
+    }
+    .layout {
+      grid-template-columns: var(--perf-layout-grid-compact);
+    }
+    .sidebar {
+      position: static;
+    }
+    .tool-list {
+      grid-template-columns: var(--perf-toollist-grid);
+    }
+    .two-col {
+      grid-template-columns: var(--perf-layout-grid-compact);
+    }
+  }
+  @media (width <=700px) {
+    .topbar {
+      height: var(--perf-flow-size);
+      padding: var(--perf-main-padding-compact);
+      align-items: flex-start;
+    }
+    .search {
+      min-width: var(--perf-flush);
+      width: var(--perf-flow-width);
+    }
+    .top-actions {
+      width: var(--perf-actions-share);
+    }
+    main {
+      padding: var(--perf-main-padding-compact);
+    }
+    .kpis {
+      grid-template-columns: var(--perf-kpi-grid-narrow);
+    }
+    .layout,
+    .two-col {
+      display: block;
+    }
+    .sidebar,
+    .workspace > .panel,
+    .workspace > .view,
+    .view > .panel,
+    .two-col > .panel {
+      margin-bottom: var(--perf-stack-gap);
+    }
+    .tool-list {
+      grid-template-columns: var(--perf-layout-grid-compact);
+    }
+    .tool-header {
+      display: block;
+    }
+    .segmented {
+      margin-top: var(--perf-segment-offset);
+    }
+    .stage-row {
+      grid-template-columns: var(--perf-stage-grid-compact);
+    }
+    .event-row {
+      grid-template-columns: var(--perf-event-grid-compact);
+    }
+  }
+}

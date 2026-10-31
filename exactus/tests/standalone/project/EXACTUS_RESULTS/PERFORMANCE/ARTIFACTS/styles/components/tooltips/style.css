@@ -1,0 +1,21 @@
+/**
+ * Overview tooltip.
+ *
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+@layer perf-base {
+  .tooltip {
+    position: fixed;
+    pointer-events: none;
+    background: var(--text);
+    color: var(--bg);
+    padding: var(--perf-tip-pad);
+    border-radius: var(--perf-radius-tip);
+    font: var(--perf-type-tip);
+    z-index: var(--perf-tip-layer);
+    max-width: var(--perf-tip-width);
+  }
+  .tooltip[hidden] {
+    display: none;
+  }
+}

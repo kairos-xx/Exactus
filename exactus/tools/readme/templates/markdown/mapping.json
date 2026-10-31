@@ -1,0 +1,95 @@
+{
+	"severity_levels": {
+		"$literal": [
+			"error"
+		]
+	},
+	"inventory": {
+		"$path": "extension.directories",
+		"$default": [],
+		"$each": {
+			"directory": "path",
+			"readme": {
+				"$when": {
+					"$path": "has_readme",
+					"$op": "eq",
+					"$value": true
+				},
+				"$then": {
+					"$literal": "present"
+				},
+				"$else": {
+					"$literal": "missing"
+				}
+			},
+			"bytes": "readme_bytes",
+			"entries": "entries",
+			"documented": "documented",
+			"missing": "missing"
+		}
+	},
+	"rules": {
+		"$path": "extension.rules",
+		"$default": []
+	},
+	"documentation_files": {
+		"$when": {
+			"$path": "extension.metrics",
+			"$op": "not_empty"
+		},
+		"$then": [
+			{
+				"metric": {
+					"$literal": "Markdown files"
+				},
+				"value": "extension.metrics.markdown.files"
+			},
+			{
+				"metric": {
+					"$literal": "Markdown bytes"
+				},
+				"value": "extension.metrics.markdown.bytes"
+			},
+			{
+				"metric": {
+					"$literal": "Markdown lines"
+				},
+				"value": "extension.metrics.markdown.lines"
+			},
+			{
+				"metric": {
+					"$literal": "README files"
+				},
+				"value": "extension.metrics.markdown.readme_files"
+			}
+		],
+		"$else": []
+	},
+	"readme_sizes": {
+		"$when": {
+			"$path": "extension.metrics.markdown.largest_readme",
+			"$op": "not_empty"
+		},
+		"$then": [
+			{
+				"readme": {
+					"$literal": "Largest"
+				},
+				"path": "extension.metrics.markdown.largest_readme.path",
+				"bytes": "extension.metrics.markdown.largest_readme.bytes"
+			},
+			{
+				"readme": {
+					"$literal": "Smallest"
+				},
+				"path": "extension.metrics.markdown.smallest_readme.path",
+				"bytes": "extension.metrics.markdown.smallest_readme.bytes"
+			}
+		],
+		"$else": []
+	},
+	"directories_without_readme": {
+		"$path": "extension.metrics.directories_without_readme",
+		"$default": []
+	}
+}

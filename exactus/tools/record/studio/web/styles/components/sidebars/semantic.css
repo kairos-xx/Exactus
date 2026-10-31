@@ -1,0 +1,124 @@
+/**
+ * Contextual aliases of the sidebars component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  /* 33-sidebars */
+  --sidebars-edit-checks-open-summary-chevron-transform: var(
+    --catalog-icon-effect-quarter-turn-transform
+  );
+  --sidebars-edit-checks-summary-chevron-flex: var(
+    --catalog-icon-measure-summary-chevron-flex
+  );
+  --sidebars-edit-checks-summary-font-size: var(
+    --catalog-label-typography-small-plus-hairline-font-size
+  );
+  --sidebars-edit-checks-summary-font-weight: var(
+    --catalog-label-typography-weight-medium-font-weight
+  );
+  --sidebars-edit-checks-summary-gap: var(
+    --catalog-label-measure-tiny-plus-micro-gap
+  );
+  --sidebars-edit-checks-summary-padding-block: var(
+    --catalog-label-measure-compact-padding-block
+  );
+  --sidebars-edit-inspector-heading-gap: var(
+    --catalog-header-measure-small-gap
+  );
+  --sidebars-edit-inspector-heading-h2-font-size: var(
+    --catalog-header-typography-normal-minus-hairline-font-size
+  );
+  --sidebars-edit-inspector-heading-h2-font-weight: var(
+    --catalog-header-typography-weight-semibold-font-weight
+  );
+  --sidebars-edit-inspector-heading-padding: var(
+    --catalog-header-measure-heading-tiny-padding
+  );
+  --sidebars-edit-inspector-mark-border: var(--catalog-icon-border-mark-border);
+  --sidebars-edit-inspector-mark-border-radius: var(
+    --catalog-icon-border-tiny-plus-micro-border-radius
+  );
+  --sidebars-edit-inspector-mark-flex: var(--catalog-icon-measure-mark-flex);
+  --sidebars-edit-inspector-mark-height: var(
+    --catalog-icon-measure-xlarge-plus-micro-height
+  );
+  --sidebars-edit-inspector-mark-icon-flex-basis: var(
+    --catalog-icon-measure-normal-plus-hairline-flex-basis
+  );
+  --sidebars-edit-inspector-mark-icon-height: var(
+    --catalog-icon-measure-normal-plus-hairline-height
+  );
+  --sidebars-edit-inspector-mark-icon-width: var(
+    --catalog-icon-measure-normal-plus-hairline-width
+  );
+  --sidebars-edit-inspector-mark-width: var(
+    --catalog-icon-measure-xlarge-plus-micro-width
+  );
+  --sidebars-edit-save-font-weight: var(
+    --catalog-control-typography-weight-semibold-font-weight
+  );
+  --sidebars-edit-step-operations-button-height: var(
+    --catalog-button-measure-xlarge-height
+  );
+  --sidebars-edit-step-operations-gap: var(--catalog-item-measure-compact-gap);
+  --sidebars-edit-step-operations-step-delete-background: var(
+    --catalog-item-color-step-delete-background
+  );
+  --sidebars-edit-step-operations-step-delete-border-color: var(
+    --catalog-item-border-step-delete-border-color
+  );
+  --sidebars-edit-step-operations-step-delete-color: var(
+    --catalog-item-color-step-delete-color
+  );
+  --sidebars-edit-step-operations-step-delete-hover-background: var(
+    --catalog-item-color-operations-step-delete-background
+  );
+  --sidebars-inspector-back-background: var(
+    --catalog-control-color-back-background
+  );
+  --sidebars-inspector-back-font-size: var(
+    --catalog-control-typography-small-font-size
+  );
+  --sidebars-inspector-back-font-weight: var(
+    --catalog-control-typography-weight-medium-font-weight
+  );
+  --sidebars-inspector-back-hover-background: var(
+    --catalog-control-color-back-background
+  );
+  --sidebars-inspector-content-check-font-size: var(
+    --catalog-surface-typography-small-plus-hairline-font-size
+  );
+  --sidebars-inspector-content-check-gap: var(
+    --catalog-surface-measure-small-gap
+  );
+  --sidebars-inspector-content-form-gap: var(
+    --catalog-surface-measure-small-gap
+  );
+  --sidebars-inspector-content-input-not-type-checkbox-height: var(
+    --catalog-field-measure-xlarge-height
+  );
+  --sidebars-inspector-content-input-not-type-checkbox-padding-inline: var(
+    --catalog-field-measure-compact-plus-micro-padding-inline
+  );
+  --sidebars-inspector-content-label-not-check-font-size: var(
+    --catalog-label-typography-small-font-size
+  );
+  --sidebars-inspector-content-label-not-check-font-weight: var(
+    --catalog-label-typography-weight-medium-font-weight
+  );
+  --sidebars-inspector-content-label-not-check-gap: var(
+    --catalog-label-measure-tiny-plus-hairline-gap
+  );
+  --sidebars-inspector-content-padding: var(
+    --catalog-surface-measure-small-padding
+  );
+  --sidebars-inspector-content-textarea-line-height: var(
+    --catalog-field-typography-height-snug-line-height
+  );
+  --sidebars-inspector-content-textarea-min-height: var(
+    --catalog-field-measure-huge-plus-compact-min-height
+  );
+  --sidebars-inspector-content-textarea-padding: var(
+    --catalog-field-measure-compact-plus-micro-padding
+  );
+}

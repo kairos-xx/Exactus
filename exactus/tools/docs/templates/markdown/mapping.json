@@ -1,0 +1,38 @@
+{
+	"languages": {
+		"$path": "extension.languages",
+		"$default": [],
+		"$each": {
+			"language": "language",
+			"discovered": "discovered",
+			"parsed": "parsed",
+			"failed": "failed",
+			"symbols": "symbols",
+			"documented": "documented",
+			"coverage": {
+				"$coalesce": [
+					{
+						"$path": "coverage_percent"
+					},
+					{
+						"$literal": "N/A"
+					}
+				]
+			},
+			"findings": "findings"
+		}
+	},
+	"rules": {
+		"$path": "extension.rules",
+		"$default": []
+	},
+	"analyzed_code": {
+		"$path": "extension.metrics.languages",
+		"$default": [],
+		"$each": {
+			"language": "language",
+			"files": "files_analyzed",
+			"lines": "lines_analyzed"
+		}
+	}
+}

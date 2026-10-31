@@ -1,0 +1,154 @@
+/**
+ * Workspace view layouts.
+ *
+ * Sources: 17-workspace-surfaces.
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+@layer studio-base {
+  /* Source: 17-workspace-surfaces */
+  .surface-row strong,
+  .surface-row small {
+    min-width: var(--workspace-surface-row-strong-min-width);
+    overflow: hidden;
+    text-overflow: var(--workspace-surface-row-strong-text-overflow);
+    white-space: var(--workspace-surface-row-strong-white-space);
+  }
+  .surface-row small,
+  .surface-index {
+    color: var(--text-subtle);
+    font: var(--workspace-surface-row-small-font);
+  }
+  .surface-empty,
+  .surface-note {
+    margin: var(--workspace-surface-empty-margin);
+    padding: var(--workspace-surface-empty-padding);
+    color: var(--text-subtle);
+    font-size: var(--workspace-surface-empty-font-size);
+    line-height: var(--workspace-surface-empty-line-height);
+  }
+  .surface-properties {
+    margin: var(--workspace-surface-properties-margin);
+  }
+  .surface-properties > div {
+    display: grid;
+    grid-template-columns: var(
+      --workspace-surface-properties-div-grid-template-columns
+    );
+    align-items: center;
+    gap: var(--workspace-surface-properties-div-gap);
+    padding: var(--workspace-surface-properties-div-padding);
+  }
+  .surface-properties dd {
+    min-width: var(--workspace-surface-properties-dd-min-width);
+    margin: var(--workspace-surface-properties-dd-margin);
+    overflow: hidden;
+    text-overflow: var(--workspace-surface-properties-dd-text-overflow);
+    white-space: var(--workspace-surface-properties-dd-white-space);
+  }
+  .profile-chips {
+    display: flex;
+    gap: var(--workspace-profile-chips-gap);
+    padding: var(--workspace-profile-chips-padding);
+    overflow: auto hidden;
+    border-bottom: var(--studio-actions-dialog-border);
+  }
+  .profile-chips button {
+    height: var(--switch-track);
+    min-height: var(--switch-track);
+    padding-inline: var(--workspace-profile-chips-button-padding-inline);
+    background: var(--workspace-profile-chips-button-background);
+    color: var(--muted);
+  }
+  .profile-chips button.active {
+    border-color: var(--accent);
+    background: var(--data-tables-selected-data-step-background);
+    color: var(--text-strong);
+  }
+  .surface-grid-record,
+  .surface-grid-debug {
+    grid-template-columns: var(
+      --workspace-surface-grid-record-grid-template-columns
+    );
+  }
+  .surface-target-stage,
+  .surface-evidence {
+    display: flex;
+    flex-direction: column;
+  }
+  .target-stage-placeholder {
+    display: grid;
+    flex: var(--workspace-target-stage-placeholder-flex);
+    min-height: var(--workspace-target-stage-placeholder-min-height);
+    place-content: center;
+    justify-items: center;
+    gap: var(--workspace-target-stage-placeholder-gap);
+    padding: var(--studio-select-padding);
+    text-align: var(--workspace-target-stage-placeholder-text-align);
+    background-color: var(--bg);
+    background-image: var(
+      --workspace-target-stage-placeholder-background-image
+    );
+    background-size: var(--workspace-target-stage-placeholder-background-size);
+  }
+  .target-stage-placeholder .studio-icon {
+    width: var(--workspace-target-stage-placeholder-icon-width);
+    height: var(--workspace-target-stage-placeholder-icon-height);
+    color: var(--accent);
+  }
+  .target-stage-placeholder p {
+    max-width: var(--workspace-target-stage-placeholder-p-max-width);
+    margin: var(--workspace-target-stage-placeholder-p-margin);
+    color: var(--text-subtle);
+  }
+  .surface-grid-debug {
+    grid-template-rows: var(--workspace-surface-grid-debug-grid-template-rows);
+  }
+  .surface-grid-debug .surface-console {
+    grid-column: var(
+      --workspace-surface-grid-debug-surface-console-grid-column
+    );
+  }
+  .surface-code {
+    margin: var(--workspace-surface-code-margin);
+    padding: var(--workspace-surface-code-padding);
+    overflow: auto;
+    color: var(--text);
+    background: var(--workspace-surface-code-background);
+    font: var(--workspace-surface-code-font);
+    white-space: var(--workspace-surface-code-white-space);
+  }
+  .surface-code-large {
+    min-height: var(--bottom-dock-height);
+  }
+  .console-detail {
+    display: grid;
+    gap: var(--workspace-console-detail-gap);
+    padding: var(--workspace-console-detail-padding);
+  }
+  .console-detail small {
+    color: var(--text-subtle);
+  }
+  .surface-grid-compare {
+    grid-template-columns: var(
+      --workspace-surface-grid-compare-grid-template-columns
+    );
+  }
+  .compare-stage {
+    display: flex;
+    flex-direction: column;
+  }
+  .surface-tabs {
+    display: flex;
+    min-width: var(--workspace-surface-tabs-min-width);
+    align-items: center;
+    overflow-x: auto;
+  }
+  .surface-tabs button {
+    height: var(--h);
+    min-height: var(--h);
+    border: var(--workspace-surface-tabs-button-border);
+    border-bottom: var(--workspace-surface-tabs-button-border-bottom);
+    background: var(--workspace-surface-tabs-button-background);
+    box-shadow: var(--workspace-surface-tabs-button-box-shadow);
+  }
+}

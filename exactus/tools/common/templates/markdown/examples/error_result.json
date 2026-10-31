@@ -1,0 +1,40 @@
+{
+	"tool": {
+		"name": "lints",
+		"display_name": "Lints",
+		"version": "0.5.0"
+	},
+	"run": {
+		"id": "run-003",
+		"pipeline_id": null,
+		"status": "ERROR",
+		"exit_code": 1,
+		"started_at": null,
+		"finished_at": "2026-10-02T14:00:01+00:00",
+		"duration_seconds": 0.5,
+		"duration_human": "0.5 s"
+	},
+	"gate": {
+		"status": "ERROR",
+		"reason": "RuntimeError: boom"
+	},
+	"invocation": {
+		"command": "exactus --tool lints",
+		"cwd": null,
+		"arguments": []
+	},
+	"environment": {
+		"os": "Linux 6.8.0",
+		"python": "3.13.1",
+		"node": null,
+		"cpu_count": 4,
+		"variables": []
+	},
+	"artifacts": [
+		{
+			"name": "stderr.log",
+			"path": "ARTIFACTS/stderr.log",
+			"bytes": 64
+		}
+	]
+}

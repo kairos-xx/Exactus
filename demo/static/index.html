@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Exactus Demo</title>
+    <link rel="stylesheet" href="app.css" />
+  </head>
+  <body>
+    <main class="page">
+      <header class="hero">
+        <h1>Exactus Demo</h1>
+        <p class="lede">
+          Every control below unveils a different interface so the screenshot
+          explorer can discover, compare and deduplicate states.
+        </p>
+      </header>
+      <section class="card" aria-labelledby="status-heading">
+        <h2 id="status-heading">Status</h2>
+        <p class="status" data-status aria-live="polite">Ready</p>
+        <div class="actions">
+          <button class="button" type="button" data-toggle-status>
+            Toggle state
+          </button>
+          <button class="button" type="button" data-save-draft>
+            Save draft
+          </button>
+        </div>
+      </section>
+      <section class="card" aria-labelledby="tabs-heading">
+        <h2 id="tabs-heading">Workspace</h2>
+        <div class="tabs" role="tablist" aria-label="Workspace views">
+          <button
+            class="tab"
+            type="button"
+            role="tab"
+            id="tab-overview"
+            aria-controls="panel-overview"
+            aria-selected="true"
+          >
+            Overview
+          </button>
+          <button
+            class="tab"
+            type="button"
+            role="tab"
+            id="tab-metrics"
+            aria-controls="panel-metrics"
+            aria-selected="false"
+          >
+            Metrics
+          </button>
+          <button
+            class="tab"
+            type="button"
+            role="tab"
+            id="tab-settings"
+            aria-controls="panel-settings"
+            aria-selected="false"
+          >
+            Settings
+          </button>
+        </div>
+        <div
+          class="panel panel-overview"
+          role="tabpanel"
+          id="panel-overview"
+          aria-labelledby="tab-overview"
+        >
+          <p>
+            The overview links to the second page, which the explorer has
+            already visited through the navigation below.
+          </p>
+          <a class="link" href="page/">Read the guide</a>
+        </div>
+        <div
+          class="panel panel-metrics"
+          role="tabpanel"
+          id="panel-metrics"
+          aria-labelledby="tab-metrics"
+          hidden
+        >
+          <div class="bars" aria-label="Weekly throughput">
+            <span class="bar bar-a"></span>
+            <span class="bar bar-b"></span>
+            <span class="bar bar-c"></span>
+            <span class="bar bar-d"></span>
+            <span class="bar bar-e"></span>
+          </div>
+        </div>
+        <div
+          class="panel panel-settings"
+          role="tabpanel"
+          id="panel-settings"
+          aria-labelledby="tab-settings"
+          hidden
+        >
+          <div class="swatches">
+            <span class="swatch swatch-a"></span>
+            <span class="swatch swatch-b"></span>
+            <span class="swatch swatch-c"></span>
+          </div>
+          <button
+            class="switch"
+            type="button"
+            role="switch"
+            aria-checked="false"
+            data-density
+          >
+            Compact layout
+          </button>
+        </div>
+      </section>
+      <section class="card" aria-labelledby="details-heading">
+        <h2 id="details-heading">Details</h2>
+        <button
+          class="button"
+          type="button"
+          aria-expanded="false"
+          aria-controls="details"
+          data-disclosure
+        >
+          Show details
+        </button>
+        <div class="reveal reveal-details" id="details" hidden>
+          <p>Details unveil a second layer of controls.</p>
+          <button
+            class="button"
+            type="button"
+            aria-expanded="false"
+            aria-controls="advanced"
+            data-disclosure
+          >
+            Show advanced options
+          </button>
+          <div class="reveal reveal-advanced" id="advanced" hidden>
+            <p>Advanced options sit two clicks deep.</p>
+          </div>
+        </div>
+      </section>
+      <section class="card" aria-labelledby="preview-heading">
+        <h2 id="preview-heading">Preview</h2>
+        <button class="button" type="button" data-open-preview>
+          Open preview panel
+        </button>
+        <dialog class="preview" aria-labelledby="preview-title">
+          <h3 id="preview-title">Preview panel</h3>
+          <p>Closing returns to a state the explorer already captured.</p>
+          <button class="button" type="button" data-close-preview>
+            Close preview
+          </button>
+        </dialog>
+      </section>
+      <nav class="card nav" aria-label="Demo navigation">
+        <a class="link" href="page/">Open page</a>
+        <a class="link" href="page/">Open same page through another element</a>
+        <a class="link" href="page/">Jump to the second page</a>
+      </nav>
+    </main>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

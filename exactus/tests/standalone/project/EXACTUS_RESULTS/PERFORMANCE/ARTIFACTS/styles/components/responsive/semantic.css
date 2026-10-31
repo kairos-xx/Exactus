@@ -1,0 +1,20 @@
+/**
+ * Contextual aliases of the responsive component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  --perf-actions-share: var(--catalog-layout-measure-full-share);
+  --perf-main-padding-compact: var(
+    --catalog-layout-measure-main-padding-compact
+  );
+  --perf-segment-offset: var(--catalog-layout-measure-segment-offset);
+  --perf-stack-gap: var(--catalog-layout-measure-stack-gap);
+  --perf-kpi-grid-wide: var(--catalog-layout-measure-kpi-grid-wide);
+  --perf-layout-grid-compact: var(--catalog-layout-measure-layout-grid-compact);
+  --perf-toollist-grid: var(--catalog-layout-measure-toollist-grid);
+  --perf-stage-grid-compact: var(--catalog-layout-measure-stage-grid-compact);
+  --perf-event-grid-compact: var(--catalog-layout-measure-event-grid-compact);
+  --perf-flow-size: var(--catalog-layout-measure-auto);
+  font-family: var(--perf-sans);
+  color-scheme: dark;
+}

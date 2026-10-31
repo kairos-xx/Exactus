@@ -1,0 +1,41 @@
+{
+	"tool": "tool",
+	"run": "run",
+	"previous_duration_seconds": "previous_duration_seconds",
+	"summary": "summary",
+	"comparison": "comparison",
+	"gate": "gate",
+	"scope": "scope",
+	"invocation": "invocation",
+	"environment": "environment",
+	"findings": {
+		"$path": "findings",
+		"$sort_by": "path"
+	},
+	"blocking": {
+		"$path": "findings",
+		"$default": [],
+		"$where": {
+			"$path": "blocking",
+			"$op": "eq",
+			"$value": true
+		},
+		"$sort_by": "path",
+		"$each": {
+			"id": "id",
+			"title": "title"
+		}
+	},
+	"artifacts": {
+		"$path": "artifacts",
+		"$default": []
+	},
+	"extension": "extension",
+	"severity_levels": {
+		"$literal": [
+			"error",
+			"warning",
+			"info"
+		]
+	}
+}

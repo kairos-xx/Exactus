@@ -1,0 +1,152 @@
+{
+  "completed": 8,
+  "detail": "",
+  "elapsed_seconds": 67.0,
+  "extra": {
+    "build_seconds": 66.98019987499993,
+    "catalog_bytes": 8779628,
+    "chunk_references": 17322,
+    "components_built": 7,
+    "components_removed": 0,
+    "components_reused": 5,
+    "delta_bytes": 84195006,
+    "entry_count": 19197,
+    "limits": {
+      "part_bytes_max": 90000000,
+      "part_size_max": "90MB"
+    },
+    "logical_payload_bytes": 602462985,
+    "membership_partition_count": 23,
+    "object_count": 14781,
+    "pack_count": 68,
+    "packs_built": 5,
+    "packs_reused": 63,
+    "physical_pack_bytes": 112636888,
+    "plan": {
+      "basedpyright_coverage_pyrefly_pytest_ruff": "REUSE",
+      "build_twine": "BUILD",
+      "defusedxml": "REUSE",
+      "eslint_htmlhint_jslint_prettier_stylelint_tsc": "REUSE",
+      "fastapi_httpx_httpx2_mcp_pydantic_uvicorn": "BUILD",
+      "hypothesis_mutmut": "BUILD",
+      "jinja2": "BUILD",
+      "node": "REUSE",
+      "pillow": "BUILD",
+      "psutil": "BUILD",
+      "tree-sitter_tree-sitter-language-pack": "BUILD",
+      "zstd-cli": "REUSE"
+    },
+    "shared_object_bytes": 11001540,
+    "shared_object_count": 804,
+    "target": {
+      "arch": "amd64",
+      "libc": "musl",
+      "name": "linux-musl-amd64",
+      "os": "linux"
+    },
+    "unique_object_bytes": 575426343
+  },
+  "finished_at": "2026-10-29T08:38:10.629754+00:00",
+  "items": [
+    {
+      "detail": "",
+      "elapsed_seconds": 3.5,
+      "finished_at": "2026-10-29T08:37:07.079726+00:00",
+      "name": "fingerprint",
+      "progress": 1.0,
+      "run_id": null,
+      "started_at": "2026-10-29T08:37:03.627010+00:00",
+      "status": "DONE",
+      "step": ""
+    },
+    {
+      "detail": "",
+      "elapsed_seconds": 14.2,
+      "finished_at": "2026-10-29T08:37:52.985514+00:00",
+      "name": "stage",
+      "progress": 1.0,
+      "run_id": null,
+      "started_at": "2026-10-29T08:37:07.079726+00:00",
+      "status": "DONE",
+      "step": ""
+    },
+    {
+      "detail": "",
+      "elapsed_seconds": 31.7,
+      "finished_at": "2026-10-29T08:37:52.985489+00:00",
+      "name": "scan",
+      "progress": 1.0,
+      "run_id": null,
+      "started_at": "2026-10-29T08:37:09.694193+00:00",
+      "status": "DONE",
+      "step": ""
+    },
+    {
+      "detail": "",
+      "elapsed_seconds": 0.0,
+      "finished_at": "2026-10-29T08:37:52.985785+00:00",
+      "name": "membership",
+      "progress": 1.0,
+      "run_id": null,
+      "started_at": "2026-10-29T08:37:52.985514+00:00",
+      "status": "DONE",
+      "step": ""
+    },
+    {
+      "detail": "",
+      "elapsed_seconds": 13.8,
+      "finished_at": "2026-10-29T08:38:06.743490+00:00",
+      "name": "pack",
+      "progress": 1.0,
+      "run_id": null,
+      "started_at": "2026-10-29T08:37:52.985785+00:00",
+      "status": "DONE",
+      "step": ""
+    },
+    {
+      "detail": "",
+      "elapsed_seconds": 1.6,
+      "finished_at": "2026-10-29T08:38:08.385306+00:00",
+      "name": "catalog",
+      "progress": 1.0,
+      "run_id": null,
+      "started_at": "2026-10-29T08:38:06.743490+00:00",
+      "status": "DONE",
+      "step": ""
+    },
+    {
+      "detail": "",
+      "elapsed_seconds": 0.0,
+      "finished_at": "2026-10-29T08:38:08.395151+00:00",
+      "name": "launcher",
+      "progress": 1.0,
+      "run_id": null,
+      "started_at": "2026-10-29T08:38:08.385306+00:00",
+      "status": "DONE",
+      "step": ""
+    },
+    {
+      "detail": "",
+      "elapsed_seconds": 0,
+      "finished_at": null,
+      "name": "delta",
+      "progress": 1.0,
+      "run_id": null,
+      "started_at": null,
+      "status": "DONE",
+      "step": ""
+    }
+  ],
+  "kind": "build",
+  "name": "linux-musl-amd64",
+  "pid": 60250,
+  "pipeline_run_id": null,
+  "progress": 1.0,
+  "run_id": "5d4ccf6ae16f43f6aeb73140cbff7b26",
+  "schema": "exactus-run/v1",
+  "started_at": "2026-10-29T08:37:03.626826+00:00",
+  "status": "DONE",
+  "step": "delta",
+  "total": 8,
+  "updated_at": "2026-10-29T08:38:10.629776+00:00"
+}

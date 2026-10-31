@@ -1,0 +1,75 @@
+/**
+ * Contextual aliases of the data tables component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  /* 10-data-tables */
+  --data-tables-check-input-after-border-radius: var(
+    --catalog-field-border-xlarge-border-radius
+  );
+  --data-tables-check-input-after-content: var(
+    --catalog-field-typography-check-input-content
+  );
+  --data-tables-check-input-after-height: var(
+    --catalog-field-measure-small-height
+  );
+  --data-tables-check-input-after-left: var(--catalog-field-measure-micro-left);
+  --data-tables-check-input-after-top: var(--catalog-field-measure-half-top);
+  --data-tables-check-input-after-transform: var(
+    --catalog-field-effect-check-input-transform
+  );
+  --data-tables-check-input-after-width: var(
+    --catalog-field-measure-small-width
+  );
+  --data-tables-control-input-webkit-inner-spin-button-margin: var(
+    --catalog-button-measure-inner-spin-margin
+  );
+  --data-tables-control-input-webkit-outer-spin-button-margin: var(
+    --catalog-button-measure-outer-spin-margin
+  );
+  --data-tables-delete-dialog-backdrop-opacity: var(
+    --catalog-dialog-effect-delete-backdrop-opacity
+  );
+  --data-tables-graph-canvas-node-gap: var(
+    --catalog-item-measure-canvas-node-gap
+  );
+  --data-tables-graph-canvas-node-height: var(
+    --catalog-item-measure-canvas-node-height
+  );
+  --data-tables-graph-canvas-node-min-width: var(
+    --catalog-item-measure-page-plus-small-plus-xxlarge-min-width
+  );
+  --data-tables-graph-canvas-node-padding: var(
+    --catalog-item-measure-canvas-node-padding
+  );
+  --data-tables-graph-canvas-node-text-align: var(
+    --catalog-item-typography-canvas-node-text-align
+  );
+  --data-tables-graph-canvas-node-white-space: var(
+    --catalog-item-typography-canvas-node-white-space
+  );
+  --data-tables-input-not-type-checkbox-font-weight: var(
+    --catalog-field-typography-input-font-weight
+  );
+  --data-tables-number-control-focus-within-outline-offset: var(
+    --catalog-control-border-micro-outline-offset
+  );
+  --data-tables-runs-content-height: var(
+    --catalog-surface-measure-runs-runs-content-height
+  );
+  --data-tables-runs-content-padding: var(
+    --catalog-surface-measure-runs-content-padding
+  );
+  --data-tables-timeline-content-flex: var(
+    --catalog-track-measure-content-flex
+  );
+  --data-tables-timeline-content-height: var(
+    --catalog-track-measure-content-height
+  );
+  --data-tables-timeline-content-min-height: var(
+    --catalog-track-measure-content-min-height
+  );
+  --data-tables-timeline-content-padding: var(
+    --catalog-track-measure-content-padding
+  );
+}

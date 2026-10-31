@@ -1,0 +1,63 @@
+/**
+ * Top bar, search and global actions.
+ *
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+@layer perf-base {
+  .topbar {
+    height: var(--perf-topbar-height);
+    padding: var(--perf-topbar-padding);
+    border-bottom: var(--perf-panel-edge);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: var(--perf-flush);
+    background: var(--perf-topbar-mist);
+    backdrop-filter: var(--perf-glass);
+    z-index: var(--perf-topbar-layer);
+  }
+  .topbar h1 {
+    font-size: var(--perf-size-hero);
+    margin: var(--perf-flush);
+    letter-spacing: var(--perf-track-tight);
+  }
+  .top-actions {
+    display: flex;
+    gap: var(--perf-actions-gap);
+  }
+  .search {
+    height: var(--perf-search-height);
+    min-width: var(--perf-search-min);
+    border: var(--perf-panel-edge);
+    background: var(--surface);
+    border-radius: var(--perf-radius-card);
+    display: flex;
+    align-items: center;
+    gap: var(--perf-search-gap);
+    padding: var(--perf-search-padding);
+  }
+  .search input {
+    border: var(--perf-no-edge);
+    outline: var(--perf-no-edge);
+    background: var(--perf-clear);
+    color: var(--text);
+    width: var(--perf-flow-width);
+    font: inherit;
+  }
+  .top-actions button,
+  .download-report,
+  .segmented button {
+    border: var(--perf-panel-edge);
+    background: var(--surface);
+    color: var(--text);
+    border-radius: var(--perf-radius-card);
+    padding: var(--perf-control-padding);
+    cursor: var(--perf-pointer);
+  }
+  .download-report {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: var(--perf-download-decoration);
+  }
+}

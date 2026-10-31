@@ -1,0 +1,1510 @@
+/**
+ * Contextual aliases of the workspace component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  /* 17-workspace-surfaces */
+  --workspace-console-detail-gap: var(--catalog-control-measure-compact-gap);
+  --workspace-console-detail-padding: var(
+    --catalog-control-measure-small-padding
+  );
+  --workspace-profile-chips-button-background: var(
+    --catalog-button-color-profile-chips-background
+  );
+  --workspace-profile-chips-button-padding-inline: var(
+    --catalog-button-measure-compact-plus-micro-padding-inline
+  );
+  --workspace-profile-chips-gap: var(--catalog-control-measure-tiny-gap);
+  --workspace-profile-chips-padding: var(
+    --catalog-control-measure-compact-plus-micro-padding
+  );
+  --workspace-surface-code-background: var(
+    --catalog-surface-color-code-dark-background
+  );
+  --workspace-surface-code-font: var(--catalog-surface-typography-code-font);
+  --workspace-surface-code-margin: var(--catalog-surface-measure-code-margin);
+  --workspace-surface-code-padding: var(
+    --catalog-surface-measure-small-padding
+  );
+  --workspace-surface-code-white-space: var(
+    --catalog-surface-typography-code-white-space
+  );
+  --workspace-surface-empty-font-size: var(
+    --catalog-surface-typography-small-font-size
+  );
+  --workspace-surface-empty-line-height: var(
+    --catalog-surface-typography-height-snug-line-height
+  );
+  --workspace-surface-empty-margin: var(--catalog-surface-measure-empty-margin);
+  --workspace-surface-empty-padding: var(
+    --catalog-surface-measure-small-padding
+  );
+  --workspace-surface-grid-compare-grid-template-columns: var(
+    --catalog-list-measure-compare-grid-template-columns
+  );
+  --workspace-surface-grid-debug-grid-template-rows: var(
+    --catalog-list-measure-debug-grid-template-rows
+  );
+  --workspace-surface-grid-debug-surface-console-grid-column: var(
+    --catalog-surface-measure-debug-console-grid-column
+  );
+  --workspace-surface-grid-record-grid-template-columns: var(
+    --catalog-list-measure-record-grid-template-columns
+  );
+  --workspace-surface-properties-dd-margin: var(
+    --catalog-surface-measure-properties-dd-margin
+  );
+  --workspace-surface-properties-dd-min-width: var(
+    --catalog-surface-measure-properties-dd-min-width
+  );
+  --workspace-surface-properties-dd-text-overflow: var(
+    --catalog-surface-typography-properties-dd-text-overflow
+  );
+  --workspace-surface-properties-dd-white-space: var(
+    --catalog-surface-typography-properties-dd-white-space
+  );
+  --workspace-surface-properties-div-gap: var(
+    --catalog-surface-measure-small-gap
+  );
+  --workspace-surface-properties-div-grid-template-columns: var(
+    --catalog-surface-measure-properties-div-grid-template-columns
+  );
+  --workspace-surface-properties-div-padding: var(
+    --catalog-surface-measure-tiny-plus-micro-compact-plus-micro-padding
+  );
+  --workspace-surface-properties-margin: var(
+    --catalog-surface-measure-properties-margin
+  );
+  --workspace-surface-row-small-font: var(
+    --catalog-label-typography-small-font
+  );
+  --workspace-surface-row-strong-min-width: var(
+    --catalog-item-measure-strong-min-width
+  );
+  --workspace-surface-row-strong-text-overflow: var(
+    --catalog-item-typography-strong-text-overflow
+  );
+  --workspace-surface-row-strong-white-space: var(
+    --catalog-item-typography-strong-white-space
+  );
+  --workspace-surface-tabs-button-background: var(
+    --catalog-button-color-tabs-background
+  );
+  --workspace-surface-tabs-button-border: var(
+    --catalog-button-border-tabs-border
+  );
+  --workspace-surface-tabs-button-border-bottom: var(
+    --catalog-button-border-tabs-border-bottom
+  );
+  --workspace-surface-tabs-button-box-shadow: var(
+    --catalog-button-effect-tabs-box-shadow
+  );
+  --workspace-surface-tabs-min-width: var(--catalog-tab-measure-tabs-min-width);
+  --workspace-target-stage-placeholder-background-image: var(
+    --catalog-surface-color-stage-placeholder-background-image
+  );
+  --workspace-target-stage-placeholder-background-size: var(
+    --catalog-surface-color-medium-background-size
+  );
+  --workspace-target-stage-placeholder-flex: var(
+    --catalog-surface-measure-stage-placeholder-flex
+  );
+  --workspace-target-stage-placeholder-gap: var(
+    --catalog-surface-measure-compact-gap
+  );
+  --workspace-target-stage-placeholder-icon-height: var(
+    --catalog-icon-measure-large-height
+  );
+  --workspace-target-stage-placeholder-icon-width: var(
+    --catalog-icon-measure-large-width
+  );
+  --workspace-target-stage-placeholder-min-height: var(
+    --catalog-surface-measure-page-plus-huge-min-height
+  );
+  --workspace-target-stage-placeholder-p-margin: var(
+    --catalog-surface-measure-placeholder-p-margin
+  );
+  --workspace-target-stage-placeholder-p-max-width: var(
+    --catalog-surface-measure-page-plus-huge-plus-page-max-width
+  );
+  --workspace-target-stage-placeholder-text-align: var(
+    --catalog-surface-typography-stage-placeholder-text-align
+  );
+  /* 26-edit-workspace */
+  --workspace-bottom-border-top: var(
+    --catalog-control-border-bottom-border-top
+  );
+  --workspace-brand-border: var(--catalog-header-border-brand-border);
+  --workspace-brand-h1-span-color: var(
+    --catalog-header-color-brand-h1-span-color
+  );
+  --workspace-data-panel-id-not-is-floating-background: var(
+    --catalog-panel-color-floating-background
+  );
+  --workspace-data-panel-id-not-is-floating-border: var(
+    --catalog-panel-border-floating-zero-border
+  );
+  --workspace-data-panel-id-not-is-floating-box-shadow: var(
+    --catalog-panel-effect-floating-none-box-shadow
+  );
+  --workspace-edit-check-list-li-button-font-size: var(
+    --catalog-button-typography-pixel-compact-plus-micro-font-size
+  );
+  --workspace-edit-check-list-li-button-height: var(
+    --catalog-button-measure-pixel-large-height
+  );
+  --workspace-edit-check-list-li-button-min-height: var(
+    --catalog-button-measure-pixel-large-min-height
+  );
+  --workspace-edit-check-list-li-color: var(--catalog-item-color-list-li-color);
+  --workspace-edit-check-list-li-font-size: var(
+    --catalog-item-typography-pixel-small-minus-hairline-font-size
+  );
+  --workspace-edit-check-list-li-gap: var(
+    --catalog-item-measure-pixel-tiny-plus-micro-gap
+  );
+  --workspace-edit-check-list-li-padding: var(
+    --catalog-item-measure-list-li-padding
+  );
+  --workspace-edit-check-list-margin: var(--catalog-list-measure-check-margin);
+  --workspace-edit-check-list-padding: var(
+    --catalog-list-measure-check-padding
+  );
+  --workspace-edit-check-list-style: var(
+    --catalog-list-measure-check-list-style
+  );
+  --workspace-edit-checks-border-top: var(
+    --catalog-control-border-checks-border-top
+  );
+  --workspace-edit-checks-margin-top: var(
+    --catalog-control-measure-pixel-compact-plus-micro-margin-top
+  );
+  --workspace-edit-checks-padding-top: var(
+    --catalog-control-measure-pixel-tiny-plus-micro-padding-top
+  );
+  --workspace-edit-checks-summary-color: var(
+    --catalog-label-color-checks-summary-color
+  );
+  --workspace-edit-checks-summary-font-size: var(
+    --catalog-label-typography-pixel-small-font-size
+  );
+  --workspace-edit-empty-button-border-radius: var(
+    --catalog-button-border-pixel-tiny-border-radius
+  );
+  --workspace-edit-empty-gap: var(
+    --catalog-control-measure-pixel-compact-plus-micro-gap
+  );
+  --workspace-edit-empty-p-font-size: var(
+    --catalog-text-typography-pixel-small-font-size
+  );
+  --workspace-edit-empty-p-line-height: var(
+    --catalog-text-typography-height-relaxed-line-height
+  );
+  --workspace-edit-empty-p-margin: var(--catalog-text-measure-empty-p-margin);
+  --workspace-edit-empty-p-max-width: var(
+    --catalog-text-measure-pixel-massive-plus-large-plus-massive-max-width
+  );
+  --workspace-edit-empty-padding: var(
+    --catalog-control-measure-pixel-xxlarge-pixel-medium-padding
+  );
+  --workspace-edit-empty-text-align: var(
+    --catalog-control-typography-empty-text-align
+  );
+  --workspace-edit-evidence-color: var(--catalog-control-color-evidence-color);
+  --workspace-edit-evidence-font-size: var(
+    --catalog-control-typography-pixel-small-minus-hairline-font-size
+  );
+  --workspace-edit-evidence-img-border-radius: var(
+    --catalog-control-border-pixel-tiny-border-radius
+  );
+  --workspace-edit-evidence-img-margin-bottom: var(
+    --catalog-control-measure-pixel-tiny-plus-micro-margin-bottom
+  );
+  --workspace-edit-evidence-img-max-height: var(
+    --catalog-control-measure-pixel-page-plus-micro-plus-compact-max-height
+  );
+  --workspace-edit-evidence-img-width: var(
+    --catalog-control-measure-full-width
+  );
+  --workspace-edit-evidence-padding: var(
+    --catalog-control-measure-pixel-tiny-pixel-small-pixel-compact-plus-micro-padding
+  );
+  --workspace-edit-form-state-button-font-size: var(
+    --catalog-button-typography-pixel-small-minus-hairline-font-size
+  );
+  --workspace-edit-form-state-button-padding: var(
+    --catalog-button-measure-form-state-padding
+  );
+  --workspace-edit-form-state-color: var(
+    --catalog-control-color-form-state-color
+  );
+  --workspace-edit-form-state-font-size: var(
+    --catalog-control-typography-pixel-small-minus-hairline-font-size
+  );
+  --workspace-edit-form-state-gap: var(
+    --catalog-control-measure-pixel-compact-gap
+  );
+  --workspace-edit-inspector-heading-div-gap: var(
+    --catalog-header-measure-pixel-tiny-gap
+  );
+  --workspace-edit-inspector-heading-div-min-width: var(
+    --catalog-header-measure-heading-div-min-width
+  );
+  --workspace-edit-inspector-heading-gap: var(
+    --catalog-header-measure-pixel-small-gap
+  );
+  --workspace-edit-inspector-heading-h2-text-overflow: var(
+    --catalog-header-typography-heading-h2-text-overflow
+  );
+  --workspace-edit-inspector-heading-h2-white-space: var(
+    --catalog-header-typography-heading-h2-white-space
+  );
+  --workspace-edit-inspector-heading-icon-color: var(
+    --catalog-header-color-heading-color
+  );
+  --workspace-edit-inspector-heading-icon-flex-basis: var(
+    --catalog-header-measure-pixel-large-flex-basis
+  );
+  --workspace-edit-inspector-heading-icon-height: var(
+    --catalog-header-measure-pixel-large-height
+  );
+  --workspace-edit-inspector-heading-icon-width: var(
+    --catalog-header-measure-pixel-large-width
+  );
+  --workspace-edit-inspector-heading-padding: var(
+    --catalog-header-measure-heading-pixel-micro-padding
+  );
+  --workspace-edit-inspector-heading-small-font-size: var(
+    --catalog-header-typography-pixel-small-minus-hairline-font-size
+  );
+  --workspace-edit-step-checks-color: var(
+    --catalog-item-color-step-checks-dark-color
+  );
+  --workspace-edit-step-checks-font-size: var(
+    --catalog-item-typography-pixel-compact-plus-micro-font-size
+  );
+  --workspace-edit-step-list-padding: var(
+    --catalog-item-measure-step-list-padding
+  );
+  --workspace-edit-step-list-width: var(--catalog-item-measure-full-width);
+  --workspace-edit-step-operations-button-flex: var(
+    --catalog-button-measure-step-operations-flex
+  );
+  --workspace-edit-step-operations-button-font-size: var(
+    --catalog-button-typography-pixel-small-minus-hairline-font-size
+  );
+  --workspace-edit-step-operations-gap: var(
+    --catalog-item-measure-pixel-tiny-plus-micro-gap
+  );
+  --workspace-edit-step-operations-id-step-delete-color: var(
+    --catalog-item-color-step-operations-color
+  );
+  --workspace-edit-step-operations-id-step-delete-flex: var(
+    --catalog-item-measure-step-operations-flex
+  );
+  --workspace-edit-step-operations-id-step-delete-flex-basis-max-width-600px: var(
+    --catalog-item-measure-pixel-xlarge-plus-small-flex-basis
+  );
+  --workspace-edit-step-operations-padding: var(
+    --catalog-item-measure-step-operations-padding
+  );
+  --workspace-edit-step-row-icon-color: var(--catalog-icon-color-step-color);
+  --workspace-edit-step-row-icon-height: var(
+    --catalog-icon-measure-pixel-medium-height
+  );
+  --workspace-edit-step-row-icon-width: var(
+    --catalog-icon-measure-pixel-medium-width
+  );
+  --workspace-edit-step-row-min-height-max-width-600px: var(
+    --catalog-item-measure-pixel-huge-minus-micro-min-height
+  );
+  --workspace-edit-step-text-is-strong-text-overflow: var(
+    --catalog-text-typography-step-strong-text-overflow
+  );
+  --workspace-edit-step-text-is-strong-white-space: var(
+    --catalog-text-typography-step-strong-white-space
+  );
+  --workspace-edit-step-text-min-width: var(
+    --catalog-item-measure-step-text-min-width
+  );
+  --workspace-edit-step-toolbar-gap: var(
+    --catalog-item-measure-pixel-compact-gap
+  );
+  --workspace-edit-step-toolbar-min-height: var(
+    --catalog-item-measure-pixel-xlarge-plus-micro-plus-compact-min-height
+  );
+  --workspace-edit-step-toolbar-padding: var(
+    --catalog-item-measure-pixel-compact-pixel-small-padding
+  );
+  --workspace-edit-step-toolbar-strong-min-width: var(
+    --catalog-item-measure-toolbar-strong-min-width
+  );
+  --workspace-edit-step-toolbar-strong-text-overflow: var(
+    --catalog-item-typography-toolbar-strong-text-overflow
+  );
+  --workspace-edit-step-toolbar-strong-white-space: var(
+    --catalog-item-typography-toolbar-strong-white-space
+  );
+  --workspace-footer-background: var(
+    --catalog-toolbar-color-footer-light-background
+  );
+  --workspace-footer-border-top: var(
+    --catalog-toolbar-border-footer-pixel-hairline-border-top
+  );
+  --workspace-footer-box-shadow: var(
+    --catalog-toolbar-effect-footer-box-shadow
+  );
+  --workspace-id-inspector-back-background: var(
+    --catalog-control-color-back-background
+  );
+  --workspace-id-inspector-back-color: var(--catalog-control-color-back-color);
+  --workspace-id-inspector-back-font-size: var(
+    --catalog-control-typography-pixel-small-minus-hairline-font-size
+  );
+  --workspace-id-inspector-back-margin-bottom: var(
+    --catalog-control-measure-pixel-compact-plus-micro-margin-bottom
+  );
+  --workspace-id-inspector-button-background: var(
+    --catalog-button-color-default-lightest-background
+  );
+  --workspace-id-inspector-button-border-color: var(
+    --catalog-button-border-default-dark-border-color
+  );
+  --workspace-id-inspector-button-border-radius: var(
+    --catalog-button-border-pixel-tiny-border-radius
+  );
+  --workspace-id-inspector-button-box-shadow: var(
+    --catalog-button-effect-default-box-shadow
+  );
+  --workspace-id-inspector-edit-save-background: var(
+    --catalog-control-color-save-dark-background
+  );
+  --workspace-id-inspector-edit-save-color: var(
+    --catalog-control-color-save-color
+  );
+  --workspace-id-inspector-edit-save-margin-top: var(
+    --catalog-control-measure-pixel-micro-margin-top
+  );
+  --workspace-id-inspector-input-role-switch-after-background: var(
+    --catalog-field-color-input-role-switch-light-background
+  );
+  --workspace-id-inspector-input-role-switch-after-height: var(
+    --catalog-field-measure-pixel-small-height
+  );
+  --workspace-id-inspector-input-role-switch-after-left: var(
+    --catalog-field-measure-pixel-micro-left
+  );
+  --workspace-id-inspector-input-role-switch-after-top: var(
+    --catalog-field-measure-pixel-micro-top
+  );
+  --workspace-id-inspector-input-role-switch-after-transform: var(
+    --catalog-field-effect-input-transform
+  );
+  --workspace-id-inspector-input-role-switch-after-width: var(
+    --catalog-field-measure-pixel-small-width
+  );
+  --workspace-id-inspector-input-role-switch-before-content: var(
+    --catalog-field-typography-input-content
+  );
+  --workspace-id-inspector-input-where-role-switch-background: var(
+    --catalog-field-color-input-role-switch-dark-background
+  );
+  --workspace-id-inspector-input-where-role-switch-border: var(
+    --catalog-field-border-input-role-switch-border
+  );
+  --workspace-id-inspector-input-where-role-switch-border-radius: var(
+    --catalog-field-border-pixel-normal-border-radius
+  );
+  --workspace-id-inspector-input-where-role-switch-height: var(
+    --catalog-field-measure-pixel-normal-height
+  );
+  --workspace-id-inspector-input-where-role-switch-min-height: var(
+    --catalog-field-measure-pixel-normal-min-height
+  );
+  --workspace-id-inspector-input-where-role-switch-min-width: var(
+    --catalog-field-measure-pixel-large-plus-tiny-min-width
+  );
+  --workspace-id-inspector-input-where-role-switch-width: var(
+    --catalog-field-measure-pixel-large-plus-tiny-width
+  );
+  --workspace-id-inspector-is-id-flow-form-gap: var(
+    --catalog-control-measure-pixel-compact-plus-micro-gap
+  );
+  --workspace-id-inspector-label-check-min-height: var(
+    --catalog-label-measure-pixel-large-plus-micro-min-height
+  );
+  --workspace-id-inspector-label-color: var(
+    --catalog-label-color-default-color
+  );
+  --workspace-id-inspector-label-font-size: var(
+    --catalog-label-typography-pixel-small-minus-hairline-font-size
+  );
+  --workspace-id-inspector-label-font-weight: var(
+    --catalog-label-typography-weight-normal-font-weight
+  );
+  --workspace-id-inspector-label-gap: var(
+    --catalog-label-measure-pixel-tiny-plus-hairline-gap
+  );
+  --workspace-id-inspector-label-letter-spacing: var(
+    --catalog-label-typography-default-letter-spacing
+  );
+  --workspace-id-inspector-label-text-transform: var(
+    --catalog-label-typography-default-text-transform
+  );
+  --workspace-id-inspector-textarea-line-height: var(
+    --catalog-field-typography-height-snug-line-height
+  );
+  --workspace-id-inspector-textarea-min-height: var(
+    --catalog-field-measure-pixel-xxlarge-plus-tiny-min-height
+  );
+  --workspace-id-inspector-textarea-padding: var(
+    --catalog-field-measure-pixel-compact-minus-hairline-pixel-compact-padding
+  );
+  --workspace-input-where-role-switch-checked-after-background: var(
+    --catalog-field-color-input-role-switch-checked-background
+  );
+  --workspace-input-where-role-switch-checked-after-transform: var(
+    --catalog-field-effect-pixel-small-transform
+  );
+  --workspace-inspector-input-where-role-switch-checked-background: var(
+    --catalog-field-color-input-checked-checked-background
+  );
+  --workspace-inspector-is-input-not-type-checkbox-width: var(
+    --catalog-field-measure-full-width
+  );
+  --workspace-is-floating-box-shadow-max-width-600px: var(
+    --catalog-control-effect-floating-box-shadow
+  );
+  --workspace-is-floating-height-max-width-600px: var(
+    --catalog-control-measure-floating-height
+  );
+  --workspace-is-floating-inset-max-width-600px: var(
+    --catalog-control-measure-floating-inset
+  );
+  --workspace-is-floating-width-max-width-600px: var(
+    --catalog-control-measure-full-width
+  );
+  --workspace-panel-data-panel-id-flex-max-width-600px: var(
+    --catalog-panel-measure-default-flex
+  );
+  --workspace-panel-data-panel-id-max-width-600px: var(
+    --catalog-panel-measure-full-max-width
+  );
+  --workspace-panel-data-panel-id-min-width-max-width-600px: var(
+    --catalog-panel-measure-default-min-width
+  );
+  --workspace-panel-data-panel-id-width-max-width-600px: var(
+    --catalog-panel-measure-full-width
+  );
+  --workspace-panel-edit-step-row-background: var(
+    --catalog-item-color-step-background
+  );
+  --workspace-panel-edit-step-row-border: var(
+    --catalog-item-border-step-zero-border
+  );
+  --workspace-panel-edit-step-row-border-radius: var(
+    --catalog-item-border-pixel-tiny-plus-hairline-border-radius
+  );
+  --workspace-panel-edit-step-row-box-shadow: var(
+    --catalog-item-effect-step-none-box-shadow
+  );
+  --workspace-panel-edit-step-row-color: var(--catalog-item-color-step-color);
+  --workspace-panel-edit-step-row-gap: var(
+    --catalog-item-measure-pixel-compact-plus-micro-gap
+  );
+  --workspace-panel-edit-step-row-grid-template-columns: var(
+    --catalog-item-measure-step-pixel-large-grid-template-columns
+  );
+  --workspace-panel-edit-step-row-height: var(
+    --catalog-item-measure-step-height
+  );
+  --workspace-panel-edit-step-row-hover-background: var(
+    --catalog-item-color-step-hover-light-background
+  );
+  --workspace-panel-edit-step-row-margin: var(
+    --catalog-item-measure-step-pixel-hairline-margin
+  );
+  --workspace-panel-edit-step-row-min-height: var(
+    --catalog-item-measure-pixel-xxlarge-plus-micro-plus-compact-min-height
+  );
+  --workspace-panel-edit-step-row-padding: var(
+    --catalog-item-measure-pixel-compact-plus-micro-pixel-small-padding
+  );
+  --workspace-panel-edit-step-row-selected-background: var(
+    --catalog-item-color-step-selected-background
+  );
+  --workspace-panel-edit-step-row-selected-box-shadow: var(
+    --catalog-item-effect-step-selected-box-shadow
+  );
+  --workspace-panel-edit-step-row-text-align: var(
+    --catalog-item-typography-step-text-align
+  );
+  --workspace-panel-edit-step-row-width: var(--catalog-item-measure-full-width);
+  --workspace-panel-header-hover-panel-tools-button-opacity: var(
+    --catalog-button-effect-full-opacity
+  );
+  --workspace-panel-is-input-background: var(
+    --catalog-field-color-field-background
+  );
+  --workspace-panel-is-input-border: var(--catalog-field-border-input-border);
+  --workspace-panel-is-input-border-radius: var(
+    --catalog-field-border-pixel-tiny-border-radius
+  );
+  --workspace-panel-is-input-box-shadow: var(
+    --catalog-field-effect-input-box-shadow
+  );
+  --workspace-panel-is-input-color: var(
+    --catalog-field-color-input-light-color
+  );
+  --workspace-panel-is-input-font-size: var(
+    --catalog-field-typography-pixel-small-font-size
+  );
+  --workspace-panel-is-input-min-width: var(
+    --catalog-field-measure-input-min-width
+  );
+  --workspace-panel-is-input-padding-block: var(
+    --catalog-field-measure-pixel-tiny-padding-block
+  );
+  --workspace-panel-tools-button-opacity: var(
+    --catalog-button-effect-half-opacity
+  );
+  --workspace-panel-where-data-panel-id-header-background: var(
+    --catalog-header-color-default-light-background
+  );
+  --workspace-panel-where-data-panel-id-header-border-bottom: var(
+    --catalog-header-border-default-lower-border-bottom
+  );
+  --workspace-panel-where-data-panel-id-header-box-shadow: var(
+    --catalog-header-effect-default-box-shadow
+  );
+  --workspace-panel-where-data-panel-id-header-gap: var(
+    --catalog-header-measure-pixel-tiny-gap
+  );
+  --workspace-panel-where-data-panel-id-header-height: var(
+    --catalog-header-measure-pixel-xlarge-plus-micro-height
+  );
+  --workspace-panel-where-data-panel-id-header-min-height: var(
+    --catalog-header-measure-pixel-xlarge-plus-micro-min-height
+  );
+  --workspace-panel-where-data-panel-id-header-padding: var(
+    --catalog-header-measure-default-zero-pixel-compact-plus-micro-padding
+  );
+  --workspace-preview-border-bottom: var(
+    --catalog-surface-border-preview-border-bottom
+  );
+  --workspace-preview-min-height: var(
+    --catalog-surface-measure-preview-min-height
+  );
+  --workspace-section-nav-button-active-background: var(
+    --catalog-button-color-nav-background
+  );
+  --workspace-section-nav-button-active-border-bottom-color: var(
+    --catalog-button-border-nav-border-bottom-color
+  );
+  --workspace-section-nav-button-font-size: var(
+    --catalog-button-typography-pixel-small-font-size
+  );
+  --workspace-section-nav-button-font-size-media-width-max-1100px-and-width-above-600px: var(
+    --catalog-button-typography-pixel-small-minus-hairline-font-size
+  );
+  --workspace-section-nav-button-padding-inline-media-width-max-1100px-and-width-above-600px: var(
+    --catalog-button-measure-pixel-compact-minus-hairline-padding-inline
+  );
+  --workspace-table-content-background: var(
+    --catalog-table-color-content-background
+  );
+  --workspace-table-content-padding: var(
+    --catalog-table-measure-content-padding
+  );
+  --workspace-tabs-background: var(--catalog-tab-color-tabs-background);
+  --workspace-tabs-border: var(--catalog-tab-border-tabs-border);
+  --workspace-tabs-button-active-background: var(
+    --catalog-button-color-tabs-background
+  );
+  --workspace-tabs-button-active-box-shadow: var(
+    --catalog-button-effect-tabs-active-box-shadow
+  );
+  --workspace-tabs-button-active-color: var(--catalog-button-color-tabs-color);
+  --workspace-tabs-button-background: var(
+    --catalog-button-color-tabs-background
+  );
+  --workspace-tabs-button-border: var(--catalog-button-border-tabs-border);
+  --workspace-tabs-button-box-shadow: var(
+    --catalog-button-effect-tabs-box-shadow
+  );
+  --workspace-tabs-button-font-size: var(
+    --catalog-button-typography-pixel-small-font-size
+  );
+  --workspace-tabs-button-height: var(
+    --catalog-button-measure-pixel-large-height
+  );
+  --workspace-tabs-button-min-height: var(
+    --catalog-button-measure-pixel-large-min-height
+  );
+  --workspace-tabs-button-padding: var(--catalog-button-measure-tabs-padding);
+  --workspace-tabs-gap: var(--catalog-tab-measure-pixel-small-gap);
+  --workspace-tabs-height: var(--catalog-tab-measure-pixel-large-height);
+  --workspace-tabs-min-width: var(--catalog-tab-measure-tabs-min-width);
+  --workspace-tabs-padding: var(--catalog-tab-measure-tabs-padding);
+  --workspace-timeline-clip-box-shadow: var(
+    --catalog-track-effect-clip-none-box-shadow
+  );
+  --workspace-timeline-clips-background-image: var(
+    --catalog-track-color-clips-background-image
+  );
+  --workspace-timeline-is-timeline-content-background-color: var(
+    --catalog-track-color-content-background-color
+  );
+  --workspace-timeline-ruler-ticks-min-height: var(
+    --catalog-track-measure-pixel-large-plus-tiny-min-height
+  );
+  --workspace-timeline-toolbar-is-button-background: var(
+    --catalog-button-color-toolbar-background
+  );
+  --workspace-timeline-toolbar-is-button-border-color: var(
+    --catalog-button-border-toolbar-border-color
+  );
+  --workspace-timeline-toolbar-is-button-font-size: var(
+    --catalog-button-typography-pixel-small-minus-hairline-font-size
+  );
+  --workspace-timeline-toolbar-min-height: var(
+    --catalog-track-measure-pixel-xlarge-minus-micro-min-height
+  );
+  --workspace-timeline-track-label-min-height: var(
+    --catalog-label-measure-pixel-large-plus-tiny-min-height
+  );
+  --workspace-timeline-track-label-padding-block: var(
+    --catalog-label-measure-pixel-tiny-padding-block
+  );
+  --workspace-where-workspace-add-background: var(
+    --catalog-control-color-add-background
+  );
+  --workspace-where-workspace-add-flex: var(
+    --catalog-control-measure-add-pixel-medium-plus-micro-flex
+  );
+  --workspace-where-workspace-tree-item-active-background: var(
+    --catalog-item-color-tree-active-background
+  );
+  --workspace-where-workspace-tree-item-active-box-shadow: var(
+    --catalog-item-effect-tree-none-box-shadow
+  );
+  --workspace-where-workspace-tree-item-background: var(
+    --catalog-item-color-tree-dark-background
+  );
+  --workspace-where-workspace-tree-item-border: var(
+    --catalog-item-border-tree-border
+  );
+  --workspace-where-workspace-tree-item-border-radius: var(
+    --catalog-item-border-pixel-tiny-border-radius
+  );
+  --workspace-where-workspace-tree-item-height: var(
+    --catalog-item-measure-pixel-xlarge-minus-micro-height
+  );
+  --workspace-where-workspace-tree-padding: var(
+    --catalog-list-measure-pixel-tiny-plus-micro-padding
+  );
+  /* 37-graph-workspace */
+  --workspace-composition-footer-background: var(
+    --catalog-toolbar-color-footer-dark-background
+  );
+  --workspace-composition-footer-border: var(
+    --catalog-toolbar-border-footer-border
+  );
+  --workspace-composition-footer-flex: var(
+    --catalog-toolbar-measure-footer-flex
+  );
+  --workspace-composition-footer-font-size: var(
+    --catalog-toolbar-typography-compact-plus-micro-font-size
+  );
+  --workspace-composition-footer-gap: var(
+    --catalog-toolbar-measure-compact-gap
+  );
+  --workspace-composition-footer-min-height: var(
+    --catalog-toolbar-measure-xlarge-min-height
+  );
+  --workspace-composition-footer-padding: var(
+    --catalog-toolbar-measure-tiny-small-padding
+  );
+  --workspace-composition-footer-span-min-width: var(
+    --catalog-toolbar-measure-footer-span-min-width
+  );
+  --workspace-composition-footer-span-text-overflow: var(
+    --catalog-toolbar-typography-footer-span-text-overflow
+  );
+  --workspace-composition-footer-span-white-space: var(
+    --catalog-toolbar-typography-footer-span-white-space
+  );
+  --workspace-composition-link-graph-edge-hit-cursor: var(
+    --catalog-item-cursor-edge-hit-cursor
+  );
+  --workspace-composition-link-graph-edge-hit-stroke: var(
+    --catalog-item-color-edge-hit-stroke
+  );
+  --workspace-composition-link-graph-edge-hit-stroke-width: var(
+    --catalog-item-measure-edge-hit-stroke-width
+  );
+  --workspace-composition-link-is-hover-outline: var(
+    --catalog-link-border-default-outline
+  );
+  --workspace-composition-link-path-filter: var(
+    --catalog-link-effect-path-none-filter
+  );
+  --workspace-composition-link-text-cursor: var(
+    --catalog-link-cursor-text-cursor
+  );
+  --workspace-composition-link-text-font-size: var(
+    --catalog-link-typography-pixel-compact-plus-micro-font-size
+  );
+  --workspace-composition-link-text-stroke: var(
+    --catalog-link-color-text-stroke
+  );
+  --workspace-composition-links-marker-path-stroke: var(
+    --catalog-control-color-marker-path-stroke
+  );
+  --workspace-composition-links-stroke-width: var(
+    --catalog-control-measure-links-lower-stroke-width
+  );
+  --workspace-composition-nodes-min-height: var(
+    --catalog-control-measure-default-zero-min-height
+  );
+  --workspace-composition-nodes-min-width: var(
+    --catalog-control-measure-default-zero-min-width
+  );
+  --workspace-composition-preview-links-stroke-dasharray: var(
+    --catalog-surface-measure-preview-links-lower-stroke-dasharray
+  );
+  --workspace-flow-node-active-flow-node-title-background: var(
+    --catalog-header-color-node-title-background
+  );
+  --workspace-flow-node-background: var(
+    --catalog-item-color-node-dark-background
+  );
+  --workspace-flow-node-border: var(--catalog-item-border-node-middle-border);
+  --workspace-flow-node-border-radius: var(
+    --catalog-item-border-tiny-plus-micro-border-radius
+  );
+  --workspace-flow-node-box-shadow: var(
+    --catalog-item-effect-node-zero-tiny-box-shadow
+  );
+  --workspace-flow-node-meta-font-size: var(
+    --catalog-label-typography-small-minus-hairline-font-size
+  );
+  --workspace-flow-node-meta-padding: var(
+    --catalog-label-measure-node-meta-padding
+  );
+  --workspace-flow-node-padding: var(--catalog-item-measure-node-padding);
+  --workspace-flow-node-port-after-background: var(
+    --catalog-item-color-node-port-mid-background
+  );
+  --workspace-flow-node-port-after-border: var(
+    --catalog-item-border-node-port-hairline-border
+  );
+  --workspace-flow-node-port-after-border-radius: var(
+    --catalog-item-border-half-border-radius
+  );
+  --workspace-flow-node-port-after-content: var(
+    --catalog-item-typography-node-port-content
+  );
+  --workspace-flow-node-port-after-inset: var(
+    --catalog-item-measure-compact-minus-hairline-inset
+  );
+  --workspace-flow-node-port-background: var(
+    --catalog-item-color-node-port-dark-background
+  );
+  --workspace-flow-node-port-border: var(
+    --catalog-item-border-node-port-zero-border
+  );
+  --workspace-flow-node-port-box-shadow: var(
+    --catalog-item-effect-node-port-none-box-shadow
+  );
+  --workspace-flow-node-port-height: var(--catalog-item-measure-large-height);
+  --workspace-flow-node-port-input-left: var(
+    --catalog-field-measure-minus-small-left
+  );
+  --workspace-flow-node-port-min-height: var(
+    --catalog-item-measure-large-min-height
+  );
+  --workspace-flow-node-port-min-width: var(
+    --catalog-item-measure-large-min-width
+  );
+  --workspace-flow-node-port-output-right: var(
+    --catalog-item-measure-minus-small-right
+  );
+  --workspace-flow-node-port-padding: var(
+    --catalog-item-measure-node-port-padding
+  );
+  --workspace-flow-node-port-top: var(--catalog-item-measure-medium-top);
+  --workspace-flow-node-port-width: var(--catalog-item-measure-large-width);
+  --workspace-flow-node-title-background: var(
+    --catalog-header-color-node-title-dark-background
+  );
+  --workspace-flow-node-title-border: var(
+    --catalog-header-border-node-title-border
+  );
+  --workspace-flow-node-title-border-radius: var(
+    --catalog-header-border-node-title-tiny-plus-micro-border-radius
+  );
+  --workspace-flow-node-title-font-size: var(
+    --catalog-header-typography-small-plus-hairline-font-size
+  );
+  --workspace-flow-node-title-font-weight: var(
+    --catalog-header-typography-weight-semibold-font-weight
+  );
+  --workspace-flow-node-title-gap: var(--catalog-header-measure-compact-gap);
+  --workspace-flow-node-title-min-height: var(
+    --catalog-header-measure-xlarge-plus-compact-min-height
+  );
+  --workspace-flow-node-title-padding: var(
+    --catalog-header-measure-compact-small-padding
+  );
+  --workspace-flow-node-title-width: var(--catalog-header-measure-full-width);
+  --workspace-flow-node-width: var(
+    --catalog-item-measure-page-plus-normal-plus-huge-width
+  );
+  --workspace-graph-canvas-background: var(
+    --catalog-control-color-canvas-background
+  );
+  --workspace-graph-canvas-flex: var(
+    --catalog-control-measure-canvas-auto-flex
+  );
+  --workspace-graph-canvas-min-height: var(
+    --catalog-control-measure-canvas-min-height
+  );
+  --workspace-graph-canvas-min-width: var(
+    --catalog-control-measure-canvas-min-width
+  );
+  --workspace-graph-canvas-padding: var(
+    --catalog-control-measure-canvas-padding
+  );
+  --workspace-graph-connection-details-dd-font-size: var(
+    --catalog-control-typography-small-plus-hairline-font-size
+  );
+  --workspace-graph-connection-details-dd-margin: var(
+    --catalog-control-measure-details-dd-margin
+  );
+  --workspace-graph-connection-details-dd-overflow-wrap: var(
+    --catalog-control-measure-details-dd-overflow-wrap
+  );
+  --workspace-graph-connection-details-dt-font-size: var(
+    --catalog-control-typography-small-minus-hairline-font-size
+  );
+  --workspace-graph-connection-details-dt-margin-top: var(
+    --catalog-control-measure-normal-margin-top
+  );
+  --workspace-graph-connection-details-margin: var(
+    --catalog-control-measure-connection-details-margin
+  );
+  --workspace-graph-connection-inspector-padding: var(
+    --catalog-control-measure-tiny-padding
+  );
+  --workspace-graph-empty-gap: var(--catalog-control-measure-compact-gap);
+  --workspace-graph-empty-h2-font-size: var(
+    --catalog-header-typography-normal-minus-hairline-font-size
+  );
+  --workspace-graph-empty-h2-font-weight: var(
+    --catalog-header-typography-weight-semibold-font-weight
+  );
+  --workspace-graph-empty-h2-margin: var(
+    --catalog-header-measure-empty-h2-margin
+  );
+  --workspace-graph-empty-height: var(
+    --catalog-control-measure-page-plus-page-height
+  );
+  --workspace-graph-empty-p-font-size: var(
+    --catalog-text-typography-small-font-size
+  );
+  --workspace-graph-empty-p-margin: var(--catalog-text-measure-empty-p-margin);
+  --workspace-graph-field-label-flex: var(--catalog-field-measure-label-flex);
+  --workspace-graph-field-values-font-family: var(
+    --catalog-field-typography-values-font-family
+  );
+  --workspace-graph-field-values-min-width: var(
+    --catalog-field-measure-values-min-width
+  );
+  --workspace-graph-field-values-text-overflow: var(
+    --catalog-field-typography-values-text-overflow
+  );
+  --workspace-graph-field-values-white-space: var(
+    --catalog-field-typography-values-white-space
+  );
+  --workspace-graph-inspector-heading-gap: var(
+    --catalog-header-measure-compact-gap
+  );
+  --workspace-graph-inspector-help-font-size: var(
+    --catalog-control-typography-small-font-size
+  );
+  --workspace-graph-inspector-help-margin: var(
+    --catalog-control-measure-help-margin
+  );
+  --workspace-graph-node-action-gap: var(--catalog-item-measure-compact-gap);
+  --workspace-graph-node-action-min-width: var(
+    --catalog-item-measure-node-action-min-width
+  );
+  --workspace-graph-node-fields-font-size: var(
+    --catalog-item-typography-small-minus-hairline-font-size
+  );
+  --workspace-graph-node-fields-gap: var(--catalog-item-measure-compact-gap);
+  --workspace-graph-node-fields-padding: var(
+    --catalog-item-measure-tiny-small-padding
+  );
+  --workspace-graph-node-index-font-family: var(
+    --catalog-item-typography-node-index-font-family
+  );
+  --workspace-graph-node-index-font-size: var(
+    --catalog-item-typography-compact-plus-micro-font-size
+  );
+  --workspace-graph-node-index-font-weight: var(
+    --catalog-item-typography-weight-normal-font-weight
+  );
+  --workspace-graph-node-name-flex: var(--catalog-item-measure-node-name-flex);
+  --workspace-graph-node-name-min-width: var(
+    --catalog-item-measure-node-name-min-width
+  );
+  --workspace-graph-node-name-text-align: var(
+    --catalog-item-typography-node-name-text-align
+  );
+  --workspace-graph-node-name-text-overflow: var(
+    --catalog-item-typography-node-name-text-overflow
+  );
+  --workspace-graph-node-name-white-space: var(
+    --catalog-item-typography-node-name-white-space
+  );
+  --workspace-graph-options-menu-background: var(
+    --catalog-menu-color-options-background
+  );
+  --workspace-graph-options-menu-border: var(
+    --catalog-menu-border-options-border
+  );
+  --workspace-graph-options-menu-border-radius: var(
+    --catalog-menu-border-tiny-plus-micro-border-radius
+  );
+  --workspace-graph-options-menu-box-shadow: var(
+    --catalog-menu-effect-options-box-shadow
+  );
+  --workspace-graph-options-menu-gap: var(--catalog-menu-measure-tiny-gap);
+  --workspace-graph-options-menu-min-width: var(
+    --catalog-menu-measure-page-min-width
+  );
+  --workspace-graph-options-menu-padding: var(
+    --catalog-menu-measure-tiny-plus-micro-padding
+  );
+  --workspace-graph-options-menu-right: var(
+    --catalog-menu-measure-options-right
+  );
+  --workspace-graph-options-menu-top: var(--catalog-menu-measure-xlarge-top);
+  --workspace-graph-options-menu-z-index: var(
+    --catalog-menu-measure-options-z-index
+  );
+  --workspace-graph-remove-connection-margin-top: var(
+    --catalog-control-measure-large-margin-top
+  );
+  --workspace-graph-toolbar-background: var(
+    --catalog-toolbar-color-default-background
+  );
+  --workspace-graph-toolbar-border-bottom: var(
+    --catalog-toolbar-border-default-border-bottom
+  );
+  --workspace-graph-toolbar-button-background: var(
+    --catalog-button-color-toolbar-background
+  );
+  --workspace-graph-toolbar-button-font-size: var(
+    --catalog-button-typography-small-font-size
+  );
+  --workspace-graph-toolbar-button-white-space: var(
+    --catalog-button-typography-toolbar-white-space
+  );
+  --workspace-graph-toolbar-flex: var(
+    --catalog-toolbar-measure-default-zero-flex
+  );
+  --workspace-graph-toolbar-gap: var(--catalog-toolbar-measure-tiny-gap);
+  --workspace-graph-toolbar-id-flow-summary-flex: var(
+    --catalog-toolbar-measure-summary-flex
+  );
+  --workspace-graph-toolbar-id-flow-summary-font-size: var(
+    --catalog-toolbar-typography-small-minus-hairline-font-size
+  );
+  --workspace-graph-toolbar-id-flow-summary-min-width: var(
+    --catalog-toolbar-measure-default-min-width
+  );
+  --workspace-graph-toolbar-id-flow-summary-text-overflow: var(
+    --catalog-toolbar-typography-default-text-overflow
+  );
+  --workspace-graph-toolbar-id-flow-summary-white-space: var(
+    --catalog-toolbar-typography-default-white-space
+  );
+  --workspace-graph-toolbar-min-height: var(
+    --catalog-toolbar-measure-xlarge-plus-tiny-min-height
+  );
+  --workspace-graph-toolbar-padding: var(
+    --catalog-toolbar-measure-tiny-small-padding
+  );
+  --workspace-graph-toolbar-padding-inline-max-width-600px: var(
+    --catalog-toolbar-measure-compact-padding-inline
+  );
+  --workspace-graph-view-options-summary-border-radius: var(
+    --catalog-label-border-tiny-border-radius
+  );
+  --workspace-graph-view-options-summary-cursor: var(
+    --catalog-label-cursor-options-summary-cursor
+  );
+  --workspace-graph-view-options-summary-height: var(
+    --catalog-label-measure-large-plus-tiny-height
+  );
+  --workspace-graph-view-options-summary-hover-background: var(
+    --catalog-label-color-options-summary-background
+  );
+  --workspace-graph-view-options-summary-list-style: var(
+    --catalog-label-measure-options-summary-list-style
+  );
+  --workspace-graph-view-options-summary-width: var(
+    --catalog-label-measure-large-plus-tiny-width
+  );
+  --workspace-graph-workbench-graph-is-docked-flex: var(
+    --catalog-panel-measure-workbench-docked-flex
+  );
+  --workspace-graph-workbench-graph-is-docked-min-height: var(
+    --catalog-panel-measure-workbench-docked-min-height
+  );
+  --workspace-graph-workbench-graph-is-docked-min-width: var(
+    --catalog-panel-measure-workbench-docked-min-width
+  );
+  --workspace-id-graph-zoom-label-font-family: var(
+    --catalog-control-typography-default-font-family
+  );
+  --workspace-id-graph-zoom-label-font-size: var(
+    --catalog-control-typography-small-minus-hairline-font-size
+  );
+  --workspace-id-graph-zoom-label-min-width: var(
+    --catalog-control-measure-xlarge-plus-small-min-width
+  );
+  --workspace-id-graph-zoom-label-text-align: var(
+    --catalog-control-typography-default-text-align
+  );
+  --workspace-node-action-where-span-last-child-min-width: var(
+    --catalog-text-measure-action-span-min-width
+  );
+  --workspace-node-action-where-span-last-child-text-overflow: var(
+    --catalog-text-typography-action-span-text-overflow
+  );
+  --workspace-node-action-where-span-last-child-white-space: var(
+    --catalog-text-typography-action-span-white-space
+  );
+  --workspace-node-actions-border: var(--catalog-item-border-node-lower-border);
+  --workspace-node-actions-font-size: var(
+    --catalog-item-typography-small-font-size
+  );
+  --workspace-node-actions-gap: var(--catalog-item-measure-tiny-plus-micro-gap);
+  --workspace-node-actions-is-small-font-size: var(
+    --catalog-label-typography-small-minus-hairline-font-size
+  );
+  --workspace-node-actions-min-height: var(
+    --catalog-item-measure-xlarge-plus-compact-min-height
+  );
+  --workspace-node-actions-padding: var(
+    --catalog-item-measure-compact-plus-micro-small-padding
+  );
+  /* 37-surfaces */
+  --workspace-edge-actions-button-min-height: var(
+    --catalog-button-measure-large-min-height
+  );
+  --workspace-edge-actions-button-padding: var(
+    --catalog-button-measure-edge-padding
+  );
+  --workspace-edge-actions-button-width: var(
+    --catalog-button-measure-large-width
+  );
+  --workspace-edge-actions-gap: var(--catalog-item-measure-pixel-micro-gap);
+  --workspace-edge-head-font-size: var(
+    --catalog-item-typography-small-font-size
+  );
+  --workspace-edge-head-font-weight: var(
+    --catalog-item-typography-weight-semibold-font-weight
+  );
+  --workspace-edge-head-gap: var(--catalog-item-measure-compact-gap);
+  --workspace-edge-head-min-height: var(
+    --catalog-item-measure-large-plus-tiny-min-height
+  );
+  --workspace-edge-head-padding: var(--catalog-item-measure-edge-head-padding);
+  --workspace-edge-row-edit-step-grip-cursor: var(
+    --catalog-item-cursor-step-grip-cursor
+  );
+  --workspace-edge-row-min-height: var(
+    --catalog-item-measure-xlarge-plus-compact-min-height
+  );
+  --workspace-edge-row-select-min-width: var(
+    --catalog-field-measure-edge-select-min-width
+  );
+  --workspace-edge-row-select-width: var(--catalog-field-measure-full-width);
+  --workspace-edit-step-more-border-radius: var(
+    --catalog-item-border-tiny-border-radius
+  );
+  --workspace-edit-step-more-height: var(--catalog-item-measure-medium-height);
+  --workspace-edit-step-more-opacity: var(--catalog-item-effect-zero-opacity);
+  --workspace-edit-step-more-width: var(--catalog-item-measure-medium-width);
+  --workspace-evidence-shot-figcaption-font-size: var(
+    --catalog-control-typography-small-font-size
+  );
+  --workspace-evidence-shot-gap: var(--catalog-control-measure-compact-gap);
+  --workspace-evidence-shot-img-border-radius: var(
+    --catalog-control-border-tiny-border-radius
+  );
+  --workspace-evidence-shot-img-height: var(
+    --catalog-control-measure-shot-img-height
+  );
+  --workspace-evidence-shot-img-max-width: var(
+    --catalog-control-measure-full-max-width
+  );
+  --workspace-evidence-shot-margin: var(
+    --catalog-control-measure-evidence-shot-margin
+  );
+  --workspace-evidence-shot-padding: var(
+    --catalog-control-measure-small-padding
+  );
+  --workspace-is-data-workspace-mode-play-grid-template-rows-max-width-600px: var(
+    --catalog-control-measure-default-max-width-600px-grid-template-rows
+  );
+  --workspace-recording-more-aria-disabled-cursor: var(
+    --catalog-control-cursor-recording-more-cursor
+  );
+  --workspace-recording-more-focus-visible-opacity: var(
+    --catalog-control-effect-full-opacity
+  );
+  --workspace-recording-rename-flex: var(
+    --catalog-control-measure-recording-rename-flex
+  );
+  --workspace-recording-rename-min-width: var(
+    --catalog-control-measure-recording-rename-min-width
+  );
+  --workspace-row-edit-step-grip-icon-height: var(
+    --catalog-icon-measure-small-plus-micro-height
+  );
+  --workspace-row-edit-step-grip-icon-width: var(
+    --catalog-icon-measure-small-plus-micro-width
+  );
+  --workspace-step-menu-border: var(--catalog-menu-border-step-border);
+  --workspace-step-menu-border-radius: var(
+    --catalog-menu-border-tiny-plus-micro-border-radius
+  );
+  --workspace-step-menu-box-shadow: var(--catalog-menu-effect-step-box-shadow);
+  --workspace-step-menu-item-background: var(
+    --catalog-menu-color-step-item-background
+  );
+  --workspace-step-menu-item-border: var(
+    --catalog-menu-border-step-item-border
+  );
+  --workspace-step-menu-item-gap: var(--catalog-menu-measure-compact-gap);
+  --workspace-step-menu-item-icon-height: var(
+    --catalog-icon-measure-normal-height
+  );
+  --workspace-step-menu-item-icon-width: var(
+    --catalog-icon-measure-normal-width
+  );
+  --workspace-step-menu-item-min-height: var(
+    --catalog-menu-measure-large-plus-tiny-min-height
+  );
+  --workspace-step-menu-item-padding: var(
+    --catalog-menu-measure-step-item-padding
+  );
+  --workspace-step-menu-min-width: var(
+    --catalog-menu-measure-massive-plus-normal-min-width
+  );
+  --workspace-step-menu-padding: var(--catalog-menu-measure-tiny-padding);
+  --workspace-step-menu-z-index: var(--catalog-menu-measure-step-z-index);
+  --workspace-step-row-hover-edit-step-more-opacity: var(
+    --catalog-item-effect-full-opacity
+  );
+  --workspace-studio-surface-code-background: var(
+    --catalog-surface-color-code-light-background
+  );
+  --workspace-surface-actions-button-flex-max-width-600px: var(
+    --catalog-button-measure-default-max-width-600px-flex
+  );
+  --workspace-surface-actions-button-height: var(
+    --catalog-button-measure-large-plus-tiny-height
+  );
+  --workspace-surface-actions-button-min-height: var(
+    --catalog-button-measure-large-plus-tiny-min-height
+  );
+  --workspace-surface-actions-button-width-max-width-600px: var(
+    --catalog-button-measure-default-width
+  );
+  --workspace-surface-actions-gap: var(--catalog-toolbar-measure-compact-gap);
+  --workspace-surface-background: var(
+    --catalog-surface-color-default-dark-background
+  );
+  --workspace-surface-border-bottom: var(
+    --catalog-surface-border-default-border-bottom
+  );
+  --workspace-surface-card-background: var(
+    --catalog-surface-color-card-background
+  );
+  --workspace-surface-card-border: var(--catalog-surface-border-card-border);
+  --workspace-surface-card-border-radius: var(
+    --catalog-surface-border-card-border-radius
+  );
+  --workspace-surface-card-box-shadow: var(
+    --catalog-surface-effect-card-box-shadow
+  );
+  --workspace-surface-card-header-background: var(
+    --catalog-header-color-card-background
+  );
+  --workspace-surface-card-header-gap: var(--catalog-header-measure-small-gap);
+  --workspace-surface-card-header-h3-flex: var(
+    --catalog-header-measure-card-h3-flex
+  );
+  --workspace-surface-card-header-h3-font-size: var(
+    --catalog-header-typography-small-plus-hairline-font-size
+  );
+  --workspace-surface-card-header-h3-font-weight: var(
+    --catalog-header-typography-weight-semibold-font-weight
+  );
+  --workspace-surface-card-header-h3-gap: var(
+    --catalog-header-measure-compact-gap
+  );
+  --workspace-surface-card-header-h3-margin: var(
+    --catalog-header-measure-card-h3-margin
+  );
+  --workspace-surface-card-header-height: var(
+    --catalog-header-measure-xlarge-plus-tiny-height
+  );
+  --workspace-surface-card-header-min-height: var(
+    --catalog-header-measure-xlarge-plus-tiny-min-height
+  );
+  --workspace-surface-card-header-padding: var(
+    --catalog-header-measure-card-padding
+  );
+  --workspace-surface-card-header-span-font-size: var(
+    --catalog-header-typography-small-font-size
+  );
+  --workspace-surface-code-font-size: var(
+    --catalog-surface-typography-small-font-size
+  );
+  --workspace-surface-code-line-height: var(
+    --catalog-surface-typography-height-body-line-height
+  );
+  --workspace-surface-content-background: var(
+    --catalog-surface-color-content-background
+  );
+  --workspace-surface-content-flex: var(--catalog-surface-measure-content-flex);
+  --workspace-surface-content-height: var(
+    --catalog-surface-measure-content-auto-height
+  );
+  --workspace-surface-content-min-height: var(
+    --catalog-surface-measure-content-min-height
+  );
+  --workspace-surface-content-padding: var(
+    --catalog-surface-measure-content-padding
+  );
+  --workspace-surface-grid-compare-grid-template-rows: var(
+    --catalog-list-measure-compare-grid-template-rows
+  );
+  --workspace-surface-grid-compare-height: var(
+    --catalog-list-measure-full-height
+  );
+  --workspace-surface-grid-compare-height-max-width-820px: var(
+    --catalog-list-measure-compare-height
+  );
+  --workspace-surface-grid-compare-image-img-height: var(
+    --catalog-list-measure-image-img-height
+  );
+  --workspace-surface-grid-compare-image-img-max-width: var(
+    --catalog-list-measure-full-max-width
+  );
+  --workspace-surface-grid-compare-pair-min-height: var(
+    --catalog-list-measure-compare-pair-min-height
+  );
+  --workspace-surface-grid-compare-surface-card-min-height: var(
+    --catalog-surface-measure-compare-card-min-height
+  );
+  --workspace-surface-grid-compare-surface-list-max-height-max-width-820px: var(
+    --catalog-list-measure-page-plus-huge-max-height
+  );
+  --workspace-surface-grid-compare-surface-list-min-height: var(
+    --catalog-list-measure-compare-min-height
+  );
+  --workspace-surface-grid-debug-surface-console-grid-column-max-width-820px: var(
+    --catalog-surface-measure-debug-console-auto-grid-column
+  );
+  --workspace-surface-grid-gap: var(--catalog-list-measure-hairline-gap);
+  --workspace-surface-grid-is-surface-grid-debug-grid-template-columns-max-width-820px: var(
+    --catalog-list-measure-debug-grid-template-columns
+  );
+  --workspace-surface-grid-is-surface-grid-debug-grid-template-rows-max-width-820px: var(
+    --catalog-list-measure-debug-max-width-820px-grid-template-rows
+  );
+  --workspace-surface-grid-row: var(
+    --catalog-surface-measure-default-lower-grid-row
+  );
+  --workspace-surface-grid-row-max-width-600px: var(
+    --catalog-surface-measure-default-max-width-600px-grid-row
+  );
+  --workspace-surface-header-background: var(
+    --catalog-header-color-default-dark-background
+  );
+  --workspace-surface-header-first-child-gap: var(
+    --catalog-header-measure-hairline-small-gap
+  );
+  --workspace-surface-header-first-child-grid-template-columns: var(
+    --catalog-header-measure-default-grid-template-columns
+  );
+  --workspace-surface-header-h2-font-size: var(
+    --catalog-header-typography-normal-minus-hairline-font-size
+  );
+  --workspace-surface-header-h2-font-weight: var(
+    --catalog-header-typography-weight-semibold-font-weight
+  );
+  --workspace-surface-header-min-height: var(
+    --catalog-header-measure-xxlarge-plus-tiny-min-height
+  );
+  --workspace-surface-header-p-font-size: var(
+    --catalog-header-typography-small-plus-hairline-font-size
+  );
+  --workspace-surface-header-p-grid-column: var(
+    --catalog-header-measure-p-grid-column
+  );
+  --workspace-surface-header-padding: var(
+    --catalog-header-measure-default-compact-small-padding
+  );
+  --workspace-surface-kicker-font-size: var(
+    --catalog-surface-typography-small-font-size
+  );
+  --workspace-surface-kicker-font-weight: var(
+    --catalog-surface-typography-weight-medium-font-weight
+  );
+  --workspace-surface-kicker-grid-column: var(
+    --catalog-surface-measure-kicker-grid-column
+  );
+  --workspace-surface-kicker-grid-row: var(
+    --catalog-surface-measure-kicker-grid-row
+  );
+  --workspace-surface-kicker-letter-spacing: var(
+    --catalog-surface-typography-kicker-letter-spacing
+  );
+  --workspace-surface-kicker-text-overflow: var(
+    --catalog-surface-typography-kicker-text-overflow
+  );
+  --workspace-surface-kicker-text-transform: var(
+    --catalog-surface-typography-kicker-text-transform
+  );
+  --workspace-surface-kicker-white-space: var(
+    --catalog-surface-typography-kicker-white-space
+  );
+  --workspace-surface-list-gap: var(--catalog-list-measure-micro-gap);
+  --workspace-surface-list-padding: var(
+    --catalog-list-measure-tiny-plus-micro-padding
+  );
+  --workspace-surface-min-height-max-width-600px: var(
+    --catalog-surface-measure-default-max-width-600px-min-height
+  );
+  --workspace-surface-properties-dd-font-size-surfaces: var(
+    --catalog-surface-typography-small-plus-hairline-font-size
+  );
+  --workspace-surface-properties-div-min-height: var(
+    --catalog-surface-measure-xlarge-plus-tiny-min-height
+  );
+  --workspace-surface-properties-dt-font-size-surfaces: var(
+    --catalog-surface-typography-small-font-size
+  );
+  --workspace-surface-properties-dt-font-weight-surfaces: var(
+    --catalog-surface-typography-weight-medium-font-weight
+  );
+  --workspace-surface-row-background: var(
+    --catalog-item-color-default-background
+  );
+  --workspace-surface-row-border: var(--catalog-item-border-default-border);
+  --workspace-surface-row-border-radius: var(
+    --catalog-item-border-tiny-plus-micro-border-radius
+  );
+  --workspace-surface-row-capture-grid-template-columns: var(
+    --catalog-item-measure-capture-grid-template-columns
+  );
+  --workspace-surface-row-capture-row-gap: var(
+    --catalog-item-measure-capture-row-gap
+  );
+  --workspace-surface-row-capture-small-grid-column: var(
+    --catalog-label-measure-capture-small-grid-column
+  );
+  --workspace-surface-row-capture-small-max-width: var(
+    --catalog-label-measure-capture-small-max-width
+  );
+  --workspace-surface-row-capture-small-text-align: var(
+    --catalog-label-typography-capture-small-text-align
+  );
+  --workspace-surface-row-gap: var(--catalog-item-measure-compact-gap);
+  --workspace-surface-row-grid-template-columns: var(
+    --catalog-item-measure-default-large-grid-template-columns
+  );
+  --workspace-surface-row-hover-background: var(
+    --catalog-item-color-default-hover-background
+  );
+  --workspace-surface-row-icon-flex-basis: var(
+    --catalog-icon-measure-normal-flex-basis
+  );
+  --workspace-surface-row-icon-height: var(
+    --catalog-icon-measure-normal-height
+  );
+  --workspace-surface-row-icon-width: var(--catalog-icon-measure-normal-width);
+  --workspace-surface-row-min-height: var(
+    --catalog-item-measure-xlarge-plus-tiny-min-height
+  );
+  --workspace-surface-row-padding: var(--catalog-item-measure-default-padding);
+  --workspace-surface-row-small-font-family: var(
+    --catalog-label-typography-small-font-family
+  );
+  --workspace-surface-row-small-font-size: var(
+    --catalog-label-typography-small-minus-hairline-font-size
+  );
+  --workspace-surface-row-small-max-width: var(
+    --catalog-label-measure-page-plus-huge-max-width
+  );
+  --workspace-surface-row-small-min-width: var(
+    --catalog-label-measure-small-min-width
+  );
+  --workspace-surface-row-small-text-align: var(
+    --catalog-label-typography-small-text-align
+  );
+  --workspace-surface-row-small-text-overflow: var(
+    --catalog-label-typography-small-text-overflow
+  );
+  --workspace-surface-row-small-white-space: var(
+    --catalog-label-typography-small-white-space
+  );
+  --workspace-surface-row-strong-font-size-surfaces: var(
+    --catalog-item-typography-small-plus-hairline-font-size
+  );
+  --workspace-surface-row-strong-font-weight: var(
+    --catalog-item-typography-weight-semibold-font-weight
+  );
+  --workspace-surface-row-text-align: var(
+    --catalog-item-typography-default-text-align
+  );
+  --workspace-surface-status-font-size-surfaces: var(
+    --catalog-label-typography-small-font-size
+  );
+  --workspace-surface-status-text-transform-surfaces: var(
+    --catalog-label-typography-default-text-transform
+  );
+  --workspace-target-stage-placeholder-background-color: var(
+    --catalog-surface-color-stage-placeholder-background-color
+  );
+  /* 01-tokens */
+  --workspace-edge-border-bottom: var(
+    --catalog-item-border-edge-head-border-bottom
+  );
+  --workspace-evidence-shot-image-border: var(
+    --catalog-control-border-shot-img-border
+  );
+  --workspace-surface-card-header-border-bottom: var(
+    --catalog-header-border-card-border-bottom
+  );
+  --workspace-surface-header-border-bottom: var(
+    --catalog-header-border-default-higher-border-bottom
+  );
+  --workspace-surface-properties-row-border-bottom: var(
+    --catalog-surface-border-properties-div-border-bottom
+  );
+  --workspace-surface-row-selected-box-shadow: var(
+    --catalog-item-effect-default-inset-box-shadow
+  );
+  --workspace-step-menu-item-icon-flex: var(--catalog-icon-measure-fixed-flex);
+}

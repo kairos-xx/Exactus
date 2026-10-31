@@ -1,0 +1,52 @@
+/**
+ * Shared semantic roles used across component boundaries. Each role is exactly one plain CATALOG
+ * reference.
+ */
+:root {
+  /* shared roles */
+  --button-dim: var(--catalog-toolbar-color-split-arrow-color);
+  --button-press-icon: var(--catalog-button-color-topbar-color);
+  --button-press-text: var(--catalog-button-color-default-color);
+  --ese-bg: var(--catalog-palette-color-ese-bg);
+  --ese-blue: var(--catalog-palette-color-ese-blue);
+  --ese-call-min-height: var(--catalog-palette-measure-pixel-large-plus-tiny);
+  --ese-control-min-height: var(--catalog-palette-measure-pixel-large);
+  --ese-control-padding: var(
+    --catalog-palette-measure-pixel-micro-pixel-tiny-plus-micro
+  );
+  --ese-editor-min-height: var(
+    --catalog-palette-measure-pixel-xlarge-plus-compact
+  );
+  --ese-editor-padding: var(
+    --catalog-palette-measure-pixel-tiny-plus-micro-pixel-compact
+  );
+  --ese-fg: var(--catalog-palette-color-ese-fg);
+  --ese-focus: var(--catalog-palette-color-ese);
+  --ese-font: var(--catalog-palette-measure-ese-font);
+  --ese-green: var(--catalog-palette-color-ese-green);
+  --ese-line: var(--catalog-palette-color-ese-line);
+  --ese-line-strong: var(--catalog-palette-color-line-strong);
+  --ese-muted: var(--catalog-palette-color-ese-muted);
+  --ese-option-bg: var(--catalog-palette-color-option-bg);
+  --ese-purple: var(--catalog-palette-color-ese-purple);
+  --ese-radius: var(--catalog-palette-measure-pixel-compact);
+  --ese-shadow-editor: var(--catalog-palette-measure-shadow-editor);
+  --green: var(--catalog-palette-color-green-background);
+  --live-focus-line: var(--catalog-control-border-image-outline);
+  --live-highlight-line: var(--catalog-control-border-highlight-border);
+  --red: var(--catalog-palette-color-red-color);
+  --studio-actions-dialog-border: var(--catalog-dialog-border-default-border);
+  --studio-recipe-menu-div-border: var(--catalog-menu-border-recipe-div-border);
+  --studio-recipe-menu-summary-border: var(
+    --catalog-menu-border-recipe-summary-border
+  );
+  --studio-ruler-ticks-clips-background-image: var(
+    --catalog-track-color-ruler-ticks-background-image
+  );
+  --studio-screenshot-dialog-border: var(
+    --catalog-dialog-border-screenshot-border
+  );
+  --studio-selection-shadow: var(
+    --catalog-item-effect-tree-inset-micro-box-shadow
+  );
+}

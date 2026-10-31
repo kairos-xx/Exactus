@@ -1,0 +1,386 @@
+/* Source: 37-graph-workspace */
+/* Value-preserving design tokens for the compact editor. */
+/* Graph shares Edit's neutral surfaces. Only selection carries an accent. */
+.studio:where([data-workspace-mode="graph"])
+  > .workbench
+  > .graph:is(.is-docked, .is-floating) {
+  display: flex;
+  flex-direction: column;
+  flex: var(--workspace-graph-workbench-graph-is-docked-flex);
+  min-width: var(--workspace-graph-workbench-graph-is-docked-min-width);
+  min-height: var(--workspace-graph-workbench-graph-is-docked-min-height);
+  overflow: hidden;
+}
+.studio .graph-toolbar {
+  display: flex;
+  flex: var(--workspace-graph-toolbar-flex);
+  align-items: center;
+  gap: var(--workspace-graph-toolbar-gap);
+  min-height: var(--workspace-graph-toolbar-min-height);
+  padding: var(--workspace-graph-toolbar-padding);
+  border-bottom: var(--workspace-graph-toolbar-border-bottom);
+  background: var(--workspace-graph-toolbar-background);
+}
+.studio .graph-toolbar [id="flow-summary"] {
+  flex: var(--workspace-graph-toolbar-id-flow-summary-flex);
+  min-width: var(--workspace-graph-toolbar-id-flow-summary-min-width);
+  overflow: hidden;
+  color: var(--muted);
+  font-size: var(--workspace-graph-toolbar-id-flow-summary-font-size);
+  white-space: var(--workspace-graph-toolbar-id-flow-summary-white-space);
+  text-overflow: var(--workspace-graph-toolbar-id-flow-summary-text-overflow);
+}
+.studio .graph-toolbar button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--workspace-graph-toolbar-button-background);
+  color: var(--text);
+  font-size: var(--workspace-graph-toolbar-button-font-size);
+  white-space: var(--workspace-graph-toolbar-button-white-space);
+}
+.studio [id="graph-zoom-label"] {
+  min-width: var(--workspace-id-graph-zoom-label-min-width);
+  color: var(--muted);
+  font-family: var(--workspace-id-graph-zoom-label-font-family);
+  font-size: var(--workspace-id-graph-zoom-label-font-size);
+  text-align: var(--workspace-id-graph-zoom-label-text-align);
+}
+.studio .graph-view-options {
+  position: relative;
+}
+.studio .graph-view-options > summary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--workspace-graph-view-options-summary-width);
+  height: var(--workspace-graph-view-options-summary-height);
+  border-radius: var(--workspace-graph-view-options-summary-border-radius);
+  list-style: var(--workspace-graph-view-options-summary-list-style);
+  cursor: var(--workspace-graph-view-options-summary-cursor);
+}
+.studio .graph-view-options > summary::-webkit-details-marker {
+  display: none;
+}
+.studio .graph-view-options > summary:hover {
+  background: var(--workspace-graph-view-options-summary-hover-background);
+}
+.studio .graph-options-menu {
+  position: absolute;
+  top: var(--workspace-graph-options-menu-top);
+  right: var(--workspace-graph-options-menu-right);
+  z-index: var(--workspace-graph-options-menu-z-index);
+  display: flex;
+  flex-direction: column;
+  gap: var(--workspace-graph-options-menu-gap);
+  min-width: var(--workspace-graph-options-menu-min-width);
+  padding: var(--workspace-graph-options-menu-padding);
+  border: var(--workspace-graph-options-menu-border);
+  border-radius: var(--workspace-graph-options-menu-border-radius);
+  background: var(--workspace-graph-options-menu-background);
+  box-shadow: var(--workspace-graph-options-menu-box-shadow);
+}
+.studio .graph-options-menu button {
+  justify-content: flex-start;
+}
+.studio .graph-canvas {
+  position: relative;
+  display: block;
+  flex: var(--workspace-graph-canvas-flex);
+  min-width: var(--workspace-graph-canvas-min-width);
+  min-height: var(--workspace-graph-canvas-min-height);
+  padding: var(--workspace-graph-canvas-padding);
+  overflow: auto;
+  background: var(--workspace-graph-canvas-background);
+}
+.studio .composition-nodes {
+  position: relative;
+  min-width: var(--workspace-composition-nodes-min-width);
+  min-height: var(--workspace-composition-nodes-min-height);
+  --base-workspace-composition-nodes-zoom: var(--dynamic-graph-zoom, 1);
+  --catalog-zoom-measure-nodes-zoom: var(
+    --base-workspace-composition-nodes-zoom
+  );
+  --workspace-composition-nodes-zoom: var(--catalog-zoom-measure-nodes-zoom);
+  zoom: var(--workspace-composition-nodes-zoom);
+}
+.studio .flow-node {
+  position: absolute;
+  box-sizing: border-box;
+  width: var(--workspace-flow-node-width);
+  padding: var(--workspace-flow-node-padding);
+  overflow: visible;
+  border: var(--workspace-flow-node-border);
+  border-radius: var(--workspace-flow-node-border-radius);
+  background: var(--workspace-flow-node-background);
+  box-shadow: var(--workspace-flow-node-box-shadow);
+}
+.studio .flow-node.active,
+.studio .flow-node.is-connection-source {
+  border-color: var(--accent);
+}
+.studio .flow-node-title {
+  display: flex;
+  align-items: center;
+  gap: var(--workspace-flow-node-title-gap);
+  width: var(--workspace-flow-node-title-width);
+  min-height: var(--workspace-flow-node-title-min-height);
+  padding: var(--workspace-flow-node-title-padding);
+  border: var(--workspace-flow-node-title-border);
+  border-radius: var(--workspace-flow-node-title-border-radius);
+  background: var(--workspace-flow-node-title-background);
+  color: var(--text-strong);
+  font-size: var(--workspace-flow-node-title-font-size);
+  font-weight: var(--workspace-flow-node-title-font-weight);
+}
+.studio .flow-node.active .flow-node-title {
+  background: var(--workspace-flow-node-active-flow-node-title-background);
+}
+.studio .graph-node-name {
+  flex: var(--workspace-graph-node-name-flex);
+  min-width: var(--workspace-graph-node-name-min-width);
+  overflow: hidden;
+  white-space: var(--workspace-graph-node-name-white-space);
+  text-overflow: var(--workspace-graph-node-name-text-overflow);
+  text-align: var(--workspace-graph-node-name-text-align);
+}
+.studio .graph-node-index {
+  color: var(--muted);
+  font-family: var(--workspace-graph-node-index-font-family);
+  font-size: var(--workspace-graph-node-index-font-size);
+  font-weight: var(--workspace-graph-node-index-font-weight);
+}
+.studio .flow-node-meta {
+  padding: var(--workspace-flow-node-meta-padding);
+  color: var(--muted);
+  font-size: var(--workspace-flow-node-meta-font-size);
+}
+.studio .node-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--workspace-node-actions-gap);
+  min-height: var(--workspace-node-actions-min-height);
+  padding: var(--workspace-node-actions-padding);
+  border: var(--workspace-node-actions-border);
+  color: var(--text);
+  font-size: var(--workspace-node-actions-font-size);
+}
+.studio .graph-node-action {
+  display: flex;
+  align-items: center;
+  gap: var(--workspace-graph-node-action-gap);
+  min-width: var(--workspace-graph-node-action-min-width);
+}
+.studio .graph-node-action > :where(span:last-child) {
+  min-width: var(--workspace-node-action-where-span-last-child-min-width);
+  overflow: hidden;
+  white-space: var(--workspace-node-action-where-span-last-child-white-space);
+  text-overflow: var(
+    --workspace-node-action-where-span-last-child-text-overflow
+  );
+}
+.studio .node-actions :is(small, .node-empty) {
+  color: var(--muted);
+  font-size: var(--workspace-node-actions-is-small-font-size);
+}
+.studio .graph-node-fields {
+  display: flex;
+  align-items: center;
+  gap: var(--workspace-graph-node-fields-gap);
+  padding: var(--workspace-graph-node-fields-padding);
+  font-size: var(--workspace-graph-node-fields-font-size);
+}
+.studio .graph-field-label {
+  flex: var(--workspace-graph-field-label-flex);
+  color: var(--muted);
+}
+.studio .graph-field-values {
+  min-width: var(--workspace-graph-field-values-min-width);
+  overflow: hidden;
+  color: var(--text);
+  font-family: var(--workspace-graph-field-values-font-family);
+  white-space: var(--workspace-graph-field-values-white-space);
+  text-overflow: var(--workspace-graph-field-values-text-overflow);
+}
+.studio .flow-node-port {
+  top: var(--workspace-flow-node-port-top);
+  width: var(--workspace-flow-node-port-width);
+  min-width: var(--workspace-flow-node-port-min-width);
+  height: var(--workspace-flow-node-port-height);
+  min-height: var(--workspace-flow-node-port-min-height);
+  padding: var(--workspace-flow-node-port-padding);
+  border: var(--workspace-flow-node-port-border);
+  background: var(--workspace-flow-node-port-background);
+  box-shadow: var(--workspace-flow-node-port-box-shadow);
+}
+.studio .flow-node-port-input {
+  left: var(--workspace-flow-node-port-input-left);
+}
+.studio .flow-node-port-output {
+  right: var(--workspace-flow-node-port-output-right);
+}
+.studio .flow-node-port::after {
+  content: var(--workspace-flow-node-port-after-content);
+  position: absolute;
+  inset: var(--workspace-flow-node-port-after-inset);
+  border: var(--workspace-flow-node-port-after-border);
+  border-radius: var(--workspace-flow-node-port-after-border-radius);
+  background: var(--workspace-flow-node-port-after-background);
+}
+.studio .flow-node-port:hover::after,
+.studio .flow-node-port:focus-visible::after,
+.studio .graph-canvas:where([data-connecting]) .flow-node-port-input::after,
+.studio .is-connection-source .flow-node-port-output::after {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+.studio .composition-links {
+  stroke: var(--muted);
+  stroke-width: var(--workspace-composition-links-stroke-width);
+}
+.studio .composition-link path {
+  filter: var(--workspace-composition-link-path-filter);
+}
+.studio .composition-link .graph-edge-hit {
+  stroke: var(--workspace-composition-link-graph-edge-hit-stroke);
+  stroke-width: var(--workspace-composition-link-graph-edge-hit-stroke-width);
+  pointer-events: stroke;
+  cursor: var(--workspace-composition-link-graph-edge-hit-cursor);
+}
+.studio .composition-link text {
+  fill: var(--muted);
+  stroke: var(--workspace-composition-link-text-stroke);
+  font-family: unset;
+  font-size: var(--workspace-composition-link-text-font-size);
+  text-anchor: middle;
+  pointer-events: auto;
+  cursor: var(--workspace-composition-link-text-cursor);
+}
+.studio .composition-links marker path {
+  fill: var(--muted);
+  stroke: var(--workspace-composition-links-marker-path-stroke);
+}
+.studio .composition-link:is(:hover, :focus-visible, .is-selected) {
+  outline: var(--workspace-composition-link-is-hover-outline);
+  stroke: var(--accent);
+}
+.studio .composition-link:is(:hover, :focus-visible, .is-selected) text {
+  fill: var(--accent);
+}
+.studio .composition-preview-links {
+  stroke: var(--accent);
+  stroke-dasharray: var(--workspace-composition-preview-links-stroke-dasharray);
+}
+.studio .composition-footer {
+  display: flex;
+  flex: var(--workspace-composition-footer-flex);
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--workspace-composition-footer-gap);
+  min-height: var(--workspace-composition-footer-min-height);
+  padding: var(--workspace-composition-footer-padding);
+  border: var(--workspace-composition-footer-border);
+  background: var(--workspace-composition-footer-background);
+  color: var(--muted);
+  font-size: var(--workspace-composition-footer-font-size);
+}
+.studio .composition-footer > span {
+  min-width: var(--workspace-composition-footer-span-min-width);
+  overflow: hidden;
+  white-space: var(--workspace-composition-footer-span-white-space);
+  text-overflow: var(--workspace-composition-footer-span-text-overflow);
+}
+.studio .graph-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--workspace-graph-empty-gap);
+  height: var(--workspace-graph-empty-height);
+  color: var(--muted);
+}
+.studio .graph-empty h2,
+.studio .graph-inspector-heading h2 {
+  margin: var(--workspace-graph-empty-h2-margin);
+  color: var(--text-strong);
+  font-size: var(--workspace-graph-empty-h2-font-size);
+  font-weight: var(--workspace-graph-empty-h2-font-weight);
+}
+.studio .graph-empty p {
+  margin: var(--workspace-graph-empty-p-margin);
+  font-size: var(--workspace-graph-empty-p-font-size);
+}
+.studio .graph-connection-inspector {
+  padding: var(--workspace-graph-connection-inspector-padding);
+}
+.studio .graph-inspector-heading {
+  display: flex;
+  align-items: center;
+  gap: var(--workspace-graph-inspector-heading-gap);
+}
+.studio .graph-inspector-help {
+  margin: var(--workspace-graph-inspector-help-margin);
+  color: var(--muted);
+  font-size: var(--workspace-graph-inspector-help-font-size);
+}
+.studio .graph-connection-details {
+  margin: var(--workspace-graph-connection-details-margin);
+}
+.studio .graph-connection-details dt {
+  margin-top: var(--workspace-graph-connection-details-dt-margin-top);
+  color: var(--muted);
+  font-size: var(--workspace-graph-connection-details-dt-font-size);
+}
+.studio .graph-connection-details dd {
+  margin: var(--workspace-graph-connection-details-dd-margin);
+  overflow-wrap: var(--workspace-graph-connection-details-dd-overflow-wrap);
+  color: var(--text-strong);
+  font-size: var(--workspace-graph-connection-details-dd-font-size);
+}
+.studio .graph-remove-connection {
+  margin-top: var(--workspace-graph-remove-connection-margin-top);
+  color: var(--muted);
+}
+.studio:where([data-workspace-mode="graph"])
+  .mobile-panel-tabs
+  [data-mobile-panel="runs"] {
+  display: none;
+}
+@media (width <= 600px) {
+  .studio[data-workspace-mode="graph"] .workbench > .panel {
+    display: none;
+  }
+  :where(.studio)[data-workspace-mode="graph"][data-mobile-panel="flows"]
+    .workbench
+    > [data-panel-id="workspace"],
+  :where(.studio)[data-workspace-mode="graph"][data-mobile-panel="properties"]
+    .workbench
+    > [data-panel-id="properties"] {
+    display: flex;
+  }
+  .studio[data-workspace-mode="graph"] > .workbench {
+    display: flex;
+  }
+  :where(.studio)[data-workspace-mode="graph"][data-mobile-panel="steps"]
+    .workbench
+    > [data-panel-id="composition"] {
+    display: flex;
+  }
+  .studio[data-workspace-mode="graph"]
+    .workbench
+    > :is(
+      [data-panel-id="steps"],
+      [data-panel-id="target"],
+      [data-panel-id="timeline"]
+    ) {
+    display: none;
+  }
+  .studio .graph-toolbar {
+    padding-inline: var(
+      --workspace-graph-toolbar-padding-inline-max-width-600px
+    );
+  }
+  .studio .graph-toolbar [id="flow-summary"] {
+    display: none;
+  }
+}

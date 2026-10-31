@@ -1,0 +1,1765 @@
+:root {
+  --primary-rem-unit: 1rem;
+  --primary-cer-css-quote-geist-x-mono-quote: "Geist Mono";
+  --primary-esd-css-ui-minus-monospace: ui-monospace;
+  --primary-cer-css-quote-sf-x-mono-quote: "SF Mono";
+  --primary-cer-css-quote-fira-x-code-quote: "Fira Code";
+  --primary-cer-css-quote-roboto-x-mono-quote: "Roboto Mono";
+  --primary-cer-css-quote-menlo-quote: "Menlo";
+  --primary-cer-css-quote-consolas-quote: "Consolas";
+  --primary-esd-css-monospace: monospace;
+  --primary-degree-unit: 1deg;
+  --primary-percent-base: 1%;
+  --primary-number-unit: 1;
+  --primary-angle-unit: 1deg;
+  --primary-pixel-unit: 1px;
+  --primary-em-unit: 1em;
+  --primary-ese-css-inset: inset;
+  --primary-clk-css-nowrap: nowrap;
+  --primary-esd-css-solid: solid;
+  --primary-ese-color-named-transparent: transparent;
+  --primary-cer-css-none: none;
+  --primary-cer-css-opacity: opacity;
+  --primary-second-unit: 1s;
+  --primary-cer-css-background: background;
+  --primary-ese-css-in: in;
+  --primary-cer-css-oklab: oklab;
+  --primary-viewport-width-unit: 1vw;
+  --primary-cer-css-border-minus-color: border-color;
+  --primary-cer-css-box-minus-shadow: box-shadow;
+  --primary-cer-css-left: left;
+  --primary-cer-css-uppercase: uppercase;
+  --primary-cer-css-background-minus-color: background-color;
+  --primary-cer-css-ease: ease;
+  --primary-cer-css-color: color;
+  --primary-cer-css-underline: underline;
+  --primary-app-css-pointer: pointer;
+  --primary-esd-css-auto: auto;
+  --base-cer-cer-background: var(--dynamic-cer-background);
+  --base-cer-cer-foreground: var(--dynamic-cer-foreground);
+  --base-cer-cer-card: var(--dynamic-cer-card);
+  --base-cer-cer-card-foreground: var(--dynamic-cer-card-foreground);
+  --base-cer-cer-primary: var(--dynamic-cer-primary);
+  --base-cer-cer-primary-foreground: var(--dynamic-cer-primary-foreground);
+  --base-cer-cer-secondary: var(--dynamic-cer-secondary);
+  --base-cer-cer-secondary-foreground: var(--dynamic-cer-secondary-foreground);
+  --base-cer-cer-muted: var(--dynamic-cer-muted);
+  --base-cer-cer-muted-foreground: var(--dynamic-cer-muted-foreground);
+  --base-cer-cer-accent: var(--dynamic-cer-accent);
+  --base-cer-cer-destructive: var(--dynamic-cer-destructive);
+  --base-cer-cer-destructive-foreground: var(
+    --dynamic-cer-destructive-foreground
+  );
+  --base-cer-cer-border: var(--dynamic-cer-border);
+  --base-cer-cer-input: var(--dynamic-cer-input);
+  --base-cer-cer-ring: var(--dynamic-cer-ring);
+  --base-app-dimension-zero-point-five-rem: calc(0.5 * var(--primary-rem-unit));
+  --base-cer-dimension-zero-point-two-five-rem: calc(
+    0.25 * var(--primary-rem-unit)
+  );
+  --base-cer-dimension-zero-point-one-two-five-rem: calc(
+    0.125 * var(--primary-rem-unit)
+  );
+  --base-cer-cer-pop-green: var(--dynamic-cer-pop-green);
+  --base-cer-cer-pop-green-foreground: var(--dynamic-cer-pop-green-foreground);
+  --base-cer-cer-pop-orange: var(--dynamic-cer-pop-orange);
+  --base-cer-cer-pop-orange-foreground: var(
+    --dynamic-cer-pop-orange-foreground
+  );
+  --base-cer-cer-pop-yellow: var(--dynamic-cer-pop-yellow);
+  --base-cer-cer-pop-yellow-foreground: var(
+    --dynamic-cer-pop-yellow-foreground
+  );
+  --base-cer-cer-pop-blue: var(--dynamic-cer-pop-blue);
+  --base-cer-cer-pop-blue-foreground: var(--dynamic-cer-pop-blue-foreground);
+  --base-cer-css-quote-geist-x-mono-quote: var(
+    --primary-cer-css-quote-geist-x-mono-quote
+  );
+  --base-esd-css-ui-minus-monospace: var(--primary-esd-css-ui-minus-monospace);
+  --base-cer-css-quote-sf-x-mono-quote: var(
+    --primary-cer-css-quote-sf-x-mono-quote
+  );
+  --base-cer-css-quote-fira-x-code-quote: var(
+    --primary-cer-css-quote-fira-x-code-quote
+  );
+  --base-cer-css-quote-roboto-x-mono-quote: var(
+    --primary-cer-css-quote-roboto-x-mono-quote
+  );
+  --base-cer-css-quote-menlo-quote: var(--primary-cer-css-quote-menlo-quote);
+  --base-cer-css-quote-consolas-quote: var(
+    --primary-cer-css-quote-consolas-quote
+  );
+  --base-esd-css-monospace: var(--primary-esd-css-monospace);
+  --base-cer-cer-shadow-xsmall: var(--dynamic-cer-shadow-xs);
+  --base-cer-cer-shadow-small: var(--dynamic-cer-shadow-sm);
+  --base-cer-cer-shadow-medium: var(--dynamic-cer-shadow-md);
+  --base-cer-cer-shadow-well: var(--dynamic-cer-shadow-well);
+  --base-cer-angle-one-eight-zero-degree: calc(
+    180 * var(--primary-degree-unit)
+  );
+  --base-cer-color-oklch-zero-point-five-eight-zero-point-one-four-six-two-four-eight: oklch(
+    calc(var(--primary-percent-base) * 0.58)
+      calc(var(--primary-number-unit) * 0.146)
+      calc(var(--primary-angle-unit) * 248)
+  );
+  --base-cer-color-oklch-zero-point-five-zero-point-one-four-two-two-four-eight: oklch(
+    calc(var(--primary-percent-base) * 0.5)
+      calc(var(--primary-number-unit) * 0.142)
+      calc(var(--primary-angle-unit) * 248)
+  );
+  --base-cer-color-oklch-zero-point-six-two-zero-point-one-five-two-four-eight: oklch(
+    calc(var(--primary-percent-base) * 0.62)
+      calc(var(--primary-number-unit) * 0.15)
+      calc(var(--primary-angle-unit) * 248)
+  );
+  --base-cer-color-oklch-zero-point-five-four-zero-point-one-four-six-two-four-eight: oklch(
+    calc(var(--primary-percent-base) * 0.54)
+      calc(var(--primary-number-unit) * 0.146)
+      calc(var(--primary-angle-unit) * 248)
+  );
+  --base-cer-dimension-nine-nine-nine-nine-pixel: calc(
+    9999 * var(--primary-pixel-unit)
+  );
+  --base-cer-dimension-zero-point-six-two-five-rem: calc(
+    0.625 * var(--primary-rem-unit)
+  );
+  --base-clk-dimension-one-one-pixel: calc(11 * var(--primary-pixel-unit));
+  --base-cer-number-five-zero-zero: calc(500 * var(--primary-number-unit));
+  --base-cer-dimension-zero-point-zero-two-em: calc(
+    0.02 * var(--primary-em-unit)
+  );
+  --base-ese-css-inset: var(--primary-ese-css-inset);
+  --base-esd-dimension-one-pixel: var(--primary-pixel-unit);
+  --base-clk-css-nowrap: var(--primary-clk-css-nowrap);
+  --base-cer-dimension-zero-point-eight-seven-five-rem: calc(
+    0.875 * var(--primary-rem-unit)
+  );
+  --base-cer-dimension-minus-zero-point-zero-zero-five-em: calc(
+    -0.005 * var(--primary-em-unit)
+  );
+  --base-clk-dimension-zero-point-six-rem: calc(0.6 * var(--primary-rem-unit));
+  --base-app-dimension-one-rem: var(--primary-rem-unit);
+  --base-esd-css-solid: var(--primary-esd-css-solid);
+  --base-ese-color-named-transparent: var(
+    --primary-ese-color-named-transparent
+  );
+  --base-cer-css-none: var(--primary-cer-css-none);
+  --base-cer-css-opacity: var(--primary-cer-css-opacity);
+  --base-cer-duration-zero-point-one-five-second: calc(
+    0.15 * var(--primary-second-unit)
+  );
+  --base-cer-css-background: var(--primary-cer-css-background);
+  --base-esd-dimension-two-pixel: calc(2 * var(--primary-pixel-unit));
+  --base-ese-dimension-four-pixel: calc(4 * var(--primary-pixel-unit));
+  --base-cer-percent-five-zero: calc(50 * var(--primary-percent-base));
+  --base-ese-css-in: var(--primary-ese-css-in);
+  --base-cer-css-oklab: var(--primary-cer-css-oklab);
+  --base-cer-percent-eight-zero: calc(80 * var(--primary-percent-base));
+  --base-esd-number-one-point-five: calc(1.5 * var(--primary-number-unit));
+  --base-ese-number-six-zero-zero: calc(600 * var(--primary-number-unit));
+  --base-cer-dimension-zero-point-five-em: calc(0.5 * var(--primary-em-unit));
+  --base-cer-dimension-one-point-seven-five-rem: calc(
+    1.75 * var(--primary-rem-unit)
+  );
+  --base-clk-dimension-four-viewport-width: calc(
+    4 * var(--primary-viewport-width-unit)
+  );
+  --base-app-dimension-two-point-five-rem: calc(2.5 * var(--primary-rem-unit));
+  --base-app-number-seven-zero-zero: calc(700 * var(--primary-number-unit));
+  --base-cer-number-one-point-zero-five: calc(
+    1.05 * var(--primary-number-unit)
+  );
+  --base-cer-dimension-minus-zero-point-zero-three-em: calc(
+    -0.03 * var(--primary-em-unit)
+  );
+  --base-cer-dimension-one-point-two-five-rem: calc(
+    1.25 * var(--primary-rem-unit)
+  );
+  --base-cer-number-one-point-two: calc(1.2 * var(--primary-number-unit));
+  --base-cer-dimension-minus-zero-point-zero-one-em: calc(
+    -0.01 * var(--primary-em-unit)
+  );
+  --base-cer-number-four-zero-zero: calc(400 * var(--primary-number-unit));
+  --base-cer-dimension-one-em: var(--primary-em-unit);
+  --base-cer-dimension-zero-point-four-rem: calc(0.4 * var(--primary-rem-unit));
+  --base-cer-dimension-zero-point-seven-rem: calc(
+    0.7 * var(--primary-rem-unit)
+  );
+  --base-cer-dimension-zero-point-eight-one-two-five-rem: calc(
+    0.8125 * var(--primary-rem-unit)
+  );
+  --base-app-dimension-zero-point-seven-five-rem: calc(
+    0.75 * var(--primary-rem-unit)
+  );
+  --base-cer-dimension-one-point-four-rem: calc(1.4 * var(--primary-rem-unit));
+  --base-cer-dimension-zero-point-five-five-rem: calc(
+    0.55 * var(--primary-rem-unit)
+  );
+  --base-cer-css-border-minus-color: var(--primary-cer-css-border-minus-color);
+  --base-cer-css-box-minus-shadow: var(--primary-cer-css-box-minus-shadow);
+  --base-cer-percent-three-five: calc(35 * var(--primary-percent-base));
+  --base-cer-dimension-one-point-one-rem: calc(1.1 * var(--primary-rem-unit));
+  --base-cer-dimension-zero-point-nine-rem: calc(0.9 * var(--primary-rem-unit));
+  --base-cer-dimension-one-point-zero-five-rem: calc(
+    1.05 * var(--primary-rem-unit)
+  );
+  --base-cer-dimension-zero-point-two-rem: calc(0.2 * var(--primary-rem-unit));
+  --base-cer-dimension-zero-point-one-five-rem: calc(
+    0.15 * var(--primary-rem-unit)
+  );
+  --base-cer-dimension-zero-point-eight-rem: calc(
+    0.8 * var(--primary-rem-unit)
+  );
+  --base-ese-dimension-nine-nine-nine-pixel: calc(
+    999 * var(--primary-pixel-unit)
+  );
+  --base-cer-css-left: var(--primary-cer-css-left);
+  --base-cer-dimension-zero-point-six-eight-seven-five-rem: calc(
+    0.6875 * var(--primary-rem-unit)
+  );
+  --base-cer-css-uppercase: var(--primary-cer-css-uppercase);
+  --base-cer-dimension-zero-point-zero-four-em: calc(
+    0.04 * var(--primary-em-unit)
+  );
+  --base-clk-dimension-zero-point-three-five-rem: calc(
+    0.35 * var(--primary-rem-unit)
+  );
+  --base-clk-dimension-zero-point-three-rem: calc(
+    0.3 * var(--primary-rem-unit)
+  );
+  --base-cer-css-background-minus-color: var(
+    --primary-cer-css-background-minus-color
+  );
+  --base-cer-duration-zero-point-one-two-second: calc(
+    0.12 * var(--primary-second-unit)
+  );
+  --base-cer-css-ease: var(--primary-cer-css-ease);
+  --base-cer-css-color: var(--primary-cer-css-color);
+  --base-cer-dimension-zero-point-one-rem: calc(0.1 * var(--primary-rem-unit));
+  --base-cer-dimension-four-four-pixel: calc(44 * var(--primary-pixel-unit));
+  --base-cer-css-underline: var(--primary-cer-css-underline);
+  --base-app-percent-nine-zero: calc(90 * var(--primary-percent-base));
+  --base-cer-percent-two-zero: calc(20 * var(--primary-percent-base));
+  --base-cer-percent-four: calc(4 * var(--primary-percent-base));
+  --base-cer-percent-two-eight: calc(28 * var(--primary-percent-base));
+  --base-cer-color-oklch-zero-point-two-zero-five-zero-point-zero-zero-six-two-five-two: oklch(
+    calc(var(--primary-percent-base) * 0.205)
+      calc(var(--primary-number-unit) * 0.006)
+      calc(var(--primary-angle-unit) * 252)
+  );
+  --base-cer-color-oklch-zero-point-nine-seven-zero-point-zero-zero-three-two-five-zero: oklch(
+    calc(var(--primary-percent-base) * 0.97)
+      calc(var(--primary-number-unit) * 0.003)
+      calc(var(--primary-angle-unit) * 250)
+  );
+  --base-cer-dimension-zero-point-zero-three-one-three-rem: calc(
+    0.0313 * var(--primary-rem-unit)
+  );
+  --base-cer-color-oklch-one-zero-zero-eight: oklch(
+    calc(var(--primary-percent-base) * 1) calc(var(--primary-number-unit) * 0)
+      calc(var(--primary-angle-unit) * 0) /
+      calc(var(--primary-percent-base) * 8)
+  );
+  --base-cer-dimension-two-point-two-five-rem: calc(
+    2.25 * var(--primary-rem-unit)
+  );
+  --base-cer-color-oklch-zero-zero-zero-five-five: oklch(
+    calc(var(--primary-percent-base) * 0) calc(var(--primary-number-unit) * 0)
+      calc(var(--primary-angle-unit) * 0) /
+      calc(var(--primary-percent-base) * 55)
+  );
+  --base-cer-color-oklch-zero-point-seven-eight-zero-point-one-three-two-three-three-seven-zero: oklch(
+    calc(var(--primary-percent-base) * 0.78)
+      calc(var(--primary-number-unit) * 0.13)
+      calc(var(--primary-angle-unit) * 233) /
+      calc(var(--primary-percent-base) * 70)
+  );
+  --base-app-dimension-zero-point-zero-six-two-five-rem: calc(
+    0.0625 * var(--primary-rem-unit)
+  );
+  --base-cer-color-oklch-one-zero-zero-two-zero: oklch(
+    calc(var(--primary-percent-base) * 1) calc(var(--primary-number-unit) * 0)
+      calc(var(--primary-angle-unit) * 0) /
+      calc(var(--primary-percent-base) * 20)
+  );
+  --base-app-dimension-zero-point-one-eight-seven-five-rem: calc(
+    0.1875 * var(--primary-rem-unit)
+  );
+  --base-cer-color-oklch-zero-zero-zero-five-zero: oklch(
+    calc(var(--primary-percent-base) * 0) calc(var(--primary-number-unit) * 0)
+      calc(var(--primary-angle-unit) * 0) /
+      calc(var(--primary-percent-base) * 50)
+  );
+  --base-cer-color-oklch-zero-point-seven-zero-point-one-two-two-two-three-three-two-eight: oklch(
+    calc(var(--primary-percent-base) * 0.7)
+      calc(var(--primary-number-unit) * 0.122)
+      calc(var(--primary-angle-unit) * 233) /
+      calc(var(--primary-percent-base) * 28)
+  );
+  --base-cer-color-oklch-zero-point-eight-two-zero-point-one-three-two-three-three-eight-five: oklch(
+    calc(var(--primary-percent-base) * 0.82)
+      calc(var(--primary-number-unit) * 0.13)
+      calc(var(--primary-angle-unit) * 233) /
+      calc(var(--primary-percent-base) * 85)
+  );
+  --base-cer-color-oklch-one-zero-zero-two-four: oklch(
+    calc(var(--primary-percent-base) * 1) calc(var(--primary-number-unit) * 0)
+      calc(var(--primary-angle-unit) * 0) /
+      calc(var(--primary-percent-base) * 24)
+  );
+  --base-cer-dimension-zero-point-three-one-two-five-rem: calc(
+    0.3125 * var(--primary-rem-unit)
+  );
+  --base-app-dimension-one-point-one-two-five-rem: calc(
+    1.125 * var(--primary-rem-unit)
+  );
+  --base-cer-color-oklch-zero-point-seven-zero-point-one-two-two-two-three-three-three-eight: oklch(
+    calc(var(--primary-percent-base) * 0.7)
+      calc(var(--primary-number-unit) * 0.122)
+      calc(var(--primary-angle-unit) * 233) /
+      calc(var(--primary-percent-base) * 38)
+  );
+  --base-cer-cerulean-zerotwozero: color-mix(
+    in oklab,
+    var(--dynamic-cer-border) 80%,
+    transparent
+  );
+  --base-cer-cerulean-zerofourthree:
+    var(--dynamic-cer-shadow-well),
+    0 0 0 2px color-mix(in oklab, var(--dynamic-cer-ring) 35%, transparent);
+  --base-cer-cerulean-zeroseventwo: color-mix(
+    in oklab,
+    var(--dynamic-cer-foreground) 20%,
+    transparent
+  );
+  --base-cer-cerulean-zeroseventhree: color-mix(
+    in oklab,
+    var(--dynamic-cer-foreground) 4%,
+    var(--dynamic-cer-background)
+  );
+  --base-cer-cerulean-zerosevenfour: color-mix(
+    in oklab,
+    var(--dynamic-cer-foreground) 28%,
+    var(--dynamic-cer-border)
+  );
+  --base-cer-color-oklch-one-zero-zero: oklch(
+    calc(var(--primary-percent-base) * 1) calc(var(--primary-number-unit) * 0)
+      calc(var(--primary-angle-unit) * 0)
+  );
+  --base-cer-color-oklch-zero-point-two-one-zero-point-zero-one-two-five-two: oklch(
+    calc(var(--primary-percent-base) * 0.21)
+      calc(var(--primary-number-unit) * 0.01)
+      calc(var(--primary-angle-unit) * 252)
+  );
+  --base-cer-color-oklch-zero-zero-zero-eight: oklch(
+    calc(var(--primary-percent-base) * 0) calc(var(--primary-number-unit) * 0)
+      calc(var(--primary-angle-unit) * 0) /
+      calc(var(--primary-percent-base) * 8)
+  );
+  --base-cer-color-oklch-zero-zero-zero-one-two: oklch(
+    calc(var(--primary-percent-base) * 0) calc(var(--primary-number-unit) * 0)
+      calc(var(--primary-angle-unit) * 0) /
+      calc(var(--primary-percent-base) * 12)
+  );
+  --base-cer-color-oklch-zero-point-five-zero-point-one-four-two-two-four-eight-six-zero: oklch(
+    calc(var(--primary-percent-base) * 0.5)
+      calc(var(--primary-number-unit) * 0.142)
+      calc(var(--primary-angle-unit) * 248) /
+      calc(var(--primary-percent-base) * 60)
+  );
+  --base-cer-color-oklch-zero-zero-zero-one-five: oklch(
+    calc(var(--primary-percent-base) * 0) calc(var(--primary-number-unit) * 0)
+      calc(var(--primary-angle-unit) * 0) /
+      calc(var(--primary-percent-base) * 15)
+  );
+  --base-cer-color-oklch-zero-point-five-zero-point-one-four-two-two-four-eight-seven-five: oklch(
+    calc(var(--primary-percent-base) * 0.5)
+      calc(var(--primary-number-unit) * 0.142)
+      calc(var(--primary-angle-unit) * 248) /
+      calc(var(--primary-percent-base) * 75)
+  );
+  --base-cer-color-oklch-zero-zero-zero-one-eight: oklch(
+    calc(var(--primary-percent-base) * 0) calc(var(--primary-number-unit) * 0)
+      calc(var(--primary-angle-unit) * 0) /
+      calc(var(--primary-percent-base) * 18)
+  );
+  --base-app-css-pointer: var(--primary-app-css-pointer);
+  --base-cer-cer-shadow-glass: var(--dynamic-cer-shadow-glass);
+  --base-esd-css-auto: var(--primary-esd-css-auto);
+  --catalog-layout-color-cer-popover: var(
+    --base-cer-color-oklch-zero-point-two-zero-five-zero-point-zero-zero-six-two-five-two
+  );
+  --catalog-layout-color-cer-popover-foreground: var(
+    --base-cer-color-oklch-zero-point-nine-seven-zero-point-zero-zero-three-two-five-zero
+  );
+  --catalog-layout-measure-app-space-half: var(
+    --base-app-dimension-zero-point-five-rem
+  );
+  --catalog-field-border-cer-radius-small: calc(
+    var(--base-app-dimension-zero-point-five-rem) -
+      var(--base-cer-dimension-zero-point-two-five-rem)
+  );
+  --catalog-field-border-cer-radius-medium: calc(
+    var(--base-app-dimension-zero-point-five-rem) -
+      var(--base-cer-dimension-zero-point-one-two-five-rem)
+  );
+  --catalog-field-border-cer-radius-xlarge: calc(
+    var(--base-app-dimension-zero-point-five-rem) +
+      var(--base-cer-dimension-zero-point-two-five-rem)
+  );
+  --catalog-text-typography-cer-font-sans:
+    var(--base-cer-css-quote-geist-x-mono-quote),
+    var(--base-esd-css-ui-minus-monospace),
+    var(--base-cer-css-quote-sf-x-mono-quote),
+    var(--base-cer-css-quote-fira-x-code-quote),
+    var(--base-cer-css-quote-roboto-x-mono-quote),
+    var(--base-cer-css-quote-menlo-quote),
+    var(--base-cer-css-quote-consolas-quote), var(--base-esd-css-monospace);
+  --catalog-layout-effect-cer-shadow-large:
+    0 0 0 var(--base-cer-dimension-zero-point-zero-three-one-three-rem)
+      var(--base-cer-color-oklch-one-zero-zero-eight),
+    0 var(--base-cer-dimension-zero-point-eight-seven-five-rem)
+      var(--base-cer-dimension-two-point-two-five-rem)
+      var(--base-cer-color-oklch-zero-zero-zero-five-five);
+  --catalog-palette-color-cer-accent-fill: linear-gradient(
+    var(--base-cer-angle-one-eight-zero-degree),
+    var(
+        --base-cer-color-oklch-zero-point-five-eight-zero-point-one-four-six-two-four-eight
+      )
+      0%,
+    var(
+        --base-cer-color-oklch-zero-point-five-zero-point-one-four-two-two-four-eight
+      )
+      100%
+  );
+  --catalog-palette-color-cer-accent-fill-hover: linear-gradient(
+    var(--base-cer-angle-one-eight-zero-degree),
+    var(
+        --base-cer-color-oklch-zero-point-six-two-zero-point-one-five-two-four-eight
+      )
+      0%,
+    var(
+        --base-cer-color-oklch-zero-point-five-four-zero-point-one-four-six-two-four-eight
+      )
+      100%
+  );
+  --catalog-layout-effect-cer-shadow-accent:
+    0 0 0 var(--base-cer-dimension-zero-point-zero-three-one-three-rem)
+      var(
+        --base-cer-color-oklch-zero-point-seven-eight-zero-point-one-three-two-three-three-seven-zero
+      ),
+    var(--base-ese-css-inset) 0
+      var(--base-app-dimension-zero-point-zero-six-two-five-rem) 0
+      var(--base-cer-color-oklch-one-zero-zero-two-zero),
+    0 var(--base-app-dimension-zero-point-zero-six-two-five-rem)
+      var(--base-app-dimension-zero-point-one-eight-seven-five-rem)
+      var(--base-cer-color-oklch-zero-zero-zero-five-zero),
+    0 0 var(--base-app-dimension-zero-point-seven-five-rem)
+      var(
+        --base-cer-color-oklch-zero-point-seven-zero-point-one-two-two-two-three-three-two-eight
+      );
+  --catalog-layout-effect-cer-shadow-accent-hover:
+    0 0 0 var(--base-cer-dimension-zero-point-zero-three-one-three-rem)
+      var(
+        --base-cer-color-oklch-zero-point-eight-two-zero-point-one-three-two-three-three-eight-five
+      ),
+    var(--base-ese-css-inset) 0
+      var(--base-app-dimension-zero-point-zero-six-two-five-rem) 0
+      var(--base-cer-color-oklch-one-zero-zero-two-four),
+    0 var(--base-cer-dimension-zero-point-one-two-five-rem)
+      var(--base-cer-dimension-zero-point-three-one-two-five-rem)
+      var(--base-cer-color-oklch-zero-zero-zero-five-five),
+    0 0 var(--base-app-dimension-one-point-one-two-five-rem)
+      var(
+        --base-cer-color-oklch-zero-point-seven-zero-point-one-two-two-two-three-three-three-eight
+      );
+  --catalog-layout-effect-cer-shadow-inset: var(--base-cer-cer-shadow-well);
+  --catalog-layout-measure-cer-cerulean-zerozeroone: var(
+    --base-cer-dimension-zero-point-two-five-rem
+  );
+  --catalog-layout-measure-cer-cerulean-zerozerotwo: var(
+    --base-cer-dimension-nine-nine-nine-nine-pixel
+  );
+  --catalog-layout-measure-cer-cerulean-zerozerothree: var(
+      --base-cer-dimension-zero-point-one-two-five-rem
+    )
+    var(--base-cer-dimension-zero-point-six-two-five-rem);
+  --catalog-layout-measure-vdd-event-gap: var(
+    --base-clk-dimension-one-one-pixel
+  );
+  --catalog-layout-measure-cer-cerulean-zerozerofive: var(
+    --base-cer-number-five-zero-zero
+  );
+  --catalog-layout-measure-cer-cerulean-zerozerosix: var(
+    --base-cer-dimension-zero-point-zero-two-em
+  );
+  --catalog-layout-measure-cer-cerulean-zerozeroseven: var(--base-ese-css-inset)
+    0 0 0 var(--base-esd-dimension-one-pixel) var(--base-cer-cer-border);
+  --catalog-layout-measure-clk-demo-white-space-twonine: var(
+    --base-clk-css-nowrap
+  );
+  --catalog-layout-measure-cer-cerulean-zeroonezero: var(
+    --base-cer-dimension-zero-point-eight-seven-five-rem
+  );
+  --catalog-layout-measure-cer-cerulean-zerooneone: var(
+    --base-cer-dimension-minus-zero-point-zero-zero-five-em
+  );
+  --catalog-layout-measure-cer-cerulean-zeroonetwo: var(
+      --base-clk-dimension-zero-point-six-rem
+    )
+    var(--base-app-dimension-one-rem);
+  --catalog-layout-measure-cer-cerulean-zeroonethree: var(
+      --base-esd-dimension-one-pixel
+    )
+    var(--base-esd-css-solid) var(--base-ese-color-named-transparent);
+  --catalog-text-typography-vca-nav-text-decoration: var(--base-cer-css-none);
+  --catalog-layout-measure-cer-cerulean-zeroonefive:
+    var(--base-cer-css-opacity)
+      var(--base-cer-duration-zero-point-one-five-second),
+    var(--base-cer-css-background)
+      var(--base-cer-duration-zero-point-one-five-second);
+  --catalog-layout-measure-cer-cerulean-zeroonesix: var(
+      --base-esd-dimension-two-pixel
+    )
+    var(--base-esd-css-solid) var(--base-cer-cer-ring);
+  --catalog-layout-measure-esd-demo-mark-offset: var(
+    --base-esd-dimension-two-pixel
+  );
+  --catalog-layout-measure-cer-cerulean-zerooneeight:
+    0 0 0 var(--base-esd-dimension-two-pixel) var(--base-cer-cer-background),
+    0 0 0 var(--base-ese-dimension-four-pixel) var(--base-cer-cer-ring);
+  --catalog-field-border-vdd-avatar-border-radius: var(
+    --base-cer-percent-five-zero
+  );
+  --catalog-layout-measure-cer-cerulean-zerotwozero: var(
+    --base-cer-cerulean-zerotwozero
+  );
+  --catalog-layout-measure-cer-cerulean-zerotwoone: var(
+    --base-esd-number-one-point-five
+  );
+  --catalog-layout-measure-ese-ese-paren-weight: var(
+    --base-ese-number-six-zero-zero
+  );
+  --catalog-layout-measure-cer-cerulean-zerotwothree: 0 0
+    var(--base-cer-dimension-zero-point-five-em);
+  --catalog-layout-measure-cer-cerulean-zerotwofour: clamp(
+    var(--base-cer-dimension-one-point-seven-five-rem),
+    var(--base-clk-dimension-four-viewport-width),
+    var(--base-app-dimension-two-point-five-rem)
+  );
+  --catalog-text-typography-app-font-weight-bold: var(
+    --base-app-number-seven-zero-zero
+  );
+  --catalog-layout-measure-cer-cerulean-zerotwosix: var(
+    --base-cer-number-one-point-zero-five
+  );
+  --catalog-layout-measure-cer-cerulean-zerotwoseven: var(
+    --base-cer-dimension-minus-zero-point-zero-three-em
+  );
+  --catalog-layout-measure-cer-cerulean-zerotwoeight: var(
+    --base-cer-dimension-one-point-two-five-rem
+  );
+  --catalog-layout-measure-cer-cerulean-zerotwonine: var(
+    --base-cer-number-one-point-two
+  );
+  --catalog-layout-measure-cer-cerulean-zerothreezero: var(
+    --base-cer-dimension-minus-zero-point-zero-one-em
+  );
+  --catalog-layout-measure-cer-cerulean-zerothreeone: var(
+    --base-cer-number-four-zero-zero
+  );
+  --catalog-layout-measure-cer-cerulean-zerothreetwo: 0 0
+    var(--base-cer-dimension-one-em);
+  --catalog-layout-measure-ese-ese-surface: var(
+    --base-ese-color-named-transparent
+  );
+  --catalog-layout-measure-ese-ese-gap: var(--base-esd-dimension-one-pixel);
+  --catalog-layout-measure-cer-cerulean-zerothreefive: var(
+      --base-cer-dimension-zero-point-four-rem
+    )
+    var(--base-cer-dimension-zero-point-seven-rem);
+  --catalog-layout-measure-cer-cerulean-zerothreesix: var(
+    --base-cer-dimension-zero-point-eight-one-two-five-rem
+  );
+  --catalog-layout-measure-cer-cerulean-zerothreeseven: var(
+      --base-app-dimension-zero-point-seven-five-rem
+    )
+    var(--base-cer-dimension-one-point-four-rem);
+  --catalog-layout-measure-app-space: var(--base-app-dimension-one-rem);
+  --catalog-layout-measure-cer-cerulean-zerothreenine: var(
+    --base-cer-dimension-zero-point-four-rem
+  );
+  --catalog-layout-measure-cer-cerulean-zerofourzero: var(
+      --base-cer-dimension-zero-point-five-five-rem
+    )
+    var(--base-app-dimension-zero-point-seven-five-rem);
+  --catalog-layout-measure-cer-cerulean-zerofourone: var(
+      --base-esd-dimension-one-pixel
+    )
+    var(--base-esd-css-solid) var(--base-cer-cer-border);
+  --catalog-layout-measure-cer-cerulean-zerofourtwo:
+    var(--base-cer-css-border-minus-color)
+      var(--base-cer-duration-zero-point-one-five-second),
+    var(--base-cer-css-box-minus-shadow)
+      var(--base-cer-duration-zero-point-one-five-second);
+  --catalog-layout-measure-cer-cerulean-zerofourthree: var(
+    --base-cer-cerulean-zerofourthree
+  );
+  --catalog-layout-measure-cer-cerulean-zerofourfive: var(
+      --base-cer-dimension-one-point-one-rem
+    )
+    var(--base-cer-dimension-one-point-two-five-rem)
+    var(--base-app-dimension-zero-point-five-rem);
+  --catalog-layout-measure-cer-cerulean-zerofoursix: var(
+      --base-app-dimension-zero-point-five-rem
+    )
+    var(--base-cer-dimension-one-point-two-five-rem)
+    var(--base-cer-dimension-one-point-one-rem);
+  --catalog-layout-measure-cer-cerulean-zerofourseven: var(
+      --base-cer-dimension-zero-point-nine-rem
+    )
+    var(--base-cer-dimension-one-point-two-five-rem);
+  --catalog-layout-measure-cer-cerulean-zerofournine: var(
+    --base-cer-dimension-one-point-zero-five-rem
+  );
+  --catalog-layout-measure-cer-cerulean-zerofivezero: 0 0
+    var(--base-cer-dimension-zero-point-two-five-rem);
+  --catalog-layout-measure-cer-cerulean-zerofiveone: var(
+      --base-cer-dimension-zero-point-nine-rem
+    )
+    var(--base-app-dimension-one-rem);
+  --catalog-layout-measure-cer-cerulean-zerofivetwo: 0 0
+    var(--base-cer-dimension-zero-point-two-rem);
+  --catalog-layout-measure-cer-cerulean-zerofivethree: var(
+      --base-app-dimension-one-rem
+    )
+    0;
+  --catalog-layout-measure-clk-demo-gap-threefour: var(
+    --base-clk-dimension-zero-point-six-rem
+  );
+  --catalog-layout-measure-cer-cerulean-zerofivefive: var(
+    --base-cer-dimension-zero-point-one-five-rem
+  );
+  --catalog-layout-measure-cer-cerulean-zerofivesix: var(
+      --base-cer-dimension-zero-point-four-rem
+    )
+    var(--base-cer-dimension-zero-point-eight-rem);
+  --catalog-field-border-ese-ese-radius-pill: var(
+    --base-ese-dimension-nine-nine-nine-pixel
+  );
+  --catalog-layout-measure-cer-cerulean-zerofiveeight: var(--base-cer-css-left);
+  --catalog-layout-measure-cer-cerulean-zerofivenine: var(
+      --base-app-dimension-zero-point-five-rem
+    )
+    var(--base-app-dimension-zero-point-seven-five-rem);
+  --catalog-layout-measure-cer-cerulean-zerosixzero: var(
+    --base-cer-dimension-zero-point-six-eight-seven-five-rem
+  );
+  --catalog-layout-measure-cer-cerulean-zerosixone: var(
+    --base-cer-css-uppercase
+  );
+  --catalog-layout-measure-cer-cerulean-zerosixtwo: var(
+    --base-cer-dimension-zero-point-zero-four-em
+  );
+  --catalog-layout-measure-clk-demo-gap-threethree: var(
+    --base-clk-dimension-zero-point-three-five-rem
+  );
+  --catalog-layout-measure-cer-cerulean-zerosixfour: var(
+      --base-clk-dimension-zero-point-three-rem
+    )
+    var(--base-cer-dimension-zero-point-seven-rem);
+  --catalog-layout-measure-cer-cerulean-zerosixsix:
+    var(--base-cer-css-background-minus-color)
+      var(--base-cer-duration-zero-point-one-two-second)
+      var(--base-cer-css-ease),
+    var(--base-cer-css-border-minus-color)
+      var(--base-cer-duration-zero-point-one-two-second)
+      var(--base-cer-css-ease),
+    var(--base-cer-css-color) var(--base-cer-duration-zero-point-one-two-second)
+      var(--base-cer-css-ease);
+  --catalog-field-border-app-radius: var(
+    --base-app-dimension-zero-point-seven-five-rem
+  );
+  --catalog-layout-measure-cer-cerulean-zerosixeight: var(
+      --base-cer-dimension-zero-point-one-rem
+    )
+    var(--base-cer-dimension-zero-point-four-rem);
+  --catalog-layout-measure-cer-cerulean-zerosixnine: var(
+    --base-cer-dimension-four-four-pixel
+  );
+  --catalog-layout-measure-cer-cerulean-zerosevenzero: var(
+    --base-cer-css-underline
+  );
+  --catalog-layout-measure-app-bar-d-height: var(--base-app-percent-nine-zero);
+  --catalog-layout-measure-cer-cerulean-zeroseventwo: var(
+    --base-cer-cerulean-zeroseventwo
+  );
+  --catalog-layout-measure-cer-cerulean-zeroseventhree: var(
+    --base-cer-cerulean-zeroseventhree
+  );
+  --catalog-layout-measure-cer-cerulean-zerosevenfour: var(
+    --base-cer-cerulean-zerosevenfour
+  );
+  --catalog-layout-color-cer-popover-media-prefers-color-scheme-light: var(
+    --base-cer-color-oklch-one-zero-zero
+  );
+  --catalog-layout-color-cer-popover-foreground-media-prefers-color-scheme-light: var(
+    --base-cer-color-oklch-zero-point-two-one-zero-point-zero-one-two-five-two
+  );
+  --catalog-layout-effect-cer-shadow-large-media-prefers-color-scheme-light:
+    0 0 0 var(--base-cer-dimension-zero-point-zero-three-one-three-rem)
+      var(--base-cer-color-oklch-zero-zero-zero-eight),
+    0 var(--base-cer-dimension-zero-point-eight-seven-five-rem)
+      var(--base-cer-dimension-two-point-two-five-rem)
+      var(--base-cer-color-oklch-zero-zero-zero-one-two);
+  --catalog-layout-effect-cer-shadow-accent-media-prefers-color-scheme-light:
+    0 0 0 var(--base-cer-dimension-zero-point-zero-three-one-three-rem)
+      var(
+        --base-cer-color-oklch-zero-point-five-zero-point-one-four-two-two-four-eight-six-zero
+      ),
+    var(--base-ese-css-inset) 0
+      var(--base-app-dimension-zero-point-zero-six-two-five-rem) 0
+      var(--base-cer-color-oklch-one-zero-zero-two-zero),
+    0 var(--base-app-dimension-zero-point-zero-six-two-five-rem)
+      var(--base-app-dimension-zero-point-one-eight-seven-five-rem)
+      var(--base-cer-color-oklch-zero-zero-zero-one-five);
+  --catalog-layout-effect-cer-shadow-accent-hover-media-prefers-color-scheme-light:
+    0 0 0 var(--base-cer-dimension-zero-point-zero-three-one-three-rem)
+      var(
+        --base-cer-color-oklch-zero-point-five-zero-point-one-four-two-two-four-eight-seven-five
+      ),
+    var(--base-ese-css-inset) 0
+      var(--base-app-dimension-zero-point-zero-six-two-five-rem) 0
+      var(--base-cer-color-oklch-one-zero-zero-two-four),
+    0 var(--base-cer-dimension-zero-point-one-two-five-rem)
+      var(--base-cer-dimension-zero-point-three-one-two-five-rem)
+      var(--base-cer-color-oklch-zero-zero-zero-one-eight);
+  --catalog-palette-color-cer-ds-badge-background-color: var(
+    --base-cer-cer-secondary
+  );
+  --catalog-palette-color-cer-ds-badge-color: var(--base-cer-cer-foreground);
+  --catalog-layout-measure-vdd-bar-flex: 1;
+  --catalog-control-cursor-app-switch-cursor: var(--base-app-css-pointer);
+  --catalog-palette-color-cer-ds-btn-secondary-background-color: var(
+    --base-cer-cer-accent
+  );
+  --catalog-layer-effect-cer-ds-btn-secondary-box-shadow: var(
+    --base-cer-cer-shadow-small
+  );
+  --catalog-palette-color-cer-ds-background: var(--base-cer-cer-background);
+  --catalog-layout-measure-app-body-margin: 0;
+  --catalog-palette-color-cer-ds-supporting-color: var(
+    --base-cer-cer-muted-foreground
+  );
+  --catalog-palette-color-cer-ds-color: var(--base-cer-cer-primary);
+  --catalog-palette-color-cer-ds-btn-primary-color: var(
+    --base-cer-cer-primary-foreground
+  );
+  --catalog-palette-color-cer-ds-btn-secondary-color: var(
+    --base-cer-cer-secondary-foreground
+  );
+  --catalog-layer-effect-cer-ds-btn-secondary-ds-btn-secondary-box-shadow: var(
+    --base-cer-cer-shadow-xsmall
+  );
+  --catalog-field-border-cer-ds-btn-outline-border-color: var(
+    --base-cer-cer-border
+  );
+  --catalog-layout-measure-esd-textarea-width: 100%;
+  --catalog-palette-color-cer-ds-select-background: var(--base-cer-cer-input);
+  --catalog-field-border-cer-ds-select-border-color: var(--base-cer-cer-ring);
+  --catalog-palette-color-cer-ds-card-background: var(--base-cer-cer-card);
+  --catalog-palette-color-cer-ds-card-color: var(
+    --base-cer-cer-card-foreground
+  );
+  --catalog-layer-effect-cer-ds-card-box-shadow: var(
+    --base-cer-cer-shadow-glass
+  );
+  --catalog-layout-measure-app-page-margin-inline: var(--base-esd-css-auto);
+  --catalog-palette-color-cer-ds-badge-safe-background: var(
+    --base-cer-cer-pop-green
+  );
+  --catalog-palette-color-cer-ds-badge-safe-color: var(
+    --base-cer-cer-pop-green-foreground
+  );
+  --catalog-palette-color-cer-ds-badge-warn-background: var(
+    --base-cer-cer-pop-orange
+  );
+  --catalog-palette-color-cer-ds-badge-warn-color: var(
+    --base-cer-cer-pop-orange-foreground
+  );
+  --catalog-palette-color-cer-ds-badge-danger-background: var(
+    --base-cer-cer-destructive
+  );
+  --catalog-palette-color-cer-ds-badge-danger-color: var(
+    --base-cer-cer-destructive-foreground
+  );
+  --catalog-palette-color-cer-ds-badge-unknown-background: var(
+    --base-cer-cer-pop-yellow
+  );
+  --catalog-palette-color-cer-ds-badge-unknown-color: var(
+    --base-cer-cer-pop-yellow-foreground
+  );
+  --catalog-palette-color-cer-ds-badge-verified-background: var(
+    --base-cer-cer-pop-blue
+  );
+  --catalog-palette-color-cer-ds-badge-verified-color: var(
+    --base-cer-cer-pop-blue-foreground
+  );
+  --catalog-palette-color-cer-ds-tabs-background: var(--base-cer-cer-muted);
+  --cer-ds-btn-border-radius: var(--catalog-field-border-cer-radius-medium);
+  --cer-ds-card-border-radius: var(--catalog-layout-measure-app-space-half);
+  --cer-ds-badge-background-color: var(
+    --catalog-palette-color-cer-ds-badge-background-color
+  );
+  --cer-ds-badge-color: var(--catalog-palette-color-cer-ds-badge-color);
+  --cer-ds-btn-line-height: var(--catalog-layout-measure-vdd-bar-flex);
+  --cer-ds-btn-cursor: var(--catalog-control-cursor-app-switch-cursor);
+  --cer-ds-btn-secondary-background-color: var(
+    --catalog-palette-color-cer-ds-btn-secondary-background-color
+  );
+  --cer-ds-btn-secondary-box-shadow: var(
+    --catalog-layer-effect-cer-ds-btn-secondary-box-shadow
+  );
+  --cer-ds-font-family: var(--catalog-text-typography-cer-font-sans);
+  --cer-ds-background: var(--catalog-palette-color-cer-ds-background);
+  --cer-ds-display-margin: var(--catalog-layout-measure-app-body-margin);
+  --cer-ds-supporting-color: var(
+    --catalog-palette-color-cer-ds-supporting-color
+  );
+  --cer-ds-color: var(--catalog-palette-color-cer-ds-color);
+  --cer-ds-btn-primary-background: var(--catalog-palette-color-cer-ds-color);
+  --cer-ds-btn-primary-color: var(
+    --catalog-palette-color-cer-ds-btn-primary-color
+  );
+  --cer-ds-btn-secondary-background: var(
+    --catalog-palette-color-cer-ds-badge-background-color
+  );
+  --cer-ds-btn-secondary-color: var(
+    --catalog-palette-color-cer-ds-btn-secondary-color
+  );
+  --cer-ds-btn-secondary-box-shadow-two: var(
+    --catalog-layer-effect-cer-ds-btn-secondary-ds-btn-secondary-box-shadow
+  );
+  --cer-ds-btn-outline-border-color: var(
+    --catalog-field-border-cer-ds-btn-outline-border-color
+  );
+  --cer-ds-btn-border-color: var(--catalog-palette-color-cer-ds-color);
+  --cer-ds-btn-opacity: var(--catalog-layout-measure-esd-textarea-width);
+  --cer-ds-select-width: var(--catalog-layout-measure-esd-textarea-width);
+  --cer-ds-select-background: var(
+    --catalog-palette-color-cer-ds-select-background
+  );
+  --cer-ds-select-box-shadow: var(--catalog-layout-effect-cer-shadow-inset);
+  --cer-ds-select-outline: var(
+    --catalog-text-typography-vca-nav-text-decoration
+  );
+  --cer-ds-select-border-color: var(
+    --catalog-field-border-cer-ds-select-border-color
+  );
+  --cer-ds-card-background: var(--catalog-palette-color-cer-ds-card-background);
+  --cer-ds-card-color: var(--catalog-palette-color-cer-ds-card-color);
+  --cer-ds-card-border-radius-two: var(
+    --catalog-field-border-cer-radius-xlarge
+  );
+  --cer-ds-card-box-shadow: var(--catalog-layer-effect-cer-ds-card-box-shadow);
+  --cer-ds-card-footer-margin-top: var(
+    --catalog-layout-measure-app-page-margin-inline
+  );
+  --cer-ds-badge-safe-background: var(
+    --catalog-palette-color-cer-ds-badge-safe-background
+  );
+  --cer-ds-badge-safe-color: var(
+    --catalog-palette-color-cer-ds-badge-safe-color
+  );
+  --cer-ds-badge-warn-background: var(
+    --catalog-palette-color-cer-ds-badge-warn-background
+  );
+  --cer-ds-badge-warn-color: var(
+    --catalog-palette-color-cer-ds-badge-warn-color
+  );
+  --cer-ds-badge-danger-background: var(
+    --catalog-palette-color-cer-ds-badge-danger-background
+  );
+  --cer-ds-badge-danger-color: var(
+    --catalog-palette-color-cer-ds-badge-danger-color
+  );
+  --cer-ds-badge-unknown-background: var(
+    --catalog-palette-color-cer-ds-badge-unknown-background
+  );
+  --cer-ds-badge-unknown-color: var(
+    --catalog-palette-color-cer-ds-badge-unknown-color
+  );
+  --cer-ds-badge-verified-background: var(
+    --catalog-palette-color-cer-ds-badge-verified-background
+  );
+  --cer-ds-badge-verified-color: var(
+    --catalog-palette-color-cer-ds-badge-verified-color
+  );
+  --cer-ds-divider-background: var(
+    --catalog-field-border-cer-ds-btn-outline-border-color
+  );
+  --cer-ds-divider-border: var(--catalog-layout-measure-app-body-margin);
+  --cer-ds-tabs-background: var(--catalog-palette-color-cer-ds-tabs-background);
+  --cer-ds-progress-bar-height: var(
+    --catalog-layout-measure-esd-textarea-width
+  );
+  --cer-ds-kbd-border-radius: var(--catalog-field-border-cer-radius-small);
+  --cer-ds-btn-ghost-background: var(
+    --catalog-palette-color-cer-ds-btn-secondary-background-color
+  );
+  color-scheme: dark;
+  --dynamic-cer-background: #090a0cff;
+  --dynamic-cer-foreground: #f4f5f7ff;
+  --dynamic-cer-card: #111315ff;
+  --dynamic-cer-card-foreground: #f4f5f7ff;
+  --popover: var(--catalog-layout-color-cer-popover);
+  --popover-foreground: var(--catalog-layout-color-cer-popover-foreground);
+  --dynamic-cer-primary: #1778c3ff;
+  --dynamic-cer-primary-foreground: #f7fbfeff;
+  --dynamic-cer-secondary: #1a1c1fff;
+  --dynamic-cer-secondary-foreground: #c2c4c7ff;
+  --dynamic-cer-muted: #15171aff;
+  --dynamic-cer-muted-foreground: #9c9fa2ff;
+  --dynamic-cer-accent: #1e2428ff;
+  --accent-foreground: var(--catalog-layout-color-cer-popover-foreground);
+  --dynamic-cer-destructive: #e6424cff;
+  --dynamic-cer-destructive-foreground: #f7f9faff;
+  --dynamic-cer-border: #ffffff12;
+  --dynamic-cer-input: #0e1012ff;
+  --dynamic-cer-ring: #3eabde8c;
+  --cer-radius: var(--catalog-layout-measure-app-space-half);
+  --radius-sm: var(--catalog-field-border-cer-radius-small);
+  --radius-md: var(--catalog-field-border-cer-radius-medium);
+  --radius-lg: var(--catalog-layout-measure-app-space-half);
+  --radius-xl: var(--catalog-field-border-cer-radius-xlarge);
+  --dynamic-cer-pop-green: #103d20ff;
+  --dynamic-cer-pop-green-foreground: #b1f0c1ff;
+  --dynamic-cer-pop-orange: #552c00ff;
+  --dynamic-cer-pop-orange-foreground: #ffd592ff;
+  --dynamic-cer-pop-yellow: #43370dff;
+  --dynamic-cer-pop-yellow-foreground: #f7e59fff;
+  --dynamic-cer-pop-blue: #0d2f4fff;
+  --dynamic-cer-pop-blue-foreground: #b1ddffff;
+  --font-sans: var(--catalog-text-typography-cer-font-sans);
+  --font-mono: var(--catalog-text-typography-cer-font-sans);
+  --dynamic-cer-shadow-xs:
+    0 0 0 0.0313rem #ffffff0d, 0 0.0625rem 0.125rem #00000066;
+  --dynamic-cer-shadow-sm:
+    0 0 0 0.0313rem #ffffff0f, 0 0.125rem 0.375rem #00000073;
+  --dynamic-cer-shadow-md:
+    0 0 0 0.0313rem #ffffff12, 0 0.375rem 1.125rem #00000080;
+  --shadow-lg: var(--catalog-layout-effect-cer-shadow-large);
+  --dynamic-cer-shadow-well:
+    inset 0 0.0625rem 0.0625rem #00000080, inset 0 -0.0625rem 0 #ffffff08;
+  --accent-fill: var(--catalog-palette-color-cer-accent-fill);
+  --accent-fill-hover: var(--catalog-palette-color-cer-accent-fill-hover);
+  --shadow-accent: var(--catalog-layout-effect-cer-shadow-accent);
+  --shadow-accent-hover: var(--catalog-layout-effect-cer-shadow-accent-hover);
+  --shadow-inset: var(--catalog-layout-effect-cer-shadow-inset);
+  --cer-cerulean-zerozeroone: var(
+    --catalog-layout-measure-cer-cerulean-zerozeroone
+  );
+  --cer-cerulean-zerozerotwo: var(
+    --catalog-layout-measure-cer-cerulean-zerozerotwo
+  );
+  --cer-cerulean-zerozerothree: var(
+    --catalog-layout-measure-cer-cerulean-zerozerothree
+  );
+  --cer-cerulean-zerozerofour: var(--catalog-layout-measure-vdd-event-gap);
+  --cer-cerulean-zerozerofive: var(
+    --catalog-layout-measure-cer-cerulean-zerozerofive
+  );
+  --cer-cerulean-zerozerosix: var(
+    --catalog-layout-measure-cer-cerulean-zerozerosix
+  );
+  --cer-cerulean-zerozeroseven: var(
+    --catalog-layout-measure-cer-cerulean-zerozeroseven
+  );
+  --cer-cerulean-zerozeroeight: var(--catalog-layout-measure-app-space-half);
+  --cer-cerulean-zerozeronine: var(
+    --catalog-layout-measure-clk-demo-white-space-twonine
+  );
+  --cer-cerulean-zeroonezero: var(
+    --catalog-layout-measure-cer-cerulean-zeroonezero
+  );
+  --cer-cerulean-zerooneone: var(
+    --catalog-layout-measure-cer-cerulean-zerooneone
+  );
+  --cer-cerulean-zeroonetwo: var(
+    --catalog-layout-measure-cer-cerulean-zeroonetwo
+  );
+  --cer-cerulean-zeroonethree: var(
+    --catalog-layout-measure-cer-cerulean-zeroonethree
+  );
+  --cer-cerulean-zeroonefour: var(
+    --catalog-text-typography-vca-nav-text-decoration
+  );
+  --cer-cerulean-zeroonefive: var(
+    --catalog-layout-measure-cer-cerulean-zeroonefive
+  );
+  --cer-cerulean-zeroonesix: var(
+    --catalog-layout-measure-cer-cerulean-zeroonesix
+  );
+  --cer-cerulean-zerooneseven: var(
+    --catalog-layout-measure-esd-demo-mark-offset
+  );
+  --cer-cerulean-zerooneeight: var(
+    --catalog-layout-measure-cer-cerulean-zerooneeight
+  );
+  --cer-cerulean-zeroonenine: var(
+    --catalog-field-border-vdd-avatar-border-radius
+  );
+  --cer-cerulean-zerotwozero: var(
+    --catalog-layout-measure-cer-cerulean-zerotwozero
+  );
+  --cer-cerulean-zerotwoone: var(
+    --catalog-layout-measure-cer-cerulean-zerotwoone
+  );
+  --cer-cerulean-zerotwotwo: var(--catalog-layout-measure-ese-ese-paren-weight);
+  --cer-cerulean-zerotwothree: var(
+    --catalog-layout-measure-cer-cerulean-zerotwothree
+  );
+  --cer-cerulean-zerotwofour: var(
+    --catalog-layout-measure-cer-cerulean-zerotwofour
+  );
+  --cer-cerulean-zerotwofive: var(
+    --catalog-text-typography-app-font-weight-bold
+  );
+  --cer-cerulean-zerotwosix: var(
+    --catalog-layout-measure-cer-cerulean-zerotwosix
+  );
+  --cer-cerulean-zerotwoseven: var(
+    --catalog-layout-measure-cer-cerulean-zerotwoseven
+  );
+  --cer-cerulean-zerotwoeight: var(
+    --catalog-layout-measure-cer-cerulean-zerotwoeight
+  );
+  --cer-cerulean-zerotwonine: var(
+    --catalog-layout-measure-cer-cerulean-zerotwonine
+  );
+  --cer-cerulean-zerothreezero: var(
+    --catalog-layout-measure-cer-cerulean-zerothreezero
+  );
+  --cer-cerulean-zerothreeone: var(
+    --catalog-layout-measure-cer-cerulean-zerothreeone
+  );
+  --cer-cerulean-zerothreetwo: var(
+    --catalog-layout-measure-cer-cerulean-zerothreetwo
+  );
+  --cer-cerulean-zerothreethree: var(--catalog-layout-measure-ese-ese-surface);
+  --cer-cerulean-zerothreefour: var(--catalog-layout-measure-ese-ese-gap);
+  --cer-cerulean-zerothreefive: var(
+    --catalog-layout-measure-cer-cerulean-zerothreefive
+  );
+  --cer-cerulean-zerothreesix: var(
+    --catalog-layout-measure-cer-cerulean-zerothreesix
+  );
+  --cer-cerulean-zerothreeseven: var(
+    --catalog-layout-measure-cer-cerulean-zerothreeseven
+  );
+  --cer-cerulean-zerothreeeight: var(--catalog-layout-measure-app-space);
+  --cer-cerulean-zerothreenine: var(
+    --catalog-layout-measure-cer-cerulean-zerothreenine
+  );
+  --cer-cerulean-zerofourzero: var(
+    --catalog-layout-measure-cer-cerulean-zerofourzero
+  );
+  --cer-cerulean-zerofourone: var(
+    --catalog-layout-measure-cer-cerulean-zerofourone
+  );
+  --cer-cerulean-zerofourtwo: var(
+    --catalog-layout-measure-cer-cerulean-zerofourtwo
+  );
+  --cer-cerulean-zerofourthree: var(
+    --catalog-layout-measure-cer-cerulean-zerofourthree
+  );
+  --cer-cerulean-zerofourfour: var(
+    --catalog-layout-measure-cer-cerulean-zerofourone
+  );
+  --cer-cerulean-zerofourfive: var(
+    --catalog-layout-measure-cer-cerulean-zerofourfive
+  );
+  --cer-cerulean-zerofoursix: var(
+    --catalog-layout-measure-cer-cerulean-zerofoursix
+  );
+  --cer-cerulean-zerofourseven: var(
+    --catalog-layout-measure-cer-cerulean-zerofourseven
+  );
+  --cer-cerulean-zerofoureight: var(
+    --catalog-layout-measure-cer-cerulean-zerofourone
+  );
+  --cer-cerulean-zerofournine: var(
+    --catalog-layout-measure-cer-cerulean-zerofournine
+  );
+  --cer-cerulean-zerofivezero: var(
+    --catalog-layout-measure-cer-cerulean-zerofivezero
+  );
+  --cer-cerulean-zerofiveone: var(
+    --catalog-layout-measure-cer-cerulean-zerofiveone
+  );
+  --cer-cerulean-zerofivetwo: var(
+    --catalog-layout-measure-cer-cerulean-zerofivetwo
+  );
+  --cer-cerulean-zerofivethree: var(
+    --catalog-layout-measure-cer-cerulean-zerofivethree
+  );
+  --cer-cerulean-zerofivefour: var(
+    --catalog-layout-measure-clk-demo-gap-threefour
+  );
+  --cer-cerulean-zerofivefive: var(
+    --catalog-layout-measure-cer-cerulean-zerofivefive
+  );
+  --cer-cerulean-zerofivesix: var(
+    --catalog-layout-measure-cer-cerulean-zerofivesix
+  );
+  --cer-cerulean-zerofiveseven: var(--catalog-field-border-ese-ese-radius-pill);
+  --cer-cerulean-zerofiveeight: var(
+    --catalog-layout-measure-cer-cerulean-zerofiveeight
+  );
+  --cer-cerulean-zerofivenine: var(
+    --catalog-layout-measure-cer-cerulean-zerofivenine
+  );
+  --cer-cerulean-zerosixzero: var(
+    --catalog-layout-measure-cer-cerulean-zerosixzero
+  );
+  --cer-cerulean-zerosixone: var(
+    --catalog-layout-measure-cer-cerulean-zerosixone
+  );
+  --cer-cerulean-zerosixtwo: var(
+    --catalog-layout-measure-cer-cerulean-zerosixtwo
+  );
+  --cer-cerulean-zerosixthree: var(
+    --catalog-layout-measure-clk-demo-gap-threethree
+  );
+  --cer-cerulean-zerosixfour: var(
+    --catalog-layout-measure-cer-cerulean-zerosixfour
+  );
+  --cer-cerulean-zerosixfive: var(
+    --catalog-layout-measure-cer-cerulean-zerofourone
+  );
+  --cer-cerulean-zerosixsix: var(
+    --catalog-layout-measure-cer-cerulean-zerosixsix
+  );
+  --cer-cerulean-zerosixseven: var(--catalog-field-border-app-radius);
+  --cer-cerulean-zerosixeight: var(
+    --catalog-layout-measure-cer-cerulean-zerosixeight
+  );
+  --cer-cerulean-zerosixnine: var(
+    --catalog-layout-measure-cer-cerulean-zerosixnine
+  );
+  --cer-cerulean-zerosevenzero: var(
+    --catalog-layout-measure-cer-cerulean-zerosevenzero
+  );
+  --cer-cerulean-zerosevenone: var(--catalog-layout-measure-app-bar-d-height);
+  --cer-cerulean-zeroseventwo: var(
+    --catalog-layout-measure-cer-cerulean-zeroseventwo
+  );
+  --cer-cerulean-zeroseventhree: var(
+    --catalog-layout-measure-cer-cerulean-zeroseventhree
+  );
+  --cer-cerulean-zerosevenfour: var(
+    --catalog-layout-measure-cer-cerulean-zerosevenfour
+  );
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    color-scheme: light;
+    --dynamic-cer-background: #f9fafbff;
+    --dynamic-cer-foreground: #15191dff;
+    --dynamic-cer-card: #ffffffff;
+    --dynamic-cer-card-foreground: #15191dff;
+    --popover: var(
+      --catalog-layout-color-cer-popover-media-prefers-color-scheme-light
+    );
+    --popover-foreground: var(
+      --catalog-layout-color-cer-popover-foreground-media-prefers-color-scheme-light
+    );
+    --dynamic-cer-primary: #0066afff;
+    --dynamic-cer-primary-foreground: #f9fcfeff;
+    --dynamic-cer-secondary: #eceff1ff;
+    --dynamic-cer-secondary-foreground: #2a2e33ff;
+    --dynamic-cer-muted: #eef0f3ff;
+    --dynamic-cer-muted-foreground: #51565bff;
+    --dynamic-cer-accent: #e1e9efff;
+    --accent-foreground: var(
+      --catalog-layout-color-cer-popover-foreground-media-prefers-color-scheme-light
+    );
+    --dynamic-cer-destructive: #c21725ff;
+    --dynamic-cer-destructive-foreground: #fafcfeff;
+    --dynamic-cer-border: #15191d1f;
+    --dynamic-cer-input: #ffffffff;
+    --dynamic-cer-ring: #0066af80;
+    --dynamic-cer-pop-green: #ccf4d3ff;
+    --dynamic-cer-pop-green-foreground: #005126ff;
+    --dynamic-cer-pop-orange: #ffe6c8ff;
+    --dynamic-cer-pop-orange-foreground: #813700ff;
+    --dynamic-cer-pop-yellow: #fdeec1ff;
+    --dynamic-cer-pop-yellow-foreground: #694500ff;
+    --dynamic-cer-pop-blue: #d3ebffff;
+    --dynamic-cer-pop-blue-foreground: #004d91ff;
+    --dynamic-cer-shadow-xs:
+      0 0 0 0.0313rem #0000000f, 0 0.0625rem 0.125rem #0000000f;
+    --dynamic-cer-shadow-sm:
+      0 0 0 0.0313rem #00000012, 0 0.125rem 0.375rem #00000012;
+    --dynamic-cer-shadow-md:
+      0 0 0 0.0313rem #00000014, 0 0.375rem 1.125rem #00000014;
+    --shadow-lg: var(
+      --catalog-layout-effect-cer-shadow-large-media-prefers-color-scheme-light
+    );
+    --dynamic-cer-shadow-well: inset 0 0.0625rem 0.0625rem #0000000f;
+    --shadow-accent: var(
+      --catalog-layout-effect-cer-shadow-accent-media-prefers-color-scheme-light
+    );
+    --shadow-accent-hover: var(
+      --catalog-layout-effect-cer-shadow-accent-hover-media-prefers-color-scheme-light
+    );
+  }
+}
+/* Kit material layer (before components so semantic badge variants win). */
+.bd-btn,
+.bd-view,
+.ds-btn {
+  border-radius: var(--cer-ds-btn-border-radius);
+}
+.bd-card,
+.ds-card {
+  border-radius: var(--cer-ds-card-border-radius);
+}
+.ds-switch-track.on {
+  background: var(--accent-fill);
+  box-shadow: var(--shadow-accent);
+}
+.ds-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cer-cerulean-zerozeroone);
+  border-radius: var(--cer-cerulean-zerozerotwo);
+  padding: var(--cer-cerulean-zerozerothree);
+  font-size: var(--cer-cerulean-zerozerofour);
+  font-weight: var(--cer-cerulean-zerozerofive);
+  letter-spacing: var(--cer-cerulean-zerozerosix);
+  box-shadow: var(--cer-cerulean-zerozeroseven);
+  background-color: var(--cer-ds-badge-background-color);
+  color: var(--cer-ds-badge-color);
+}
+.ds-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--cer-cerulean-zerozeroeight);
+  white-space: var(--cer-cerulean-zerozeronine);
+  font: inherit;
+  font-size: var(--cer-cerulean-zeroonezero);
+  font-weight: var(--cer-cerulean-zerozerofive);
+  line-height: var(--cer-ds-btn-line-height);
+  letter-spacing: var(--cer-cerulean-zerooneone);
+  padding: var(--cer-cerulean-zeroonetwo);
+  border-radius: var(--cer-ds-btn-border-radius);
+  border: var(--cer-cerulean-zeroonethree);
+  cursor: var(--cer-ds-btn-cursor);
+  user-select: none;
+  touch-action: manipulation;
+  text-decoration: var(--cer-cerulean-zeroonefour);
+  transition: var(--cer-cerulean-zeroonefive);
+}
+.ds-btn:focus-visible {
+  outline: var(--cer-cerulean-zeroonesix);
+  outline-offset: var(--cer-cerulean-zerooneseven);
+  box-shadow: var(--cer-cerulean-zerooneeight);
+}
+.ds-btn:disabled {
+  pointer-events: none;
+  opacity: var(--cer-cerulean-zeroonenine);
+}
+@media (hover: hover) and (pointer: fine) {
+  .ds .ds-btn-primary:hover {
+    background: var(--accent-fill-hover);
+    box-shadow: var(--shadow-accent-hover);
+  }
+  .ds .ds-btn-secondary:hover {
+    background-color: var(--cer-ds-btn-secondary-background-color);
+    color: var(--cer-ds-badge-color);
+    box-shadow: var(--cer-ds-btn-secondary-box-shadow);
+  }
+  .ds .ds-btn-outline:hover {
+    background-color: var(--cer-ds-btn-secondary-background-color);
+    border-color: var(--cer-cerulean-zerotwozero);
+  }
+  .ds .ds-btn-ghost:hover {
+    background-color: var(--cer-ds-btn-secondary-background-color);
+    color: var(--cer-ds-badge-color);
+  }
+}
+/* Kit components (verbatim). */
+html,
+body,
+main,
+section,
+article,
+aside,
+nav,
+header,
+footer,
+div,
+span,
+p,
+a,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+ul,
+ol,
+li,
+dl,
+dt,
+dd,
+table,
+thead,
+tbody,
+tfoot,
+tr,
+th,
+td,
+caption,
+colgroup,
+col,
+pre,
+code,
+em,
+strong,
+small,
+mark,
+abbr,
+time,
+button,
+input,
+select,
+textarea,
+option,
+label,
+fieldset,
+legend,
+form,
+details,
+summary,
+img,
+figure,
+figcaption,
+blockquote,
+hr,
+br,
+kbd,
+samp,
+var,
+sub,
+sup,
+b,
+i,
+u,
+s,
+iframe,
+object,
+embed,
+canvas,
+video,
+audio,
+source,
+meter,
+progress,
+output,
+::before,
+::after {
+  box-sizing: border-box;
+}
+:where(.ds) {
+  font-family: var(--cer-ds-font-family);
+  color: var(--cer-ds-badge-color);
+  background: var(--cer-ds-background);
+  line-height: var(--cer-cerulean-zerotwoone);
+}
+.ds
+  :where(h1, h2, h3, h4, h5, h6, p, strong, label, legend, li, dt, dd, small) {
+  color: inherit;
+}
+.ds h1,
+.ds h2,
+.ds h3,
+.ds h4 {
+  font-family: inherit;
+  font-weight: var(--cer-cerulean-zerotwotwo);
+  margin: var(--cer-cerulean-zerotwothree);
+  color: var(--cer-ds-badge-color);
+}
+.ds .ds-display {
+  font-family: inherit;
+  font-size: var(--cer-cerulean-zerotwofour);
+  font-weight: var(--cer-cerulean-zerotwofive);
+  line-height: var(--cer-cerulean-zerotwosix);
+  letter-spacing: var(--cer-cerulean-zerotwoseven);
+  margin: var(--cer-ds-display-margin);
+  color: var(--cer-ds-badge-color);
+}
+.ds .ds-section-title {
+  font-family: inherit;
+  font-size: var(--cer-cerulean-zerotwoeight);
+  font-weight: var(--cer-cerulean-zerotwotwo);
+  line-height: var(--cer-cerulean-zerotwonine);
+  letter-spacing: var(--cer-cerulean-zerothreezero);
+  margin: var(--cer-ds-display-margin);
+  color: var(--cer-ds-badge-color);
+}
+.ds .ds-supporting {
+  font-size: var(--cer-cerulean-zeroonezero);
+  font-weight: var(--cer-cerulean-zerothreeone);
+  line-height: var(--cer-cerulean-zerotwoone);
+  color: var(--cer-ds-supporting-color);
+  margin: var(--cer-ds-display-margin);
+}
+.ds a {
+  color: var(--cer-ds-color);
+  text-decoration: var(--cer-cerulean-zeroonefour);
+}
+.ds a.ds-btn {
+  color: inherit;
+}
+.ds a.ds-btn:hover {
+  text-decoration: var(--cer-cerulean-zeroonefour);
+}
+.ds p {
+  margin: var(--cer-cerulean-zerothreetwo);
+}
+.ds-muted {
+  color: var(--cer-ds-supporting-color);
+}
+.ds-btn-primary {
+  background: var(--cer-ds-btn-primary-background);
+  color: var(--cer-ds-btn-primary-color);
+  box-shadow: var(--cer-ds-btn-secondary-box-shadow);
+}
+.ds-btn-secondary {
+  background: var(--cer-ds-btn-secondary-background);
+  color: var(--cer-ds-btn-secondary-color);
+  box-shadow: var(--cer-ds-btn-secondary-box-shadow-two);
+}
+.ds-btn-outline {
+  background: var(--cer-cerulean-zerothreethree);
+  color: var(--cer-ds-badge-color);
+  border-color: var(--cer-ds-btn-outline-border-color);
+}
+.ds-btn-ghost {
+  background: var(--cer-cerulean-zerothreethree);
+  color: var(--cer-ds-badge-color);
+}
+.ds .ds-btn-primary {
+  background: var(--accent-fill);
+  color: var(--cer-ds-btn-primary-color);
+  box-shadow: var(--shadow-accent);
+}
+.ds .ds-btn-primary:active {
+  box-shadow: var(--cer-ds-btn-secondary-box-shadow);
+}
+.ds .ds-btn-secondary {
+  background-color: var(--cer-ds-badge-background-color);
+  color: var(--cer-ds-btn-secondary-color);
+  border-width: var(--cer-cerulean-zerothreefour);
+  border-color: var(--cer-ds-btn-outline-border-color);
+  box-shadow: var(--cer-ds-btn-secondary-box-shadow-two);
+}
+.ds .ds-btn-outline {
+  background-color: var(--cer-cerulean-zerothreethree);
+  color: var(--cer-ds-badge-color);
+  border-width: var(--cer-cerulean-zerothreefour);
+  border-color: var(--cer-ds-btn-outline-border-color);
+}
+.ds .ds-btn-ghost {
+  background-color: var(--cer-cerulean-zerothreethree);
+  color: var(--cer-ds-supporting-color);
+}
+.ds .ds-btn[aria-pressed="true"],
+.ds .ds-btn[aria-pressed="true"]:hover {
+  background: var(--cer-ds-btn-primary-background);
+  color: var(--cer-ds-btn-primary-color);
+  border-color: var(--cer-ds-btn-border-color);
+  opacity: var(--cer-ds-btn-opacity);
+}
+.ds-btn-sm {
+  padding: var(--cer-cerulean-zerothreefive);
+  font-size: var(--cer-cerulean-zerothreesix);
+}
+.ds-btn-lg {
+  padding: var(--cer-cerulean-zerothreeseven);
+  font-size: var(--cer-cerulean-zerothreeeight);
+}
+.ds-label {
+  display: block;
+  font-size: var(--cer-cerulean-zerothreesix);
+  font-weight: var(--cer-cerulean-zerozerofive);
+  margin-bottom: var(--cer-cerulean-zerothreenine);
+  color: var(--cer-ds-badge-color);
+}
+.ds-input,
+.ds-textarea,
+.ds-select {
+  width: var(--cer-ds-select-width);
+  font: inherit;
+  font-size: var(--cer-cerulean-zeroonezero);
+  padding: var(--cer-cerulean-zerofourzero);
+  border-radius: var(--cer-ds-card-border-radius);
+  border: var(--cer-cerulean-zerofourone);
+  background: var(--cer-ds-select-background);
+  color: var(--cer-ds-badge-color);
+  box-shadow: var(--cer-ds-select-box-shadow);
+  transition: var(--cer-cerulean-zerofourtwo);
+}
+.ds-input::placeholder,
+.ds-textarea::placeholder {
+  color: var(--cer-ds-supporting-color);
+}
+.ds-input:focus,
+.ds-textarea:focus,
+.ds-select:focus {
+  outline: var(--cer-ds-select-outline);
+  border-color: var(--cer-ds-select-border-color);
+  box-shadow: var(--cer-cerulean-zerofourthree);
+}
+.ds-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--cer-ds-card-background);
+  color: var(--cer-ds-card-color);
+  border: var(--cer-cerulean-zerofourfour);
+  border-radius: var(--cer-ds-card-border-radius-two);
+  box-shadow: var(--cer-ds-card-box-shadow);
+  overflow: hidden;
+}
+.ds-card-header {
+  padding: var(--cer-cerulean-zerofourfive);
+}
+.ds-card-body {
+  padding: var(--cer-cerulean-zerofoursix);
+}
+.ds-card-footer {
+  margin-top: var(--cer-ds-card-footer-margin-top);
+  padding: var(--cer-cerulean-zerofourseven);
+  border-top: var(--cer-cerulean-zerofoureight);
+  display: flex;
+  gap: var(--cer-cerulean-zerozeroeight);
+  align-items: center;
+}
+.ds-card-title {
+  font-size: var(--cer-cerulean-zerofournine);
+  margin: var(--cer-cerulean-zerofivezero);
+}
+.ds-card-desc {
+  font-size: var(--cer-cerulean-zeroonezero);
+  color: var(--cer-ds-supporting-color);
+  margin: var(--cer-ds-display-margin);
+}
+.ds-badge-primary {
+  background: var(--cer-ds-btn-primary-background);
+  color: var(--cer-ds-btn-primary-color);
+}
+.ds-badge-outline {
+  background: var(--cer-cerulean-zerothreethree);
+  border: var(--cer-cerulean-zerofourone);
+  color: var(--cer-ds-badge-color);
+}
+.ds-badge-safe {
+  background: var(--cer-ds-badge-safe-background);
+  color: var(--cer-ds-badge-safe-color);
+}
+.ds-badge-warn {
+  background: var(--cer-ds-badge-warn-background);
+  color: var(--cer-ds-badge-warn-color);
+}
+.ds-badge-danger {
+  background: var(--cer-ds-badge-danger-background);
+  color: var(--cer-ds-badge-danger-color);
+}
+.ds-badge-unknown {
+  background: var(--cer-ds-badge-unknown-background);
+  color: var(--cer-ds-badge-unknown-color);
+}
+.ds-badge-verified {
+  background: var(--cer-ds-badge-verified-background);
+  color: var(--cer-ds-badge-verified-color);
+}
+.ds-alert {
+  border: var(--cer-cerulean-zerofourfour);
+  border-radius: var(--cer-ds-card-border-radius);
+  padding: var(--cer-cerulean-zerofiveone);
+  background: var(--cer-ds-card-background);
+  color: var(--cer-ds-card-color);
+  font-size: var(--cer-cerulean-zeroonezero);
+}
+.ds-alert-title {
+  font-weight: var(--cer-cerulean-zerotwotwo);
+  margin: var(--cer-cerulean-zerofivetwo);
+}
+.ds-divider {
+  height: var(--cer-cerulean-zerothreefour);
+  background: var(--cer-ds-divider-background);
+  border: var(--cer-ds-divider-border);
+  margin: var(--cer-cerulean-zerofivethree);
+}
+.ds-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cer-cerulean-zerofivefour);
+  align-items: center;
+}
+.ds-field {
+  margin-bottom: var(--cer-cerulean-zerothreeeight);
+}
+.ds-tabs {
+  display: inline-flex;
+  gap: var(--cer-cerulean-zerofivefive);
+  padding: var(--cer-cerulean-zerozeroone);
+  border-radius: var(--cer-ds-card-border-radius);
+  background: var(--cer-ds-tabs-background);
+}
+.ds-tab {
+  font: inherit;
+  font-size: var(--cer-cerulean-zerothreesix);
+  font-weight: var(--cer-cerulean-zerozerofive);
+  padding: var(--cer-cerulean-zerofivesix);
+  border: var(--cer-ds-divider-border);
+  border-radius: var(--cer-ds-btn-border-radius);
+  background: var(--cer-cerulean-zerothreethree);
+  color: var(--cer-ds-supporting-color);
+  cursor: var(--cer-ds-btn-cursor);
+  touch-action: manipulation;
+}
+.ds-tab.active {
+  background: var(--cer-ds-background);
+  color: var(--cer-ds-badge-color);
+  box-shadow: var(--cer-ds-btn-secondary-box-shadow);
+}
+.ds-progress {
+  height: var(--cer-cerulean-zerozeroeight);
+  border-radius: var(--cer-cerulean-zerofiveseven);
+  background: var(--cer-ds-tabs-background);
+  overflow: hidden;
+}
+.ds-progress-bar {
+  height: var(--cer-ds-progress-bar-height);
+  border-radius: var(--cer-cerulean-zerofiveseven);
+  background: var(--cer-ds-btn-primary-background);
+}
+.ds-table {
+  width: var(--cer-ds-select-width);
+  border-collapse: collapse;
+  font-size: var(--cer-cerulean-zerothreesix);
+}
+.ds-table th,
+.ds-table td {
+  text-align: var(--cer-cerulean-zerofiveeight);
+  padding: var(--cer-cerulean-zerofivenine);
+  border-bottom: var(--cer-cerulean-zerofoureight);
+}
+.ds-table th {
+  font-weight: var(--cer-cerulean-zerotwotwo);
+  color: var(--cer-ds-supporting-color);
+  font-size: var(--cer-cerulean-zerosixzero);
+  text-transform: var(--cer-cerulean-zerosixone);
+  letter-spacing: var(--cer-cerulean-zerosixtwo);
+}
+.ds-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cer-cerulean-zerosixthree);
+  font: inherit;
+  font-size: var(--cer-cerulean-zerothreesix);
+  padding: var(--cer-cerulean-zerosixfour);
+  border-radius: var(--cer-cerulean-zerofiveseven);
+  border: var(--cer-cerulean-zerosixfive);
+  background: var(--cer-ds-background);
+  color: var(--cer-ds-badge-color);
+  cursor: var(--cer-ds-btn-cursor);
+  touch-action: manipulation;
+  transition: var(--cer-cerulean-zerosixsix);
+}
+.ds-chip:focus-visible {
+  outline: var(--cer-cerulean-zeroonesix);
+  outline-offset: var(--cer-cerulean-zerooneseven);
+}
+.ds .ds-chip[aria-pressed="true"],
+.ds .ds-chip[aria-pressed="true"]:hover {
+  background: var(--cer-ds-btn-primary-background);
+  color: var(--cer-ds-btn-primary-color);
+  border-color: var(--cer-ds-btn-border-color);
+}
+.ds-kbd {
+  font-family: var(--cer-ds-font-family);
+  font-size: var(--cer-cerulean-zerosixseven);
+  padding: var(--cer-cerulean-zerosixeight);
+  border-radius: var(--cer-ds-kbd-border-radius);
+  border: var(--cer-cerulean-zerofourone);
+  background: var(--cer-ds-tabs-background);
+  color: var(--cer-ds-badge-color);
+}
+@media (pointer: coarse) {
+  .ds-btn,
+  .ds-tab,
+  .ds-chip {
+    min-height: var(--cer-cerulean-zerosixnine);
+  }
+  .ds-input,
+  .ds-select {
+    min-height: var(--cer-cerulean-zerosixnine);
+    font-size: var(--cer-cerulean-zerothreeeight);
+  }
+}
+@media (hover: hover) and (pointer: fine) {
+  .ds a:hover {
+    text-decoration: var(--cer-cerulean-zerosevenzero);
+  }
+  .ds-btn:hover:not(:disabled, [aria-pressed="true"]) {
+    opacity: var(--cer-cerulean-zerosevenone);
+  }
+  .ds-btn-ghost:hover:not(:disabled, [aria-pressed="true"]) {
+    background: var(--cer-ds-btn-ghost-background);
+    opacity: var(--cer-ds-btn-opacity);
+  }
+  .ds-input:hover:not(:disabled),
+  .ds-textarea:hover:not(:disabled),
+  .ds-select:hover:not(:disabled) {
+    border-color: var(--cer-cerulean-zeroseventwo);
+  }
+  .ds .ds-chip:hover:not([aria-pressed="true"]) {
+    background: var(--cer-cerulean-zeroseventhree);
+    color: var(--cer-ds-badge-color);
+    border-color: var(--cer-cerulean-zerosevenfour);
+  }
+}
+.ds ::selection {
+  background: var(--cer-ds-btn-primary-background);
+  color: var(--cer-ds-btn-primary-color);
+}
+/* Kit host isolation (APP_ROOT = .report-root). */
+.report-root {
+  color: var(--cer-ds-badge-color);
+  background: var(--cer-ds-background);
+}
+.report-root.report-root
+  :where(
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    strong,
+    label,
+    legend,
+    li,
+    dt,
+    dd,
+    small
+  ):not(.ds-supporting, .ds-card-desc, .ds-muted) {
+  color: inherit;
+}

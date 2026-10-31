@@ -1,0 +1,318 @@
+/**
+ * The top bar's project controls and their three responsive tiers.
+ *
+ * Sources: 46-project-bar.
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+/* Source: 46-project-bar */
+/* The top bar's project controls.
+ *
+ * Three tiers, chosen from the room the controls really need (see fit() in
+ * project-bar.js), not from a fixed window width:
+ *   full   labelled buttons and the "Unsaved changes" pill
+ *   icons  icon-only buttons and a single LED
+ *   menu   one "…" menu holds every action; only the LED stays
+ * Names stay in the markup in every tier (visually hidden when shortened), so
+ * assistive technology reads the same buttons the eye sees. */
+.studio > .topbar {
+  display: flex;
+  align-items: center;
+}
+.studio .project-context {
+  display: flex;
+  flex: var(--project-bar-project-context-flex);
+  gap: var(--project-bar-project-context-gap);
+  align-items: center;
+  align-self: stretch;
+  min-width: var(--project-bar-project-context-min-width);
+  padding-inline: var(--project-bar-project-context-padding-inline);
+  color: var(--text-subtle);
+}
+.studio .project-name {
+  max-width: var(--project-bar-project-name-max-width);
+  overflow: hidden;
+  border: var(--project-bar-project-name-border);
+  background: var(--project-bar-project-name-background);
+  color: var(--text-strong);
+  font-weight: var(--project-bar-project-name-font-weight);
+  text-overflow: var(--project-bar-project-name-text-overflow);
+  white-space: var(--project-bar-project-name-white-space);
+}
+.studio .bar-actions {
+  display: flex;
+  flex: var(--project-bar-actions-flex);
+  gap: var(--project-bar-actions-gap);
+  align-items: center;
+  justify-content: flex-end;
+  min-width: var(--project-bar-actions-min-width);
+  padding-inline: var(--project-bar-actions-padding-inline);
+}
+.studio .bar-gap {
+  flex: var(--project-bar-gap-flex);
+  width: var(--project-bar-gap-width);
+}
+.studio .bar-button {
+  flex: var(--project-bar-button-flex);
+  font-size: var(--project-bar-button-font-size);
+  white-space: var(--project-bar-button-white-space);
+}
+/* The Open button is one control: a single border around the icon, the label
+ * and the arrow, with no divider between them. The halves keep their own hover
+ * and press colour, and sit close together. */
+.studio .bar-split {
+  display: inline-flex;
+  flex: var(--project-bar-split-flex);
+  box-sizing: border-box;
+  height: var(--button-height);
+  border: var(--project-bar-split-border);
+  border-radius: var(--project-bar-split-border-radius);
+}
+.studio .bar-split > .bar-button {
+  height: var(--project-bar-split-bar-button-height);
+  border: var(--project-bar-split-bar-button-border);
+  border-radius: var(--project-bar-split-bar-button-border-radius);
+}
+.studio .bar-split-main {
+  padding-right: var(--project-bar-split-main-padding-right);
+}
+/* Only the icon and label move: a little larger under the pointer, a little
+ * smaller when pressed. The arrow and the shared border stay where they are. */
+.studio .bar-split-main:hover {
+  scale: var(--project-bar-split-main-hover-scale);
+}
+.studio .bar-split-main:active {
+  scale: var(--project-bar-split-main-active-scale);
+}
+.studio .bar-split-main:disabled {
+  scale: var(--project-bar-split-main-disabled-scale);
+}
+.studio .bar-split-arrow {
+  padding-inline: var(--project-bar-split-arrow-padding-inline);
+}
+/* Saved or not: a pill with an LED. */
+.studio .save-pill {
+  display: inline-flex;
+  flex: var(--project-bar-save-pill-flex);
+  gap: var(--project-bar-save-pill-gap);
+  align-items: center;
+  height: var(--project-bar-save-pill-height);
+  padding: var(--project-bar-save-pill-padding);
+  border-radius: var(--project-bar-save-pill-border-radius);
+  background: var(--shell-button-background);
+  color: var(--muted);
+  font-size: var(--project-bar-save-pill-font-size);
+  white-space: var(--project-bar-save-pill-white-space);
+}
+.studio .save-led {
+  width: var(--project-bar-save-led-width);
+  height: var(--project-bar-save-led-height);
+  border-radius: var(--project-bar-save-led-border-radius);
+  background: var(--project-bar-save-led-background);
+}
+.studio .save-pill[data-state="dirty"] {
+  background: var(--project-bar-save-pill-data-state-dirty-background);
+  color: var(--text);
+}
+.studio .save-pill[data-state="dirty"] > .save-led {
+  background: var(--project-bar-pill-data-state-dirty-save-led-background);
+  /* A ring as well as a colour, so the LED differs by shape, not only hue. */
+  outline: var(--project-bar-pill-data-state-dirty-save-led-outline);
+  outline-offset: var(
+    --project-bar-pill-data-state-dirty-save-led-outline-offset
+  );
+}
+.studio .bar-overflow {
+  display: none;
+  flex: var(--project-bar-overflow-flex);
+  margin-inline: var(--project-bar-overflow-margin-inline);
+}
+/* Less room: icons only, and the pill becomes its LED. `fit()` in
+ * project-bar.js sets the tier from the width the controls really need. */
+.topbar[data-tier="icons"] .bar-label,
+.topbar[data-tier="icons"] .save-text {
+  position: absolute;
+  width: var(--project-bar-topbar-data-tier-icons-bar-label-width);
+  height: var(--project-bar-topbar-data-tier-icons-bar-label-height);
+  overflow: hidden;
+  clip-path: var(--project-bar-topbar-data-tier-icons-bar-label-clip-path);
+  white-space: var(--project-bar-topbar-data-tier-icons-bar-label-white-space);
+}
+.topbar[data-tier="icons"] .save-pill {
+  padding: var(--project-bar-topbar-data-tier-icons-save-pill-padding);
+  width: var(--project-bar-topbar-data-tier-icons-save-pill-width);
+  justify-content: center;
+}
+.topbar[data-tier="icons"] .bar-split {
+  border-color: var(
+    --project-bar-topbar-data-tier-icons-bar-split-border-color
+  );
+}
+.topbar[data-tier="icons"] .bar-button {
+  border-color: var(
+    --project-bar-topbar-data-tier-icons-bar-button-border-color
+  );
+  color: var(--text);
+}
+/* These buttons are icon-only to the eye, so nothing may paint a border back
+ * on hover, press or the open state — the icon-and-text rules would, because
+ * their state selectors out-specify the plain tier rule above. */
+.topbar[data-tier="icons"]
+  .bar-button:is(
+    :hover,
+    :active,
+    [aria-expanded="true"],
+    [aria-pressed="true"],
+    .active
+  ) {
+  border-color: var(--project-bar-tier-icons-bar-button-is-hover-border-color);
+  background: var(--project-bar-tier-icons-bar-button-is-hover-background);
+  box-shadow: var(--project-bar-tier-icons-bar-button-is-hover-box-shadow);
+}
+.topbar[data-tier="icons"] .bar-button > .studio-icon {
+  translate: var(--project-bar-tier-icons-bar-button-icon-translate);
+}
+.topbar[data-tier="icons"] .bar-button:hover {
+  color: var(--accent);
+}
+.topbar[data-tier="icons"] .bar-button:active {
+  color: var(--button-press-icon);
+}
+.topbar[data-tier="icons"] .bar-button[aria-expanded="true"] {
+  color: var(--accent);
+}
+/* Least room: every action lives in the "…" menu; the LED stays. */
+.topbar[data-tier="menu"] .bar-label,
+.topbar[data-tier="menu"] .save-text {
+  position: absolute;
+  width: var(--project-bar-topbar-data-tier-menu-bar-label-width);
+  height: var(--project-bar-topbar-data-tier-menu-bar-label-height);
+  overflow: hidden;
+  clip-path: var(--project-bar-topbar-data-tier-menu-bar-label-clip-path);
+  white-space: var(--project-bar-topbar-data-tier-menu-bar-label-white-space);
+}
+.topbar[data-tier="menu"] .bar-actions > :not(.save-pill) {
+  display: none;
+}
+.topbar[data-tier="menu"] .save-pill {
+  padding: var(--project-bar-topbar-data-tier-menu-save-pill-padding);
+  width: var(--project-bar-topbar-data-tier-menu-save-pill-width);
+  justify-content: center;
+}
+.topbar[data-tier="menu"] .bar-overflow {
+  display: inline-flex;
+}
+.topbar[data-tier="menu"] .project-name {
+  max-width: var(--project-bar-topbar-data-tier-menu-project-name-max-width);
+}
+/* The menu under the Open arrow and the "…" button. */
+.bar-menu {
+  position: fixed;
+  z-index: var(--project-bar-menu-z-index);
+  display: grid;
+  min-width: var(--project-bar-menu-min-width);
+  max-width: var(--project-bar-menu-max-width);
+  max-height: var(--project-bar-menu-max-height);
+  overflow: auto;
+  padding: var(--project-bar-menu-padding);
+  --base-project-bar-bar-menu-border: calc(var(--primary-dimension-pixel) * 1)
+    solid var(--primary-line);
+  --catalog-edge-border-menu-border: var(--base-project-bar-bar-menu-border);
+  --project-bar-menu-border: var(--catalog-edge-border-menu-border);
+  border: var(--project-bar-menu-border);
+  border-radius: var(--project-bar-menu-border-radius);
+  background: var(--shell-button-background);
+  box-shadow: var(--project-bar-menu-box-shadow);
+}
+.bar-menu-heading {
+  margin: var(--project-bar-menu-heading-margin);
+  padding: var(--project-bar-menu-heading-padding);
+  color: var(--text-subtle);
+  font-size: var(--project-bar-menu-heading-font-size);
+  font-weight: var(--project-bar-menu-heading-font-weight);
+  letter-spacing: var(--project-bar-menu-heading-letter-spacing);
+  text-transform: var(--project-bar-menu-heading-text-transform);
+}
+.bar-menu .bar-menu-item {
+  display: flex;
+  gap: var(--project-bar-menu-item-gap);
+  align-items: center;
+  width: var(--project-bar-menu-item-width);
+  height: var(--project-bar-menu-item-height);
+  min-height: var(--project-bar-menu-item-min-height);
+  padding: var(--project-bar-menu-item-padding);
+  border: var(--project-bar-menu-item-border);
+  border-radius: var(--project-bar-menu-item-border-radius);
+  background: var(--project-bar-menu-item-background);
+  color: var(--text);
+  font-size: var(--project-bar-menu-item-font-size);
+  text-align: var(--project-bar-menu-item-text-align);
+}
+.bar-menu .bar-menu-item:disabled {
+  color: var(--text-subtle);
+  cursor: var(--project-bar-menu-item-disabled-cursor);
+}
+.bar-menu .bar-menu-item:focus-visible {
+  background: var(--brand-soft);
+  outline: var(--project-bar-menu-item-focus-visible-outline);
+}
+.bar-menu .bar-menu-item:hover {
+  background: var(--brand-soft);
+}
+.bar-menu .bar-menu-item:disabled:hover {
+  background: var(--project-bar-menu-item-disabled-hover-background);
+}
+.bar-menu-label {
+  flex: var(--project-bar-menu-label-flex);
+  overflow: hidden;
+  text-overflow: var(--project-bar-menu-label-text-overflow);
+  white-space: var(--project-bar-menu-label-white-space);
+}
+.bar-menu-item > small {
+  flex: var(--project-bar-menu-item-small-flex);
+  color: var(--text-subtle);
+}
+.bar-menu-gap {
+  flex: var(--project-bar-menu-gap-flex);
+}
+/* The Project section of Settings: its fields use the full width, like the
+ * description does, instead of the profile name's narrow box. */
+.project-form :is(input, textarea) {
+  width: var(--project-bar-project-form-is-input-width);
+  max-width: var(--project-bar-project-form-is-input-max-width);
+}
+/* The two halves of the Open button answer each other: the label tints while
+ * the arrow is hovered or pressed, and the arrow dims while the label is
+ * pressed. The seam has no divider line. */
+.bar-split:has(.bar-split-arrow:is(:hover, :active)) .bar-split-main {
+  --base-project-bar-has-bar-split-arrow-is-hover-color: color-mix(
+    in oklab,
+    color-mix(
+        in oklab,
+        var(--primary-button-dim) calc(var(--primary-percent-base) * 50),
+        var(--primary-accent)
+      )
+      calc(var(--primary-percent-base) * 85),
+    var(--primary-bg)
+  );
+  --catalog-ink-color-has-split-arrow-is-hover-color: var(
+    --base-project-bar-has-bar-split-arrow-is-hover-color
+  );
+  --project-bar-has-bar-split-arrow-is-hover-color: var(
+    --catalog-ink-color-has-split-arrow-is-hover-color
+  );
+  color: var(--project-bar-has-bar-split-arrow-is-hover-color);
+}
+.bar-split:has(.bar-split-main:active) .bar-split-arrow {
+  --base-project-bar-split-main-active-bar-split-arrow-color: color-mix(
+    in oklab,
+    var(--primary-text) calc(var(--primary-percent-base) * 70),
+    var(--primary-bg)
+  );
+  --catalog-ink-color-split-main-active-split-arrow-color: var(
+    --base-project-bar-split-main-active-bar-split-arrow-color
+  );
+  --project-bar-split-main-active-bar-split-arrow-color: var(
+    --catalog-ink-color-split-main-active-split-arrow-color
+  );
+  color: var(--project-bar-split-main-active-bar-split-arrow-color);
+}

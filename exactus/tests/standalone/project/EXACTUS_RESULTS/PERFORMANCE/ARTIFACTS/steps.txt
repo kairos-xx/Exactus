@@ -1,0 +1,6 @@
+2026-10-31T02:56:46.485+00:00 +    0.001s performance: arguments — root /Users/joaolopes/Exactus/exactus/tests/standalone/project, output /Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/PERFORMANCE
+2026-10-31T02:56:46.485+00:00 +    0.001s performance: run start
+2026-10-31T02:56:46.498+00:00 +    0.014s   performance: analyzed 7 runs
+2026-10-31T02:56:46.673+00:00 +    0.189s   stage: report
+2026-10-31T02:56:47.276+00:00 +    0.792s     report: bundle written — /Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/PERFORMANCE/result.md
+2026-10-31T02:56:47.276+00:00 +    0.792s performance: run finished — status 0

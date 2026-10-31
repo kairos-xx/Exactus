@@ -1,0 +1,6 @@
+prune exactus/bundle/linux
+prune exactus/bundle/macos
+prune exactus/bundle/windows
+global-exclude .DS_Store
+global-exclude *.py[cod]
+global-exclude __pycache__

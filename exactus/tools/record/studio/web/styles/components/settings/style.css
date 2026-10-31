@@ -1,0 +1,359 @@
+/* Source: 39-settings */
+.settings-section {
+  display: grid;
+  gap: var(--settings-section-gap);
+  max-width: var(--settings-section-max-width);
+  margin-block-end: var(--settings-section-margin-block-end);
+  padding: var(--settings-section-padding);
+  background: var(--settings-section-background);
+  border: var(--settings-border);
+  border-radius: var(--settings-section-border-radius);
+}
+.settings-section > header {
+  display: grid;
+  gap: var(--settings-section-header-gap);
+}
+.settings-section h3 {
+  margin: var(--settings-section-h3-margin);
+  color: var(--text-strong);
+  font-size: var(--settings-section-h3-font-size);
+  font-weight: var(--settings-section-h3-font-weight);
+}
+.settings-intro {
+  margin: var(--settings-intro-margin);
+  color: var(--muted);
+  font-size: var(--settings-intro-font-size);
+}
+.settings-split {
+  display: grid;
+  grid-template-columns: var(--settings-split-grid-template-columns);
+  gap: var(--settings-split-gap);
+  align-items: start;
+}
+.profile-nav {
+  display: grid;
+  gap: var(--settings-profile-nav-gap);
+}
+.profile-list {
+  display: grid;
+  gap: var(--settings-profile-list-gap);
+  margin: var(--settings-profile-list-margin);
+  padding: var(--settings-profile-list-padding);
+  list-style: var(--settings-profile-list-style);
+}
+.studio .profile-item {
+  display: grid;
+  grid-template-columns: var(--settings-profile-item-grid-template-columns);
+  height: var(--settings-profile-item-height);
+  min-height: var(--settings-profile-item-min-height);
+  justify-content: start;
+  justify-items: start;
+  gap: var(--settings-profile-item-gap);
+  width: var(--settings-profile-item-width);
+  padding: var(--settings-profile-item-padding);
+  color: var(--text);
+  text-align: var(--settings-profile-item-text-align);
+  background: var(--settings-profile-item-background);
+  border: var(--settings-profile-item-border);
+  border-radius: var(--settings-profile-item-border-radius);
+  cursor: var(--settings-profile-item-cursor);
+}
+.profile-item small {
+  color: var(--text-subtle);
+  font-size: var(--settings-profile-item-small-font-size);
+}
+.profile-item:hover {
+  background: var(--settings-profile-item-hover-background);
+}
+.profile-item[aria-current="true"] {
+  background: var(--brand-soft);
+  border-color: var(--brand-edge);
+  box-shadow: var(--settings-rail);
+}
+.profile-badge {
+  justify-self: start;
+  padding: var(--settings-profile-badge-padding);
+  color: var(--text);
+  font-size: var(--settings-profile-badge-font-size);
+  background: var(--settings-profile-badge-background);
+  border-radius: var(--settings-profile-badge-border-radius);
+}
+.profile-add {
+  justify-self: start;
+  color: var(--text);
+  background: var(--settings-profile-add-background);
+  border: var(--settings-border);
+  border-radius: var(--settings-profile-add-border-radius);
+  cursor: var(--settings-profile-add-cursor);
+}
+.profile-item:focus-visible,
+.profile-add:focus-visible,
+.profile-form :is(input, select, button):focus-visible {
+  outline: var(--settings-focus);
+  outline-offset: var(--settings-profile-item-focus-visible-outline-offset);
+}
+.profile-form {
+  display: grid;
+  gap: var(--settings-profile-form-gap);
+  min-width: var(--settings-profile-form-min-width);
+}
+.settings-group {
+  display: grid;
+  gap: var(--settings-group-gap);
+  min-width: var(--settings-group-min-width);
+  margin: var(--settings-group-margin);
+  padding: var(--settings-group-padding);
+  border: var(--settings-border);
+  border-radius: var(--settings-group-border-radius);
+}
+.settings-group > legend {
+  padding: var(--settings-group-legend-padding);
+  color: var(--text-subtle);
+  font-size: var(--settings-group-legend-font-size);
+  font-weight: var(--settings-group-legend-font-weight);
+}
+.settings-field {
+  display: grid;
+  grid-template-columns: var(--settings-field-grid-template-columns);
+  gap: var(--settings-field-gap);
+  align-items: center;
+}
+.settings-field > label,
+.settings-field > .field-label {
+  color: var(--text);
+  font-size: var(--settings-field-label-font-size);
+}
+.field-note {
+  margin: var(--settings-field-note-margin);
+  color: var(--text-subtle);
+  font-size: var(--settings-field-note-font-size);
+}
+.field-error {
+  color: var(--settings-field-error-color);
+  font-size: var(--settings-field-error-font-size);
+}
+.field-error:empty {
+  display: none;
+}
+.settings-field > .field-error,
+.settings-field > .field-note {
+  grid-column: var(--settings-field-error-grid-column);
+}
+.field-control {
+  display: inline-flex;
+  gap: var(--settings-field-control-gap);
+  align-items: center;
+  min-width: var(--settings-field-control-min-width);
+}
+.field-unit {
+  color: var(--text-subtle);
+  font-size: var(--settings-field-unit-font-size);
+}
+.profile-form :is(input[type="text"], select) {
+  height: var(--settings-profile-form-is-input-type-text-height);
+  width: var(--settings-profile-form-is-input-type-text-width);
+  padding: var(--settings-profile-form-is-input-type-text-padding);
+  color: var(--text);
+  background: var(--settings-profile-form-is-input-type-text-background);
+  border: var(--settings-border);
+  border-radius: var(--settings-profile-form-is-input-type-text-border-radius);
+}
+.profile-form input[name="name"] {
+  width: var(--settings-profile-form-input-name-width);
+  max-width: var(--settings-profile-form-input-name-max-width);
+}
+.profile-form .ratio-pair input {
+  width: var(--settings-profile-form-ratio-pair-input-width);
+  text-align: var(--settings-profile-form-ratio-pair-input-text-align);
+}
+.ratio-pair {
+  display: inline-flex;
+  gap: var(--settings-ratio-pair-gap);
+  align-items: center;
+}
+.profile-form [aria-invalid="true"] {
+  border-color: var(--settings-profile-form-aria-invalid-true-border-color);
+}
+.settings-toggle > label {
+  display: inline-flex;
+  grid-column: var(--settings-toggle-label-grid-column);
+  gap: var(--settings-toggle-label-gap);
+  align-items: center;
+}
+.settings-unsupported {
+  color: var(--text-subtle);
+  font-size: var(--settings-unsupported-font-size);
+}
+.settings-unsupported summary {
+  cursor: var(--settings-unsupported-summary-cursor);
+}
+.settings-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--settings-actions-gap);
+  align-items: center;
+}
+.settings-actions-main {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--settings-actions-main-gap);
+}
+.settings-actions-main > :is(button, a) {
+  color: var(--text);
+  text-decoration: var(--settings-actions-main-is-button-text-decoration);
+  background: var(--settings-actions-main-is-button-background);
+  border: var(--settings-border);
+  border-radius: var(--settings-actions-main-is-button-border-radius);
+  cursor: var(--settings-actions-main-is-button-cursor);
+}
+.settings-actions-main > a {
+  display: inline-flex;
+  box-sizing: border-box;
+  align-items: center;
+  height: var(--button-height);
+  --base-settings-settings-actions-main-a-padding: var(--primary-button-pad-y)
+    var(--primary-button-pad-x);
+  --catalog-padding-measure-main-a-padding: var(
+    --base-settings-settings-actions-main-a-padding
+  );
+  --settings-actions-main-a-padding: var(
+    --catalog-padding-measure-main-a-padding
+  );
+  padding: var(--settings-actions-main-a-padding);
+  gap: var(--button-gap);
+}
+.settings-actions-main > .accent {
+  color: var(--settings-actions-main-accent-color);
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.settings-actions button:disabled {
+  cursor: var(--settings-actions-button-disabled-cursor);
+  opacity: var(--settings-actions-button-disabled-opacity);
+}
+.settings-status {
+  color: var(--muted);
+  font-size: var(--settings-status-font-size);
+}
+.link-danger {
+  border-color: var(--settings-link-danger-border-color);
+  margin-inline-start: var(--settings-link-danger-margin-inline-start);
+  color: var(--text-subtle);
+  background: var(--settings-link-danger-background);
+  border-radius: var(--settings-link-danger-border-radius);
+  cursor: var(--settings-link-danger-cursor);
+  text-decoration: var(--settings-link-danger-text-decoration);
+}
+.link-danger:hover:not(:disabled) {
+  color: var(--settings-link-danger-hover-not-disabled-color);
+}
+@media (width <= 720px) {
+  .settings-split {
+    grid-template-columns: var(
+      --settings-split-grid-template-columns-max-width-720px
+    );
+  }
+  .settings-field {
+    grid-template-columns: var(
+      --settings-field-grid-template-columns-max-width-720px
+    );
+  }
+  .settings-field > .field-error,
+  .settings-field > .field-note {
+    grid-column: var(--settings-field-error-grid-column-max-width-720px);
+  }
+}
+.flow-danger {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--settings-flow-danger-gap);
+  align-items: center;
+  margin-block-start: var(--settings-flow-danger-margin-block-start);
+}
+.flow-danger small {
+  color: var(--text-subtle);
+  font-size: var(--settings-flow-danger-small-font-size);
+}
+[data-mode-group][hidden] {
+  display: none;
+}
+.target-modes {
+  grid-template-columns: var(--settings-target-modes-grid-template-columns);
+}
+.target-modes > legend {
+  grid-column: var(--settings-target-modes-legend-grid-column);
+}
+.target-mode {
+  display: flex;
+  gap: var(--settings-target-mode-gap);
+  align-items: flex-start;
+  padding: var(--settings-target-mode-padding);
+  background: var(--settings-target-mode-background);
+  border: var(--settings-border);
+  border-radius: var(--settings-target-mode-border-radius);
+  cursor: var(--settings-target-mode-cursor);
+}
+.target-mode:has(input:checked) {
+  background: var(--settings-target-mode-has-input-checked-background);
+  box-shadow: var(--settings-rail);
+}
+.target-mode:has(input:focus-visible) {
+  outline: var(--settings-focus);
+  outline-offset: var(
+    --settings-target-mode-has-input-focus-visible-outline-offset
+  );
+}
+.target-mode > span {
+  display: grid;
+  gap: var(--settings-target-mode-span-gap);
+}
+.target-mode small {
+  color: var(--text-subtle);
+  font-size: var(--settings-target-mode-small-font-size);
+}
+.target-form input[name="url"],
+.target-form input[name="command"],
+.target-form input[name="cwd"] {
+  width: var(--settings-target-form-input-name-url-width);
+  max-width: var(--settings-target-form-input-name-url-max-width);
+}
+.target-form input[name="command"] {
+  font-family: var(--settings-target-form-input-name-command-font-family);
+}
+.target-port {
+  flex-wrap: wrap;
+}
+.inline-choice {
+  display: inline-flex;
+  gap: var(--settings-inline-choice-gap);
+  align-items: center;
+}
+.target-notice {
+  margin: var(--settings-target-notice-margin);
+  padding: var(--settings-target-notice-padding);
+  color: var(--text);
+  font-size: var(--settings-target-notice-font-size);
+  background: var(--settings-target-notice-background);
+  border-radius: var(--settings-target-notice-border-radius);
+}
+.target-notice code {
+  font-family: var(--settings-target-notice-code-font-family);
+  overflow-wrap: var(--settings-target-notice-code-overflow-wrap);
+}
+@media (width <= 720px) {
+  .target-modes {
+    grid-template-columns: var(
+      --settings-target-modes-grid-template-columns-max-width-720px
+    );
+  }
+}
+.action-pref {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--settings-actions-main-gap);
+}
+.action-pref-row {
+  display: flex;
+  align-items: center;
+  gap: var(--settings-actions-gap);
+}

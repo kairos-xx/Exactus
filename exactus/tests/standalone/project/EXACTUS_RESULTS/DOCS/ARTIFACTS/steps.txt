@@ -1,0 +1,18 @@
+2026-10-31T02:56:19.733+00:00 +    0.001s docs: arguments — root /Users/joaolopes/Exactus/exactus/tests/standalone/project, output /Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/DOCS, language both, fail_on warning
+2026-10-31T02:56:19.733+00:00 +    0.001s docs: run start
+2026-10-31T02:56:19.733+00:00 +    0.001s   stage: analyze docstrings
+2026-10-31T02:56:19.735+00:00 +    0.004s     docs: 8 files discovered
+2026-10-31T02:56:19.737+00:00 +    0.006s       progress: analyzing docstrings — __init__.py (1/8)
+2026-10-31T02:56:19.738+00:00 +    0.006s       progress: analyzing docstrings — conftest.py (2/8)
+2026-10-31T02:56:19.738+00:00 +    0.007s       progress: analyzing docstrings — __init__.py (3/8)
+2026-10-31T02:56:19.745+00:00 +    0.014s       progress: analyzing docstrings — calc.py (4/8)
+2026-10-31T02:56:19.750+00:00 +    0.018s       progress: analyzing docstrings — __init__.py (5/8)
+2026-10-31T02:56:19.753+00:00 +    0.022s       progress: analyzing docstrings — test_calc.py (6/8)
+2026-10-31T02:56:19.783+00:00 +    0.052s       progress: analyzing docstrings — code.test.mjs (7/8)
+2026-10-31T02:56:19.784+00:00 +    0.053s       progress: analyzing docstrings — code.js (8/8)
+2026-10-31T02:56:19.784+00:00 +    0.053s     docs: 0 findings, 0 excluded
+2026-10-31T02:56:19.785+00:00 +    0.053s   stage: report
+2026-10-31T02:56:20.389+00:00 +    0.657s     report: bundle written — /Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/DOCS/DOCS.md
+2026-10-31T02:56:20.389+00:00 +    0.657s   stage: fail-on gate
+2026-10-31T02:56:20.389+00:00 +    0.657s     docs: gate passed — status 0
+2026-10-31T02:56:20.389+00:00 +    0.657s docs: run finished — status 0

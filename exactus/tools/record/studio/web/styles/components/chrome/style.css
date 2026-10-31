@@ -1,0 +1,150 @@
+/* Source: 30-chrome */
+/* Value-preserving design tokens for the compact editor. */
+/* Page chrome: identity row, workspace sections, transport and status bar. */
+@media (width > 600px) {
+  .studio {
+    grid-template-rows: var(--chrome-grid-template-rows-above-width-600px);
+  }
+  .studio > .topbar {
+    height: var(--chrome-topbar-height-above-width-600px);
+    min-height: var(--chrome-topbar-min-height-above-width-600px);
+  }
+}
+/* Identity row */
+.studio > .topbar {
+  gap: var(--chrome-topbar-gap);
+  padding-inline: var(--chrome-topbar-padding-inline);
+  background: var(--bg);
+  border-bottom: var(--chrome-topbar-border-bottom);
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--chrome-brand-gap);
+  flex: var(--chrome-brand-flex);
+}
+.brand-mark {
+  display: grid;
+  width: var(--chrome-brand-mark-width);
+  height: var(--chrome-brand-mark-height);
+  flex: var(--chrome-brand-mark-flex);
+  place-items: center;
+  border-radius: var(--chrome-brand-mark-border-radius);
+  background: var(--brand-soft);
+  color: var(--accent);
+}
+.brand-mark > .studio-icon {
+  width: var(--chrome-brand-mark-icon-width);
+  height: var(--chrome-brand-mark-icon-height);
+  flex-basis: var(--chrome-brand-mark-icon-flex-basis);
+}
+.brand h1 {
+  display: flex;
+  align-items: baseline;
+  gap: var(--chrome-brand-h1-gap);
+  margin: var(--chrome-brand-h1-margin);
+  font-size: var(--chrome-brand-h1-font-size);
+  font-weight: var(--chrome-brand-h1-font-weight);
+  color: var(--text-strong);
+  letter-spacing: var(--chrome-brand-h1-letter-spacing);
+  white-space: var(--chrome-brand-h1-white-space);
+}
+.brand h1 > span {
+  color: var(--muted);
+  font-weight: var(--chrome-brand-h1-span-font-weight);
+}
+.brand h1 > i {
+  color: var(--text-subtle);
+  font-style: var(--chrome-brand-h1-i-font-style);
+  font-weight: var(--chrome-brand-h1-i-font-weight);
+}
+.target-status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--chrome-target-status-gap);
+  flex: var(--chrome-target-status-flex);
+  height: var(--chrome-target-status-height);
+  padding: var(--chrome-target-status-padding);
+  border-radius: var(--chrome-target-status-border-radius);
+  background: var(--chrome-target-status-background);
+  color: var(--muted);
+  font-size: var(--chrome-target-status-font-size);
+  font-weight: var(--chrome-target-status-font-weight);
+}
+.target-status::before {
+  content: var(--chrome-target-status-before-content);
+  width: var(--chrome-target-status-before-width);
+  height: var(--chrome-target-status-before-height);
+  border-radius: var(--chrome-target-status-before-border-radius);
+  background: var(--text-subtle);
+}
+.target-status[data-state="succeeded"]::before {
+  background: var(
+    --chrome-target-status-data-state-succeeded-before-background
+  );
+}
+/* Workspace sections */
+.studio > .section-nav {
+  gap: var(--chrome-section-nav-gap);
+  padding-inline: var(--chrome-section-nav-padding-inline);
+  background: var(--bg);
+  border-bottom: var(--chrome-topbar-border-bottom);
+}
+.studio > .section-nav > button {
+  position: relative;
+  height: var(--chrome-section-nav-button-height);
+  padding: var(--chrome-section-nav-button-padding);
+  border: var(--chrome-section-nav-button-border);
+  border-radius: var(--chrome-section-nav-button-border-radius);
+  background: var(--chrome-section-nav-button-background);
+  color: var(--muted);
+  font-size: var(--chrome-section-nav-button-font-size);
+  font-weight: var(--chrome-section-nav-button-font-weight);
+}
+.studio > .section-nav > button.active {
+  color: var(--text-strong);
+}
+.studio > .section-nav > button.active::after {
+  content: var(--chrome-section-nav-button-active-after-content);
+  position: absolute;
+  right: var(--chrome-section-nav-button-active-after-right);
+  bottom: var(--chrome-section-nav-button-active-after-bottom);
+  left: var(--chrome-section-nav-button-active-after-left);
+  height: var(--chrome-section-nav-button-active-after-height);
+  border-radius: var(--chrome-section-nav-button-active-after-border-radius);
+  background: var(--accent);
+}
+.studio > .section-nav > button:hover {
+  background: var(--chrome-section-nav-button-hover-background);
+  color: var(--text-strong);
+}
+.transport-target {
+  display: flex;
+  align-items: center;
+  gap: var(--chrome-transport-target-gap);
+  margin-left: var(--chrome-transport-target-margin-left);
+  color: var(--muted);
+  font-size: var(--chrome-transport-target-font-size);
+  white-space: var(--chrome-transport-target-white-space);
+}
+.status-dot {
+  width: var(--chrome-status-dot-width);
+  height: var(--chrome-status-dot-height);
+  border-radius: var(--chrome-status-dot-border-radius);
+  background: var(--text-subtle);
+}
+.status-dot[data-state="succeeded"] {
+  background: var(--chrome-status-dot-data-state-succeeded-background);
+  box-shadow: var(--chrome-status-dot-data-state-succeeded-box-shadow);
+}
+/* Status bar */
+.studio > footer {
+  padding-inline: var(--chrome-footer-padding-inline);
+  background: var(--bg);
+  border-top: var(--chrome-footer-border-top);
+  color: var(--text-subtle);
+  font-size: var(--chrome-footer-font-size);
+}
+.status-text {
+  color: var(--muted);
+}

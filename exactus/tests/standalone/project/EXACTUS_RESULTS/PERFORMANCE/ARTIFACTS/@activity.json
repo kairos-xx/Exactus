@@ -1,0 +1,79 @@
+{
+  "activity": {
+    "count": 3,
+    "dropped": 0,
+    "events": [
+      {
+        "at": "2026-10-31T02:56:46.475423+00:00",
+        "level": "info",
+        "message": "started: Performance"
+      },
+      {
+        "at": "2026-10-31T02:56:46.475722+00:00",
+        "level": "info",
+        "message": "step: starting (Performance)"
+      },
+      {
+        "at": "2026-10-31T02:56:47.289143+00:00",
+        "level": "info",
+        "message": "finished: DONE (exit status 0) in 0.814s"
+      }
+    ],
+    "limit": 50
+  },
+  "elapsed_seconds": 0.814,
+  "extra": {
+    "exit_code": 0,
+    "previous_duration_seconds": 0.907
+  },
+  "finished_at": "2026-10-31T02:56:47.289167+00:00",
+  "heartbeat": {
+    "alive": false,
+    "interval_seconds": 1.0,
+    "last_beat": "2026-10-31T02:56:47.289170+00:00",
+    "phase": "finished",
+    "pid": 86955
+  },
+  "items": [],
+  "kind": "tool",
+  "name": "performance",
+  "pipeline_run_id": "f9656595c8b74d23b2b6aec3bd0db7de",
+  "progress": {
+    "completed": 1,
+    "current": "Performance",
+    "fraction": 1.0,
+    "hierarchy": {
+      "children": [
+        {
+          "children": [],
+          "completed": 1,
+          "current": "Performance",
+          "error": null,
+          "fraction": 1.0,
+          "id": "complete",
+          "level": "activity",
+          "state": "DONE",
+          "step": "complete",
+          "total": 1
+        }
+      ],
+      "completed": 1,
+      "current": "Performance",
+      "error": null,
+      "fraction": 1.0,
+      "id": "performance",
+      "level": "task",
+      "state": "DONE",
+      "step": "complete",
+      "total": 1
+    },
+    "percent": 100.0,
+    "step": "complete",
+    "total": 1
+  },
+  "run_id": "f9656595c8b74d23b2b6aec3bd0db7de:performance",
+  "schema": "exactus/activity/v1",
+  "started_at": "2026-10-31T02:56:46.475297+00:00",
+  "status": "DONE",
+  "updated_at": "2026-10-31T02:56:47.289170+00:00"
+}

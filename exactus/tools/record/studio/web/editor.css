@@ -1,0 +1,4 @@
+/* Studio stylesheet entry. The token hierarchy and every component live under styles/ (see styles/README.md). */
+/* Studio is the lowest layer, so self-contained widget packages (their own layers) win over its bare element rules. */
+@layer studio, reset, tokens, base, components, utilities;
+@import url("styles/style.css?v=tokens-20261010a") layer(studio);

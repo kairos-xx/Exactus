@@ -1,0 +1,180 @@
+/**
+ * Base responsive adaptations.
+ *
+ * Sources: 12-responsive-base.
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+@layer studio-base {
+  /* Source: 12-responsive-base */
+  @media (width <=600px) {
+    select {
+      min-height: var(--flow-min-height-2);
+      min-width: var(--flow-min-height-2);
+    }
+    summary {
+      min-height: var(--flow-min-height-2);
+      min-width: var(--flow-min-height-2);
+    }
+    .tree-item {
+      min-height: var(--flow-min-height-2);
+    }
+    .workbench {
+      grid-template-columns: var(
+        --responsive-workbench-grid-template-columns-max-width-600px
+      );
+    }
+    .workspace {
+      max-height: var(--responsive-workspace-max-height-max-width-600px);
+    }
+    .right-stack {
+      grid-template-columns: var(
+        --responsive-right-stack-grid-template-columns-max-width-600px
+      );
+    }
+    .center {
+      grid-template-rows: var(
+        --responsive-center-grid-template-rows-max-width-600px
+      );
+    }
+    .graph-canvas {
+      flex-wrap: wrap;
+      align-content: flex-start;
+      gap: var(--responsive-graph-canvas-gap-max-width-600px);
+      padding: var(--responsive-graph-canvas-padding-max-width-600px);
+    }
+    .table-panel {
+      overflow: auto;
+    }
+    .topbar {
+      gap: var(--responsive-topbar-gap-max-width-600px);
+    }
+    .brand {
+      flex: var(--responsive-brand-flex-max-width-600px);
+    }
+    .tree {
+      max-height: var(--responsive-tree-max-height-max-width-600px);
+      flex: var(--responsive-tree-flex-max-width-600px);
+    }
+    .action-library {
+      flex: var(--responsive-action-library-flex-max-width-600px);
+    }
+    .composition-nodes {
+      position: relative;
+      min-width: var(--responsive-composition-nodes-min-width-max-width-600px);
+      flex-direction: column;
+      gap: var(--responsive-composition-nodes-gap-max-width-600px);
+    }
+    .flow-node {
+      position: relative;
+      z-index: var(--responsive-flow-node-z-index-max-width-600px);
+      width: var(--responsive-flow-node-width-max-width-600px);
+    }
+    .composition-footer {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: var(--responsive-composition-footer-gap-max-width-600px);
+      padding: var(--flow-panel-padding);
+    }
+    .bottom {
+      display: block;
+      height: var(--responsive-bottom-height-max-width-600px);
+    }
+    .timeline {
+      height: var(--responsive-timeline-height-max-width-600px);
+    }
+    .runs {
+      max-height: var(--responsive-runs-max-height-max-width-600px);
+    }
+    .timeline-toolbar {
+      width: var(--responsive-timeline-toolbar-width-max-width-600px);
+      justify-content: space-between;
+    }
+    .connection-form {
+      align-items: stretch;
+    }
+    .connection-arrow {
+      display: none;
+    }
+    [id="flow-summary"] {
+      font-size: var(--responsive-id-flow-summary-font-size-max-width-600px);
+    }
+    .menu button {
+      min-height: var(--flow-min-height-2);
+    }
+    .data-table th {
+      white-space: var(--responsive-data-table-th-white-space-max-width-600px);
+      overflow-wrap: var(
+        --responsive-data-table-th-overflow-wrap-max-width-600px
+      );
+    }
+    .data-table td {
+      white-space: var(--responsive-data-table-td-white-space-max-width-600px);
+      overflow-wrap: var(
+        --responsive-data-table-td-overflow-wrap-max-width-600px
+      );
+    }
+    .data-table button {
+      white-space: var(
+        --responsive-data-table-button-white-space-max-width-600px
+      );
+      overflow-wrap: var(
+        --responsive-data-table-button-overflow-wrap-max-width-600px
+      );
+    }
+    .workspace > header {
+      flex-wrap: nowrap;
+    }
+    .action-grid button {
+      display: grid;
+      grid-template-columns: var(
+        --responsive-action-grid-button-columns-max-width-600px
+      );
+      padding: var(--responsive-action-grid-button-padding-max-width-600px);
+      font-size: var(--responsive-action-grid-button-font-size-max-width-600px);
+    }
+    .timeline > header {
+      flex-wrap: wrap;
+      padding-top: var(
+        --responsive-timeline-header-padding-top-max-width-600px
+      );
+    }
+    .graph-canvas .node {
+      display: flex;
+      flex-direction: column;
+      min-width: var(--responsive-graph-canvas-node-min-width-max-width-600px);
+      width: var(--responsive-graph-canvas-node-width-max-width-600px);
+    }
+    .node::after {
+      display: none;
+    }
+    input:not([type="checkbox"], [type="radio"]) {
+      min-height: var(--flow-min-height-2);
+      min-width: var(--flow-min-height-2);
+    }
+    .data-table th:first-child {
+      width: var(--flow-min-height-2);
+    }
+    .data-table td:first-child {
+      width: var(--flow-min-height-2);
+    }
+    .data-table th:last-child {
+      width: var(--flow-min-height-2);
+    }
+    .data-table td:last-child {
+      width: var(--flow-min-height-2);
+    }
+  }
+  .composition-links {
+    position: absolute;
+    z-index: var(--responsive-composition-links-z-index);
+    inset: var(--responsive-composition-links-inset);
+    overflow: visible;
+    pointer-events: none;
+    fill: var(--responsive-composition-links-fill);
+    stroke: var(--responsive-composition-links-stroke);
+    stroke-width: var(--responsive-composition-links-stroke-width);
+  }
+  .composition-link path {
+    filter: var(--responsive-composition-link-path-filter);
+  }
+}

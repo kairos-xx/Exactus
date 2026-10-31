@@ -1,0 +1,306 @@
+/**
+ * Contextual aliases of the settings component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  /* 39-settings */
+  --settings-actions-button-disabled-cursor: var(
+    --catalog-button-cursor-default-disabled-not-allowed-cursor
+  );
+  --settings-actions-button-disabled-opacity: var(
+    --catalog-button-effect-default-disabled-opacity
+  );
+  --settings-actions-gap: var(--catalog-toolbar-measure-normal-gap);
+  --settings-actions-main-accent-color: var(
+    --catalog-toolbar-color-main-accent-color
+  );
+  --settings-actions-main-gap: var(--catalog-toolbar-measure-compact-gap);
+  --settings-actions-main-is-button-background: var(
+    --catalog-button-color-main-background
+  );
+  --settings-actions-main-is-button-border-radius: var(
+    --catalog-button-border-tiny-border-radius
+  );
+  --settings-actions-main-is-button-cursor: var(
+    --catalog-button-cursor-main-cursor
+  );
+  --settings-actions-main-is-button-text-decoration: var(
+    --catalog-button-typography-main-text-decoration
+  );
+  --settings-border: var(--catalog-surface-border-default-border);
+  --settings-field-control-gap: var(--catalog-field-measure-compact-gap);
+  --settings-field-control-min-width: var(
+    --catalog-field-measure-default-min-width
+  );
+  --settings-field-error-color: var(--catalog-field-color-error-color);
+  --settings-field-error-font-size: var(
+    --catalog-field-typography-small-font-size
+  );
+  --settings-field-error-grid-column: var(
+    --catalog-field-measure-error-grid-column
+  );
+  --settings-field-error-grid-column-max-width-720px: var(
+    --catalog-field-measure-error-max-width-720px-grid-column
+  );
+  --settings-field-gap: var(--catalog-field-measure-tiny-normal-gap);
+  --settings-field-grid-template-columns: var(
+    --catalog-field-measure-default-massive-plus-normal-grid-template-columns
+  );
+  --settings-field-grid-template-columns-max-width-720px: var(
+    --catalog-field-measure-default-max-width-720px-grid-template-columns
+  );
+  --settings-field-label-font-size: var(
+    --catalog-field-typography-small-plus-hairline-font-size
+  );
+  --settings-field-note-font-size: var(
+    --catalog-field-typography-small-font-size
+  );
+  --settings-field-note-margin: var(--catalog-field-measure-note-margin);
+  --settings-field-unit-font-size: var(
+    --catalog-field-typography-small-font-size
+  );
+  --settings-flow-danger-gap: var(--catalog-control-measure-compact-gap);
+  --settings-flow-danger-margin-block-start: var(
+    --catalog-control-measure-normal-margin-block-start
+  );
+  --settings-flow-danger-small-font-size: var(
+    --catalog-label-typography-small-font-size
+  );
+  --settings-focus: var(--catalog-item-border-profile-outline);
+  --settings-group-border-radius: var(--catalog-list-border-tiny-border-radius);
+  --settings-group-gap: var(--catalog-list-measure-compact-gap);
+  --settings-group-legend-font-size: var(
+    --catalog-list-typography-small-font-size
+  );
+  --settings-group-legend-font-weight: var(
+    --catalog-list-typography-weight-semibold-font-weight
+  );
+  --settings-group-legend-padding: var(
+    --catalog-list-measure-group-legend-padding
+  );
+  --settings-group-margin: var(--catalog-list-measure-group-margin);
+  --settings-group-min-width: var(--catalog-list-measure-group-min-width);
+  --settings-group-padding: var(
+    --catalog-list-measure-compact-small-normal-padding
+  );
+  --settings-inline-choice-gap: var(
+    --catalog-control-measure-tiny-plus-micro-gap
+  );
+  --settings-intro-font-size: var(
+    --catalog-control-typography-small-plus-hairline-font-size
+  );
+  --settings-intro-margin: var(--catalog-control-measure-intro-margin);
+  --settings-link-danger-background: var(
+    --catalog-link-color-danger-background
+  );
+  --settings-link-danger-border-color: var(
+    --catalog-link-border-danger-border-color
+  );
+  --settings-link-danger-border-radius: var(
+    --catalog-link-border-tiny-border-radius
+  );
+  --settings-link-danger-cursor: var(--catalog-link-cursor-danger-cursor);
+  --settings-link-danger-hover-not-disabled-color: var(
+    --catalog-link-color-danger-color
+  );
+  --settings-link-danger-margin-inline-start: var(
+    --catalog-link-measure-danger-margin-inline-start
+  );
+  --settings-link-danger-text-decoration: var(
+    --catalog-link-typography-danger-text-decoration
+  );
+  --settings-profile-add-background: var(
+    --catalog-control-color-profile-add-background
+  );
+  --settings-profile-add-border-radius: var(
+    --catalog-control-border-tiny-border-radius
+  );
+  --settings-profile-add-cursor: var(
+    --catalog-control-cursor-profile-add-cursor
+  );
+  --settings-profile-badge-background: var(
+    --catalog-label-color-profile-badge-background
+  );
+  --settings-profile-badge-border-radius: var(
+    --catalog-label-border-tiny-border-radius
+  );
+  --settings-profile-badge-font-size: var(
+    --catalog-label-typography-small-minus-hairline-font-size
+  );
+  --settings-profile-badge-padding: var(
+    --catalog-label-measure-profile-badge-padding
+  );
+  --settings-profile-form-aria-invalid-true-border-color: var(
+    --catalog-control-border-profile-form-border-color
+  );
+  --settings-profile-form-gap: var(--catalog-control-measure-normal-gap);
+  --settings-profile-form-input-name-max-width: var(
+    --catalog-field-measure-page-plus-page-max-width
+  );
+  --settings-profile-form-input-name-width: var(
+    --catalog-field-measure-full-width
+  );
+  --settings-profile-form-is-input-type-text-background: var(
+    --catalog-field-color-form-input-background
+  );
+  --settings-profile-form-is-input-type-text-border-radius: var(
+    --catalog-field-border-tiny-border-radius
+  );
+  --settings-profile-form-is-input-type-text-height: var(
+    --catalog-field-measure-large-plus-tiny-height
+  );
+  --settings-profile-form-is-input-type-text-padding: var(
+    --catalog-field-measure-form-input-padding
+  );
+  --settings-profile-form-is-input-type-text-width: var(
+    --catalog-field-measure-massive-width
+  );
+  --settings-profile-form-min-width: var(
+    --catalog-control-measure-profile-form-min-width
+  );
+  --settings-profile-form-ratio-pair-input-text-align: var(
+    --catalog-field-typography-pair-input-text-align
+  );
+  --settings-profile-form-ratio-pair-input-width: var(
+    --catalog-field-measure-huge-width
+  );
+  --settings-profile-item-background: var(
+    --catalog-item-color-profile-background
+  );
+  --settings-profile-item-border: var(--catalog-item-border-profile-border);
+  --settings-profile-item-border-radius: var(
+    --catalog-item-border-tiny-border-radius
+  );
+  --settings-profile-item-cursor: var(--catalog-item-cursor-profile-cursor);
+  --settings-profile-item-focus-visible-outline-offset: var(
+    --catalog-item-border-pixel-hairline-outline-offset
+  );
+  --settings-profile-item-gap: var(--catalog-item-measure-micro-gap);
+  --settings-profile-item-grid-template-columns: var(
+    --catalog-item-measure-profile-grid-template-columns
+  );
+  --settings-profile-item-height: var(--catalog-item-measure-profile-height);
+  --settings-profile-item-hover-background: var(
+    --catalog-item-color-profile-hover-background
+  );
+  --settings-profile-item-min-height: var(
+    --catalog-item-measure-large-plus-tiny-min-height
+  );
+  --settings-profile-item-padding: var(
+    --catalog-item-measure-compact-small-padding
+  );
+  --settings-profile-item-small-font-size: var(
+    --catalog-label-typography-small-font-size
+  );
+  --settings-profile-item-text-align: var(
+    --catalog-item-typography-profile-text-align
+  );
+  --settings-profile-item-width: var(--catalog-item-measure-full-width);
+  --settings-profile-list-gap: var(--catalog-list-measure-tiny-gap);
+  --settings-profile-list-margin: var(--catalog-list-measure-profile-margin);
+  --settings-profile-list-padding: var(--catalog-list-measure-profile-padding);
+  --settings-profile-list-style: var(--catalog-list-measure-profile-list-style);
+  --settings-profile-nav-gap: var(--catalog-tab-measure-compact-gap);
+  --settings-rail: var(--catalog-item-effect-profile-box-shadow);
+  --settings-ratio-pair-gap: var(--catalog-control-measure-tiny-gap);
+  --settings-section-background: var(
+    --catalog-surface-color-default-light-background
+  );
+  --settings-section-border-radius: var(
+    --catalog-surface-border-tiny-border-radius
+  );
+  --settings-section-gap: var(--catalog-surface-measure-normal-gap);
+  --settings-section-h3-font-size: var(
+    --catalog-header-typography-normal-font-size
+  );
+  --settings-section-h3-font-weight: var(
+    --catalog-header-typography-weight-semibold-font-weight
+  );
+  --settings-section-h3-margin: var(--catalog-header-measure-h3-margin);
+  --settings-section-header-gap: var(--catalog-header-measure-tiny-gap);
+  --settings-section-margin-block-end: var(
+    --catalog-surface-measure-large-margin-block-end
+  );
+  --settings-section-max-width: var(
+    --catalog-surface-measure-default-max-width
+  );
+  --settings-section-padding: var(--catalog-surface-measure-normal-padding);
+  --settings-split-gap: var(--catalog-control-measure-large-gap);
+  --settings-split-grid-template-columns: var(
+    --catalog-control-measure-split-grid-template-columns
+  );
+  --settings-split-grid-template-columns-max-width-720px: var(
+    --catalog-control-measure-split-max-width-720px-grid-template-columns
+  );
+  --settings-status-font-size: var(
+    --catalog-label-typography-small-plus-hairline-font-size
+  );
+  --settings-target-form-input-name-command-font-family: var(
+    --catalog-field-typography-form-input-font-family
+  );
+  --settings-target-form-input-name-url-max-width: var(
+    --catalog-field-measure-page-plus-massive-plus-page-max-width
+  );
+  --settings-target-form-input-name-url-width: var(
+    --catalog-field-measure-full-width
+  );
+  --settings-target-mode-background: var(
+    --catalog-control-color-mode-background
+  );
+  --settings-target-mode-border-radius: var(
+    --catalog-control-border-tiny-border-radius
+  );
+  --settings-target-mode-cursor: var(--catalog-control-cursor-mode-cursor);
+  --settings-target-mode-gap: var(--catalog-control-measure-compact-gap);
+  --settings-target-mode-has-input-checked-background: var(
+    --catalog-field-color-mode-input-checked-background
+  );
+  --settings-target-mode-has-input-focus-visible-outline-offset: var(
+    --catalog-field-border-pixel-hairline-outline-offset
+  );
+  --settings-target-mode-padding: var(
+    --catalog-control-measure-compact-small-padding
+  );
+  --settings-target-mode-small-font-size: var(
+    --catalog-label-typography-small-font-size
+  );
+  --settings-target-mode-span-gap: var(--catalog-text-measure-micro-gap);
+  --settings-target-modes-grid-template-columns: var(
+    --catalog-control-measure-default-repeat-grid-template-columns
+  );
+  --settings-target-modes-grid-template-columns-max-width-720px: var(
+    --catalog-control-measure-default-grid-template-columns
+  );
+  --settings-target-modes-legend-grid-column: var(
+    --catalog-control-measure-legend-grid-column
+  );
+  --settings-target-notice-background: var(
+    --catalog-control-color-notice-background
+  );
+  --settings-target-notice-border-radius: var(
+    --catalog-control-border-tiny-border-radius
+  );
+  --settings-target-notice-code-font-family: var(
+    --catalog-text-typography-notice-code-font-family
+  );
+  --settings-target-notice-code-overflow-wrap: var(
+    --catalog-text-measure-notice-code-overflow-wrap
+  );
+  --settings-target-notice-font-size: var(
+    --catalog-control-typography-small-plus-hairline-font-size
+  );
+  --settings-target-notice-margin: var(--catalog-control-measure-notice-margin);
+  --settings-target-notice-padding: var(
+    --catalog-control-measure-compact-small-padding
+  );
+  --settings-toggle-label-gap: var(--catalog-label-measure-compact-gap);
+  --settings-toggle-label-grid-column: var(
+    --catalog-label-measure-toggle-grid-column
+  );
+  --settings-unsupported-font-size: var(
+    --catalog-control-typography-small-font-size
+  );
+  --settings-unsupported-summary-cursor: var(
+    --catalog-label-cursor-unsupported-summary-cursor
+  );
+}

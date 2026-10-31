@@ -1,0 +1,112 @@
+/**
+ * Contextual aliases of the welcome component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  /* 49-welcome */
+  --welcome-actions-gap: var(--catalog-toolbar-measure-compact-gap);
+  --welcome-actions-margin-block: var(
+    --catalog-toolbar-measure-default-margin-block
+  );
+  --welcome-body-gap: var(--catalog-surface-measure-small-gap);
+  --welcome-body-h2-font-size: var(
+    --catalog-header-typography-body-h2-font-size
+  );
+  --welcome-body-h2-font-weight: var(
+    --catalog-header-typography-weight-semibold-font-weight
+  );
+  --welcome-body-h2-letter-spacing: var(
+    --catalog-header-typography-spacing-tight-letter-spacing
+  );
+  --welcome-body-h2-line-height: var(
+    --catalog-header-typography-height-heading-line-height
+  );
+  --welcome-body-h2-margin: var(--catalog-header-measure-body-h2-margin);
+  --welcome-body-h2-max-width: var(--catalog-header-measure-body-h2-max-width);
+  --welcome-body-max-width: var(--catalog-surface-measure-body-max-width);
+  --welcome-clip-animation-media-prefers-reduced-motion-reduce: var(
+    --catalog-track-motion-clip-animation
+  );
+  --welcome-clip-background-media-prefers-reduced-motion-reduce: var(
+    --catalog-track-color-clip-media-prefers-reduced-motion-reduce-background
+  );
+  --welcome-clip-border-color-media-prefers-reduced-motion-reduce: var(
+    --catalog-track-border-clip-media-prefers-reduced-motion-reduce-border-color
+  );
+  --welcome-clip-border-radius: var(
+    --catalog-track-border-tiny-plus-micro-border-radius
+  );
+  --welcome-clip-font-size: var(--catalog-track-typography-small-font-size);
+  --welcome-clip-gap: var(--catalog-track-measure-tiny-plus-micro-gap);
+  --welcome-clip-height: var(--catalog-track-measure-xlarge-plus-tiny-height);
+  --welcome-clip-icon-flex: var(--catalog-icon-measure-clip-flex);
+  --welcome-clip-padding-inline: var(
+    --catalog-track-measure-compact-padding-inline
+  );
+  --welcome-clip-top: var(--catalog-track-measure-tiny-top);
+  --welcome-clip-white-space: var(--catalog-track-typography-clip-white-space);
+  --welcome-grid-area: var(--catalog-control-measure-default-grid-area);
+  --welcome-inset: var(--catalog-control-measure-default-inset);
+  --welcome-lede-font-size: var(
+    --catalog-control-typography-normal-minus-hairline-font-size
+  );
+  --welcome-lede-line-height: var(
+    --catalog-control-typography-height-prose-line-height
+  );
+  --welcome-lede-margin: var(--catalog-control-measure-lede-margin);
+  --welcome-lede-max-width: var(--catalog-control-measure-lede-max-width);
+  --welcome-lede-white-space: var(
+    --catalog-control-typography-lede-white-space
+  );
+  --welcome-min-height: var(--catalog-control-measure-default-zero-min-height);
+  --welcome-note-font-size: var(--catalog-control-typography-small-font-size);
+  --welcome-note-line-height: var(
+    --catalog-control-typography-height-body-line-height
+  );
+  --welcome-note-margin: var(--catalog-control-measure-note-margin);
+  --welcome-note-max-width: var(--catalog-control-measure-note-max-width);
+  --welcome-note-white-space: var(
+    --catalog-control-typography-note-white-space
+  );
+  --welcome-padding: var(--catalog-control-measure-default-clamp-padding);
+  --welcome-playhead-animation: var(--catalog-track-motion-playhead-animation);
+  --welcome-playhead-bottom: var(--catalog-track-measure-playhead-bottom);
+  --welcome-playhead-left: var(--catalog-track-measure-playhead-zero-left);
+  --welcome-playhead-top: var(--catalog-track-measure-playhead-top);
+  --welcome-playhead-width: var(--catalog-track-measure-pixel-micro-width);
+  --welcome-ruler-height: var(--catalog-track-measure-medium-height);
+  --welcome-skip-background: var(--catalog-control-color-skip-background);
+  --welcome-skip-border-color: var(--catalog-control-border-skip-border-color);
+  --welcome-skip-height: var(--catalog-control-measure-skip-height);
+  --welcome-skip-margin-top: var(--catalog-control-measure-normal-margin-top);
+  --welcome-skip-padding: var(--catalog-control-measure-skip-padding);
+  --welcome-skip-text-decoration: var(
+    --catalog-control-typography-skip-text-decoration
+  );
+  --welcome-tick-font-family: var(
+    --catalog-control-typography-tick-font-family
+  );
+  --welcome-tick-font-size: var(
+    --catalog-control-typography-small-minus-hairline-font-size
+  );
+  --welcome-tick-height: var(--catalog-control-measure-full-height);
+  --welcome-tick-padding-left: var(--catalog-control-measure-tiny-padding-left);
+  --welcome-timeline-margin-top: var(--catalog-track-measure-xlarge-margin-top);
+  --welcome-timeline-max-width: var(--catalog-track-measure-default-max-width);
+  --welcome-timeline-width: var(--catalog-track-measure-full-width);
+  --welcome-to-background-keyframes-welcome-played: var(
+    --catalog-control-color-to-background
+  );
+  --welcome-to-border-color-keyframes-welcome-played: var(
+    --catalog-control-border-to-border-color
+  );
+  --welcome-to-left-keyframes-welcome-sweep: var(
+    --catalog-control-measure-to-left
+  );
+  --welcome-to-opacity-keyframes-welcome-out: var(
+    --catalog-control-effect-zero-opacity
+  );
+  --welcome-track-height: var(--catalog-track-measure-xxlarge-height);
+  --welcome-track-margin-top: var(--catalog-track-measure-compact-margin-top);
+  --welcome-z-index: var(--catalog-control-measure-default-z-index);
+}

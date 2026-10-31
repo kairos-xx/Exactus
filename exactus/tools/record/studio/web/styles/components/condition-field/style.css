@@ -1,0 +1,556 @@
+/**
+ * The condition field: token colours, pills, suggestions and issues.
+ *
+ * Sources: 45-condition-field.
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+/* Source: 45-condition-field */
+/* The condition field and its token system.
+ *
+ * Every kind of token in the condition language has one colour, defined once
+ * below, so the field, its suggestions and any future legend always agree:
+ *   names     system (flow state), probe (what a selector sees), output
+ *   operators logic (and, or, not), compare (== > …), membership (in)
+ *   values    number, string, literal (True, False, None)
+ *   structure function, paren, comma, unknown
+ */
+/* One class per kind carries its colour, in the field and in the list. */
+.condition-token {
+  color: var(--text);
+}
+.condition-system {
+  color: var(--condition-field-condition-system-color);
+}
+.condition-probe {
+  color: var(--condition-field-condition-probe-color);
+}
+.condition-output {
+  color: var(--condition-field-condition-output-color);
+}
+.condition-logic {
+  color: var(--condition-field-condition-logic-color);
+  font-weight: var(--condition-field-condition-logic-font-weight);
+}
+.condition-compare {
+  color: var(--condition-field-condition-compare-color);
+  font-weight: var(--condition-field-condition-compare-font-weight);
+}
+.condition-membership {
+  color: var(--condition-field-condition-membership-color);
+  font-weight: var(--condition-field-condition-membership-font-weight);
+}
+.condition-function {
+  color: var(--condition-field-condition-function-color);
+}
+.condition-number {
+  color: var(--condition-field-condition-number-color);
+}
+.condition-string {
+  color: var(--condition-field-condition-string-color);
+}
+.condition-literal {
+  color: var(--condition-field-condition-literal-color);
+}
+.condition-paren,
+.condition-comma {
+  color: var(--condition-field-condition-paren-color);
+}
+.condition-unknown {
+  color: var(--condition-field-condition-unknown-color);
+}
+.condition-token[data-issue="error"] {
+  text-decoration: var(
+    --condition-field-condition-token-data-issue-error-text-decoration
+  );
+  text-underline-offset: var(
+    --condition-field-condition-token-data-issue-error-text-underline-offset
+  );
+}
+.condition-token[data-issue="warning"] {
+  text-decoration: var(
+    --condition-field-condition-token-data-issue-warning-text-decoration
+  );
+  text-underline-offset: var(
+    --condition-field-condition-token-data-issue-warning-text-underline-offset
+  );
+}
+/* The field: the input keeps its own box, its text is hidden, and the painted
+ * tokens sit over it with the same font so they line up with the caret. */
+.condition-field {
+  position: relative;
+  display: grid;
+  gap: var(--condition-field-gap);
+  min-width: var(--condition-field-min-width);
+}
+.condition-editor {
+  position: relative;
+  display: grid;
+  min-width: var(--condition-field-condition-editor-min-width);
+}
+.condition-input {
+  width: var(--condition-field-condition-input-width);
+  font-family: var(--condition-field-condition-input-font-family);
+  font-size: var(--condition-field-condition-input-font-size);
+  letter-spacing: var(--condition-field-condition-input-letter-spacing);
+  caret-color: var(--text-strong);
+  color: var(--condition-field-condition-input-color);
+  -webkit-text-fill-color: var(
+    --condition-field-condition-input--webkit-text-fill-color
+  );
+}
+.condition-input::selection {
+  background: var(--brand-soft);
+}
+.condition-paint {
+  position: absolute;
+  inset: var(--condition-field-condition-paint-inset);
+  display: block;
+  overflow: hidden;
+  padding-right: var(--condition-field-condition-paint-padding-right);
+  font-family: var(--condition-field-condition-paint-font-family);
+  font-size: var(--condition-field-condition-paint-font-size);
+  letter-spacing: var(--condition-field-condition-paint-letter-spacing);
+  white-space: var(--condition-field-condition-paint-white-space);
+  pointer-events: none;
+}
+.condition-input[aria-invalid="true"] {
+  border-color: var(
+    --condition-field-condition-input-aria-invalid-true-border-color
+  );
+}
+/* Suggestions. */
+.condition-options {
+  position: absolute;
+  inset: var(--condition-field-condition-options-inset);
+  z-index: var(--condition-field-condition-options-z-index);
+  display: grid;
+  margin: var(--condition-field-condition-options-margin);
+  padding: var(--condition-field-condition-options-padding);
+  list-style: var(--condition-field-condition-options-list-style);
+  --base-condition-field-condition-options-border: calc(
+      var(--primary-dimension-pixel) * 1
+    )
+    solid var(--primary-line);
+  --catalog-edge-border-options-border: var(
+    --base-condition-field-condition-options-border
+  );
+  --condition-field-condition-options-border: var(
+    --catalog-edge-border-options-border
+  );
+  border: var(--condition-field-condition-options-border);
+  border-radius: var(--condition-field-condition-options-border-radius);
+  background: var(--shell-button-background);
+  box-shadow: var(--condition-field-condition-options-box-shadow);
+}
+.condition-options.above {
+  inset: var(--condition-field-condition-options-above-inset);
+  margin: var(--condition-field-condition-options-above-margin);
+}
+.condition-options[hidden],
+.condition-issues[hidden] {
+  display: none;
+}
+.condition-option {
+  display: grid;
+  gap: var(--condition-field-condition-option-gap);
+  padding: var(--condition-field-condition-option-padding);
+  border-radius: var(--condition-field-condition-option-border-radius);
+  cursor: var(--condition-field-condition-option-cursor);
+}
+.condition-option[aria-selected="true"],
+.condition-option:hover {
+  background: var(--brand-soft);
+}
+.condition-option > strong {
+  font-family: var(--condition-field-condition-option-strong-font-family);
+  font-size: var(--condition-field-condition-option-strong-font-size);
+  font-weight: var(--condition-field-condition-option-strong-font-weight);
+}
+.condition-option > small {
+  color: var(--muted);
+  font-size: var(--condition-field-condition-option-small-font-size);
+  white-space: var(--condition-field-condition-option-small-white-space);
+}
+/* What the language says about the text. */
+.condition-issues {
+  display: grid;
+  gap: var(--condition-field-condition-issues-gap);
+  margin: var(--condition-field-condition-issues-margin);
+  padding: var(--condition-field-condition-issues-padding);
+  list-style: var(--condition-field-condition-issues-list-style);
+}
+.condition-issue {
+  padding: var(--condition-field-condition-issue-padding);
+  border-radius: var(--condition-field-condition-issue-border-radius);
+  background: var(--condition-field-condition-issue-background);
+  color: var(--text);
+  font-size: var(--condition-field-condition-issue-font-size);
+  white-space: var(--condition-field-condition-issue-white-space);
+}
+.condition-issue[data-level="warning"] {
+  background: var(
+    --condition-field-condition-issue-data-level-warning-background
+  );
+}
+/* ── Pills ───────────────────────────────────────────────────────────────
+ * The default view. A function is a capsule wrapping its arguments, lighter
+ * the deeper it sits, so nested calls read like nested brackets. Names are
+ * tinted by the same token colours as the text view. */
+.studio .condition-field .condition-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--condition-field-condition-pills-gap);
+  align-items: center;
+  min-height: var(--condition-field-condition-pills-min-height);
+  padding: var(--condition-field-condition-pills-padding);
+  --base-condition-field-condition-field-condition-pills-border: calc(
+      var(--primary-dimension-pixel) * 1
+    )
+    solid var(--primary-line);
+  --catalog-edge-border-pills-border: var(
+    --base-condition-field-condition-field-condition-pills-border
+  );
+  --condition-field-condition-pills-border: var(
+    --catalog-edge-border-pills-border
+  );
+  border: var(--condition-field-condition-pills-border);
+  border-radius: var(--condition-field-condition-pills-border-radius);
+  background: var(--condition-field-condition-pills-background);
+  color: var(--condition-field-condition-pills-color);
+  font-size: var(--condition-field-condition-pills-font-size);
+}
+.studio .condition-field[data-mode="text"] > .condition-pills {
+  display: none;
+}
+.studio .condition-field .condition-editor[data-collapsed] {
+  position: absolute;
+  inset: var(--condition-field-condition-editor-data-collapsed-inset);
+  width: var(--condition-field-condition-editor-data-collapsed-width);
+  height: var(--condition-field-condition-editor-data-collapsed-height);
+  overflow: hidden;
+  opacity: var(--condition-field-condition-editor-data-collapsed-opacity);
+  pointer-events: none;
+}
+.studio .condition-field[data-disabled] > .condition-pills {
+  opacity: var(--condition-field-data-disabled-condition-pills-opacity);
+}
+.studio .condition-field .pill,
+.studio .condition-field .pill-op,
+.studio .condition-field .pill-name {
+  display: inline-flex;
+  gap: var(--condition-field-pill-gap);
+  align-items: center;
+  height: var(--condition-field-pill-height);
+  margin: var(--condition-field-pill-margin);
+  padding: var(--condition-field-pill-padding);
+  border: var(--condition-field-pill-border);
+  border-radius: var(--condition-field-pill-border-radius);
+  background: var(--condition-field-pill-background);
+  color: var(--text);
+  font: inherit;
+  white-space: var(--condition-field-pill-white-space);
+  cursor: var(--condition-field-pill-cursor);
+}
+.studio .condition-field .pill-binary {
+  display: inline-flex;
+  flex-wrap: wrap;
+  min-width: var(--condition-field-pill-binary-min-width);
+  gap: var(--condition-field-pill-binary-gap);
+  align-items: center;
+}
+.studio .condition-field .pill-arrow {
+  display: inline-block;
+  width: var(--condition-field-pill-arrow-width);
+  height: var(--condition-field-pill-arrow-height);
+  border-top: var(--condition-field-pill-arrow-border-top);
+  border-right: var(--condition-field-pill-arrow-border-right);
+  border-left: var(--condition-field-pill-arrow-border-left);
+  opacity: var(--condition-field-pill-arrow-opacity);
+}
+/* Function capsule, with its name, arguments and closing cap. */
+.studio .condition-field .pill-call {
+  flex-wrap: wrap;
+  height: var(--condition-field-pill-call-height);
+  min-height: var(--condition-field-pill-call-min-height);
+  gap: var(--condition-field-pill-call-gap);
+  padding: var(--condition-field-pill-call-padding);
+  background: var(--condition-field-pill-background);
+  color: var(--condition-field-pill-call-color);
+  cursor: var(--condition-field-pill-call-cursor);
+}
+.studio .condition-field .pill-name {
+  position: relative;
+  padding: var(--condition-field-pill-name-padding);
+  border: var(--condition-field-pill-border);
+  background: var(--condition-field-pill-background);
+  color: var(--condition-field-pill-name-color);
+  font-weight: var(--condition-field-pill-name-font-weight);
+  text-transform: var(--condition-field-pill-name-text-transform);
+}
+.studio .condition-field .pill-cap {
+  height: var(--condition-field-pill-cap-full-height);
+  fill: var(--condition-field-pill-call-background);
+  pointer-events: none;
+}
+.studio .condition-field .pill-cap-host > .pill-cap-start {
+  position: absolute;
+  inset: var(--condition-field-pill-cap-inset);
+  width: var(--condition-field-pill-cap-full-width);
+}
+.studio .condition-field .pill-cap-host > :not(.pill-cap) {
+  position: relative;
+}
+.studio .condition-field .pill-group > .pill-cap-start {
+  width: var(--condition-field-pill-cap-start-width);
+  margin-right: var(--condition-field-pill-cap-overlap);
+}
+.studio .condition-field .pill-cap-end {
+  width: var(--condition-field-pill-cap-end-width);
+  margin-left: var(--condition-field-pill-cap-overlap);
+}
+.studio .condition-field .pill-sep,
+.studio .condition-field .pill-paren {
+  color: var(--condition-field-pill-sep-color);
+}
+.studio .condition-field .pill-paren {
+  padding: var(--condition-field-pill-paren-padding);
+}
+.studio .condition-field .pill-end {
+  display: inline-flex;
+  gap: var(--condition-field-pill-end-gap);
+  align-items: center;
+  white-space: var(--condition-field-pill-end-white-space);
+}
+/* Names carry their token colour, like a cell reference. */
+.studio .condition-field .pill-ref {
+  border-color: var(--condition-field-pill-ref-border-color);
+  background: var(--condition-field-pill-probe-background);
+  color: var(--condition-field-pill-call-color);
+}
+.studio .condition-field .pill-system {
+  border-color: var(--condition-field-pill-system-border-color);
+  background: var(--condition-field-pill-system-background);
+}
+.studio .condition-field .pill-output {
+  border-color: var(--condition-field-pill-output-border-color);
+  background: var(--condition-field-pill-output-background);
+}
+.studio .condition-field .pill-unknown {
+  border-color: var(--condition-field-pill-unknown-border-color);
+  background: var(--condition-field-pill-unknown-background);
+}
+.studio .condition-field .pill-literal {
+  background: var(--condition-field-pill-literal-background);
+  color: var(--condition-field-pill-literal-color);
+  font-family: var(--condition-field-pill-literal-font-family);
+}
+.studio .condition-field .pill-slot {
+  border-color: var(--condition-field-pill-slot-border-color);
+  background: var(--condition-field-pill-slot-background);
+  color: var(--condition-field-pill-slot-color);
+  font-style: var(--condition-field-pill-slot-font-style);
+}
+/* Operators sit between their values. */
+.studio .condition-field .pill-compare {
+  padding: var(--condition-field-pill-compare-padding);
+  color: var(--condition-field-pill-compare-color);
+  font-family: var(--condition-field-pill-compare-font-family);
+  font-weight: var(--condition-field-pill-compare-font-weight);
+}
+.studio .condition-field .pill-logic {
+  background: var(--condition-field-pill-logic-background);
+  border-color: var(--condition-field-pill-logic-border-color);
+  color: var(--condition-field-pill-call-color);
+  font-weight: var(--condition-field-pill-logic-font-weight);
+  text-transform: var(--condition-field-pill-name-text-transform);
+}
+.studio .condition-field .pill-not {
+  display: inline-flex;
+  flex-wrap: wrap;
+  height: var(--condition-field-pill-not-height);
+  gap: var(--condition-field-pill-not-gap);
+  align-items: center;
+  padding: var(--condition-field-pill-not-padding);
+}
+.studio .condition-field .pill-word {
+  color: var(--condition-field-pill-word-color);
+  font-weight: var(--condition-field-pill-word-font-weight);
+}
+.studio .condition-field .pill-raw {
+  color: var(--condition-field-pill-raw-color);
+  font-family: var(--condition-field-pill-raw-font-family);
+  text-decoration: var(--condition-field-pill-raw-text-decoration);
+}
+.studio .condition-field .pill-hint {
+  color: var(--muted);
+  padding: var(--condition-field-pill-hint-padding);
+}
+.studio .condition-field .pill-add {
+  width: var(--condition-field-pill-add-width);
+  padding: var(--condition-field-pill-add-padding);
+  justify-content: center;
+  --base-condition-field-condition-field-pill-add-border: calc(
+      var(--primary-dimension-pixel) * 1
+    )
+    dashed
+    color-mix(
+      in oklab,
+      var(--primary-text),
+      var(--primary-color-named-transparent)
+        calc(var(--primary-percent-base) * 60)
+    );
+  --catalog-edge-border-pill-add-border: var(
+    --base-condition-field-condition-field-pill-add-border
+  );
+  --condition-field-pill-add-border: var(--catalog-edge-border-pill-add-border);
+  border: var(--condition-field-pill-add-border);
+  color: var(--muted);
+}
+/* The remove button of a pill: hidden until the pill is hovered or focused. */
+.studio .condition-field .pill-remove {
+  display: none;
+  width: var(--condition-field-pill-remove-width);
+  height: var(--condition-field-pill-remove-height);
+  margin: var(--condition-field-pill-remove-margin);
+  padding: var(--condition-field-pill-remove-padding);
+  border: var(--condition-field-pill-remove-border);
+  border-radius: var(--condition-field-pill-remove-border-radius);
+  background: var(--condition-field-pill-remove-background);
+  color: inherit;
+  font: inherit;
+  line-height: var(--condition-field-pill-remove-line-height);
+  cursor: var(--condition-field-pill-remove-cursor);
+}
+.studio .condition-field .pill-call > .pill-remove {
+  margin-left: var(--condition-field-pill-call-pill-remove-margin-left);
+}
+.studio .condition-field .pill-remove:focus-visible {
+  --base-condition-field-condition-field-pill-remove-focus-visible-outline: calc(
+      var(--primary-dimension-pixel) * 2
+    )
+    solid var(--primary-brand-edge);
+  --catalog-edge-border-pill-remove-focus-visible-outline: var(
+    --base-condition-field-condition-field-pill-remove-focus-visible-outline
+  );
+  --condition-field-pill-remove-focus-visible-outline: var(
+    --catalog-edge-border-pill-remove-focus-visible-outline
+  );
+  outline: var(--condition-field-pill-remove-focus-visible-outline);
+}
+.condition-field .pill:hover > .pill-remove,
+.condition-field .pill:focus-within > .pill-remove {
+  display: inline-block;
+}
+/* States. */
+.studio .condition-field .pill:disabled,
+.studio .condition-field .pill-op:disabled,
+.studio .condition-field .pill-name:disabled {
+  cursor: var(--condition-field-pill-disabled-cursor);
+}
+.studio .condition-field .pill:focus-visible,
+.studio .condition-field .pill-op:focus-visible,
+.studio .condition-field .pill-name:focus-visible {
+  --base-condition-field-condition-field-pill-focus-visible-outline: calc(
+      var(--primary-dimension-pixel) * 2
+    )
+    solid var(--primary-brand-edge);
+  --catalog-edge-border-pill-focus-visible-outline: var(
+    --base-condition-field-condition-field-pill-focus-visible-outline
+  );
+  --condition-field-pill-focus-visible-outline: var(
+    --catalog-edge-border-pill-focus-visible-outline
+  );
+  outline: var(--condition-field-pill-focus-visible-outline);
+  outline-offset: var(--condition-field-pill-focus-visible-outline-offset);
+}
+.studio .condition-field .pill:hover,
+.studio .condition-field .pill-op:hover,
+.studio .condition-field .pill-name:hover {
+  filter: var(--condition-field-pill-hover-filter);
+}
+.studio .condition-field [data-issue="error"] {
+  box-shadow: var(--condition-field-data-issue-error-box-shadow);
+}
+.studio .condition-field [data-issue="warning"] {
+  box-shadow: var(--condition-field-data-issue-warning-box-shadow);
+}
+/* The dropdown under a pill, and the switch between pills and text. */
+.studio .condition-field .condition-menu {
+  position: absolute;
+  z-index: var(--condition-field-condition-menu-z-index);
+  display: grid;
+  max-width: var(--condition-field-condition-menu-max-width);
+  max-height: var(--condition-field-condition-menu-max-height);
+  overflow: auto;
+  padding: var(--condition-field-condition-menu-padding);
+  --base-condition-field-condition-field-condition-menu-border: calc(
+      var(--primary-dimension-pixel) * 1
+    )
+    solid var(--primary-line);
+  --catalog-edge-border-suggestion-menu-border: var(
+    --base-condition-field-condition-field-condition-menu-border
+  );
+  --condition-field-condition-menu-border: var(
+    --catalog-edge-border-suggestion-menu-border
+  );
+  border: var(--condition-field-condition-menu-border);
+  border-radius: var(--condition-field-condition-menu-border-radius);
+  background: var(--shell-button-background);
+  box-shadow: var(--condition-field-condition-menu-box-shadow);
+}
+.studio .condition-field .condition-menu[hidden] {
+  display: none;
+}
+.studio .condition-field .condition-menu-search,
+.studio .condition-field .condition-menu-choices {
+  width: var(--condition-field-condition-menu-item-width);
+}
+.studio .condition-field .condition-menu-choices {
+  display: grid;
+}
+.studio .condition-field .condition-menu-item {
+  display: grid;
+  width: var(--condition-field-condition-menu-item-width);
+  height: var(--condition-field-condition-menu-item-height);
+  min-height: var(--condition-field-condition-menu-item-min-height);
+  gap: var(--condition-field-condition-menu-item-gap);
+  justify-content: stretch;
+  place-items: start;
+  padding: var(--condition-field-condition-menu-item-padding);
+  border: var(--condition-field-condition-menu-item-border);
+  border-radius: var(--condition-field-condition-menu-item-border-radius);
+  background: var(--condition-field-condition-menu-item-background);
+  color: var(--text);
+  font: inherit;
+  text-align: var(--condition-field-condition-menu-item-text-align);
+  cursor: var(--condition-field-condition-menu-item-cursor);
+}
+.studio .condition-field .condition-menu-item:hover,
+.studio .condition-field .condition-menu-item:focus-visible {
+  background: var(--brand-soft);
+  outline: var(--condition-field-condition-menu-item-hover-outline);
+}
+.studio .condition-field .condition-menu-item > strong {
+  font-family: var(--condition-field-condition-menu-item-strong-font-family);
+  font-size: var(--condition-field-condition-menu-item-strong-font-size);
+  font-weight: var(--condition-field-condition-menu-item-strong-font-weight);
+}
+.studio .condition-field .condition-menu-item > small {
+  color: var(--muted);
+  font-size: var(--condition-field-condition-menu-item-small-font-size);
+  white-space: var(--condition-field-condition-menu-item-small-white-space);
+}
+.studio .condition-field .condition-mode {
+  justify-self: start;
+  padding: var(--condition-field-condition-mode-padding);
+  border: var(--condition-field-condition-mode-border);
+  background: var(--condition-field-condition-mode-background);
+  color: var(--muted);
+  font: inherit;
+  font-size: var(--condition-field-condition-mode-font-size);
+  text-decoration: var(--condition-field-condition-mode-text-decoration);
+  cursor: var(--condition-field-condition-mode-cursor);
+}
+.studio .condition-field .condition-mode:hover {
+  color: var(--text-strong);
+}

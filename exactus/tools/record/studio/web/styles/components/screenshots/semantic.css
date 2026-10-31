@@ -1,0 +1,352 @@
+/**
+ * Contextual aliases of the screenshots component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  /* 06-screenshots */
+  --screenshots-action-drop-outline: var(
+    --catalog-button-border-default-outline
+  );
+  --screenshots-action-drop-outline-offset: var(
+    --catalog-button-border-micro-outline-offset
+  );
+  --screenshots-action-code-font-family: var(
+    --catalog-field-typography-code-font
+  );
+  --screenshots-action-code-min-height: var(
+    --catalog-control-measure-page-min-height
+  );
+  --screenshots-action-control-gap: var(--catalog-control-measure-tiny-gap);
+  --screenshots-action-control-padding: var(
+    --catalog-field-measure-compact-padding
+  );
+  --screenshots-action-control-width: var(--catalog-field-measure-full-width);
+  --screenshots-action-group-gap: var(--catalog-control-measure-small-gap);
+  --screenshots-action-group-heading-color: var(
+    --catalog-control-color-form-state-color
+  );
+  --screenshots-action-group-heading-font-size: var(
+    --catalog-control-typography-small-minus-hairline-font-size
+  );
+  --screenshots-action-group-margin: var(--catalog-control-measure-normal-gap);
+  --screenshots-action-rest-row-gap: var(--catalog-control-measure-tiny-gap);
+  --screenshots-action-rest-row-padding: var(
+    --catalog-control-measure-tiny-padding
+  );
+  --screenshots-action-sandbox-gap: var(--catalog-control-measure-small-gap);
+  --screenshots-action-sandbox-globals-max-height: var(
+    --catalog-control-measure-page-plus-medium-max-height
+  );
+  --screenshots-action-sandbox-global-padding: var(
+    --catalog-control-measure-tiny-padding
+  );
+  --screenshots-action-search-margin: var(--catalog-control-measure-small-gap);
+  --screenshots-action-grid-gap: var(--catalog-list-measure-compact-gap);
+  --screenshots-action-grid-template-columns: var(
+    --catalog-list-measure-action-grid-template-columns
+  );
+  --screenshots-action-row-padding: var(
+    --catalog-button-measure-shortcut-padding
+  );
+  --screenshots-action-row-height: var(
+    --catalog-button-measure-shortcut-height
+  );
+  --screenshots-action-row-compact-padding: var(
+    --catalog-button-measure-shortcut-compact-padding
+  );
+  --screenshots-action-row-columns: var(
+    --catalog-button-measure-shortcut-columns
+  );
+  --screenshots-action-row-background: var(
+    --catalog-button-color-action-item-background
+  );
+  --screenshots-action-row-border: var(--catalog-button-border-default-border);
+  --screenshots-action-row-border-radius: var(
+    --catalog-button-border-micro-border-radius
+  );
+  --screenshots-action-row-text-align: var(
+    --catalog-button-typography-list-text-align
+  );
+  --screenshots-action-icon-size: var(--catalog-icon-measure-shortcut-size);
+  --screenshots-action-icon-frame-size: var(
+    --catalog-icon-measure-shortcut-frame-size
+  );
+  --screenshots-action-icon-background: var(
+    --catalog-icon-color-action-badge-background
+  );
+  --screenshots-action-icon-border: var(
+    --catalog-icon-border-action-badge-border
+  );
+  --screenshots-action-icon-border-radius: var(
+    --catalog-icon-border-tiny-plus-micro-border-radius
+  );
+  --screenshots-action-icon-glyph-color: var(
+    --catalog-icon-color-action-badge-glyph
+  );
+  --screenshots-action-help-padding: var(
+    --catalog-label-measure-context-padding
+  );
+  --screenshots-action-help-gap: var(--catalog-label-measure-context-gap);
+  --screenshots-action-help-background: var(
+    --catalog-label-color-context-background
+  );
+  --screenshots-action-help-border: var(--catalog-label-border-context-border);
+  --screenshots-action-help-border-radius: var(
+    --catalog-label-border-context-radius
+  );
+  --screenshots-action-help-offset: var(--catalog-label-measure-context-offset);
+  --screenshots-action-help-z-index: var(
+    --catalog-label-measure-context-z-index
+  );
+  --screenshots-action-pointer-color: var(
+    --catalog-control-color-pointer-color
+  );
+  --screenshots-action-touch-color: var(--catalog-control-color-touch-color);
+  --screenshots-action-form-color: var(--catalog-control-color-form-color);
+  --screenshots-action-browser-color: var(
+    --catalog-control-color-browser-color
+  );
+  --screenshots-action-variable-color: var(
+    --catalog-control-color-variable-color
+  );
+  --screenshots-action-wait-color: var(--catalog-control-color-wait-color);
+  --screenshots-action-logic-color: var(
+    --catalog-control-color-logic-action-color
+  );
+  --screenshots-action-evidence-color: var(
+    --catalog-control-color-evidence-action-color
+  );
+  --screenshots-variable-editor-background: var(
+    --catalog-field-color-input-background
+  );
+  --screenshots-variable-editor-border: var(
+    --catalog-field-border-textarea-border
+  );
+  --screenshots-variable-editor-border-radius: var(
+    --catalog-button-border-micro-border-radius
+  );
+  --screenshots-variable-editor-min-height: var(
+    --catalog-field-measure-large-plus-tiny-min-height
+  );
+  --screenshots-variable-editor-padding: var(
+    --catalog-field-measure-compact-padding
+  );
+  --screenshots-variable-pill-background: var(
+    --catalog-field-color-pill-output-background
+  );
+  --screenshots-variable-pill-border: var(--catalog-field-border-pill-border);
+  --screenshots-variable-pill-border-radius: var(
+    --catalog-field-border-pill-border-radius
+  );
+  --screenshots-variable-pill-color: var(--catalog-field-color-pill-name-color);
+  --screenshots-variable-pill-padding: var(
+    --catalog-field-measure-pill-padding
+  );
+  --screenshots-variable-menu-background: var(
+    --catalog-panel-color-action-library-background
+  );
+  --screenshots-variable-menu-border: var(
+    --catalog-button-border-default-border
+  );
+  --screenshots-variable-menu-border-radius: var(
+    --catalog-button-border-micro-border-radius
+  );
+  --screenshots-variable-menu-gap: var(--catalog-control-measure-tiny-gap);
+  --screenshots-variable-menu-padding: var(
+    --catalog-control-measure-tiny-padding
+  );
+  --screenshots-variable-menu-offset: var(
+    --catalog-label-measure-context-offset
+  );
+  --screenshots-variable-menu-z-index: var(
+    --catalog-field-measure-menu-z-index
+  );
+  --screenshots-variable-menu-block-start: var(
+    --catalog-field-measure-menu-block-start
+  );
+  --screenshots-variable-editor-white-space: var(
+    --catalog-field-typography-editor-white-space
+  );
+  --screenshots-action-library-body-flex: var(
+    --catalog-surface-measure-library-body-flex
+  );
+  --screenshots-action-library-body-min-height: var(
+    --catalog-surface-measure-library-body-min-height
+  );
+  --screenshots-action-library-body-padding: var(
+    --catalog-surface-measure-small-padding
+  );
+  --screenshots-action-library-dragging-opacity: var(
+    --catalog-panel-effect-dragging-opacity
+  );
+  --screenshots-action-library-min-height: var(
+    --catalog-control-measure-action-library-min-height
+  );
+  --screenshots-action-library-min-width: var(
+    --catalog-control-measure-action-library-min-width
+  );
+  --screenshots-composition-nodes-height: var(
+    --catalog-control-measure-default-max-full-height
+  );
+  --screenshots-composition-nodes-min-height: var(
+    --catalog-control-measure-default-min-height
+  );
+  --screenshots-composition-nodes-min-width: var(
+    --catalog-control-measure-default-min-width
+  );
+  --screenshots-composition-nodes-width: var(
+    --catalog-control-measure-default-width
+  );
+  --screenshots-composition-title-gap: var(--catalog-header-measure-small-gap);
+  --screenshots-data-state-failed-color: var(
+    --catalog-control-color-state-failed-color
+  );
+  --screenshots-data-state-succeeded-color: var(
+    --catalog-control-color-default-color
+  );
+  --screenshots-data-state-warning-color: var(
+    --catalog-control-color-state-notice-color
+  );
+  --screenshots-delete-dialog-border-radius: var(
+    --catalog-dialog-border-micro-border-radius
+  );
+  --screenshots-delete-dialog-max-width: var(
+    --catalog-dialog-measure-delete-max-width
+  );
+  --screenshots-delete-dialog-padding: var(
+    --catalog-dialog-measure-normal-padding
+  );
+  --screenshots-flow-node-border-radius: var(
+    --catalog-item-border-tiny-border-radius
+  );
+  --screenshots-flow-node-flex-shrink: var(
+    --catalog-item-measure-node-flex-shrink
+  );
+  --screenshots-flow-node-is-node-dragging-opacity: var(
+    --catalog-item-effect-node-dragging-opacity
+  );
+  --screenshots-flow-node-is-node-dragging-z-index: var(
+    --catalog-item-measure-node-dragging-z-index
+  );
+  --screenshots-flow-node-port-background: var(
+    --catalog-item-color-node-port-light-background
+  );
+  --screenshots-flow-node-port-border: var(
+    --catalog-item-border-node-port-pixel-micro-border
+  );
+  --screenshots-flow-node-port-border-radius: var(
+    --catalog-item-border-half-border-radius
+  );
+  --screenshots-flow-node-port-box-shadow: var(
+    --catalog-item-effect-node-port-zero-box-shadow
+  );
+  --screenshots-flow-node-port-height: var(--catalog-item-measure-small-height);
+  --screenshots-flow-node-port-min-height: var(
+    --catalog-item-measure-small-min-height
+  );
+  --screenshots-flow-node-port-min-width: var(
+    --catalog-item-measure-small-min-width
+  );
+  --screenshots-flow-node-port-padding: var(
+    --catalog-item-measure-node-port-padding
+  );
+  --screenshots-flow-node-port-top: var(--catalog-item-measure-half-top);
+  --screenshots-flow-node-port-transform: var(
+    --catalog-item-effect-node-port-transform
+  );
+  --screenshots-flow-node-port-width: var(--catalog-item-measure-small-width);
+  --screenshots-flow-node-port-z-index: var(
+    --catalog-item-measure-node-port-z-index
+  );
+  --screenshots-flow-node-title-cursor: var(
+    --catalog-header-cursor-node-title-cursor
+  );
+  --screenshots-flow-node-width: var(
+    --catalog-item-measure-page-plus-huge-width
+  );
+  --screenshots-flow-node-z-index: var(--catalog-item-measure-node-z-index);
+  --screenshots-graph-toolbar-button-background: var(
+    --catalog-button-color-toolbar-background
+  );
+  --screenshots-graph-toolbar-button-border-color: var(
+    --catalog-button-border-toolbar-border-color
+  );
+  --screenshots-graph-toolbar-button-box-shadow: var(
+    --catalog-button-effect-toolbar-box-shadow
+  );
+  --screenshots-graph-toolbar-button-font-size: var(
+    --catalog-button-typography-small-minus-hairline-font-size
+  );
+  --screenshots-graph-toolbar-flex: var(--catalog-toolbar-measure-default-flex);
+  --screenshots-graph-toolbar-gap: var(--catalog-toolbar-measure-tiny-gap);
+  --screenshots-graph-toolbar-min-width: var(
+    --catalog-toolbar-measure-default-min-width
+  );
+  --screenshots-id-flow-summary-font-family: var(
+    --catalog-control-typography-default-font-family
+  );
+  --screenshots-id-flow-summary-font-size: var(
+    --catalog-control-typography-small-minus-hairline-font-size
+  );
+  --screenshots-id-flow-summary-font-weight: var(
+    --catalog-control-typography-weight-normal-font-weight
+  );
+  --screenshots-id-flow-summary-min-width: var(
+    --catalog-control-measure-default-zero-min-width
+  );
+  --screenshots-id-flow-summary-text-overflow: var(
+    --catalog-control-typography-default-text-overflow
+  );
+  --screenshots-id-flow-summary-white-space: var(
+    --catalog-control-typography-default-white-space
+  );
+  --screenshots-is-node-dragging-flow-node-title-cursor: var(
+    --catalog-header-cursor-dragging-node-title-cursor
+  );
+  --screenshots-node-title-min-width: var(
+    --catalog-header-measure-node-title-min-width
+  );
+  --screenshots-node-title-text-align: var(
+    --catalog-header-typography-node-title-text-align
+  );
+  --screenshots-panel-title-gap: var(--catalog-header-measure-compact-gap);
+  --screenshots-run-action-grid-column: var(
+    --catalog-control-measure-action-grid-column
+  );
+  --screenshots-run-action-padding-top: var(
+    --catalog-control-measure-tiny-padding-top
+  );
+  --screenshots-run-status-border: var(--catalog-label-border-default-border);
+  --screenshots-run-status-border-radius: var(
+    --catalog-label-border-micro-border-radius
+  );
+  --screenshots-run-status-font-size: var(
+    --catalog-label-typography-small-font-size
+  );
+  --screenshots-run-status-gap: var(--catalog-label-measure-compact-gap);
+  --screenshots-run-status-padding: var(
+    --catalog-label-measure-default-padding
+  );
+  --screenshots-shot-margin: var(--catalog-control-measure-small-margin);
+  --screenshots-shot-open-height: var(
+    --catalog-control-measure-shot-open-height
+  );
+  --screenshots-shot-open-padding: var(
+    --catalog-control-measure-shot-open-padding
+  );
+  --screenshots-shot-open-width: var(--catalog-control-measure-full-width);
+  --screenshots-action-help-text-min-width: var(
+    --catalog-field-measure-shrinkable-min-width
+  );
+  --screenshots-rest-input-min-width: var(
+    --catalog-field-measure-shrinkable-min-width
+  );
+  --screenshots-rest-input-flex: var(--catalog-field-measure-fluid-flex);
+  --screenshots-sandbox-textarea-flex: var(--catalog-field-measure-fluid-flex);
+  --screenshots-variable-editor-placeholder-content: var(
+    --catalog-field-typography-placeholder-content
+  );
+  --screenshots-variable-picker-cursor: var(
+    --catalog-button-cursor-picker-cursor
+  );
+}

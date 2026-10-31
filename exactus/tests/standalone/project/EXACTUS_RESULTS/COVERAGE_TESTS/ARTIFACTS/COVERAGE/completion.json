@@ -1,0 +1,59 @@
+{
+  "completed": true,
+  "returncode": 0,
+  "final_status": 0,
+  "test_files_discovered": 1,
+  "tests_collected": 2,
+  "tests_executed": 2,
+  "js_tests_discovered": 1,
+  "js_returncode": 0,
+  "pytest_jobs": 18,
+  "pytest_shard_by": "file",
+  "pytest_shards": 1,
+  "test_execution": {
+    "status": 0,
+    "duration_seconds": 1.511,
+    "tests": [
+      {
+        "shard": 0,
+        "test": "tests/test_calc.py::test_add_sums_operands",
+        "outcome": "PASSED",
+        "log": "ARTIFACTS/TESTS/pytest-shards/shard-000.log"
+      },
+      {
+        "shard": 0,
+        "test": "tests/test_calc.py::test_is_even_flags_parity",
+        "outcome": "PASSED",
+        "log": "ARTIFACTS/TESTS/pytest-shards/shard-000.log"
+      }
+    ],
+    "shards": [
+      {
+        "index": 0,
+        "returncode": 0,
+        "log": "ARTIFACTS/TESTS/pytest-shards/shard-000.log",
+        "collected": 2,
+        "tests": [
+          {
+            "shard": 0,
+            "test": "tests/test_calc.py::test_add_sums_operands",
+            "outcome": "PASSED"
+          },
+          {
+            "shard": 0,
+            "test": "tests/test_calc.py::test_is_even_flags_parity",
+            "outcome": "PASSED"
+          }
+        ],
+        "failures": [],
+        "warnings": [],
+        "skipped": []
+      }
+    ],
+    "failed_tests": [],
+    "skipped_tests": [],
+    "warnings": []
+  },
+  "coverage_file": "coverage_raw_py.json",
+  "coverage_sha256": "a98b82f3c28093d273be6803722fcaff3881293644b355e4d8cb74c93a526de9"
+}

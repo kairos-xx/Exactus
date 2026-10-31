@@ -1,0 +1,219 @@
+/* Source: 32-steps */
+/* Value-preserving design tokens for the compact editor. */
+/* Steps list: rows with a drag grip, status chips and a drop indicator. */
+.studio .edit-step-toolbar {
+  min-height: var(--steps-edit-step-toolbar-min-height);
+  padding: var(--steps-edit-step-toolbar-padding);
+}
+.edit-step-toolbar > strong {
+  color: var(--muted);
+  font-size: var(--steps-edit-step-toolbar-strong-font-size);
+  font-weight: var(--steps-edit-step-toolbar-strong-font-weight);
+}
+.recording-group > summary {
+  display: flex;
+  align-items: center;
+  gap: var(--steps-recording-group-summary-gap);
+  padding: var(--steps-recording-group-summary-padding);
+  cursor: var(--steps-recording-group-summary-cursor);
+  white-space: var(--steps-recording-group-summary-white-space);
+}
+.studio .edit-step-list {
+  gap: var(--steps-card-gap);
+  padding: var(--steps-edit-step-list-padding);
+}
+.studio .panel :is(.edit-step-row, .edit-step-block) {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--steps-panel-edit-step-row-grid-template-columns);
+  gap: var(--steps-panel-edit-step-row-gap);
+  min-height: var(--steps-panel-edit-step-row-min-height);
+  margin: var(--steps-panel-edit-step-row-margin);
+  padding: var(--steps-card-padding);
+  border: var(--steps-panel-edit-step-row-border);
+  border-radius: var(--steps-card-radius);
+  background: var(--steps-card-background);
+  overflow: visible; /* lets the connector reach the previous card */
+  color: var(--text);
+  cursor: var(--steps-panel-edit-step-row-cursor);
+}
+.studio .panel .edit-step-row:hover {
+  background: var(--steps-panel-edit-step-row-hover-background);
+}
+.studio .panel .edit-step-row.selected {
+  background: var(--steps-card-background);
+  border-color: var(--steps-card-selected-border-color);
+}
+/* A paused run is held before this action; the "Runs next" badge says it too. */
+.studio .panel .edit-step-row[data-run-next] {
+  border-color: var(--steps-card-selected-border-color);
+}
+.edit-step-grip {
+  display: grid;
+  place-items: center;
+  height: var(--steps-edit-step-grip-height);
+  color: var(--text-subtle);
+  cursor: var(--steps-edit-step-grip-cursor);
+  opacity: var(--steps-edit-step-grip-opacity);
+  touch-action: none;
+}
+.edit-step-row:hover .edit-step-grip,
+.edit-step-row:focus-visible .edit-step-grip,
+.edit-step-row.selected .edit-step-grip {
+  opacity: var(--steps-step-row-hover-edit-step-grip-opacity);
+}
+.edit-empty > .studio-icon {
+  width: var(--steps-edit-empty-icon-width);
+  height: var(--steps-edit-empty-icon-height);
+  color: var(--text-subtle);
+}
+.edit-step-kind {
+  display: grid;
+  width: var(--steps-edit-step-kind-width);
+  height: var(--steps-edit-step-kind-height);
+  place-items: center;
+}
+.edit-step-kind > .studio-icon {
+  width: var(--steps-edit-step-kind-icon-width);
+  height: var(--steps-edit-step-kind-icon-height);
+  flex-basis: var(--steps-edit-step-kind-icon-flex-basis);
+}
+.edit-step-row .edit-step-grip > .studio-icon {
+  width: var(--steps-row-edit-step-grip-icon-width);
+  height: var(--steps-row-edit-step-grip-icon-height);
+}
+.edit-step-text {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--steps-card-text-gap);
+}
+.edit-step-row[data-connected]::before {
+  content: var(--steps-card-connector-content);
+  position: absolute;
+  inset-block-start: var(--steps-card-connector-block-start);
+  inset-inline-start: var(--steps-card-connector-inline-start);
+  width: var(--steps-card-connector-width);
+  height: var(--steps-card-connector-length);
+  background: var(--text-subtle);
+  pointer-events: none;
+}
+.edit-step-text strong {
+  color: var(--text-strong);
+  font-size: var(--steps-edit-step-text-strong-font-size);
+  font-weight: var(--steps-edit-step-text-strong-font-weight);
+}
+.edit-step-text small {
+  color: var(--muted);
+  font-family: var(--steps-edit-step-text-small-font-family);
+  font-size: var(--steps-edit-step-text-small-font-size);
+}
+.studio .edit-step-checks {
+  padding: var(--steps-edit-step-checks-padding);
+  border-radius: var(--steps-edit-step-checks-border-radius);
+  background: var(--steps-edit-step-checks-background);
+  color: var(--steps-edit-step-checks-color);
+  font-size: var(--steps-edit-step-checks-font-size);
+  font-weight: var(--steps-edit-step-checks-font-weight);
+}
+.studio .edit-step-checks:empty {
+  display: none;
+}
+.studio .panel .edit-step-row.is-dragging,
+.studio .panel .edge-row.is-dragging {
+  z-index: var(--steps-panel-edit-step-row-is-dragging-z-index);
+  opacity: var(--steps-panel-edit-step-row-is-dragging-opacity);
+  background: var(--shell-button-background);
+  box-shadow: var(--steps-panel-edit-step-row-is-dragging-box-shadow);
+  cursor: var(--steps-panel-edit-step-row-is-dragging-cursor);
+}
+.edit-step-row[data-drop="before"]::before,
+.edit-step-row[data-drop="after"]::after,
+.edge-row[data-drop="before"]::before,
+.edge-row[data-drop="after"]::after {
+  content: var(--steps-step-row-data-drop-before-content);
+  position: absolute;
+  right: var(--steps-step-row-data-drop-before-right);
+  left: var(--steps-step-row-data-drop-before-left);
+  height: var(--steps-step-row-data-drop-before-height);
+  border-radius: var(--steps-step-row-data-drop-before-border-radius);
+  background: var(--accent);
+  box-shadow: var(--steps-step-row-data-drop-before-box-shadow);
+  pointer-events: none;
+}
+.edit-step-row[data-drop="before"]::before,
+.edge-row[data-drop="before"]::before {
+  top: var(--steps-step-row-data-drop-before-top);
+}
+.edit-step-row[data-drop="after"]::after,
+.edge-row[data-drop="after"]::after {
+  bottom: var(--steps-step-row-data-drop-after-bottom);
+}
+/* Empty state */
+.studio .edit-empty {
+  gap: var(--steps-edit-empty-gap);
+  padding: var(--steps-edit-empty-padding);
+}
+.edit-empty h2 {
+  color: var(--text-strong);
+  font-size: var(--steps-edit-empty-h2-font-size);
+  font-weight: var(--steps-edit-empty-h2-font-weight);
+}
+.edit-empty p {
+  color: var(--muted);
+}
+.edit-empty button {
+  height: var(--steps-edit-empty-button-height);
+  margin-top: var(--steps-edit-empty-button-margin-top);
+  padding-inline: var(--steps-edit-empty-button-padding-inline);
+  border: var(--steps-edit-empty-button-border);
+  background: var(--primary);
+  color: var(--brand-ink);
+  font-weight: var(--steps-edit-empty-button-font-weight);
+}
+/* Tabs in the steps panel header */
+.table-panel-header > .panel-title {
+  margin-right: var(--steps-table-panel-header-panel-title-margin-right);
+}
+.recording-group {
+  margin: var(--steps-recording-group-margin);
+  background: var(--steps-recording-group-background);
+  border-radius: var(--steps-recording-group-border-radius);
+}
+.recording-group > summary strong {
+  min-width: var(--steps-recording-group-summary-strong-min-width);
+  overflow: hidden;
+  text-overflow: var(--steps-recording-group-summary-strong-text-overflow);
+  font-size: var(--steps-recording-group-summary-strong-font-size);
+}
+.recording-group > summary small {
+  flex: var(--steps-recording-group-summary-small-flex);
+  margin-left: var(--steps-recording-group-summary-small-margin-left);
+  color: var(--steps-recording-group-summary-small-color);
+  font-size: var(--steps-recording-group-summary-small-font-size);
+}
+.recording-children {
+  padding-left: var(--steps-recording-children-padding-left);
+}
+.recording-empty {
+  margin: unset;
+  padding: var(--steps-recording-empty-padding);
+  color: var(--steps-recording-empty-color);
+  font-size: var(--steps-recording-empty-font-size);
+}
+.recording-group[open] .recording-disclosure {
+  transform: var(--steps-recording-group-open-recording-disclosure-transform);
+}
+.recording-band {
+  position: absolute;
+  inset-block: var(--steps-recording-band-inset-block);
+  background: var(--steps-recording-band-background);
+  border-radius: var(--steps-recording-band-border-radius);
+}
+.edit-step-text small:not(:empty) {
+  padding: var(--steps-card-param-padding);
+  border-radius: var(--steps-card-param-radius);
+  background: var(--brand-soft);
+  color: var(--accent);
+  font-family: inherit;
+}

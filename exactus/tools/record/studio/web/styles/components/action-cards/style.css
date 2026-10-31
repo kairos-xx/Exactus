@@ -1,0 +1,159 @@
+/**
+ * Action cards: the coloured tile, the sentence with its tokens and pills, the
+ * code block, branch cards and the small editor a token opens.
+ *
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+.action-tile {
+  display: grid;
+  place-items: center;
+  border-radius: var(--action-cards-tile-radius);
+  color: var(--action-cards-tile-color);
+}
+.action-tile[data-tone="blue"] {
+  background: var(--action-cards-tile-blue-background);
+}
+.action-tile[data-tone="yellow"] {
+  background: var(--action-cards-tile-yellow-background);
+}
+.action-tile[data-tone="orange"] {
+  background: var(--action-cards-tile-orange-background);
+}
+.action-tile[data-tone="green"] {
+  background: var(--action-cards-tile-green-background);
+}
+.action-tile[data-tone="silver"] {
+  background: var(--action-cards-tile-silver-background);
+}
+.action-sentence {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--action-cards-sentence-gap);
+}
+.action-token {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--action-cards-pill-gap);
+  padding: var(--action-cards-token-padding);
+  border-radius: var(--action-cards-token-radius);
+  background: var(--action-cards-token-background);
+  color: var(--action-cards-token-color);
+  font-weight: var(--action-cards-token-weight);
+}
+.action-token[data-empty] {
+  background: var(--action-cards-token-empty-background);
+  color: var(--action-cards-token-empty-color);
+}
+.action-token[data-field] {
+  cursor: var(--action-cards-token-cursor);
+}
+.action-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--action-cards-pill-gap);
+}
+.action-pill > .studio-icon {
+  box-sizing: content-box;
+  width: var(--action-cards-pill-icon-size);
+  height: var(--action-cards-pill-icon-size);
+  border-radius: var(--action-cards-pill-icon-radius);
+  color: var(--action-cards-tile-color);
+}
+.action-pill[data-tone="blue"] > .studio-icon {
+  background: var(--action-cards-tile-blue-background);
+}
+.action-pill[data-tone="yellow"] > .studio-icon {
+  background: var(--action-cards-tile-yellow-background);
+}
+.action-pill[data-tone="orange"] > .studio-icon {
+  background: var(--action-cards-tile-orange-background);
+}
+.action-pill[data-tone="green"] > .studio-icon {
+  background: var(--action-cards-tile-green-background);
+}
+.action-pill[data-tone="silver"] > .studio-icon {
+  background: var(--action-cards-tile-silver-background);
+}
+.action-code {
+  display: block;
+  grid-column: var(--action-cards-code-grid-column);
+  flex-basis: var(--action-cards-code-flex-basis);
+  max-height: var(--action-cards-code-max-height);
+  overflow: hidden;
+  padding: var(--action-cards-code-padding);
+  border: var(--action-cards-code-border);
+  border-radius: var(--action-cards-code-radius);
+  background: var(--action-cards-code-background);
+  color: var(--text);
+  font-family: var(--action-cards-code-font-family);
+  font-size: var(--action-cards-code-font-size);
+  text-align: var(--action-cards-code-text-align);
+  white-space: var(--action-cards-code-white-space);
+  cursor: var(--action-cards-code-cursor);
+}
+.action-code[data-empty] {
+  color: var(--muted);
+}
+.studio .panel .edit-step-row[data-nested] {
+  width: var(--action-cards-nested-width);
+  margin-inline-start: var(--action-cards-nested-margin);
+}
+.edit-step-block > .action-tile {
+  grid-column: var(--action-cards-tile-block-grid-column);
+}
+.studio .edit-step-checks[data-state="produces"] {
+  background: var(--action-cards-produces-background);
+  color: var(--muted);
+}
+.token-editor {
+  position: fixed;
+  z-index: var(--action-cards-editor-layer);
+  padding: var(--action-cards-editor-padding);
+  border: var(--action-cards-editor-border);
+  border-radius: var(--action-cards-editor-radius);
+  background: var(--action-cards-editor-background);
+  box-shadow: var(--action-cards-editor-shadow);
+}
+.token-editor-code {
+  width: var(--action-cards-editor-code-width);
+  font-family: var(--action-cards-code-font-family);
+  font-size: var(--action-cards-code-font-size);
+}
+.variable-inspector {
+  display: grid;
+  gap: var(--action-cards-sentence-gap);
+}
+.variable-inspector-head {
+  display: flex;
+  align-items: center;
+  gap: var(--action-cards-sentence-gap);
+}
+.variable-inspector-head > .action-tile {
+  width: var(--action-cards-tile-size);
+  height: var(--action-cards-tile-size);
+}
+.variable-inspector-actions {
+  display: flex;
+  gap: var(--action-cards-sentence-gap);
+}
+.variable-inspector-actions > button {
+  flex: var(--action-cards-field-flex);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--action-cards-pill-gap);
+}
+.variable-inspector-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--action-cards-sentence-gap);
+}
+.variable-inspector-row > :is(input, select) {
+  flex: var(--action-cards-field-flex);
+  min-width: var(--action-cards-field-min-width);
+}
+.variable-inspector-type {
+  color: var(--muted);
+}

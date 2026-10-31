@@ -1,0 +1,146 @@
+/**
+ * Inspector content and code displays.
+ *
+ * Sources: 08-inspector.
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+@layer studio-base {
+  /* Source: 08-inspector */
+  .data-table td {
+    height: var(--inspector-data-table-td-height);
+    padding: var(--inspector-data-table-td-padding);
+    border-right: var(--panels-panel-border-right);
+    border-bottom: var(--inspector-data-table-td-border-bottom);
+    text-align: var(--inspector-data-table-td-text-align);
+    white-space: var(--inspector-data-table-td-white-space);
+    overflow: hidden;
+    text-overflow: var(--inspector-data-table-td-text-overflow);
+    overflow-wrap: var(--inspector-data-table-td-overflow-wrap);
+  }
+  .inspector pre {
+    padding: var(--inspector-pre-padding);
+    overflow: auto;
+    height: var(--inspector-pre-height);
+  }
+  .run-item > strong {
+    min-width: var(--inspector-run-item-strong-min-width);
+    overflow-wrap: var(--inspector-run-item-strong-overflow-wrap);
+  }
+  .run-item > span {
+    min-width: var(--inspector-run-item-span-min-width);
+    overflow-wrap: var(--inspector-run-item-span-overflow-wrap);
+  }
+  .run-item > small {
+    min-width: var(--inspector-run-item-small-min-width);
+    overflow-wrap: var(--inspector-run-item-small-overflow-wrap);
+  }
+  .field code {
+    overflow: hidden;
+    text-overflow: var(--inspector-field-code-text-overflow);
+    color: var(--inspector-field-code-color);
+    font: var(--inspector-field-code-font);
+  }
+  .run-item small {
+    font-size: var(--inspector-run-item-small-font-size);
+    color: var(--muted);
+    white-space: var(--inspector-run-item-small-white-space);
+    overflow-wrap: var(--inspector-run-item-small-overflow-wrap);
+  }
+  .run-item .run-action[data-state="succeeded"] {
+    color: var(--inspector-item-run-action-data-state-succeeded-color);
+  }
+  .run-item .run-action[data-state="failed"] {
+    color: var(--inspector-item-run-action-data-state-failed-color);
+  }
+  .run-item .run-action[data-state="skipped"],
+  .run-item .run-action[data-state="warning"] {
+    color: var(--inspector-item-run-action-data-state-skipped-color);
+  }
+  button:disabled {
+    box-shadow: var(--inspector-button-disabled-box-shadow);
+    opacity: var(--inspector-button-disabled-opacity);
+    cursor: var(--inspector-button-disabled-cursor);
+  }
+  textarea:focus-visible {
+    outline: var(--connections-button-focus-visible-outline);
+    outline-offset: var(--inspector-textarea-focus-visible-outline-offset);
+  }
+  summary:focus-visible {
+    outline: var(--connections-button-focus-visible-outline);
+    outline-offset: var(--inspector-summary-focus-visible-outline-offset);
+  }
+  a:focus-visible {
+    outline: var(--connections-button-focus-visible-outline);
+    outline-offset: var(--inspector-a-focus-visible-outline-offset);
+  }
+  .inspector > header {
+    flex-shrink: var(--inspector-header-flex-shrink);
+  }
+  .inspector-content form {
+    display: grid;
+    margin-block: var(--inspector-content-form-margin-block);
+  }
+  .check input {
+    appearance: none;
+    position: relative;
+    border: var(--inspector-check-input-border);
+    background: var(--inspector-check-input-background);
+    color-scheme: dark;
+    accent-color: var(--accent);
+    width: var(--switch-track);
+    height: var(--inspector-check-input-height);
+    min-height: var(--inspector-check-input-min-height);
+    flex-shrink: var(--inspector-check-input-flex-shrink);
+    order: var(--inspector-check-input-order);
+  }
+  .inspector-content select {
+    width: var(--inspector-content-select-width);
+    padding: var(--inspector-content-select-padding);
+    background: var(--bg);
+  }
+  .inspector-content textarea {
+    width: var(--inspector-content-textarea-width);
+    height: var(--property-text-height);
+    resize: vertical;
+    background: var(--bg);
+  }
+  .shot img {
+    display: block;
+    max-width: var(--inspector-shot-img-max-width);
+    max-height: var(--inspector-shot-img-max-height);
+    object-fit: contain;
+  }
+  .shot figcaption {
+    margin-top: var(--inspector-shot-figcaption-margin-top);
+  }
+  .data-table button {
+    white-space: var(--inspector-data-table-button-white-space);
+    overflow-wrap: var(--inspector-data-table-button-overflow-wrap);
+  }
+  .workspace > header {
+    flex-wrap: wrap;
+    padding: var(--inspector-workspace-header-padding);
+  }
+  .action-library-body > p {
+    font-size: var(--inspector-action-library-body-p-font-size);
+    color: var(--muted);
+    margin: var(--inspector-action-library-body-p-margin);
+  }
+  .action-grid button {
+    justify-content: flex-start;
+    font-size: var(--inspector-action-grid-button-font-size);
+    padding: var(--inspector-action-grid-button-padding);
+    background: var(--inspector-action-grid-button-background);
+    border-color: var(--inspector-action-grid-button-border-color);
+  }
+  .flow-node-title > small {
+    color: var(--muted);
+    font-family: var(--inspector-flow-node-title-small-font-family);
+  }
+  .node-actions > div {
+    display: flex;
+    align-items: center;
+    gap: var(--inspector-node-actions-div-gap);
+    min-width: var(--inspector-node-actions-div-min-width);
+  }
+}

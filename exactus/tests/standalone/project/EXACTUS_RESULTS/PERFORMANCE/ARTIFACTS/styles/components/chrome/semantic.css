@@ -1,0 +1,20 @@
+/**
+ * Contextual aliases of the chrome component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  --perf-topbar-mist: var(--catalog-field-color-topbar-mist);
+  --perf-topbar-height: var(--catalog-layout-measure-topbar-height);
+  --perf-topbar-padding: var(--catalog-layout-measure-topbar-padding);
+  --perf-actions-gap: var(--catalog-layout-measure-cluster-gap);
+  --perf-search-height: var(--catalog-layout-measure-search-height);
+  --perf-search-min: var(--catalog-layout-measure-search-min);
+  --perf-search-padding: var(--catalog-layout-measure-search-padding);
+  --perf-search-gap: var(--catalog-layout-measure-search-gap);
+  --perf-control-padding: var(--catalog-layout-measure-control-padding);
+  --perf-topbar-layer: var(--catalog-layout-measure-topbar-layer);
+  --perf-glass: var(--catalog-layout-effect-glass);
+  --perf-size-hero: var(--catalog-text-typography-size-hero);
+  --perf-track-tight: var(--catalog-text-typography-track-tight);
+  --perf-download-decoration: var(--catalog-text-typography-plain);
+}

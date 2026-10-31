@@ -1,0 +1,157 @@
+{
+	"findings": {
+		"$path": "findings"
+	},
+	"source_label": {
+		"$literal": "Category"
+	},
+	"metrics": {
+		"$when": {
+			"$path": "extension.metrics",
+			"$op": "not_empty"
+		},
+		"$then": [
+			{
+				"metric": {
+					"$literal": "Python files analyzed"
+				},
+				"value": "extension.metrics.overview.files_analyzed"
+			},
+			{
+				"metric": {
+					"$literal": "Files that failed to parse"
+				},
+				"value": "extension.metrics.overview.parse_failures"
+			},
+			{
+				"metric": {
+					"$literal": "Call sites with positional arguments"
+				},
+				"value": "extension.metrics.overview.call_sites"
+			},
+			{
+				"metric": {
+					"$literal": "Call sites resolved to a signature"
+				},
+				"value": "extension.metrics.overview.resolved_call_sites"
+			},
+			{
+				"metric": {
+					"$literal": "Resolved (%)"
+				},
+				"value": "extension.metrics.overview.resolution_percent"
+			},
+			{
+				"metric": {
+					"$literal": "Exempt call sites (positional-only or dynamic APIs)"
+				},
+				"value": "extension.metrics.overview.exempt_call_sites"
+			},
+			{
+				"metric": {
+					"$literal": "Unresolved call sites"
+				},
+				"value": "extension.metrics.overview.unresolved_call_sites"
+			},
+			{
+				"metric": {
+					"$literal": "Other unchecked call sites"
+				},
+				"value": "extension.metrics.overview.skipped_call_sites"
+			},
+			{
+				"metric": {
+					"$literal": "Functions checked"
+				},
+				"value": "extension.metrics.overview.functions_checked"
+			},
+			{
+				"metric": {
+					"$literal": "Parameters checked"
+				},
+				"value": "extension.metrics.overview.parameters_checked"
+			},
+			{
+				"metric": {
+					"$literal": "Signature hint coverage (%)"
+				},
+				"value": "extension.metrics.overview.hint_coverage_percent"
+			},
+			{
+				"metric": {
+					"$literal": "Missing variable and attribute hints"
+				},
+				"value": "extension.metrics.overview.missing_variable_hints"
+			},
+			{
+				"metric": {
+					"$literal": "Blocking findings"
+				},
+				"value": "extension.metrics.overview.blocking_findings"
+			}
+		],
+		"$else": []
+	},
+	"findings_by_category": {
+		"$path": "extension.metrics.categories",
+		"$default": [],
+		"$each": {
+			"category": "label",
+			"severity": "severity",
+			"blocking": "blocking",
+			"findings": "count"
+		}
+	},
+	"unresolved_callees": {
+		"$path": "extension.unresolved_callees",
+		"$default": [],
+		"$each": {
+			"callee": "callee",
+			"path": "path",
+			"line": "line",
+			"reason": "reason",
+			"call_sites": "count",
+			"finding": "finding"
+		}
+	},
+	"ambiguous_call_sites": {
+		"$path": "extension.ambiguous_call_sites",
+		"$default": [],
+		"$each": {
+			"callee": "callee",
+			"path": "path",
+			"line": "line",
+			"candidates": "candidates",
+			"finding": "finding"
+		}
+	},
+	"bare_imports": {
+		"$path": "extension.bare_imports",
+		"$default": [],
+		"$each": {
+			"module": "module",
+			"path": "path",
+			"line": "line",
+			"fix": "fix",
+			"replacement": "suggestion",
+			"finding": "finding"
+		}
+	},
+	"auto_fixes": {
+		"$path": "extension.auto_fixes",
+		"$default": [],
+		"$each": {
+			"status": "status",
+			"kind": "kind",
+			"file": "file",
+			"line": "line",
+			"column": "column",
+			"original": "original",
+			"replacement": "replacement"
+		}
+	},
+	"methodology_and_caveats": {
+		"$path": "extension.methodology",
+		"$default": []
+	}
+}

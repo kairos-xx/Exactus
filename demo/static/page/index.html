@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Second Demo Page</title>
+    <link rel="stylesheet" href="../app.css" />
+  </head>
+  <body class="second">
+    <main class="page">
+      <header class="hero hero-second">
+        <h1>Second Demo Page</h1>
+        <p class="lede">Reached through several links that share one URL.</p>
+      </header>
+      <section class="card" aria-labelledby="activity-heading">
+        <h2 id="activity-heading">Activity</h2>
+        <button
+          class="button"
+          type="button"
+          aria-expanded="false"
+          aria-controls="activity"
+          data-disclosure
+        >
+          Load activity
+        </button>
+        <ul class="reveal activity" id="activity" hidden>
+          <li>Lints passed</li>
+          <li>Coverage measured</li>
+          <li>Screenshots captured</li>
+        </ul>
+      </section>
+      <nav class="card nav" aria-label="Second page navigation">
+        <a class="link" href="../">Return home</a>
+      </nav>
+    </main>
+    <script type="module" src="../app.js"></script>
+  </body>
+</html>

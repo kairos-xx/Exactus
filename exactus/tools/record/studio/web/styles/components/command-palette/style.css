@@ -1,0 +1,170 @@
+/**
+ * Command palette and workspace surface shell.
+ *
+ * Sources: 16-command-palette.
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+@layer studio-base {
+  /* Source: 16-command-palette */
+  .command-palette::backdrop {
+    background: var(--command-palette-backdrop-background);
+  }
+  .command-palette-shell {
+    display: grid;
+    gap: var(--command-palette-shell-gap);
+    padding: var(--command-palette-shell-padding);
+  }
+  .command-palette header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--command-palette-header-gap);
+  }
+  :where(.command-palette header) p {
+    margin: var(--command-palette-where-command-palette-header-p-margin);
+    color: var(--muted);
+  }
+  .command-search {
+    display: grid;
+    grid-template-columns: var(
+      --command-palette-command-search-grid-template-columns
+    );
+    align-items: center;
+    gap: var(--command-palette-command-search-gap);
+    padding-inline: var(--command-palette-command-search-padding-inline);
+    background: var(--bg);
+    border: var(--command-palette-command-search-border);
+  }
+  .command-search input {
+    width: var(--command-palette-command-search-input-width);
+    border: var(--command-palette-command-search-input-border);
+    background: var(--command-palette-command-search-input-background);
+    outline: var(--command-palette-command-search-input-outline);
+  }
+  .command-list {
+    display: grid;
+    gap: var(--command-palette-command-list-gap);
+    max-height: var(--command-palette-command-list-max-height);
+    overflow: auto;
+  }
+  .command-list button {
+    display: grid;
+    height: var(--command-palette-command-list-button-height);
+    min-height: var(--flow-card-heading-height);
+    justify-items: start;
+    gap: var(--command-palette-command-list-button-gap);
+    padding: var(--command-palette-command-list-button-padding);
+    text-align: var(--command-palette-command-list-button-text-align);
+  }
+  .command-list small {
+    color: var(--muted);
+  }
+  .workspace-surface {
+    grid-row: var(--command-palette-workspace-surface-grid-row);
+    min-width: var(--command-palette-workspace-surface-min-width);
+    min-height: var(--command-palette-workspace-surface-min-height);
+    overflow: hidden;
+    background: var(--bg);
+    border-bottom: var(--studio-actions-dialog-border);
+  }
+  .workspace-surface-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--command-palette-workspace-surface-header-gap);
+  }
+  .workspace-surface-header > div:first-child {
+    min-width: var(
+      --command-palette-workspace-surface-header-div-first-child-min-width
+    );
+  }
+  .workspace-surface-header h2,
+  .workspace-surface-header p {
+    margin: var(--command-palette-workspace-surface-header-h2-margin);
+  }
+  .workspace-surface-header h2 {
+    line-height: var(--command-palette-workspace-surface-header-h2-line-height);
+  }
+  .workspace-surface-header p {
+    max-width: var(--command-palette-workspace-surface-header-p-max-width);
+    overflow: hidden;
+    text-overflow: var(
+      --command-palette-workspace-surface-header-p-text-overflow
+    );
+    white-space: var(--command-palette-workspace-surface-header-p-white-space);
+  }
+  [id="workspace-surface-kicker"] {
+    color: var(--accent);
+    font-size: var(--command-palette-id-workspace-surface-kicker-font-size);
+    font-weight: var(--command-palette-id-workspace-surface-kicker-font-weight);
+    letter-spacing: var(
+      --command-palette-id-workspace-surface-kicker-letter-spacing
+    );
+    text-transform: var(
+      --command-palette-id-workspace-surface-kicker-text-transform
+    );
+  }
+  .workspace-surface-actions {
+    flex: var(--command-palette-workspace-surface-actions-flex);
+  }
+  .workspace-surface-content {
+    height: var(--command-palette-workspace-surface-content-height);
+    min-height: var(--command-palette-workspace-surface-content-min-height);
+    overflow: auto;
+    padding: var(--command-palette-workspace-surface-content-padding);
+  }
+  .surface-grid {
+    display: grid;
+    min-height: var(--command-palette-surface-grid-min-height);
+    gap: var(--command-palette-surface-grid-gap);
+  }
+  .surface-card {
+    min-width: var(--command-palette-surface-card-min-width);
+    min-height: var(--command-palette-surface-card-min-height);
+    overflow: auto;
+    border: var(--studio-actions-dialog-border);
+    background: var(--surface);
+  }
+  .surface-card > header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .surface-card > h3,
+  .surface-card > header h3 {
+    margin: var(--command-palette-surface-card-h3-margin);
+    color: var(--text-strong);
+    font-size: var(--command-palette-surface-card-h3-font-size);
+    font-weight: var(--command-palette-surface-card-h3-font-weight);
+  }
+  .surface-card > header span,
+  .surface-card > header small {
+    min-width: var(--command-palette-surface-card-header-span-min-width);
+    overflow: hidden;
+    color: var(--text-subtle);
+    font-size: var(--command-palette-surface-card-header-span-font-size);
+    text-overflow: var(
+      --command-palette-surface-card-header-span-text-overflow
+    );
+    white-space: var(--command-palette-surface-card-header-span-white-space);
+  }
+  .surface-card > footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--command-palette-surface-card-footer-gap);
+    padding: var(--command-palette-surface-card-footer-padding);
+    border-top: var(--studio-actions-dialog-border);
+  }
+  .surface-list {
+    min-height: var(--command-palette-surface-list-min-height);
+    overflow: auto;
+  }
+  .surface-row {
+    display: grid;
+    width: var(--command-palette-surface-row-width);
+    height: var(--docks-workspace-is-collapsed-header-width);
+    justify-content: start;
+    border-bottom: var(--studio-actions-dialog-border);
+    box-shadow: var(--command-palette-surface-row-box-shadow);
+  }
+}

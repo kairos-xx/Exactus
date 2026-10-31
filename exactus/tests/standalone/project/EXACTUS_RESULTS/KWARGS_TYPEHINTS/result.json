@@ -1,0 +1,472 @@
+{
+  "title": "Python Call, Import, and Typing Exactus",
+  "status": "PASS",
+  "tool": {
+    "name": "kwargs_typehints",
+    "display_name": "Python Call, Import, and Typing Exactus",
+    "version": "0.5.0"
+  },
+  "summary": {
+    "python_files": 6,
+    "parse_failures": 0,
+    "positional_findings": 0,
+    "bare_import_findings": 0,
+    "missing_type_hints": 0,
+    "ambiguous_calls": 0,
+    "unresolved_callees": 0,
+    "unresolved_call_sites": 0,
+    "call_sites": 3,
+    "resolved_call_sites": 3,
+    "exempt_call_sites": 0,
+    "functions_checked": 5,
+    "parameters_checked": 5,
+    "targets_eligible": 6,
+    "targets_analyzed": 6,
+    "findings_total": 0,
+    "auto_fixes": 0,
+    "severity": {
+      "error": 0,
+      "warning": 0,
+      "info": 0
+    }
+  },
+  "ambiguous": [],
+  "analyzer": "static",
+  "artifacts": [
+    {
+      "name": "@activity.json",
+      "path": "ARTIFACTS/@activity.json",
+      "bytes": 1867
+    },
+    {
+      "name": "README.md",
+      "path": "ARTIFACTS/README.md",
+      "bytes": 460
+    },
+    {
+      "name": "heuristics.json",
+      "path": "ARTIFACTS/heuristics.json",
+      "bytes": 3915721
+    },
+    {
+      "name": "stderr.log",
+      "path": "ARTIFACTS/stderr.log",
+      "bytes": 0
+    },
+    {
+      "name": "stdout.log",
+      "path": "ARTIFACTS/stdout.log",
+      "bytes": 0
+    },
+    {
+      "name": "steps.txt",
+      "path": "ARTIFACTS/steps.txt",
+      "bytes": 4275
+    }
+  ],
+  "auto_fixes": [],
+  "bare_imports": [],
+  "comparison": {
+    "available": true,
+    "previous_generated_at": "2026-10-31T02:36:02.109043+00:00",
+    "previous_run_id": "121cfe10a875424b95e7d42f9947eb9a:kwargs_typehints",
+    "previous_status": "PASS",
+    "previous_duration_seconds": 1.682,
+    "current_total": 0,
+    "previous_total": 0,
+    "delta": 0,
+    "added_count": 0,
+    "resolved_count": 0,
+    "unchanged_count": 0,
+    "added": [],
+    "resolved": [],
+    "finding_details_available": true,
+    "subsections": [],
+    "categories": [
+      {
+        "category": "ambiguous-call",
+        "title": "Ambiguous calls",
+        "current": 0,
+        "previous": 0,
+        "delta": 0
+      },
+      {
+        "category": "bare-import",
+        "title": "Bare imports",
+        "current": 0,
+        "previous": 0,
+        "delta": 0
+      },
+      {
+        "category": "missing-hint",
+        "title": "Missing type hints",
+        "current": 0,
+        "previous": 0,
+        "delta": 0
+      },
+      {
+        "category": "missing-kwargs",
+        "title": "Missing keyword arguments",
+        "current": 0,
+        "previous": 0,
+        "delta": 0
+      },
+      {
+        "category": "parse-failure",
+        "title": "Parse failures",
+        "current": 0,
+        "previous": 0,
+        "delta": 0
+      },
+      {
+        "category": "unresolved-callee",
+        "title": "Unresolved callees",
+        "current": 0,
+        "previous": 0,
+        "delta": 0
+      }
+    ]
+  },
+  "duration_seconds": 1.523,
+  "environment": {
+    "os": "Darwin 25.3.0",
+    "python": "3.13.9",
+    "node": "v22.21.1",
+    "cpu_count": 18,
+    "variables": [
+      {
+        "name": "EXACTUS_ORCHESTRATED",
+        "value": "1"
+      },
+      {
+        "name": "EXACTUS_PIPELINE_RUN_ID",
+        "value": "f9656595c8b74d23b2b6aec3bd0db7de"
+      },
+      {
+        "name": "EXACTUS_REGISTRY",
+        "value": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/.runtime/runs.db"
+      },
+      {
+        "name": "EXACTUS_ROOT",
+        "value": "/Users/joaolopes/Exactus/exactus/tests/standalone/project"
+      },
+      {
+        "name": "EXACTUS_RUN_ID",
+        "value": "f9656595c8b74d23b2b6aec3bd0db7de:kwargs_typehints"
+      },
+      {
+        "name": "EXACTUS_TOOL",
+        "value": "kwargs_typehints"
+      },
+      {
+        "name": "LANG",
+        "value": "C.UTF-8"
+      }
+    ]
+  },
+  "extension": {
+    "metrics": {
+      "overview": {
+        "files_scanned": 6,
+        "files_analyzed": 6,
+        "parse_failures": 0,
+        "call_sites": 3,
+        "resolved_call_sites": 3,
+        "resolution_percent": 100.0,
+        "exempt_call_sites": 0,
+        "unresolved_call_sites": 0,
+        "skipped_call_sites": 0,
+        "functions_checked": 5,
+        "parameters_checked": 5,
+        "missing_parameter_hints": 0,
+        "missing_return_hints": 0,
+        "missing_variable_hints": 0,
+        "hint_coverage_percent": 100.0,
+        "findings": 0,
+        "blocking_findings": 0,
+        "auto_fixes": 0
+      },
+      "categories": [
+        {
+          "category": "missing-kwargs",
+          "label": "Missing keyword arguments",
+          "severity": "error",
+          "blocking": true,
+          "count": 0
+        },
+        {
+          "category": "bare-import",
+          "label": "Bare imports",
+          "severity": "error",
+          "blocking": true,
+          "count": 0
+        },
+        {
+          "category": "missing-hint",
+          "label": "Missing type hints",
+          "severity": "error",
+          "blocking": true,
+          "count": 0
+        },
+        {
+          "category": "parse-failure",
+          "label": "Parse failures",
+          "severity": "error",
+          "blocking": true,
+          "count": 0
+        },
+        {
+          "category": "ambiguous-call",
+          "label": "Ambiguous calls",
+          "severity": "warning",
+          "blocking": false,
+          "count": 0
+        },
+        {
+          "category": "unresolved-callee",
+          "label": "Unresolved callees",
+          "severity": "info",
+          "blocking": false,
+          "count": 0
+        }
+      ]
+    },
+    "unresolved_callees": [],
+    "ambiguous_call_sites": [],
+    "bare_imports": [],
+    "auto_fixes": [],
+    "methodology": [
+      "Signatures come from a repository-wide AST index (functions, methods, dataclass and `NamedTuple` fields, imports, `self.attr` assignments, annotations), `inspect.signature` for external callables and the typeshed stubs bundled with basedpyright.",
+      "Confidence of a missing-keyword finding: `resolved` (project index), `constructor` (project class constructor), `external` (`inspect.signature`), `stub` (typeshed), `stub-rt` (typeshed checked by a runtime probe), `unique-name` (one class defines the method), `ambiguous-all-flag` (every candidate flags it).",
+      "Arguments after a `*unpack`, beyond the named parameters of a `*args` signature, or already passed by keyword are not reported.",
+      "Calls to `pytest.mark.*`, standard-library positional-only methods and Qt-style `lowerCamelCase` methods are counted as exempt, not as unresolved.",
+      "A variable needs one annotation per lexical scope; parameters own their type, walrus bindings, TypeVar declarations and Enum members are exempt, `self`/`cls` need none, and lambdas cannot be annotated.",
+      "Hint coverage counts the parameters (receivers excluded) and return annotations of every function; variables are not part of the ratio.",
+      "Unresolved callees (dynamic objects, `*args` wrappers, mocks, higher-order results) are listed so they can be checked by hand; they never fail the run.",
+      "`ARTIFACTS/heuristics.json` holds the argument types observed by fuzzing builtin callables."
+    ]
+  },
+  "filters": {
+    "include": [],
+    "exclude": [
+      ".*/**",
+      "**/.*/**",
+      "EXACTUS_RESULTS/**",
+      "**/EXACTUS_RESULTS/**",
+      "node_modules/**",
+      "build/**",
+      "dist/**",
+      "*.egg-info/**",
+      "**/__pycache__/**",
+      "**/.agents/**",
+      "**/.build-cache/**",
+      "**/.cache/**",
+      "**/.claude/**",
+      "**/.cursor/**",
+      "**/.devin/**",
+      "**/.eggs/**",
+      "**/.git/**",
+      "**/.history/**",
+      "**/.mypy_cache/**",
+      "**/.pytest_cache/**",
+      "**/.ruff_cache/**",
+      "**/.tox/**",
+      "**/.venv/**",
+      "**/build/**",
+      "**/coverage_report/**",
+      "**/dist/**",
+      "**/env/**",
+      "**/htmlcov/**",
+      "**/mutants/**",
+      "**/node_modules/**",
+      "**/site-packages/**",
+      "**/venv/**"
+    ]
+  },
+  "findings": [],
+  "fingerprint": {
+    "commit": "44699a6d15abc067a4fca0d73349a1b51d916daa",
+    "tree": "da1ed611a023a1100d5395906351fec79ba6db1b",
+    "dirty": true,
+    "python": "3.13.9",
+    "ruff": "ruff 0.12.0",
+    "basedpyright": "basedpyright 1.40.2"
+  },
+  "gate": {
+    "status": "PASS",
+    "reason": "No blocking findings"
+  },
+  "generated_at": "2026-10-31T02:56:29.358318+00:00",
+  "generated_at_human": "31 October 2026, 02:56:29 UTC",
+  "invocation": {
+    "command": "/Users/joaolopes/Exactus/bin/release/exactus_macos_arm64/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=60276 --orchestrator-control-token=[redacted] --orchestrator-worker-port=60256 --orchestrator-worker-token=[redacted] '--orchestrator-call={\"args\":[],\"kwargs\":{\"request\":{\"identifier\":\"kwargs_typehints\",\"module\":\"exactus.tools.kwargs_typehints.main\",\"output\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/KWARGS_TYPEHINTS\",\"arguments\":[],\"run_id\":\"f9656595c8b74d23b2b6aec3bd0db7de:kwargs_typehints\",\"pipeline_run_id\":\"f9656595c8b74d23b2b6aec3bd0db7de\",\"project_root\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\"}}}'",
+    "cwd": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
+    "arguments": [
+      "exactus.tools.common.tool_worker",
+      "ExactusTool",
+      "--orchestrator-control-port=60276",
+      "--orchestrator-control-token=[redacted]",
+      "--orchestrator-worker-port=60256",
+      "--orchestrator-worker-token=[redacted]",
+      "--orchestrator-call={\"args\":[],\"kwargs\":{\"request\":{\"identifier\":\"kwargs_typehints\",\"module\":\"exactus.tools.kwargs_typehints.main\",\"output\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/KWARGS_TYPEHINTS\",\"arguments\":[],\"run_id\":\"f9656595c8b74d23b2b6aec3bd0db7de:kwargs_typehints\",\"pipeline_run_id\":\"f9656595c8b74d23b2b6aec3bd0db7de\",\"project_root\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\"}}}"
+    ]
+  },
+  "parse_failure_files": [],
+  "passed": true,
+  "pipeline_run_id": "f9656595c8b74d23b2b6aec3bd0db7de",
+  "previous_duration_seconds": 1.682,
+  "project_href": "../../..",
+  "project_root": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
+  "report_bundle": {
+    "markdown": "result.md",
+    "json": "result.json",
+    "web": "result_web"
+  },
+  "resume": "PASS: analyzer completed with exit status 0.",
+  "root": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
+  "run": {
+    "id": "f9656595c8b74d23b2b6aec3bd0db7de:kwargs_typehints",
+    "pipeline_id": "f9656595c8b74d23b2b6aec3bd0db7de",
+    "status": "PASS",
+    "exit_code": 0,
+    "started_at": "2026-10-31T02:56:29.212389+00:00",
+    "finished_at": "2026-10-31T02:56:30.736326+00:00",
+    "at_human": "31 October 2026, 02:56:29 UTC",
+    "started_at_human": "31 October 2026, 02:56:29 UTC",
+    "finished_at_human": "31 October 2026, 02:56:30 UTC",
+    "duration_seconds": 1.523,
+    "duration_human": "1.5 s",
+    "error": null
+  },
+  "run_at": "2026-10-31T02:56:29.212389+00:00",
+  "run_at_human": "31 October 2026, 02:56:29 UTC",
+  "run_id": "f9656595c8b74d23b2b6aec3bd0db7de:kwargs_typehints",
+  "schema": "project-exactus-report/v1",
+  "scope": {
+    "include": [
+      "**/*.py"
+    ],
+    "exclude": [
+      ".*/**",
+      "**/.*/**",
+      "EXACTUS_RESULTS/**",
+      "**/EXACTUS_RESULTS/**",
+      "node_modules/**",
+      "build/**",
+      "dist/**",
+      "*.egg-info/**",
+      "**/__pycache__/**",
+      "**/.agents/**",
+      "**/.build-cache/**",
+      "**/.cache/**",
+      "**/.claude/**",
+      "**/.cursor/**",
+      "**/.devin/**",
+      "**/.eggs/**",
+      "**/.git/**",
+      "**/.history/**",
+      "**/.mypy_cache/**",
+      "**/.pytest_cache/**",
+      "**/.ruff_cache/**",
+      "**/.tox/**",
+      "**/.venv/**",
+      "**/build/**",
+      "**/coverage_report/**",
+      "**/dist/**",
+      "**/env/**",
+      "**/htmlcov/**",
+      "**/mutants/**",
+      "**/node_modules/**",
+      "**/site-packages/**",
+      "**/venv/**"
+    ],
+    "skipped": []
+  },
+  "sections": [
+    {
+      "level": 1,
+      "title": "Python Call, Import, and Typing Exactus"
+    },
+    {
+      "level": 2,
+      "title": "Identity"
+    },
+    {
+      "level": 2,
+      "title": "What was checked"
+    },
+    {
+      "level": 3,
+      "title": "Metrics"
+    },
+    {
+      "level": 4,
+      "title": "Findings by category"
+    },
+    {
+      "level": 3,
+      "title": "Change since previous report"
+    },
+    {
+      "level": 4,
+      "title": "Category findings"
+    },
+    {
+      "level": 3,
+      "title": "Scope"
+    },
+    {
+      "level": 2,
+      "title": "Setup"
+    },
+    {
+      "level": 3,
+      "title": "Invocation"
+    },
+    {
+      "level": 3,
+      "title": "Environment"
+    },
+    {
+      "level": 2,
+      "title": "Gate"
+    },
+    {
+      "level": 2,
+      "title": "Findings"
+    },
+    {
+      "level": 2,
+      "title": "Artifacts"
+    },
+    {
+      "level": 2,
+      "title": "Unresolved callees"
+    },
+    {
+      "level": 2,
+      "title": "Ambiguous call sites"
+    },
+    {
+      "level": 2,
+      "title": "Bare imports"
+    },
+    {
+      "level": 2,
+      "title": "Automatic fixes"
+    },
+    {
+      "level": 2,
+      "title": "Methodology and caveats"
+    }
+  ],
+  "type_hints": [],
+  "unresolved": [],
+  "unresolved_sites": [],
+  "web": {
+    "index": "index.html",
+    "css": "report.css",
+    "javascript": "report.js",
+    "data": "data.json"
+  }
+}

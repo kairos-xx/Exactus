@@ -1,0 +1,781 @@
+{
+	"ambiguous": [
+		{
+			"callee": "found.walk",
+			"candidates": [
+				"Gamma.walk",
+				"Delta.walk"
+			],
+			"file": "pkg/mod.py",
+			"line": 36
+		}
+	],
+	"analyzer": "static",
+	"artifacts": [
+		{
+			"bytes": 0,
+			"name": "stderr.log",
+			"path": "ARTIFACTS/stderr.log"
+		},
+		{
+			"bytes": 3915729,
+			"name": "heuristics.json",
+			"path": "ARTIFACTS/heuristics.json"
+		}
+	],
+	"bare_imports": [
+		{
+			"bound": "json",
+			"column": 1,
+			"file": "pkg/mod.py",
+			"line": 3,
+			"module": "json",
+			"reason": "`json` is referenced from a nested lexical scope",
+			"replacements": [],
+			"safe": false,
+			"suggestion": ""
+		}
+	],
+	"duration_seconds": 4.25,
+	"environment": {
+		"cpu_count": 8,
+		"node": "v22.4.0",
+		"os": "Linux 6.8.0",
+		"python": "3.13.1",
+		"variables": [
+			{
+				"name": "EXACTUS_ORCHESTRATED",
+				"value": "1"
+			},
+			{
+				"name": "CI",
+				"value": "true"
+			}
+		]
+	},
+	"extension": {
+		"ambiguous_call_sites": [
+			{
+				"callee": "found.walk",
+				"candidates": "Gamma.walk, Delta.walk",
+				"finding": "KWARGS-006",
+				"line": 36,
+				"path": "pkg/mod.py"
+			}
+		],
+		"bare_imports": [
+			{
+				"finding": "KWARGS-002",
+				"fix": "manual",
+				"line": 3,
+				"module": "json",
+				"path": "pkg/mod.py",
+				"suggestion": null
+			}
+		],
+		"methodology": [
+			"Signatures come from a repository-wide AST index (functions, methods, dataclass and `NamedTuple` fields, imports, `self.attr` assignments, annotations), `inspect.signature` for external callables and the typeshed stubs bundled with basedpyright.",
+			"Confidence of a missing-keyword finding: `resolved` (project index), `constructor` (project class constructor), `external` (`inspect.signature`), `stub` (typeshed), `stub-rt` (typeshed checked by a runtime probe), `unique-name` (one class defines the method), `ambiguous-all-flag` (every candidate flags it).",
+			"Arguments after a `*unpack`, beyond the named parameters of a `*args` signature, or already passed by keyword are not reported.",
+			"Calls to `pytest.mark.*`, standard-library positional-only methods and Qt-style `lowerCamelCase` methods are counted as exempt, not as unresolved.",
+			"A variable needs one annotation per lexical scope; parameters own their type, walrus bindings, TypeVar declarations and Enum members are exempt, `self`/`cls` need none, and lambdas cannot be annotated.",
+			"Hint coverage counts the parameters (receivers excluded) and return annotations of every function; variables are not part of the ratio.",
+			"Unresolved callees (dynamic objects, `*args` wrappers, mocks, higher-order results) are listed so they can be checked by hand; they never fail the run.",
+			"`ARTIFACTS/heuristics.json` holds the argument types observed by fuzzing builtin callables."
+		],
+		"metrics": {
+			"categories": [
+				{
+					"blocking": true,
+					"category": "missing-kwargs",
+					"count": 1,
+					"label": "Missing keyword arguments",
+					"severity": "error"
+				},
+				{
+					"blocking": true,
+					"category": "bare-import",
+					"count": 1,
+					"label": "Bare imports",
+					"severity": "error"
+				},
+				{
+					"blocking": true,
+					"category": "missing-hint",
+					"count": 3,
+					"label": "Missing type hints",
+					"severity": "error"
+				},
+				{
+					"blocking": true,
+					"category": "parse-failure",
+					"count": 0,
+					"label": "Parse failures",
+					"severity": "error"
+				},
+				{
+					"blocking": false,
+					"category": "ambiguous-call",
+					"count": 1,
+					"label": "Ambiguous calls",
+					"severity": "warning"
+				},
+				{
+					"blocking": false,
+					"category": "unresolved-callee",
+					"count": 2,
+					"label": "Unresolved callees",
+					"severity": "info"
+				}
+			],
+			"overview": {
+				"blocking_findings": 5,
+				"call_sites": 4,
+				"exempt_call_sites": 0,
+				"files_analyzed": 2,
+				"files_scanned": 2,
+				"findings": 8,
+				"functions_checked": 5,
+				"hint_coverage_percent": 81.8,
+				"missing_parameter_hints": 1,
+				"missing_return_hints": 1,
+				"missing_variable_hints": 1,
+				"parameters_checked": 6,
+				"parse_failures": 0,
+				"resolution_percent": 50,
+				"resolved_call_sites": 2,
+				"skipped_call_sites": 0,
+				"unresolved_call_sites": 2
+			}
+		},
+		"unresolved_callees": [
+			{
+				"callee": "found.walk",
+				"count": 1,
+				"finding": "KWARGS-008",
+				"line": 36,
+				"path": "pkg/mod.py",
+				"reason": "receiver type unknown"
+			},
+			{
+				"callee": "registry['go']",
+				"count": 1,
+				"finding": "KWARGS-007",
+				"line": 34,
+				"path": "pkg/mod.py",
+				"reason": "subscript lookup"
+			}
+		]
+	},
+	"filters": {
+		"exclude": [
+			"exactus/packages/**",
+			"**/__pycache__/**",
+			"**/build/**",
+			"**/dist/**",
+			"**/mutants/**",
+			"**/node_modules/**",
+			"**/packages/**"
+		],
+		"include": []
+	},
+	"findings": [
+		{
+			"argument": "3",
+			"blocking": true,
+			"callee": "scale",
+			"category": "missing-kwargs",
+			"column": null,
+			"confidence": "resolved",
+			"excerpt": {
+				"clipped": false,
+				"context": 3,
+				"end": 37,
+				"language": "python",
+				"line": 37,
+				"lines": [
+					{
+						"n": 34,
+						"target": false,
+						"text": "    registry[\"go\"](7)"
+					},
+					{
+						"n": 35,
+						"target": false,
+						"text": "    found = registry[\"w\"]"
+					},
+					{
+						"n": 36,
+						"target": false,
+						"text": "    found.walk(3)"
+					},
+					{
+						"n": 37,
+						"target": true,
+						"text": "    return json.dumps(obj=scale(3))"
+					}
+				],
+				"start": 34
+			},
+			"file": "pkg/mod.py",
+			"id": "KWARGS-001",
+			"index": 0,
+			"line": 37,
+			"message": "`scale(…)` passes `3` positionally to the keyword-capable parameter `value` (signature: resolved). Write `value=3`.",
+			"parameter": "value",
+			"path": "pkg/mod.py",
+			"rule": "positional-argument",
+			"severity": "error",
+			"source": "Missing keyword arguments",
+			"suggestion": "value=3",
+			"title": "Pass `value` by keyword to `scale`"
+		},
+		{
+			"blocking": true,
+			"bound": "json",
+			"category": "bare-import",
+			"column": 1,
+			"excerpt": {
+				"clipped": false,
+				"context": 3,
+				"end": 6,
+				"language": "python",
+				"line": 3,
+				"lines": [
+					{
+						"n": 1,
+						"target": false,
+						"text": "\"\"\"Demo module.\"\"\""
+					},
+					{
+						"n": 2,
+						"target": false,
+						"text": ""
+					},
+					{
+						"n": 3,
+						"target": true,
+						"text": "import json"
+					},
+					{
+						"n": 4,
+						"target": false,
+						"text": ""
+					},
+					{
+						"n": 5,
+						"target": false,
+						"text": ""
+					},
+					{
+						"n": 6,
+						"target": false,
+						"text": "def scale(value: int, factor: int = 2) -> int:"
+					}
+				],
+				"start": 1
+			},
+			"file": "pkg/mod.py",
+			"id": "KWARGS-002",
+			"line": 3,
+			"message": "No complete automatic rewrite is proposed because `json` is referenced from a nested lexical scope.",
+			"module": "json",
+			"path": "pkg/mod.py",
+			"reason": "`json` is referenced from a nested lexical scope",
+			"replacements": [],
+			"rule": "bare-import-manual",
+			"safe": false,
+			"severity": "error",
+			"source": "Bare imports",
+			"suggestion": "",
+			"title": "Bare `import json`"
+		},
+		{
+			"blocking": true,
+			"category": "missing-hint",
+			"column": 1,
+			"excerpt": {
+				"clipped": false,
+				"context": 3,
+				"end": 14,
+				"language": "python",
+				"line": 11,
+				"lines": [
+					{
+						"n": 8,
+						"target": false,
+						"text": "    return value * factor"
+					},
+					{
+						"n": 9,
+						"target": false,
+						"text": ""
+					},
+					{
+						"n": 10,
+						"target": false,
+						"text": ""
+					},
+					{
+						"n": 11,
+						"target": true,
+						"text": "def total(items):"
+					},
+					{
+						"n": 12,
+						"target": false,
+						"text": "    \"\"\"Sum items.\"\"\""
+					},
+					{
+						"n": 13,
+						"target": false,
+						"text": "    return sum(items)"
+					},
+					{
+						"n": 14,
+						"target": false,
+						"text": ""
+					}
+				],
+				"start": 8
+			},
+			"file": "pkg/mod.py",
+			"id": "KWARGS-003",
+			"kind": "return",
+			"line": 11,
+			"message": "Callable has no explicit return annotation. Scope: `total`. Add `-> <return_type>`.",
+			"name": "total",
+			"path": "pkg/mod.py",
+			"reason": "callable has no explicit return annotation",
+			"rule": "missing-return-hint",
+			"scope": "total",
+			"severity": "error",
+			"source": "Missing type hints",
+			"suggestion": "-> <return_type>",
+			"title": "Missing return type hint for `total`"
+		},
+		{
+			"blocking": true,
+			"category": "missing-hint",
+			"column": 11,
+			"excerpt": {
+				"clipped": false,
+				"context": 3,
+				"end": 14,
+				"language": "python",
+				"line": 11,
+				"lines": [
+					{
+						"n": 8,
+						"target": false,
+						"text": "    return value * factor"
+					},
+					{
+						"n": 9,
+						"target": false,
+						"text": ""
+					},
+					{
+						"n": 10,
+						"target": false,
+						"text": ""
+					},
+					{
+						"n": 11,
+						"target": true,
+						"text": "def total(items):"
+					},
+					{
+						"n": 12,
+						"target": false,
+						"text": "    \"\"\"Sum items.\"\"\""
+					},
+					{
+						"n": 13,
+						"target": false,
+						"text": "    return sum(items)"
+					},
+					{
+						"n": 14,
+						"target": false,
+						"text": ""
+					}
+				],
+				"start": 8
+			},
+			"file": "pkg/mod.py",
+			"id": "KWARGS-004",
+			"kind": "parameter",
+			"line": 11,
+			"message": "Function parameter has no explicit annotation. Scope: `total`. Add `items: <type>`.",
+			"name": "items",
+			"path": "pkg/mod.py",
+			"reason": "function parameter has no explicit annotation",
+			"rule": "missing-parameter-hint",
+			"scope": "total",
+			"severity": "error",
+			"source": "Missing type hints",
+			"suggestion": "items: <type>",
+			"title": "Missing parameter type hint for `items`"
+		},
+		{
+			"blocking": true,
+			"category": "missing-hint",
+			"column": 5,
+			"excerpt": {
+				"clipped": false,
+				"context": 3,
+				"end": 37,
+				"language": "python",
+				"line": 35,
+				"lines": [
+					{
+						"n": 32,
+						"target": false,
+						"text": "def dispatch(registry: dict[str, object]) -> str:"
+					},
+					{
+						"n": 33,
+						"target": false,
+						"text": "    \"\"\"Dispatch dynamically.\"\"\""
+					},
+					{
+						"n": 34,
+						"target": false,
+						"text": "    registry[\"go\"](7)"
+					},
+					{
+						"n": 35,
+						"target": true,
+						"text": "    found = registry[\"w\"]"
+					},
+					{
+						"n": 36,
+						"target": false,
+						"text": "    found.walk(3)"
+					},
+					{
+						"n": 37,
+						"target": false,
+						"text": "    return json.dumps(obj=scale(3))"
+					}
+				],
+				"start": 32
+			},
+			"file": "pkg/mod.py",
+			"id": "KWARGS-005",
+			"kind": "variable",
+			"line": 35,
+			"message": "Variable binding has no explicit annotation anywhere in its owning scope `dispatch`. Add `found: <type>`.",
+			"name": "found",
+			"path": "pkg/mod.py",
+			"reason": "variable binding has no explicit annotation anywhere in its owning scope `dispatch`",
+			"rule": "missing-variable-hint",
+			"scope": "dispatch",
+			"severity": "error",
+			"source": "Missing type hints",
+			"suggestion": "found: <type>",
+			"title": "Missing variable type hint for `found`"
+		},
+		{
+			"blocking": false,
+			"callee": "found.walk",
+			"candidates": [
+				"Gamma.walk",
+				"Delta.walk"
+			],
+			"category": "ambiguous-call",
+			"column": null,
+			"excerpt": {
+				"clipped": false,
+				"context": 3,
+				"end": 37,
+				"language": "python",
+				"line": 36,
+				"lines": [
+					{
+						"n": 33,
+						"target": false,
+						"text": "    \"\"\"Dispatch dynamically.\"\"\""
+					},
+					{
+						"n": 34,
+						"target": false,
+						"text": "    registry[\"go\"](7)"
+					},
+					{
+						"n": 35,
+						"target": false,
+						"text": "    found = registry[\"w\"]"
+					},
+					{
+						"n": 36,
+						"target": true,
+						"text": "    found.walk(3)"
+					},
+					{
+						"n": 37,
+						"target": false,
+						"text": "    return json.dumps(obj=scale(3))"
+					}
+				],
+				"start": 33
+			},
+			"file": "pkg/mod.py",
+			"id": "KWARGS-006",
+			"line": 36,
+			"message": "2 candidate definitions disagree on the signature: `Gamma.walk`, `Delta.walk`. Review the call by hand.",
+			"path": "pkg/mod.py",
+			"rule": "disagreeing-signatures",
+			"severity": "warning",
+			"source": "Ambiguous calls",
+			"title": "Ambiguous call `found.walk`"
+		},
+		{
+			"blocking": false,
+			"callee": "registry['go']",
+			"category": "unresolved-callee",
+			"column": 5,
+			"excerpt": {
+				"clipped": false,
+				"context": 3,
+				"end": 37,
+				"language": "python",
+				"line": 34,
+				"lines": [
+					{
+						"n": 31,
+						"target": false,
+						"text": ""
+					},
+					{
+						"n": 32,
+						"target": false,
+						"text": "def dispatch(registry: dict[str, object]) -> str:"
+					},
+					{
+						"n": 33,
+						"target": false,
+						"text": "    \"\"\"Dispatch dynamically.\"\"\""
+					},
+					{
+						"n": 34,
+						"target": true,
+						"text": "    registry[\"go\"](7)"
+					},
+					{
+						"n": 35,
+						"target": false,
+						"text": "    found = registry[\"w\"]"
+					},
+					{
+						"n": 36,
+						"target": false,
+						"text": "    found.walk(3)"
+					},
+					{
+						"n": 37,
+						"target": false,
+						"text": "    return json.dumps(obj=scale(3))"
+					}
+				],
+				"start": 31
+			},
+			"file": "pkg/mod.py",
+			"id": "KWARGS-007",
+			"line": 34,
+			"message": "The callee is a subscript lookup, so its positional arguments were not checked.",
+			"path": "pkg/mod.py",
+			"reason": "subscript-lookup",
+			"rule": "subscript-lookup",
+			"severity": "info",
+			"sites": 1,
+			"source": "Unresolved callees",
+			"title": "Unresolved callee `registry['go']`"
+		},
+		{
+			"blocking": false,
+			"callee": "found.walk",
+			"category": "unresolved-callee",
+			"column": 5,
+			"excerpt": {
+				"clipped": false,
+				"context": 3,
+				"end": 37,
+				"language": "python",
+				"line": 36,
+				"lines": [
+					{
+						"n": 33,
+						"target": false,
+						"text": "    \"\"\"Dispatch dynamically.\"\"\""
+					},
+					{
+						"n": 34,
+						"target": false,
+						"text": "    registry[\"go\"](7)"
+					},
+					{
+						"n": 35,
+						"target": false,
+						"text": "    found = registry[\"w\"]"
+					},
+					{
+						"n": 36,
+						"target": true,
+						"text": "    found.walk(3)"
+					},
+					{
+						"n": 37,
+						"target": false,
+						"text": "    return json.dumps(obj=scale(3))"
+					}
+				],
+				"start": 33
+			},
+			"file": "pkg/mod.py",
+			"id": "KWARGS-008",
+			"line": 36,
+			"message": "The receiver's type is unknown, so its positional arguments were not checked.",
+			"path": "pkg/mod.py",
+			"reason": "unknown-receiver",
+			"rule": "unknown-receiver",
+			"severity": "info",
+			"sites": 1,
+			"source": "Unresolved callees",
+			"title": "Unresolved callee `found.walk`"
+		}
+	],
+	"gate": {
+		"reason": "5 blocking findings",
+		"status": "FAIL"
+	},
+	"invocation": {
+		"arguments": [
+			"."
+		],
+		"command": "python exactus/tools/kwargs_typehints/main.py .",
+		"cwd": "/work/project"
+	},
+	"parse_failure_files": [],
+	"passed": false,
+	"pipeline_run_id": null,
+	"resume": "FAIL: analyzer completed with exit status 1.",
+	"root": "/work/project",
+	"run": {
+		"duration_human": "4.2 s",
+		"duration_seconds": 4.25,
+		"exit_code": 1,
+		"finished_at": "2026-10-03T09:00:04+00:00",
+		"id": "0123456789abcdef0123456789abcdef",
+		"pipeline_id": null,
+		"started_at": "2026-10-03T09:00:00+00:00",
+		"status": "FAIL"
+	},
+	"run_id": "0123456789abcdef0123456789abcdef",
+	"scope": {
+		"exclude": [
+			"exactus/packages/**",
+			"**/__pycache__/**",
+			"**/build/**",
+			"**/dist/**",
+			"**/mutants/**",
+			"**/node_modules/**",
+			"**/packages/**"
+		],
+		"include": [
+			"**/*.py"
+		],
+		"skipped": []
+	},
+	"status": "FAIL",
+	"summary": {
+		"ambiguous_calls": 1,
+		"bare_import_findings": 1,
+		"call_sites": 4,
+		"exempt_call_sites": 0,
+		"findings_total": 8,
+		"functions_checked": 5,
+		"missing_type_hints": 3,
+		"parameters_checked": 6,
+		"parse_failures": 0,
+		"positional_findings": 1,
+		"python_files": 2,
+		"resolved_call_sites": 2,
+		"severity": {
+			"error": 5,
+			"info": 2,
+			"warning": 1
+		},
+		"targets_analyzed": 2,
+		"targets_eligible": 2,
+		"unresolved_call_sites": 2,
+		"unresolved_callees": 2
+	},
+	"title": "Python Call, Import, and Typing Exactus",
+	"tool": {
+		"display_name": "Kwargs Typehints Exactus",
+		"name": "kwargs-typehints",
+		"version": "0.5.0"
+	},
+	"type_hints": [
+		{
+			"column": 1,
+			"file": "pkg/mod.py",
+			"kind": "return",
+			"line": 11,
+			"name": "total",
+			"reason": "callable has no explicit return annotation",
+			"scope": "total",
+			"suggestion": "-> <return_type>"
+		},
+		{
+			"column": 11,
+			"file": "pkg/mod.py",
+			"kind": "parameter",
+			"line": 11,
+			"name": "items",
+			"reason": "function parameter has no explicit annotation",
+			"scope": "total",
+			"suggestion": "items: <type>"
+		},
+		{
+			"column": 5,
+			"file": "pkg/mod.py",
+			"kind": "variable",
+			"line": 35,
+			"name": "found",
+			"reason": "variable binding has no explicit annotation anywhere in its owning scope `dispatch`",
+			"scope": "dispatch",
+			"suggestion": "found: <type>"
+		}
+	],
+	"unresolved": [
+		{
+			"callee": "found.walk",
+			"file": "pkg/mod.py",
+			"sites": 1
+		},
+		{
+			"callee": "registry['go']",
+			"file": "pkg/mod.py",
+			"sites": 1
+		}
+	],
+	"unresolved_sites": [
+		{
+			"callee": "registry['go']",
+			"column": 5,
+			"file": "pkg/mod.py",
+			"line": 34,
+			"reason": "subscript-lookup"
+		},
+		{
+			"callee": "found.walk",
+			"column": 5,
+			"file": "pkg/mod.py",
+			"line": 36,
+			"reason": "unknown-receiver"
+		}
+	]
+}

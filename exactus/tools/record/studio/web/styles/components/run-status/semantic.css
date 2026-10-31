@@ -1,0 +1,142 @@
+/**
+ * Contextual aliases of the run status component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  /* 44-run-status */
+  --run-status-edit-step-checks-data-state-failed-background: var(
+    --catalog-item-color-step-checks-state-failed-background
+  );
+  --run-status-edit-step-checks-data-state-failed-color: var(
+    --catalog-item-color-step-checks-state-failed-color
+  );
+  --run-status-edit-step-checks-data-state-warning-background: var(
+    --catalog-item-color-step-checks-state-warning-background
+  );
+  --run-status-edit-step-checks-data-state-warning-color: var(
+    --catalog-item-color-step-checks-state-warning-color
+  );
+  --run-status-inspector-is-step-target-gap-container-panel-height-below-340px-and-width-min-300px: var(
+    --catalog-item-measure-compact-gap
+  );
+  --run-status-inspector-is-step-target-grid-template-columns-container-panel-height-below-340px-and-width-min-300px: var(
+    --catalog-item-measure-step-container-panel-height-below-340px-and-width-min-300px-grid-template-columns
+  );
+  --run-status-item-run-line-data-level-error-color: var(
+    --catalog-item-color-line-level-error-color
+  );
+  --run-status-item-run-line-data-level-warn-color: var(
+    --catalog-item-color-line-color
+  );
+  --run-status-last-run-facts-dd-font-family: var(
+    --catalog-control-typography-facts-dd-font-family
+  );
+  --run-status-last-run-facts-dd-margin: var(
+    --catalog-control-measure-facts-dd-margin
+  );
+  --run-status-last-run-facts-dd-overflow-wrap: var(
+    --catalog-control-measure-facts-dd-overflow-wrap
+  );
+  --run-status-last-run-facts-font-size: var(
+    --catalog-control-typography-small-font-size
+  );
+  --run-status-last-run-facts-gap: var(
+    --catalog-control-measure-micro-small-gap
+  );
+  --run-status-last-run-facts-grid-template-columns: var(
+    --catalog-control-measure-facts-grid-template-columns
+  );
+  --run-status-last-run-facts-margin: var(
+    --catalog-control-measure-facts-margin
+  );
+  --run-status-last-run-gap: var(--catalog-control-measure-compact-gap);
+  --run-status-last-run-h3-font-size: var(
+    --catalog-header-typography-small-font-size
+  );
+  --run-status-last-run-h3-font-weight: var(
+    --catalog-header-typography-weight-semibold-font-weight
+  );
+  --run-status-last-run-h3-margin: var(--catalog-header-measure-h3-margin);
+  --run-status-last-run-head-gap: var(--catalog-control-measure-compact-gap);
+  --run-status-last-run-head-small-font-size: var(
+    --catalog-label-typography-small-font-size
+  );
+  --run-status-last-run-head-small-margin: var(
+    --catalog-label-measure-head-small-margin
+  );
+  --run-status-last-run-head-small-overflow-wrap: var(
+    --catalog-label-measure-head-small-overflow-wrap
+  );
+  --run-status-last-run-head-small-white-space: var(
+    --catalog-label-typography-head-small-white-space
+  );
+  --run-status-last-run-head-text-transform: var(
+    --catalog-control-typography-head-text-transform
+  );
+  --run-status-last-run-item-border-radius: var(
+    --catalog-item-border-tiny-plus-micro-border-radius
+  );
+  --run-status-last-run-item-data-state-failed-box-shadow: var(
+    --catalog-item-effect-state-failed-box-shadow
+  );
+  --run-status-last-run-item-data-state-warning-box-shadow: var(
+    --catalog-item-effect-state-warning-box-shadow
+  );
+  --run-status-last-run-item-gap: var(
+    --catalog-item-measure-tiny-plus-micro-gap
+  );
+  --run-status-last-run-item-padding: var(
+    --catalog-item-measure-compact-plus-micro-padding
+  );
+  --run-status-last-run-line-error-color: var(
+    --catalog-control-color-line-error-color
+  );
+  --run-status-last-run-line-warn-color: var(
+    --catalog-control-color-line-warn-color
+  );
+  --run-status-last-run-padding-top: var(
+    --catalog-control-measure-small-padding-top
+  );
+  --run-status-run-item-run-line-font-family: var(
+    --catalog-item-typography-line-font-family
+  );
+  --run-status-run-item-run-line-padding-left: var(
+    --catalog-item-measure-small-padding-left
+  );
+  --run-status-run-item-run-line-white-space: var(
+    --catalog-item-typography-line-white-space
+  );
+  --run-status-step-note-background: var(
+    --catalog-item-color-step-note-background
+  );
+  --run-status-step-note-border-radius: var(
+    --catalog-item-border-tiny-plus-micro-border-radius
+  );
+  --run-status-step-note-font-size: var(
+    --catalog-item-typography-small-font-size
+  );
+  --run-status-step-note-margin: var(--catalog-item-measure-step-note-margin);
+  --run-status-step-note-padding: var(
+    --catalog-item-measure-compact-plus-micro-padding
+  );
+  --run-status-step-note-white-space: var(
+    --catalog-item-typography-step-note-white-space
+  );
+  --run-status-step-target-border: var(--catalog-item-border-step-zero-border);
+  --run-status-step-target-gap: var(--catalog-item-measure-compact-gap);
+  --run-status-step-target-legend-font-size: var(
+    --catalog-item-typography-small-font-size
+  );
+  --run-status-step-target-legend-font-weight: var(
+    --catalog-item-typography-weight-semibold-font-weight
+  );
+  --run-status-step-target-legend-padding: var(
+    --catalog-item-measure-step-legend-padding
+  );
+  --run-status-step-target-margin: var(
+    --catalog-item-measure-step-policy-margin
+  );
+  --run-status-step-target-padding: var(
+    --catalog-item-measure-step-policy-padding
+  );
+}

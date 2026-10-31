@@ -1,0 +1,72 @@
+/** Contextual aliases for the shared action and JavaScript workbenches. */
+:root {
+  --action-workbench-gap: var(--catalog-control-measure-small-gap);
+  --action-workbench-tight-gap: var(--catalog-control-measure-tiny-gap);
+  --action-workbench-section-gap: var(--catalog-control-measure-normal-gap);
+  --action-workbench-padding: var(--catalog-field-measure-compact-padding);
+  --action-workbench-small-padding: var(--catalog-control-measure-tiny-padding);
+  --action-workbench-border: var(--catalog-button-border-default-border);
+  --action-workbench-radius: var(--catalog-button-border-micro-border-radius);
+  --action-workbench-inner-radius: var(
+    --catalog-control-border-compact-border-radius
+  );
+  --action-workbench-background: var(
+    --catalog-panel-color-action-library-background
+  );
+  --action-workbench-card-background: var(
+    --catalog-surface-color-card-background
+  );
+  --action-workbench-field-background: var(
+    --catalog-field-color-input-background
+  );
+  --action-workbench-muted-color: var(--catalog-control-color-form-state-color);
+  --action-workbench-accent-color: var(--catalog-control-color-browser-color);
+  --action-workbench-small-font-size: var(
+    --catalog-control-typography-small-font-size
+  );
+  --action-workbench-icon-size: var(--catalog-icon-measure-shortcut-size);
+  --action-workbench-control-height: var(
+    --catalog-control-measure-touch-target-size
+  );
+  --action-workbench-catalog-height: var(
+    --catalog-control-measure-page-plus-medium-max-height
+  );
+  --action-workbench-full-width: var(--catalog-field-measure-full-width);
+  --action-workbench-flex-grow: var(--catalog-control-measure-canvas-auto-flex);
+  --action-workbench-zero-min-width: var(
+    --catalog-button-measure-default-min-width
+  );
+  --action-workbench-tab-padding: var(
+    --catalog-button-measure-compact-tiny-padding
+  );
+  --action-workbench-tab-border: var(--catalog-button-border-tabs-border);
+  --action-workbench-tab-border-bottom: var(
+    --catalog-button-border-tabs-border-bottom
+  );
+  --action-workbench-tab-background: var(
+    --catalog-button-color-tabs-background
+  );
+  --action-workbench-tab-white-space: var(
+    --catalog-button-typography-default-white-space
+  );
+  --action-workbench-row-padding: var(--catalog-control-measure-tiny-padding);
+  --action-workbench-badge-padding: var(
+    --catalog-button-measure-compact-plus-micro-padding-inline
+  );
+  --action-workbench-badge-background: var(
+    --catalog-control-color-highlight-background
+  );
+  --action-workbench-button-background: var(
+    --catalog-field-color-input-background
+  );
+  --action-workbench-preview-overflow: var(
+    --catalog-control-measure-facts-dd-overflow-wrap
+  );
+  --action-workbench-pointer-heading-columns: var(
+    --catalog-control-measure-default-grid-template-columns
+  );
+  --action-workbench-pointer-field-columns: var(
+    --catalog-control-measure-default-repeat-grid-template-columns
+  );
+  --action-workbench-zero-margin: var(--catalog-control-measure-app-margin);
+}

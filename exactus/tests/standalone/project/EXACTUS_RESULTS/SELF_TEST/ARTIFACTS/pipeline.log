@@ -1,0 +1,45 @@
+[2J[3J[H
+files · 2 py · 0 json · 3 html · 1 css · 0 md
+[1m[36mexactus · unified[0m
+[2m────────────────────────────────────────────────────────────────────────────────────────────────────[0m
+Result  [32m[1mPASS[0m    Tools  9    Passed  9    Failed  0
+[2m────────────────────────────────────────────────────────────────────────────────────────────────────[0m
+lints             [32m[1mPASS*[0m        4.417s
+coverage_tests    [32m[1mPASS*[0m        6.347s
+docs              [32m[1mPASS*[0m        0.491s
+kwargs_typehints  [32m[1mPASS*[0m        1.755s
+frontend          [32m[1mPASS*[0m        4.971s
+record            [32m[1mPASS*[0m        6.180s
+visual_cause      [32m[1mPASS*[0m        4.563s
+readme            [32m[1mPASS*[0m        0.496s
+performance       [32m[1mPASS*[0m        0.657s
+[2m────────────────────────────────────────────────────────────────────────────────────────────────────[0m
+[1mResumes[0m
+  lints: [32m[1mPASS*[0m    [2m0 files with issues / 8 files[0m
+  [2m/private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-self_test-6jdmekjq/repo/EXACTUS_…[0m
+
+  coverage_tests: [32m[1mPASS*[0m    [2m0 files with issues / 1 files[0m
+  [2m/private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-self_test-6jdmekjq/repo/EXACTUS_…[0m
+
+  docs: [32m[1mPASS*[0m    [2m0 files with issues / 4 files[0m
+  [2m/private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-self_test-6jdmekjq/repo/EXACTUS_…[0m
+
+  kwargs_typehints: [32m[1mPASS*[0m    [2m0 files with issues / 2 files[0m
+  [2m/private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-self_test-6jdmekjq/repo/EXACTUS_…[0m
+
+  frontend: [32m[1mPASS*[0m    [2m0 files with issues / 1 files[0m
+  [2m/private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-self_test-6jdmekjq/repo/EXACTUS_…[0m
+
+  record: [32m[1mPASS*[0m
+  [2m/private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-self_test-6jdmekjq/repo/EXACTUS_…[0m
+
+  visual_cause: [32m[1mPASS*[0m    [2m2 errors[0m
+  [2m/private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-self_test-6jdmekjq/repo/EXACTUS_…[0m
+
+  readme: [32m[1mPASS*[0m    [2m0 files with issues / 2 files[0m
+  [2m/private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-self_test-6jdmekjq/repo/EXACTUS_…[0m
+
+  performance: [32m[1mPASS*[0m
+  [2m/private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-self_test-6jdmekjq/repo/EXACTUS_…[0m
+
+[2m────────────────────────────────────────────────────────────────────────────────────────────────────[0m

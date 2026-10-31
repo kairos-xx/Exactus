@@ -1,0 +1,264 @@
+/**
+ * Profile, comparison, and assertion controls. Control specimens and dock-zone foundations.
+ *
+ * Sources: 18-surface-controls, 19-control-specimens.
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+@layer studio-base {
+  /* Source: 18-surface-controls */
+  .surface-tabs button.active {
+    border-bottom-color: var(--accent);
+    color: var(--text-strong);
+  }
+  .compare-pair {
+    display: grid;
+    flex: var(--controls-compare-pair-flex);
+    grid-template-columns: var(--controls-compare-pair-grid-template-columns);
+    gap: var(--controls-compare-pair-gap);
+    background: var(--line);
+  }
+  .compare-pair[data-mode="overlay"],
+  .compare-pair[data-mode="difference"],
+  .compare-pair[data-mode="wipe"] {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    background: var(--bg);
+  }
+  .compare-pair[data-mode="overlay"] > :where(.compare-image, .compare-empty),
+  .compare-pair[data-mode="difference"]
+    > :where(.compare-image, .compare-empty),
+  .compare-pair[data-mode="wipe"] > :where(.compare-image, .compare-empty) {
+    position: absolute;
+    inset: var(--controls-data-mode-overlay-where-compare-image-inset);
+    width: var(--controls-data-mode-overlay-where-compare-image-width);
+    height: var(--controls-data-mode-overlay-where-compare-image-height);
+  }
+  .compare-pair[data-mode="overlay"] > :last-child {
+    opacity: var(--controls-pair-data-mode-overlay-last-child-opacity);
+  }
+  .compare-pair[data-mode="difference"] > :last-child {
+    opacity: var(--controls-pair-data-mode-difference-last-child-opacity);
+    mix-blend-mode: difference;
+  }
+  .compare-pair[data-mode="wipe"] > :last-child {
+    clip-path: var(--controls-pair-data-mode-wipe-last-child-clip-path);
+    border-right: var(--command-palette-command-search-border);
+  }
+  .compare-image,
+  .compare-empty {
+    display: grid;
+    min-width: var(--controls-compare-image-min-width);
+    min-height: var(--controls-compare-image-min-height);
+    place-content: center;
+    gap: var(--controls-compare-image-gap);
+    border: var(--controls-compare-image-border);
+    background: var(--bg);
+  }
+  .compare-image {
+    position: relative;
+    height: var(--controls-compare-image-height);
+    padding: var(--studio-select-padding);
+  }
+  :where(.profile-card > header) span {
+    margin-left: var(--controls-where-profile-card-header-span-margin-left);
+  }
+  .compare-image span {
+    position: absolute;
+    top: var(--controls-compare-image-span-top);
+    left: var(--controls-compare-image-span-left);
+    color: var(--text-subtle);
+  }
+  .compare-image img {
+    display: block;
+    max-width: var(--controls-compare-image-img-max-width);
+    max-height: var(--controls-compare-image-img-max-height);
+    object-fit: contain;
+  }
+  .compare-empty span {
+    color: var(--text-subtle);
+  }
+  .surface-grid-crawl {
+    grid-template-columns: var(
+      --controls-surface-grid-crawl-grid-template-columns
+    );
+  }
+  .surface-form-grid {
+    display: grid;
+    grid-template-columns: var(--controls-surface-form-grid-template-columns);
+    gap: var(--controls-surface-form-grid-gap);
+    padding: var(--controls-surface-form-grid-padding);
+  }
+  .surface-form-grid label {
+    display: grid;
+    gap: var(--controls-surface-form-grid-label-gap);
+    color: var(--text-subtle);
+    font-size: var(--controls-surface-form-grid-label-font-size);
+    font-weight: var(--controls-surface-form-grid-label-font-weight);
+  }
+  .surface-form-grid :where(input, select) {
+    width: var(--controls-surface-form-grid-where-input-width);
+    min-width: var(--controls-surface-form-grid-where-input-min-width);
+    padding-inline: var(
+      --controls-surface-form-grid-where-input-padding-inline
+    );
+  }
+  .crawl-main fieldset {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--controls-crawl-main-fieldset-gap);
+    margin: var(--controls-crawl-main-fieldset-margin);
+    padding: var(--controls-crawl-main-fieldset-padding);
+    border: var(--studio-actions-dialog-border);
+  }
+  .crawl-main fieldset .check {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--controls-crawl-main-fieldset-check-gap);
+  }
+  .profile-grid {
+    display: grid;
+    grid-template-columns: var(--controls-profile-grid-template-columns);
+    align-items: start;
+    gap: var(--controls-profile-grid-gap);
+  }
+  .profile-card {
+    box-shadow: var(--controls-profile-card-box-shadow);
+  }
+  .profile-card.selected {
+    box-shadow: var(--controls-profile-card-selected-box-shadow);
+  }
+  .profile-card > header {
+    justify-content: flex-start;
+  }
+  .profile-card > strong {
+    display: block;
+    padding: var(--controls-profile-card-strong-padding);
+    color: var(--text-strong);
+    font: var(--controls-profile-card-strong-font);
+  }
+  .profile-card > button {
+    margin: var(--controls-profile-card-button-margin);
+  }
+  .surface-grid-inspector {
+    grid-template-columns: var(
+      --controls-surface-grid-inspector-grid-template-columns
+    );
+  }
+  .assertion-card {
+    display: grid;
+    gap: var(--controls-assertion-card-gap);
+    padding: var(--controls-assertion-card-padding);
+    border-bottom: var(--studio-actions-dialog-border);
+  }
+  .assertion-card span {
+    color: var(--text-subtle);
+  }
+  .assertion-card code {
+    color: var(--accent);
+  }
+  .surface-grid-controls {
+    grid-template-columns: var(
+      --controls-surface-grid-controls-grid-template-columns
+    );
+  }
+  /* Source: 19-control-specimens */
+  .controls-main > h3 {
+    padding: var(--controls-main-h3-padding);
+  }
+  .control-specimen {
+    display: grid;
+    gap: var(--controls-control-specimen-gap);
+    padding: var(--controls-control-specimen-padding);
+    background: var(--line);
+  }
+  .control-specimen > div {
+    display: flex;
+    align-items: center;
+    gap: var(--controls-control-specimen-div-gap);
+    padding: var(--controls-control-specimen-div-padding);
+    background: var(--surface);
+  }
+  .control-specimen small {
+    width: var(--controls-control-specimen-small-width);
+    color: var(--text-subtle);
+  }
+  .command-preview {
+    display: grid;
+    width: var(--controls-command-preview-width);
+    height: var(--controls-command-preview-height);
+    min-height: var(--flow-card-heading-height);
+    grid-template-columns: var(
+      --controls-command-preview-grid-template-columns
+    );
+    justify-content: start;
+    margin: var(--controls-command-preview-margin);
+    text-align: var(--controls-command-preview-text-align);
+  }
+  .command-preview small {
+    grid-column: var(--controls-command-preview-small-grid-column);
+    color: var(--text-subtle);
+  }
+  .status-specimens {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--controls-status-specimens-gap);
+    padding: var(--controls-status-specimens-padding);
+  }
+  .status-specimens span {
+    padding: var(--controls-status-specimens-span-padding);
+    border: var(--controls-status-specimens-span-border);
+  }
+  .history-list > div {
+    display: grid;
+    gap: var(--controls-history-list-div-gap);
+    padding: var(--controls-history-list-div-padding);
+    border-bottom: var(--studio-actions-dialog-border);
+  }
+  .history-list small {
+    color: var(--text-subtle);
+  }
+  .surface-grid-recovery {
+    grid-template-columns: var(
+      --controls-surface-grid-recovery-grid-template-columns
+    );
+    align-items: start;
+  }
+  .recovery-summary > p {
+    margin: var(--controls-recovery-summary-p-margin);
+    padding: var(--controls-recovery-summary-p-padding);
+    color: var(--muted);
+  }
+  .recovery-columns {
+    display: grid;
+    grid-template-columns: var(
+      --controls-recovery-columns-grid-template-columns
+    );
+    gap: var(--controls-recovery-columns-gap);
+    background: var(--line);
+  }
+  .recovery-columns article {
+    display: grid;
+    gap: var(--controls-recovery-columns-article-gap);
+    padding: var(--studio-icon-size);
+    background: var(--surface);
+  }
+  .recovery-columns small,
+  .recovery-columns span {
+    color: var(--text-subtle);
+  }
+  .studio:is(
+      [data-workspace-mode="play"],
+      [data-workspace-mode="compare"],
+      [data-workspace-mode="crawl"],
+      [data-workspace-mode="settings"]
+    )
+    > :is(.workbench, .bottom) {
+    display: none;
+  }
+  /* Reconfigurable professional panel workspace. */
+  .workbench {
+    grid-template-rows: var(--controls-workbench-grid-template-rows);
+    overflow: hidden;
+  }
+}

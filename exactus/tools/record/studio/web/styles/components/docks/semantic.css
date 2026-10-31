@@ -1,0 +1,556 @@
+/**
+ * Contextual aliases of the docks component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  /* 04-dock-resizers */
+  --docks-bottom-has-runs-is-collapsed-grid-template-columns: var(
+    --catalog-control-measure-runs-collapsed-grid-template-columns
+  );
+  --docks-bottom-has-timeline-is-collapsed-grid-template-columns: var(
+    --catalog-track-measure-bottom-collapsed-grid-template-columns
+  );
+  --docks-bottom-has-timeline-is-floating-grid-template-columns: var(
+    --catalog-track-measure-bottom-floating-grid-template-columns
+  );
+  --docks-dot-border-radius: var(--catalog-control-border-half-border-radius);
+  --docks-dot-height: var(
+    --catalog-control-measure-compact-minus-hairline-height
+  );
+  --docks-dot-width: var(
+    --catalog-control-measure-compact-minus-hairline-width
+  );
+  --docks-graph-canvas-background-image: var(
+    --catalog-control-color-canvas-background-image
+  );
+  --docks-graph-canvas-background-size: var(
+    --catalog-control-color-medium-background-size
+  );
+  --docks-graph-canvas-cursor: var(--catalog-control-cursor-canvas-cursor);
+  --docks-graph-canvas-flex: var(--catalog-control-measure-canvas-flex);
+  --docks-graph-canvas-gap: var(--catalog-control-measure-normal-gap);
+  --docks-graph-canvas-height: var(--catalog-control-measure-canvas-height);
+  --docks-graph-canvas-is-graph-panning-cursor: var(
+    --catalog-control-cursor-canvas-panning-cursor
+  );
+  --docks-graph-canvas-min-height: var(
+    --catalog-control-measure-canvas-min-height
+  );
+  --docks-graph-canvas-padding: var(--catalog-control-measure-small-padding);
+  --docks-node-background: var(--catalog-item-color-node-light-background);
+  --docks-node-border: var(--catalog-item-border-node-higher-border);
+  --docks-node-border-radius: var(--catalog-item-border-micro-border-radius);
+  --docks-node-box-shadow: var(--catalog-item-effect-node-none-box-shadow);
+  --docks-node-width: var(
+    --catalog-item-measure-massive-plus-micro-plus-medium-width
+  );
+  --docks-tree-flex: var(--catalog-list-measure-tree-flex);
+  --docks-tree-height: var(--catalog-list-measure-tree-height);
+  --docks-tree-item-background: var(--catalog-item-color-tree-dark-background);
+  --docks-tree-item-border: var(--catalog-item-border-tree-border);
+  --docks-tree-item-border-radius: var(
+    --catalog-item-border-micro-border-radius
+  );
+  --docks-tree-item-gap: var(--catalog-item-measure-compact-gap);
+  --docks-tree-item-height: var(--catalog-item-measure-tree-height);
+  --docks-tree-item-padding: var(--catalog-item-measure-tree-padding);
+  --docks-tree-item-text-align: var(--catalog-item-typography-tree-text-align);
+  --docks-tree-item-width: var(--catalog-item-measure-full-width);
+  --docks-tree-min-height: var(--catalog-list-measure-tree-min-height);
+  --docks-tree-padding: var(--catalog-list-measure-compact-padding);
+  --docks-workbench-has-workspace-is-collapsed-grid-template-columns: var(
+    --catalog-panel-measure-workbench-collapsed-grid-template-columns
+  );
+  --docks-workbench-has-workspace-is-floating-grid-template-columns: var(
+    --catalog-panel-measure-workbench-floating-grid-template-columns
+  );
+  --docks-workspace-add-background: var(--catalog-control-color-add-background);
+  --docks-workspace-is-collapsed-header-height: var(
+    --catalog-header-measure-full-height
+  );
+  --docks-workspace-is-collapsed-header-min-height: var(
+    --catalog-header-measure-collapsed-min-height
+  );
+  --docks-workspace-is-collapsed-header-padding: var(
+    --catalog-header-measure-tiny-plus-micro-tiny-padding
+  );
+  --docks-workspace-is-collapsed-panel-title-font-size: var(
+    --catalog-header-typography-collapsed-title-font-size
+  );
+  --docks-workspace-is-collapsed-panel-tools-margin: var(
+    --catalog-button-measure-collapsed-tools-margin
+  );
+  /* 20-dock-groups */
+  --docks-panel-id-composition-not-is-floating-flex-grow: var(
+    --catalog-control-measure-floating-flex-grow
+  );
+  --docks-panel-id-properties-not-is-floating-flex-grow: var(
+    --catalog-control-measure-floating-flex-grow
+  );
+  --docks-panel-id-steps-not-is-floating-flex-grow: var(
+    --catalog-control-measure-floating-floating-flex-grow
+  );
+  --docks-panel-id-target-not-is-floating-flex-grow: var(
+    --catalog-control-measure-floating-floating-flex-grow
+  );
+  /* 21-panel-docking */
+  --docks-has-panel-dock-menu-is-open-z-index: var(
+    --catalog-menu-measure-open-z-index
+  );
+  --docks-panel-dock-menu-box-shadow: var(
+    --catalog-menu-effect-default-small-box-shadow
+  );
+  --docks-panel-dock-menu-button-padding-inline: var(
+    --catalog-button-measure-compact-padding-inline
+  );
+  --docks-panel-dock-menu-button-text-align: var(
+    --catalog-button-typography-menu-text-align
+  );
+  --docks-panel-dock-menu-button-width: var(
+    --catalog-button-measure-full-width
+  );
+  --docks-panel-dock-menu-padding: var(--catalog-menu-measure-tiny-padding);
+  --docks-panel-dock-menu-right: var(--catalog-menu-measure-default-right);
+  --docks-panel-dock-menu-select-font-size: var(
+    --catalog-field-typography-small-minus-hairline-font-size
+  );
+  --docks-panel-dock-menu-select-min-width: var(
+    --catalog-field-measure-menu-select-min-width
+  );
+  --docks-panel-dock-menu-select-width: var(--catalog-field-measure-full-width);
+  --docks-panel-dock-menu-span-font-size: var(
+    --catalog-menu-typography-compact-plus-micro-font-size
+  );
+  --docks-panel-dock-menu-span-font-weight: var(
+    --catalog-menu-typography-span-font-weight
+  );
+  --docks-panel-dock-menu-span-letter-spacing: var(
+    --catalog-menu-typography-spacing-ultra-wide-letter-spacing
+  );
+  --docks-panel-dock-menu-span-padding: var(
+    --catalog-menu-measure-tiny-tiny-plus-micro-padding
+  );
+  --docks-panel-dock-menu-span-text-transform: var(
+    --catalog-menu-typography-span-text-transform
+  );
+  --docks-panel-dock-menu-top: var(--catalog-menu-measure-default-tiny-top);
+  --docks-panel-dock-menu-width: var(
+    --catalog-menu-measure-page-plus-xlarge-width
+  );
+  --docks-panel-dock-menu-z-index: var(
+    --catalog-menu-measure-default-lower-z-index
+  );
+  --docks-panel-header-active-cursor: var(
+    --catalog-header-cursor-default-active-cursor
+  );
+  --docks-panel-header-cursor: var(--catalog-header-cursor-default-cursor);
+  --docks-panel-header-is-id-browser-status-flex: var(
+    --catalog-header-measure-default-flex
+  );
+  --docks-panel-header-is-id-browser-status-text-overflow: var(
+    --catalog-header-typography-default-text-overflow
+  );
+  --docks-panel-header-is-id-browser-status-white-space: var(
+    --catalog-header-typography-default-white-space
+  );
+  --docks-panel-header-not-panel-tools-min-width: var(
+    --catalog-button-measure-header-tools-min-width
+  );
+  --docks-panel-header-panel-title-text-min-width: var(
+    --catalog-header-measure-title-text-min-width
+  );
+  --docks-panel-header-panel-title-text-overflow: var(
+    --catalog-header-typography-title-text-overflow
+  );
+  --docks-panel-header-panel-title-text-white-space: var(
+    --catalog-header-typography-title-text-white-space
+  );
+  --docks-panel-is-dragging-opacity: var(
+    --catalog-panel-effect-dragging-opacity
+  );
+  --docks-panel-split-edges-gap: var(--catalog-panel-measure-micro-gap);
+  --docks-panel-split-edges-grid-template-columns: var(
+    --catalog-panel-measure-split-edges-grid-template-columns
+  );
+  --docks-timeline-header-panel-title-flex: var(
+    --catalog-header-measure-title-flex
+  );
+  --docks-timeline-toolbar-flex: var(--catalog-track-measure-toolbar-auto-flex);
+  --docks-timeline-toolbar-is-button-flex: var(
+    --catalog-button-measure-toolbar-flex
+  );
+  --docks-timeline-toolbar-min-width: var(
+    --catalog-track-measure-toolbar-min-width
+  );
+  --docks-timeline-toolbar-scrollbar-width: var(
+    --catalog-track-measure-toolbar-scrollbar-width
+  );
+  --docks-timeline-toolbar-white-space: var(
+    --catalog-track-typography-toolbar-white-space
+  );
+  /* 22-dock-chrome */
+  --docks-action-grid-button-background: var(
+    --catalog-button-color-action-item-background
+  );
+  --docks-action-grid-button-border-color: var(
+    --catalog-button-border-action-item-border-color
+  );
+  --docks-action-grid-button-box-shadow: var(
+    --catalog-button-effect-action-box-shadow
+  );
+  --docks-action-grid-button-hover-background-media-hover-and-pointer-fine: var(
+    --catalog-button-color-action-hover-media-hover-and-pointer-fine-background
+  );
+  --docks-action-grid-button-hover-border-color-media-hover-and-pointer-fine: var(
+    --catalog-button-border-action-hover-media-hover-and-pointer-fine-border-color
+  );
+  --docks-action-library-body-box-shadow: var(
+    --catalog-surface-effect-library-body-box-shadow
+  );
+  --docks-data-panel-id-focus-within-header-border-bottom-color: var(
+    --catalog-header-border-within-border-bottom-color
+  );
+  --docks-data-panel-id-focus-within-header-box-shadow: var(
+    --catalog-header-effect-within-box-shadow
+  );
+  --docks-data-panel-id-is-floating-header-background: var(
+    --catalog-header-color-floating-background
+  );
+  --docks-data-panel-id-is-floating-header-border-bottom-color: var(
+    --catalog-header-border-floating-border-bottom-color
+  );
+  --docks-data-panel-id-not-is-floating-border-color: var(
+    --catalog-panel-border-floating-border-color
+  );
+  --docks-data-panel-id-not-is-floating-box-shadow: var(
+    --catalog-panel-effect-floating-none-box-shadow
+  );
+  --docks-flow-node-border-color: var(--catalog-item-border-node-border-color);
+  --docks-flow-node-box-shadow: var(--catalog-item-effect-node-card-box-shadow);
+  --docks-panel-data-panel-id-header-border-bottom: var(
+    --catalog-header-border-default-middle-border-bottom
+  );
+  --docks-panel-data-panel-id-header-box-shadow: var(
+    --catalog-header-effect-default-box-shadow
+  );
+  --docks-panel-id-header-not-panel-tools-min-width: var(
+    --catalog-button-measure-header-tools-min-width
+  );
+  --docks-panel-id-not-is-collapsed-header-white-space: var(
+    --catalog-header-typography-collapsed-white-space
+  );
+  --docks-panel-id-not-is-collapsed-header-width: var(
+    --catalog-header-measure-full-width
+  );
+  --docks-panel-is-button-border-color: var(
+    --catalog-button-border-default-light-border-color
+  );
+  --docks-panel-is-button-box-shadow: var(
+    --catalog-button-effect-default-box-shadow
+  );
+  --docks-panel-is-floating-background: var(
+    --catalog-panel-color-floating-darkest-background
+  );
+  --docks-panel-is-flow-node-meta-font-size: var(
+    --catalog-label-typography-node-meta-font-size
+  );
+  --docks-panel-is-flow-node-meta-font-weight: var(
+    --catalog-label-typography-node-meta-font-weight
+  );
+  --docks-panel-is-graph-background: var(
+    --catalog-panel-color-default-darkest-background
+  );
+  --docks-panel-is-input-background: var(
+    --catalog-field-color-input-background
+  );
+  --docks-panel-is-input-box-shadow: var(
+    --catalog-field-effect-input-box-shadow
+  );
+  --docks-panel-is-table-panel-background: var(
+    --catalog-table-color-default-background
+  );
+  --docks-panel-is-workspace-background: var(
+    --catalog-panel-color-action-library-background
+  );
+  --docks-panel-where-button-min-width: var(
+    --catalog-button-measure-default-min-width
+  );
+  --docks-panel-where-button-text-overflow: var(
+    --catalog-button-typography-default-text-overflow
+  );
+  --docks-panel-where-button-white-space: var(
+    --catalog-button-typography-default-white-space
+  );
+  --docks-timeline-toolbar-is-button-white-space: var(
+    --catalog-button-typography-toolbar-white-space
+  );
+  --docks-topbar-background: var(--catalog-header-color-topbar-background);
+  --docks-topbar-border-bottom-color: var(
+    --catalog-header-border-topbar-border-bottom-color
+  );
+  --docks-topbar-box-shadow: var(--catalog-header-effect-topbar-box-shadow);
+  --docks-workspace-add-flex: var(
+    --catalog-control-measure-add-huge-plus-large-flex
+  );
+  --docks-workspace-add-icon-flex: var(--catalog-icon-measure-add-flex);
+  --docks-workspace-add-text-overflow: var(
+    --catalog-control-typography-add-text-overflow
+  );
+  --docks-workspace-add-white-space: var(
+    --catalog-control-typography-add-white-space
+  );
+  /* 23-responsive-docks */
+  --docks-data-panel-id-not-is-floating-max-width-600px: var(
+    --catalog-panel-measure-full-max-width
+  );
+  --docks-data-panel-id-not-is-floating-min-width-max-width-600px: var(
+    --catalog-panel-measure-floating-min-width
+  );
+  --docks-data-panel-id-not-is-floating-width-max-width-600px: var(
+    --catalog-panel-measure-full-width
+  );
+  --docks-data-workspace-mode-crawl-graph-opacity-above-width-1100px: var(
+    --catalog-control-effect-default-opacity
+  );
+  --docks-data-workspace-mode-graph-workbench-grid-template-columns-above-width-1100px: var(
+    --catalog-panel-measure-workbench-above-width-1100px-grid-template-columns
+  );
+  --docks-data-workspace-mode-timeline-bottom-grid-template-columns-above-width-1100px: var(
+    --catalog-control-measure-bottom-above-width-1100px-grid-template-columns
+  );
+  --docks-data-workspace-mode-timeline-bottom-height-above-width-1100px: var(
+    --catalog-control-measure-bottom-height
+  );
+  --docks-data-workspace-mode-timeline-height-above-width-1100px: var(
+    --catalog-track-measure-default-above-width-1100px-height
+  );
+  --docks-inspector-content-label-color: var(
+    --catalog-label-color-content-color
+  );
+  --docks-inspector-content-label-font-size: var(
+    --catalog-label-typography-compact-plus-micro-font-size
+  );
+  --docks-inspector-content-label-font-weight: var(
+    --catalog-label-typography-content-table-th-font-weight
+  );
+  --docks-inspector-content-label-letter-spacing: var(
+    --catalog-label-typography-spacing-broad-letter-spacing
+  );
+  --docks-mobile-panel-tabs-button-background-max-width-600px: var(
+    --catalog-button-color-mobile-tabs-background
+  );
+  --docks-mobile-panel-tabs-button-border-bottom-max-width-600px: var(
+    --catalog-button-border-mobile-tabs-border-bottom
+  );
+  --docks-mobile-panel-tabs-button-border-max-width-600px: var(
+    --catalog-button-border-mobile-tabs-border
+  );
+  --docks-mobile-panel-tabs-button-border-radius-max-width-600px: var(
+    --catalog-button-border-mobile-tabs-border-radius
+  );
+  --docks-mobile-panel-tabs-grid-template-columns-max-width-600px: var(
+    --catalog-tab-measure-mobile-tabs-grid-template-columns
+  );
+  --docks-mobile-panel-tabs-top-max-width-600px: var(
+    --catalog-tab-measure-mobile-tabs-top
+  );
+  --docks-mobile-panel-tabs-z-index-max-width-600px: var(
+    --catalog-tab-measure-mobile-tabs-z-index
+  );
+  --docks-preview-max-height-max-width-600px: var(
+    --catalog-surface-measure-page-plus-massive-max-height
+  );
+  --docks-preview-order-max-width-600px: var(
+    --catalog-surface-measure-preview-order
+  );
+  --docks-profile-grid-template-columns-max-width-600px: var(
+    --catalog-list-measure-profile-max-width-600px-grid-template-columns
+  );
+  --docks-runs-order-max-width-600px: var(--catalog-control-measure-runs-order);
+  --docks-table-panel-order-max-width-600px: var(
+    --catalog-table-measure-default-order
+  );
+  --docks-timeline-order-max-width-600px: var(
+    --catalog-track-measure-default-order
+  );
+  --docks-workbench-max-width-600px: var(
+    --catalog-panel-measure-full-max-width
+  );
+  --docks-workbench-min-width-max-width-600px: var(
+    --catalog-panel-measure-workbench-min-width
+  );
+  --docks-workbench-width-max-width-600px: var(
+    --catalog-panel-measure-full-width
+  );
+  --docks-workspace-surface-actions-width-max-width-600px: var(
+    --catalog-toolbar-measure-full-width
+  );
+  --docks-workspace-surface-content-padding-max-width-600px: var(
+    --catalog-surface-measure-compact-padding
+  );
+  /* 35-dock-grid */
+  --docks-body-dock-resizing-x-cursor: var(
+    --catalog-panel-cursor-resizing-x-cursor
+  );
+  --docks-body-dock-resizing-y-cursor: var(
+    --catalog-panel-cursor-resizing-y-cursor
+  );
+  --docks-data-workspace-mode-edit-workbench-background: var(
+    --catalog-panel-color-workbench-background
+  );
+  --docks-data-workspace-mode-edit-workbench-gap: var(
+    --catalog-panel-measure-hairline-gap
+  );
+  --docks-data-workspace-mode-edit-workbench-min-height: var(
+    --catalog-panel-measure-workbench-min-height
+  );
+  --docks-data-workspace-mode-edit-workbench-min-width: var(
+    --catalog-panel-measure-workbench-min-width
+  );
+  --docks-dock-drop-border: var(--catalog-panel-border-drop-border);
+  --docks-dock-drop-border-radius: var(
+    --catalog-panel-border-tiny-plus-micro-border-radius
+  );
+  --docks-dock-drop-data-blocked-background: var(
+    --catalog-panel-color-drop-background
+  );
+  --docks-dock-drop-data-blocked-border-color: var(
+    --catalog-panel-border-drop-border-color
+  );
+  --docks-dock-drop-z-index: var(--catalog-panel-measure-drop-z-index);
+  --docks-dock-ghost-background: var(--catalog-panel-color-ghost-background);
+  --docks-dock-ghost-border: var(--catalog-panel-border-ghost-border);
+  --docks-dock-ghost-border-radius: var(
+    --catalog-panel-border-tiny-plus-micro-border-radius
+  );
+  --docks-dock-ghost-box-shadow: var(--catalog-panel-effect-ghost-box-shadow);
+  --docks-dock-ghost-font-size: var(
+    --catalog-panel-typography-small-plus-hairline-font-size
+  );
+  --docks-dock-ghost-font-weight: var(
+    --catalog-panel-typography-weight-medium-font-weight
+  );
+  --docks-dock-ghost-left: var(--catalog-panel-measure-ghost-left);
+  --docks-dock-ghost-padding: var(
+    --catalog-panel-measure-tiny-compact-plus-micro-padding
+  );
+  --docks-dock-ghost-top: var(--catalog-panel-measure-ghost-top);
+  --docks-dock-ghost-z-index: var(--catalog-panel-measure-ghost-z-index);
+  --docks-dock-handle-after-content: var(
+    --catalog-panel-typography-handle-content
+  );
+  --docks-dock-handle-after-opacity: var(--catalog-panel-effect-zero-opacity);
+  --docks-dock-handle-data-axis-c-after-inset: var(
+    --catalog-panel-measure-handle-inset
+  );
+  --docks-dock-handle-data-axis-c-cursor: var(
+    --catalog-panel-cursor-handle-cursor
+  );
+  --docks-dock-handle-data-axis-c-transform: var(
+    --catalog-panel-effect-handle-transform
+  );
+  --docks-dock-handle-data-axis-c-width: var(
+    --catalog-panel-measure-compact-width
+  );
+  --docks-dock-handle-data-axis-r-after-inset: var(
+    --catalog-panel-measure-handle-axis-r-inset
+  );
+  --docks-dock-handle-data-axis-r-cursor: var(
+    --catalog-panel-cursor-handle-axis-r-cursor
+  );
+  --docks-dock-handle-data-axis-r-height: var(
+    --catalog-panel-measure-compact-height
+  );
+  --docks-dock-handle-data-axis-r-transform: var(
+    --catalog-panel-effect-handle-axis-r-transform
+  );
+  --docks-dock-handle-focus-visible-outline: var(
+    --catalog-panel-border-handle-outline
+  );
+  --docks-dock-handle-hover-after-opacity: var(
+    --catalog-panel-effect-full-opacity
+  );
+  --docks-dock-handle-z-index: var(--catalog-panel-measure-handle-z-index);
+  --docks-dock-handles-inset: var(--catalog-panel-measure-handles-inset);
+  --docks-dock-handles-z-index: var(--catalog-panel-measure-handles-z-index);
+  --docks-is-collapsed-data-collapse-h-header-gap: var(
+    --catalog-header-measure-small-gap
+  );
+  --docks-is-collapsed-data-collapse-h-header-height: var(
+    --catalog-header-measure-full-height
+  );
+  --docks-is-collapsed-data-collapse-h-header-max-height: var(
+    --catalog-header-measure-collapsed-max-height
+  );
+  --docks-is-collapsed-data-collapse-h-header-padding: var(
+    --catalog-header-measure-collapsed-padding
+  );
+  --docks-is-collapsed-data-collapse-h-header-width: var(
+    --catalog-header-measure-full-width
+  );
+  --docks-is-collapsed-panel-tools-margin: var(
+    --catalog-button-measure-collapsed-tools-margin
+  );
+  --docks-is-collapsed-panel-tools-order: var(
+    --catalog-button-measure-collapsed-tools-order
+  );
+  --docks-is-floating-is-collapsed-panel-tools-margin-left: var(
+    --catalog-button-measure-collapsed-tools-margin-left
+  );
+  --docks-is-floating-is-collapsed-panel-tools-order: var(
+    --catalog-button-measure-floating-collapsed-tools-order
+  );
+  --docks-panel-id-workspace-not-is-floating-max-height: var(
+    --catalog-panel-measure-workbench-floating-max-height
+  );
+  --docks-panel-is-collapsed-header-border-bottom: var(
+    --catalog-header-border-collapsed-border-bottom
+  );
+  --docks-panel-is-floating-border-dock-grid: var(
+    --catalog-panel-border-floating-hairline-border
+  );
+  --docks-panel-is-floating-border-radius: var(
+    --catalog-panel-border-compact-border-radius
+  );
+  --docks-panel-is-floating-box-shadow-dock-grid: var(
+    --catalog-panel-effect-floating-inset-box-shadow
+  );
+  --docks-panel-is-floating-is-collapsed-min-height: var(
+    --catalog-panel-measure-floating-collapsed-min-height
+  );
+  --docks-panel-is-floating-min-height: var(
+    --catalog-panel-measure-massive-plus-normal-min-height
+  );
+  --docks-panel-is-floating-min-width: var(
+    --catalog-panel-measure-massive-plus-massive-min-width
+  );
+  --docks-panel-is-floating-z-index: var(
+    --catalog-panel-measure-floating-z-index
+  );
+  --docks-workbench-gap-max-width-600px: var(
+    --catalog-panel-measure-workbench-gap
+  );
+  --docks-workbench-panel-data-panel-id-flex-max-width-600px: var(
+    --catalog-panel-measure-workbench-flex
+  );
+  --docks-workbench-panel-data-panel-id-min-height: var(
+    --catalog-panel-measure-workbench-min-height
+  );
+  --docks-workbench-panel-data-panel-id-min-width: var(
+    --catalog-panel-measure-workbench-min-width
+  );
+  --docks-workbench-panel-data-panel-id-width-max-width-600px: var(
+    --catalog-panel-measure-full-width
+  );
+  /* 01-tokens */
+  --docks-data-workspace-mode-debug-runs-box-shadow: var(
+    --catalog-control-effect-runs-box-shadow
+  );
+  --docks-flow-node-active-box-shadow: var(
+    --catalog-item-effect-node-zero-pixel-micro-plus-hairline-box-shadow
+  );
+  --docks-tree-item-active-background: var(
+    --catalog-item-color-tree-light-background
+  );
+  --docks-tree-item-color: var(--catalog-item-color-tree-color);
+}

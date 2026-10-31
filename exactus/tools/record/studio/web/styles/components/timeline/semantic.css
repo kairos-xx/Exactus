@@ -1,0 +1,440 @@
+/**
+ * Contextual aliases of the timeline component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  /* 13-timeline */
+  --timeline-clip-diagnostics-border-color: var(
+    --catalog-track-border-clip-diagnostics-light-border-color
+  );
+  --timeline-clips-clip-width: var(
+    --catalog-track-measure-huge-plus-large-width
+  );
+  --timeline-composition-link-text-fill: var(--catalog-link-color-text-fill);
+  --timeline-composition-link-text-font: var(
+    --catalog-link-typography-text-font
+  );
+  --timeline-composition-link-text-stroke: var(
+    --catalog-link-color-text-stroke
+  );
+  --timeline-composition-links-marker-path-fill: var(
+    --catalog-control-color-marker-path-fill
+  );
+  --timeline-composition-links-marker-path-stroke: var(
+    --catalog-control-color-marker-path-stroke
+  );
+  --timeline-composition-preview-links-stroke: var(
+    --catalog-surface-color-preview-links-stroke
+  );
+  --timeline-composition-preview-links-stroke-dasharray: var(
+    --catalog-surface-measure-preview-links-higher-stroke-dasharray
+  );
+  --timeline-marker-border-left: var(--catalog-track-border-marker-border-left);
+  --timeline-marker-small-color: var(--catalog-label-color-marker-small-color);
+  --timeline-marker-small-font: var(
+    --catalog-label-typography-marker-small-font
+  );
+  --timeline-marker-small-left: var(--catalog-label-measure-tiny-left);
+  --timeline-marker-small-padding: var(
+    --catalog-label-measure-hairline-tiny-padding
+  );
+  --timeline-marker-small-top: var(--catalog-label-measure-micro-top);
+  --timeline-marker-small-white-space: var(
+    --catalog-label-typography-marker-small-white-space
+  );
+  --timeline-playhead-before-border-left: var(
+    --catalog-track-border-playhead-border-left
+  );
+  --timeline-playhead-before-border-right: var(
+    --catalog-track-border-playhead-border-right
+  );
+  --timeline-playhead-before-content: var(
+    --catalog-track-typography-playhead-content
+  );
+  --timeline-playhead-before-left: var(--catalog-track-measure-playhead-left);
+  --timeline-playhead-before-top: var(--catalog-track-measure-playhead-top);
+  --timeline-playhead-bottom: var(--catalog-track-measure-playhead-bottom);
+  --timeline-playhead-top: var(--catalog-track-measure-playhead-top);
+  --timeline-playhead-width: var(--catalog-track-measure-pixel-hairline-width);
+  --timeline-playhead-z-index: var(--catalog-track-measure-playhead-z-index);
+  --timeline-right-stack-grid-template-rows: var(
+    --catalog-list-measure-right-stack-minmax-grid-template-rows
+  );
+  --timeline-right-stack-grid-template-rows-max-width-1000px: var(
+    --catalog-list-measure-right-stack-grid-template-rows
+  );
+  --timeline-right-stack-min-height: var(
+    --catalog-list-measure-right-stack-min-height
+  );
+  --timeline-screenshot-dialog-backdrop-background: var(
+    --catalog-dialog-color-screenshot-backdrop-background
+  );
+  --timeline-screenshot-dialog-header-gap: var(
+    --catalog-dialog-measure-small-gap
+  );
+  --timeline-screenshot-dialog-header-margin-bottom: var(
+    --catalog-dialog-measure-small-margin-bottom
+  );
+  --timeline-screenshot-dialog-height: var(
+    --catalog-dialog-measure-screenshot-height
+  );
+  --timeline-screenshot-dialog-padding: var(
+    --catalog-dialog-measure-small-padding
+  );
+  --timeline-screenshot-dialog-width: var(
+    --catalog-dialog-measure-screenshot-width
+  );
+  --timeline-topbar-gap: var(--catalog-header-measure-small-gap);
+  --timeline-topbar-padding: var(--catalog-header-measure-tiny-small-padding);
+  /* 34-timeline */
+  --timeline-clip-border: var(--catalog-track-border-clip-hairline-border);
+  --timeline-clip-border-radius: var(--catalog-track-border-tiny-border-radius);
+  --timeline-clip-cursor: var(--catalog-track-cursor-clip-cursor);
+  --timeline-clip-diagnostics-background: var(
+    --catalog-track-color-clip-diagnostics-background
+  );
+  --timeline-clip-font-size: var(--catalog-track-typography-small-font-size);
+  --timeline-clip-font-weight: var(
+    --catalog-track-typography-weight-medium-font-weight
+  );
+  --timeline-clip-gap: var(--catalog-track-measure-tiny-plus-micro-gap);
+  --timeline-clip-height: var(--catalog-track-measure-large-height);
+  --timeline-clip-hover-background: var(
+    --catalog-track-color-clip-light-background
+  );
+  --timeline-clip-icon-flex-basis: var(
+    --catalog-icon-measure-small-plus-micro-flex-basis
+  );
+  --timeline-clip-icon-height: var(
+    --catalog-icon-measure-small-plus-micro-height
+  );
+  --timeline-clip-icon-width: var(
+    --catalog-icon-measure-small-plus-micro-width
+  );
+  --timeline-clip-is-dragging-box-shadow: var(
+    --catalog-track-effect-clip-dragging-box-shadow
+  );
+  --timeline-clip-is-dragging-cursor: var(
+    --catalog-track-cursor-clip-dragging-cursor
+  );
+  --timeline-clip-is-dragging-opacity: var(
+    --catalog-track-effect-clip-dragging-opacity
+  );
+  --timeline-clip-is-dragging-z-index: var(
+    --catalog-track-measure-clip-dragging-z-index
+  );
+  --timeline-clip-min-height: var(--catalog-track-measure-large-min-height);
+  --timeline-clip-padding: var(
+    --catalog-track-measure-clip-tiny-plus-micro-padding
+  );
+  --timeline-clip-selected-box-shadow: var(
+    --catalog-track-effect-clip-zero-box-shadow
+  );
+  --timeline-clip-span-not-icon-min-width: var(
+    --catalog-icon-measure-clip-span-min-width
+  );
+  --timeline-clip-span-not-icon-text-overflow: var(
+    --catalog-icon-typography-clip-span-text-overflow
+  );
+  --timeline-clip-span-not-icon-white-space: var(
+    --catalog-icon-typography-clip-span-white-space
+  );
+  --timeline-clips-background-color: var(
+    --catalog-track-color-clips-background-color
+  );
+  --timeline-cluster-gap: var(--catalog-track-measure-compact-gap);
+  --timeline-cluster-min-width: var(--catalog-track-measure-cluster-min-width);
+  --timeline-content-background: var(--catalog-track-color-content-background);
+  --timeline-content-is-marquee-cursor: var(
+    --catalog-track-cursor-content-marquee-cursor
+  );
+  --timeline-drop-line-bottom: var(--catalog-track-measure-drop-line-bottom);
+  --timeline-drop-line-box-shadow: var(
+    --catalog-track-effect-drop-line-box-shadow
+  );
+  --timeline-drop-line-top: var(--catalog-track-measure-drop-line-top);
+  --timeline-drop-line-width: var(--catalog-track-measure-micro-width);
+  --timeline-drop-line-z-index: var(--catalog-track-measure-drop-line-z-index);
+  --timeline-group-background: var(--catalog-track-color-group-background);
+  --timeline-group-border: var(--catalog-track-border-group-border);
+  --timeline-group-border-radius: var(
+    --catalog-track-border-compact-border-radius
+  );
+  --timeline-group-button-background: var(
+    --catalog-button-color-group-background
+  );
+  --timeline-group-button-border-radius: var(
+    --catalog-button-border-tiny-border-radius
+  );
+  --timeline-group-button-font-size: var(
+    --catalog-button-typography-small-font-size
+  );
+  --timeline-group-button-font-weight: var(
+    --catalog-button-typography-weight-medium-font-weight
+  );
+  --timeline-group-flex: var(--catalog-track-measure-group-flex);
+  --timeline-group-gap: var(--catalog-track-measure-micro-gap);
+  --timeline-group-padding: var(--catalog-track-measure-micro-padding);
+  --timeline-group-timeline-icon-button-background: var(
+    --catalog-button-color-group-background
+  );
+  --timeline-header-panel-title-flex: var(--catalog-header-measure-title-flex);
+  --timeline-marquee-z-index: var(--catalog-track-measure-marquee-z-index);
+  --timeline-panel-timeline-header-gap: var(
+    --catalog-header-measure-normal-gap
+  );
+  --timeline-panel-timeline-header-height: var(
+    --catalog-header-measure-xxlarge-plus-compact-height
+  );
+  --timeline-panel-timeline-header-min-height: var(
+    --catalog-header-measure-xxlarge-plus-compact-min-height
+  );
+  --timeline-panel-timeline-header-padding-inline: var(
+    --catalog-header-measure-small-compact-padding-inline
+  );
+  --timeline-ruler-background: var(--catalog-track-color-ruler-background);
+  --timeline-ruler-border-bottom: var(
+    --catalog-track-border-ruler-border-bottom
+  );
+  --timeline-ruler-label-font-size: var(
+    --catalog-label-typography-small-minus-hairline-font-size
+  );
+  --timeline-ruler-label-height: var(
+    --catalog-label-measure-large-plus-tiny-height
+  );
+  --timeline-ruler-label-line-height: var(
+    --catalog-label-typography-large-plus-tiny-line-height
+  );
+  --timeline-ruler-label-min-height: var(
+    --catalog-label-measure-large-plus-tiny-min-height
+  );
+  --timeline-ruler-min-height: var(
+    --catalog-track-measure-large-plus-tiny-min-height
+  );
+  --timeline-ruler-ticks-span-font-family: var(
+    --catalog-track-typography-ticks-span-font-family
+  );
+  --timeline-ruler-ticks-span-font-size: var(
+    --catalog-track-typography-small-minus-hairline-font-size
+  );
+  --timeline-ticks-flex: var(--catalog-track-measure-ticks-flex);
+  --timeline-ticks-font-size: var(--catalog-track-typography-small-font-size);
+  --timeline-ticks-gap: var(--catalog-track-measure-compact-gap);
+  --timeline-ticks-select-font-size: var(
+    --catalog-field-typography-small-font-size
+  );
+  --timeline-ticks-select-height: var(
+    --catalog-field-measure-large-plus-tiny-height
+  );
+  --timeline-ticks-select-padding-inline: var(
+    --catalog-field-measure-compact-large-padding-inline
+  );
+  --timeline-timecode-background: var(
+    --catalog-track-color-timecode-background
+  );
+  --timeline-timecode-border-radius: var(
+    --catalog-track-border-compact-border-radius
+  );
+  --timeline-timecode-font-family: var(
+    --catalog-track-typography-timecode-font-family
+  );
+  --timeline-timecode-font-size: var(
+    --catalog-track-typography-large-plus-micro-font-size
+  );
+  --timeline-timecode-font-variant-numeric: var(
+    --catalog-track-typography-timecode-font-variant-numeric
+  );
+  --timeline-timecode-font-weight: var(
+    --catalog-track-typography-weight-semibold-font-weight
+  );
+  --timeline-timecode-height: var(
+    --catalog-track-measure-xlarge-plus-compact-height
+  );
+  --timeline-timecode-letter-spacing: var(
+    --catalog-track-typography-spacing-broader-letter-spacing
+  );
+  --timeline-timecode-line-height: var(
+    --catalog-track-typography-timecode-line-height
+  );
+  --timeline-timecode-min-width: var(
+    --catalog-track-measure-page-plus-large-min-width
+  );
+  --timeline-timecode-padding: var(--catalog-track-measure-timecode-padding);
+  --timeline-timecode-text-align: var(
+    --catalog-track-typography-timecode-text-align
+  );
+  --timeline-timeline-clip-diagnostics-border-color: var(
+    --catalog-track-border-clip-diagnostics-dark-border-color
+  );
+  --timeline-toolbar-flex: var(--catalog-track-measure-toolbar-flex);
+  --timeline-toolbar-gap: var(--catalog-track-measure-normal-gap);
+  --timeline-toolbar-grid-template-columns: var(
+    --catalog-track-measure-toolbar-grid-template-columns
+  );
+  --timeline-toolbar-height: var(--catalog-track-measure-xxlarge-height);
+  --timeline-toolbar-max-height: var(
+    --catalog-track-measure-toolbar-max-height
+  );
+  --timeline-toolbar-min-width: var(--catalog-track-measure-toolbar-min-width);
+  --timeline-track-border-bottom: var(
+    --catalog-track-border-default-border-bottom
+  );
+  --timeline-track-label-background: var(
+    --catalog-label-color-track-background
+  );
+  --timeline-track-label-font-size: var(
+    --catalog-label-typography-small-font-size
+  );
+  --timeline-track-label-font-weight: var(
+    --catalog-label-typography-weight-medium-font-weight
+  );
+  --timeline-track-label-gap: var(--catalog-label-measure-compact-gap);
+  --timeline-track-label-padding-inline: var(
+    --catalog-label-measure-small-padding-inline
+  );
+  --timeline-track-nth-child-even-background-color: var(
+    --catalog-track-color-even-background-color
+  );
+  --timeline-zoom-group-input-type-range-background: var(
+    --catalog-field-color-group-input-background
+  );
+  --timeline-zoom-group-input-type-range-border: var(
+    --catalog-field-border-group-input-border
+  );
+  --timeline-zoom-group-input-type-range-box-shadow: var(
+    --catalog-field-effect-group-input-box-shadow
+  );
+  --timeline-zoom-group-input-type-range-height: var(
+    --catalog-field-measure-medium-height
+  );
+  --timeline-zoom-group-input-type-range-padding: var(
+    --catalog-field-measure-group-input-padding
+  );
+  --timeline-zoom-group-input-type-range-width: var(
+    --catalog-field-measure-huge-plus-large-width
+  );
+  /* 40-timeline-clock */
+  --timeline-cursor: var(--catalog-track-cursor-ew-resize-cursor);
+  --timeline-cursor-before-content: var(
+    --catalog-track-typography-cursor-content
+  );
+  --timeline-cursor-before-inset: var(--catalog-track-measure-cursor-inset);
+  --timeline-cursor-before-width: var(
+    --catalog-track-measure-pixel-hairline-width
+  );
+  --timeline-cursor-focus-visible-outline-offset: var(
+    --catalog-track-border-pixel-micro-outline-offset
+  );
+  --timeline-cursor-grip-clip-path: var(
+    --catalog-track-measure-cursor-grip-clip-path
+  );
+  --timeline-cursor-grip-height: var(--catalog-track-measure-compact-height);
+  --timeline-cursor-grip-margin-left: var(
+    --catalog-track-measure-tiny-margin-left
+  );
+  --timeline-cursor-grip-top: var(--catalog-track-measure-cursor-grip-top);
+  --timeline-cursor-grip-width: var(--catalog-track-measure-compact-width);
+  --timeline-cursor-margin-left: var(
+    --catalog-track-measure-minus-compact-margin-left
+  );
+  --timeline-cursor-top: var(--catalog-track-measure-cursor-top);
+  --timeline-cursor-width: var(--catalog-track-measure-normal-width);
+  --timeline-cursor-z-index: var(--catalog-track-measure-cursor-z-index);
+  --timeline-id-timeline-is-scrubbing-cursor: var(
+    --catalog-control-cursor-scrubbing-cursor
+  );
+  --timeline-id-timeline-zoom-focus-visible-outline-offset: var(
+    --catalog-control-border-tiny-outline-offset
+  );
+  --timeline-id-timeline-zoom-moz-range-thumb-border-radius: var(
+    --catalog-field-border-half-border-radius
+  );
+  --timeline-id-timeline-zoom-moz-range-thumb-box-shadow: var(
+    --catalog-field-effect-range-thumb-box-shadow
+  );
+  --timeline-id-timeline-zoom-moz-range-thumb-height: var(
+    --catalog-field-measure-normal-height
+  );
+  --timeline-id-timeline-zoom-moz-range-thumb-width: var(
+    --catalog-field-measure-normal-width
+  );
+  --timeline-id-timeline-zoom-moz-range-track-border: var(
+    --catalog-field-border-range-track-border
+  );
+  --timeline-id-timeline-zoom-moz-range-track-border-radius: var(
+    --catalog-field-border-normal-border-radius
+  );
+  --timeline-id-timeline-zoom-moz-range-track-height: var(
+    --catalog-field-measure-micro-height
+  );
+  --timeline-id-timeline-zoom-webkit-slider-thumb-border-radius: var(
+    --catalog-field-border-half-border-radius
+  );
+  --timeline-id-timeline-zoom-webkit-slider-thumb-box-shadow: var(
+    --catalog-field-effect-slider-thumb-box-shadow
+  );
+  --timeline-id-timeline-zoom-webkit-slider-thumb-height: var(
+    --catalog-field-measure-normal-height
+  );
+  --timeline-id-timeline-zoom-webkit-slider-thumb-margin-top: var(
+    --catalog-field-measure-minus-compact-minus-hairline-margin-top
+  );
+  --timeline-id-timeline-zoom-webkit-slider-thumb-width: var(
+    --catalog-field-measure-normal-width
+  );
+  --timeline-timecode-segments-background: var(
+    --catalog-track-color-timecode-segments-background
+  );
+  --timeline-timecode-segments-border: var(
+    --catalog-track-border-timecode-segments-border
+  );
+  --timeline-timecode-segments-border-radius: var(
+    --catalog-track-border-timecode-segments-border-radius
+  );
+  --timeline-timecode-segments-min-width: var(
+    --catalog-track-measure-timecode-segments-min-width
+  );
+  --timeline-timecode-segments-padding: var(
+    --catalog-track-measure-timecode-segments-padding
+  );
+  --timeline-timecode-segments-width: var(
+    --catalog-track-measure-timecode-segments-width
+  );
+  --timeline-zoom-group-id-timeline-zoom-background: var(
+    --catalog-track-color-zoom-group-background
+  );
+  --timeline-zoom-group-id-timeline-zoom-border: var(
+    --catalog-track-border-zoom-group-border
+  );
+  --timeline-zoom-group-id-timeline-zoom-border-radius: var(
+    --catalog-track-border-zoom-group-border-radius
+  );
+  --timeline-zoom-group-id-timeline-zoom-cursor: var(
+    --catalog-track-cursor-zoom-group-cursor
+  );
+  --timeline-zoom-group-id-timeline-zoom-min-height: var(
+    --catalog-track-measure-zoom-group-min-height
+  );
+  --timeline-zoom-group-id-timeline-zoom-padding: var(
+    --catalog-track-measure-zoom-group-padding
+  );
+  --timeline-zoom-webkit-slider-runnable-track-background: var(
+    --catalog-field-color-runnable-track-background
+  );
+  --timeline-zoom-webkit-slider-runnable-track-border: var(
+    --catalog-field-border-runnable-track-border
+  );
+  --timeline-zoom-webkit-slider-runnable-track-border-radius: var(
+    --catalog-field-border-normal-border-radius
+  );
+  --timeline-zoom-webkit-slider-runnable-track-height: var(
+    --catalog-field-measure-micro-height
+  );
+  /* 01-tokens */
+  --timeline-playhead-before-border-top: var(
+    --catalog-track-border-playhead-border-top
+  );
+  --timeline-playhead-box-shadow: var(
+    --catalog-track-effect-playhead-box-shadow
+  );
+}

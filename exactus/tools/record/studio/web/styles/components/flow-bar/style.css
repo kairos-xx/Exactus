@@ -1,0 +1,94 @@
+/**
+ * The Flow panel toolbar: step count, Duplicate, Remove and Add action.
+ *
+ * Sources: 42-flow-bar.
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+/* Source: 42-flow-bar */
+/* The Flow panel's toolbar: step count, Duplicate and Remove, then Add action.
+ *
+ * It follows the Browser panel's bar. Add action is the one bright control and
+ * has the same size as "Open browser"; Duplicate and Remove are smaller and
+ * quiet, and stay disabled until a step is selected. */
+.flow-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--flow-bar-gap);
+  flex-shrink: var(--flow-bar-flex-shrink);
+  min-height: var(--flow-bar-min-height);
+  padding: var(--flow-bar-padding);
+}
+.flow-bar-count {
+  flex: var(--flow-bar-count-flex);
+  min-width: var(--flow-bar-count-min-width);
+  overflow: hidden;
+  color: var(--muted);
+  font-size: var(--flow-bar-count-font-size);
+  font-weight: var(--flow-bar-count-font-weight);
+  text-overflow: var(--flow-bar-count-text-overflow);
+  white-space: var(--flow-bar-count-white-space);
+}
+.flow-bar > button {
+  flex: var(--flow-bar-button-flex);
+}
+.flow-bar-icon {
+  display: inline-grid;
+  place-items: center;
+}
+.flow-bar-icon:disabled {
+  opacity: var(--flow-bar-icon-disabled-opacity);
+  cursor: var(--flow-bar-icon-disabled-cursor);
+}
+.studio .flow-bar-add {
+  display: inline-flex;
+  align-items: center;
+  border-color: var(--accent);
+  border-radius: var(--flow-bar-add-border-radius);
+  background: var(--accent);
+  color: var(--flow-bar-add-color);
+  font-size: var(--flow-bar-add-font-size);
+  font-weight: var(--flow-bar-add-font-weight);
+  white-space: var(--flow-bar-add-white-space);
+}
+.studio .flow-bar-add:hover {
+  --base-flow-flow-bar-add-hover-background: color-mix(
+    in oklab,
+    var(--primary-accent) calc(var(--primary-percent-base) * 88),
+    var(--primary-color-named-white)
+  );
+  --catalog-surface-color-add-hover-background: var(
+    --base-flow-flow-bar-add-hover-background
+  );
+  --flow-bar-add-hover-background: var(
+    --catalog-surface-color-add-hover-background
+  );
+  background: var(--flow-bar-add-hover-background);
+}
+.studio .flow-bar-add:active {
+  --base-flow-flow-bar-add-active-background: color-mix(
+    in oklab,
+    var(--primary-accent) calc(var(--primary-percent-base) * 80),
+    var(--primary-color-named-black)
+  );
+  --catalog-surface-color-add-active-background: var(
+    --base-flow-flow-bar-add-active-background
+  );
+  --flow-bar-add-active-background: var(
+    --catalog-surface-color-add-active-background
+  );
+  background: var(--flow-bar-add-active-background);
+}
+/* A narrow panel keeps every button and gives the count up first. */
+@container panel (width < 20rem) {
+  .flow-bar-count {
+    display: none;
+  }
+  .flow-bar {
+    justify-content: flex-end;
+  }
+}
+@container panel (width < 15rem) {
+  .flow-bar-add-label {
+    display: none;
+  }
+}

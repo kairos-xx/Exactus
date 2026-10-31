@@ -1,0 +1,8 @@
+/**
+ * Contextual aliases of the status component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  --perf-status-padding: var(--catalog-layout-measure-notice-padding);
+  --perf-status-edge: var(--catalog-field-border-notice-edge);
+}

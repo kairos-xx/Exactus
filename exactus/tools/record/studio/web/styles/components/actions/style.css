@@ -1,0 +1,144 @@
+/**
+ * Action controls and status treatments.
+ *
+ * Sources: 15-actions.
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+@layer studio-base {
+  /* Source: 15-actions */
+  .flow-node-meta,
+  .node-port,
+  [id="flow-summary"],
+  [id="browser-status"],
+  .timeline-toolbar label,
+  .track-label,
+  .run-item small {
+    color: var(--text-subtle);
+    font-size: var(--actions-flow-node-meta-font-size);
+    font-weight: var(--actions-flow-node-meta-font-weight);
+  }
+  .node-actions,
+  .run-item > span,
+  .data-table td {
+    color: var(--text);
+    font-size: var(--actions-node-actions-font-size);
+  }
+  .data-table th {
+    color: var(--text-subtle);
+    font-size: var(--actions-data-table-th-font-size);
+    font-weight: var(--actions-data-table-th-font-weight);
+    letter-spacing: var(--actions-data-table-th-letter-spacing);
+    text-transform: var(--actions-data-table-th-text-transform);
+    background: var(--bg);
+    height: var(--actions-data-table-th-height);
+    padding: var(--actions-data-table-th-padding);
+    border-right: var(--panels-panel-border-right);
+    border-bottom: var(--actions-data-table-th-border-bottom);
+    text-align: var(--actions-data-table-th-text-align);
+    white-space: var(--actions-data-table-th-white-space);
+    overflow: hidden;
+    text-overflow: var(--actions-data-table-th-text-overflow);
+  }
+  .inspector-content label {
+    color: var(--text-subtle);
+    font-size: var(--actions-inspector-content-label-font-size);
+    font-weight: var(--actions-inspector-content-label-font-weight);
+    letter-spacing: var(--actions-inspector-content-label-letter-spacing);
+    display: grid;
+    gap: var(--actions-inspector-content-label-gap);
+  }
+  .inspector-content :where(input, select, textarea) {
+    color: var(--text-strong);
+    font-size: var(--actions-inspector-content-where-input-font-size);
+    font-weight: var(--actions-inspector-content-where-input-font-weight);
+  }
+  [id="flow-title"] {
+    color: var(--text);
+    font-size: var(--actions-id-flow-title-font-size);
+    font-weight: var(--actions-id-flow-title-font-weight);
+  }
+  [id="timecode"] {
+    color: var(--accent);
+    font-size: var(--actions-id-timecode-font-size);
+    font-weight: var(--actions-id-timecode-font-weight);
+    font-family: var(--actions-id-timecode-font-family);
+  }
+  :where(
+    button,
+    .panel-title,
+    .tree-item,
+    .action-grid button,
+    .flow-node-title,
+    .flow-node-meta,
+    .node-actions,
+    .node-port,
+    .composition-footer,
+    .timeline-toolbar,
+    .track-label,
+    .clip,
+    .run-item,
+    .data-table th,
+    .data-table td,
+    .status,
+    footer
+  ) {
+    white-space: var(--actions-where-button-white-space);
+  }
+  :where(
+    .tree-item,
+    .flow-node-title,
+    .flow-node-meta,
+    .node-actions,
+    .node-port,
+    .track-label,
+    .clip,
+    .run-item,
+    .data-table th,
+    .data-table td
+  ) {
+    min-width: var(--actions-where-tree-item-min-width);
+    overflow: hidden;
+    text-overflow: var(--actions-where-tree-item-text-overflow);
+  }
+  .mobile-panel-tabs {
+    display: none;
+  }
+  .timeline-toolbar select {
+    min-height: var(--studio-select-padding);
+    padding: var(--actions-timeline-toolbar-select-padding);
+    color: var(--text);
+    background: var(--shell-button-background);
+    border: var(--panels-panel-is-floating-border);
+  }
+  .ruler-ticks span {
+    position: absolute;
+    top: var(--actions-ruler-ticks-span-top);
+    height: var(--actions-ruler-ticks-span-height);
+    padding: var(--actions-ruler-ticks-span-padding);
+    border-left: var(--studio-actions-dialog-border);
+    color: var(--text-subtle);
+    font: var(--actions-ruler-ticks-span-font);
+    white-space: var(--actions-ruler-ticks-span-white-space);
+  }
+  .sr-only {
+    position: absolute;
+    width: var(--actions-sr-only-width);
+    height: var(--actions-sr-only-height);
+    padding: var(--actions-sr-only-padding);
+    margin: var(--actions-sr-only-margin);
+    overflow: hidden;
+    clip-path: var(--actions-sr-only-clip-path);
+    white-space: var(--actions-sr-only-white-space);
+    border: var(--actions-sr-only-border);
+  }
+  .command-palette {
+    width: var(--actions-command-palette-width);
+    max-height: var(--actions-command-palette-max-height);
+    padding: var(--actions-command-palette-padding);
+    color: var(--text);
+    background: var(--surface);
+    border: var(--panels-panel-is-floating-border);
+    border-radius: var(--actions-command-palette-border-radius);
+    box-shadow: var(--actions-command-palette-box-shadow);
+  }
+}

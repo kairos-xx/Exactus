@@ -1,0 +1,197 @@
+/**
+ * Contextual aliases of the composition component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  /* 11-composition */
+  --composition-app-root-height-max-width-800px: var(
+    --catalog-control-measure-app-height
+  );
+  --composition-app-root-height-max-width-900px: var(
+    --catalog-control-measure-app-height
+  );
+  --composition-app-root-min-height-max-width-800px: var(
+    --catalog-control-measure-full-min-height
+  );
+  --composition-body-height-max-width-800px: var(
+    --catalog-surface-measure-body-height
+  );
+  --composition-body-height-max-width-900px: var(
+    --catalog-surface-measure-body-height
+  );
+  --composition-body-min-height-max-width-800px: var(
+    --catalog-surface-measure-full-min-height
+  );
+  --composition-bottom-grid-template-columns-max-width-800px: var(
+    --catalog-control-measure-bottom-max-width-800px-grid-template-columns
+  );
+  --composition-bottom-grid-template-columns-max-width-900px: var(
+    --catalog-control-measure-bottom-grid-template-columns
+  );
+  --composition-bottom-height-max-width-800px: var(
+    --catalog-control-measure-bottom-height
+  );
+  --composition-bottom-height-max-width-900px: var(
+    --catalog-control-measure-page-plus-medium-plus-page-height
+  );
+  --composition-center-grid-template-rows-max-width-800px: var(
+    --catalog-control-measure-center-max-width-800px-grid-template-rows
+  );
+  --composition-center-grid-template-rows-max-width-900px: var(
+    --catalog-control-measure-center-page-plus-page-grid-template-rows
+  );
+  --composition-check-input-before-border-radius: var(
+    --catalog-field-border-xlarge-border-radius
+  );
+  --composition-check-input-before-content: var(
+    --catalog-field-typography-check-input-content
+  );
+  --composition-check-input-before-height: var(
+    --catalog-field-measure-normal-height
+  );
+  --composition-check-input-before-left: var(
+    --catalog-field-measure-check-input-left
+  );
+  --composition-check-input-before-top: var(--catalog-field-measure-half-top);
+  --composition-check-input-before-transform: var(
+    --catalog-field-effect-check-input-transform
+  );
+  --composition-check-input-checked-after-transform: var(
+    --catalog-field-effect-input-checked-transform
+  );
+  --composition-check-input-checked-before-background: var(
+    --catalog-field-color-input-checked-background
+  );
+  --composition-clip-span-last-child-text-overflow: var(
+    --catalog-text-typography-clip-span-text-overflow
+  );
+  --composition-data-table-td-button-selected-background: var(
+    --catalog-button-color-table-td-background
+  );
+  --composition-data-table-td-first-child-font-family: var(
+    --catalog-table-typography-td-font-family
+  );
+  --composition-data-table-td-nth-child-3-font-family: var(
+    --catalog-table-typography-td-font-family
+  );
+  --composition-data-table-td-nth-child-3-font-size: var(
+    --catalog-table-typography-small-minus-hairline-font-size
+  );
+  --composition-data-table-tr-hover-td-background: var(
+    --catalog-table-color-tr-td-background
+  );
+  --composition-flow-node-active-flow-node-title-background: var(
+    --catalog-header-color-node-title-light-background
+  );
+  --composition-footer-gap-max-width-800px: var(
+    --catalog-toolbar-measure-compact-gap
+  );
+  --composition-footer-padding-max-width-800px: var(
+    --catalog-toolbar-measure-small-padding
+  );
+  --composition-html-height-max-width-800px: var(
+    --catalog-control-measure-html-height
+  );
+  --composition-html-height-max-width-900px: var(
+    --catalog-control-measure-html-height
+  );
+  --composition-html-min-height-max-width-800px: var(
+    --catalog-control-measure-full-min-height
+  );
+  --composition-inspector-content-input-not-type-checkbox-padding: var(
+    --catalog-field-measure-compact-padding
+  );
+  --composition-inspector-content-input-not-type-checkbox-width: var(
+    --catalog-field-measure-full-width
+  );
+  --composition-inspector-content-max-height-max-width-800px: var(
+    --catalog-surface-measure-content-max-height
+  );
+  --composition-node-actions-div-span-last-child-text-overflow: var(
+    --catalog-text-typography-div-span-text-overflow
+  );
+  --composition-node-actions-div-span-last-child-white-space: var(
+    --catalog-text-typography-div-span-white-space
+  );
+  --composition-node-port-span-last-child-overflow-wrap: var(
+    --catalog-text-measure-port-span-overflow-wrap
+  );
+  --composition-node-title-span-nth-child-2-flex: var(
+    --catalog-header-measure-title-span-flex
+  );
+  --composition-node-title-span-nth-child-2-text-align: var(
+    --catalog-header-typography-title-span-text-align
+  );
+  --composition-node-title-span-nth-child-2-text-overflow: var(
+    --catalog-header-typography-title-span-text-overflow
+  );
+  --composition-number-control-input-focus-visible-outline: var(
+    --catalog-field-border-number-input-outline
+  );
+  --composition-profile-grid-template-columns-max-width-800px: var(
+    --catalog-list-measure-profile-lower-grid-template-columns
+  );
+  --composition-right-stack-grid-column-max-width-800px: var(
+    --catalog-list-measure-right-stack-grid-column
+  );
+  --composition-right-stack-grid-column-max-width-900px: var(
+    --catalog-list-measure-right-stack-grid-column
+  );
+  --composition-right-stack-grid-template-columns-max-width-800px: var(
+    --catalog-list-measure-right-stack-grid-template-columns
+  );
+  --composition-right-stack-grid-template-columns-max-width-900px: var(
+    --catalog-list-measure-right-stack-grid-template-columns
+  );
+  --composition-right-stack-grid-template-rows-max-width-800px: var(
+    --catalog-list-measure-right-stack-grid-template-rows
+  );
+  --composition-right-stack-grid-template-rows-max-width-900px: var(
+    --catalog-list-measure-right-stack-grid-template-rows
+  );
+  --composition-runs-content-max-height-max-width-800px: var(
+    --catalog-surface-measure-massive-plus-large-plus-massive-max-height
+  );
+  --composition-surface-grid-debug-surface-console-grid-column-max-width-800px: var(
+    --catalog-surface-measure-debug-console-auto-grid-column
+  );
+  --composition-surface-grid-template-columns-max-width-800px: var(
+    --catalog-list-measure-default-zero-grid-template-columns
+  );
+  --composition-surface-grid-template-rows-max-width-800px: var(
+    --catalog-list-measure-default-grid-template-rows
+  );
+  --composition-timeline-content-max-height-max-width-800px: var(
+    --catalog-track-measure-massive-plus-large-plus-massive-max-height
+  );
+  --composition-topbar-gap-max-width-800px: var(
+    --catalog-header-measure-small-gap
+  );
+  --composition-topbar-gap-max-width-900px: var(
+    --catalog-header-measure-small-gap
+  );
+  --composition-topbar-padding-max-width-800px: var(
+    --catalog-header-measure-small-padding
+  );
+  --composition-track-label-span-nth-child-2-flex: var(
+    --catalog-label-measure-track-span-flex
+  );
+  --composition-workbench-grid-template-columns-max-width-800px: var(
+    --catalog-panel-measure-workbench-max-width-800px-grid-template-columns
+  );
+  --composition-workbench-grid-template-columns-max-width-900px: var(
+    --catalog-panel-measure-workbench-max-width-900px-grid-template-columns
+  );
+  --composition-workspace-add-span-last-child-font-size: var(
+    --catalog-text-typography-small-font-size
+  );
+  --composition-workspace-max-height-max-width-900px: var(
+    --catalog-control-measure-default-max-height
+  );
+  --composition-workspace-surface-content-height-max-width-800px: var(
+    --catalog-surface-measure-content-auto-height
+  );
+  --composition-workspace-surface-min-height-max-width-800px: var(
+    --catalog-surface-measure-default-min-height
+  );
+}

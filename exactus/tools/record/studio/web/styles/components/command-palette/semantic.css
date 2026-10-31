@@ -1,0 +1,155 @@
+/**
+ * Contextual aliases of the command palette component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  /* 16-command-palette */
+  --command-palette-backdrop-background: var(
+    --catalog-menu-color-backdrop-background
+  );
+  --command-palette-command-list-button-gap: var(
+    --catalog-button-measure-micro-gap
+  );
+  --command-palette-command-list-button-height: var(
+    --catalog-button-measure-list-height
+  );
+  --command-palette-command-list-button-padding: var(
+    --catalog-button-measure-compact-plus-micro-small-padding
+  );
+  --command-palette-command-list-button-text-align: var(
+    --catalog-button-typography-list-text-align
+  );
+  --command-palette-command-list-gap: var(--catalog-list-measure-tiny-gap);
+  --command-palette-command-list-max-height: var(
+    --catalog-list-measure-page-plus-massive-plus-page-max-height
+  );
+  --command-palette-command-search-gap: var(
+    --catalog-control-measure-compact-gap
+  );
+  --command-palette-command-search-grid-template-columns: var(
+    --catalog-control-measure-search-grid-template-columns
+  );
+  --command-palette-command-search-input-background: var(
+    --catalog-field-color-search-input-background
+  );
+  --command-palette-command-search-input-border: var(
+    --catalog-field-border-search-input-border
+  );
+  --command-palette-command-search-input-outline: var(
+    --catalog-field-border-search-input-outline
+  );
+  --command-palette-command-search-input-width: var(
+    --catalog-field-measure-full-width
+  );
+  --command-palette-command-search-padding-inline: var(
+    --catalog-control-measure-small-padding-inline
+  );
+  --command-palette-header-gap: var(--catalog-menu-measure-small-gap);
+  --command-palette-id-workspace-surface-kicker-font-size: var(
+    --catalog-control-typography-compact-plus-micro-font-size
+  );
+  --command-palette-id-workspace-surface-kicker-font-weight: var(
+    --catalog-control-typography-kicker-font-weight
+  );
+  --command-palette-id-workspace-surface-kicker-letter-spacing: var(
+    --catalog-control-typography-spacing-ultra-wide-letter-spacing
+  );
+  --command-palette-id-workspace-surface-kicker-text-transform: var(
+    --catalog-control-typography-default-text-transform
+  );
+  --command-palette-shell-gap: var(--catalog-menu-measure-small-gap);
+  --command-palette-shell-padding: var(--catalog-menu-measure-small-padding);
+  --command-palette-surface-card-footer-gap: var(
+    --catalog-toolbar-measure-compact-gap
+  );
+  --command-palette-surface-card-footer-padding: var(
+    --catalog-toolbar-measure-compact-padding
+  );
+  --command-palette-surface-card-h3-font-size: var(
+    --catalog-header-typography-small-font-size
+  );
+  --command-palette-surface-card-h3-font-weight: var(
+    --catalog-header-typography-card-h3-font-weight
+  );
+  --command-palette-surface-card-h3-margin: var(
+    --catalog-header-measure-card-h3-margin
+  );
+  --command-palette-surface-card-header-span-font-size: var(
+    --catalog-header-typography-small-minus-hairline-font-size
+  );
+  --command-palette-surface-card-header-span-min-width: var(
+    --catalog-header-measure-card-span-min-width
+  );
+  --command-palette-surface-card-header-span-text-overflow: var(
+    --catalog-header-typography-card-span-text-overflow
+  );
+  --command-palette-surface-card-header-span-white-space: var(
+    --catalog-header-typography-card-span-white-space
+  );
+  --command-palette-surface-card-min-height: var(
+    --catalog-surface-measure-card-min-height
+  );
+  --command-palette-surface-card-min-width: var(
+    --catalog-surface-measure-card-min-width
+  );
+  --command-palette-surface-grid-gap: var(--catalog-list-measure-compact-gap);
+  --command-palette-surface-grid-min-height: var(
+    --catalog-list-measure-full-min-height
+  );
+  --command-palette-surface-list-min-height: var(
+    --catalog-list-measure-default-min-height
+  );
+  --command-palette-surface-row-box-shadow: var(
+    --catalog-item-effect-default-none-box-shadow
+  );
+  --command-palette-surface-row-width: var(--catalog-item-measure-full-width);
+  --command-palette-where-command-palette-header-p-margin: var(
+    --catalog-menu-measure-header-p-margin
+  );
+  --command-palette-workspace-surface-actions-flex: var(
+    --catalog-toolbar-measure-default-zero-flex
+  );
+  --command-palette-workspace-surface-content-height: var(
+    --catalog-surface-measure-content-calc-height
+  );
+  --command-palette-workspace-surface-content-min-height: var(
+    --catalog-surface-measure-content-min-height
+  );
+  --command-palette-workspace-surface-content-padding: var(
+    --catalog-surface-measure-small-padding
+  );
+  --command-palette-workspace-surface-grid-row: var(
+    --catalog-surface-measure-default-higher-grid-row
+  );
+  --command-palette-workspace-surface-header-div-first-child-min-width: var(
+    --catalog-header-measure-div-min-width
+  );
+  --command-palette-workspace-surface-header-gap: var(
+    --catalog-header-measure-small-gap
+  );
+  --command-palette-workspace-surface-header-h2-line-height: var(
+    --catalog-header-typography-height-tight-line-height
+  );
+  --command-palette-workspace-surface-header-h2-margin: var(
+    --catalog-header-measure-h2-margin
+  );
+  --command-palette-workspace-surface-header-p-max-width: var(
+    --catalog-header-measure-p-max-width
+  );
+  --command-palette-workspace-surface-header-p-text-overflow: var(
+    --catalog-header-typography-p-text-overflow
+  );
+  --command-palette-workspace-surface-header-p-white-space: var(
+    --catalog-header-typography-p-white-space
+  );
+  --command-palette-workspace-surface-min-height: var(
+    --catalog-surface-measure-default-zero-min-height
+  );
+  --command-palette-workspace-surface-min-width: var(
+    --catalog-surface-measure-default-min-width
+  );
+  /* 01-tokens */
+  --command-palette-command-search-border: var(
+    --catalog-control-border-search-border
+  );
+}

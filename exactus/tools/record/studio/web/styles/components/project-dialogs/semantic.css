@@ -1,0 +1,429 @@
+/**
+ * Contextual aliases of the project dialogs component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  /* 47-project-dialogs */
+  --project-dialogs-dialog-pd-danger-not-disabled-hover-background: var(
+    --catalog-dialog-color-pd-danger-background
+  );
+  --project-dialogs-pd-actions-gap: var(--catalog-dialog-measure-compact-gap);
+  --project-dialogs-pd-actions-padding: var(
+    --catalog-dialog-measure-small-medium-normal-padding
+  );
+  --project-dialogs-pd-adv-grid-gap: var(--catalog-dialog-measure-small-gap);
+  --project-dialogs-pd-adv-grid-template-columns: var(
+    --catalog-dialog-measure-pd-adv-grid-template-columns
+  );
+  --project-dialogs-pd-advanced-border-radius: var(
+    --catalog-dialog-border-tiny-plus-micro-border-radius
+  );
+  --project-dialogs-pd-advanced-gap: var(--catalog-dialog-measure-compact-gap);
+  --project-dialogs-pd-advanced-margin: var(
+    --catalog-dialog-measure-pd-advanced-margin
+  );
+  --project-dialogs-pd-advanced-padding: var(
+    --catalog-dialog-measure-small-padding
+  );
+  --project-dialogs-pd-badge-background: var(
+    --catalog-dialog-color-pd-badge-background
+  );
+  --project-dialogs-pd-badge-border-radius: var(
+    --catalog-dialog-border-pd-badge-border-radius
+  );
+  --project-dialogs-pd-badge-color: var(--catalog-dialog-color-pd-badge-color);
+  --project-dialogs-pd-badge-flex: var(--catalog-dialog-measure-pd-badge-flex);
+  --project-dialogs-pd-badge-font-size: var(
+    --catalog-dialog-typography-small-minus-hairline-font-size
+  );
+  --project-dialogs-pd-badge-padding: var(
+    --catalog-dialog-measure-pd-badge-padding
+  );
+  --project-dialogs-pd-body-grid-template-columns: var(
+    --catalog-dialog-measure-pd-body-grid-template-columns
+  );
+  --project-dialogs-pd-body-grid-template-columns-max-width-720px: var(
+    --catalog-dialog-measure-pd-body-max-width-720px-grid-template-columns
+  );
+  --project-dialogs-pd-body-grid-template-rows-max-width-720px: var(
+    --catalog-dialog-measure-pd-body-grid-template-rows
+  );
+  --project-dialogs-pd-body-min-height: var(
+    --catalog-dialog-measure-pd-body-min-height
+  );
+  --project-dialogs-pd-button-border-radius: var(
+    --catalog-button-border-tiny-plus-micro-border-radius
+  );
+  --project-dialogs-pd-button-font-size: var(
+    --catalog-button-typography-small-font-size
+  );
+  --project-dialogs-pd-button-hover-filter: var(
+    --catalog-button-effect-pd-filter
+  );
+  --project-dialogs-pd-button-text-decoration: var(
+    --catalog-button-typography-pd-text-decoration
+  );
+  --project-dialogs-pd-confirm-background: var(
+    --catalog-dialog-color-pd-confirm-background
+  );
+  --project-dialogs-pd-confirm-border: var(
+    --catalog-dialog-border-pd-confirm-border
+  );
+  --project-dialogs-pd-confirm-border-radius: var(
+    --catalog-dialog-border-tiny-plus-micro-border-radius
+  );
+  --project-dialogs-pd-confirm-font-size: var(
+    --catalog-dialog-typography-small-plus-hairline-font-size
+  );
+  --project-dialogs-pd-confirm-gap: var(--catalog-dialog-measure-small-gap);
+  --project-dialogs-pd-confirm-p-margin: var(
+    --catalog-dialog-measure-confirm-p-margin
+  );
+  --project-dialogs-pd-confirm-padding: var(
+    --catalog-dialog-measure-small-padding
+  );
+  --project-dialogs-pd-confirm-pd-actions-border: var(
+    --catalog-dialog-border-confirm-pd-border
+  );
+  --project-dialogs-pd-confirm-pd-actions-padding: var(
+    --catalog-dialog-measure-confirm-pd-padding
+  );
+  --project-dialogs-pd-desc-font-size: var(
+    --catalog-dialog-typography-small-plus-hairline-font-size
+  );
+  --project-dialogs-pd-desc-margin: var(
+    --catalog-dialog-measure-pd-desc-margin
+  );
+  --project-dialogs-pd-desc-white-space: var(
+    --catalog-dialog-typography-pd-desc-white-space
+  );
+  --project-dialogs-pd-detail-actions-gap: var(
+    --catalog-dialog-measure-compact-gap
+  );
+  --project-dialogs-pd-details-gap: var(--catalog-dialog-measure-normal-gap);
+  --project-dialogs-pd-details-h3-font-size: var(
+    --catalog-dialog-typography-normal-font-size
+  );
+  --project-dialogs-pd-details-h3-margin: var(
+    --catalog-dialog-measure-details-h3-margin
+  );
+  --project-dialogs-pd-details-padding: var(
+    --catalog-dialog-measure-normal-medium-padding
+  );
+  --project-dialogs-pd-empty-font-size: var(
+    --catalog-dialog-typography-small-plus-hairline-font-size
+  );
+  --project-dialogs-pd-empty-padding: var(
+    --catalog-dialog-measure-normal-compact-padding
+  );
+  --project-dialogs-pd-error-padding: var(
+    --catalog-dialog-measure-pd-error-padding
+  );
+  --project-dialogs-pd-facts-dd-margin: var(
+    --catalog-dialog-measure-facts-dd-margin
+  );
+  --project-dialogs-pd-facts-dd-overflow-wrap: var(
+    --catalog-dialog-measure-facts-dd-overflow-wrap
+  );
+  --project-dialogs-pd-facts-font-size: var(
+    --catalog-dialog-typography-small-font-size
+  );
+  --project-dialogs-pd-facts-gap: var(
+    --catalog-dialog-measure-tiny-plus-micro-normal-gap
+  );
+  --project-dialogs-pd-facts-grid-template-columns: var(
+    --catalog-dialog-measure-pd-facts-grid-template-columns
+  );
+  --project-dialogs-pd-facts-margin: var(
+    --catalog-dialog-measure-pd-facts-margin
+  );
+  --project-dialogs-pd-field-gap: var(--catalog-field-measure-tiny-gap);
+  --project-dialogs-pd-field-input-font-size: var(
+    --catalog-field-typography-small-plus-hairline-font-size
+  );
+  --project-dialogs-pd-field-input-height: var(
+    --catalog-field-measure-xlarge-minus-micro-height
+  );
+  --project-dialogs-pd-field-input-min-width: var(
+    --catalog-field-measure-pd-input-min-width
+  );
+  --project-dialogs-pd-field-input-padding: var(
+    --catalog-field-measure-pd-input-padding
+  );
+  --project-dialogs-pd-field-input-width: var(
+    --catalog-field-measure-full-width
+  );
+  --project-dialogs-pd-field-min-width: var(
+    --catalog-field-measure-pd-min-width
+  );
+  --project-dialogs-pd-field-textarea-height: var(
+    --catalog-field-measure-pd-textarea-height
+  );
+  --project-dialogs-pd-field-textarea-padding: var(
+    --catalog-field-measure-tiny-plus-micro-compact-padding
+  );
+  --project-dialogs-pd-form-grid-template-rows: var(
+    --catalog-dialog-measure-pd-form-grid-template-rows
+  );
+  --project-dialogs-pd-form-height: var(--catalog-dialog-measure-full-height);
+  --project-dialogs-pd-form-margin: var(
+    --catalog-dialog-measure-pd-form-margin
+  );
+  --project-dialogs-pd-gallery-grid-template-rows: var(
+    --catalog-dialog-measure-pd-gallery-grid-template-rows
+  );
+  --project-dialogs-pd-group-border: var(
+    --catalog-dialog-border-pd-group-border
+  );
+  --project-dialogs-pd-group-gap: var(--catalog-dialog-measure-small-gap);
+  --project-dialogs-pd-group-legend-font-size: var(
+    --catalog-dialog-typography-small-font-size
+  );
+  --project-dialogs-pd-group-legend-font-weight: var(
+    --catalog-dialog-typography-weight-semibold-font-weight
+  );
+  --project-dialogs-pd-group-legend-padding: var(
+    --catalog-dialog-measure-group-legend-padding
+  );
+  --project-dialogs-pd-group-margin: var(
+    --catalog-dialog-measure-pd-group-margin
+  );
+  --project-dialogs-pd-group-min-width: var(
+    --catalog-dialog-measure-pd-group-min-width
+  );
+  --project-dialogs-pd-group-padding: var(
+    --catalog-dialog-measure-pd-group-padding
+  );
+  --project-dialogs-pd-header-actions-gap: var(
+    --catalog-dialog-measure-compact-gap
+  );
+  --project-dialogs-pd-header-gap: var(--catalog-dialog-measure-normal-gap);
+  --project-dialogs-pd-header-h2-font-size: var(
+    --catalog-dialog-typography-normal-font-size
+  );
+  --project-dialogs-pd-header-h2-font-weight: var(
+    --catalog-dialog-typography-weight-semibold-font-weight
+  );
+  --project-dialogs-pd-header-h2-margin: var(
+    --catalog-dialog-measure-header-h2-margin
+  );
+  --project-dialogs-pd-header-padding: var(
+    --catalog-dialog-measure-medium-small-padding
+  );
+  --project-dialogs-pd-help-font-size: var(
+    --catalog-dialog-typography-small-font-size
+  );
+  --project-dialogs-pd-help-white-space: var(
+    --catalog-dialog-typography-pd-help-white-space
+  );
+  --project-dialogs-pd-issue-color: var(--catalog-dialog-color-pd-issue-color);
+  --project-dialogs-pd-issue-font-size: var(
+    --catalog-dialog-typography-small-font-size
+  );
+  --project-dialogs-pd-issue-margin: var(
+    --catalog-dialog-measure-pd-issue-margin
+  );
+  --project-dialogs-pd-item-border-radius: var(
+    --catalog-dialog-border-tiny-plus-micro-border-radius
+  );
+  --project-dialogs-pd-item-cursor: var(--catalog-dialog-cursor-pd-item-cursor);
+  --project-dialogs-pd-item-focus-visible-outline-offset: var(
+    --catalog-item-border-pixel-minus-micro-outline-offset
+  );
+  --project-dialogs-pd-item-gap: var(--catalog-dialog-measure-tiny-gap);
+  --project-dialogs-pd-item-main-gap: var(--catalog-dialog-measure-compact-gap);
+  --project-dialogs-pd-item-main-min-width: var(
+    --catalog-dialog-measure-item-main-min-width
+  );
+  --project-dialogs-pd-item-main-strong-font-size: var(
+    --catalog-item-typography-small-plus-hairline-font-size
+  );
+  --project-dialogs-pd-item-main-strong-text-overflow: var(
+    --catalog-item-typography-main-strong-text-overflow
+  );
+  --project-dialogs-pd-item-main-strong-white-space: var(
+    --catalog-item-typography-main-strong-white-space
+  );
+  --project-dialogs-pd-item-meta-font-size: var(
+    --catalog-dialog-typography-small-font-size
+  );
+  --project-dialogs-pd-item-padding: var(
+    --catalog-dialog-measure-compact-plus-micro-padding
+  );
+  --project-dialogs-pd-item-tags-gap: var(--catalog-dialog-measure-tiny-gap);
+  --project-dialogs-pd-label-font-size: var(
+    --catalog-dialog-typography-small-font-size
+  );
+  --project-dialogs-pd-label-font-weight: var(
+    --catalog-dialog-typography-weight-medium-font-weight
+  );
+  --project-dialogs-pd-link-background: var(
+    --catalog-dialog-color-pd-link-background
+  );
+  --project-dialogs-pd-link-border: var(--catalog-dialog-border-pd-link-border);
+  --project-dialogs-pd-link-height: var(
+    --catalog-dialog-measure-pd-link-height
+  );
+  --project-dialogs-pd-link-padding: var(
+    --catalog-dialog-measure-pd-link-padding
+  );
+  --project-dialogs-pd-link-text-decoration: var(
+    --catalog-dialog-typography-pd-link-text-decoration
+  );
+  --project-dialogs-pd-list-border-right-max-width-720px: var(
+    --catalog-dialog-border-pd-list-border-right
+  );
+  --project-dialogs-pd-list-gap: var(--catalog-dialog-measure-tiny-gap);
+  --project-dialogs-pd-list-margin: var(
+    --catalog-dialog-measure-pd-list-margin
+  );
+  --project-dialogs-pd-list-padding: var(
+    --catalog-dialog-measure-compact-padding
+  );
+  --project-dialogs-pd-list-style: var(--catalog-dialog-measure-pd-list-style);
+  --project-dialogs-pd-pair-gap: var(--catalog-dialog-measure-small-gap);
+  --project-dialogs-pd-pair-grid-template-columns: var(
+    --catalog-dialog-measure-pd-pair-grid-template-columns
+  );
+  --project-dialogs-pd-pair-grid-template-columns-max-width-720px: var(
+    --catalog-dialog-measure-pd-pair-max-width-720px-grid-template-columns
+  );
+  --project-dialogs-pd-scroll-gap: var(--catalog-dialog-measure-medium-gap);
+  --project-dialogs-pd-scroll-padding: var(
+    --catalog-dialog-measure-compact-medium-normal-padding
+  );
+  --project-dialogs-pd-search-box-border-radius: var(
+    --catalog-dialog-border-tiny-plus-micro-border-radius
+  );
+  --project-dialogs-pd-search-box-flex: var(
+    --catalog-dialog-measure-search-box-flex
+  );
+  --project-dialogs-pd-search-box-flex-basis-max-width-720px: var(
+    --catalog-dialog-measure-page-plus-xlarge-flex-basis
+  );
+  --project-dialogs-pd-search-box-gap: var(
+    --catalog-dialog-measure-compact-gap
+  );
+  --project-dialogs-pd-search-box-height: var(
+    --catalog-dialog-measure-xlarge-minus-micro-height
+  );
+  --project-dialogs-pd-search-box-input-background: var(
+    --catalog-field-color-box-input-background
+  );
+  --project-dialogs-pd-search-box-input-border: var(
+    --catalog-field-border-box-input-border
+  );
+  --project-dialogs-pd-search-box-input-flex: var(
+    --catalog-field-measure-box-input-flex
+  );
+  --project-dialogs-pd-search-box-input-focus-outline: var(
+    --catalog-field-border-box-input-outline
+  );
+  --project-dialogs-pd-search-box-input-font-size: var(
+    --catalog-field-typography-small-plus-hairline-font-size
+  );
+  --project-dialogs-pd-search-box-input-height: var(
+    --catalog-field-measure-full-height
+  );
+  --project-dialogs-pd-search-box-input-min-width: var(
+    --catalog-field-measure-box-input-min-width
+  );
+  --project-dialogs-pd-search-box-input-padding: var(
+    --catalog-field-measure-box-input-padding
+  );
+  --project-dialogs-pd-search-box-padding: var(
+    --catalog-dialog-measure-search-box-padding
+  );
+  --project-dialogs-pd-search-gap: var(--catalog-dialog-measure-compact-gap);
+  --project-dialogs-pd-search-padding: var(
+    --catalog-dialog-measure-pd-search-padding
+  );
+  --project-dialogs-pd-sub-font-size: var(
+    --catalog-dialog-typography-small-font-size
+  );
+  --project-dialogs-pd-sub-margin: var(--catalog-dialog-measure-pd-sub-margin);
+  --project-dialogs-pd-tag-border-radius: var(
+    --catalog-dialog-border-pd-tag-border-radius
+  );
+  --project-dialogs-pd-tag-font-size: var(
+    --catalog-dialog-typography-small-minus-hairline-font-size
+  );
+  --project-dialogs-pd-tag-padding: var(
+    --catalog-dialog-measure-pd-tag-padding
+  );
+  --project-dialogs-pd-tags-gap: var(
+    --catalog-dialog-measure-tiny-plus-micro-gap
+  );
+  --project-dialogs-project-dialog-ask-name-width: var(
+    --catalog-dialog-measure-ask-name-width
+  );
+  --project-dialogs-project-dialog-backdrop-background: var(
+    --catalog-dialog-color-backdrop-background
+  );
+  --project-dialogs-project-dialog-border-radius: var(
+    --catalog-dialog-border-compact-border-radius
+  );
+  --project-dialogs-project-dialog-box-shadow: var(
+    --catalog-dialog-effect-default-box-shadow
+  );
+  --project-dialogs-project-dialog-button-disabled-cursor: var(
+    --catalog-button-cursor-dialog-cursor
+  );
+  --project-dialogs-project-dialog-button-disabled-opacity: var(
+    --catalog-button-effect-half-opacity
+  );
+  --project-dialogs-project-dialog-max-height: var(
+    --catalog-dialog-measure-default-xxlarge-max-height
+  );
+  --project-dialogs-project-dialog-padding: var(
+    --catalog-dialog-measure-default-padding
+  );
+  --project-dialogs-project-dialog-pd-chip-border-radius: var(
+    --catalog-dialog-border-pd-chip-border-radius
+  );
+  --project-dialogs-project-dialog-pd-chip-font-size: var(
+    --catalog-dialog-typography-small-font-size
+  );
+  --project-dialogs-project-dialog-pd-danger-not-disabled-border-color: var(
+    --catalog-dialog-border-pd-danger-border-color
+  );
+  --project-dialogs-project-dialog-pd-danger-not-disabled-color: var(
+    --catalog-dialog-color-pd-danger-color
+  );
+  --project-dialogs-project-dialog-pd-icon-only-padding: var(
+    --catalog-dialog-measure-pd-only-padding
+  );
+  --project-dialogs-project-dialog-pd-icon-only-width: var(
+    --catalog-dialog-measure-xlarge-minus-micro-width
+  );
+  --project-dialogs-project-dialog-project-gallery-border-radius-max-width-720px: var(
+    --catalog-dialog-border-gallery-border-radius
+  );
+  --project-dialogs-project-dialog-project-gallery-height: var(
+    --catalog-dialog-measure-gallery-height
+  );
+  --project-dialogs-project-dialog-project-gallery-height-max-width-720px: var(
+    --catalog-dialog-measure-gallery-max-width-720px-height
+  );
+  --project-dialogs-project-dialog-project-gallery-inset-max-width-720px: var(
+    --catalog-dialog-measure-gallery-inset
+  );
+  --project-dialogs-project-dialog-project-gallery-margin-max-width-720px: var(
+    --catalog-dialog-measure-gallery-margin
+  );
+  --project-dialogs-project-dialog-project-gallery-max-height-max-width-720px: var(
+    --catalog-dialog-measure-gallery-max-height
+  );
+  --project-dialogs-project-dialog-project-gallery-max-width-720px: var(
+    --catalog-dialog-measure-gallery-max-width
+  );
+  --project-dialogs-project-dialog-project-gallery-width: var(
+    --catalog-dialog-measure-gallery-width
+  );
+  --project-dialogs-project-dialog-project-gallery-width-max-width-720px: var(
+    --catalog-dialog-measure-gallery-max-width-720px-width
+  );
+  --project-dialogs-project-dialog-width: var(
+    --catalog-dialog-measure-default-lower-width
+  );
+}

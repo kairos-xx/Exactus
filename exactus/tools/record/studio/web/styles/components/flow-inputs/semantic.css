@@ -1,0 +1,18 @@
+/**
+ * Contextual aliases of the flow inputs component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  --flow-inputs-gap: var(--catalog-toolbar-measure-compact-gap);
+  --flow-inputs-row-background: var(--catalog-item-color-step-background);
+  --flow-inputs-row-border: var(--catalog-button-border-default-border);
+  --flow-inputs-row-border-radius: var(
+    --catalog-item-border-compact-border-radius
+  );
+  --flow-inputs-row-gap: var(--catalog-toolbar-measure-compact-gap);
+  --flow-inputs-row-padding: var(--catalog-control-measure-compact-padding);
+  --flow-inputs-field-flex: var(--catalog-field-measure-fluid-flex);
+  --flow-inputs-field-min-width: var(
+    --catalog-field-measure-shrinkable-min-width
+  );
+}

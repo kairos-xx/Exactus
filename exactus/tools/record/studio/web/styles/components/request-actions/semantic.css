@@ -1,0 +1,57 @@
+/** Contextual aliases for REST and WebSocket action editors. */
+:root {
+  --request-actions-gap: var(--catalog-control-measure-small-gap);
+  --request-actions-tight-gap: var(--catalog-control-measure-tiny-gap);
+  --request-actions-section-gap: var(--catalog-control-measure-normal-gap);
+  --request-actions-padding: var(--catalog-field-measure-compact-padding);
+  --request-actions-small-padding: var(--catalog-control-measure-tiny-padding);
+  --request-actions-border: var(--catalog-button-border-default-border);
+  --request-actions-field-border: var(--catalog-field-border-textarea-border);
+  --request-actions-radius: var(--catalog-button-border-micro-border-radius);
+  --request-actions-background: var(
+    --catalog-panel-color-action-library-background
+  );
+  --request-actions-field-background: var(
+    --catalog-field-color-input-background
+  );
+  --request-actions-card-background: var(
+    --catalog-surface-color-card-background
+  );
+  --request-actions-muted-color: var(--catalog-control-color-form-state-color);
+  --request-actions-accent-color: var(--catalog-control-color-browser-color);
+  --request-actions-danger-color: var(--catalog-control-color-line-error-color);
+  --request-actions-small-font-size: var(
+    --catalog-control-typography-small-font-size
+  );
+  --request-actions-code-font: var(--catalog-field-typography-code-font);
+  --request-actions-full-width: var(--catalog-field-measure-full-width);
+  --request-actions-control-height: var(
+    --catalog-control-measure-touch-target-size
+  );
+  --request-actions-body-height: var(
+    --catalog-field-measure-xxlarge-plus-compact-min-height
+  );
+  --request-actions-flex-grow: var(--catalog-control-measure-canvas-auto-flex);
+  --request-actions-icon-size: var(--catalog-icon-measure-shortcut-size);
+  --request-actions-tab-padding: var(
+    --catalog-button-measure-compact-tiny-padding
+  );
+  --request-actions-row-padding: var(--catalog-control-measure-tiny-padding);
+  --request-actions-zero-min-width: var(
+    --catalog-button-measure-default-min-width
+  );
+  --request-actions-tab-border: var(--catalog-button-border-tabs-border);
+  --request-actions-tab-border-bottom: var(
+    --catalog-button-border-tabs-border-bottom
+  );
+  --request-actions-tab-background: var(--catalog-button-color-tabs-background);
+  --request-actions-tab-white-space: var(
+    --catalog-button-typography-default-white-space
+  );
+  --request-actions-touch-size: var(
+    --catalog-control-measure-touch-target-size
+  );
+  --request-actions-inner-radius: var(
+    --catalog-control-border-compact-border-radius
+  );
+}

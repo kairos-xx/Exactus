@@ -1,0 +1,184 @@
+/**
+ * Contextual aliases of the live target component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  /* 38-live-target */
+  --live-target-browser-address-flex-shrink: var(
+    --catalog-control-measure-browser-address-flex-shrink
+  );
+  --live-target-browser-address-font-size: var(
+    --catalog-control-typography-small-font-size
+  );
+  --live-target-browser-address-margin: var(
+    --catalog-control-measure-browser-address-margin
+  );
+  --live-target-browser-address-padding: var(
+    --catalog-control-measure-browser-address-padding
+  );
+  --live-target-browser-address-text-overflow: var(
+    --catalog-control-typography-browser-address-text-overflow
+  );
+  --live-target-browser-address-white-space: var(
+    --catalog-control-typography-browser-address-white-space
+  );
+  --live-target-browser-bar-flex-shrink: var(
+    --catalog-toolbar-measure-browser-flex-shrink
+  );
+  --live-target-browser-bar-gap: var(--catalog-toolbar-measure-compact-gap);
+  --live-target-browser-bar-grid-template-columns: var(
+    --catalog-toolbar-measure-browser-grid-template-columns
+  );
+  --live-target-browser-bar-padding: var(
+    --catalog-toolbar-measure-compact-padding
+  );
+  --live-target-browser-open-accent-color: var(
+    --catalog-control-color-open-accent-color
+  );
+  --live-target-browser-open-white-space: var(
+    --catalog-control-typography-browser-open-white-space
+  );
+  --live-target-browser-profile-icon-inset-block-start: var(
+    --catalog-icon-measure-half-inset-block-start
+  );
+  --live-target-browser-profile-icon-inset-inline-start: var(
+    --catalog-icon-measure-compact-inset-inline-start
+  );
+  --live-target-browser-profile-icon-transform: var(
+    --catalog-icon-effect-browser-profile-transform
+  );
+  --live-target-browser-profile-min-width: var(
+    --catalog-control-measure-browser-profile-min-width
+  );
+  --live-target-browser-profile-select-min-width: var(
+    --catalog-field-measure-profile-select-min-width
+  );
+  --live-target-browser-profile-select-padding-inline-start: var(
+    --catalog-field-measure-large-plus-tiny-padding-inline-start
+  );
+  --live-target-browser-profile-select-text-overflow: var(
+    --catalog-field-typography-profile-select-text-overflow
+  );
+  --live-target-browser-profile-select-width: var(
+    --catalog-field-measure-full-width
+  );
+  --live-target-data-cmd-recorder-record-icon-color: var(
+    --catalog-button-color-tools-mid-color
+  );
+  --live-target-frame-data-preview-closed-after-content: var(
+    --catalog-control-typography-frame-preview-closed-content
+  );
+  --live-target-frame-data-preview-error-after-color: var(
+    --catalog-control-color-frame-color
+  );
+  --live-target-frame-data-preview-error-after-content: var(
+    --catalog-control-typography-frame-preview-error-content
+  );
+  --live-target-frame-data-preview-loading-after-content: var(
+    --catalog-control-typography-frame-content
+  );
+  --live-target-frame-data-preview-loading-after-font-size: var(
+    --catalog-control-typography-small-plus-hairline-font-size
+  );
+  --live-target-frame-data-preview-loading-after-inset: var(
+    --catalog-control-measure-frame-inset
+  );
+  --live-target-frame-data-preview-unauthorized-after-color: var(
+    --catalog-control-color-frame-color
+  );
+  --live-target-frame-data-preview-unauthorized-after-content: var(
+    --catalog-control-typography-frame-preview-unauthorized-content
+  );
+  --live-target-frame-not-data-preview-live-min-height: var(
+    --catalog-control-measure-page-min-height
+  );
+  --live-target-highlight-background: var(
+    --catalog-control-color-highlight-background
+  );
+  --live-target-highlight-z-index: var(
+    --catalog-control-measure-highlight-z-index
+  );
+  --live-target-identity-data-ambiguous-color: var(
+    --catalog-control-color-identity-color
+  );
+  --live-target-identity-font-size: var(
+    --catalog-control-typography-small-font-size
+  );
+  --live-target-identity-margin: var(--catalog-control-measure-identity-margin);
+  --live-target-identity-padding: var(
+    --catalog-control-measure-tiny-compact-padding
+  );
+  --live-target-image-cursor: var(--catalog-control-cursor-image-cursor);
+  --live-target-image-data-stale-opacity: var(
+    --catalog-control-effect-image-opacity
+  );
+  --live-target-image-focus-visible-outline-offset: var(
+    --catalog-control-border-image-outline-offset
+  );
+  --live-target-image-height: var(--catalog-control-measure-image-height);
+  --live-target-image-width: var(--catalog-control-measure-full-width);
+  --live-target-panel-id-target-data-live-maximized-background: var(
+    --catalog-panel-color-workbench-maximized-background
+  );
+  --live-target-panel-id-target-data-live-maximized-height: var(
+    --catalog-panel-measure-workbench-height
+  );
+  --live-target-panel-id-target-data-live-maximized-inset: var(
+    --catalog-panel-measure-workbench-inset
+  );
+  --live-target-panel-id-target-data-live-maximized-width: var(
+    --catalog-panel-measure-workbench-width
+  );
+  --live-target-panel-id-target-data-live-maximized-z-index: var(
+    --catalog-panel-measure-workbench-z-index
+  );
+  --live-target-preview-closed-data-hint-address-after-content: var(
+    --catalog-control-typography-frame-preview-closed-hint-address-content
+  );
+  --live-target-preview-closed-data-hint-service-after-content: var(
+    --catalog-control-typography-frame-preview-closed-hint-service-content
+  );
+  --live-target-selection-flex-shrink: var(
+    --catalog-control-measure-selection-flex-shrink
+  );
+  --live-target-selection-gap: var(--catalog-control-measure-compact-gap);
+  --live-target-selection-input-flex: var(
+    --catalog-field-measure-selection-input-flex
+  );
+  --live-target-selection-input-min-width: var(
+    --catalog-field-measure-selection-input-min-width
+  );
+  --live-target-selection-padding: var(
+    --catalog-control-measure-selection-padding
+  );
+  --live-target-stage-background: var(--catalog-surface-color-stage-background);
+  --live-target-stage-flex: var(--catalog-surface-measure-stage-flex);
+  --live-target-stage-min-height: var(
+    --catalog-surface-measure-stage-min-height
+  );
+  --live-target-stage-min-width: var(--catalog-surface-measure-stage-min-width);
+  --live-target-stage-padding: var(--catalog-surface-measure-compact-padding);
+  --live-target-tools-flex-shrink: var(
+    --catalog-button-measure-tools-flex-shrink
+  );
+  --live-target-tools-gap: var(--catalog-button-measure-compact-gap);
+  --live-target-tools-padding: var(--catalog-button-measure-tools-padding);
+  --live-target-tools-tool-label-clip-path-panel-below-width-440px: var(
+    --catalog-button-measure-half-clip-path
+  );
+  --live-target-tools-tool-label-height-panel-below-width-440px: var(
+    --catalog-button-measure-pixel-hairline-height
+  );
+  --live-target-tools-tool-label-margin-panel-below-width-440px: var(
+    --catalog-button-measure-pixel-minus-hairline-margin
+  );
+  --live-target-tools-tool-label-white-space-panel-below-width-440px: var(
+    --catalog-button-typography-tool-label-white-space
+  );
+  --live-target-tools-tool-label-width-panel-below-width-440px: var(
+    --catalog-button-measure-pixel-hairline-width
+  );
+  --live-target-maximized-evidence-display: var(
+    --catalog-surface-measure-collapsed-display
+  );
+}

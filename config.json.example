@@ -1,0 +1,45 @@
+{
+  "service": {
+    "root": "/absolute/path/to/project",
+    "host": "127.0.0.1",
+    "port": 6100,
+    "access-token": "replace-with-mcp-bearer-token",
+    "ngrok": true,
+    "ngrok-command": "ngrok",
+    "ngrok-endpoint": "your_endpoint_name",
+    "mantledb-namespace": "replace-private-namespace",
+    "mantledb-path": "url",
+    "mantledb-timeout": 10.0,
+    "tunnel-timeout": 30.0,
+    "check-timeout": 900.0,
+    "log-level": "info"
+  },
+  "wakeup": {
+    "label": "com.exactus.mcp-wakeup",
+    "mantledb-namespace": "replace-private-namespace",
+    "wake-key": "replace-with-independent-wake-hmac-key",
+    "access-token": "replace-with-mcp-bearer-token",
+    "secrets-file": "/private/path/to/installed-secrets.json",
+    "command-path": "wake/command",
+    "response-path": "wake/response",
+    "url-path": "url",
+    "state": ".exactus/mcp-wakeup/last-id",
+    "poll-interval": 3.0,
+    "request-timeout": 10.0,
+    "discovery-timeout": 45.0,
+    "retry-maximum": 30.0,
+    "maximum-age": 120.0,
+    "mcp-path": "/mcp",
+    "url-pattern": "(?<=MCP endpoint: )https://[^\\s<>'\\\"]+",
+    "keep-service-running": true,
+    "service-command": [
+      "exactus-mcp",
+      "--root",
+      "/absolute/path/to/project",
+      "--port",
+      "6100",
+      "--ngrok-endpoint",
+      "your_endpoint_name"
+    ]
+  }
+}

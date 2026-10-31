@@ -1,0 +1,922 @@
+#
+# BUILD SYSTEM
+#
+
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+#
+# PROJECT
+#
+
+[project]
+name = "exactus"
+version = "0.6.1"
+description = "Standalone, project-agnostic exactus for Python/JavaScript projects."
+readme = "README.md"
+requires-python = ">=3.13"
+license = "MIT"
+authors = [{ name = "Joao Lopes" }]
+dependencies = [
+    "coverage>=7.6",
+    "defusedxml>=0.7.1",
+    "jinja2>=3.1",
+    "mcp>=2.3,<3",
+    "pillow>=10.0",
+    "playwright>=1.40",
+    "psutil>=7.0",
+    "pyyaml>=6.0",
+    "rumps==0.4.0; sys_platform == 'darwin'",
+]
+
+# ── optional dependencies ──
+
+[project.optional-dependencies]
+dev = [
+    "basedpyright>=1.29",
+    "build>=1.2",
+    "coverage>=7.6",
+    "pytest>=8.3",
+    "pyrefly>=0.63,<0.64",
+    "ruff==0.15.22",
+    "twine>=5.1",
+    "types-cffi>=2.1.0",
+    "types-defusedxml>=0.7.0",
+    "types-docutils>=0.23.0",
+    "types-greenlet>=3.5.0",
+    "types-jsonschema>=4.26.0",
+    "types-psutil>=7.2.2.20260906",
+    "types-Pygments>=2.21.0",
+    "types-PyYAML>=6.0.12",
+    "types-requests>=2.33.0",
+]
+record = []
+
+# ── scripts ──
+
+[project.scripts]
+exactus = "exactus.__main__:main"
+exactus-mcp = "exactus.packages.exactus_mcp.cli:main"
+exactus-mcp-wakeup = "exactus.packages.exactus_mcp.wakeup_cli:main"
+record = "exactus.tools.record.studio.__main__:main"
+
+#
+# PACKAGING
+#
+
+# ── package discovery ──
+
+[tool.setuptools.packages.find]
+include = ["exactus*"]
+exclude = [
+    "exactus.bundle.linux*",
+    "exactus.bundle.macos*",
+    "exactus.bundle.windows*",
+]
+where = ["."]
+
+[tool.setuptools.exclude-package-data]
+"exactus.bundle" = ["linux/**", "macos/**", "windows/**"]
+
+# ── package data ──
+
+[tool.setuptools.package-data]
+"exactus.packages.extended_selector" = [
+    "*.js",
+    "*.mjs",
+    "*.css",
+    "*.json",
+    "README.md",
+    "DOC.md",
+    "editor/*.js",
+    "editor/*.css",
+    "editor/*.d.ts",
+    "editor/README.md",
+    "examples/*",
+    "examples/web/*",
+]
+"exactus.packages.exactus_mcp" = [
+    "README.md",
+    "bridge/*",
+    "examples/*",
+    "macos/README.md",
+    "macos/icons/*",
+    "web/*.html",
+    "web/*.css",
+    "web/*.js",
+    "web/README.md",
+]
+"exactus.packages.widgets.widget_clock" = [
+    "*.js",
+    "*.css",
+    "README.md",
+    "examples/*.html",
+    "examples/*.js",
+    "examples/*.css",
+]
+"exactus.packages.widgets.widget_styles" = ["*.css", "README.md"]
+"exactus.tools.actions.examples" = [
+    "README.md",
+    "actions.json",
+    "site.html",
+    "site.js",
+]
+"exactus.packages.completion.examples" = ["README.md"]
+"exactus.packages.markdown" = ["examples/*", "examples/assets/*"]
+"exactus.packages.performance" = [
+    "web/*.html",
+    "web/*.js",
+    "web/styles/*.css",
+    "web/styles/tokens/*.css",
+    "web/styles/components/*/*.css",
+]
+"exactus.packages.todo_sync" = [
+    "web/dashboard.html",
+    "web/dashboard.css",
+    "web/dashboard.js",
+    "README.md",
+    "examples/*.md",
+]
+"exactus.tools.record" = [
+    "py.typed",
+    "action_recorder.js",
+    "selector_resolve.js",
+    "selector_sandbox.js",
+]
+"exactus.tools.record.studio" = [
+    "web/*.html",
+    "web/*.css",
+    "web/*.js",
+    "web/*.d.ts",
+    "web/styles/*.css",
+    "web/styles/tokens/*.css",
+    "web/styles/components/*/*.css",
+    "web/icons/*.svg",
+    "web/icons/LICENSE",
+    "web/icons/README.md",
+    "web/icons/.library.json",
+]
+"exactus.packages.screenshot" = ["js/capture_screen.js"]
+"exactus.packages.screenshot.examples" = ["README.md"]
+"exactus.tools.common" = [
+    "templates/html/*",
+    "templates/html/packages/*",
+    "templates/markdown/*",
+    "templates/markdown/*/*",
+    "templates/markdown/examples/*",
+]
+"exactus.tools.coverage_tests" = ["templates/markdown/*"]
+"exactus.tools.docs" = ["templates/markdown/*"]
+"exactus.tools.frontend" = ["templates/markdown/*"]
+"exactus.tools.visual_cause" = ["templates/markdown/*"]
+"exactus.tools.kwargs_typehints" = ["templates/markdown/*"]
+"exactus.tools.lints" = [
+    "templates/*",
+    "templates/markdown/*",
+    "js/*.js",
+    "js/README.md",
+]
+"exactus.tools.readme" = ["templates/markdown/*"]
+"*" = [
+    "data/*.json",
+    "data/README.md",
+    "data/parts/README.md",
+    "data/parts/fs/**/README.md",
+    "data/parts/fs/README.md",
+    "data/parts/fs/catalog.json",
+    "data/parts/fs/packs/*/*.zst",
+    "zstd_portable/README.md",
+    "zstd_portable/bin/README.md",
+    "zstd_portable/bin/*.zip",
+    "zstd_portable/py.typed",
+    "README.md",
+    "bin/README.md",
+    "bin/*.zip",
+    "py.typed",
+]
+
+#
+# LINTING
+#
+
+[tool.ruff]
+extend-exclude = [
+    ".history",
+    "mutants",
+    "build",
+    "dist",
+    ".bkp",
+    ".build-cache",
+    ".icloud-conflicts",
+    "exactus/bundle",
+    "**/exactus/vendor/_vendor/**",
+]
+line-length = 79
+src = [".", "exactus/packages/rename_project"]
+target-version = "py313"
+
+# ── lint rules ──
+
+[tool.ruff.lint]
+ignore = ["D203", "D213"]
+select = ["ALL"]
+
+# TYPE CHECKING
+#
+
+# ── basedpyright ──
+
+[tool.basedpyright]
+include = ["exactus"]
+extraPaths = [
+    ".",
+    "exactus/packages/rename_project",
+    "exactus/tests/standalone/project",
+]
+exclude = [
+    "**/node_modules",
+    "**/__pycache__",
+    "**/.*",
+    "mutants",
+    "**/mutants",
+    "dist",
+    "build",
+    ".build-cache",
+    "exactus/bundle",
+    "**/exactus/vendor/_vendor/**",
+]
+pythonVersion = "3.13"
+typeCheckingMode = "strict"
+venvPath = "."
+venv = ".venv"
+
+[[tool.basedpyright.executionEnvironments]]
+root = "exactus/packages/rename_project"
+extraPaths = [
+    ".",
+    "exactus/packages/rename_project",
+    "exactus/packages/rename_project/examples/project/src",
+]
+
+[[tool.basedpyright.executionEnvironments]]
+root = "exactus/tests/packages/completion"
+reportPrivateUsage = "none"
+
+[[tool.basedpyright.executionEnvironments]]
+root = "exactus/tests/tools/completion"
+reportPrivateUsage = "none"
+
+[[tool.basedpyright.executionEnvironments]]
+root = "exactus/tests/tools/record"
+reportMissingParameterType = "none"
+reportMissingTypeStubs = "none"
+reportPrivateUsage = "none"
+reportUnknownArgumentType = "none"
+reportUnknownLambdaType = "none"
+reportUnknownMemberType = "none"
+reportUnknownParameterType = "none"
+reportUnknownVariableType = "none"
+
+# ── pyrefly ──
+
+[tool.pyrefly]
+project-excludes = [
+    "**/mutants/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/.build-cache/**",
+    "**/exactus/bundle/**",
+    "**/exactus/vendor/_vendor/**",
+]
+project-includes = ["exactus", "exactus/packages", "tests"]
+python-version = "3.13"
+search-path = [
+    "exactus/packages/rename_project",
+    "exactus/packages/rename_project/examples/project/src",
+    "exactus/tests/standalone/project",
+    "bin",
+    ".",
+]
+
+#
+# TESTING
+#
+
+[tool.pytest.ini_options]
+addopts = ["--ignore=exactus/bundle", "--ignore=dev"]
+filterwarnings = [
+    "ignore::UserWarning:multiprocessing.resource_tracker",
+    "ignore:pkg_resources is deprecated:UserWarning",
+    "ignore:Deprecated call to `pkg_resources.declare_namespace:DeprecationWarning",
+]
+pythonpath = [".", "exactus/packages/rename_project"]
+
+#
+# EXACTUS
+#
+# Keys map to `--flags` of the orchestrator or, inside a
+# [tool.exactus.<name>] subtable, to that tool's parser. `root` and
+# `reports-dir` are consumed by exactus itself; every other top-level
+# key forwards to every tool that accepts it, so tool flags like
+# `no-fix`, `context-lines` or `dry` can be set globally here or
+# individually inside each tool's subtable.
+#
+# `dry` is the report-only umbrella: it disables every file-mutating
+# stage a tool has (for lints: clean, fix, infer, install-tools and
+# shebang healing). For lints, `no-fix` is the healing switch: nothing
+# writes to sources. The other per-stage `no-*` keys are narrower —
+# each one disables a single stage while the rest still run.
+#
+# Tool selection is CLI-only (`--tools`): there is no `tools` key —
+# use `exclude-tools` to skip catalog tools during pipeline runs.
+# Pipeline-scoped overrides live in
+# [tool.exactus.pipeline.<pipeline>.<tool>] tables
+# (pipeline: self | all-fast | unified).
+
+[tool.exactus]
+clear = true # clear reports before running; a list
+# clears only the named tools
+reports-dir = "EXACTUS_RESULTS" # reports dir, resolved against this file
+root = true                     # mark this pyproject as the project root:
+# stops upward discovery and anchors
+# reports-dir even when run from a subdir
+# pipeline = "unified"             # self | all-fast | unified
+# exclude-tools = ["frontend"]     # skip tools during pipeline runs
+collect-files = true # bundle FILES/{README,TREE,files.zip} with
+# the sources named by each report's findings
+# include = ["src/**"]             # globs forwarded to every tool
+exclude = [
+    "exactus/bundle/**",
+    "exactus/vendor/_vendor/**",
+    "bin/release/exactus",
+    "bin/release/exactus_all/exactus",
+    "bin/release/exactus_*/exactus",
+    "packages/**",
+    "zip-components/**",
+    # "dev/**",
+    # "**/dev/**",
+]
+# generated bundle/executable output,
+# archive dirs, and local dev scratch
+# are ignored
+# context-lines = 3                # snippet lines around findings
+# output-dir = "REPORTS"           # shared per-tool output root
+# dry = true                       # report-only: no tool may modify files
+# no-fix = true                    # lints only: audit mode, no healing writes
+# no-group-final = true            # lints only: skip group_final pre-pass
+# unsafe-fixes = true              # lints only: allow Ruff unsafe fixes
+
+# ── Exactus MCP service ──
+#
+# This table is the complete project-side inventory for the `exactus-mcp`
+# command. Secrets are intentionally excluded: provide
+# EXACTUS_MCP_ACCESS_TOKEN and EXACTUS_MCP_MANTLEDB_NAMESPACE through the
+# process environment or the private startup-manager secrets file.
+
+[tool.exactus.mcp]
+# root = "."                       # project exposed to remote Exactus checks
+host = "127.0.0.1" # loopback bind host
+port = 6100        # 0 = ephemeral; fixed for named ngrok upstreams
+ngrok = true       # false is equivalent to --no-ngrok
+# menu-bar = true                 # macOS default; use false for headless runs
+# ngrok-command = "/absolute/path/to/ngrok"
+# ngrok-url = "https://reserved.example" # mutually exclusive with endpoint
+# ngrok-endpoint = "your_endpoint_name"  # named ngrok.yml endpoint (paid here)
+mantledb-path = "url"   # signed public-origin record
+mantledb-timeout = 10.0 # MantleDB request timeout, seconds
+tunnel-timeout = 30.0   # ngrok readiness timeout, seconds
+check-timeout = 900.0   # one remote Exactus report timeout
+log-level = "info"      # critical | error | warning | info | debug
+# access-token = "never-store-secrets-here" # use EXACTUS_MCP_ACCESS_TOKEN
+# mantledb-namespace = "private"  # use EXACTUS_MCP_MANTLEDB_NAMESPACE
+
+# These are all `exactus-mcp-wakeup run/install` settings. `install` persists
+# the resolved values in a native LaunchAgent, systemd user service, or Task
+# Scheduler task. Wake and bearer secrets remain outside that definition.
+
+[tool.exactus.mcp.wakeup]
+label = "com.exactus.mcp-wakeup"
+command-path = "wake/command"
+response-path = "wake/response"
+url-path = "url"
+state = ".exactus/mcp-wakeup/last-id"
+poll-interval = 3.0
+request-timeout = 10.0
+discovery-timeout = 45.0
+retry-maximum = 30.0
+maximum-age = 120.0
+mcp-path = "/mcp"
+url-pattern = '''(?<=MCP endpoint: )https://[^\s<>'"]+'''
+keep-service-running = true                               # required for ChatGPT web remote access
+# service-command = [             # fixed shell-free child argv after `--`
+#   "python",
+#   "-m",
+#   "exactus.packages.exactus_mcp",
+#   "--root",
+#   "/absolute/project/path",
+#   "--port",
+#   "6100",
+# ]
+# wake-key = "never-store-secrets-here"   # use EXACTUS_MCP_WAKE_KEY
+# access-token = "never-store-secrets-here" # use EXACTUS_MCP_ACCESS_TOKEN
+# mantledb-namespace = "private"  # use EXACTUS_MCP_MANTLEDB_NAMESPACE
+# secrets-file = "/private/path/secrets.json" # created by `install`
+
+# ── coverage tests ──
+
+[tool.exactus.coverage_tests]
+fail-under = 90           # overall Python+JS coverage floor
+per-file-minimum = 80     # per-source-file coverage floor
+source-root = ["exactus"] # Exactus packages are self-contained owned code
+jobs = 4                  # bound browser/process concurrency for stability
+shard-by = "node"         # node | file; node splits large pytest modules
+# output-dir = "EXACTUS_RESULTS/COVERAGE_TESTS" # report destination
+# include = ["src/**"]             # include relative paths matching GLOB
+# exclude = ["tmp/**"]             # exclude test files AND measured
+# sources matching GLOB (coverage and meaningful findings drop them)
+# context-lines = 3                # snippet lines around reported lines
+# dry = true                       # analyze and report, modify nothing
+# minimum = 80                     # floor for the validated evidence
+# average-minimum = 0              # mean file-coverage floor
+# critical = ["tools/common"]      # path fragments needing more
+# critical-minimum = 80            # floor applied to critical paths
+# pytest-arg = ["-x"]              # extra pytest args, repeatable
+# no-branch = true                 # disable branch coverage
+# no-js-coverage = true            # skip JavaScript coverage
+# include-unreached = true         # count every unreached file at 0%
+# meaningful = "require"           # off | classify | require
+# meaningful-minimum-level = "TEST-2" # TEST-0 through TEST-3
+# meaningful-unclassified = "filtered" # filtered | actionable | error
+# meaningful-workers = 4           # parallel semantic-analysis workers
+# meaningful-evidence-context = 2  # source context lines around evidence
+# meaningful-threshold-test-0-to-1 = 0.25
+# meaningful-threshold-test-1-to-2 = 0.50
+# meaningful-threshold-test-2-to-3 = 0.70
+# meaningful-weight-behavior = 1.0
+# meaningful-weight-public-surface = 1.1
+# meaningful-weight-side-effects = 1.4
+# meaningful-weight-mutations = 1.3
+# meaningful-weight-decisions = 1.2
+# meaningful-weight-errors = 1.3
+# meaningful-weight-computations = 0.8
+# meaningful-weight-size = 0.9
+# meaningful-weight-nesting = 1.0
+# meaningful-cap-behavioral-statements = 30
+# meaningful-cap-public-members = 10
+# meaningful-cap-side-effects = 5
+# meaningful-cap-mutations = 5
+# meaningful-cap-decisions = 12
+# meaningful-cap-errors = 5
+# meaningful-cap-computations = 40
+# meaningful-cap-source-lines = 300
+# meaningful-cap-nesting = 5
+# meaningful-floor-side-effect-test-1-to-2 = 0.70
+# meaningful-floor-mutation-test-1-to-2 = 0.65
+# meaningful-floor-error-test-1-to-2 = 0.70
+# meaningful-floor-import-runtime-test-1-to-2 = 0.65
+# meaningful-floor-high-complexity-test-2-to-3 = 0.75
+
+# ── docs ──
+
+[tool.exactus.docs]
+# output-dir = "EXACTUS_RESULTS/DOCS"  # report destination
+# include = ["src/**"]             # include relative paths matching GLOB
+# exclude = ["tmp/**"]             # exclude relative paths matching GLOB
+# context-lines = 3                # snippet lines around reported lines
+# dry = true                       # analyze and report, modify nothing
+# language = "both"                # both | python | javascript
+# public-only = true               # only public API symbols
+# no-js-check = true               # skip the JavaScript JSDoc pass
+# fail-on = "warning"              # error | warning | info | never
+
+# ── frontend ──
+
+[tool.exactus.frontend]
+actions = "demo/actions/frontend.json"
+# output-dir = "EXACTUS_RESULTS/FRONTEND" # report destination
+# include = ["src/**"]             # include relative paths matching GLOB
+# exclude = ["tmp/**"]             # exclude relative paths matching GLOB
+# context-lines = 3                # snippet lines around reported lines
+# dry = true                       # analyze and report, modify nothing
+# url = "http://localhost:8000"    # initial application URL (no --actions)
+# workspace = "path/out"           # Studio project to execute (no --actions)
+# flow = "name"                    # workflow entry flow id
+# width = 1440                     # viewport width
+# height = 1000                    # viewport height
+# scale = 1.0                      # device scale factor
+# timeout-ms = 5000                # action timeout
+# headed = true                    # show the browser window
+# workers = 4                      # parallel flow workers
+# server-log = "path/log.txt"      # captured dev-server log destination
+
+# ── kwargs typehints ──
+
+[tool.exactus.kwargs_typehints]
+allow-bare-import = ["sys"] # sys.stdout/sys.stderr must resolve
+# dynamically — `from sys import stdout` freezes the stream bound at
+# import time, which breaks capture and tee redirection
+# python = ".venv"                    # interpreter executable, PATH
+# name, or virtual-environment directory whose version/platform
+# steer inference; unset falls back to the project .venv/venv,
+# then requires-python probes on PATH, then the running
+# interpreter
+# output-dir = "EXACTUS_RESULTS/KWARGS_TYPEHINTS" # report destination
+# include = ["src/**"]             # include relative paths matching GLOB
+# exclude = ["tmp/**"]             # exclude relative paths matching GLOB
+# context-lines = 3                # snippet lines around reported lines
+# dry = true                       # analyze and report, modify nothing
+# strict = true                    # stricter call-shape checks
+# allow-bare-import = ["module"]   # modules allowed bare imports
+
+# ── lints ──
+
+[tool.exactus.lints]
+# temporary folders and IDE local-history snapshots are never linted
+exclude = ["tmp/**", "**/tmp/**", ".history/**"]
+simple = false # true runs only the all_lints package audit and reports
+# its findings alone — no cleaning, convention scans, refactors,
+# compliance or guarded inference
+# workers = 8                      # max parallel external linters; 1 = serial, omitted = auto (max 16)
+# output-dir = "EXACTUS_RESULTS/LINTS" # report destination
+# include = ["src/**"]             # include relative paths matching GLOB
+# context-lines = 3                # snippet lines around reported lines
+# dry = true                       # report only: all no-* stages below off
+# no-clean = true                  # skip source cleaning/format passes
+# no-fix = true                    # audit only: cleaning, rewrites, refactors
+# and guarded inference report but never
+# write to sources
+# no-long-lines = true             # skip the long-line repair inside --fix
+# no-delimiters = true             # skip the JS delimiter scan/simplification
+# no-notation = true               # skip the JS function-block normalization
+# no-infer = true                  # skip environment inference
+# no-group-final = true            # skip the group_final pre-pass
+# no-organize = true               # skip the class-method reorder pass
+# unsafe-fixes = true              # allow Ruff --unsafe-fixes in all_lints
+# no-install-tools = true          # never install missing linters
+# runtime_max_runs = 500           # finished runs kept in the shared
+#                                  # EXACTUS_RESULTS/.runtime registry; the
+#                                  # oldest are pruned after each run
+# runtime_max_size = "64MB"        # byte cap on the registry database;
+#                                  # a size string ("64MB") or a plain int
+#                                  # of bytes; oldest finished runs are
+#                                  # deleted when exceeded; 0 disables
+# no-shebang-heal = true           # report shebang/exec mismatches, don't repair
+# exec-no-shebang = "drop-exec"    # add-shebang | drop-exec
+# shebang-no-exec = "drop-shebang" # add-exec | drop-shebang
+# bare-import-exception = ["module"]
+# css-context-word = ["timeline"]     # word CSS CATALOG token names must not contain
+# toolchain = "path/to/exactus"    # explicit toolchain executable
+# ruff-arg = ["--flag"]            # forwarded to ruff, repeatable
+# basedpyright-arg = ["--flag"]    # forwarded to basedpyright
+# pyrefly-arg = ["--flag"]         # forwarded to pyrefly
+
+# ── performance ──
+
+# Instruments the generic exactus/packages/performance package: scans
+# EXACTUS_RESULTS for steps.txt traces and exports the dashboard under
+# EXACTUS_RESULTS/PERFORMANCE. Pipelines pass --no-serve so exports never
+# block on the dashboard server.
+# [tool.exactus.performance]
+# output-dir = "EXACTUS_RESULTS/PERFORMANCE" # report destination
+# source = ["EXACTUS_RESULTS"]     # trace roots to scan, repeatable
+# serve = true                   # serve the dashboard after export;
+#                                # no-serve = true forces it off
+# open = true                    # open the managed browser;
+#                                # no-open = true forces it off
+# gap-threshold = 0.25           # silent-gap threshold in seconds
+# repetition-threshold = 10      # repeated steps treated as a bottleneck
+# server-timeout = 10.0          # seconds to wait for the dashboard server
+
+# ── readme ──
+
+# [tool.exactus.readme]
+# output-dir = "EXACTUS_RESULTS/README" # report destination
+# include = ["src/**"]             # include relative paths matching GLOB
+# exclude = ["tmp/**"]             # exclude relative paths matching GLOB
+# context-lines = 3                # snippet lines around reported lines
+# dry = true                       # check without rewriting READMEs
+
+# ── record ──
+
+[tool.exactus.record]
+window = false # open the managed browser window with
+# Studio and stop Studio when it closes;
+# no-window = true forces it off
+# output-dir = "EXACTUS_RESULTS/RECORD" # report destination
+# include = ["src/**"]             # include relative paths matching GLOB
+# exclude = ["tmp/**"]             # exclude relative paths matching GLOB
+# context-lines = 3                # snippet lines around reported lines
+# dry = true                       # analyze and report, modify nothing
+# url = "http://localhost:8000"    # page to record
+# workspace = "path/out"           # exported workspace destination
+# width = 1440                     # viewport width
+# height = 1000                    # viewport height
+# port = 0                         # editor port, 0 = auto
+# timeout-ms = 5000                # action timeout
+# duration = 30                    # recording duration, seconds
+# flow = "name"                    # run one recorded flow
+# flow-id = "exactus-recording"    # id of the exported flow
+# flow-name = "Exactus recording"  # name of the exported flow
+# replay = "flow.json"             # replay a recorded flow file
+# headless = true                  # run the browser headless
+# no-open = true                   # do not open the editor
+# preserve-timing = true           # keep recorded delays on replay
+# crawl = true                     # discover flows automatically
+# max-depth = 2                    # crawler click depth
+# max-states = 20                  # crawler state cap
+# capture-ui-changes = true        # set false to disable the flag
+# no-capture-ui-changes = true     # equivalent explicit negation
+# follow-links = true              # set false, or use no-follow-links
+# click-controls = true            # set false, or use no-click-controls
+# include-selector = "css"         # restrict discovery targets
+
+# ── visual cause ──
+
+[tool.exactus.visual_cause]
+target = "example" # named [[targets]] entry run by pipelines
+# output-dir = "EXACTUS_RESULTS/VISUAL_CAUSE" # report destination
+# include = ["src/**"]           # include relative paths matching GLOB
+# exclude = ["tmp/**"]           # exclude relative paths matching GLOB
+# context-lines = 3              # snippet lines around reported lines
+# dry = true                     # analyze and report, modify nothing
+# url = "http://localhost:8000"  # ad-hoc A-side URL (mutually exclusive
+#                                # with --target names; html works too)
+# html = "path/page.html"        # ad-hoc A-side local HTML folder/file
+# landing = "index.html"         # landing document inside html folders
+# url-b = "http://localhost:8000/other" # B-side URL for page diffs
+# html-b = "path/other.html"     # B-side local HTML
+# landing-b = "index.html"       # B-side landing document
+# css-a = "path/a.css"           # stylesheet applied to the A side
+# css-b = "path/b.css"           # stylesheet applied to the B side
+# viewport = ["1440x900"]        # WIDTHxHEIGHT strings, repeatable
+# accept = ["[data-volatile]"]
+# warning = [".clock *"]
+# fail = [".toolbar button"]
+# default-level = "fail"         # fail | warning | accept
+# fail-on = "findings"           # findings | pixels | never
+# threshold = 8                  # pixel difference threshold, 0..255
+# max-candidates = 200           # most causal candidates per target
+# parallel-workers = 4           # rendering worker processes
+# timeout-ms = 30000             # per-render timeout
+# screenshot-scale = 2.0         # device-pixel ratio for screenshots
+# native-styles-a = true         # keep native styles on the A side
+# native-styles-b = true         # keep native styles on the B side
+
+# Named comparison targets. Every entry needs `name` plus exactly one
+# A-side source (`url` or `html`), then either a B page (`url-b` or
+# `html-b`, never both) for a page diff or `css-b` for a stylesheet
+# comparison. Underscored spellings (url_b, css_a, ...) are accepted.
+
+[[tool.exactus.visual_cause.targets]]
+name = "example"
+html = "exactus/packages/visual_cause/examples/web"
+landing = "index.html"
+css-a = "exactus/packages/visual_cause/examples/web/a.css"
+css-b = "exactus/packages/visual_cause/examples/web/b.css"
+viewports = ["1180x900"]
+threshold = 8
+max-candidates = 80
+timeout-ms = 5000
+parallel-workers = 1
+default-level = "warning"
+# url = "http://localhost:8000"  # alternative A-side source
+# url-b = "http://localhost:8000/other" # B page for a page diff
+# html-b = "path/other.html"     # local B page
+# landing-b = "index.html"       # B-side landing document
+# accept = ["[data-volatile]"]   # findings accepted without failing
+# warning = [".clock *"]         # findings downgraded to warnings
+# fail = [".toolbar button"]     # findings that fail the run
+# fail-on = "findings"           # findings | pixels | never
+# screenshot-scale = 2.0         # device-pixel ratio for screenshots
+# native-styles-a = true         # keep native styles on the A side
+# native-styles-b = true         # keep native styles on the B side
+
+# ── pipeline-scoped overrides ──
+# Settings under [tool.exactus.pipeline.<pipeline>.<tool>] apply only
+# while that pipeline runs the tool; orchestrator keys (clean,
+# include, exclude, ...) sit directly under .pipeline.<pipeline>.
+#
+# [tool.exactus.pipeline.unified.lints]
+# no-fix = true
+#
+# [tool.exactus.pipeline.all-fast.coverage_tests]
+# fail-under = 50
+
+#
+# PACKAGES
+#
+# Standalone `python exactus/packages/<name>` tools read their own [tool.<name>]
+# tables; Exactus packages are our own code and are linted like
+# everything else: no tool excludes exactus/packages/.
+
+# ── all_lints audit ──
+
+[tool.all_lint] # [tool.all_lints] is an overlay alias;
+# the same two keys work there
+output-dir = "ALL_LINTS_RESULTS" # report directory name under the root
+collect-files = true             # true writes the FILES/files.zip bundle,
+# like [tool.exactus] collect-files
+
+# Extra audit-wide and per-tool exclusions merged into discovery.
+# Per-tool subtables exist for each audit tool: ruff, ruff_docs,
+# basedpyright, pyrefly, eslint, stylelint, htmlint, typescript.
+#
+# [tool.audit_linters_json]
+# exclude = ["dev", "**/dev"] # local dev scratch is never audited
+#
+# [tool.audit_linters_json]
+# exclude = ["gen/**"]           # dropped before native tool config
+# extend-exclude = ["tmp/**"]    # appended to the merged exclusion list
+#
+# [tool.audit_linters_json.ruff]
+# exclude = ["exactus/packages/legacy/**"]
+# extend-exclude = ["fixtures/**"]
+
+# ── organize ──
+
+[tool.organize]
+# Class-method category order used by exactus.packages.organize. This lists the
+# default canonical order explicitly for reference; any complete
+# permutation of the same categories is allowed.
+order = [
+    "new",                  # __new__
+    "init",                 # __init__
+    "classmethod",          # public class methods
+    "property",             # public property families
+    "staticmethod",         # public static methods
+    "method",               # public instance methods
+    "magic",                # other dunder methods
+    "private_classmethod",  # private class methods
+    "private_property",     # private property families
+    "private_staticmethod", # private static methods
+    "private_method",       # private instance methods
+]
+
+# ── steps ──
+
+
+# ── performance ──
+
+[tool.performance]
+# Generic standalone analyzer defaults — the exactus tool wrapper reads
+# [tool.exactus.performance] instead (see the exactus sections above).
+# Input files, directories, or project-relative glob expressions.
+# CLI positional sources replace this complete list when supplied.
+sources = ["EXACTUS_RESULTS"]
+
+# Export directory, relative to the project root unless absolute.
+output = "EXACTUS_RESULTS/PERFORMANCE"
+
+# Export and start exactus.packages.server after analysis.
+# serve = true
+
+# Match Exactus Studio: open the managed browser unless explicitly disabled.
+# CLI: --open / --no-open.
+# open = true
+
+# Optional explicit Chrome/Chromium executable used by exactus.packages.browser.
+# chrome = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+
+# Minimum adjacent-event silence reported as a gap bottleneck, in seconds.
+# gap-threshold = 0.25
+
+# Minimum identical-event count reported as a repetition bottleneck.
+# repetition-threshold = 10
+
+# Maximum seconds to wait for exactus.packages.server readiness.
+# server-timeout = 10.0
+
+[tool.steps]
+write = true # record ARTIFACTS/steps.txt traces; false
+# discards every step call without creating
+# the file
+sample = 0.5 # seconds between ~sample CPU/memory/disk-I/O
+# lines for the whole process tree; 0 = off
+
+# ── watch ──
+
+[tool.watch]
+# Relative paths are resolved from the directory containing pyproject.toml.
+run = true # pause copying; keep watching this table
+source = "."
+destination = "/Users/joaolopes/Desktop/Exactus"
+interval = 0.5
+settle-time = 0.5
+exclude = [".*", ".DS_Store", "__pycache__", "dev"]
+include = [ # wins over exclude; Finder always
+    ".DS_Store", # recreates it, so sync it instead of
+] # fighting the recreation
+initial-sync = true
+mirror-deletes = true
+quiet = false
+# workers = 0                     # parallel copy/prune workers; 0 = auto
+
+#
+# SCRIPTS
+#
+# Defaults for the scripts/ tools; CLI flags always override these.
+
+# ── build_make ──
+
+[tool.build]
+exactus = true # build only bin/release/exactus_all; `check`
+# check = true                   # alias for the same artifact
+build = true # build only build/
+tree = true # write only TREE.txt
+no-exactus = true # exclude EXACTUS_RESULTS from TREE.txt
+targets = [ # bundle targets/groups staged into the
+    "linux-glibc-amd64", # artifacts; same vocabulary as
+] # [tool.bundle] targets (linux, glibc,
+# musl, macos, windows, amd64, arm64,
+# linux-glibc-amd64, ..., "all")
+# target = "linux-glibc-amd64"   # single target; merged with targets
+
+# [tool.build.exec]              # scopes targets to the fat pyz
+# targets = ["macos-arm64"]      # alone; overrides [tool.build] targets;
+# --exec-target overrides both
+# target = "macos-arm64"         # single target; merged with targets above
+
+# ── bundle_make ──
+
+[tool.bundle]
+node-version = "22.21.1" # Node.js runtime bundled per target
+optional = [
+    "browser", # playwright + chromium
+    "build_twine",
+    "fastapi_httpx_httpx2_mcp_pydantic_uvicorn",
+    "hypothesis_mutmut",
+    "jinja2",
+    "pillow",
+    "psutil",
+    "tree-sitter_tree-sitter-language-pack",
+]
+targets = [ # targets and/or groups: linux, glibc,
+    "linux",   # musl, macos, windows, amd64, arm64,
+    "macos",   # linux-amd64, linux-arm64, or a
+    "windows", # concrete name like linux-glibc-amd64
+]
+# target = "linux-glibc-amd64"     # legacy single target; use targets
+# part-bytes = 90000000            # payload-part size cap, <= 90 MB
+# output = "build/out/__main__.py" # launcher destination (single target)
+# parts-dir = "build/out/parts"    # payload parts dir (single target)
+# exclude = ["pillow"]             # components to drop from optional
+# only = ["node"]                  # force-acquire these components
+# rebuild = true                   # restage and rescan everything
+
+# ── package ──
+
+# [tool.package]
+# output = "dist/exactus.zip"      # archive destination (skips README)
+# no-exactus = true                # exclude EXACTUS_RESULTS subtree
+
+# ── unified exactus.packages.package pipeline ──
+# CLI/API explicit values override these settings. Stages always execute in
+# build -> bundle -> package order, independent of flag/config declaration order.
+# [tool.package.build]
+# enabled = false
+# check = true
+# dist = true
+# tree = true
+# include-exactus-results = true
+# targets = ["linux-glibc-amd64"]
+# exec-targets = ["macos-arm64"]
+# self-test = false
+#
+[tool.package.build]
+self-test = false
+exec-targets = [
+    "linux-glibc-amd64",
+    "linux-glibc-arm64",
+    "linux-musl-amd64",
+    "linux-musl-arm64",
+    "macos-arm64",
+    "macos-amd64",
+    "windows-amd64",
+    "windows-arm64",
+]
+[tool.package.bundle]
+# enabled = false
+targets = ["all"]
+node-version = "22.21.1"
+optional = [
+    "browser", # playwright + chromium
+    "build_twine",
+    "fastapi_httpx_httpx2_mcp_pydantic_uvicorn",
+    "hypothesis_mutmut",
+    "jinja2",
+    "pillow",
+    "psutil",
+    "tree-sitter_tree-sitter-language-pack",
+]
+# exclude = []
+# only = []
+# part-bytes = 90000000
+# output = "build/out/__main__.py" # single target only
+# parts-dir = "build/out/parts"    # single target only
+# rebuild = false
+#
+# [tool.package.package]
+# enabled = true
+# output = "dist/project.zip"      # omit for timestamped packages/ layout
+# include-exactus-results = true

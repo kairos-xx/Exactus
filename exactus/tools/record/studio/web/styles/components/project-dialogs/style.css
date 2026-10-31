@@ -1,0 +1,566 @@
+/**
+ * New project, name, unsaved-changes and gallery dialogs.
+ *
+ * Sources: 47-project-dialogs.
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+/* Source: 47-project-dialogs */
+/* Project dialogs: new project, ask for a name, unsaved changes, the gallery.
+ * They are native <dialog> elements opened as modals, so the page behind is
+ * inert and Escape closes them. Spacing follows one rule: tighter inside a
+ * group than between groups. */
+.project-dialog {
+  width: var(--project-dialogs-project-dialog-width);
+  max-height: var(--project-dialogs-project-dialog-max-height);
+  padding: var(--project-dialogs-project-dialog-padding);
+  overflow: hidden;
+  --base-project-dialogs-project-dialog-border: calc(
+      var(--primary-dimension-pixel) * 1
+    )
+    solid var(--primary-line);
+  --catalog-edge-border-dialog-border: var(
+    --base-project-dialogs-project-dialog-border
+  );
+  --project-dialogs-project-dialog-border: var(
+    --catalog-edge-border-dialog-border
+  );
+  border: var(--project-dialogs-project-dialog-border);
+  border-radius: var(--project-dialogs-project-dialog-border-radius);
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--project-dialogs-project-dialog-box-shadow);
+}
+.project-dialog::backdrop {
+  background: var(--project-dialogs-project-dialog-backdrop-background);
+}
+.project-dialog.ask-name,
+.project-dialog.unsaved {
+  width: var(--project-dialogs-project-dialog-ask-name-width);
+}
+.project-dialog.project-gallery {
+  width: var(--project-dialogs-project-dialog-project-gallery-width);
+  height: var(--project-dialogs-project-dialog-project-gallery-height);
+}
+/* Outside the app root, controls keep the browser's content-box sizing, so a
+ * full-width field would overflow its column by its padding and border. */
+.project-dialog :is(input, textarea, select, button) {
+  box-sizing: border-box;
+}
+.pd-form {
+  display: grid;
+  grid-template-rows: var(--project-dialogs-pd-form-grid-template-rows);
+  max-height: inherit;
+  height: var(--project-dialogs-pd-form-height);
+  margin: var(--project-dialogs-pd-form-margin);
+}
+.pd-header {
+  display: flex;
+  gap: var(--project-dialogs-pd-header-gap);
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: var(--project-dialogs-pd-header-padding);
+}
+.pd-header h2 {
+  margin: var(--project-dialogs-pd-header-h2-margin);
+  color: var(--text-strong);
+  font-size: var(--project-dialogs-pd-header-h2-font-size);
+  font-weight: var(--project-dialogs-pd-header-h2-font-weight);
+}
+.pd-sub,
+.pd-count,
+.pd-muted {
+  margin: var(--project-dialogs-pd-sub-margin);
+  color: var(--muted);
+  font-size: var(--project-dialogs-pd-sub-font-size);
+}
+.pd-scroll {
+  display: grid;
+  gap: var(--project-dialogs-pd-scroll-gap);
+  align-content: start;
+  padding: var(--project-dialogs-pd-scroll-padding);
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+.pd-group {
+  display: grid;
+  gap: var(--project-dialogs-pd-group-gap);
+  min-width: var(--project-dialogs-pd-group-min-width);
+  margin: var(--project-dialogs-pd-group-margin);
+  padding: var(--project-dialogs-pd-group-padding);
+  border: var(--project-dialogs-pd-group-border);
+}
+.pd-group > legend {
+  padding: var(--project-dialogs-pd-group-legend-padding);
+  color: var(--text-subtle);
+  font-size: var(--project-dialogs-pd-group-legend-font-size);
+  font-weight: var(--project-dialogs-pd-group-legend-font-weight);
+}
+.pd-field {
+  display: grid;
+  gap: var(--project-dialogs-pd-field-gap);
+  min-width: var(--project-dialogs-pd-field-min-width);
+}
+.pd-label {
+  color: var(--text);
+  font-size: var(--project-dialogs-pd-label-font-size);
+  font-weight: var(--project-dialogs-pd-label-font-weight);
+}
+.pd-field input,
+.pd-field textarea,
+.pd-field select {
+  width: var(--project-dialogs-pd-field-input-width);
+  min-width: var(--project-dialogs-pd-field-input-min-width);
+  height: var(--project-dialogs-pd-field-input-height);
+  padding: var(--project-dialogs-pd-field-input-padding);
+  font-size: var(--project-dialogs-pd-field-input-font-size);
+}
+.pd-field textarea {
+  height: var(--project-dialogs-pd-field-textarea-height);
+  padding: var(--project-dialogs-pd-field-textarea-padding);
+  resize: vertical;
+}
+.pd-help {
+  color: var(--text-subtle);
+  font-size: var(--project-dialogs-pd-help-font-size);
+  white-space: var(--project-dialogs-pd-help-white-space);
+}
+.pd-issue,
+.pd-error {
+  margin: var(--project-dialogs-pd-issue-margin);
+  color: var(--project-dialogs-pd-issue-color);
+  font-size: var(--project-dialogs-pd-issue-font-size);
+}
+.pd-error {
+  padding: var(--project-dialogs-pd-error-padding);
+}
+.pd-issue:empty,
+.pd-error:empty {
+  display: none;
+}
+.pd-pair {
+  display: grid;
+  grid-template-columns: var(--project-dialogs-pd-pair-grid-template-columns);
+  gap: var(--project-dialogs-pd-pair-gap);
+}
+.pd-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--project-dialogs-pd-actions-gap);
+  align-items: center;
+  justify-content: flex-end;
+  padding: var(--project-dialogs-pd-actions-padding);
+  --base-project-dialogs-pd-actions-border-top: calc(
+      var(--primary-dimension-pixel) * 1
+    )
+    solid var(--primary-line);
+  --catalog-edge-border-pd-border-top: var(
+    --base-project-dialogs-pd-actions-border-top
+  );
+  --project-dialogs-pd-actions-border-top: var(
+    --catalog-edge-border-pd-border-top
+  );
+  border-top: var(--project-dialogs-pd-actions-border-top);
+}
+.project-dialog button:disabled {
+  cursor: var(--project-dialogs-project-dialog-button-disabled-cursor);
+  opacity: var(--project-dialogs-project-dialog-button-disabled-opacity);
+}
+.project-dialog .pd-danger:not(:disabled) {
+  border-color: var(
+    --project-dialogs-project-dialog-pd-danger-not-disabled-border-color
+  );
+  color: var(--project-dialogs-project-dialog-pd-danger-not-disabled-color);
+}
+.project-dialog .pd-danger:not(:disabled):hover {
+  background: var(
+    --project-dialogs-dialog-pd-danger-not-disabled-hover-background
+  );
+}
+.project-dialog .pd-icon-only {
+  width: var(--project-dialogs-project-dialog-pd-icon-only-width);
+  padding: var(--project-dialogs-project-dialog-pd-icon-only-padding);
+  justify-content: center;
+}
+.pd-link {
+  height: var(--project-dialogs-pd-link-height);
+  padding: var(--project-dialogs-pd-link-padding);
+  border: var(--project-dialogs-pd-link-border);
+  background: var(--project-dialogs-pd-link-background);
+  color: var(--muted);
+  text-decoration: var(--project-dialogs-pd-link-text-decoration);
+}
+/* Gallery. */
+.pd-gallery {
+  grid-template-rows: var(--project-dialogs-pd-gallery-grid-template-rows);
+}
+.pd-header-actions {
+  display: flex;
+  gap: var(--project-dialogs-pd-header-actions-gap);
+  align-items: center;
+}
+.pd-search {
+  display: flex;
+  gap: var(--project-dialogs-pd-search-gap);
+  align-items: center;
+  padding: var(--project-dialogs-pd-search-padding);
+}
+.pd-search-box {
+  display: flex;
+  flex: var(--project-dialogs-pd-search-box-flex);
+  gap: var(--project-dialogs-pd-search-box-gap);
+  align-items: center;
+  height: var(--project-dialogs-pd-search-box-height);
+  padding: var(--project-dialogs-pd-search-box-padding);
+  --base-project-dialogs-pd-search-box-border: calc(
+      var(--primary-dimension-pixel) * 1
+    )
+    solid var(--primary-line);
+  --catalog-edge-border-pd-search-box-border: var(
+    --base-project-dialogs-pd-search-box-border
+  );
+  --project-dialogs-pd-search-box-border: var(
+    --catalog-edge-border-pd-search-box-border
+  );
+  border: var(--project-dialogs-pd-search-box-border);
+  border-radius: var(--project-dialogs-pd-search-box-border-radius);
+  background: var(--shell-button-background);
+  color: var(--muted);
+}
+.pd-search-box:focus-within {
+  border-color: var(--brand-edge);
+}
+.pd-search-box > input {
+  flex: var(--project-dialogs-pd-search-box-input-flex);
+  min-width: var(--project-dialogs-pd-search-box-input-min-width);
+  height: var(--project-dialogs-pd-search-box-input-height);
+  padding: var(--project-dialogs-pd-search-box-input-padding);
+  border: var(--project-dialogs-pd-search-box-input-border);
+  background: var(--project-dialogs-pd-search-box-input-background);
+  color: var(--text);
+  font-size: var(--project-dialogs-pd-search-box-input-font-size);
+}
+.pd-search-box > input:focus {
+  outline: var(--project-dialogs-pd-search-box-input-focus-outline);
+}
+.pd-toggle[aria-expanded="true"] {
+  background: var(--brand-soft);
+}
+.pd-advanced {
+  display: grid;
+  gap: var(--project-dialogs-pd-advanced-gap);
+  margin: var(--project-dialogs-pd-advanced-margin);
+  padding: var(--project-dialogs-pd-advanced-padding);
+  --base-project-dialogs-pd-advanced-border: calc(
+      var(--primary-dimension-pixel) * 1
+    )
+    solid var(--primary-line);
+  --catalog-edge-border-pd-advanced-border: var(
+    --base-project-dialogs-pd-advanced-border
+  );
+  --project-dialogs-pd-advanced-border: var(
+    --catalog-edge-border-pd-advanced-border
+  );
+  border: var(--project-dialogs-pd-advanced-border);
+  border-radius: var(--project-dialogs-pd-advanced-border-radius);
+  --base-project-dialogs-pd-advanced-background: color-mix(
+    in oklab,
+    var(--primary-shell-button-background),
+    var(--primary-color-named-transparent)
+      calc(var(--primary-percent-base) * 40)
+  );
+  --catalog-surface-color-pd-advanced-background: var(
+    --base-project-dialogs-pd-advanced-background
+  );
+  --project-dialogs-pd-advanced-background: var(
+    --catalog-surface-color-pd-advanced-background
+  );
+  background: var(--project-dialogs-pd-advanced-background);
+}
+.pd-advanced[hidden] {
+  display: none;
+}
+.pd-adv-grid {
+  display: grid;
+  grid-template-columns: var(--project-dialogs-pd-adv-grid-template-columns);
+  gap: var(--project-dialogs-pd-adv-grid-gap);
+}
+.pd-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--project-dialogs-pd-tags-gap);
+}
+.project-dialog .pd-chip {
+  border-radius: var(--project-dialogs-project-dialog-pd-chip-border-radius);
+  font-size: var(--project-dialogs-project-dialog-pd-chip-font-size);
+}
+.project-dialog .pd-chip[aria-pressed="true"] {
+  border-color: var(--brand-edge);
+  background: var(--brand-soft);
+}
+.pd-body {
+  display: grid;
+  grid-template-columns: var(--project-dialogs-pd-body-grid-template-columns);
+  min-height: var(--project-dialogs-pd-body-min-height);
+  --base-project-dialogs-pd-body-border-top: calc(
+      var(--primary-dimension-pixel) * 1
+    )
+    solid var(--primary-line);
+  --catalog-edge-border-pd-body-border-top: var(
+    --base-project-dialogs-pd-body-border-top
+  );
+  --project-dialogs-pd-body-border-top: var(
+    --catalog-edge-border-pd-body-border-top
+  );
+  border-top: var(--project-dialogs-pd-body-border-top);
+}
+.pd-list {
+  display: grid;
+  gap: var(--project-dialogs-pd-list-gap);
+  align-content: start;
+  margin: var(--project-dialogs-pd-list-margin);
+  padding: var(--project-dialogs-pd-list-padding);
+  overflow: auto;
+  overscroll-behavior: contain;
+  list-style: var(--project-dialogs-pd-list-style);
+  --base-project-dialogs-pd-list-border-right: calc(
+      var(--primary-dimension-pixel) * 1
+    )
+    solid var(--primary-line);
+  --catalog-edge-border-pd-list-border-right: var(
+    --base-project-dialogs-pd-list-border-right
+  );
+  --project-dialogs-pd-list-border-right: var(
+    --catalog-edge-border-pd-list-border-right
+  );
+  border-right: var(--project-dialogs-pd-list-border-right);
+}
+.pd-item {
+  display: grid;
+  gap: var(--project-dialogs-pd-item-gap);
+  padding: var(--project-dialogs-pd-item-padding);
+  border-radius: var(--project-dialogs-pd-item-border-radius);
+  cursor: var(--project-dialogs-pd-item-cursor);
+}
+.pd-item:hover {
+  background: var(--shell-button-background);
+}
+.pd-item[aria-selected="true"] {
+  background: var(--brand-soft);
+  --base-project-dialogs-pd-item-aria-selected-true-box-shadow: inset
+    calc(var(--primary-dimension-pixel) * 2)
+    calc(var(--primary-dimension-pixel) * 0)
+    calc(var(--primary-dimension-pixel) * 0) var(--primary-brand-edge);
+  --catalog-shadow-effect-pd-item-aria-selected-true-box-shadow: var(
+    --base-project-dialogs-pd-item-aria-selected-true-box-shadow
+  );
+  --project-dialogs-pd-item-aria-selected-true-box-shadow: var(
+    --catalog-shadow-effect-pd-item-aria-selected-true-box-shadow
+  );
+  box-shadow: var(--project-dialogs-pd-item-aria-selected-true-box-shadow);
+}
+.pd-item:focus-visible {
+  --base-project-dialogs-pd-item-focus-visible-outline: calc(
+      var(--primary-dimension-pixel) * 2
+    )
+    solid var(--primary-brand-edge);
+  --catalog-edge-border-pd-item-focus-visible-outline: var(
+    --base-project-dialogs-pd-item-focus-visible-outline
+  );
+  --project-dialogs-pd-item-focus-visible-outline: var(
+    --catalog-edge-border-pd-item-focus-visible-outline
+  );
+  outline: var(--project-dialogs-pd-item-focus-visible-outline);
+  outline-offset: var(--project-dialogs-pd-item-focus-visible-outline-offset);
+}
+.pd-item-main {
+  display: flex;
+  gap: var(--project-dialogs-pd-item-main-gap);
+  align-items: center;
+  min-width: var(--project-dialogs-pd-item-main-min-width);
+}
+.pd-item-main > strong {
+  overflow: hidden;
+  color: var(--text-strong);
+  font-size: var(--project-dialogs-pd-item-main-strong-font-size);
+  text-overflow: var(--project-dialogs-pd-item-main-strong-text-overflow);
+  white-space: var(--project-dialogs-pd-item-main-strong-white-space);
+}
+.pd-item-meta {
+  color: var(--muted);
+  font-size: var(--project-dialogs-pd-item-meta-font-size);
+}
+.pd-badge {
+  flex: var(--project-dialogs-pd-badge-flex);
+  padding: var(--project-dialogs-pd-badge-padding);
+  border-radius: var(--project-dialogs-pd-badge-border-radius);
+  background: var(--project-dialogs-pd-badge-background);
+  color: var(--project-dialogs-pd-badge-color);
+  font-size: var(--project-dialogs-pd-badge-font-size);
+}
+.pd-item-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--project-dialogs-pd-item-tags-gap);
+}
+.pd-tag {
+  padding: var(--project-dialogs-pd-tag-padding);
+  border-radius: var(--project-dialogs-pd-tag-border-radius);
+  background: var(--shell-button-background);
+  color: var(--muted);
+  font-size: var(--project-dialogs-pd-tag-font-size);
+}
+.pd-empty {
+  padding: var(--project-dialogs-pd-empty-padding);
+  color: var(--muted);
+  font-size: var(--project-dialogs-pd-empty-font-size);
+}
+.pd-details {
+  display: grid;
+  gap: var(--project-dialogs-pd-details-gap);
+  align-content: start;
+  padding: var(--project-dialogs-pd-details-padding);
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+.pd-details h3 {
+  margin: var(--project-dialogs-pd-details-h3-margin);
+  color: var(--text-strong);
+  font-size: var(--project-dialogs-pd-details-h3-font-size);
+}
+.pd-desc {
+  margin: var(--project-dialogs-pd-desc-margin);
+  color: var(--text);
+  font-size: var(--project-dialogs-pd-desc-font-size);
+  white-space: var(--project-dialogs-pd-desc-white-space);
+}
+.pd-facts {
+  display: grid;
+  grid-template-columns: var(--project-dialogs-pd-facts-grid-template-columns);
+  gap: var(--project-dialogs-pd-facts-gap);
+  margin: var(--project-dialogs-pd-facts-margin);
+  font-size: var(--project-dialogs-pd-facts-font-size);
+}
+.pd-facts > dt {
+  color: var(--muted);
+}
+.pd-facts > dd {
+  margin: var(--project-dialogs-pd-facts-dd-margin);
+  overflow-wrap: var(--project-dialogs-pd-facts-dd-overflow-wrap);
+}
+.pd-detail-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--project-dialogs-pd-detail-actions-gap);
+}
+.pd-button {
+  display: inline-flex;
+  box-sizing: border-box;
+  gap: var(--button-gap);
+  align-items: center;
+  height: var(--button-height);
+  --base-project-dialogs-pd-button-padding: var(--primary-button-pad-y)
+    var(--primary-button-pad-x);
+  --catalog-padding-measure-pd-button-padding: var(
+    --base-project-dialogs-pd-button-padding
+  );
+  --project-dialogs-pd-button-padding: var(
+    --catalog-padding-measure-pd-button-padding
+  );
+  padding: var(--project-dialogs-pd-button-padding);
+  --base-project-dialogs-pd-button-border: calc(
+      var(--primary-dimension-pixel) * 1
+    )
+    solid var(--primary-line);
+  --catalog-edge-border-pd-button-border: var(
+    --base-project-dialogs-pd-button-border
+  );
+  --project-dialogs-pd-button-border: var(
+    --catalog-edge-border-pd-button-border
+  );
+  border: var(--project-dialogs-pd-button-border);
+  border-radius: var(--project-dialogs-pd-button-border-radius);
+  background: var(--shell-button-background);
+  color: var(--text);
+  font-size: var(--project-dialogs-pd-button-font-size);
+  text-decoration: var(--project-dialogs-pd-button-text-decoration);
+}
+.pd-button:hover {
+  filter: var(--project-dialogs-pd-button-hover-filter);
+}
+.pd-confirm {
+  display: grid;
+  gap: var(--project-dialogs-pd-confirm-gap);
+  padding: var(--project-dialogs-pd-confirm-padding);
+  border: var(--project-dialogs-pd-confirm-border);
+  border-radius: var(--project-dialogs-pd-confirm-border-radius);
+  background: var(--project-dialogs-pd-confirm-background);
+  font-size: var(--project-dialogs-pd-confirm-font-size);
+}
+.pd-confirm > p {
+  margin: var(--project-dialogs-pd-confirm-p-margin);
+}
+.pd-confirm .pd-actions {
+  padding: var(--project-dialogs-pd-confirm-pd-actions-padding);
+  border: var(--project-dialogs-pd-confirm-pd-actions-border);
+}
+/* Narrow windows: the list sits above the details instead of beside them. */
+@media (width <= 720px) {
+  .project-dialog.project-gallery {
+    inset: var(
+      --project-dialogs-project-dialog-project-gallery-inset-max-width-720px
+    );
+    width: var(
+      --project-dialogs-project-dialog-project-gallery-width-max-width-720px
+    );
+    max-width: var(
+      --project-dialogs-project-dialog-project-gallery-max-width-720px
+    );
+    height: var(
+      --project-dialogs-project-dialog-project-gallery-height-max-width-720px
+    );
+    max-height: var(
+      --project-dialogs-project-dialog-project-gallery-max-height-max-width-720px
+    );
+    margin: var(
+      --project-dialogs-project-dialog-project-gallery-margin-max-width-720px
+    );
+    border-radius: var(
+      --project-dialogs-project-dialog-project-gallery-border-radius-max-width-720px
+    );
+  }
+  .pd-header,
+  .pd-header-actions,
+  .pd-search {
+    flex-wrap: wrap;
+  }
+  .pd-search-box {
+    flex-basis: var(--project-dialogs-pd-search-box-flex-basis-max-width-720px);
+  }
+  .pd-body {
+    grid-template-columns: var(
+      --project-dialogs-pd-body-grid-template-columns-max-width-720px
+    );
+    grid-template-rows: var(
+      --project-dialogs-pd-body-grid-template-rows-max-width-720px
+    );
+  }
+  .pd-list {
+    border-right: var(--project-dialogs-pd-list-border-right-max-width-720px);
+    --base-project-dialogs-pd-list-border-bottom-max-width-720px: calc(
+        var(--primary-dimension-pixel) * 1
+      )
+      solid var(--primary-line);
+    --catalog-edge-border-pd-list-border-bottom-max-width-720px: var(
+      --base-project-dialogs-pd-list-border-bottom-max-width-720px
+    );
+    --project-dialogs-pd-list-border-bottom-max-width-720px: var(
+      --catalog-edge-border-pd-list-border-bottom-max-width-720px
+    );
+    border-bottom: var(--project-dialogs-pd-list-border-bottom-max-width-720px);
+  }
+  .pd-pair {
+    grid-template-columns: var(
+      --project-dialogs-pd-pair-grid-template-columns-max-width-720px
+    );
+  }
+}

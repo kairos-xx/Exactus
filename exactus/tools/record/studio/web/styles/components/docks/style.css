@@ -1,0 +1,119 @@
+/**
+ * Dock sizing controls.
+ *
+ * Sources: 04-dock-resizers.
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+@layer studio-base {
+  /* Source: 04-dock-resizers */
+  .workbench:has(> .workspace.is-collapsed) {
+    grid-template-columns: var(
+      --docks-workbench-has-workspace-is-collapsed-grid-template-columns
+    );
+  }
+  .workbench:has(> .workspace.is-floating) {
+    grid-template-columns: var(
+      --docks-workbench-has-workspace-is-floating-grid-template-columns
+    );
+  }
+  .bottom:has(> .timeline.is-collapsed) {
+    grid-template-columns: var(
+      --docks-bottom-has-timeline-is-collapsed-grid-template-columns
+    );
+  }
+  .bottom:has(> .runs.is-collapsed) {
+    grid-template-columns: var(
+      --docks-bottom-has-runs-is-collapsed-grid-template-columns
+    );
+  }
+  .bottom:has(> .timeline.is-floating),
+  .bottom:has(> .runs.is-floating) {
+    grid-template-columns: var(
+      --docks-bottom-has-timeline-is-floating-grid-template-columns
+    );
+  }
+  .workspace.is-collapsed > header,
+  .bottom > .panel.is-collapsed > header {
+    width: var(--docks-workspace-is-collapsed-header-width);
+    height: var(--docks-workspace-is-collapsed-header-height);
+    min-height: var(--docks-workspace-is-collapsed-header-min-height);
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: var(--docks-workspace-is-collapsed-header-padding);
+  }
+  .workspace.is-collapsed > header > :not(.panel-title, .panel-tools),
+  .bottom
+    > :where(.panel.is-collapsed)
+    > header
+    > :not(.panel-title, .panel-tools) {
+    display: none;
+  }
+  .workspace.is-collapsed .panel-title,
+  .bottom > .panel.is-collapsed .panel-title {
+    font-size: var(--docks-workspace-is-collapsed-panel-title-font-size);
+  }
+  .workspace.is-collapsed .panel-tools,
+  .bottom > .panel.is-collapsed .panel-tools {
+    flex-direction: column;
+    margin: var(--docks-workspace-is-collapsed-panel-tools-margin);
+  }
+  .workspace-add {
+    background: var(--docks-workspace-add-background);
+  }
+  .tree {
+    padding: var(--docks-tree-padding);
+    overflow: auto;
+    height: var(--docks-tree-height);
+    flex: var(--docks-tree-flex);
+    min-height: var(--docks-tree-min-height);
+  }
+  .tree-item {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    border-radius: var(--docks-tree-item-border-radius);
+    color: var(--docks-tree-item-color);
+    width: var(--docks-tree-item-width);
+    min-height: var(--flow-min-height-2);
+    height: var(--docks-tree-item-height);
+    padding: var(--docks-tree-item-padding);
+    gap: var(--docks-tree-item-gap);
+    text-align: var(--docks-tree-item-text-align);
+    border: var(--docks-tree-item-border);
+    background: var(--docks-tree-item-background);
+  }
+  .dot {
+    width: var(--docks-dot-width);
+    height: var(--docks-dot-height);
+    border-radius: var(--docks-dot-border-radius);
+    background: var(--accent);
+  }
+  .graph-canvas {
+    flex-wrap: wrap;
+    align-content: flex-start;
+    height: var(--docks-graph-canvas-height);
+    overflow: auto;
+    padding: var(--docks-graph-canvas-padding);
+    background-color: var(--bg);
+    background-image: var(--docks-graph-canvas-background-image);
+    background-size: var(--docks-graph-canvas-background-size);
+    display: block;
+    align-items: stretch;
+    gap: var(--docks-graph-canvas-gap);
+    flex: var(--docks-graph-canvas-flex);
+    min-height: var(--docks-graph-canvas-min-height);
+    cursor: var(--docks-graph-canvas-cursor);
+    touch-action: none;
+  }
+  .graph-canvas.is-graph-panning {
+    cursor: var(--docks-graph-canvas-is-graph-panning-cursor);
+  }
+  .node {
+    position: relative;
+    width: var(--docks-node-width);
+    border: var(--docks-node-border);
+    border-radius: var(--docks-node-border-radius);
+    background: var(--docks-node-background);
+    box-shadow: var(--docks-node-box-shadow);
+  }
+}

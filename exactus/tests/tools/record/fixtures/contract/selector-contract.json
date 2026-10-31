@@ -1,0 +1,49 @@
+{
+  "contract_version": 1,
+  "baseline_grammar_version": "2.1.0",
+  "grammar_version_policy": "Persist the version string the shared grammar artifact reports; never hand-copy operator lists.",
+  "persisted_selector_fields": [
+    "id", "name", "source", "grammar_version", "ast_hash", "expected_count",
+    "checks", "strategies", "references", "value_bindings"
+  ],
+  "expression_fields": [
+    "source", "grammar_version", "ast_hash", "references", "value_bindings"
+  ],
+  "preview_request_fields": [
+    "request_id", "draft_revision", "page_resource_id", "frame_resource_id",
+    "context_generation", "expression", "maximum_matches"
+  ],
+  "preview_maximum_matches_default": 200,
+  "derived_never_persisted": [
+    "parser_ast_objects", "element_handles", "page_overlays", "editor_mode",
+    "caret", "current_match_rows"
+  ],
+  "widget_modes": ["pick", "text", "expression"],
+  "expected_count_kinds": ["exact"],
+  "frame_binding_owner": "action_slot",
+  "diagnostic_codes": [
+    "SELECTOR_SYNTAX", "SELECTOR_UNSUPPORTED_OPERATOR", "SELECTOR_INVALID_ARITY",
+    "SELECTOR_INVALID_PREDICATE", "SELECTOR_INVALID_COMPARATOR",
+    "SELECTOR_REFERENCE_MISSING", "SELECTOR_REFERENCE_CYCLE",
+    "SELECTOR_VALUE_BINDING_MISSING", "SELECTOR_VALUE_TYPE",
+    "SELECTOR_RESOURCE_MISSING", "SELECTOR_FRAME_DETACHED",
+    "SELECTOR_CROSS_ORIGIN_UNSUPPORTED", "SELECTOR_CLOSED_SHADOW_ROOT",
+    "SELECTOR_NO_MATCH", "SELECTOR_AMBIGUOUS", "SELECTOR_EXPECTED_COUNT",
+    "SELECTOR_TIMEOUT", "SELECTOR_RESULT_LIMIT", "SELECTOR_STALE_PREVIEW"
+  ],
+  "commands": [
+    "selector.syntax.validate", "selector.preview", "selector.pick.start",
+    "selector.pick.commit", "selector.pick.cancel", "selector.highlight.show",
+    "selector.highlight.reveal", "selector.highlight.clear", "selector.save",
+    "selector.repair.plan", "selector.repair.apply"
+  ],
+  "limit_keys": [
+    "source_length", "ast_depth", "total_nodes", "reference_depth",
+    "regex_length", "regex_complexity", "evaluation_deadline_ms",
+    "returned_match_count", "highlighted_match_count"
+  ],
+  "open_decisions": [
+    {"item": "expected_count kinds beyond exact", "owner": "FLOW-005"},
+    {"item": "ordered fallback strategy record shape", "owner": "FLOW-072"}
+  ]
+}

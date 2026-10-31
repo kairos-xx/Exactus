@@ -1,0 +1,1173 @@
+/** BASE — exact derived values.
+ * Built from PRIMARY and DYNAMIC only. Lengths use the named scale: a name is a step
+ * (`tiny`, `large`) or a step plus or minus another (`large-plus-tiny`).
+ */
+:root {
+  /* base: angle */
+  --base-angle-minus-ninety-degree: calc(var(--primary-angle-unit) * -90);
+  --base-angle-quarter-turn: calc(90 * var(--primary-angle-unit));
+  /* base: color */
+  --base-color-amber-821-a100: oklch(
+    calc(var(--primary-percent-base) * 82)
+      calc(var(--primary-number-unit) * 0.12)
+      calc(var(--primary-angle-unit) * 90)
+  );
+  --base-color-blue-309-a100: var(--primary-color-blue-309-a100);
+  --base-color-blue-347-a100: var(--primary-color-blue-347-a100);
+  --base-color-blue-389-a100: var(--primary-color-blue-389-a100);
+  --base-color-blue-396-a100: var(--primary-color-blue-396-a100);
+  --base-color-blue-399-a100: var(--primary-color-blue-399-a100);
+  --base-color-blue-411-a100: var(--primary-color-blue-411-a100);
+  --base-color-blue-443-a100: var(--primary-color-blue-443-a100);
+  --base-color-blue-485-a100: var(--primary-color-blue-485-a100);
+  --base-color-blue-500-a100: var(--primary-color-blue-500-a100);
+  --base-color-blue-621-a100: var(--primary-color-blue-621-a100);
+  --base-color-blue-686-a100: var(--primary-color-blue-686-a100);
+  --base-color-blue-701-a100: oklch(
+    calc(var(--primary-percent-base) * 70)
+      calc(var(--primary-number-unit) * 0.02)
+      calc(var(--primary-angle-unit) * 250)
+  );
+  --base-color-blue-722-a100: var(--primary-color-blue-722-a100);
+  --base-color-blue-723-a100: var(--primary-color-blue-723-a100);
+  --base-color-blue-751-a15: oklch(
+    calc(var(--primary-percent-base) * 75)
+      calc(var(--primary-number-unit) * 0.06)
+      calc(var(--primary-angle-unit) * 240) /
+      calc(var(--primary-percent-base) * 15)
+  );
+  --base-color-blue-755-a30: var(--primary-color-blue-755-a30);
+  --base-color-blue-759-a100: var(--primary-color-blue-759-a100);
+  --base-color-blue-769-a100: var(--primary-color-blue-769-a100);
+  --base-color-blue-774-a100: var(--primary-color-blue-774-a100);
+  --base-color-blue-777-a100: oklch(
+    calc(var(--primary-percent-base) * 78)
+      calc(var(--primary-number-unit) * 0.12)
+      calc(var(--primary-angle-unit) * 270)
+  );
+  --base-color-blue-778-a100: var(--primary-color-blue-778-a100);
+  --base-color-blue-800-a100: var(--primary-color-blue-800-a100);
+  --base-color-blue-810-a100: var(--primary-color-blue-810-a100);
+  --base-color-blue-812-a100: var(--primary-color-blue-812-a100);
+  --base-color-blue-819-a100: oklch(
+    calc(var(--primary-percent-base) * 82)
+      calc(var(--primary-number-unit) * 0.1)
+      calc(var(--primary-angle-unit) * 230)
+  );
+  --base-color-blue-820-a100: var(--primary-color-blue-820-a100);
+  --base-color-blue-841-a100: var(--primary-color-blue-841-a100);
+  --base-color-blue-872-a100: var(--primary-color-blue-872-a100);
+  --base-color-blue-882-a100: var(--primary-color-blue-882-a100);
+  --base-color-blue-932-a100: var(--primary-color-blue-932-a100);
+  --base-color-gray-000-a15: oklch(
+    calc(var(--primary-percent-base) * 0) calc(var(--primary-number-unit) * 0)
+      calc(var(--primary-angle-unit) * 0) /
+      calc(var(--primary-percent-base) * 15)
+  );
+  --base-color-gray-000-a25: oklch(
+    calc(var(--primary-percent-base) * 0) calc(var(--primary-number-unit) * 0)
+      calc(var(--primary-angle-unit) * 0) /
+      calc(var(--primary-percent-base) * 25)
+  );
+  --base-color-gray-000-a40: oklch(
+    calc(var(--primary-percent-base) * 0) calc(var(--primary-number-unit) * 0)
+      calc(var(--primary-angle-unit) * 0) /
+      calc(var(--primary-percent-base) * 40)
+  );
+  --base-color-gray-000-a53: var(--primary-color-gray-000-a53);
+  --base-color-gray-000-a60: var(--primary-color-gray-000-a60);
+  --base-color-gray-000-a67: var(--primary-color-gray-000-a67);
+  --base-color-gray-097-a60: oklch(
+    calc(var(--primary-percent-base) * 10)
+      calc(var(--primary-number-unit) * 0.01)
+      calc(var(--primary-angle-unit) * 250) /
+      calc(var(--primary-percent-base) * 60)
+  );
+  --base-color-gray-1000-a12: oklch(
+    calc(var(--primary-percent-base) * 100) calc(var(--primary-number-unit) * 0)
+      calc(var(--primary-angle-unit) * 0) /
+      calc(var(--primary-percent-base) * 12)
+  );
+  --base-color-gray-1000-a20: oklch(
+    calc(var(--primary-percent-base) * 100) calc(var(--primary-number-unit) * 0)
+      calc(var(--primary-angle-unit) * 0) /
+      calc(var(--primary-percent-base) * 20)
+  );
+  --base-color-gray-1000-a24: oklch(
+    calc(var(--primary-percent-base) * 100) calc(var(--primary-number-unit) * 0)
+      calc(var(--primary-angle-unit) * 0) /
+      calc(var(--primary-percent-base) * 24)
+  );
+  --base-color-gray-1000-a26: oklch(
+    calc(var(--primary-percent-base) * 100) calc(var(--primary-number-unit) * 0)
+      calc(var(--primary-angle-unit) * 0) /
+      calc(var(--primary-percent-base) * 26)
+  );
+  --base-color-gray-1000-a4: oklch(
+    calc(var(--primary-percent-base) * 100) calc(var(--primary-number-unit) * 0)
+      calc(var(--primary-angle-unit) * 0) /
+      calc(var(--primary-percent-base) * 4)
+  );
+  --base-color-gray-1000-a42: oklch(
+    calc(var(--primary-percent-base) * 100) calc(var(--primary-number-unit) * 0)
+      calc(var(--primary-angle-unit) * 0) /
+      calc(var(--primary-percent-base) * 42)
+  );
+  --base-color-gray-1000-a5: oklch(
+    calc(var(--primary-percent-base) * 100) calc(var(--primary-number-unit) * 0)
+      calc(var(--primary-angle-unit) * 0) /
+      calc(var(--primary-percent-base) * 5)
+  );
+  --base-color-gray-1000-a6: oklch(
+    calc(var(--primary-percent-base) * 100) calc(var(--primary-number-unit) * 0)
+      calc(var(--primary-angle-unit) * 0) /
+      calc(var(--primary-percent-base) * 6)
+  );
+  --base-color-gray-1000-a7: var(--primary-color-gray-1000-a7);
+  --base-color-gray-1000-a8: oklch(
+    calc(var(--primary-percent-base) * 100) calc(var(--primary-number-unit) * 0)
+      calc(var(--primary-angle-unit) * 0) /
+      calc(var(--primary-percent-base) * 8)
+  );
+  --base-color-gray-1000-a9: oklch(
+    calc(var(--primary-percent-base) * 100) calc(var(--primary-number-unit) * 0)
+      calc(var(--primary-angle-unit) * 0) /
+      calc(var(--primary-percent-base) * 9)
+  );
+  --base-color-gray-122-a100: oklch(
+    calc(var(--primary-percent-base) * 12) calc(var(--primary-number-unit) * 0)
+      calc(var(--primary-angle-unit) * 0)
+  );
+  --base-color-gray-139-a85: var(--primary-color-gray-139-a85);
+  --base-color-gray-145-a100: var(--primary-color-gray-145-a100);
+  --base-color-gray-158-a100: var(--primary-color-gray-158-a100);
+  --base-color-gray-185-a100: var(--primary-color-gray-185-a100);
+  --base-color-gray-190-a100: var(--primary-color-gray-190-a100);
+  --base-color-gray-200-a100: var(--primary-color-gray-200-a100);
+  --base-color-gray-212-a100: var(--primary-color-gray-212-a100);
+  --base-color-gray-218-a100: var(--primary-color-gray-218-a100);
+  --base-color-gray-225-a100: var(--primary-color-gray-225-a100);
+  --base-color-gray-226-a100: var(--primary-color-gray-226-a100);
+  --base-color-gray-230-a100: var(--primary-color-gray-230-a100);
+  --base-color-gray-239-a100: var(--primary-color-gray-239-a100);
+  --base-color-gray-242-a100: var(--primary-color-gray-242-a100);
+  --base-color-gray-251-a100: var(--primary-color-gray-251-a100);
+  --base-color-gray-255-a100: var(--primary-color-gray-255-a100);
+  --base-color-gray-260-a100: var(--primary-color-gray-260-a100);
+  --base-color-gray-264-a100: var(--primary-color-gray-264-a100);
+  --base-color-gray-268-a100: var(--primary-color-gray-268-a100);
+  --base-color-gray-269-a100: var(--primary-color-gray-269-a100);
+  --base-color-gray-271-a100: var(--primary-color-gray-271-a100);
+  --base-color-gray-272-a100: var(--primary-color-gray-272-a100);
+  --base-color-gray-276-a100: oklch(
+    calc(var(--primary-percent-base) * 27.5)
+      calc(var(--primary-number-unit) * 0.007)
+      calc(var(--primary-angle-unit) * 260)
+  );
+  --base-color-gray-279-a100: var(--primary-color-gray-279-a100);
+  --base-color-gray-281-a100: var(--primary-color-gray-281-a100);
+  --base-color-gray-283-a100: var(--primary-color-gray-283-a100);
+  --base-color-gray-287-a100: var(--primary-color-gray-287-a100);
+  --base-color-gray-289-a100: var(--primary-color-gray-289-a100);
+  --base-color-gray-300-a100: var(--primary-color-gray-300-a100);
+  --base-color-gray-307-a100: var(--primary-color-gray-307-a100);
+  --base-color-gray-308-a100: var(--primary-color-gray-308-a100);
+  --base-color-gray-317-a100: var(--primary-color-gray-317-a100);
+  --base-color-gray-324-a100: var(--primary-color-gray-324-a100);
+  --base-color-gray-327-a100: var(--primary-color-gray-327-a100);
+  --base-color-gray-328-a100: var(--primary-color-gray-328-a100);
+  --base-color-gray-330-a100: var(--primary-color-gray-330-a100);
+  --base-color-gray-333-a100: var(--primary-color-gray-333-a100);
+  --base-color-gray-344-a100: var(--primary-color-gray-344-a100);
+  --base-color-gray-346-a100: var(--primary-color-gray-346-a100);
+  --base-color-gray-351-a100: var(--primary-color-gray-351-a100);
+  --base-color-gray-352-a100: var(--primary-color-gray-352-a100);
+  --base-color-gray-355-a100: oklch(
+    calc(var(--primary-percent-base) * 35.5)
+      calc(var(--primary-number-unit) * 0.009)
+      calc(var(--primary-angle-unit) * 260)
+  );
+  --base-color-gray-369-a100: var(--primary-color-gray-369-a100);
+  --base-color-gray-370-a100: var(--primary-color-gray-370-a100);
+  --base-color-gray-380-a100: var(--primary-color-gray-380-a100);
+  --base-color-gray-382-a100: var(--primary-color-gray-382-a100);
+  --base-color-gray-388-a100: var(--primary-color-gray-388-a100);
+  --base-color-gray-404-a100: var(--primary-color-gray-404-a100);
+  --base-color-gray-411-a100: var(--primary-color-gray-411-a100);
+  --base-color-gray-435-a100: var(--primary-color-gray-435-a100);
+  --base-color-gray-439-a100: var(--primary-color-gray-439-a100);
+  --base-color-gray-469-a100: var(--primary-color-gray-469-a100);
+  --base-color-gray-488-a100: var(--primary-color-gray-488-a100);
+  --base-color-gray-489-a100: var(--primary-color-gray-489-a100);
+  --base-color-gray-569-a100: var(--primary-color-gray-569-a100);
+  --base-color-gray-611-a100: var(--primary-color-gray-611-a100);
+  --base-color-gray-626-a100: var(--primary-color-gray-626-a100);
+  --base-color-gray-662-a100: var(--primary-color-gray-662-a100);
+  --base-color-gray-675-a100: var(--primary-color-gray-675-a100);
+  --base-color-gray-697-a100: var(--primary-color-gray-697-a100);
+  --base-color-gray-716-a100: var(--primary-color-gray-716-a100);
+  --base-color-gray-721-a100: var(--primary-color-gray-721-a100);
+  --base-color-gray-723-a100: var(--primary-color-gray-723-a100);
+  --base-color-gray-759-a100: var(--primary-color-gray-759-a100);
+  --base-color-gray-773-a100: var(--primary-color-gray-773-a100);
+  --base-color-gray-779-a100: var(--primary-color-gray-779-a100);
+  --base-color-gray-800-a100: var(--primary-color-gray-800-a100);
+  --base-color-gray-805-a100: var(--primary-color-gray-805-a100);
+  --base-color-gray-811-a100: var(--primary-color-gray-811-a100);
+  --base-color-gray-820-a100: oklch(
+    calc(var(--primary-percent-base) * 82)
+      calc(var(--primary-number-unit) * 0.005)
+      calc(var(--primary-angle-unit) * 250)
+  );
+  --base-color-gray-857-a100: var(--primary-color-gray-857-a100);
+  --base-color-gray-866-a100: var(--primary-color-gray-866-a100);
+  --base-color-gray-872-a100: var(--primary-color-gray-872-a100);
+  --base-color-gray-873-a100: var(--primary-color-gray-873-a100);
+  --base-color-gray-908-a100: var(--primary-color-gray-908-a100);
+  --base-color-gray-912-a100: var(--primary-color-gray-912-a100);
+  --base-color-gray-915-a100: var(--primary-color-gray-915-a100);
+  --base-color-gray-931-a100: var(--primary-color-gray-931-a100);
+  --base-color-gray-936-a100: var(--primary-color-gray-936-a100);
+  --base-color-gray-943-a100: var(--primary-color-gray-943-a100);
+  --base-color-gray-958-a100: var(--primary-color-gray-958-a100);
+  --base-color-gray-960-a100: oklch(
+    calc(var(--primary-percent-base) * 96)
+      calc(var(--primary-number-unit) * 0.003)
+      calc(var(--primary-angle-unit) * 250)
+  );
+  --base-color-gray-969-a100: var(--primary-color-gray-969-a100);
+  --base-color-gray-979-a100: oklch(
+    calc(var(--primary-percent-base) * 98) calc(var(--primary-number-unit) * 0)
+      calc(var(--primary-angle-unit) * 0)
+  );
+  --base-color-green-770-a100: var(--primary-color-green-770-a100);
+  --base-color-green-665-a100: var(--primary-color-green-665-a100);
+  --base-color-green-800-a100: oklch(
+    calc(var(--primary-percent-base) * 80)
+      calc(var(--primary-number-unit) * 0.055)
+      calc(var(--primary-angle-unit) * 155)
+  );
+  --base-color-green-821-a100: oklch(
+    calc(var(--primary-percent-base) * 82)
+      calc(var(--primary-number-unit) * 0.1)
+      calc(var(--primary-angle-unit) * 150)
+  );
+  --base-color-mix-blue-778-a100-p12-gray-276-a100: color-mix(
+    in oklab,
+    var(--primary-color-blue-778-a100) calc(var(--primary-percent-base) * 12),
+    oklch(
+      calc(var(--primary-percent-base) * 27.5)
+        calc(var(--primary-number-unit) * 0.007)
+        calc(var(--primary-angle-unit) * 260)
+    )
+  );
+  --base-color-mix-blue-778-a100-p14-gray-308-a100: color-mix(
+    in srgb,
+    var(--primary-color-blue-778-a100) calc(var(--primary-percent-base) * 14),
+    var(--primary-color-gray-308-a100)
+  );
+  --base-color-mix-blue-778-a100-p15-transparent: color-mix(
+    in oklab,
+    var(--primary-color-blue-778-a100) calc(var(--primary-percent-base) * 15),
+    var(--primary-color-named-transparent)
+  );
+  --base-color-mix-blue-778-a100-p18-transparent: color-mix(
+    in srgb,
+    var(--primary-color-blue-778-a100) calc(var(--primary-percent-base) * 18),
+    var(--primary-color-named-transparent)
+  );
+  --base-color-mix-blue-778-a100-p22-gray-255-a100: color-mix(
+    in oklab,
+    var(--primary-color-blue-778-a100) calc(var(--primary-percent-base) * 22),
+    oklch(
+      calc(var(--primary-percent-base) * 25.5)
+        calc(var(--primary-number-unit) * 0.007)
+        calc(var(--primary-angle-unit) * 260)
+    )
+  );
+  --base-color-mix-blue-778-a100-p30-gray-324-a100: color-mix(
+    in oklab,
+    var(--primary-color-blue-778-a100) calc(var(--primary-percent-base) * 30),
+    oklch(
+      calc(var(--primary-percent-base) * 32.5)
+        calc(var(--primary-number-unit) * 0.009)
+        calc(var(--primary-angle-unit) * 260)
+    )
+  );
+  --base-color-mix-blue-778-a100-p35-transparent: color-mix(
+    in srgb,
+    var(--primary-color-blue-778-a100) calc(var(--primary-percent-base) * 35),
+    var(--primary-color-named-transparent)
+  );
+  --base-color-mix-blue-778-a100-p40-gray-324-a100: color-mix(
+    in oklab,
+    var(--primary-color-blue-778-a100) calc(var(--primary-percent-base) * 40),
+    oklch(
+      calc(var(--primary-percent-base) * 32.5)
+        calc(var(--primary-number-unit) * 0.009)
+        calc(var(--primary-angle-unit) * 260)
+    )
+  );
+  --base-color-mix-blue-778-a100-p50-transparent: color-mix(
+    in oklab,
+    var(--primary-color-blue-778-a100) calc(var(--primary-percent-base) * 50),
+    var(--primary-color-named-transparent)
+  );
+  --base-color-mix-blue-778-a100-p66-gray-226-a100: color-mix(
+    in oklab,
+    var(--primary-color-blue-778-a100) calc(var(--primary-percent-base) * 66),
+    oklch(
+      calc(var(--primary-percent-base) * 22.5)
+        calc(var(--primary-number-unit) * 0.006)
+        calc(var(--primary-angle-unit) * 260)
+    )
+  );
+  --base-color-mix-blue-778-a100-p70-transparent: color-mix(
+    in oklab,
+    var(--primary-color-blue-778-a100) calc(var(--primary-percent-base) * 70),
+    var(--primary-color-named-transparent)
+  );
+  --base-color-mix-blue-778-a100-p96-gray-226-a100: color-mix(
+    in oklab,
+    var(--primary-color-blue-778-a100) calc(var(--primary-percent-base) * 96),
+    oklch(
+      calc(var(--primary-percent-base) * 22.5)
+        calc(var(--primary-number-unit) * 0.006)
+        calc(var(--primary-angle-unit) * 260)
+    )
+  );
+  --base-color-mix-blue-820-a100-p15-transparent-oklab: color-mix(
+    in oklab,
+    var(--primary-color-blue-820-a100) calc(var(--primary-percent-base) * 15),
+    var(--primary-color-named-transparent)
+  );
+  --base-color-mix-blue-820-a100-p15-transparent-srgb: color-mix(
+    in srgb,
+    var(--primary-color-blue-820-a100) calc(var(--primary-percent-base) * 15),
+    var(--primary-color-named-transparent)
+  );
+  --base-color-mix-blue-820-a100-p30-gray-324-a100: color-mix(
+    in oklab,
+    var(--primary-color-blue-820-a100) calc(var(--primary-percent-base) * 30),
+    oklch(
+      calc(var(--primary-percent-base) * 32.5)
+        calc(var(--primary-number-unit) * 0.009)
+        calc(var(--primary-angle-unit) * 260)
+    )
+  );
+  --base-color-mix-blue-820-a100-p40-gray-324-a100: color-mix(
+    in oklab,
+    var(--primary-color-blue-820-a100) calc(var(--primary-percent-base) * 40),
+    oklch(
+      calc(var(--primary-percent-base) * 32.5)
+        calc(var(--primary-number-unit) * 0.009)
+        calc(var(--primary-angle-unit) * 260)
+    )
+  );
+  --base-color-mix-blue-820-a100-p50-transparent: color-mix(
+    in oklab,
+    var(--primary-color-blue-820-a100) calc(var(--primary-percent-base) * 50),
+    var(--primary-color-named-transparent)
+  );
+  --base-color-mix-currentcolor-transparent-p80: color-mix(
+    in oklab,
+    var(--primary-color-named-currentcolor),
+    var(--primary-color-named-transparent)
+      calc(var(--primary-percent-base) * 80)
+  );
+  --base-color-mix-gray-279-a100-transparent-p60: color-mix(
+    in oklab,
+    oklch(
+      calc(var(--primary-percent-base) * 28)
+        calc(var(--primary-number-unit) * 0.01)
+        calc(var(--primary-angle-unit) * 250)
+    ),
+    var(--primary-color-named-transparent)
+      calc(var(--primary-percent-base) * 60)
+  );
+  --base-color-mix-gray-355-a100-p80-gray-912-a100: color-mix(
+    in oklab,
+    oklch(
+        calc(var(--primary-percent-base) * 35.5)
+          calc(var(--primary-number-unit) * 0.009)
+          calc(var(--primary-angle-unit) * 260)
+      )
+      calc(var(--primary-percent-base) * 80),
+    var(--primary-color-gray-912-a100)
+  );
+  --base-color-mix-gray-697-a100-p55-transparent: color-mix(
+    in srgb,
+    var(--primary-color-gray-697-a100) calc(var(--primary-percent-base) * 55),
+    var(--primary-color-named-transparent)
+  );
+  --base-color-mix-gray-912-a100-p16-transparent: color-mix(
+    in oklab,
+    var(--primary-color-gray-912-a100) calc(var(--primary-percent-base) * 16),
+    var(--primary-color-named-transparent)
+  );
+  --base-color-mix-gray-912-a100-p30-transparent: color-mix(
+    in oklab,
+    var(--primary-color-gray-912-a100) calc(var(--primary-percent-base) * 30),
+    var(--primary-color-named-transparent)
+  );
+  --base-color-mix-gray-912-a100-p81-transparent: color-mix(
+    in oklab,
+    var(--primary-color-gray-912-a100) calc(var(--primary-percent-base) * 81),
+    var(--primary-color-named-transparent)
+  );
+  --base-color-mix-gray-979-a100-transparent-p35: color-mix(
+    in oklab,
+    oklch(
+      calc(var(--primary-percent-base) * 98)
+        calc(var(--primary-number-unit) * 0) calc(var(--primary-angle-unit) * 0)
+    ),
+    var(--primary-color-named-transparent)
+      calc(var(--primary-percent-base) * 35)
+  );
+  --base-color-mix-green-770-a100-p20-gray-255-a100: color-mix(
+    in oklab,
+    var(--primary-color-green-770-a100) calc(var(--primary-percent-base) * 20),
+    oklch(
+      calc(var(--primary-percent-base) * 25.5)
+        calc(var(--primary-number-unit) * 0.007)
+        calc(var(--primary-angle-unit) * 260)
+    )
+  );
+  --base-color-mix-green-800-a100-p14-transparent: color-mix(
+    in oklab,
+    oklch(
+        calc(var(--primary-percent-base) * 80)
+          calc(var(--primary-number-unit) * 0.055)
+          calc(var(--primary-angle-unit) * 155)
+      )
+      calc(var(--primary-percent-base) * 14),
+    var(--primary-color-named-transparent)
+  );
+  --base-color-mix-green-800-a100-transparent-p55: color-mix(
+    in oklab,
+    oklch(
+      calc(var(--primary-percent-base) * 80)
+        calc(var(--primary-number-unit) * 0.055)
+        calc(var(--primary-angle-unit) * 155)
+    ),
+    var(--primary-color-named-transparent)
+      calc(var(--primary-percent-base) * 55)
+  );
+  --base-color-mix-red-801-a100-p14-transparent: color-mix(
+    in oklab,
+    oklch(
+        calc(var(--primary-percent-base) * 80)
+          calc(var(--primary-number-unit) * 0.065)
+          calc(var(--primary-angle-unit) * 20)
+      )
+      calc(var(--primary-percent-base) * 14),
+    var(--primary-color-named-transparent)
+  );
+  --base-color-mix-red-801-a100-p35-transparent: color-mix(
+    in oklab,
+    oklch(
+        calc(var(--primary-percent-base) * 80)
+          calc(var(--primary-number-unit) * 0.065)
+          calc(var(--primary-angle-unit) * 20)
+      )
+      calc(var(--primary-percent-base) * 35),
+    var(--primary-color-named-transparent)
+  );
+  --base-color-mix-red-801-a100-p55-transparent: color-mix(
+    in oklab,
+    oklch(
+        calc(var(--primary-percent-base) * 80)
+          calc(var(--primary-number-unit) * 0.065)
+          calc(var(--primary-angle-unit) * 20)
+      )
+      calc(var(--primary-percent-base) * 55),
+    var(--primary-color-named-transparent)
+  );
+  --base-color-mix-red-801-a100-p60-transparent: color-mix(
+    in oklab,
+    oklch(
+        calc(var(--primary-percent-base) * 80)
+          calc(var(--primary-number-unit) * 0.065)
+          calc(var(--primary-angle-unit) * 20)
+      )
+      calc(var(--primary-percent-base) * 60),
+    var(--primary-color-named-transparent)
+  );
+  --base-color-mix-yellow-821-a100-p12-transparent: color-mix(
+    in oklab,
+    oklch(
+        calc(var(--primary-percent-base) * 82)
+          calc(var(--primary-number-unit) * 0.065)
+          calc(var(--primary-angle-unit) * 85)
+      )
+      calc(var(--primary-percent-base) * 12),
+    var(--primary-color-named-transparent)
+  );
+  --base-color-named-currentcolor: var(--primary-color-named-currentcolor);
+  --base-color-named-transparent: var(--primary-color-named-transparent);
+  --base-color-orange-694-a100: oklch(
+    calc(var(--primary-percent-base) * 70)
+      calc(var(--primary-number-unit) * 0.2)
+      calc(var(--primary-angle-unit) * 25)
+  );
+  --base-color-orange-800-a100: oklch(
+    calc(var(--primary-percent-base) * 80)
+      calc(var(--primary-number-unit) * 0.13)
+      calc(var(--primary-angle-unit) * 55)
+  );
+  --base-color-pink-800-a100: oklch(
+    calc(var(--primary-percent-base) * 80)
+      calc(var(--primary-number-unit) * 0.12)
+      calc(var(--primary-angle-unit) * 330)
+  );
+  --base-color-red-716-a100: oklch(
+    calc(var(--primary-percent-base) * 72)
+      calc(var(--primary-number-unit) * 0.18)
+      calc(var(--primary-angle-unit) * 25)
+  );
+  --base-color-red-536-a100: var(--primary-color-red-536-a100);
+  --base-color-red-764-a100: var(--primary-color-red-764-a100);
+  --base-color-red-800-a100: oklch(
+    calc(var(--primary-percent-base) * 80)
+      calc(var(--primary-number-unit) * 0.1)
+      calc(var(--primary-angle-unit) * 25)
+  );
+  --base-color-red-801-a100: oklch(
+    calc(var(--primary-percent-base) * 80)
+      calc(var(--primary-number-unit) * 0.065)
+      calc(var(--primary-angle-unit) * 20)
+  );
+  --base-color-rgb-rgb-one-hundred-forty-six-one-hundred-seventy-one-hundred-eighty-seven-eight: rgb(
+    calc(var(--primary-number-unit) * 146)
+      calc(var(--primary-number-unit) * 170)
+      calc(var(--primary-number-unit) * 187) /
+      calc(var(--primary-percent-base) * 8)
+  );
+  --base-color-rgb-rgb-zero-zero-zero-twenty: rgb(
+    calc(var(--primary-number-unit) * 0) calc(var(--primary-number-unit) * 0)
+      calc(var(--primary-number-unit) * 0) /
+      calc(var(--primary-percent-base) * 20)
+  );
+  --base-color-slate-226-a100: oklch(
+    calc(var(--primary-percent-base) * 22.5)
+      calc(var(--primary-number-unit) * 0.006)
+      calc(var(--primary-angle-unit) * 260)
+  );
+  --base-color-slate-239-a100: oklch(
+    calc(var(--primary-percent-base) * 24)
+      calc(var(--primary-number-unit) * 0.006)
+      calc(var(--primary-angle-unit) * 260)
+  );
+  --base-color-slate-255-a100: oklch(
+    calc(var(--primary-percent-base) * 25.5)
+      calc(var(--primary-number-unit) * 0.007)
+      calc(var(--primary-angle-unit) * 260)
+  );
+  --base-color-slate-260-a100: var(--primary-color-slate-260-a100);
+  --base-color-slate-264-a100: var(--primary-color-slate-264-a100);
+  --base-color-slate-279-a100: oklch(
+    calc(var(--primary-percent-base) * 28)
+      calc(var(--primary-number-unit) * 0.01)
+      calc(var(--primary-angle-unit) * 250)
+  );
+  --base-color-slate-289-a100: var(--primary-color-slate-289-a100);
+  --base-color-slate-300-a100: oklch(
+    calc(var(--primary-percent-base) * 30)
+      calc(var(--primary-number-unit) * 0.008)
+      calc(var(--primary-angle-unit) * 260)
+  );
+  --base-color-slate-324-a100: oklch(
+    calc(var(--primary-percent-base) * 32.5)
+      calc(var(--primary-number-unit) * 0.009)
+      calc(var(--primary-angle-unit) * 260)
+  );
+  --base-color-slate-336-a100: var(--primary-color-slate-336-a100);
+  --base-color-slate-382-a100: var(--primary-color-slate-382-a100);
+  --base-color-slate-927-a100: var(--primary-color-slate-927-a100);
+  --base-color-slate-954-a100: var(--primary-color-slate-954-a100);
+  --base-color-teal-800-a100: oklch(
+    calc(var(--primary-percent-base) * 80)
+      calc(var(--primary-number-unit) * 0.11)
+      calc(var(--primary-angle-unit) * 175)
+  );
+  --base-color-violet-779-a100: oklch(
+    calc(var(--primary-percent-base) * 78)
+      calc(var(--primary-number-unit) * 0.12)
+      calc(var(--primary-angle-unit) * 300)
+  );
+  --base-color-white-a7: oklch(
+    calc(var(--primary-percent-base) * 100) calc(var(--primary-number-unit) * 0)
+      calc(var(--primary-angle-unit) * 0) /
+      calc(var(--primary-percent-base) * 7)
+  );
+  --base-color-yellow-820-a100: oklch(
+    calc(var(--primary-percent-base) * 82)
+      calc(var(--primary-number-unit) * 0.14)
+      calc(var(--primary-angle-unit) * 85)
+  );
+  --base-color-yellow-821-a100: oklch(
+    calc(var(--primary-percent-base) * 82)
+      calc(var(--primary-number-unit) * 0.065)
+      calc(var(--primary-angle-unit) * 85)
+  );
+  /* base: css */
+  --base-css-anywhere: var(--primary-css-anywhere);
+  --base-css-auto: var(--primary-css-auto);
+  --base-css-capitalize: var(--primary-css-capitalize);
+  --base-css-center: var(--primary-css-center);
+  --base-css-clip: var(--primary-css-clip);
+  --base-css-col-resize: var(--primary-css-col-resize);
+  --base-css-crosshair: var(--primary-css-crosshair);
+  --base-css-default: var(--primary-css-default);
+  --base-css-ellipsis: var(--primary-css-ellipsis);
+  --base-css-ew-resize: var(--primary-css-ew-resize);
+  --base-css-grab: var(--primary-css-grab);
+  --base-css-grabbing: var(--primary-css-grabbing);
+  --base-css-italic: var(--primary-css-italic);
+  --base-css-left: var(--primary-css-left);
+  --base-css-max-content: var(--primary-css-max-content);
+  --base-css-monospace: var(--primary-css-monospace);
+  --base-css-none: var(--primary-css-none);
+  --base-css-normal: var(--primary-css-normal);
+  --base-css-not-allowed: var(--primary-css-not-allowed);
+  --base-css-nowrap: var(--primary-css-nowrap);
+  --base-css-opening-the-page: var(--primary-css-opening-the-page);
+  --base-css-pointer: var(--primary-css-pointer);
+  --base-css-pre: var(--primary-css-pre);
+  --base-css-pre-wrap: var(--primary-css-pre-wrap);
+  --base-css-preview-access-expired-reload-the-page: var(
+    --primary-css-preview-access-expired-reload-the-page
+  );
+  --base-css-preview-unavailable-retrying: var(
+    --primary-css-preview-unavailable-retrying
+  );
+  --base-css-right: var(--primary-css-right);
+  --base-css-row-resize: var(--primary-css-row-resize);
+  --base-css-set-the-address-in-to-see: var(
+    --primary-css-set-the-address-in-to-see
+  );
+  --base-css-sfmono-regular-consolas-monospace: var(
+    --primary-css-sfmono-regular-consolas-monospace
+  );
+  --base-css-start: var(--primary-css-start);
+  --base-css-start-the-service-in-to-see: var(
+    --primary-css-start-the-service-in-to-see
+  );
+  --base-css-tabular-nums: var(--primary-css-tabular-nums);
+  --base-css-text: var(--primary-css-text);
+  --base-css-the-browser-is-closed-open-it: var(
+    --primary-css-the-browser-is-closed-open-it
+  );
+  --base-css-thin: var(--primary-css-thin);
+  --base-css-ui-monospace-sfmono-regular-menlo-monospace: var(
+    --primary-css-ui-monospace-sfmono-regular-menlo-monospace
+  );
+  --base-css-underline: var(--primary-css-underline);
+  --base-css-uppercase: var(--primary-css-uppercase);
+  /* base: dimension */
+  --base-dimension-compact: calc(var(--primary-dimension-unit) * 0.5);
+  --base-dimension-compact-minus-hairline: calc(
+    var(--primary-dimension-unit) * 0.4375
+  );
+  --base-dimension-compact-plus-micro: calc(
+    var(--primary-dimension-unit) * 0.625
+  );
+  --base-dimension-eighteen-character: calc(
+    var(--primary-dimension-character) * 18
+  );
+  --base-dimension-eighty-five-viewport-height: calc(
+    var(--primary-dimension-viewport-height) * 85
+  );
+  --base-dimension-fifty-six-character: calc(
+    var(--primary-dimension-character) * 56
+  );
+  --base-dimension-hairline: calc(var(--primary-dimension-unit) * 0.0625);
+  --base-dimension-huge: calc(var(--primary-dimension-unit) * 4);
+  --base-dimension-huge-plus-compact: calc(var(--primary-dimension-unit) * 4.5);
+  --base-dimension-huge-plus-large: calc(var(--primary-dimension-unit) * 5.5);
+  --base-dimension-huge-plus-normal: calc(var(--primary-dimension-unit) * 5);
+  --base-dimension-huge-plus-xlarge: calc(var(--primary-dimension-unit) * 6);
+  --base-dimension-huge-plus-xxlarge: calc(var(--primary-dimension-unit) * 7);
+  --base-dimension-large: calc(var(--primary-dimension-unit) * 1.5);
+  --base-dimension-large-minus-hairline: calc(
+    var(--primary-dimension-unit) * 1.4375
+  );
+  --base-dimension-large-plus-hairline-plus-micro: calc(
+    var(--primary-dimension-unit) * 1.6875
+  );
+  --base-dimension-large-plus-micro: calc(
+    var(--primary-dimension-unit) * 1.625
+  );
+  --base-dimension-large-plus-tiny: calc(var(--primary-dimension-unit) * 1.75);
+  --base-dimension-massive: calc(var(--primary-dimension-unit) * 8);
+  --base-dimension-massive-minus-compact: calc(
+    var(--primary-dimension-unit) * 7.5
+  );
+  --base-dimension-massive-minus-large: calc(
+    var(--primary-dimension-unit) * 6.5
+  );
+  --base-dimension-massive-plus-large: calc(
+    var(--primary-dimension-unit) * 9.5
+  );
+  --base-dimension-massive-plus-large-plus-massive: calc(
+    var(--primary-dimension-unit) * 17.5
+  );
+  --base-dimension-massive-plus-massive: calc(
+    var(--primary-dimension-unit) * 16
+  );
+  --base-dimension-massive-plus-micro-plus-medium: calc(
+    var(--primary-dimension-unit) * 9.375
+  );
+  --base-dimension-massive-plus-normal: calc(var(--primary-dimension-unit) * 9);
+  --base-dimension-massive-plus-tiny-plus-massive: calc(
+    var(--primary-dimension-unit) * 16.25
+  );
+  --base-dimension-medium: calc(var(--primary-dimension-unit) * 1.25);
+  --base-dimension-medium-plus-micro: calc(
+    var(--primary-dimension-unit) * 1.375
+  );
+  --base-dimension-micro: calc(var(--primary-dimension-unit) * 0.125);
+  --base-dimension-micro-plus-hairline: calc(
+    var(--primary-dimension-unit) * 0.1875
+  );
+  --base-dimension-minus-compact: calc(var(--primary-dimension-unit) * -0.5);
+  --base-dimension-minus-compact-minus-hairline: calc(
+    var(--primary-dimension-unit) * -0.4375
+  );
+  --base-dimension-minus-large-minus-hairline: calc(
+    var(--primary-dimension-unit) * -1.4375
+  );
+  --base-dimension-minus-micro-plus-hairline: calc(
+    var(--primary-dimension-unit) * -0.1875
+  );
+  --base-dimension-minus-small: calc(var(--primary-dimension-unit) * -0.75);
+  --base-dimension-minus-tiny: calc(var(--primary-dimension-unit) * -0.25);
+  --base-dimension-minus-tiny-plus-micro: calc(
+    var(--primary-dimension-unit) * -0.375
+  );
+  --base-dimension-ninety-viewport-width: calc(
+    var(--primary-dimension-viewport-width) * 90
+  );
+  --base-dimension-normal: calc(var(--primary-dimension-unit) * 1);
+  --base-dimension-normal-minus-hairline: calc(
+    var(--primary-dimension-unit) * 0.9375
+  );
+  --base-dimension-normal-plus-hairline: calc(
+    var(--primary-dimension-unit) * 1.0625
+  );
+  --base-dimension-normal-plus-micro: calc(
+    var(--primary-dimension-unit) * 1.125
+  );
+  --base-dimension-one-em: calc(var(--primary-dimension-em) * 1);
+  --base-dimension-one-hundred-dynamic-viewport-height: calc(
+    var(--primary-dimension-dynamic-viewport-height) * 100
+  );
+  --base-dimension-one-hundred-viewport-height: calc(
+    var(--primary-dimension-viewport-height) * 100
+  );
+  --base-dimension-one-hundred-viewport-width: calc(
+    var(--primary-dimension-viewport-width) * 100
+  );
+  --base-dimension-page: calc(var(--primary-dimension-unit) * 10);
+  --base-dimension-page-plus-compact-plus-huge: calc(
+    var(--primary-dimension-unit) * 14.5
+  );
+  --base-dimension-page-plus-compact-plus-page: calc(
+    var(--primary-dimension-unit) * 20.5
+  );
+  --base-dimension-page-plus-compact-plus-xxlarge: calc(
+    var(--primary-dimension-unit) * 13.5
+  );
+  --base-dimension-page-plus-huge: calc(var(--primary-dimension-unit) * 14);
+  --base-dimension-page-plus-huge-plus-page: calc(
+    var(--primary-dimension-unit) * 24
+  );
+  --base-dimension-page-plus-large: calc(var(--primary-dimension-unit) * 11.5);
+  --base-dimension-page-plus-massive: calc(var(--primary-dimension-unit) * 18);
+  --base-dimension-page-plus-massive-plus-massive: calc(
+    var(--primary-dimension-unit) * 26
+  );
+  --base-dimension-page-plus-massive-plus-page: calc(
+    var(--primary-dimension-unit) * 28
+  );
+  --base-dimension-page-plus-medium: calc(
+    var(--primary-dimension-unit) * 11.25
+  );
+  --base-dimension-page-plus-medium-plus-page: calc(
+    var(--primary-dimension-unit) * 21.25
+  );
+  --base-dimension-page-plus-normal: calc(var(--primary-dimension-unit) * 11);
+  --base-dimension-page-plus-normal-plus-huge: calc(
+    var(--primary-dimension-unit) * 15
+  );
+  --base-dimension-page-plus-normal-plus-massive: calc(
+    var(--primary-dimension-unit) * 19
+  );
+  --base-dimension-page-plus-normal-plus-page: calc(
+    var(--primary-dimension-unit) * 21
+  );
+  --base-dimension-page-plus-page: calc(var(--primary-dimension-unit) * 20);
+  --base-dimension-page-plus-page-plus-page: calc(
+    var(--primary-dimension-unit) * 30
+  );
+  --base-dimension-page-plus-small-plus-xxlarge: calc(
+    var(--primary-dimension-unit) * 13.75
+  );
+  --base-dimension-page-plus-xlarge: calc(var(--primary-dimension-unit) * 12);
+  --base-dimension-page-plus-xlarge-plus-page: calc(
+    var(--primary-dimension-unit) * 22
+  );
+  --base-dimension-page-plus-xxlarge: calc(var(--primary-dimension-unit) * 13);
+  --base-dimension-pixel-compact: calc(var(--primary-dimension-pixel) * 8);
+  --base-dimension-pixel-compact-minus-hairline: calc(
+    var(--primary-dimension-pixel) * 7
+  );
+  --base-dimension-pixel-compact-plus-hairline: calc(
+    var(--primary-dimension-pixel) * 9
+  );
+  --base-dimension-pixel-compact-plus-micro: calc(
+    var(--primary-dimension-pixel) * 10
+  );
+  --base-dimension-pixel-hairline: calc(var(--primary-dimension-pixel) * 1);
+  --base-dimension-pixel-huge-minus-micro: calc(
+    var(--primary-dimension-pixel) * 62
+  );
+  --base-dimension-pixel-large: calc(var(--primary-dimension-pixel) * 24);
+  --base-dimension-pixel-large-plus-micro: calc(
+    var(--primary-dimension-pixel) * 26
+  );
+  --base-dimension-pixel-large-plus-tiny: calc(
+    var(--primary-dimension-pixel) * 28
+  );
+  --base-dimension-pixel-massive-plus-large-plus-massive: calc(
+    var(--primary-dimension-pixel) * 280
+  );
+  --base-dimension-pixel-medium: calc(var(--primary-dimension-pixel) * 20);
+  --base-dimension-pixel-medium-plus-micro: calc(
+    var(--primary-dimension-pixel) * 22
+  );
+  --base-dimension-pixel-micro: calc(var(--primary-dimension-pixel) * 2);
+  --base-dimension-pixel-micro-plus-hairline: calc(
+    var(--primary-dimension-pixel) * 3
+  );
+  --base-dimension-pixel-minus-hairline: calc(
+    var(--primary-dimension-pixel) * -1
+  );
+  --base-dimension-pixel-minus-micro: calc(var(--primary-dimension-pixel) * -2);
+  --base-dimension-pixel-minus-zero-point-four-five: calc(
+    var(--primary-dimension-pixel) * -0.45
+  );
+  --base-dimension-pixel-nine-hundred-ninety-nine: calc(
+    var(--primary-dimension-pixel) * 999
+  );
+  --base-dimension-pixel-none: calc(var(--primary-dimension-pixel) * 0);
+  --base-dimension-pixel-normal: calc(var(--primary-dimension-pixel) * 16);
+  --base-dimension-pixel-page-plus-micro-plus-compact: calc(
+    var(--primary-dimension-pixel) * 170
+  );
+  --base-dimension-pixel-small: calc(var(--primary-dimension-pixel) * 12);
+  --base-dimension-pixel-small-minus-hairline: calc(
+    var(--primary-dimension-pixel) * 11
+  );
+  --base-dimension-pixel-tiny: calc(var(--primary-dimension-pixel) * 4);
+  --base-dimension-pixel-tiny-plus-hairline: calc(
+    var(--primary-dimension-pixel) * 5
+  );
+  --base-dimension-pixel-tiny-plus-micro: calc(
+    var(--primary-dimension-pixel) * 6
+  );
+  --base-dimension-pixel-xlarge-minus-micro: calc(
+    var(--primary-dimension-pixel) * 30
+  );
+  --base-dimension-pixel-xlarge-plus-compact: calc(
+    var(--primary-dimension-pixel) * 40
+  );
+  --base-dimension-pixel-xlarge-plus-micro: calc(
+    var(--primary-dimension-pixel) * 34
+  );
+  --base-dimension-pixel-xlarge-plus-micro-plus-compact: calc(
+    var(--primary-dimension-pixel) * 42
+  );
+  --base-dimension-pixel-xlarge-plus-small: calc(
+    var(--primary-dimension-pixel) * 44
+  );
+  --base-dimension-pixel-xxlarge: calc(var(--primary-dimension-pixel) * 48);
+  --base-dimension-pixel-xxlarge-plus-micro-plus-compact: calc(
+    var(--primary-dimension-pixel) * 58
+  );
+  --base-dimension-pixel-xxlarge-plus-tiny: calc(
+    var(--primary-dimension-pixel) * 52
+  );
+  --base-dimension-rem-fifty-two: calc(var(--primary-dimension-unit) * 52);
+  --base-dimension-rem-forty: calc(var(--primary-dimension-unit) * 40);
+  --base-dimension-rem-forty-four: calc(var(--primary-dimension-unit) * 44);
+  --base-dimension-rem-forty-six: calc(var(--primary-dimension-unit) * 46);
+  --base-dimension-rem-forty-two: calc(var(--primary-dimension-unit) * 42);
+  --base-dimension-rem-forty-two-point-five: calc(
+    var(--primary-dimension-unit) * 42.5
+  );
+  --base-dimension-rem-minus-zero-point-four: calc(
+    var(--primary-dimension-unit) * -0.4
+  );
+  --base-dimension-rem-minus-zero-point-one: calc(
+    var(--primary-dimension-unit) * -0.1
+  );
+  --base-dimension-rem-minus-zero-point-three: calc(
+    var(--primary-dimension-unit) * -0.3
+  );
+  --base-dimension-rem-minus-zero-point-two: calc(
+    var(--primary-dimension-unit) * -0.2
+  );
+  --base-dimension-rem-minus-zero-point-zero-nine-three-seven-five: calc(
+    var(--primary-dimension-unit) * -0.09375
+  );
+  --base-dimension-rem-minus-zero-point-zero-three-one-two-five: calc(
+    var(--primary-dimension-unit) * -0.03125
+  );
+  --base-dimension-rem-seventy-five: calc(var(--primary-dimension-unit) * 75);
+  --base-dimension-rem-sixty: calc(var(--primary-dimension-unit) * 60);
+  --base-dimension-rem-sixty-four: calc(var(--primary-dimension-unit) * 64);
+  --base-dimension-rem-sixty-six: calc(var(--primary-dimension-unit) * 66);
+  --base-dimension-rem-sixty-two: calc(var(--primary-dimension-unit) * 62);
+  --base-dimension-rem-sixty-two-point-four-three-seven-five: calc(
+    var(--primary-dimension-unit) * 62.4375
+  );
+  --base-dimension-rem-thirty-eight: calc(var(--primary-dimension-unit) * 38);
+  --base-dimension-rem-thirty-four: calc(var(--primary-dimension-unit) * 34);
+  --base-dimension-rem-thirty-six: calc(var(--primary-dimension-unit) * 36);
+  --base-dimension-rem-thirty-two: calc(var(--primary-dimension-unit) * 32);
+  --base-dimension-rem-thirty-two-point-five: calc(
+    var(--primary-dimension-unit) * 32.5
+  );
+  --base-dimension-rem-twenty-five: calc(var(--primary-dimension-unit) * 25);
+  --base-dimension-rem-twenty-seven-point-five: calc(
+    var(--primary-dimension-unit) * 27.5
+  );
+  --base-dimension-rem-twenty-two-point-five: calc(
+    var(--primary-dimension-unit) * 22.5
+  );
+  --base-dimension-rem-zero-point-seven-one-eight-seven-five: calc(
+    var(--primary-dimension-unit) * 0.71875
+  );
+  --base-dimension-rem-zero-point-six-five-six-two-five: calc(
+    var(--primary-dimension-unit) * 0.65625
+  );
+  --base-dimension-rem-zero-point-three: calc(
+    var(--primary-dimension-unit) * 0.3
+  );
+  --base-dimension-rem-zero-point-three-five: calc(
+    var(--primary-dimension-unit) * 0.35
+  );
+  --base-dimension-rem-zero-point-two-two: calc(
+    var(--primary-dimension-unit) * 0.22
+  );
+  --base-dimension-rem-zero-point-zero-three-one-two-five: calc(
+    var(--primary-dimension-unit) * 0.03125
+  );
+  --base-dimension-six-viewport-width: calc(
+    var(--primary-dimension-viewport-width) * 6
+  );
+  --base-dimension-small: calc(var(--primary-dimension-unit) * 0.75);
+  --base-dimension-small-minus-hairline: calc(
+    var(--primary-dimension-unit) * 0.6875
+  );
+  --base-dimension-small-plus-hairline: calc(
+    var(--primary-dimension-unit) * 0.8125
+  );
+  --base-dimension-small-plus-micro: calc(
+    var(--primary-dimension-unit) * 0.875
+  );
+  --base-dimension-tiny: calc(var(--primary-dimension-unit) * 0.25);
+  --base-dimension-tiny-plus-hairline: calc(
+    var(--primary-dimension-unit) * 0.3125
+  );
+  --base-dimension-tiny-plus-micro: calc(var(--primary-dimension-unit) * 0.375);
+  --base-dimension-twenty-eight-character: calc(
+    var(--primary-dimension-character) * 28
+  );
+  --base-dimension-twenty-two-character: calc(
+    var(--primary-dimension-character) * 22
+  );
+  --base-dimension-two-point-six-viewport-width: calc(
+    var(--primary-dimension-viewport-width) * 2.6
+  );
+  --base-dimension-xlarge: calc(var(--primary-dimension-unit) * 2);
+  --base-dimension-xlarge-minus-micro: calc(
+    var(--primary-dimension-unit) * 1.875
+  );
+  --base-dimension-xlarge-plus-compact: calc(
+    var(--primary-dimension-unit) * 2.5
+  );
+  --base-dimension-xlarge-plus-micro: calc(
+    var(--primary-dimension-unit) * 2.125
+  );
+  --base-dimension-xlarge-plus-micro-plus-tiny: calc(
+    var(--primary-dimension-unit) * 2.375
+  );
+  --base-dimension-xlarge-plus-small: calc(
+    var(--primary-dimension-unit) * 2.75
+  );
+  --base-dimension-xlarge-plus-tiny: calc(var(--primary-dimension-unit) * 2.25);
+  --base-dimension-xxlarge: calc(var(--primary-dimension-unit) * 3);
+  --base-dimension-xxlarge-plus-compact: calc(
+    var(--primary-dimension-unit) * 3.5
+  );
+  --base-dimension-xxlarge-plus-tiny: calc(
+    var(--primary-dimension-unit) * 3.25
+  );
+  --base-dimension-zero: calc(var(--primary-dimension-pixel) * 0);
+  --base-dimension-zero-point-two-em: calc(var(--primary-dimension-em) * 0.2);
+  /* base: duration */
+  --base-duration-four-point-four-second: calc(
+    var(--primary-duration-unit) * 4.4
+  );
+  --base-duration-normal: calc(0.5 * var(--primary-duration-unit));
+  --base-duration-quick: calc(0.4 * var(--primary-duration-unit));
+  --base-duration-slow: calc(4 * var(--primary-duration-unit));
+  --base-duration-zero-point-one-four-second: calc(
+    var(--primary-duration-unit) * 0.14
+  );
+  --base-duration-zero-point-one-two-second: calc(
+    var(--primary-duration-unit) * 0.12
+  );
+  --base-duration-zero-point-zero-eight-second: calc(
+    var(--primary-duration-unit) * 0.08
+  );
+  /* base: font */
+  --base-font-weight-medium: calc(var(--primary-font-weight-unit) * 5);
+  --base-font-weight-normal: calc(var(--primary-font-weight-unit) * 4);
+  --base-font-weight-semibold: calc(var(--primary-font-weight-unit) * 6);
+  --base-font-weight-seven: calc(var(--primary-font-weight-unit) * 7);
+  /* base: fraction */
+  --base-fraction-one-fraction: var(--primary-fraction-unit);
+  --base-fraction-one-point-five-fraction: var(
+    --primary-fraction-one-point-five
+  );
+  --base-fraction-one-point-four-fraction: var(
+    --primary-fraction-one-point-four
+  );
+  --base-fraction-one-point-one-eight-fraction: var(
+    --primary-fraction-one-point-one-eight
+  );
+  --base-fraction-one-point-two-fraction: var(--primary-fraction-one-point-two);
+  --base-fraction-three-fraction: var(--primary-fraction-three);
+  --base-fraction-two-fraction: var(--primary-fraction-two);
+  --base-fraction-zero-point-eight-fraction: var(
+    --primary-fraction-zero-point-eight
+  );
+  --base-fraction-zero-point-eight-two-fraction: var(
+    --primary-fraction-zero-point-eight-two
+  );
+  --base-fraction-zero-point-four-five-fraction: var(
+    --primary-fraction-zero-point-four-five
+  );
+  --base-fraction-zero-point-nine-fraction: var(
+    --primary-fraction-zero-point-nine
+  );
+  --base-fraction-zero-point-seven-five-fraction: var(
+    --primary-fraction-zero-point-seven-five
+  );
+  --base-fraction-zero-point-seven-fraction: var(
+    --primary-fraction-zero-point-seven
+  );
+  --base-fraction-zero-point-six-five-fraction: var(
+    --primary-fraction-zero-point-six-five
+  );
+  /* base: letter */
+  --base-letter-spacing-broad: calc(0.045 * var(--primary-dimension-em));
+  --base-letter-spacing-broader: calc(0.03 * var(--primary-dimension-em));
+  --base-letter-spacing-extra-wide: calc(0.015 * var(--primary-dimension-em));
+  --base-letter-spacing-faint: calc(0.005 * var(--primary-dimension-em));
+  --base-letter-spacing-tight: calc(-0.015 * var(--primary-dimension-em));
+  --base-letter-spacing-ultra-wide: calc(0.08 * var(--primary-dimension-em));
+  --base-letter-spacing-wide: calc(0.04 * var(--primary-dimension-em));
+  --base-letter-spacing-wider: calc(0.0125 * var(--primary-dimension-em));
+  --base-letter-spacing-widest: calc(0.055 * var(--primary-dimension-em));
+  /* base: line */
+  --base-line-height-body: calc(1.5 * var(--primary-number-unit));
+  --base-line-height-control: calc(1.35 * var(--primary-number-unit));
+  --base-line-height-heading: calc(1.15 * var(--primary-number-unit));
+  --base-line-height-loose: calc(1.4 * var(--primary-number-unit));
+  --base-line-height-prose: calc(1.55 * var(--primary-number-unit));
+  --base-line-height-relaxed: calc(1.6 * var(--primary-number-unit));
+  --base-line-height-snug: calc(1.45 * var(--primary-number-unit));
+  --base-line-height-tight: calc(1.25 * var(--primary-number-unit));
+  /* base: number */
+  --base-number-eight: calc(8 * var(--primary-number-unit));
+  --base-number-eighteen: calc(var(--primary-number-unit) * 18);
+  --base-number-five: calc(5 * var(--primary-number-unit));
+  --base-number-forty: calc(var(--primary-number-unit) * 40);
+  --base-number-four: calc(4 * var(--primary-number-unit));
+  --base-number-half: calc(0.5 * var(--primary-number-unit));
+  --base-number-minus-one: calc(var(--primary-number-unit) * -1);
+  --base-number-ninety: calc(90 * var(--primary-number-unit));
+  --base-number-ninety-nine: calc(var(--primary-number-unit) * 99);
+  --base-number-one: calc(1 * var(--primary-number-unit));
+  --base-number-one-hundred-twenty: calc(var(--primary-number-unit) * 120);
+  --base-number-one-point-five: calc(var(--primary-number-unit) * 1.5);
+  --base-number-one-point-five-five: calc(var(--primary-number-unit) * 1.55);
+  --base-number-one-point-one-five: calc(var(--primary-number-unit) * 1.15);
+  --base-number-one-point-three: calc(var(--primary-number-unit) * 1.3);
+  --base-number-one-point-three-five: calc(var(--primary-number-unit) * 1.35);
+  --base-number-one-point-zero-eight: calc(var(--primary-number-unit) * 1.08);
+  --base-number-one-point-zero-four: calc(var(--primary-number-unit) * 1.04);
+  --base-number-seventy: calc(var(--primary-number-unit) * 70);
+  --base-number-six: calc(6 * var(--primary-number-unit));
+  --base-number-six-hundred: calc(var(--primary-number-unit) * 600);
+  --base-number-sixteen: calc(var(--primary-number-unit) * 16);
+  --base-number-sixty: calc(var(--primary-number-unit) * 60);
+  --base-number-thirty: calc(var(--primary-number-unit) * 30);
+  --base-number-thirty-two: calc(var(--primary-number-unit) * 32);
+  --base-number-thousand: calc(1000 * var(--primary-number-unit));
+  --base-number-three: calc(3 * var(--primary-number-unit));
+  --base-number-three-quarters: calc(0.75 * var(--primary-number-unit));
+  --base-number-twenty: calc(var(--primary-number-unit) * 20);
+  --base-number-twenty-one: calc(var(--primary-number-unit) * 21);
+  --base-number-two: calc(2 * var(--primary-number-unit));
+  --base-number-two-point-two-five: calc(var(--primary-number-unit) * 2.25);
+  --base-number-zero: calc(var(--primary-number-unit) * 0);
+  --base-number-zero-point-nine: calc(var(--primary-number-unit) * 0.9);
+  --base-number-zero-point-nine-seven: calc(var(--primary-number-unit) * 0.97);
+  --base-number-zero-point-nine-six: calc(var(--primary-number-unit) * 0.96);
+  /* base: percent */
+  --base-percent-eighty: calc(var(--primary-percent-base) * 80);
+  --base-percent-eighty-eight: calc(var(--primary-percent-base) * 88);
+  --base-percent-eighty-five: calc(var(--primary-percent-base) * 85);
+  --base-percent-fifty-five: calc(var(--primary-percent-base) * 55);
+  --base-percent-forty-five: calc(var(--primary-percent-base) * 45);
+  --base-percent-full: calc(100 * var(--primary-percent-base));
+  --base-percent-half: calc(50 * var(--primary-percent-base));
+  --base-percent-minus-fifty: calc(var(--primary-percent-base) * -50);
+  --base-percent-ninety: calc(var(--primary-percent-base) * 90);
+  --base-percent-seventy: calc(var(--primary-percent-base) * 70);
+  --base-percent-sixty: calc(var(--primary-percent-base) * 60);
+  --base-percent-thirty: calc(var(--primary-percent-base) * 30);
+  --base-percent-thirty-five: calc(var(--primary-percent-base) * 35);
+  --base-percent-two-fifths: calc(40 * var(--primary-percent-base));
+  --base-percent-zero: calc(0 * var(--primary-percent-base));
+  /* base: action card colours */
+  --base-color-blue-604-a100: var(--primary-color-blue-604-a100);
+  --base-color-blue-663-a100: var(--primary-color-blue-663-a100);
+  --base-color-blue-544-a100: var(--primary-color-blue-544-a100);
+  --base-color-blue-566-a100: var(--primary-color-blue-566-a100);
+  --base-color-yellow-808-a100: var(--primary-color-yellow-808-a100);
+  --base-color-orange-745-a100: var(--primary-color-orange-745-a100);
+  --base-color-green-724-a100: var(--primary-color-green-724-a100);
+  --base-color-gray-652-a100: var(--primary-color-gray-652-a100);
+  --base-color-gray-315-a100: var(--primary-color-gray-315-a100);
+  --base-color-gray-232-a100: var(--primary-color-gray-232-a100);
+  --base-color-gray-350-a100: var(--primary-color-gray-350-a100);
+  --base-color-gray-526-a100: var(--primary-color-gray-526-a100);
+  --base-color-mix-blue-604-a100-p18-transparent: color-mix(
+    in oklab,
+    var(--primary-color-blue-604-a100) calc(var(--primary-percent-base) * 18),
+    var(--primary-color-named-transparent)
+  );
+  --base-color-mix-blue-604-a100-p12-transparent: color-mix(
+    in oklab,
+    var(--primary-color-blue-604-a100) calc(var(--primary-percent-base) * 12),
+    var(--primary-color-named-transparent)
+  );
+  --base-color-named-white: var(--primary-color-named-white);
+  --base-percent-one-hundred: calc(100 * var(--primary-percent-base));
+}

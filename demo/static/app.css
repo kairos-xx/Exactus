@@ -1,0 +1,423 @@
+:root {
+  --primary-app-color-violet-546-a100: #2563ebff;
+  --primary-app-color-white-1000-a100: #ffffffff;
+  --primary-app-color-pink-558-a100: #9333eaff;
+  --primary-app-color-green-627-a100: #16a34aff;
+  --primary-app-color-amber-769-a100: #f59e0bff;
+  --primary-app-color-orange-577-a100: #dc2626ff;
+  --primary-rem-unit: 1rem;
+  --primary-esd-css-system-minus-ui: system-ui;
+  --primary-app-css-sans-minus-serif: sans-serif;
+  --primary-number-unit: 1;
+  --primary-percent-base: 1%;
+  --primary-esd-css-auto: auto;
+  --primary-esd-css-solid: solid;
+  --primary-app-css-pointer: pointer;
+  --base-app-app-background: var(--dynamic-app-background);
+  --base-app-app-foreground: var(--dynamic-app-foreground);
+  --base-app-app-muted: var(--dynamic-app-muted);
+  --base-app-app-border: var(--dynamic-app-border);
+  --base-app-color-violet-546-a100: var(--primary-app-color-violet-546-a100);
+  --base-app-color-white-1000-a100: var(--primary-app-color-white-1000-a100);
+  --base-app-color-pink-558-a100: var(--primary-app-color-pink-558-a100);
+  --base-app-color-green-627-a100: var(--primary-app-color-green-627-a100);
+  --base-app-color-amber-769-a100: var(--primary-app-color-amber-769-a100);
+  --base-app-color-orange-577-a100: var(--primary-app-color-orange-577-a100);
+  --base-app-dimension-zero-point-zero-six-two-five-rem: calc(
+    0.0625 * var(--primary-rem-unit)
+  );
+  --base-app-dimension-zero-point-one-eight-seven-five-rem: calc(
+    0.1875 * var(--primary-rem-unit)
+  );
+  --base-app-dimension-zero-point-seven-five-rem: calc(
+    0.75 * var(--primary-rem-unit)
+  );
+  --base-esd-css-system-minus-ui: var(--primary-esd-css-system-minus-ui);
+  --base-app-css-sans-minus-serif: var(--primary-app-css-sans-minus-serif);
+  --base-app-number-seven-zero-zero: calc(700 * var(--primary-number-unit));
+  --base-app-dimension-one-point-one-two-five-rem: calc(
+    1.125 * var(--primary-rem-unit)
+  );
+  --base-app-dimension-one-rem: var(--primary-rem-unit);
+  --base-app-dimension-zero-point-five-rem: calc(0.5 * var(--primary-rem-unit));
+  --base-app-dimension-two-rem: calc(2 * var(--primary-rem-unit));
+  --base-app-dimension-four-four-rem: calc(44 * var(--primary-rem-unit));
+  --base-app-number-two: calc(2 * var(--primary-number-unit));
+  --base-app-dimension-eight-rem: calc(8 * var(--primary-rem-unit));
+  --base-app-dimension-one-two-rem: calc(12 * var(--primary-rem-unit));
+  --base-app-dimension-two-point-five-rem: calc(2.5 * var(--primary-rem-unit));
+  --base-app-percent-four-zero: calc(40 * var(--primary-percent-base));
+  --base-app-percent-seven-five: calc(75 * var(--primary-percent-base));
+  --base-app-percent-five-five: calc(55 * var(--primary-percent-base));
+  --base-app-percent-nine-zero: calc(90 * var(--primary-percent-base));
+  --base-app-percent-three-zero: calc(30 * var(--primary-percent-base));
+  --base-app-dimension-four-rem: calc(4 * var(--primary-rem-unit));
+  --base-esd-css-auto: var(--primary-esd-css-auto);
+  --base-app-app-accent-soft: var(--dynamic-app-accent-soft);
+  --base-app-app-second-soft: var(--dynamic-app-second-soft);
+  --base-esd-css-solid: var(--primary-esd-css-solid);
+  --base-app-app-surface: var(--dynamic-app-surface);
+  --base-app-css-pointer: var(--primary-app-css-pointer);
+  --base-app-app-details-soft: var(--dynamic-app-details-soft);
+  --base-app-app-advanced-soft: var(--dynamic-app-advanced-soft);
+  --base-app-app-preview-soft: var(--dynamic-app-preview-soft);
+  --catalog-palette-color-app-accent: var(--base-app-color-violet-546-a100);
+  --catalog-palette-color-app-accent-contrast: var(
+    --base-app-color-white-1000-a100
+  );
+  --catalog-layout-color-app-second-accent: var(--base-app-color-pink-558-a100);
+  --catalog-layout-color-app-bar-b: var(--base-app-color-green-627-a100);
+  --catalog-layout-color-app-bar-c: var(--base-app-color-amber-769-a100);
+  --catalog-layout-color-app-bar-d: var(--base-app-color-orange-577-a100);
+  --catalog-field-border-app-border-width: var(
+    --base-app-dimension-zero-point-zero-six-two-five-rem
+  );
+  --catalog-layout-measure-app-focus-width: var(
+    --base-app-dimension-zero-point-one-eight-seven-five-rem
+  );
+  --catalog-field-border-app-radius: var(
+    --base-app-dimension-zero-point-seven-five-rem
+  );
+  --catalog-text-typography-app-font-family:
+    var(--base-esd-css-system-minus-ui), var(--base-app-css-sans-minus-serif);
+  --catalog-text-typography-app-font-weight-bold: var(
+    --base-app-number-seven-zero-zero
+  );
+  --catalog-layout-measure-app-lede-size: var(
+    --base-app-dimension-one-point-one-two-five-rem
+  );
+  --catalog-layout-measure-app-space: var(--base-app-dimension-one-rem);
+  --catalog-layout-measure-app-space-half: var(
+    --base-app-dimension-zero-point-five-rem
+  );
+  --catalog-layout-measure-app-space-double: var(--base-app-dimension-two-rem);
+  --catalog-layout-typography-app-content-width: var(
+    --base-app-dimension-four-four-rem
+  );
+  --catalog-layout-measure-app-page-gutter-multiplier: var(
+    --base-app-number-two
+  );
+  --catalog-layout-measure-app-hero-height: var(--base-app-dimension-eight-rem);
+  --catalog-layout-measure-app-bars-height: var(
+    --base-app-dimension-one-two-rem
+  );
+  --catalog-layout-measure-app-bar-width: var(
+    --base-app-dimension-two-point-five-rem
+  );
+  --catalog-layout-measure-app-bar-a-height: var(--base-app-percent-four-zero);
+  --catalog-layout-measure-app-bar-b-height: var(--base-app-percent-seven-five);
+  --catalog-layout-measure-app-bar-c-height: var(--base-app-percent-five-five);
+  --catalog-layout-measure-app-bar-d-height: var(--base-app-percent-nine-zero);
+  --catalog-layout-measure-app-bar-e-height: var(--base-app-percent-three-zero);
+  --catalog-layout-measure-app-swatch-size: var(--base-app-dimension-four-rem);
+  --catalog-layout-measure-app-body-margin: 0;
+  --catalog-palette-color-app-body-background: var(--base-app-app-background);
+  --catalog-palette-color-app-body-color: var(--base-app-app-foreground);
+  --catalog-layout-measure-app-page-width: min(
+    var(--base-app-dimension-four-four-rem),
+    calc(100% - var(--base-app-number-two) * var(--base-app-dimension-one-rem))
+  );
+  --catalog-layout-measure-app-page-margin-inline: var(--base-esd-css-auto);
+  --catalog-palette-color-app-hero-background: var(--base-app-app-accent-soft);
+  --catalog-palette-color-app-hero-second-background: var(
+    --base-app-app-second-soft
+  );
+  --catalog-palette-color-app-lede-color: var(--base-app-app-muted);
+  --catalog-field-border-app-card-border: var(
+      --base-app-dimension-zero-point-zero-six-two-five-rem
+    )
+    var(--base-esd-css-solid) var(--base-app-app-border);
+  --catalog-palette-color-app-card-background: var(--base-app-app-surface);
+  --catalog-layout-measure-app-switch-padding: var(
+      --base-app-dimension-zero-point-five-rem
+    )
+    var(--base-app-dimension-one-rem);
+  --catalog-control-cursor-app-switch-cursor: var(--base-app-css-pointer);
+  --catalog-field-border-app-link-outline: var(
+      --base-app-dimension-zero-point-one-eight-seven-five-rem
+    )
+    var(--base-esd-css-solid) var(--base-app-color-violet-546-a100);
+  --catalog-field-border-app-bar-border-radius: var(
+      --base-app-dimension-zero-point-seven-five-rem
+    )
+    var(--base-app-dimension-zero-point-seven-five-rem) 0 0;
+  --catalog-palette-color-app-reveal-details-background: var(
+    --base-app-app-details-soft
+  );
+  --catalog-palette-color-app-reveal-advanced-background: var(
+    --base-app-app-advanced-soft
+  );
+  --catalog-palette-color-app-preview-background: var(
+    --base-app-app-preview-soft
+  );
+  --app-body-margin: var(--catalog-layout-measure-app-body-margin);
+  --app-body-background: var(--catalog-palette-color-app-body-background);
+  --app-body-color: var(--catalog-palette-color-app-body-color);
+  --app-page-width: var(--catalog-layout-measure-app-page-width);
+  --app-page-margin-inline: var(
+    --catalog-layout-measure-app-page-margin-inline
+  );
+  --app-hero-background: var(--catalog-palette-color-app-hero-background);
+  --app-hero-second-background: var(
+    --catalog-palette-color-app-hero-second-background
+  );
+  --app-lede-color: var(--catalog-palette-color-app-lede-color);
+  --app-card-border: var(--catalog-field-border-app-card-border);
+  --app-card-background: var(--catalog-palette-color-app-card-background);
+  --app-switch-padding: var(--catalog-layout-measure-app-switch-padding);
+  --app-switch-cursor: var(--catalog-control-cursor-app-switch-cursor);
+  --app-link-outline: var(--catalog-field-border-app-link-outline);
+  --app-bar-border-radius: var(--catalog-field-border-app-bar-border-radius);
+  --app-reveal-details-background: var(
+    --catalog-palette-color-app-reveal-details-background
+  );
+  --app-reveal-advanced-background: var(
+    --catalog-palette-color-app-reveal-advanced-background
+  );
+  --app-preview-background: var(--catalog-palette-color-app-preview-background);
+  color-scheme: light dark;
+  --dynamic-app-background: #f4f4f5ff;
+  --dynamic-app-foreground: #18181bff;
+  --dynamic-app-muted: #52525bff;
+  --dynamic-app-surface: #ffffffff;
+  --dynamic-app-border: #d4d4d8ff;
+  --app-accent: var(--catalog-palette-color-app-accent);
+  --accent-contrast: var(--catalog-palette-color-app-accent-contrast);
+  --dynamic-app-accent-soft: #dbeafeff;
+  --second-accent: var(--catalog-layout-color-app-second-accent);
+  --dynamic-app-second-soft: #f3e8ffff;
+  --dynamic-app-details-soft: #dcfce7ff;
+  --dynamic-app-advanced-soft: #fef3c7ff;
+  --dynamic-app-preview-soft: #ffe4e6ff;
+  --bar-a: var(--catalog-palette-color-app-accent);
+  --bar-b: var(--catalog-layout-color-app-bar-b);
+  --bar-c: var(--catalog-layout-color-app-bar-c);
+  --bar-d: var(--catalog-layout-color-app-bar-d);
+  --bar-e: var(--catalog-layout-color-app-second-accent);
+  --border-width: var(--catalog-field-border-app-border-width);
+  --app-focus-width: var(--catalog-layout-measure-app-focus-width);
+  --app-radius: var(--catalog-field-border-app-radius);
+  --font-family: var(--catalog-text-typography-app-font-family);
+  --font-weight-bold: var(--catalog-text-typography-app-font-weight-bold);
+  --lede-size: var(--catalog-layout-measure-app-lede-size);
+  --app-space: var(--catalog-layout-measure-app-space);
+  --space-half: var(--catalog-layout-measure-app-space-half);
+  --space-double: var(--catalog-layout-measure-app-space-double);
+  --compact-space: var(--catalog-layout-measure-app-space-half);
+  --content-width: var(--catalog-layout-typography-app-content-width);
+  --page-gutter-multiplier: var(
+    --catalog-layout-measure-app-page-gutter-multiplier
+  );
+  --hero-height: var(--catalog-layout-measure-app-hero-height);
+  --bars-height: var(--catalog-layout-measure-app-bars-height);
+  --app-bar-width: var(--catalog-layout-measure-app-bar-width);
+  --bar-a-height: var(--catalog-layout-measure-app-bar-a-height);
+  --bar-b-height: var(--catalog-layout-measure-app-bar-b-height);
+  --bar-c-height: var(--catalog-layout-measure-app-bar-c-height);
+  --bar-d-height: var(--catalog-layout-measure-app-bar-d-height);
+  --bar-e-height: var(--catalog-layout-measure-app-bar-e-height);
+  --swatch-size: var(--catalog-layout-measure-app-swatch-size);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --dynamic-app-background: #09090bff;
+    --dynamic-app-foreground: #fafafaff;
+    --dynamic-app-muted: #a1a1aaff;
+    --dynamic-app-surface: #18181bff;
+    --dynamic-app-border: #3f3f46ff;
+    --dynamic-app-accent-soft: #1e3a8aff;
+    --dynamic-app-second-soft: #3b0764ff;
+    --dynamic-app-details-soft: #14532dff;
+    --dynamic-app-advanced-soft: #78350fff;
+    --dynamic-app-preview-soft: #881337ff;
+  }
+}
+html {
+  box-sizing: border-box;
+}
+body {
+  margin: var(--app-body-margin);
+  background: var(--app-body-background);
+  color: var(--app-body-color);
+  font-family: var(--font-family);
+}
+.page {
+  display: grid;
+  gap: var(--app-space);
+  width: var(--app-page-width);
+  margin-inline: var(--app-page-margin-inline);
+  padding-block: var(--space-double);
+}
+.compact .page {
+  gap: var(--compact-space);
+  padding-block: var(--compact-space);
+}
+.hero {
+  display: grid;
+  align-content: center;
+  min-height: var(--hero-height);
+  padding: var(--app-space);
+  border-radius: var(--app-radius);
+  background: var(--app-hero-background);
+}
+.hero-second {
+  background: var(--app-hero-second-background);
+}
+.lede {
+  margin: var(--app-body-margin);
+  color: var(--app-lede-color);
+  font-size: var(--lede-size);
+}
+.card {
+  display: grid;
+  gap: var(--space-half);
+  padding: var(--app-space);
+  border: var(--app-card-border);
+  border-radius: var(--app-radius);
+  background: var(--app-card-background);
+}
+.compact .card {
+  padding: var(--compact-space);
+}
+.status {
+  margin: var(--app-body-margin);
+  font-weight: var(--font-weight-bold);
+}
+.button,
+.tab,
+.switch {
+  justify-self: start;
+  padding: var(--app-switch-padding);
+  border: var(--app-card-border);
+  border-radius: var(--app-radius);
+  background: var(--app-card-background);
+  color: inherit;
+  font: inherit;
+  cursor: var(--app-switch-cursor);
+}
+.link {
+  color: var(--app-accent);
+}
+.button:focus-visible,
+.tab:focus-visible,
+.switch:focus-visible,
+.link:focus-visible {
+  outline: var(--app-link-outline);
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-half);
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-half);
+}
+.tab[aria-selected="true"],
+.switch[aria-checked="true"] {
+  border-color: var(--app-accent);
+  background: var(--app-accent);
+  color: var(--accent-contrast);
+}
+.panel {
+  padding: var(--app-space);
+  border-radius: var(--app-radius);
+}
+.panel-overview {
+  background: var(--app-hero-background);
+}
+.panel-metrics {
+  background: var(--app-card-background);
+}
+.panel-settings {
+  display: grid;
+  gap: var(--app-space);
+  background: var(--app-hero-second-background);
+}
+.bars {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--app-space);
+  height: var(--bars-height);
+}
+.bar {
+  width: var(--app-bar-width);
+  border-radius: var(--app-bar-border-radius);
+}
+.bar-a {
+  height: var(--bar-a-height);
+  background: var(--bar-a);
+}
+.bar-b {
+  height: var(--bar-b-height);
+  background: var(--bar-b);
+}
+.bar-c {
+  height: var(--bar-c-height);
+  background: var(--bar-c);
+}
+.bar-d {
+  height: var(--bar-d-height);
+  background: var(--bar-d);
+}
+.bar-e {
+  height: var(--bar-e-height);
+  background: var(--bar-e);
+}
+.swatches {
+  display: flex;
+  gap: var(--app-space);
+}
+.swatch {
+  width: var(--swatch-size);
+  height: var(--swatch-size);
+  border-radius: var(--app-radius);
+}
+.swatch-a {
+  background: var(--bar-a);
+}
+.swatch-b {
+  background: var(--bar-c);
+}
+.swatch-c {
+  background: var(--bar-e);
+}
+.reveal {
+  display: grid;
+  gap: var(--space-half);
+  padding: var(--app-space);
+  border-radius: var(--app-radius);
+}
+.panel[hidden],
+.reveal[hidden] {
+  display: none;
+}
+.reveal-details {
+  background: var(--app-reveal-details-background);
+}
+.reveal-advanced {
+  background: var(--app-reveal-advanced-background);
+}
+.activity {
+  margin: var(--app-body-margin);
+  padding-inline-start: var(--space-double);
+  background: var(--app-hero-second-background);
+}
+.preview {
+  position: static;
+  margin: var(--app-body-margin);
+  padding: var(--app-space);
+  border: var(--app-card-border);
+  border-radius: var(--app-radius);
+  background: var(--app-preview-background);
+  color: inherit;
+}
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--app-space);
+}
+.second .link {
+  color: var(--second-accent);
+}

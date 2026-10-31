@@ -1,0 +1,915 @@
+{
+  "title": "Self Test Exactus",
+  "status": "FAIL",
+  "tool": "self_test",
+  "summary": {
+    "checks": 86,
+    "passed": 81,
+    "failed": 4,
+    "skipped": 1,
+    "findings": 4,
+    "findings_total": 4,
+    "severity": {
+      "error": 4,
+      "warning": 0,
+      "info": 0
+    }
+  },
+  "analyzer": "self_test",
+  "comparison": {
+    "available": true,
+    "previous_generated_at": "2026-10-27T21:23:27.987652+00:00",
+    "previous_run_id": "a5fd15f223e6443f917f01a0086bbc78:self_test",
+    "previous_status": "PASS",
+    "previous_duration_seconds": 131.924,
+    "current_total": 4,
+    "previous_total": 0,
+    "delta": 4,
+    "added_count": 4,
+    "resolved_count": 0,
+    "unchanged_count": 0,
+    "added": [
+      {
+        "id": "SEL-001",
+        "title": "self_test tool check failed",
+        "severity": "error",
+        "rule": "self_test-tool",
+        "path": "basedpyright-langserver",
+        "file": "basedpyright-langserver",
+        "line": 0,
+        "message": "/Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py basedpyright-langserver --version exited 1: Node.js v22.21.1; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py basedpyright-langserver --help exited 1: Node.js v22.21.1; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py basedpyright-langserver -h exited 1: Node.js v22.21.1; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py basedpyright-langserver exited 1: Node.js v22.21.1",
+        "blocking": true
+      },
+      {
+        "id": "SEL-002",
+        "title": "self_test tool check failed",
+        "severity": "error",
+        "rule": "self_test-tool",
+        "path": "node-which",
+        "file": "node-which",
+        "line": 0,
+        "message": "/Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py node-which --version exited 1: usage: which [-as] program ...; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py node-which --help exited 1: usage: which [-as] program ...; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py node-which -h exited 1: usage: which [-as] program ...; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py node-which exited 1: usage: which [-as] program ...",
+        "blocking": true
+      },
+      {
+        "id": "SEL-003",
+        "title": "self_test tool check failed",
+        "severity": "error",
+        "rule": "self_test-tool",
+        "path": "textual",
+        "file": "textual",
+        "line": 0,
+        "message": "/Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py textual --version timed out after 120s; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py textual --help timed out after 120s; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py textual -h timed out after 120s; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py textual timed out after 120s",
+        "blocking": true
+      },
+      {
+        "id": "SEL-004",
+        "title": "self_test tool check failed",
+        "severity": "error",
+        "rule": "self_test-tool",
+        "path": "which",
+        "file": "which",
+        "line": 0,
+        "message": "/Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py which --version exited 1: usage: which [-as] program ...; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py which --help exited 1: usage: which [-as] program ...; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py which -h exited 1: usage: which [-as] program ...; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py which exited 1: usage: which [-as] program ...",
+        "blocking": true
+      }
+    ],
+    "resolved": [],
+    "finding_details_available": true,
+    "subsections": [
+      {
+        "section": "Rule: self_test-tool",
+        "current_total": 4,
+        "previous_total": 0,
+        "delta": 4,
+        "added_count": 4,
+        "resolved_count": 0,
+        "unchanged_count": 0,
+        "added": [
+          {
+            "id": "SEL-001",
+            "title": "self_test tool check failed",
+            "severity": "error",
+            "rule": "self_test-tool",
+            "path": "basedpyright-langserver",
+            "file": "basedpyright-langserver",
+            "line": 0,
+            "message": "/Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py basedpyright-langserver --version exited 1: Node.js v22.21.1; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py basedpyright-langserver --help exited 1: Node.js v22.21.1; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py basedpyright-langserver -h exited 1: Node.js v22.21.1; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py basedpyright-langserver exited 1: Node.js v22.21.1",
+            "blocking": true,
+            "change": "added",
+            "comparison_key": "7ef2b3f29c78c5d0"
+          },
+          {
+            "id": "SEL-002",
+            "title": "self_test tool check failed",
+            "severity": "error",
+            "rule": "self_test-tool",
+            "path": "node-which",
+            "file": "node-which",
+            "line": 0,
+            "message": "/Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py node-which --version exited 1: usage: which [-as] program ...; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py node-which --help exited 1: usage: which [-as] program ...; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py node-which -h exited 1: usage: which [-as] program ...; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py node-which exited 1: usage: which [-as] program ...",
+            "blocking": true,
+            "change": "added",
+            "comparison_key": "e194d307881b577e"
+          },
+          {
+            "id": "SEL-003",
+            "title": "self_test tool check failed",
+            "severity": "error",
+            "rule": "self_test-tool",
+            "path": "textual",
+            "file": "textual",
+            "line": 0,
+            "message": "/Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py textual --version timed out after 120s; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py textual --help timed out after 120s; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py textual -h timed out after 120s; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py textual timed out after 120s",
+            "blocking": true,
+            "change": "added",
+            "comparison_key": "65abb1c04bcff3fe"
+          },
+          {
+            "id": "SEL-004",
+            "title": "self_test tool check failed",
+            "severity": "error",
+            "rule": "self_test-tool",
+            "path": "which",
+            "file": "which",
+            "line": 0,
+            "message": "/Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py which --version exited 1: usage: which [-as] program ...; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py which --help exited 1: usage: which [-as] program ...; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py which -h exited 1: usage: which [-as] program ...; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py which exited 1: usage: which [-as] program ...",
+            "blocking": true,
+            "change": "added",
+            "comparison_key": "b5bdbc661b5cb5d9"
+          }
+        ],
+        "resolved": []
+      }
+    ],
+    "categories": [
+      {
+        "category": "self_test-tool",
+        "title": "self_test-tool",
+        "current": 4,
+        "previous": 0,
+        "delta": 4
+      }
+    ]
+  },
+  "duration_seconds": 603.231,
+  "extension": {
+    "platform": "macOS-26.3.2-arm64-arm-64bit-Mach-O",
+    "machine": "arm64",
+    "executable": "/Users/joaolopes/Exactus/bin/exactus_macos_arm64/exactus/exactus/packages/pmanager/class_runner.py",
+    "fixture": "/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-self_test-6jdmekjq/repo",
+    "checks": [
+      {
+        "kind": "cli",
+        "name": "exactus",
+        "status": "PASS",
+        "reason": ""
+      },
+      {
+        "kind": "stage",
+        "name": "materialization",
+        "status": "PASS",
+        "reason": ""
+      },
+      {
+        "kind": "tool",
+        "name": "acorn",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "basedpyright",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "basedpyright-langserver",
+        "status": "FAIL",
+        "reason": "/Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py basedpyright-langserver --version exited 1: Node.js v22.21.1; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py basedpyright-langserver --help exited 1: Node.js v22.21.1; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py basedpyright-langserver -h exited 1: Node.js v22.21.1; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py basedpyright-langserver exited 1: Node.js v22.21.1",
+        "source": "none"
+      },
+      {
+        "kind": "tool",
+        "name": "build",
+        "status": "PASS",
+        "reason": "",
+        "source": "bundle"
+      },
+      {
+        "kind": "tool",
+        "name": "certifi",
+        "status": "PASS",
+        "reason": "",
+        "source": "bundle"
+      },
+      {
+        "kind": "tool",
+        "name": "charset_normalizer",
+        "status": "PASS",
+        "reason": "",
+        "source": "bundle"
+      },
+      {
+        "kind": "tool",
+        "name": "chromium",
+        "status": "PASS",
+        "reason": "",
+        "source": "bundle"
+      },
+      {
+        "kind": "tool",
+        "name": "chromium-headless-shell",
+        "status": "PASS",
+        "reason": "",
+        "source": "bundle"
+      },
+      {
+        "kind": "tool",
+        "name": "coverage",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "coverage-3.13",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "coverage3",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "cssesc",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "docutils",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "eslint",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "exactus-mcp",
+        "status": "PASS",
+        "reason": "",
+        "source": "bundle"
+      },
+      {
+        "kind": "tool",
+        "name": "exactus-mcp-wakeup",
+        "status": "PASS",
+        "reason": "",
+        "source": "bundle"
+      },
+      {
+        "kind": "tool",
+        "name": "ffmpeg",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "htmlhint",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "httpx2",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "id",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "idna",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "jinja2",
+        "status": "PASS",
+        "reason": "",
+        "source": "bundle"
+      },
+      {
+        "kind": "tool",
+        "name": "js-yaml",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "jslint",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "jsonschema",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "keyring",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "markdown-it",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "markdown_it_py",
+        "status": "PASS",
+        "reason": "",
+        "source": "bundle"
+      },
+      {
+        "kind": "tool",
+        "name": "mcp",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "mutmut",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "nanoid",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "node",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "node-which",
+        "status": "FAIL",
+        "reason": "/Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py node-which --version exited 1: usage: which [-as] program ...; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py node-which --help exited 1: usage: which [-as] program ...; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py node-which -h exited 1: usage: which [-as] program ...; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py node-which exited 1: usage: which [-as] program ...",
+        "source": "none"
+      },
+      {
+        "kind": "tool",
+        "name": "nodejs_wheel",
+        "status": "PASS",
+        "reason": "",
+        "source": "bundle"
+      },
+      {
+        "kind": "tool",
+        "name": "nodejs_wheel_binaries",
+        "status": "PASS",
+        "reason": "",
+        "source": "bundle"
+      },
+      {
+        "kind": "tool",
+        "name": "nopt",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "normalizer",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "pillow",
+        "status": "PASS",
+        "reason": "",
+        "source": "bundle"
+      },
+      {
+        "kind": "tool",
+        "name": "platformdirs",
+        "status": "PASS",
+        "reason": "",
+        "source": "bundle"
+      },
+      {
+        "kind": "tool",
+        "name": "playwright",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "prettier",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "py.test",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "pygmentize",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "pygments",
+        "status": "PASS",
+        "reason": "",
+        "source": "bundle"
+      },
+      {
+        "kind": "tool",
+        "name": "pyproject-build",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "pyrefly",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "pytest",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "readme_renderer",
+        "status": "PASS",
+        "reason": "",
+        "source": "bundle"
+      },
+      {
+        "kind": "tool",
+        "name": "rich",
+        "status": "PASS",
+        "reason": "",
+        "source": "bundle"
+      },
+      {
+        "kind": "tool",
+        "name": "rst2html",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "rst2html4",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "rst2html5",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "rst2latex",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "rst2man",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "rst2odt",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "rst2pseudoxml",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "rst2s5",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "rst2xetex",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "rst2xml",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "ruff",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "semver",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "stylelint",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "textual",
+        "status": "FAIL",
+        "reason": "/Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py textual --version timed out after 120s; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py textual --help timed out after 120s; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py textual -h timed out after 120s; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py textual timed out after 120s",
+        "source": "none"
+      },
+      {
+        "kind": "tool",
+        "name": "tsc",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "tsserver",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "twine",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "typescript",
+        "status": "PASS",
+        "reason": "",
+        "source": "bundle"
+      },
+      {
+        "kind": "tool",
+        "name": "uvicorn",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "which",
+        "status": "FAIL",
+        "reason": "/Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py which --version exited 1: usage: which [-as] program ...; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py which --help exited 1: usage: which [-as] program ...; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py which -h exited 1: usage: which [-as] program ...; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py which exited 1: usage: which [-as] program ...",
+        "source": "none"
+      },
+      {
+        "kind": "tool",
+        "name": "zstd",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "tool",
+        "name": "zstd-cli",
+        "status": "PASS",
+        "reason": "",
+        "source": "bundle"
+      },
+      {
+        "kind": "binary",
+        "name": "chromium",
+        "status": "PASS",
+        "reason": "",
+        "source": "system"
+      },
+      {
+        "kind": "stage",
+        "name": "xvfb",
+        "status": "SKIP",
+        "reason": "no usable Xvfb display"
+      },
+      {
+        "kind": "pipeline",
+        "name": "unified",
+        "status": "PASS",
+        "reason": ""
+      },
+      {
+        "kind": "report",
+        "name": "report COVERAGE_TESTS",
+        "status": "PASS",
+        "reason": "",
+        "path": "/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-self_test-6jdmekjq/repo/EXACTUS_RESULTS/COVERAGE_TESTS/result.json",
+        "passed": true,
+        "exit_code": 0,
+        "findings_total": 0,
+        "duration_seconds": 6.347
+      },
+      {
+        "kind": "report",
+        "name": "report DOCS",
+        "status": "PASS",
+        "reason": "",
+        "path": "/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-self_test-6jdmekjq/repo/EXACTUS_RESULTS/DOCS/result.json",
+        "passed": true,
+        "exit_code": 0,
+        "findings_total": 0,
+        "duration_seconds": 0.491
+      },
+      {
+        "kind": "report",
+        "name": "report FRONTEND",
+        "status": "PASS",
+        "reason": "",
+        "path": "/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-self_test-6jdmekjq/repo/EXACTUS_RESULTS/FRONTEND/result.json",
+        "passed": true,
+        "exit_code": 0,
+        "findings_total": 0,
+        "duration_seconds": 4.971
+      },
+      {
+        "kind": "report",
+        "name": "report KWARGS_TYPEHINTS",
+        "status": "PASS",
+        "reason": "",
+        "path": "/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-self_test-6jdmekjq/repo/EXACTUS_RESULTS/KWARGS_TYPEHINTS/result.json",
+        "passed": true,
+        "exit_code": 0,
+        "findings_total": 0,
+        "duration_seconds": 1.755
+      },
+      {
+        "kind": "report",
+        "name": "report LINTS",
+        "status": "PASS",
+        "reason": "",
+        "path": "/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-self_test-6jdmekjq/repo/EXACTUS_RESULTS/LINTS/result.json",
+        "passed": true,
+        "exit_code": 0,
+        "findings_total": 0,
+        "duration_seconds": 4.417
+      },
+      {
+        "kind": "report",
+        "name": "report PERFORMANCE",
+        "status": "PASS",
+        "reason": "",
+        "path": "/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-self_test-6jdmekjq/repo/EXACTUS_RESULTS/PERFORMANCE/result.json",
+        "passed": true,
+        "exit_code": null,
+        "findings_total": null,
+        "duration_seconds": null
+      },
+      {
+        "kind": "report",
+        "name": "report README",
+        "status": "PASS",
+        "reason": "",
+        "path": "/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-self_test-6jdmekjq/repo/EXACTUS_RESULTS/README/result.json",
+        "passed": true,
+        "exit_code": 0,
+        "findings_total": 0,
+        "duration_seconds": 0.496
+      },
+      {
+        "kind": "report",
+        "name": "report RECORD",
+        "status": "PASS",
+        "reason": "",
+        "path": "/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-self_test-6jdmekjq/repo/EXACTUS_RESULTS/RECORD/result.json",
+        "passed": true,
+        "exit_code": 0,
+        "findings_total": 0,
+        "duration_seconds": 6.18
+      },
+      {
+        "kind": "report",
+        "name": "report VISUAL_CAUSE",
+        "status": "PASS",
+        "reason": "",
+        "path": "/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-self_test-6jdmekjq/repo/EXACTUS_RESULTS/VISUAL_CAUSE/result.json",
+        "passed": true,
+        "exit_code": 0,
+        "findings_total": null,
+        "duration_seconds": 4.563
+      },
+      {
+        "kind": "report",
+        "name": "report PIPELINES/UNIFIED",
+        "status": "PASS",
+        "reason": "",
+        "path": "/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-self_test-6jdmekjq/repo/EXACTUS_RESULTS/PIPELINES/UNIFIED/result.json",
+        "passed": null,
+        "exit_code": null,
+        "findings_total": null,
+        "duration_seconds": null
+      }
+    ]
+  },
+  "findings": [
+    {
+      "id": "SEL-001",
+      "title": "self_test tool check failed",
+      "severity": "error",
+      "rule": "self_test-tool",
+      "path": "basedpyright-langserver",
+      "file": "basedpyright-langserver",
+      "line": 0,
+      "message": "/Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py basedpyright-langserver --version exited 1: Node.js v22.21.1; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py basedpyright-langserver --help exited 1: Node.js v22.21.1; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py basedpyright-langserver -h exited 1: Node.js v22.21.1; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py basedpyright-langserver exited 1: Node.js v22.21.1",
+      "blocking": true,
+      "change": "added",
+      "comparison_key": "7ef2b3f29c78c5d0"
+    },
+    {
+      "id": "SEL-002",
+      "title": "self_test tool check failed",
+      "severity": "error",
+      "rule": "self_test-tool",
+      "path": "node-which",
+      "file": "node-which",
+      "line": 0,
+      "message": "/Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py node-which --version exited 1: usage: which [-as] program ...; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py node-which --help exited 1: usage: which [-as] program ...; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py node-which -h exited 1: usage: which [-as] program ...; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py node-which exited 1: usage: which [-as] program ...",
+      "blocking": true,
+      "change": "added",
+      "comparison_key": "e194d307881b577e"
+    },
+    {
+      "id": "SEL-003",
+      "title": "self_test tool check failed",
+      "severity": "error",
+      "rule": "self_test-tool",
+      "path": "textual",
+      "file": "textual",
+      "line": 0,
+      "message": "/Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py textual --version timed out after 120s; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py textual --help timed out after 120s; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py textual -h timed out after 120s; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py textual timed out after 120s",
+      "blocking": true,
+      "change": "added",
+      "comparison_key": "65abb1c04bcff3fe"
+    },
+    {
+      "id": "SEL-004",
+      "title": "self_test tool check failed",
+      "severity": "error",
+      "rule": "self_test-tool",
+      "path": "which",
+      "file": "which",
+      "line": 0,
+      "message": "/Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py which --version exited 1: usage: which [-as] program ...; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py which --help exited 1: usage: which [-as] program ...; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py which -h exited 1: usage: which [-as] program ...; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py which exited 1: usage: which [-as] program ...",
+      "blocking": true,
+      "change": "added",
+      "comparison_key": "b5bdbc661b5cb5d9"
+    }
+  ],
+  "fingerprint": {
+    "commit": "db22de349d3d975656646ba73c04fdd155425735",
+    "tree": "706472aa27a889ad4350534ae5c0ddf1ca877450",
+    "dirty": true,
+    "python": "3.13.9",
+    "ruff": "ruff 0.12.0",
+    "basedpyright": "basedpyright 1.40.2"
+  },
+  "generated_at": "2026-10-29T02:19:35.373802+00:00",
+  "generated_at_human": "29 October 2026, 02:19:35 UTC",
+  "local_links": {
+    "../..": "../..",
+    "../../..": "../../..",
+    "result.md": "result.md",
+    "result.json": "result.json",
+    "/Users/joaolopes/Exactus/exactus/tests/standalone/project": "../.."
+  },
+  "markdown": "# Self Test Exactus\n\n**Run time:** 29 October 2026, 02:19:35 UTC\n\n## Change since previous report\n\nPrevious run completed in **131.924s**.\n\n| Findings | Current | Previous | Delta | Added | Resolved | Unchanged |\n|---|---:|---:|---:|---:|---:|---:|\n| Overall | 4 | 0 | 4 | 4 | 0 | 0 |\n\n### Category findings\n\n| Category | Title | Current | Previous | Delta |\n| --- | --- | --- | --- | --- |\n| self_test-tool | self_test-tool | 4 | 0 | 4 |\n\n\n\n## Checks\n\n- **PASS** `exactus`\n- **PASS** `materialization`\n- **PASS** `acorn`\n- **PASS** `basedpyright`\n- **FAIL** `basedpyright-langserver` — /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py basedpyright-langserver --version exited 1: Node.js v22.21.1; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py basedpyright-langserver --help exited 1: Node.js v22.21.1; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py basedpyright-langserver -h exited 1: Node.js v22.21.1; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py basedpyright-langserver exited 1: Node.js v22.21.1\n- **PASS** `build`\n- **PASS** `certifi`\n- **PASS** `charset_normalizer`\n- **PASS** `chromium`\n- **PASS** `chromium-headless-shell`\n- **PASS** `coverage`\n- **PASS** `coverage-3.13`\n- **PASS** `coverage3`\n- **PASS** `cssesc`\n- **PASS** `docutils`\n- **PASS** `eslint`\n- **PASS** `exactus-mcp`\n- **PASS** `exactus-mcp-wakeup`\n- **PASS** `ffmpeg`\n- **PASS** `htmlhint`\n- **PASS** `httpx2`\n- **PASS** `id`\n- **PASS** `idna`\n- **PASS** `jinja2`\n- **PASS** `js-yaml`\n- **PASS** `jslint`\n- **PASS** `jsonschema`\n- **PASS** `keyring`\n- **PASS** `markdown-it`\n- **PASS** `markdown_it_py`\n- **PASS** `mcp`\n- **PASS** `mutmut`\n- **PASS** `nanoid`\n- **PASS** `node`\n- **FAIL** `node-which` — /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py node-which --version exited 1: usage: which [-as] program ...; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py node-which --help exited 1: usage: which [-as] program ...; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py node-which -h exited 1: usage: which [-as] program ...; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py node-which exited 1: usage: which [-as] program ...\n- **PASS** `nodejs_wheel`\n- **PASS** `nodejs_wheel_binaries`\n- **PASS** `nopt`\n- **PASS** `normalizer`\n- **PASS** `pillow`\n- **PASS** `platformdirs`\n- **PASS** `playwright`\n- **PASS** `prettier`\n- **PASS** `py.test`\n- **PASS** `pygmentize`\n- **PASS** `pygments`\n- **PASS** `pyproject-build`\n- **PASS** `pyrefly`\n- **PASS** `pytest`\n- **PASS** `readme_renderer`\n- **PASS** `rich`\n- **PASS** `rst2html`\n- **PASS** `rst2html4`\n- **PASS** `rst2html5`\n- **PASS** `rst2latex`\n- **PASS** `rst2man`\n- **PASS** `rst2odt`\n- **PASS** `rst2pseudoxml`\n- **PASS** `rst2s5`\n- **PASS** `rst2xetex`\n- **PASS** `rst2xml`\n- **PASS** `ruff`\n- **PASS** `semver`\n- **PASS** `stylelint`\n- **FAIL** `textual` — /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py textual --version timed out after 120s; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py textual --help timed out after 120s; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py textual -h timed out after 120s; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py textual timed out after 120s\n- **PASS** `tsc`\n- **PASS** `tsserver`\n- **PASS** `twine`\n- **PASS** `typescript`\n- **PASS** `uvicorn`\n- **FAIL** `which` — /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py which --version exited 1: usage: which [-as] program ...; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py which --help exited 1: usage: which [-as] program ...; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py which -h exited 1: usage: which [-as] program ...; /Users/joaolopes/Exactus/.venv/bin/python /Users/joaolopes/.cache/exactus-tools/embedded/c6b2dd3de7daa8f443f10ef08f8f736e21c55c468c2e106c4e39314cbafdcb05/__main__.py which exited 1: usage: which [-as] program ...\n- **PASS** `zstd`\n- **PASS** `zstd-cli`\n- **PASS** `chromium`\n- **SKIP** `xvfb` — no usable Xvfb display\n- **PASS** `unified`\n- **PASS** `report COVERAGE_TESTS`\n- **PASS** `report DOCS`\n- **PASS** `report FRONTEND`\n- **PASS** `report KWARGS_TYPEHINTS`\n- **PASS** `report LINTS`\n- **PASS** `report PERFORMANCE`\n- **PASS** `report README`\n- **PASS** `report RECORD`\n- **PASS** `report VISUAL_CAUSE`\n- **PASS** `report PIPELINES/UNIFIED`\n",
+  "passed": false,
+  "previous_duration_seconds": 131.924,
+  "project_href": "../../..",
+  "project_root": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
+  "report_bundle": {
+    "markdown": "result.md",
+    "json": "result.json",
+    "web": "result_web"
+  },
+  "resume": "81/86 checks passed — 4 failed, 1 skipped",
+  "run_at": "2026-10-29T02:19:35.373802+00:00",
+  "run_at_human": "29 October 2026, 02:19:35 UTC",
+  "schema": "project-exactus-report/v1",
+  "scope": {
+    "include": [],
+    "exclude": []
+  },
+  "sections": [
+    {
+      "level": 1,
+      "title": "Self Test Exactus"
+    },
+    {
+      "level": 2,
+      "title": "Change since previous report"
+    },
+    {
+      "level": 3,
+      "title": "Category findings"
+    },
+    {
+      "level": 2,
+      "title": "Checks"
+    }
+  ],
+  "web": {
+    "index": "index.html",
+    "css": "report.css",
+    "javascript": "report.js",
+    "data": "data.json"
+  }
+}

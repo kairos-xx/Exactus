@@ -1,0 +1,12 @@
+/**
+ * Contextual aliases of the stages component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  --perf-stage-gap: var(--catalog-layout-measure-stage-gap);
+  --perf-stage-pad: var(--catalog-layout-measure-stage-pad);
+  --perf-track-thick: var(--catalog-layout-measure-track-thick);
+  --perf-stage-grid: var(--catalog-layout-measure-stage-grid);
+  --perf-radius-track: var(--catalog-field-border-radius-track);
+  --perf-type-clock: var(--catalog-text-typography-clock);
+}

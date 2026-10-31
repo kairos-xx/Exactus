@@ -1,0 +1,33 @@
+{
+	"version": 1,
+	"actions": [
+		{
+			"id": "discover",
+			"tool": "record.crawl",
+			"arguments": {
+				"url": "http://127.0.0.1/web/index.html",
+				"max_depth": 1,
+				"environments": [
+					{
+						"width": 390,
+						"height": 900,
+						"theme": "light"
+					},
+					{
+						"width": 1440,
+						"height": 900,
+						"theme": "dark"
+					}
+				],
+				"max_states": 3
+			}
+		},
+		{
+			"id": "verify",
+			"tool": "frontend.run",
+			"arguments": {
+				"projects": "$discover.projects"
+			}
+		}
+	]
+}

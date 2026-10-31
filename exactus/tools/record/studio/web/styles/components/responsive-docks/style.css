@@ -1,0 +1,204 @@
+/**
+ * Final responsive dock adaptations.
+ *
+ * Sources: 23-responsive-docks.
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+@layer studio-base {
+  /* Scope: custom properties set by 23-responsive-docks */
+  @media (width <=600px) {
+    :root {
+      --h: var(--catalog-field-measure-xlarge-plus-small-height);
+      --flow-min-height-2: var(
+        --catalog-item-measure-xlarge-plus-small-min-height
+      );
+      --flow-card-heading-height: var(
+        --catalog-item-measure-xxlarge-plus-compact-min-height
+      );
+      --flow-panel-header-table-panel-header-min-height: var(
+        --catalog-header-measure-xlarge-plus-small-min-height
+      );
+      --docks-workspace-is-collapsed-header-width: var(
+        --catalog-header-measure-xlarge-plus-tiny-width
+      );
+      --flow-track-min-height: var(--catalog-track-measure-xxlarge-min-height);
+      --studio-ruler-ticks-clips-min-height: var(
+        --catalog-track-measure-xxlarge-min-height
+      );
+      --studio-clips-clip-min-height: var(
+        --catalog-track-measure-xlarge-plus-compact-min-height
+      );
+    }
+  }
+  /* Source: 23-responsive-docks */
+  [hidden][hidden] {
+    display: none;
+  }
+  .panel :is(button, input, select, textarea, td, .node-actions) {
+    color: var(--text);
+  }
+  .inspector-content label,
+  .data-table th {
+    color: var(--docks-inspector-content-label-color);
+    font-size: var(--docks-inspector-content-label-font-size);
+    font-weight: var(--docks-inspector-content-label-font-weight);
+    letter-spacing: var(--docks-inspector-content-label-letter-spacing);
+  }
+  @media (width > 1100px) {
+    .studio[data-workspace-mode="timeline"],
+    .studio[data-workspace-mode="graph"] {
+      grid-template-rows: var(
+        --docks-data-workspace-mode-timeline-grid-template-rows
+      );
+    }
+    .studio[data-workspace-mode="timeline"] .workbench,
+    .studio[data-workspace-mode="timeline"] .runs {
+      display: none;
+    }
+    .studio[data-workspace-mode="timeline"] .bottom {
+      grid-template-columns: var(
+        --docks-data-workspace-mode-timeline-bottom-grid-template-columns-above-width-1100px
+      );
+      height: var(
+        --docks-data-workspace-mode-timeline-bottom-height-above-width-1100px
+      );
+    }
+    .studio[data-workspace-mode="timeline"] .timeline {
+      height: var(
+        --docks-data-workspace-mode-timeline-height-above-width-1100px
+      );
+    }
+    .studio[data-workspace-mode="graph"] .bottom {
+      display: none;
+    }
+    .studio[data-workspace-mode="graph"] .workbench {
+      grid-template-columns: var(
+        --docks-data-workspace-mode-graph-workbench-grid-template-columns-above-width-1100px
+      );
+    }
+    .studio[data-workspace-mode="crawl"] .graph,
+    .studio[data-workspace-mode="profiles"] .graph {
+      opacity: var(
+        --docks-data-workspace-mode-crawl-graph-opacity-above-width-1100px
+      );
+    }
+    .studio[data-workspace-mode="debug"] .runs,
+    .studio[data-workspace-mode="compare"] .runs,
+    .studio[data-workspace-mode="inspector"] .inspector,
+    .studio[data-workspace-mode="record"] .preview,
+    .studio[data-workspace-mode="crawl"] .preview,
+    .studio[data-workspace-mode="profiles"] .preview {
+      box-shadow: var(--docks-data-workspace-mode-debug-runs-box-shadow);
+    }
+  }
+  @media (width <=600px) {
+    .mobile-panel-tabs {
+      position: sticky;
+      top: var(--docks-mobile-panel-tabs-top-max-width-600px);
+      z-index: var(--docks-mobile-panel-tabs-z-index-max-width-600px);
+      display: grid;
+      grid-template-columns: var(
+        --docks-mobile-panel-tabs-grid-template-columns-max-width-600px
+      );
+      background: var(--bg);
+      border-bottom: var(--studio-actions-dialog-border);
+    }
+    [data-panel-action="float"] {
+      display: none;
+    }
+    .workspace-surface-header {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+    .workspace-surface-actions,
+    .workspace-surface-actions button {
+      width: var(--docks-workspace-surface-actions-width-max-width-600px);
+    }
+    .workspace-surface-content {
+      padding: var(--docks-workspace-surface-content-padding-max-width-600px);
+    }
+    .profile-grid,
+    .surface-form-grid,
+    .compare-pair,
+    .recovery-columns {
+      grid-template-columns: var(
+        --docks-profile-grid-template-columns-max-width-600px
+      );
+    }
+    .mobile-panel-tabs button {
+      border: var(--docks-mobile-panel-tabs-button-border-max-width-600px);
+      border-bottom: var(
+        --docks-mobile-panel-tabs-button-border-bottom-max-width-600px
+      );
+      border-radius: var(
+        --docks-mobile-panel-tabs-button-border-radius-max-width-600px
+      );
+      background: var(
+        --docks-mobile-panel-tabs-button-background-max-width-600px
+      );
+    }
+    .mobile-panel-tabs button.active {
+      border-bottom-color: var(--accent);
+      color: var(--text);
+    }
+    .menu,
+    .workspace,
+    .graph,
+    .action-library,
+    .timeline {
+      display: none;
+    }
+    .action-library[data-open] {
+      position: fixed;
+      inset: var(--responsive-docks-action-library-open-inset);
+      z-index: var(--responsive-docks-action-library-open-z-index);
+      display: flex;
+      width: var(--responsive-docks-action-library-open-width);
+      max-width: var(--responsive-docks-action-library-open-max-width);
+      min-width: var(--responsive-docks-action-library-open-min-width);
+      height: var(--responsive-docks-action-library-open-height);
+      max-height: var(--responsive-docks-action-library-open-height);
+    }
+    .workbench {
+      width: var(--docks-workbench-width-max-width-600px);
+      max-width: var(--docks-workbench-max-width-600px);
+      min-width: var(--docks-workbench-min-width-max-width-600px);
+    }
+    .panel[data-panel-id]:not(.is-floating) {
+      width: var(--docks-data-panel-id-not-is-floating-width-max-width-600px);
+      max-width: var(--docks-data-panel-id-not-is-floating-max-width-600px);
+      min-width: var(
+        --docks-data-panel-id-not-is-floating-min-width-max-width-600px
+      );
+    }
+    .bottom {
+      display: contents;
+    }
+    .preview {
+      order: var(--docks-preview-order-max-width-600px);
+      max-height: var(--docks-preview-max-height-max-width-600px);
+    }
+    .table-panel,
+    .inspector {
+      order: var(--docks-table-panel-order-max-width-600px);
+    }
+    .timeline {
+      order: var(--docks-timeline-order-max-width-600px);
+    }
+    .runs {
+      order: var(--docks-runs-order-max-width-600px);
+    }
+    .studio[data-mobile-panel="steps"] .inspector,
+    .studio[data-mobile-panel="steps"] .runs,
+    .studio[data-mobile-panel="properties"] .table-panel,
+    .studio[data-mobile-panel="properties"] .runs,
+    .studio[data-mobile-panel="runs"] .table-panel,
+    .studio[data-mobile-panel="runs"] .inspector {
+      display: none;
+    }
+    .studio[data-mobile-panel="properties"] .inspector,
+    .studio[data-mobile-panel="runs"] .runs {
+      display: flex;
+    }
+  }
+}

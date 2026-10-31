@@ -1,0 +1,52 @@
+{
+  "contract_version": 1,
+  "persisted_fields": [
+    "source", "source_mode", "inputs", "outputs", "target", "target_scope",
+    "capabilities", "timeout_ms"
+  ],
+  "source_modes": ["expression", "body"],
+  "output_declaration_fields": [
+    "port_id", "name", "value_type", "nullable", "sensitivity"
+  ],
+  "target_scopes": ["first", "all"],
+  "capabilities": [
+    "page_dom_read", "network", "navigation", "download", "clipboard",
+    "dialog", "cross_origin_frame", "evidence_attachment"
+  ],
+  "namespace": [
+    "document", "window", "globalThis", "self", "exactus", "__EXACTUS_FLOW__"
+  ],
+  "deprecated_namespace": ["__EXACTUS_FLOW__"],
+  "runtime_members": [
+    "project", "context", "flow", "graph", "run", "action", "page", "frame",
+    "device", "inputs", "vars", "values", "selectors", "target", "targets",
+    "index", "count", "clock", "random", "evidence", "log", "warn", "error",
+    "assert"
+  ],
+  "never_persisted": [
+    "resolved_system_value_catalog", "page_and_window_objects",
+    "current_project_and_context_facts", "latest_preview"
+  ],
+  "v3_compatibility": {
+    "sandbox_true": "Compiles as an expression first and falls back to an async function body; has the __EXACTUS_FLOW__ facade; {{Name}} templates are not expanded. Migrates to the compatibility facade with a migration warning.",
+    "sandbox_false": "Evaluates through page.evaluate as an expression only; a return statement is a SyntaxError; there is no __EXACTUS_FLOW__; {{Name}} templates are not expanded. Requires explicit capability review and is never silently relabelled isolated.",
+    "frozen_by": "exactus/tests/tools/record/test_v3_execution.py::test_javascript_paths_are_frozen"
+  },
+  "commands": [
+    "javascript.catalog", "javascript.validate", "javascript.test",
+    "javascript.convert_legacy.plan", "javascript.convert_legacy.apply"
+  ],
+  "diagnostic_codes": [
+    "JAVASCRIPT_SYNTAX", "JAVASCRIPT_SOURCE_MODE",
+    "JAVASCRIPT_SYMBOL_UNAVAILABLE", "JAVASCRIPT_INPUT_MISSING",
+    "JAVASCRIPT_OUTPUT_MISSING", "JAVASCRIPT_OUTPUT_TYPE",
+    "JAVASCRIPT_SECRET_EXPOSURE", "JAVASCRIPT_CAPABILITY_REQUIRED",
+    "JAVASCRIPT_NONDETERMINISTIC", "JAVASCRIPT_TIMEOUT", "JAVASCRIPT_CANCELLED",
+    "JAVASCRIPT_SERIALIZATION", "JAVASCRIPT_RESULT_LIMIT"
+  ],
+  "limit_keys": [
+    "source_bytes", "compile_deadline_ms", "execution_timeout_ms",
+    "output_bytes", "output_depth", "output_items", "log_entries", "log_bytes",
+    "variable_mutations", "evidence_attachments", "target_count"
+  ]
+}

@@ -1,0 +1,161 @@
+/**
+ * Contextual aliases of the connections component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  /* 07-connections */
+  --connections-button-focus-visible-outline-offset: var(
+    --catalog-button-border-micro-outline-offset
+  );
+  --connections-canvas-hint-font-size: var(
+    --catalog-label-typography-small-font-size
+  );
+  --connections-canvas-hint-margin: var(
+    --catalog-label-measure-canvas-hint-margin
+  );
+  --connections-canvas-hint-max-width: var(
+    --catalog-label-measure-canvas-hint-max-width
+  );
+  --connections-composition-footer-gap: var(
+    --catalog-toolbar-measure-small-gap
+  );
+  --connections-composition-footer-padding: var(
+    --catalog-toolbar-measure-footer-padding
+  );
+  --connections-connection-form-gap: var(--catalog-control-measure-compact-gap);
+  --connections-connection-form-padding: var(
+    --catalog-control-measure-small-padding
+  );
+  --connections-connection-strip-gap: var(--catalog-control-measure-small-gap);
+  --connections-connection-strip-margin-top: var(
+    --catalog-control-measure-large-margin-top
+  );
+  --connections-empty-panel-padding: var(--catalog-panel-measure-small-padding);
+  --connections-flow-node-meta-font-size: var(
+    --catalog-label-typography-small-minus-hairline-font-size
+  );
+  --connections-flow-node-port-hover-border-color: var(
+    --catalog-item-border-node-port-border-color
+  );
+  --connections-flow-node-port-hover-box-shadow: var(
+    --catalog-item-effect-node-port-hover-focus-box-shadow
+  );
+  --connections-flow-node-port-input-left: var(
+    --catalog-field-measure-minus-compact-minus-hairline-left
+  );
+  --connections-flow-node-port-output-right: var(
+    --catalog-item-measure-minus-compact-minus-hairline-right
+  );
+  --connections-id-browser-status-data-state-disconnected-color: var(
+    --catalog-control-color-browser-state-disconnected-color
+  );
+  --connections-id-browser-status-font-size: var(
+    --catalog-control-typography-small-minus-hairline-font-size
+  );
+  --connections-id-browser-status-font-weight: var(
+    --catalog-control-typography-weight-normal-font-weight
+  );
+  --connections-id-timeline-zoom-background: var(
+    --catalog-control-color-default-background
+  );
+  --connections-id-timeline-zoom-border: var(
+    --catalog-control-border-default-border
+  );
+  --connections-id-timeline-zoom-padding: var(
+    --catalog-control-measure-default-zero-padding
+  );
+  --connections-id-timeline-zoom-width: var(
+    --catalog-control-measure-huge-plus-xlarge-width
+  );
+  --connections-input-focus-visible-outline-offset: var(
+    --catalog-field-border-micro-outline-offset
+  );
+  --connections-menu-button-background: var(
+    --catalog-button-color-menu-background
+  );
+  --connections-menu-button-border: var(--catalog-button-border-menu-border);
+  --connections-menu-button-color: var(--catalog-button-color-menu-color);
+  --connections-menu-button-padding: var(--catalog-button-measure-menu-padding);
+  --connections-node-actions-font-size: var(
+    --catalog-item-typography-small-font-size
+  );
+  --connections-node-actions-gap: var(--catalog-item-measure-compact-gap);
+  --connections-node-port-font-size: var(
+    --catalog-item-typography-small-minus-hairline-font-size
+  );
+  --connections-node-port-gap: var(--catalog-item-measure-compact-gap);
+  --connections-number-control-button-background: var(
+    --catalog-button-color-number-background
+  );
+  --connections-number-control-button-border: var(
+    --catalog-button-border-number-border
+  );
+  --connections-number-control-button-box-shadow: var(
+    --catalog-button-effect-number-box-shadow
+  );
+  --connections-number-control-button-padding: var(
+    --catalog-button-measure-number-padding
+  );
+  --connections-number-control-input-background: var(
+    --catalog-field-color-number-input-background
+  );
+  --connections-number-control-input-border: var(
+    --catalog-field-border-number-input-border
+  );
+  --connections-number-control-input-font-family: var(
+    --catalog-field-typography-number-input-font-family
+  );
+  --connections-number-control-input-min-width: var(
+    --catalog-field-measure-number-input-min-width
+  );
+  --connections-number-control-input-padding: var(
+    --catalog-field-measure-number-input-padding
+  );
+  --connections-number-control-input-width: var(
+    --catalog-field-measure-full-width
+  );
+  --connections-panel-header-color: var(--catalog-header-color-default-color);
+  --connections-panel-header-flex-shrink: var(
+    --catalog-header-measure-default-flex-shrink
+  );
+  --connections-panel-header-font-size: var(
+    --catalog-header-typography-small-font-size
+  );
+  --connections-panel-header-font-weight: var(
+    --catalog-header-typography-weight-semibold-font-weight
+  );
+  --connections-panel-header-gap: var(--catalog-header-measure-compact-gap);
+  --connections-panel-header-height: var(
+    --catalog-header-measure-default-height
+  );
+  --connections-panel-header-letter-spacing: var(
+    --catalog-header-typography-default-letter-spacing
+  );
+  --connections-panel-header-padding: var(
+    --catalog-header-measure-default-zero-small-padding
+  );
+  --connections-ruler-label-font-size: var(
+    --catalog-label-typography-small-minus-hairline-font-size
+  );
+  --connections-ruler-label-left: var(--catalog-label-measure-ruler-left);
+  --connections-ruler-label-z-index: var(--catalog-label-measure-ruler-z-index);
+  --connections-ruler-ticks-gap: var(--catalog-track-measure-ruler-ticks-gap);
+  --connections-select-focus-visible-outline-offset: var(
+    --catalog-field-border-micro-outline-offset
+  );
+  --connections-timeline-ruler-grid-template-columns: var(
+    --catalog-track-measure-massive-plus-normal-grid-template-columns
+  );
+  --connections-timeline-ruler-min-width: var(
+    --catalog-track-measure-ruler-min-width
+  );
+  --connections-timeline-ruler-top: var(--catalog-track-measure-ruler-top);
+  --connections-timeline-ruler-z-index: var(
+    --catalog-track-measure-ruler-z-index
+  );
+  --connections-timeline-toolbar-gap: var(--catalog-track-measure-small-gap);
+  /* 01-tokens */
+  --connections-button-focus-visible-outline: var(
+    --catalog-button-border-default-outline
+  );
+}

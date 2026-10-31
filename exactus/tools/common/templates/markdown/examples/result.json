@@ -1,0 +1,136 @@
+{
+	"tool": {
+		"name": "lints",
+		"display_name": "Lints",
+		"version": "0.5.0"
+	},
+	"run": {
+		"id": "run-001",
+		"pipeline_id": null,
+		"status": "FAIL",
+		"exit_code": 1,
+		"started_at": "2026-10-02T14:00:00+00:00",
+		"finished_at": "2026-10-02T14:00:12+00:00",
+		"duration_seconds": 12,
+		"duration_human": "12.0 s"
+	},
+	"summary": {
+		"targets_eligible": 10,
+		"targets_analyzed": 10,
+		"findings_total": 3,
+		"severity": {
+			"error": 2,
+			"warning": 1
+		}
+	},
+	"gate": {
+		"status": "FAIL",
+		"reason": "2 blocking findings"
+	},
+	"scope": {
+		"include": [
+			"exactus/**/*.py"
+		],
+		"exclude": [
+			"build/**",
+			"**/__pycache__/**"
+		],
+		"skipped": [
+			{
+				"target": "exactus/packages/x.js",
+				"reason": "excluded by config"
+			}
+		]
+	},
+	"invocation": {
+		"command": "./check -t lints --root .",
+		"cwd": "/work/project",
+		"arguments": [
+			"-t",
+			"lints",
+			"--root",
+			"."
+		]
+	},
+	"environment": {
+		"os": "Darwin 25.3.0",
+		"python": "3.13.1",
+		"node": "v22.4.0",
+		"cpu_count": 8,
+		"variables": [
+			{
+				"name": "EXACTUS_ORCHESTRATED",
+				"value": "1"
+			},
+			{
+				"name": "EXACTUS_TOKEN",
+				"value": "[redacted]"
+			}
+		]
+	},
+	"findings": [
+		{
+			"id": "F-003",
+			"title": "Mutable default argument",
+			"severity": "error",
+			"rule": "B006",
+			"path": "pkg/c.py",
+			"line": 7,
+			"message": "Do not use a mutable default argument",
+			"blocking": true
+		},
+		{
+			"id": "F-002",
+			"title": "Unused import",
+			"severity": "warning",
+			"rule": "F401",
+			"path": "pkg/b.py",
+			"line": 1,
+			"message": "`os` imported but unused",
+			"blocking": false
+		},
+		{
+			"id": "F-001",
+			"title": "Bare except",
+			"severity": "error",
+			"rule": "E722",
+			"path": "pkg/a.py",
+			"line": 3,
+			"message": "Do not use bare `except`",
+			"blocking": true,
+			"excerpt": {
+				"language": "python",
+				"line": 3,
+				"context": 1,
+				"start": 2,
+				"end": 4,
+				"clipped": false,
+				"lines": [
+					{
+						"n": 2,
+						"text": "try:",
+						"target": false
+					},
+					{
+						"n": 3,
+						"text": "except:",
+						"target": true
+					},
+					{
+						"n": 4,
+						"text": "    pass",
+						"target": false
+					}
+				]
+			}
+		}
+	],
+	"artifacts": [
+		{
+			"name": "stderr.log",
+			"path": "ARTIFACTS/stderr.log",
+			"bytes": 120
+		}
+	],
+	"extension": {}
+}

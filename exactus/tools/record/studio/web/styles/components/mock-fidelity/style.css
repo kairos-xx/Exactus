@@ -1,0 +1,401 @@
+/**
+ * Rules of the mock fidelity component.
+ *
+ * Sources: 25-mock-fidelity.
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+@layer studio-base {
+  /* Scope: custom properties set by 25-mock-fidelity */
+  @media (width > 600px) {
+    :root {
+      --bottom-dock-height: var(
+        --catalog-surface-measure-massive-plus-massive-min-height
+      );
+      --h: var(--catalog-field-measure-large-plus-tiny-height);
+      --studio-select-padding: var(
+        --catalog-field-measure-large-plus-tiny-min-height
+      );
+      --shell-body-font: var(--catalog-surface-typography-body-small-font);
+      --panels-center-grid-template-rows: var(
+        --catalog-control-measure-center-minmax-page-plus-xxlarge-grid-template-rows
+      );
+    }
+  }
+  /* Source: 25-mock-fidelity */
+  /* Mock contract: dense charcoal editor with one clear workspace hierarchy. */
+  @media (width > 600px) {
+    body {
+      letter-spacing: var(
+        --mock-fidelity-body-letter-spacing-above-width-600px
+      );
+      background: var(--bg);
+    }
+    footer {
+      padding-inline: var(
+        --mock-fidelity-footer-padding-inline-above-width-600px
+      );
+      background: var(--bg);
+      color: var(--mock-fidelity-footer-color-above-width-600px);
+      font-size: var(--mock-fidelity-footer-font-size-above-width-600px);
+    }
+    .topbar {
+      gap: var(--mock-fidelity-topbar-gap-above-width-600px);
+      min-width: var(--mock-fidelity-topbar-min-width-above-width-600px);
+      padding: var(--mock-fidelity-topbar-padding-above-width-600px);
+      flex-wrap: nowrap;
+      background: var(--mock-fidelity-topbar-background-above-width-600px);
+      border-bottom: var(
+        --mock-fidelity-topbar-border-bottom-above-width-600px
+      );
+      box-shadow: var(--mock-fidelity-topbar-box-shadow-above-width-600px);
+    }
+    .brand {
+      height: var(--mock-fidelity-brand-height-above-width-600px);
+      padding-inline: var(
+        --mock-fidelity-brand-padding-inline-above-width-600px
+      );
+      border-right: var(--studio-actions-dialog-border);
+    }
+    .section-nav {
+      display: flex;
+      flex: var(--mock-fidelity-section-nav-flex-above-width-600px);
+      align-self: stretch;
+      min-width: var(--mock-fidelity-section-nav-min-width-above-width-600px);
+      align-items: stretch;
+      overflow: auto hidden;
+      scrollbar-width: var(
+        --mock-fidelity-section-nav-scrollbar-width-above-width-600px
+      );
+    }
+    .section-view-select {
+      position: absolute;
+      width: var(--mock-fidelity-section-view-select-width-above-width-600px);
+      height: var(--mock-fidelity-section-view-select-height-above-width-600px);
+      overflow: hidden;
+      clip-path: var(
+        --mock-fidelity-section-view-select-clip-path-above-width-600px
+      );
+    }
+    .tree,
+    .action-library-body,
+    .inspector-content,
+    .table-content,
+    .runs-content {
+      background: var(--panel-content-surface);
+    }
+    .action-grid {
+      gap: var(--mock-fidelity-action-grid-gap-above-width-600px);
+    }
+    .flow-node {
+      border-color: var(--data-tables-clip-network-border-color);
+      background: var(--panel-content-surface);
+      box-shadow: var(--mock-fidelity-flow-node-box-shadow-above-width-600px);
+    }
+    .timeline-toolbar {
+      gap: var(--mock-fidelity-timeline-toolbar-gap-above-width-600px);
+    }
+    .track,
+    .timeline-ruler {
+      border-bottom-color: var(--line);
+    }
+    .clip {
+      border-color: var(--mock-fidelity-clip-border-color-above-width-600px);
+      background: var(--mock-fidelity-clip-background-above-width-600px);
+      color: var(--mock-fidelity-clip-color-above-width-600px);
+    }
+    .brand h1 {
+      display: flex;
+      align-items: center;
+      gap: var(--mock-fidelity-brand-h1-gap-above-width-600px);
+      margin: var(--mock-fidelity-brand-h1-margin-above-width-600px);
+      color: var(--text-strong);
+      font-size: var(--mock-fidelity-brand-h1-font-size-above-width-600px);
+      font-weight: var(--mock-fidelity-brand-h1-font-weight-above-width-600px);
+    }
+    .tree-item,
+    .action-grid button,
+    .run-item {
+      border-color: var(
+        --mock-fidelity-tree-item-border-color-above-width-600px
+      );
+      border-bottom-color: var(--line);
+      border-radius: var(
+        --mock-fidelity-tree-item-border-radius-above-width-600px
+      );
+      background: var(--mock-fidelity-tree-item-background-above-width-600px);
+    }
+    .action-grid button {
+      border-radius: var(
+        --mock-fidelity-action-grid-button-border-radius-above-width-600px
+      );
+      background: var(
+        --mock-fidelity-action-grid-button-background-above-width-600px
+      );
+    }
+    .action-library-body > p,
+    .empty-panel {
+      color: var(--text-subtle);
+      font-size: var(
+        --mock-fidelity-action-library-body-p-font-size-above-width-600px
+      );
+    }
+    .panel :is(input, select, textarea),
+    .number-control {
+      border-color: var(--data-tables-clip-network-border-color);
+      background: var(
+        --mock-fidelity-panel-is-input-background-above-width-600px
+      );
+    }
+    .inspector-content label,
+    .data-table th {
+      color: var(
+        --mock-fidelity-inspector-content-label-color-above-width-600px
+      );
+      font-size: var(
+        --mock-fidelity-inspector-content-label-font-size-above-width-600px
+      );
+      font-weight: var(
+        --mock-fidelity-inspector-content-label-font-weight-above-width-600px
+      );
+      letter-spacing: var(
+        --mock-fidelity-inspector-content-label-letter-spacing-above-width-600px
+      );
+      text-transform: var(
+        --mock-fidelity-inspector-content-label-text-transform-above-width-600px
+      );
+    }
+    .data-table td {
+      color: var(--text);
+      font-size: var(--mock-fidelity-data-table-td-font-size-above-width-600px);
+    }
+    .timeline-toolbar :is(button, select) {
+      border-color: var(--data-tables-clip-network-border-color);
+      background: var(
+        --mock-fidelity-timeline-toolbar-is-button-background-above-width-600px
+      );
+      font-size: var(
+        --mock-fidelity-timeline-toolbar-is-button-font-size-above-width-600px
+      );
+    }
+    .brand h1 span {
+      color: var(--mock-fidelity-brand-h1-span-color-above-width-600px);
+      font-weight: var(
+        --mock-fidelity-brand-h1-span-font-weight-above-width-600px
+      );
+    }
+    .brand h1 i {
+      color: var(--text-subtle);
+      font-style: var(--mock-fidelity-brand-h1-i-font-style-above-width-600px);
+      font-weight: var(
+        --mock-fidelity-brand-h1-i-font-weight-above-width-600px
+      );
+    }
+    .brand > .studio-icon {
+      width: var(--mock-fidelity-brand-icon-width-above-width-600px);
+      height: var(--mock-fidelity-brand-icon-height-above-width-600px);
+      color: var(--accent);
+    }
+    .panel-title .studio-icon,
+    .panel-tools {
+      color: var(--text-subtle);
+    }
+    .workspace > .tree {
+      flex: var(--mock-fidelity-workspace-tree-flex-above-width-600px);
+      padding-bottom: var(
+        --mock-fidelity-workspace-tree-padding-bottom-above-width-600px
+      );
+    }
+    .graph-canvas,
+    .timeline .timeline-content,
+    .target-stage-placeholder {
+      background-color: var(--dock-canvas);
+    }
+    .flow-node.active {
+      border-color: var(--accent);
+      box-shadow: var(
+        --mock-fidelity-flow-node-active-box-shadow-above-width-600px
+      );
+    }
+    .clip.selected {
+      border-color: var(
+        --mock-fidelity-clip-selected-border-color-above-width-600px
+      );
+      background: var(
+        --mock-fidelity-clip-selected-background-above-width-600px
+      );
+    }
+    .section-nav > button[data-workspace-view] {
+      flex: var(
+        --mock-fidelity-section-nav-button-data-workspace-view-flex-above-width-600px
+      );
+      height: var(
+        --mock-fidelity-section-nav-button-data-workspace-view-height-above-width-600px
+      );
+      min-height: var(
+        --mock-fidelity-section-nav-button-data-workspace-view-min-height-above-width-600px
+      );
+      padding-inline: var(
+        --mock-fidelity-section-nav-button-data-workspace-view-padding-inline-above-width-600px
+      );
+      border: var(
+        --mock-fidelity-section-nav-button-data-workspace-view-border-above-width-600px
+      );
+      border-bottom: var(
+        --mock-fidelity-section-nav-button-data-workspace-view-border-bottom-above-width-600px
+      );
+      border-radius: var(
+        --mock-fidelity-section-nav-button-data-workspace-view-border-radius-above-width-600px
+      );
+      background: var(
+        --mock-fidelity-section-nav-button-data-workspace-view-background-above-width-600px
+      );
+      color: var(--muted);
+      font-size: var(
+        --mock-fidelity-section-nav-button-data-workspace-view-font-size-above-width-600px
+      );
+      font-weight: var(
+        --mock-fidelity-section-nav-button-data-workspace-view-font-weight-above-width-600px
+      );
+    }
+    .panel[data-panel-id] > header {
+      padding: var(
+        --mock-fidelity-panel-data-panel-id-header-padding-above-width-600px
+      );
+      border-bottom-color: var(
+        --mock-fidelity-panel-data-panel-id-header-border-bottom-color-above-width-600px
+      );
+      background: var(--panel-header-surface);
+    }
+    .tree-item.active,
+    .selected[data-step] {
+      background: var(
+        --mock-fidelity-tree-item-active-background-above-width-600px
+      );
+      box-shadow: var(--mock-fidelity-tree-item-active-box-shadow);
+    }
+    .data-table tbody tr:hover td {
+      background: var(
+        --mock-fidelity-data-table-tbody-tr-hover-td-background-above-width-600px
+      );
+    }
+    .panel[data-panel-id]:not(.is-floating) {
+      border-color: var(
+        --mock-fidelity-data-panel-id-not-is-floating-border-color-above-width-600px
+      );
+    }
+    .studio[data-workspace-mode="edit"] .graph,
+    .studio[data-workspace-mode="edit"] .runs {
+      display: none;
+    }
+    .studio[data-workspace-mode="edit"] .bottom {
+      display: block;
+    }
+    .studio[data-workspace-mode="edit"] .timeline {
+      width: var(
+        --mock-fidelity-data-workspace-mode-edit-timeline-width-above-width-600px
+      );
+      height: var(
+        --mock-fidelity-data-workspace-mode-edit-timeline-height-above-width-600px
+      );
+    }
+    .section-nav > button[data-workspace-view].active {
+      border-bottom-color: var(--accent);
+      background: var(
+        --mock-fidelity-nav-button-data-workspace-view-active-background-above-width-600px
+      );
+      color: var(--text-strong);
+      font-weight: var(
+        --mock-fidelity-nav-button-data-workspace-view-active-font-weight-above-width-600px
+      );
+    }
+    .panel[data-panel-id]:focus-within > header {
+      border-bottom-color: var(
+        --mock-fidelity-data-panel-id-focus-within-header-border-bottom-color-above-width-600px
+      );
+      background: var(--panel-header-active-surface);
+    }
+  }
+  @media (width <= 600px) {
+    .topbar {
+      height: var(--flow-card-heading-height);
+      min-height: var(--flow-card-heading-height);
+      gap: var(--mock-fidelity-topbar-gap-max-width-600px);
+      padding: var(--mock-fidelity-topbar-padding-max-width-600px);
+      flex-wrap: nowrap;
+      overflow: hidden;
+      background: var(--mock-fidelity-topbar-background-max-width-600px);
+    }
+    .brand {
+      flex: var(--mock-fidelity-brand-flex-max-width-600px);
+      height: var(--mock-fidelity-brand-height-max-width-600px);
+      padding-inline: var(--mock-fidelity-brand-padding-inline-max-width-600px);
+      border-right: var(--studio-actions-dialog-border);
+    }
+    .section-nav {
+      display: flex;
+      flex: var(--mock-fidelity-section-nav-flex-max-width-600px);
+      align-self: stretch;
+      min-width: var(--mock-fidelity-section-nav-min-width-max-width-600px);
+      overflow: auto hidden;
+      scrollbar-width: var(
+        --mock-fidelity-section-nav-scrollbar-width-max-width-600px
+      );
+    }
+    .section-view-select {
+      position: absolute;
+      width: var(--mock-fidelity-section-view-select-width-max-width-600px);
+      height: var(--mock-fidelity-section-view-select-height-max-width-600px);
+      overflow: hidden;
+      clip-path: var(
+        --mock-fidelity-section-view-select-clip-path-max-width-600px
+      );
+    }
+    .section-nav::-webkit-scrollbar {
+      display: none;
+    }
+    .brand h1 span,
+    .brand h1 i {
+      display: none;
+    }
+    .section-nav > button[data-workspace-view] {
+      flex: var(
+        --mock-fidelity-section-nav-button-data-workspace-view-flex-max-width-600px
+      );
+      height: var(
+        --mock-fidelity-section-nav-button-data-workspace-view-height-max-width-600px
+      );
+      min-height: var(
+        --mock-fidelity-section-nav-button-data-workspace-view-min-height-max-width-600px
+      );
+      padding-inline: var(
+        --mock-fidelity-section-nav-button-data-workspace-view-padding-inline-max-width-600px
+      );
+      border: var(
+        --mock-fidelity-section-nav-button-data-workspace-view-border-max-width-600px
+      );
+      border-bottom: var(
+        --mock-fidelity-section-nav-button-data-workspace-view-border-bottom-max-width-600px
+      );
+      border-radius: var(
+        --mock-fidelity-section-nav-button-data-workspace-view-border-radius-max-width-600px
+      );
+      background: var(
+        --mock-fidelity-section-nav-button-data-workspace-view-background-max-width-600px
+      );
+      color: var(--muted);
+      font-size: var(
+        --mock-fidelity-section-nav-button-data-workspace-view-font-size-max-width-600px
+      );
+      white-space: var(
+        --mock-fidelity-section-nav-button-data-workspace-view-white-space-max-width-600px
+      );
+    }
+    .section-nav > button[data-workspace-view].active {
+      border-bottom-color: var(--accent);
+      background: var(
+        --mock-fidelity-nav-button-data-workspace-view-active-background-max-width-600px
+      );
+      color: var(--text-strong);
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "coverage_sha256": "a98b82f3c28093d273be6803722fcaff3881293644b355e4d8cb74c93a526de9",
+  "critical_minimum": 80.0,
+  "critical_patterns": [],
+  "percent": 100.0,
+  "status": "PASS",
+  "tests_collected": 2,
+  "tests_executed": 2
+}

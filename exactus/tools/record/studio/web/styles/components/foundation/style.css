@@ -1,0 +1,69 @@
+/**
+ * Element-level control defaults and icon masks (layered).
+ *
+ * Sources: 28-foundation.
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+@layer studio-base {
+  /* Source: 28-foundation */
+  /* Value-preserving design tokens for the compact editor. */
+  /* Foundation controls. Element-level defaults at element specificity, so every
+   component rule keeps priority and only unstyled controls pick these up. */
+  :where(.studio, dialog) button {
+    border: var(--foundation-where-border);
+    border-radius: var(--foundation-where-border-radius);
+    background: var(--shell-button-background);
+    color: var(--text);
+    font: inherit;
+    font-size: var(--foundation-where-font-size);
+    font-weight: var(--foundation-where-font-weight);
+    line-height: var(--foundation-where-line-height);
+    transition: var(--foundation-where-transition);
+  }
+  :where(.studio, dialog) button:where(:hover) {
+    color: var(--text-strong);
+  }
+  :where(.studio, dialog) button:where(:disabled) {
+    opacity: var(--foundation-where-opacity);
+    cursor: var(--foundation-where-cursor);
+  }
+  :where(.studio, dialog)
+    :is(button, input, select, textarea, summary, a):where(:focus-visible) {
+    outline: var(--foundation-where-outline);
+    outline-offset: var(--foundation-where-outline-offset);
+  }
+  :where(.studio, dialog) :is(input, select, textarea) {
+    border: var(--foundation-where-border);
+    border-radius: var(--foundation-where-border-radius);
+    background-color: var(--foundation-where-background-color);
+    color: var(--text-strong);
+    font: inherit;
+    font-size: var(--foundation-where-font-size);
+    transition: var(
+      --foundation-where-also-dialog-is-input-also-select-also-textarea-transition
+    );
+  }
+  :where(.studio, dialog) :is(input, select, textarea):where(:hover) {
+    border-color: var(--foundation-where-border-color);
+  }
+  :where(.studio, dialog) :is(input, select, textarea):where(:focus) {
+    border-color: var(--brand-edge);
+    box-shadow: var(--foundation-where-box-shadow);
+  }
+  :where(.studio, dialog) :is(input, textarea)::placeholder {
+    color: var(--text-subtle);
+  }
+  /* A select keeps the browser's own arrow: a select cannot hold an SVG element,
+ * and icons here are only ever real inline SVG. */
+  :where(.studio, dialog) select {
+    cursor: var(--foundation-where-also-dialog-select-cursor);
+  }
+  /* Disclosure markers are drawn from the owned icon set, not the browser. */
+  :where(.studio, dialog) summary {
+    list-style: var(--foundation-where-list-style);
+  }
+  :where(.studio, dialog) summary::-webkit-details-marker {
+    display: none;
+  }
+  /* Icon mappings for the glyphs added with the docking and timeline refresh. */
+}

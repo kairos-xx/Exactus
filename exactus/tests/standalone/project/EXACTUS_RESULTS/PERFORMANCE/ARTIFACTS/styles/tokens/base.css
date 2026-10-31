@@ -1,0 +1,289 @@
+/** BASE — exact derived values.
+ * Built from PRIMARY and DYNAMIC only. Lengths are the dimension unit times a step times the density.
+ */
+:root {
+  --base-perf-color-canvas: var(--dynamic-perf-canvas);
+  --base-perf-color-panel: var(--dynamic-perf-panel);
+  --base-perf-color-raised: var(--dynamic-perf-raised);
+  --base-perf-color-edge: var(--dynamic-perf-edge);
+  --base-perf-color-ink: var(--dynamic-perf-ink);
+  --base-perf-color-faint: var(--dynamic-perf-faint);
+  --base-perf-color-signal: var(--dynamic-perf-signal);
+  --base-perf-color-mint: var(--dynamic-perf-mint);
+  --base-perf-color-amber: var(--dynamic-perf-amber);
+  --base-perf-color-ember: var(--dynamic-perf-ember);
+  --base-perf-color-clear: transparent;
+  --base-perf-color-topbar-mist: color-mix(
+    in srgb,
+    var(--dynamic-perf-canvas) 88%,
+    transparent
+  );
+  --base-perf-color-edge-faint: color-mix(
+    in srgb,
+    var(--dynamic-perf-edge) 55%,
+    transparent
+  );
+  --base-perf-color-tooltip-fill: color-mix(
+    in srgb,
+    var(--dynamic-perf-panel) 96%,
+    transparent
+  );
+  --base-perf-color-shell-fill: color-mix(
+    in srgb,
+    var(--dynamic-perf-raised) 62%,
+    transparent
+  );
+  --base-perf-color-select-tint: color-mix(
+    in srgb,
+    var(--dynamic-perf-signal) 8%,
+    transparent
+  );
+  --base-perf-color-cursor-tint: color-mix(
+    in srgb,
+    var(--dynamic-perf-signal) 10%,
+    transparent
+  );
+  --base-perf-color-halo-tint: color-mix(
+    in srgb,
+    var(--dynamic-perf-signal) 55%,
+    transparent
+  );
+  --base-perf-color-ghost-tint: color-mix(
+    in srgb,
+    var(--dynamic-perf-signal) 4%,
+    transparent
+  );
+  /* BASE: derived measures. */
+  /* BASE: shared spacing and corner scale; catalog specs compose from it. */
+  --base-perf-space-none: 0;
+  --base-perf-space-hairline: calc(
+    var(--primary-dimension-unit) * 0.125 * var(--primary-density-unit)
+  );
+  --base-perf-space-fine: calc(
+    var(--primary-dimension-unit) * 0.25 * var(--primary-density-unit)
+  );
+  --base-perf-space-snug: calc(
+    var(--primary-dimension-unit) * 0.375 * var(--primary-density-unit)
+  );
+  --base-perf-space-close: calc(
+    var(--primary-dimension-unit) * 0.5 * var(--primary-density-unit)
+  );
+  --base-perf-space-cozy: calc(
+    var(--primary-dimension-unit) * 0.625 * var(--primary-density-unit)
+  );
+  --base-perf-space-even: calc(
+    var(--primary-dimension-unit) * 0.75 * var(--primary-density-unit)
+  );
+  --base-perf-space-roomy: calc(
+    var(--primary-dimension-unit) * 0.875 * var(--primary-density-unit)
+  );
+  --base-perf-space-ample: calc(
+    var(--primary-dimension-unit) * 1 * var(--primary-density-unit)
+  );
+  --base-perf-space-broad: calc(
+    var(--primary-dimension-unit) * 1.125 * var(--primary-density-unit)
+  );
+  --base-perf-space-wide: calc(
+    var(--primary-dimension-unit) * 1.25 * var(--primary-density-unit)
+  );
+  --base-perf-space-vast: calc(
+    var(--primary-dimension-unit) * 1.5 * var(--primary-density-unit)
+  );
+  --base-perf-space-grand: calc(
+    var(--primary-dimension-unit) * 1.75 * var(--primary-density-unit)
+  );
+  --base-perf-measure-flow: 100%;
+  --base-perf-measure-auto: auto;
+  --base-perf-measure-page-min: calc(
+    var(--primary-dimension-unit) * 20 * var(--primary-density-unit)
+  );
+  --base-perf-measure-flow-share: 55%;
+  --base-perf-measure-topbar-height: calc(
+    var(--primary-dimension-unit) * 5.5 * var(--primary-density-unit)
+  );
+  --base-perf-measure-main-width: calc(
+    var(--primary-dimension-unit) * 112.5 * var(--primary-density-unit)
+  );
+  --base-perf-measure-main-padding: calc(
+      var(--primary-dimension-unit) * 1.375 * var(--primary-density-unit)
+    )
+    calc(var(--primary-dimension-unit) * 1.75 * var(--primary-density-unit))
+    calc(var(--primary-dimension-unit) * 3.125 * var(--primary-density-unit));
+  --base-perf-measure-search-height: calc(
+    var(--primary-dimension-unit) * 2.5 * var(--primary-density-unit)
+  );
+  --base-perf-measure-search-min: calc(
+    var(--primary-dimension-unit) * 19.375 * var(--primary-density-unit)
+  );
+  --base-perf-measure-sidebar-offset: calc(
+    var(--primary-dimension-unit) * 6.375 * var(--primary-density-unit)
+  );
+  --base-perf-measure-marker-height: calc(
+    var(--primary-dimension-unit) * 2 * var(--primary-density-unit)
+  );
+  --base-perf-measure-segment-height: calc(
+    var(--primary-dimension-unit) * 1.9375 * var(--primary-density-unit)
+  );
+  --base-perf-measure-event-height: calc(
+    var(--primary-dimension-unit) * 38.75 * var(--primary-density-unit)
+  );
+  --base-perf-measure-tip-width: calc(
+    var(--primary-dimension-unit) * 27.5 * var(--primary-density-unit)
+  );
+  --base-perf-measure-drill-min: calc(
+    var(--primary-dimension-unit) * 2.125 * var(--primary-density-unit)
+  );
+  --base-perf-measure-chart-height: calc(
+    var(--primary-dimension-unit) * 26.875 * var(--primary-density-unit)
+  );
+  --base-perf-measure-share-height: calc(
+    var(--primary-dimension-unit) * 13.75 * var(--primary-density-unit)
+  );
+  --base-perf-measure-graph-height: calc(
+    var(--primary-dimension-unit) * 35 * var(--primary-density-unit)
+  );
+  --base-perf-measure-overview-height: calc(
+    var(--primary-dimension-unit) * 3.5 * var(--primary-density-unit)
+  );
+  --base-perf-measure-resource-height: calc(
+    var(--primary-dimension-unit) * 7.5 * var(--primary-density-unit)
+  );
+  --base-perf-measure-zoom-min: calc(
+    var(--primary-dimension-unit) * 7.5 * var(--primary-density-unit)
+  );
+  --base-perf-measure-cursor-anchor: calc(
+    var(--primary-dimension-unit) * 11.25 * var(--primary-density-unit)
+  );
+  --base-perf-measure-bubble-max: min(
+    calc(var(--primary-dimension-unit) * 32.5 * var(--primary-density-unit)),
+    80%
+  );
+  --base-perf-measure-tip-layer: 20;
+  --base-perf-measure-topbar-layer: 10;
+  --base-perf-measure-bubble-layer: 4;
+  --base-perf-measure-dim: 35%;
+  --base-perf-measure-kpi-grid: repeat(auto-fit, minmax(10rem, 1fr));
+  --base-perf-measure-kpi-grid-wide: repeat(3, 1fr);
+  --base-perf-measure-kpi-grid-narrow: 1fr 1fr;
+  --base-perf-measure-layout-grid: calc(
+      var(--primary-dimension-unit) * 18.125 * var(--primary-density-unit)
+    )
+    minmax(0, 1fr);
+  --base-perf-measure-layout-grid-compact: 1fr;
+  --base-perf-measure-toollist-grid: repeat(3, 1fr);
+  --base-perf-measure-card-grid: calc(
+      var(--primary-dimension-unit) * 0.25 * var(--primary-density-unit)
+    )
+    1fr auto;
+  --base-perf-measure-split-grid: 1fr 1fr;
+  --base-perf-measure-rank-grid: calc(
+      var(--primary-dimension-unit) * 1.5 * var(--primary-density-unit)
+    )
+    minmax(0, 1fr) auto;
+  --base-perf-measure-stage-grid: calc(
+      var(--primary-dimension-unit) * 5.75 * var(--primary-density-unit)
+    )
+    calc(var(--primary-dimension-unit) * 8.75 * var(--primary-density-unit))
+    minmax(0, 1fr);
+  --base-perf-measure-stage-grid-compact: calc(
+      var(--primary-dimension-unit) * 4.375 * var(--primary-density-unit)
+    )
+    calc(var(--primary-dimension-unit) * 5 * var(--primary-density-unit)) 1fr;
+  --base-perf-measure-event-grid: calc(
+      var(--primary-dimension-unit) * 5.875 * var(--primary-density-unit)
+    )
+    calc(var(--primary-dimension-unit) * 4.625 * var(--primary-density-unit))
+    minmax(0, 1fr);
+  --base-perf-measure-event-grid-compact: calc(
+      var(--primary-dimension-unit) * 4.5 * var(--primary-density-unit)
+    )
+    calc(var(--primary-dimension-unit) * 3.625 * var(--primary-density-unit))
+    1fr;
+  --base-perf-measure-metric-grid: repeat(4, minmax(0, 1fr));
+  --base-perf-measure-inspector-grid: calc(
+      var(--primary-dimension-unit) * 7.5 * var(--primary-density-unit)
+    )
+    calc(var(--primary-dimension-unit) * 7.5 * var(--primary-density-unit))
+    calc(var(--primary-dimension-unit) * 7.5 * var(--primary-density-unit))
+    minmax(0, 1fr);
+  /* BASE: derived typography. */
+  --base-perf-typography-sans: var(--primary-perf-sans);
+  --base-perf-typography-mono: var(--primary-perf-mono);
+  --base-perf-typography-size-hero: calc(var(--primary-dimension-unit) * 1.375);
+  --base-perf-typography-size-heading: calc(
+    var(--primary-dimension-unit) * 1.3125
+  );
+  --base-perf-typography-size-panel: calc(
+    var(--primary-dimension-unit) * 1.0625
+  );
+  --base-perf-typography-size-sub: calc(var(--primary-dimension-unit) * 0.9375);
+  --base-perf-typography-size-stat: calc(
+    var(--primary-dimension-unit) * 1.5625
+  );
+  --base-perf-typography-size-body: calc(var(--primary-dimension-unit) * 0.75);
+  --base-perf-typography-size-note: calc(
+    var(--primary-dimension-unit) * 0.6875
+  );
+  --base-perf-typography-size-compact: calc(
+    var(--primary-dimension-unit) * 0.625
+  );
+  --base-perf-typography-size-micro: calc(
+    var(--primary-dimension-unit) * 0.5625
+  );
+  --base-perf-typography-track-wide: 0.18em;
+  --base-perf-typography-track-tight: -0.03em;
+  --base-perf-typography-track-snug: -0.04em;
+  --base-perf-typography-track-firm: -0.025em;
+  --base-perf-typography-track-label: 0.08em;
+  --base-perf-typography-weight-bold: calc(
+    8 * var(--primary-perf-font-weight-unit)
+  );
+  --base-perf-typography-crumb-glyph: "›";
+  --base-perf-typography-overflow: ellipsis;
+  --base-perf-typography-align-start: left;
+  --base-perf-typography-align-center: center;
+  --base-perf-typography-case-title: capitalize;
+  --base-perf-typography-case-upper: uppercase;
+  --base-perf-typography-wrap-none: nowrap;
+  --base-perf-typography-wrap-pre: pre-wrap;
+  --base-perf-typography-wrap-line: pre-line;
+  --base-perf-typography-wrap-any: anywhere;
+  --base-perf-typography-metric: 700
+    calc(var(--primary-dimension-unit) * 0.6875) var(--primary-perf-mono);
+  --base-perf-typography-badge: 700 calc(var(--primary-dimension-unit) * 0.625)
+    var(--primary-perf-mono);
+  --base-perf-typography-clock: 700 calc(var(--primary-dimension-unit) * 0.75)
+    var(--primary-perf-mono);
+  --base-perf-typography-score: 650 calc(var(--primary-dimension-unit) * 0.875)
+    var(--primary-perf-mono);
+  --base-perf-typography-readout: 600
+    calc(var(--primary-dimension-unit) * 0.6875) var(--primary-perf-mono);
+  --base-perf-typography-zoom: 600 calc(var(--primary-dimension-unit) * 0.625)
+    var(--primary-perf-mono);
+  --base-perf-typography-tip: calc(var(--primary-dimension-unit) * 0.625)
+    var(--primary-perf-mono);
+  /* BASE: derived borders, effects, motion, cursors. */
+  --base-perf-border-panel-edge: 1px solid var(--dynamic-perf-edge);
+  --base-perf-border-card-edge: 1px solid transparent;
+  --base-perf-border-status-edge: 1px solid var(--dynamic-perf-ember);
+  --base-perf-border-row-rule: 1px solid var(--dynamic-perf-edge);
+  --base-perf-border-row-faint: 1px solid
+    color-mix(in srgb, var(--dynamic-perf-edge) 55%, transparent);
+  --base-perf-border-select-ring: 1px solid var(--dynamic-perf-signal);
+  --base-perf-border-scrub-ring: 2px solid
+    color-mix(in srgb, var(--dynamic-perf-signal) 55%, transparent);
+  --base-perf-border-cursor-edge: 2px solid transparent;
+  --base-perf-border-no-edge: 0;
+  --base-perf-border-radius-round: 50%;
+  --base-perf-effect-card-shadow: 0 18px 60px var(--dynamic-perf-shade);
+  --base-perf-effect-chip-shadow: 0 1px 5px var(--primary-perf-thumb-shade);
+  --base-perf-effect-glass: blur(18px);
+  --base-perf-effect-accent-wash: inset 3px 0 var(--dynamic-perf-signal);
+  --base-perf-motion-row-shift: translateX(2px);
+  --base-perf-motion-press: translateY(1px);
+  --base-perf-motion-row-motion: background 0.12s ease, transform 0.12s ease;
+  --base-perf-typography-decoration-none: var(--primary-css-none);
+  --base-perf-cursor-pointer: pointer;
+  --base-perf-cursor-plain: default;
+  --base-perf-cursor-crosshair: crosshair;
+}

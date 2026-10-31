@@ -1,0 +1,5 @@
+Cleaned: /Users/joaolopes/Exactus/exactus/tests/standalone/project/conftest.py
+Cleaned: /Users/joaolopes/Exactus/exactus/tests/standalone/project/python/calc.py
+Cleaned: /Users/joaolopes/Exactus/exactus/tests/standalone/project/tests/test_calc.py
+10 scanned, 3 changed, 20 lines removed, 20 bytes removed
+pyrefly infer left sources unchanged.

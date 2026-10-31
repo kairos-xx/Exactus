@@ -1,0 +1,1940 @@
+window.__REPORT_DATA__ = JSON.parse(`{
+  "title": "Unified Pipeline",
+  "status": "PASS",
+  "summary": {
+    "status": "PASS",
+    "total": 6,
+    "passed": 6,
+    "failed": 0
+  },
+  "analyzer": "unified",
+  "comparison": {
+    "available": true,
+    "previous_generated_at": "2026-10-31T02:36:22.479937+00:00",
+    "previous_run_id": "121cfe10a875424b95e7d42f9947eb9a",
+    "previous_status": "PASS",
+    "previous_duration_seconds": 36.333,
+    "current_total": 0,
+    "previous_total": 0,
+    "delta": 0,
+    "added_count": 0,
+    "resolved_count": 0,
+    "unchanged_count": 0,
+    "added": [],
+    "resolved": [],
+    "finding_details_available": true,
+    "subsections": [
+      {
+        "section": "Tool: coverage_tests",
+        "current_total": 0,
+        "previous_total": 0,
+        "delta": 0,
+        "added_count": 0,
+        "resolved_count": 0,
+        "unchanged_count": 0,
+        "added": [],
+        "resolved": []
+      },
+      {
+        "section": "Tool: docs",
+        "current_total": 0,
+        "previous_total": 0,
+        "delta": 0,
+        "added_count": 0,
+        "resolved_count": 0,
+        "unchanged_count": 0,
+        "added": [],
+        "resolved": []
+      },
+      {
+        "section": "Tool: kwargs_typehints",
+        "current_total": 0,
+        "previous_total": 0,
+        "delta": 0,
+        "added_count": 0,
+        "resolved_count": 0,
+        "unchanged_count": 0,
+        "added": [],
+        "resolved": []
+      },
+      {
+        "section": "Tool: lints",
+        "current_total": 0,
+        "previous_total": 0,
+        "delta": 0,
+        "added_count": 0,
+        "resolved_count": 0,
+        "unchanged_count": 0,
+        "added": [],
+        "resolved": []
+      },
+      {
+        "section": "Tool: performance",
+        "current_total": 0,
+        "previous_total": 0,
+        "delta": 0,
+        "added_count": 0,
+        "resolved_count": 0,
+        "unchanged_count": 0,
+        "added": [],
+        "resolved": []
+      },
+      {
+        "section": "Tool: readme",
+        "current_total": 0,
+        "previous_total": 0,
+        "delta": 0,
+        "added_count": 0,
+        "resolved_count": 0,
+        "unchanged_count": 0,
+        "added": [],
+        "resolved": []
+      }
+    ],
+    "categories": [
+      {
+        "category": "coverage_tests / coverage-average",
+        "title": "Average file coverage",
+        "current": 0,
+        "previous": 0,
+        "delta": 0
+      },
+      {
+        "category": "coverage_tests / coverage-evidence",
+        "title": "Coverage evidence validation",
+        "current": 0,
+        "previous": 0,
+        "delta": 0
+      },
+      {
+        "category": "coverage_tests / coverage-javascript-total",
+        "title": "Overall JavaScript coverage",
+        "current": 0,
+        "previous": 0,
+        "delta": 0
+      },
+      {
+        "category": "coverage_tests / coverage-meaningful",
+        "title": "Untested meaningful sources",
+        "current": 0,
+        "previous": 0,
+        "delta": 0
+      },
+      {
+        "category": "coverage_tests / coverage-meaningful-analysis",
+        "title": "Meaningful analysis failures",
+        "current": 0,
+        "previous": 0,
+        "delta": 0
+      },
+      {
+        "category": "coverage_tests / coverage-per-file",
+        "title": "Per-file coverage minimum",
+        "current": 0,
+        "previous": 0,
+        "delta": 0
+      },
+      {
+        "category": "coverage_tests / coverage-shortfall-excused",
+        "title": "Excused sub-gate sources",
+        "current": 0,
+        "previous": 0,
+        "delta": 0
+      },
+      {
+        "category": "coverage_tests / coverage-total",
+        "title": "Overall Python coverage",
+        "current": 0,
+        "previous": 0,
+        "delta": 0
+      },
+      {
+        "category": "coverage_tests / test-error",
+        "title": "Errored tests",
+        "current": 0,
+        "previous": 0,
+        "delta": 0
+      },
+      {
+        "category": "coverage_tests / test-failure",
+        "title": "Failed tests",
+        "current": 0,
+        "previous": 0,
+        "delta": 0
+      },
+      {
+        "category": "docs / DOC001",
+        "title": "Missing documentation",
+        "current": 0,
+        "previous": 0,
+        "delta": 0
+      },
+      {
+        "category": "docs / DOC002",
+        "title": "Missing parameter documentation",
+        "current": 0,
+        "previous": 0,
+        "delta": 0
+      },
+      {
+        "category": "docs / DOC003",
+        "title": "Stale parameter documentation",
+        "current": 0,
+        "previous": 0,
+        "delta": 0
+      },
+      {
+        "category": "docs / DOC004",
+        "title": "Missing return documentation",
+        "current": 0,
+        "previous": 0,
+        "delta": 0
+      },
+      {
+        "category": "docs / DOC005",
+        "title": "Return and yield mismatch",
+        "current": 0,
+        "previous": 0,
+        "delta": 0
+      },
+      {
+        "category": "docs / DOC006",
+        "title": "Missing exception documentation",
+        "current": 0,
+        "previous": 0,
+        "delta": 0
+      },
+      {
+        "category": "docs / DOC007",
+        "title": "Missing attribute documentation",
+        "current": 0,
+        "previous": 0,
+        "delta": 0
+      },
+      {
+        "category": "docs / DOC008",
+        "title": "Malformed documentation",
+        "current": 0,
+        "previous": 0,
+        "delta": 0
+      },
+      {
+        "category": "docs / DOC009",
+        "title": "Analysis failure",
+        "current": 0,
+        "previous": 0,
+        "delta": 0
+      },
+      {
+        "category": "docs / DOC010",
+        "title": "Missing description",
+        "current": 0,
+        "previous": 0,
+        "delta": 0
+      },
+      {
+        "category": "docs / DOC011",
+        "title": "Stale exception documentation",
+        "current": 0,
+        "previous": 0,
+        "delta": 0
+      },
+      {
+        "category": "docs / DOC012",
+        "title": "Stale attribute documentation",
+        "current": 0,
+        "previous": 0,
+        "delta": 0
+      },
+      {
+        "category": "kwargs_typehints / ambiguous-call",
+        "title": "Ambiguous calls",
+        "current": 0,
+        "previous": 0,
+        "delta": 0
+      },
+      {
+        "category": "kwargs_typehints / bare-import",
+        "title": "Bare imports",
+        "current": 0,
+        "previous": 0,
+        "delta": 0
+      },
+      {
+        "category": "kwargs_typehints / missing-hint",
+        "title": "Missing type hints",
+        "current": 0,
+        "previous": 0,
+        "delta": 0
+      },
+      {
+        "category": "kwargs_typehints / missing-kwargs",
+        "title": "Missing keyword arguments",
+        "current": 0,
+        "previous": 0,
+        "delta": 0
+      },
+      {
+        "category": "kwargs_typehints / parse-failure",
+        "title": "Parse failures",
+        "current": 0,
+        "previous": 0,
+        "delta": 0
+      },
+      {
+        "category": "kwargs_typehints / unresolved-callee",
+        "title": "Unresolved callees",
+        "current": 0,
+        "previous": 0,
+        "delta": 0
+      },
+      {
+        "category": "lints / CMP000",
+        "title": "Module does not parse",
+        "current": 0,
+        "previous": 0,
+        "delta": 0
+      },
+      {
+        "category": "lints / CMP001",
+        "title": "Suppression marker",
+        "current": 0,
+        "previous": 0,
+        "delta": 0
+      },
+      {
+        "category": "lints / CMP002",
+        "title": "typing.Any usage",
+        "current": 0,
+        "previous": 0,
+        "delta": 0
+      },
+      {
+        "category": "lints / CMP003",
+        "title": "object annotation",
+        "current": 0,
+        "previous": 0,
+        "delta": 0
+      },
+      {
+        "category": "lints / CMP004",
+        "title": "Lint ignore configuration",
+        "current": 0,
+        "previous": 0,
+        "delta": 0
+      },
+      {
+        "category": "lints / CMP005",
+        "title": "Type-check suppression",
+        "current": 0,
+        "previous": 0,
+        "delta": 0
+      },
+      {
+        "category": "lints / CMP006",
+        "title": "pyproject.toml missing",
+        "current": 0,
+        "previous": 0,
+        "delta": 0
+      },
+      {
+        "category": "readme / RDM001",
+        "title": "Missing README.md",
+        "current": 0,
+        "previous": 0,
+        "delta": 0
+      },
+      {
+        "category": "readme / RDM002",
+        "title": "Undocumented subdirectory",
+        "current": 0,
+        "previous": 0,
+        "delta": 0
+      },
+      {
+        "category": "readme / RDM003",
+        "title": "Undocumented file",
+        "current": 0,
+        "previous": 0,
+        "delta": 0
+      }
+    ]
+  },
+  "digests": [
+    {
+      "tool": "lints",
+      "status": "PASS",
+      "resume": "PASS: analyzer completed with exit status 0.",
+      "findings": 0,
+      "rules": [],
+      "files": [],
+      "top": [],
+      "distinct": [],
+      "notes": [],
+      "failed_tests": []
+    },
+    {
+      "tool": "coverage_tests",
+      "status": "PASS",
+      "resume": "PASS: 2 of 2 tests passed; 1 JavaScript test file passed; Total 100.0% meets the 90.0% minimum; every file meets 80.0%",
+      "findings": 0,
+      "rules": [],
+      "files": [],
+      "top": [],
+      "distinct": [],
+      "notes": [
+        "Total coverage 100%",
+        "Total gate 90.0%",
+        "Per-file gate 80.0%: 0 file(s) below"
+      ],
+      "failed_tests": []
+    },
+    {
+      "tool": "docs",
+      "status": "PASS",
+      "resume": "PASS: analyzer completed with exit status 0.",
+      "findings": 0,
+      "rules": [],
+      "files": [],
+      "top": [],
+      "distinct": [],
+      "notes": [],
+      "failed_tests": []
+    },
+    {
+      "tool": "kwargs_typehints",
+      "status": "PASS",
+      "resume": "PASS: analyzer completed with exit status 0.",
+      "findings": 0,
+      "rules": [],
+      "files": [],
+      "top": [],
+      "distinct": [],
+      "notes": [],
+      "failed_tests": []
+    },
+    {
+      "tool": "readme",
+      "status": "PASS",
+      "resume": "PASS: analyzer completed with exit status 0.",
+      "findings": 0,
+      "rules": [],
+      "files": [],
+      "top": [],
+      "distinct": [],
+      "notes": [],
+      "failed_tests": []
+    },
+    {
+      "tool": "performance",
+      "status": "PASS",
+      "resume": "7 runs profiled — slowest self_test 603.2s",
+      "findings": 0,
+      "rules": [],
+      "files": [],
+      "top": [],
+      "distinct": [],
+      "notes": [],
+      "failed_tests": []
+    }
+  ],
+  "duration_seconds": 48.53,
+  "failures": [],
+  "findings": [],
+  "fingerprint": {
+    "commit": "44699a6d15abc067a4fca0d73349a1b51d916daa",
+    "tree": "da1ed611a023a1100d5395906351fec79ba6db1b",
+    "dirty": true,
+    "python": "3.13.9",
+    "ruff": "ruff 0.12.0",
+    "basedpyright": "basedpyright 1.40.2"
+  },
+  "generated_at": "2026-10-31T02:56:48.303527+00:00",
+  "generated_at_human": "31 October 2026, 02:56:48 UTC",
+  "kind": "pipeline",
+  "local_links": {
+    "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/LINTS/result.md": "../../LINTS/result.md",
+    "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/LINTS/result.json": "../../LINTS/result.json",
+    "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/LINTS/result_web/index.html": "../../LINTS/result_web/index.html",
+    "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS/result.md": "../../COVERAGE_TESTS/result.md",
+    "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS/result.json": "../../COVERAGE_TESTS/result.json",
+    "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS/result_web/index.html": "../../COVERAGE_TESTS/result_web/index.html",
+    "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/DOCS/result.md": "../../DOCS/result.md",
+    "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/DOCS/result.json": "../../DOCS/result.json",
+    "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/DOCS/result_web/index.html": "../../DOCS/result_web/index.html",
+    "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/KWARGS_TYPEHINTS/result.md": "../../KWARGS_TYPEHINTS/result.md",
+    "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/KWARGS_TYPEHINTS/result.json": "../../KWARGS_TYPEHINTS/result.json",
+    "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/KWARGS_TYPEHINTS/result_web/index.html": "../../KWARGS_TYPEHINTS/result_web/index.html",
+    "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/README/result.md": "../../README/result.md",
+    "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/README/result.json": "../../README/result.json",
+    "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/README/result_web/index.html": "../../README/result_web/index.html",
+    "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/PERFORMANCE/result.md": "../../PERFORMANCE/result.md",
+    "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/PERFORMANCE/result.json": "../../PERFORMANCE/result.json",
+    "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/PERFORMANCE/result_web/index.html": "../../PERFORMANCE/result_web/index.html",
+    "/Users/joaolopes/Exactus/exactus/tests/standalone/project": "../../..",
+    "README.md": "README.md",
+    "python/README.md": "../../../python/README.md",
+    "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/PERFORMANCE": "../../PERFORMANCE",
+    "../../../..": "../../../..",
+    "result.md": "result.md",
+    "result.json": "result.json"
+  },
+  "markdown": "# Unified Pipeline\\n\\n**Run time:** 31 October 2026, 02:56:48 UTC\\n\\n## Change since previous report\\n\\nPrevious run completed in **36.333s**.\\n\\n| Findings | Current | Previous | Delta | Added | Resolved | Unchanged |\\n|---|---:|---:|---:|---:|---:|---:|\\n| Overall | 0 | 0 | 0 | 0 | 0 | 0 |\\n\\n### Category findings\\n\\n| Category | Title | Current | Previous | Delta |\\n| --- | --- | --- | --- | --- |\\n| coverage_tests / coverage-average | Average file coverage | 0 | 0 | 0 |\\n| coverage_tests / coverage-evidence | Coverage evidence validation | 0 | 0 | 0 |\\n| coverage_tests / coverage-javascript-total | Overall JavaScript coverage | 0 | 0 | 0 |\\n| coverage_tests / coverage-meaningful | Untested meaningful sources | 0 | 0 | 0 |\\n| coverage_tests / coverage-meaningful-analysis | Meaningful analysis failures | 0 | 0 | 0 |\\n| coverage_tests / coverage-per-file | Per-file coverage minimum | 0 | 0 | 0 |\\n| coverage_tests / coverage-shortfall-excused | Excused sub-gate sources | 0 | 0 | 0 |\\n| coverage_tests / coverage-total | Overall Python coverage | 0 | 0 | 0 |\\n| coverage_tests / test-error | Errored tests | 0 | 0 | 0 |\\n| coverage_tests / test-failure | Failed tests | 0 | 0 | 0 |\\n| docs / DOC001 | Missing documentation | 0 | 0 | 0 |\\n| docs / DOC002 | Missing parameter documentation | 0 | 0 | 0 |\\n| docs / DOC003 | Stale parameter documentation | 0 | 0 | 0 |\\n| docs / DOC004 | Missing return documentation | 0 | 0 | 0 |\\n| docs / DOC005 | Return and yield mismatch | 0 | 0 | 0 |\\n| docs / DOC006 | Missing exception documentation | 0 | 0 | 0 |\\n| docs / DOC007 | Missing attribute documentation | 0 | 0 | 0 |\\n| docs / DOC008 | Malformed documentation | 0 | 0 | 0 |\\n| docs / DOC009 | Analysis failure | 0 | 0 | 0 |\\n| docs / DOC010 | Missing description | 0 | 0 | 0 |\\n| docs / DOC011 | Stale exception documentation | 0 | 0 | 0 |\\n| docs / DOC012 | Stale attribute documentation | 0 | 0 | 0 |\\n| kwargs_typehints / ambiguous-call | Ambiguous calls | 0 | 0 | 0 |\\n| kwargs_typehints / bare-import | Bare imports | 0 | 0 | 0 |\\n| kwargs_typehints / missing-hint | Missing type hints | 0 | 0 | 0 |\\n| kwargs_typehints / missing-kwargs | Missing keyword arguments | 0 | 0 | 0 |\\n| kwargs_typehints / parse-failure | Parse failures | 0 | 0 | 0 |\\n| kwargs_typehints / unresolved-callee | Unresolved callees | 0 | 0 | 0 |\\n| lints / CMP000 | Module does not parse | 0 | 0 | 0 |\\n| lints / CMP001 | Suppression marker | 0 | 0 | 0 |\\n| lints / CMP002 | typing.Any usage | 0 | 0 | 0 |\\n| lints / CMP003 | object annotation | 0 | 0 | 0 |\\n| lints / CMP004 | Lint ignore configuration | 0 | 0 | 0 |\\n| lints / CMP005 | Type-check suppression | 0 | 0 | 0 |\\n| lints / CMP006 | pyproject.toml missing | 0 | 0 | 0 |\\n| readme / RDM001 | Missing README.md | 0 | 0 | 0 |\\n| readme / RDM002 | Undocumented subdirectory | 0 | 0 | 0 |\\n| readme / RDM003 | Undocumented file | 0 | 0 | 0 |\\n\\n\\n\\n- Status: **PASS**\\n- Run UUID: \`f9656595c8b74d23b2b6aec3bd0db7de\`\\n- Duration: 48.530s\\n- Tools: 6\\n- Passed: 6\\n- Failed: 0\\n\\n## Summary\\n\\n| Tool | Status | Time | Findings | Headline |\\n| --- | --- | ---: | ---: | --- |\\n| \`lints\` | **PASS** | 6.6s | 0 | PASS: analyzer completed with exit status 0. |\\n| \`coverage_tests\` | **PASS** | 17.8s | 0 | Total coverage 100%; Total gate 90.0%; Per-file gate 80.0%: 0 file(s) below |\\n| \`docs\` | **PASS** | 0.7s | 0 | PASS: analyzer completed with exit status 0. |\\n| \`kwargs_typehints\` | **PASS** | 1.5s | 0 | PASS: analyzer completed with exit status 0. |\\n| \`readme\` | **PASS** | 0.6s | 0 | PASS: analyzer completed with exit status 0. |\\n| \`performance\` | **PASS** | 0.8s | 0 | 7 runs profiled — slowest self_test 603.2s |\\n## Passing tools\\n\\n- \`lints\`\\n- \`coverage_tests\`\\n- \`docs\`\\n- \`kwargs_typehints\`\\n- \`readme\`\\n- \`performance\`\\n\\n## Tool resumes\\n\\n- \`lints\`: **PASS** (6.627s) — PASS: analyzer completed with exit status 0. [markdown](../../LINTS/result.md) · [json](../../LINTS/result.json) · [web](../../LINTS/result_web/index.html)\\n- \`coverage_tests\`: **PASS** (17.845s) — PASS: 2 of 2 tests passed; 1 JavaScript test file passed; Total 100.0% meets the 90.0% minimum; every file meets 80.0% [markdown](../../COVERAGE_TESTS/result.md) · [json](../../COVERAGE_TESTS/result.json) · [web](../../COVERAGE_TESTS/result_web/index.html)\\n- \`docs\`: **PASS** (0.664s) — PASS: analyzer completed with exit status 0. [markdown](../../DOCS/result.md) · [json](../../DOCS/result.json) · [web](../../DOCS/result_web/index.html)\\n- \`kwargs_typehints\`: **PASS** (1.523s) — PASS: analyzer completed with exit status 0. [markdown](../../KWARGS_TYPEHINTS/result.md) · [json](../../KWARGS_TYPEHINTS/result.json) · [web](../../KWARGS_TYPEHINTS/result_web/index.html)\\n- \`readme\`: **PASS** (0.649s) — PASS: analyzer completed with exit status 0. [markdown](../../README/result.md) · [json](../../README/result.json) · [web](../../README/result_web/index.html)\\n- \`performance\`: **PASS** (0.805s) — 7 runs profiled — slowest self_test 603.2s [markdown](../../PERFORMANCE/result.md) · [json](../../PERFORMANCE/result.json) · [web](../../PERFORMANCE/result_web/index.html)\\n",
+  "pipeline": "unified",
+  "previous_duration_seconds": 36.333,
+  "project_href": "../../../..",
+  "project_root": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
+  "report_bundle": {
+    "markdown": "result.md",
+    "json": "result.json",
+    "web": "result_web"
+  },
+  "report_snapshots": {
+    "lints": {
+      "status": "PASS",
+      "summary": {
+        "timing": {
+          "date_time": "31/10/2026 02:56:04",
+          "finished_date_time": "31/10/2026 02:56:10",
+          "timezone": "WET",
+          "duration_seconds": 5.729967,
+          "duration_human": "00:00:05.729967"
+        },
+        "host": {
+          "hostname": "Mac",
+          "operating_system": "Darwin",
+          "platform": "macOS-26.3.2-arm64-arm-64bit-Mach-O",
+          "architecture": "arm64",
+          "python_version": "3.13.9"
+        },
+        "analysis": {
+          "working_directory": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
+          "output_file": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/LINTS/LINTS.json",
+          "targets": [
+            "."
+          ],
+          "ignore_patterns": [
+            ".*/**",
+            "**/.*/**",
+            "EXACTUS_RESULTS/**",
+            "**/EXACTUS_RESULTS/**",
+            "node_modules/**",
+            "build/**",
+            "dist/**",
+            "*.egg-info/**",
+            "**/__pycache__/**",
+            "EXACTUS_RESULTS",
+            "EXACTUS_RESULTS/**"
+          ],
+          "files": {
+            "python": 6,
+            "javascript_jsx": 2,
+            "css": 1,
+            "html": 1,
+            "unique_analyzed": 10,
+            "with_findings": 0
+          },
+          "files_with_issues": [],
+          "findings": {
+            "total": 0,
+            "errors": 0,
+            "warnings": 0,
+            "information": 0,
+            "unique_rules": 0,
+            "affected_files": 0
+          }
+        },
+        "tools": {
+          "configured": 17,
+          "executed": 17,
+          "names": [
+            "custom_compliance",
+            "custom_shebang",
+            "custom_python",
+            "custom_python_long_lines",
+            "custom_javascript",
+            "custom_javascript_delimiters",
+            "custom_javascript_notation",
+            "custom_css",
+            "custom_html",
+            "ruff",
+            "ruff_docs",
+            "basedpyright",
+            "pyrefly",
+            "eslint",
+            "typescript",
+            "stylelint",
+            "htmlhint"
+          ]
+        },
+        "clean": true,
+        "targets_eligible": 10,
+        "targets_analyzed": 10,
+        "findings_total": 0,
+        "severity": {}
+      },
+      "extension": {
+        "metrics": {
+          "overview": {
+            "linters_run": 17,
+            "linters_unavailable": 0,
+            "files_analyzed": 10,
+            "files_with_findings": 0,
+            "rules_triggered": 0,
+            "findings": 0
+          },
+          "linters": [
+            {
+              "linter": "custom_compliance",
+              "status": "ran",
+              "version": "built-in",
+              "files": 6,
+              "findings": 0,
+              "errors": 0,
+              "warnings": 0,
+              "information": 0,
+              "exit_code": 0,
+              "duration_seconds": 0.001855249996879138
+            },
+            {
+              "linter": "custom_shebang",
+              "status": "ran",
+              "version": "built-in",
+              "files": 6,
+              "findings": 0,
+              "errors": 0,
+              "warnings": 0,
+              "information": 0,
+              "exit_code": 0,
+              "duration_seconds": 0.0010459159966558218
+            },
+            {
+              "linter": "custom_python",
+              "status": "ran",
+              "version": "built-in",
+              "files": 6,
+              "findings": 0,
+              "errors": 0,
+              "warnings": 0,
+              "information": 0,
+              "exit_code": 0,
+              "duration_seconds": 0.033
+            },
+            {
+              "linter": "custom_python_long_lines",
+              "status": "ran",
+              "version": "built-in",
+              "files": 6,
+              "findings": 0,
+              "errors": 0,
+              "warnings": 0,
+              "information": 0,
+              "exit_code": 0,
+              "duration_seconds": 5.3499999921768904e-05
+            },
+            {
+              "linter": "custom_javascript",
+              "status": "ran",
+              "version": "built-in",
+              "files": 2,
+              "findings": 0,
+              "errors": 0,
+              "warnings": 0,
+              "information": 0,
+              "exit_code": 0,
+              "duration_seconds": 0.001
+            },
+            {
+              "linter": "custom_javascript_delimiters",
+              "status": "ran",
+              "version": "built-in",
+              "files": 2,
+              "findings": 0,
+              "errors": 0,
+              "warnings": 0,
+              "information": 0,
+              "exit_code": 0,
+              "duration_seconds": 0.020500541999354027
+            },
+            {
+              "linter": "custom_javascript_notation",
+              "status": "ran",
+              "version": "built-in",
+              "files": 2,
+              "findings": 0,
+              "errors": 0,
+              "warnings": 0,
+              "information": 0,
+              "exit_code": 0,
+              "duration_seconds": 0.1922328340006061
+            },
+            {
+              "linter": "custom_css",
+              "status": "ran",
+              "version": "built-in",
+              "files": 1,
+              "findings": 0,
+              "errors": 0,
+              "warnings": 0,
+              "information": 0,
+              "exit_code": 0,
+              "duration_seconds": 0.001
+            },
+            {
+              "linter": "custom_html",
+              "status": "ran",
+              "version": "built-in",
+              "files": 1,
+              "findings": 0,
+              "errors": 0,
+              "warnings": 0,
+              "information": 0,
+              "exit_code": 0,
+              "duration_seconds": 0.0
+            },
+            {
+              "linter": "ruff",
+              "status": "ran",
+              "version": "0.12.0",
+              "files": 6,
+              "findings": 0,
+              "errors": 0,
+              "warnings": 0,
+              "information": 0,
+              "exit_code": 0,
+              "duration_seconds": 0.323857
+            },
+            {
+              "linter": "ruff_docs",
+              "status": "ran",
+              "version": "0.12.0",
+              "files": 6,
+              "findings": 0,
+              "errors": 0,
+              "warnings": 0,
+              "information": 0,
+              "exit_code": 0,
+              "duration_seconds": 0.323857
+            },
+            {
+              "linter": "basedpyright",
+              "status": "ran",
+              "version": "1.40.2",
+              "files": 6,
+              "findings": 0,
+              "errors": 0,
+              "warnings": 0,
+              "information": 0,
+              "exit_code": 0,
+              "duration_seconds": 1.181143
+            },
+            {
+              "linter": "pyrefly",
+              "status": "ran",
+              "version": "0.63.0",
+              "files": 6,
+              "findings": 0,
+              "errors": 0,
+              "warnings": 0,
+              "information": 0,
+              "exit_code": 0,
+              "duration_seconds": 0.258
+            },
+            {
+              "linter": "eslint",
+              "status": "ran",
+              "version": "10.13.0",
+              "files": 2,
+              "findings": 0,
+              "errors": 0,
+              "warnings": 0,
+              "information": 0,
+              "exit_code": 0,
+              "duration_seconds": 0.725283
+            },
+            {
+              "linter": "typescript",
+              "status": "ran",
+              "version": "6.0.3",
+              "files": 2,
+              "findings": 0,
+              "errors": 0,
+              "warnings": 0,
+              "information": 0,
+              "exit_code": 0,
+              "duration_seconds": 2.90863
+            },
+            {
+              "linter": "stylelint",
+              "status": "ran",
+              "version": "17.16.0",
+              "files": 1,
+              "findings": 0,
+              "errors": 0,
+              "warnings": 0,
+              "information": 0,
+              "exit_code": 0,
+              "duration_seconds": 0.770066
+            },
+            {
+              "linter": "htmlhint",
+              "status": "ran",
+              "version": "1.9.2",
+              "files": 1,
+              "findings": 0,
+              "errors": 0,
+              "warnings": 0,
+              "information": 0,
+              "exit_code": 0,
+              "duration_seconds": 0.149709
+            }
+          ],
+          "top_rules": [],
+          "top_files": [],
+          "severity_by_linter": []
+        },
+        "rules": [
+          {
+            "rule": "CMP000",
+            "title": "Module does not parse",
+            "category": "Parsing",
+            "count": 0
+          },
+          {
+            "rule": "CMP001",
+            "title": "Suppression marker",
+            "category": "Suppression",
+            "count": 0
+          },
+          {
+            "rule": "CMP002",
+            "title": "typing.Any usage",
+            "category": "Typing",
+            "count": 0
+          },
+          {
+            "rule": "CMP003",
+            "title": "object annotation",
+            "category": "Typing",
+            "count": 0
+          },
+          {
+            "rule": "CMP004",
+            "title": "Lint ignore configuration",
+            "category": "Configuration",
+            "count": 0
+          },
+          {
+            "rule": "CMP005",
+            "title": "Type-check suppression",
+            "category": "Configuration",
+            "count": 0
+          },
+          {
+            "rule": "CMP006",
+            "title": "pyproject.toml missing",
+            "category": "Configuration",
+            "count": 0
+          }
+        ]
+      },
+      "findings": []
+    },
+    "coverage_tests": {
+      "status": "PASS",
+      "summary": {
+        "targets_eligible": 5,
+        "targets_analyzed": 5,
+        "findings_total": 0,
+        "severity": {
+          "error": 0,
+          "warning": 0,
+          "info": 0
+        },
+        "coverage_percent": 100.0,
+        "coverage_required": 90.0,
+        "tests": {
+          "passed": 2,
+          "failed": 0,
+          "errors": 0,
+          "skipped": 0,
+          "xfailed": 0,
+          "xpassed": 0,
+          "total": 2,
+          "files": 1
+        }
+      },
+      "coverage": {
+        "meta": {
+          "format": 3,
+          "version": "7.17.0",
+          "timestamp": "2026-10-31T02:56:34.632869",
+          "branch_coverage": true,
+          "show_contexts": false
+        },
+        "files": {
+          "__init__.py": {
+            "executed_lines": [],
+            "summary": {
+              "covered_lines": 0,
+              "num_statements": 0,
+              "percent_covered": 100.0,
+              "percent_covered_display": "100",
+              "missing_lines": 0,
+              "excluded_lines": 0,
+              "percent_statements_covered": 100.0,
+              "percent_statements_covered_display": "100",
+              "num_branches": 0,
+              "num_partial_branches": 0,
+              "covered_branches": 0,
+              "missing_branches": 0,
+              "percent_branches_covered": 100.0,
+              "percent_branches_covered_display": "100"
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [],
+            "missing_branches": [],
+            "functions": {
+              "": {
+                "executed_lines": [],
+                "summary": {
+                  "covered_lines": 0,
+                  "num_statements": 0,
+                  "percent_covered": 100.0,
+                  "percent_covered_display": "100",
+                  "missing_lines": 0,
+                  "excluded_lines": 0,
+                  "percent_statements_covered": 100.0,
+                  "percent_statements_covered_display": "100",
+                  "num_branches": 0,
+                  "num_partial_branches": 0,
+                  "covered_branches": 0,
+                  "missing_branches": 0,
+                  "percent_branches_covered": 100.0,
+                  "percent_branches_covered_display": "100"
+                },
+                "missing_lines": [],
+                "excluded_lines": [],
+                "start_line": 1,
+                "executed_branches": [],
+                "missing_branches": []
+              }
+            },
+            "classes": {
+              "": {
+                "executed_lines": [],
+                "summary": {
+                  "covered_lines": 0,
+                  "num_statements": 0,
+                  "percent_covered": 100.0,
+                  "percent_covered_display": "100",
+                  "missing_lines": 0,
+                  "excluded_lines": 0,
+                  "percent_statements_covered": 100.0,
+                  "percent_statements_covered_display": "100",
+                  "num_branches": 0,
+                  "num_partial_branches": 0,
+                  "covered_branches": 0,
+                  "missing_branches": 0,
+                  "percent_branches_covered": 100.0,
+                  "percent_branches_covered_display": "100"
+                },
+                "missing_lines": [],
+                "excluded_lines": [],
+                "start_line": 1,
+                "executed_branches": [],
+                "missing_branches": []
+              }
+            }
+          },
+          "python/__init__.py": {
+            "executed_lines": [],
+            "summary": {
+              "covered_lines": 0,
+              "num_statements": 0,
+              "percent_covered": 100.0,
+              "percent_covered_display": "100",
+              "missing_lines": 0,
+              "excluded_lines": 0,
+              "percent_statements_covered": 100.0,
+              "percent_statements_covered_display": "100",
+              "num_branches": 0,
+              "num_partial_branches": 0,
+              "covered_branches": 0,
+              "missing_branches": 0,
+              "percent_branches_covered": 100.0,
+              "percent_branches_covered_display": "100"
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [],
+            "missing_branches": [],
+            "functions": {
+              "": {
+                "executed_lines": [],
+                "summary": {
+                  "covered_lines": 0,
+                  "num_statements": 0,
+                  "percent_covered": 100.0,
+                  "percent_covered_display": "100",
+                  "missing_lines": 0,
+                  "excluded_lines": 0,
+                  "percent_statements_covered": 100.0,
+                  "percent_statements_covered_display": "100",
+                  "num_branches": 0,
+                  "num_partial_branches": 0,
+                  "covered_branches": 0,
+                  "missing_branches": 0,
+                  "percent_branches_covered": 100.0,
+                  "percent_branches_covered_display": "100"
+                },
+                "missing_lines": [],
+                "excluded_lines": [],
+                "start_line": 1,
+                "executed_branches": [],
+                "missing_branches": []
+              }
+            },
+            "classes": {
+              "": {
+                "executed_lines": [],
+                "summary": {
+                  "covered_lines": 0,
+                  "num_statements": 0,
+                  "percent_covered": 100.0,
+                  "percent_covered_display": "100",
+                  "missing_lines": 0,
+                  "excluded_lines": 0,
+                  "percent_statements_covered": 100.0,
+                  "percent_statements_covered_display": "100",
+                  "num_branches": 0,
+                  "num_partial_branches": 0,
+                  "covered_branches": 0,
+                  "missing_branches": 0,
+                  "percent_branches_covered": 100.0,
+                  "percent_branches_covered_display": "100"
+                },
+                "missing_lines": [],
+                "excluded_lines": [],
+                "start_line": 1,
+                "executed_branches": [],
+                "missing_branches": []
+              }
+            }
+          },
+          "python/calc.py": {
+            "executed_lines": [
+              3,
+              6,
+              17,
+              20,
+              30
+            ],
+            "summary": {
+              "covered_lines": 5,
+              "num_statements": 5,
+              "percent_covered": 100.0,
+              "percent_covered_display": "100",
+              "missing_lines": 0,
+              "excluded_lines": 0,
+              "percent_statements_covered": 100.0,
+              "percent_statements_covered_display": "100",
+              "num_branches": 0,
+              "num_partial_branches": 0,
+              "covered_branches": 0,
+              "missing_branches": 0,
+              "percent_branches_covered": 100.0,
+              "percent_branches_covered_display": "100"
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [],
+            "missing_branches": [],
+            "functions": {
+              "add": {
+                "executed_lines": [
+                  17
+                ],
+                "summary": {
+                  "covered_lines": 1,
+                  "num_statements": 1,
+                  "percent_covered": 100.0,
+                  "percent_covered_display": "100",
+                  "missing_lines": 0,
+                  "excluded_lines": 0,
+                  "percent_statements_covered": 100.0,
+                  "percent_statements_covered_display": "100",
+                  "num_branches": 0,
+                  "num_partial_branches": 0,
+                  "covered_branches": 0,
+                  "missing_branches": 0,
+                  "percent_branches_covered": 100.0,
+                  "percent_branches_covered_display": "100"
+                },
+                "missing_lines": [],
+                "excluded_lines": [],
+                "start_line": 6,
+                "executed_branches": [],
+                "missing_branches": []
+              },
+              "is_even": {
+                "executed_lines": [
+                  30
+                ],
+                "summary": {
+                  "covered_lines": 1,
+                  "num_statements": 1,
+                  "percent_covered": 100.0,
+                  "percent_covered_display": "100",
+                  "missing_lines": 0,
+                  "excluded_lines": 0,
+                  "percent_statements_covered": 100.0,
+                  "percent_statements_covered_display": "100",
+                  "num_branches": 0,
+                  "num_partial_branches": 0,
+                  "covered_branches": 0,
+                  "missing_branches": 0,
+                  "percent_branches_covered": 100.0,
+                  "percent_branches_covered_display": "100"
+                },
+                "missing_lines": [],
+                "excluded_lines": [],
+                "start_line": 20,
+                "executed_branches": [],
+                "missing_branches": []
+              },
+              "": {
+                "executed_lines": [
+                  3,
+                  6,
+                  20
+                ],
+                "summary": {
+                  "covered_lines": 3,
+                  "num_statements": 3,
+                  "percent_covered": 100.0,
+                  "percent_covered_display": "100",
+                  "missing_lines": 0,
+                  "excluded_lines": 0,
+                  "percent_statements_covered": 100.0,
+                  "percent_statements_covered_display": "100",
+                  "num_branches": 0,
+                  "num_partial_branches": 0,
+                  "covered_branches": 0,
+                  "missing_branches": 0,
+                  "percent_branches_covered": 100.0,
+                  "percent_branches_covered_display": "100"
+                },
+                "missing_lines": [],
+                "excluded_lines": [],
+                "start_line": 1,
+                "executed_branches": [],
+                "missing_branches": []
+              }
+            },
+            "classes": {
+              "": {
+                "executed_lines": [
+                  3,
+                  6,
+                  17,
+                  20,
+                  30
+                ],
+                "summary": {
+                  "covered_lines": 5,
+                  "num_statements": 5,
+                  "percent_covered": 100.0,
+                  "percent_covered_display": "100",
+                  "missing_lines": 0,
+                  "excluded_lines": 0,
+                  "percent_statements_covered": 100.0,
+                  "percent_statements_covered_display": "100",
+                  "num_branches": 0,
+                  "num_partial_branches": 0,
+                  "covered_branches": 0,
+                  "missing_branches": 0,
+                  "percent_branches_covered": 100.0,
+                  "percent_branches_covered_display": "100"
+                },
+                "missing_lines": [],
+                "excluded_lines": [],
+                "start_line": 1,
+                "executed_branches": [],
+                "missing_branches": []
+              }
+            }
+          },
+          "tests/__init__.py": {
+            "executed_lines": [],
+            "summary": {
+              "covered_lines": 0,
+              "num_statements": 0,
+              "percent_covered": 100.0,
+              "percent_covered_display": "100",
+              "missing_lines": 0,
+              "excluded_lines": 0,
+              "percent_statements_covered": 100.0,
+              "percent_statements_covered_display": "100",
+              "num_branches": 0,
+              "num_partial_branches": 0,
+              "covered_branches": 0,
+              "missing_branches": 0,
+              "percent_branches_covered": 100.0,
+              "percent_branches_covered_display": "100"
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [],
+            "missing_branches": [],
+            "functions": {
+              "": {
+                "executed_lines": [],
+                "summary": {
+                  "covered_lines": 0,
+                  "num_statements": 0,
+                  "percent_covered": 100.0,
+                  "percent_covered_display": "100",
+                  "missing_lines": 0,
+                  "excluded_lines": 0,
+                  "percent_statements_covered": 100.0,
+                  "percent_statements_covered_display": "100",
+                  "num_branches": 0,
+                  "num_partial_branches": 0,
+                  "covered_branches": 0,
+                  "missing_branches": 0,
+                  "percent_branches_covered": 100.0,
+                  "percent_branches_covered_display": "100"
+                },
+                "missing_lines": [],
+                "excluded_lines": [],
+                "start_line": 1,
+                "executed_branches": [],
+                "missing_branches": []
+              }
+            },
+            "classes": {
+              "": {
+                "executed_lines": [],
+                "summary": {
+                  "covered_lines": 0,
+                  "num_statements": 0,
+                  "percent_covered": 100.0,
+                  "percent_covered_display": "100",
+                  "missing_lines": 0,
+                  "excluded_lines": 0,
+                  "percent_statements_covered": 100.0,
+                  "percent_statements_covered_display": "100",
+                  "num_branches": 0,
+                  "num_partial_branches": 0,
+                  "covered_branches": 0,
+                  "missing_branches": 0,
+                  "percent_branches_covered": 100.0,
+                  "percent_branches_covered_display": "100"
+                },
+                "missing_lines": [],
+                "excluded_lines": [],
+                "start_line": 1,
+                "executed_branches": [],
+                "missing_branches": []
+              }
+            }
+          }
+        },
+        "totals": {
+          "covered_lines": 5,
+          "num_statements": 5,
+          "percent_covered": 100.0,
+          "percent_covered_display": "100",
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "percent_statements_covered": 100.0,
+          "percent_statements_covered_display": "100",
+          "num_branches": 0,
+          "num_partial_branches": 0,
+          "covered_branches": 0,
+          "missing_branches": 0,
+          "percent_branches_covered": 100.0,
+          "percent_branches_covered_display": "100"
+        }
+      },
+      "extension": {
+        "tests": {
+          "status": "PASS",
+          "reason": "2 of 2 tests passed; 1 JavaScript test file passed",
+          "passed": 2,
+          "failed": 0,
+          "errors": 0,
+          "skipped": 0,
+          "xfailed": 0,
+          "xpassed": 0,
+          "total": 2,
+          "duration_seconds": 1.511,
+          "test_files": 1,
+          "shards": 1,
+          "javascript_test_files": 1,
+          "javascript_failed": 0,
+          "groups": [
+            {
+              "group": "tests",
+              "files": 1,
+              "tests": 2,
+              "passed": 2,
+              "failed": 0,
+              "skipped": 0,
+              "report": "TESTS/tests"
+            }
+          ],
+          "report": "TESTS"
+        },
+        "categories": [
+          {
+            "category": "test-failure",
+            "title": "Failed tests",
+            "count": 0
+          },
+          {
+            "category": "test-error",
+            "title": "Errored tests",
+            "count": 0
+          },
+          {
+            "category": "coverage-total",
+            "title": "Overall Python coverage",
+            "count": 0
+          },
+          {
+            "category": "coverage-javascript-total",
+            "title": "Overall JavaScript coverage",
+            "count": 0
+          },
+          {
+            "category": "coverage-per-file",
+            "title": "Per-file coverage minimum",
+            "count": 0
+          },
+          {
+            "category": "coverage-average",
+            "title": "Average file coverage",
+            "count": 0
+          },
+          {
+            "category": "coverage-evidence",
+            "title": "Coverage evidence validation",
+            "count": 0
+          },
+          {
+            "category": "coverage-meaningful",
+            "title": "Untested meaningful sources",
+            "count": 0
+          },
+          {
+            "category": "coverage-meaningful-analysis",
+            "title": "Meaningful analysis failures",
+            "count": 0
+          },
+          {
+            "category": "coverage-shortfall-excused",
+            "title": "Excused sub-gate sources",
+            "count": 0
+          }
+        ],
+        "coverage": {
+          "status": "PASS",
+          "reason": "Total 100.0% meets the 90.0% minimum; every file meets 80.0%",
+          "languages": [
+            {
+              "language": "Python",
+              "basis": "Lines",
+              "percent": 100.0,
+              "lines": 5,
+              "covered": 5,
+              "missing": 0,
+              "files": 4
+            },
+            {
+              "language": "JavaScript",
+              "basis": "Lines",
+              "percent": 100.0,
+              "lines": 21,
+              "covered": 21,
+              "missing": 0,
+              "files": 1
+            }
+          ],
+          "gates": [
+            {
+              "gate": "Total coverage",
+              "option": "--fail-under",
+              "required": "90.0%",
+              "measured": "100.0%",
+              "status": "PASS"
+            },
+            {
+              "gate": "JavaScript total coverage",
+              "option": "--fail-under",
+              "required": "90.0%",
+              "measured": "100.0%",
+              "status": "PASS"
+            },
+            {
+              "gate": "Per-file minimum",
+              "option": "--per-file-minimum",
+              "required": "80.0%",
+              "measured": "0 of 5 files below",
+              "status": "PASS"
+            },
+            {
+              "gate": "Untested meaningful sources",
+              "option": "--meaningful-minimum-level",
+              "required": ">= TEST-2",
+              "measured": "0 actionable, 0 analysis errors",
+              "status": "PASS"
+            },
+            {
+              "gate": "Evidence check",
+              "option": "--minimum",
+              "required": "complete, unchanged evidence",
+              "measured": "valid",
+              "status": "PASS"
+            }
+          ],
+          "files_below_minimum": [],
+          "unreached_sources": 1,
+          "report": "COVERAGE"
+        },
+        "reports": [
+          {
+            "name": "Tests",
+            "report": "TESTS",
+            "description": "Every test result, failed tests with reasons, shards and warnings"
+          },
+          {
+            "name": "Coverage",
+            "report": "COVERAGE",
+            "description": "Coverage per file with uncovered lines, the import graph and the JavaScript lane"
+          }
+        ]
+      },
+      "findings": []
+    },
+    "docs": {
+      "status": "PASS",
+      "summary": {
+        "targets_eligible": 8,
+        "targets_analyzed": 8,
+        "findings_total": 0,
+        "severity": {}
+      },
+      "extension": {
+        "languages": [
+          {
+            "discovered": 2,
+            "parsed": 2,
+            "failed": 0,
+            "symbols": 3,
+            "documented": 3,
+            "findings": 0,
+            "language": "javascript",
+            "coverage_percent": 100.0
+          },
+          {
+            "discovered": 6,
+            "parsed": 6,
+            "failed": 0,
+            "symbols": 12,
+            "documented": 12,
+            "findings": 0,
+            "language": "python",
+            "coverage_percent": 100.0
+          }
+        ],
+        "rules": [
+          {
+            "rule": "DOC001",
+            "title": "Missing documentation",
+            "count": 0
+          },
+          {
+            "rule": "DOC002",
+            "title": "Missing parameter documentation",
+            "count": 0
+          },
+          {
+            "rule": "DOC003",
+            "title": "Stale parameter documentation",
+            "count": 0
+          },
+          {
+            "rule": "DOC004",
+            "title": "Missing return documentation",
+            "count": 0
+          },
+          {
+            "rule": "DOC005",
+            "title": "Return and yield mismatch",
+            "count": 0
+          },
+          {
+            "rule": "DOC006",
+            "title": "Missing exception documentation",
+            "count": 0
+          },
+          {
+            "rule": "DOC007",
+            "title": "Missing attribute documentation",
+            "count": 0
+          },
+          {
+            "rule": "DOC008",
+            "title": "Malformed documentation",
+            "count": 0
+          },
+          {
+            "rule": "DOC009",
+            "title": "Analysis failure",
+            "count": 0
+          },
+          {
+            "rule": "DOC010",
+            "title": "Missing description",
+            "count": 0
+          },
+          {
+            "rule": "DOC011",
+            "title": "Stale exception documentation",
+            "count": 0
+          },
+          {
+            "rule": "DOC012",
+            "title": "Stale attribute documentation",
+            "count": 0
+          }
+        ],
+        "fail_on": "warning",
+        "metrics": {
+          "languages": [
+            {
+              "language": "javascript",
+              "files_analyzed": 2,
+              "lines_analyzed": 35
+            },
+            {
+              "language": "python",
+              "files_analyzed": 6,
+              "lines_analyzed": 91
+            }
+          ]
+        }
+      },
+      "findings": []
+    },
+    "kwargs_typehints": {
+      "status": "PASS",
+      "summary": {
+        "python_files": 6,
+        "parse_failures": 0,
+        "positional_findings": 0,
+        "bare_import_findings": 0,
+        "missing_type_hints": 0,
+        "ambiguous_calls": 0,
+        "unresolved_callees": 0,
+        "unresolved_call_sites": 0,
+        "call_sites": 3,
+        "resolved_call_sites": 3,
+        "exempt_call_sites": 0,
+        "functions_checked": 5,
+        "parameters_checked": 5,
+        "targets_eligible": 6,
+        "targets_analyzed": 6,
+        "findings_total": 0,
+        "auto_fixes": 0,
+        "severity": {
+          "error": 0,
+          "warning": 0,
+          "info": 0
+        }
+      },
+      "extension": {
+        "metrics": {
+          "overview": {
+            "files_scanned": 6,
+            "files_analyzed": 6,
+            "parse_failures": 0,
+            "call_sites": 3,
+            "resolved_call_sites": 3,
+            "resolution_percent": 100.0,
+            "exempt_call_sites": 0,
+            "unresolved_call_sites": 0,
+            "skipped_call_sites": 0,
+            "functions_checked": 5,
+            "parameters_checked": 5,
+            "missing_parameter_hints": 0,
+            "missing_return_hints": 0,
+            "missing_variable_hints": 0,
+            "hint_coverage_percent": 100.0,
+            "findings": 0,
+            "blocking_findings": 0,
+            "auto_fixes": 0
+          },
+          "categories": [
+            {
+              "category": "missing-kwargs",
+              "label": "Missing keyword arguments",
+              "severity": "error",
+              "blocking": true,
+              "count": 0
+            },
+            {
+              "category": "bare-import",
+              "label": "Bare imports",
+              "severity": "error",
+              "blocking": true,
+              "count": 0
+            },
+            {
+              "category": "missing-hint",
+              "label": "Missing type hints",
+              "severity": "error",
+              "blocking": true,
+              "count": 0
+            },
+            {
+              "category": "parse-failure",
+              "label": "Parse failures",
+              "severity": "error",
+              "blocking": true,
+              "count": 0
+            },
+            {
+              "category": "ambiguous-call",
+              "label": "Ambiguous calls",
+              "severity": "warning",
+              "blocking": false,
+              "count": 0
+            },
+            {
+              "category": "unresolved-callee",
+              "label": "Unresolved callees",
+              "severity": "info",
+              "blocking": false,
+              "count": 0
+            }
+          ]
+        },
+        "unresolved_callees": [],
+        "ambiguous_call_sites": [],
+        "bare_imports": [],
+        "auto_fixes": [],
+        "methodology": [
+          "Signatures come from a repository-wide AST index (functions, methods, dataclass and \`NamedTuple\` fields, imports, \`self.attr\` assignments, annotations), \`inspect.signature\` for external callables and the typeshed stubs bundled with basedpyright.",
+          "Confidence of a missing-keyword finding: \`resolved\` (project index), \`constructor\` (project class constructor), \`external\` (\`inspect.signature\`), \`stub\` (typeshed), \`stub-rt\` (typeshed checked by a runtime probe), \`unique-name\` (one class defines the method), \`ambiguous-all-flag\` (every candidate flags it).",
+          "Arguments after a \`*unpack\`, beyond the named parameters of a \`*args\` signature, or already passed by keyword are not reported.",
+          "Calls to \`pytest.mark.*\`, standard-library positional-only methods and Qt-style \`lowerCamelCase\` methods are counted as exempt, not as unresolved.",
+          "A variable needs one annotation per lexical scope; parameters own their type, walrus bindings, TypeVar declarations and Enum members are exempt, \`self\`/\`cls\` need none, and lambdas cannot be annotated.",
+          "Hint coverage counts the parameters (receivers excluded) and return annotations of every function; variables are not part of the ratio.",
+          "Unresolved callees (dynamic objects, \`*args\` wrappers, mocks, higher-order results) are listed so they can be checked by hand; they never fail the run.",
+          "\`ARTIFACTS/heuristics.json\` holds the argument types observed by fuzzing builtin callables."
+        ]
+      },
+      "findings": []
+    },
+    "readme": {
+      "status": "PASS",
+      "summary": {
+        "targets_eligible": 4,
+        "targets_analyzed": 4,
+        "findings_total": 0,
+        "severity": {},
+        "directories": 4,
+        "findings": 0,
+        "by_rule": {}
+      },
+      "extension": {
+        "metrics": {
+          "markdown": {
+            "files": 4,
+            "bytes": 2669,
+            "lines": 80,
+            "readme_files": 4,
+            "largest_readme": {
+              "path": "README.md",
+              "bytes": 1187
+            },
+            "smallest_readme": {
+              "path": "python/README.md",
+              "bytes": 438
+            }
+          },
+          "directories_without_readme": []
+        },
+        "directories": [
+          {
+            "path": ".",
+            "has_readme": true,
+            "readme_bytes": 1187,
+            "entries": 6,
+            "documented": 6,
+            "missing": 0
+          },
+          {
+            "path": "python",
+            "has_readme": true,
+            "readme_bytes": 438,
+            "entries": 2,
+            "documented": 2,
+            "missing": 0
+          },
+          {
+            "path": "tests",
+            "has_readme": true,
+            "readme_bytes": 579,
+            "entries": 3,
+            "documented": 3,
+            "missing": 0
+          },
+          {
+            "path": "web",
+            "has_readme": true,
+            "readme_bytes": 465,
+            "entries": 3,
+            "documented": 3,
+            "missing": 0
+          }
+        ],
+        "rules": [
+          {
+            "rule": "RDM001",
+            "title": "Missing README.md",
+            "count": 0
+          },
+          {
+            "rule": "RDM002",
+            "title": "Undocumented subdirectory",
+            "count": 0
+          },
+          {
+            "rule": "RDM003",
+            "title": "Undocumented file",
+            "count": 0
+          }
+        ]
+      },
+      "findings": []
+    },
+    "performance": {
+      "status": "PASS",
+      "summary": {
+        "runs": 7,
+        "findings": 0,
+        "severity": {
+          "error": 0,
+          "warning": 0,
+          "info": 0
+        }
+      },
+      "extension": {
+        "output": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/PERFORMANCE",
+        "serve": false,
+        "gap_threshold": 0.25,
+        "repetition_threshold": 10,
+        "runs": [
+          {
+            "tool": "coverage_tests",
+            "duration": 17.836,
+            "events": 66,
+            "events_per_second": 3.70038125140166,
+            "largest_gap": 12.767,
+            "silent": 17.323,
+            "actors": 24,
+            "threads": 3
+          },
+          {
+            "tool": "docs",
+            "duration": 0.657,
+            "events": 18,
+            "events_per_second": 27.397260273972602,
+            "largest_gap": 0.604,
+            "silent": 0.604,
+            "actors": 4,
+            "threads": 1
+          },
+          {
+            "tool": "kwargs_typehints",
+            "duration": 1.518,
+            "events": 31,
+            "events_per_second": 20.421607378129117,
+            "largest_gap": 0.7429999999999999,
+            "silent": 1.378,
+            "actors": 7,
+            "threads": 7
+          },
+          {
+            "tool": "lints",
+            "duration": 6.583,
+            "events": 321,
+            "events_per_second": 48.761962631019294,
+            "largest_gap": 0.9139999999999997,
+            "silent": 3.2959999999999994,
+            "actors": 28,
+            "threads": 20
+          },
+          {
+            "tool": "performance",
+            "duration": 0.001,
+            "events": 2,
+            "events_per_second": 2000.0,
+            "largest_gap": 0.0,
+            "silent": 0,
+            "actors": 1,
+            "threads": 1
+          },
+          {
+            "tool": "readme",
+            "duration": 0.63,
+            "events": 19,
+            "events_per_second": 30.158730158730158,
+            "largest_gap": 0.617,
+            "silent": 0.617,
+            "actors": 6,
+            "threads": 1
+          },
+          {
+            "tool": "self_test",
+            "duration": 603.223,
+            "events": 111,
+            "events_per_second": 0.1840115512836878,
+            "largest_gap": 480.27500000000003,
+            "silent": 598.3199999999999,
+            "actors": 4,
+            "threads": 1
+          }
+        ]
+      },
+      "findings": []
+    }
+  },
+  "run_at": "2026-10-31T02:56:48.303527+00:00",
+  "run_at_human": "31 October 2026, 02:56:48 UTC",
+  "run_id": "f9656595c8b74d23b2b6aec3bd0db7de",
+  "schema": "project-exactus-report/v1",
+  "sections": [
+    {
+      "level": 1,
+      "title": "Unified Pipeline"
+    },
+    {
+      "level": 2,
+      "title": "Change since previous report"
+    },
+    {
+      "level": 3,
+      "title": "Category findings"
+    },
+    {
+      "level": 2,
+      "title": "Summary"
+    },
+    {
+      "level": 2,
+      "title": "Passing tools"
+    },
+    {
+      "level": 2,
+      "title": "Tool resumes"
+    }
+  ],
+  "tools": {
+    "lints": {
+      "tool": "lints",
+      "run_id": "f9656595c8b74d23b2b6aec3bd0db7de:lints",
+      "pipeline_run_id": "f9656595c8b74d23b2b6aec3bd0db7de",
+      "report_replaced_after_execution": true,
+      "status": "PASS",
+      "passed": true,
+      "duration_seconds": 6.627,
+      "resume": "PASS: analyzer completed with exit status 0.",
+      "report": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/LINTS/result.md",
+      "report_json": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/LINTS/result.json",
+      "report_web": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/LINTS/result_web/index.html",
+      "report_web_href": "../../../LINTS/result_web/index.html"
+    },
+    "coverage_tests": {
+      "tool": "coverage_tests",
+      "run_id": "f9656595c8b74d23b2b6aec3bd0db7de:coverage_tests",
+      "pipeline_run_id": "f9656595c8b74d23b2b6aec3bd0db7de",
+      "report_replaced_after_execution": true,
+      "status": "PASS",
+      "passed": true,
+      "duration_seconds": 17.845,
+      "resume": "PASS: 2 of 2 tests passed; 1 JavaScript test file passed; Total 100.0% meets the 90.0% minimum; every file meets 80.0%",
+      "report": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS/result.md",
+      "report_json": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS/result.json",
+      "report_web": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS/result_web/index.html",
+      "report_web_href": "../../../COVERAGE_TESTS/result_web/index.html"
+    },
+    "docs": {
+      "tool": "docs",
+      "run_id": "f9656595c8b74d23b2b6aec3bd0db7de:docs",
+      "pipeline_run_id": "f9656595c8b74d23b2b6aec3bd0db7de",
+      "report_replaced_after_execution": true,
+      "status": "PASS",
+      "passed": true,
+      "duration_seconds": 0.664,
+      "resume": "PASS: analyzer completed with exit status 0.",
+      "report": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/DOCS/result.md",
+      "report_json": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/DOCS/result.json",
+      "report_web": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/DOCS/result_web/index.html",
+      "report_web_href": "../../../DOCS/result_web/index.html"
+    },
+    "kwargs_typehints": {
+      "tool": "kwargs_typehints",
+      "run_id": "f9656595c8b74d23b2b6aec3bd0db7de:kwargs_typehints",
+      "pipeline_run_id": "f9656595c8b74d23b2b6aec3bd0db7de",
+      "report_replaced_after_execution": true,
+      "status": "PASS",
+      "passed": true,
+      "duration_seconds": 1.523,
+      "resume": "PASS: analyzer completed with exit status 0.",
+      "report": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/KWARGS_TYPEHINTS/result.md",
+      "report_json": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/KWARGS_TYPEHINTS/result.json",
+      "report_web": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/KWARGS_TYPEHINTS/result_web/index.html",
+      "report_web_href": "../../../KWARGS_TYPEHINTS/result_web/index.html"
+    },
+    "readme": {
+      "tool": "readme",
+      "run_id": "f9656595c8b74d23b2b6aec3bd0db7de:readme",
+      "pipeline_run_id": "f9656595c8b74d23b2b6aec3bd0db7de",
+      "report_replaced_after_execution": true,
+      "status": "PASS",
+      "passed": true,
+      "duration_seconds": 0.649,
+      "resume": "PASS: analyzer completed with exit status 0.",
+      "report": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/README/result.md",
+      "report_json": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/README/result.json",
+      "report_web": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/README/result_web/index.html",
+      "report_web_href": "../../../README/result_web/index.html"
+    },
+    "performance": {
+      "tool": "performance",
+      "run_id": "f9656595c8b74d23b2b6aec3bd0db7de:performance",
+      "pipeline_run_id": "f9656595c8b74d23b2b6aec3bd0db7de",
+      "report_replaced_after_execution": true,
+      "status": "PASS",
+      "passed": true,
+      "duration_seconds": 0.805,
+      "resume": "7 runs profiled — slowest self_test 603.2s",
+      "report": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/PERFORMANCE/result.md",
+      "report_json": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/PERFORMANCE/result.json",
+      "report_web": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/PERFORMANCE/result_web/index.html",
+      "report_web_href": "../../../PERFORMANCE/result_web/index.html"
+    }
+  },
+  "web": {
+    "index": "index.html",
+    "css": "report.css",
+    "javascript": "report.js",
+    "data": "data.json"
+  }
+}`);

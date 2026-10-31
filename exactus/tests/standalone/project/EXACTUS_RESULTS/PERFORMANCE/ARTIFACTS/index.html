@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
+    <title>Exactus Performance Observatory</title>
+    <link rel="stylesheet" href="styles/style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">EXACTUS · EXECUTION TELEMETRY</p>
+        <h1>Performance Observatory</h1>
+      </div>
+      <div class="top-actions">
+        <label class="search"
+          ><span>⌕</span
+          ><input
+            id="search"
+            type="search"
+            placeholder="Filter events, paths, stages…"
+        /></label>
+        <a
+          id="download-report"
+          class="download-report"
+          href="report.json"
+          download="performance-report.json"
+          title="Download the full machine-readable JSON report"
+          >⭳ JSON report</a
+        >
+        <button id="theme" type="button" title="Toggle theme">◐</button>
+      </div>
+    </header>
+    <main>
+      <section id="status" class="status">Loading steps.json…</section>
+      <section id="kpis" class="kpis" aria-label="Run summary">
+        <article>
+          <span>Wall span</span><strong id="kpi-wall">—</strong
+          ><small id="kpi-wall-note">across tools</small>
+        </article>
+        <article>
+          <span>Tool runtime</span><strong id="kpi-runtime">—</strong
+          ><small>sum of elapsed traces</small>
+        </article>
+        <article>
+          <span>Events</span><strong id="kpi-events">—</strong
+          ><small id="kpi-rate">—</small>
+        </article>
+        <article>
+          <span>Largest stall</span><strong id="kpi-gap">—</strong
+          ><small id="kpi-gap-tool">—</small>
+        </article>
+        <article>
+          <span>Slowest tool</span><strong id="kpi-slowest">—</strong
+          ><small id="kpi-slowest-time">—</small>
+        </article>
+        <article>
+          <span>Silent time</span><strong id="kpi-silent">—</strong
+          ><small id="kpi-silent-note">—</small>
+        </article>
+        <article>
+          <span>Hottest actor</span><strong id="kpi-hot">—</strong
+          ><small id="kpi-hot-note">—</small>
+        </article>
+      </section>
+      <section class="panel hero-panel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">CONCURRENCY</p>
+            <h2>Cross-tool execution map</h2>
+          </div>
+          <div class="legend">
+            <span class="dot active"></span>activity
+            <span class="dot stall"></span>stall
+          </div>
+        </div>
+        <canvas id="global-timeline" height="250"></canvas>
+        <div id="timeline-tooltip" class="tooltip" hidden></div>
+      </section>
+      <section class="layout">
+        <aside class="panel sidebar">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">TOOLS</p>
+              <h2>Run lanes</h2>
+            </div>
+          </div>
+          <div id="tool-list" class="tool-list"></div>
+        </aside>
+        <section class="workspace">
+          <section class="panel tool-header">
+            <div>
+              <p id="tool-kicker" class="eyebrow">TOOL</p>
+              <h2 id="tool-name">All tools</h2>
+              <p id="tool-summary" class="muted">
+                Select a tool to inspect its critical path.
+              </p>
+            </div>
+            <div class="segmented" role="group" aria-label="Analysis mode">
+              <button class="mode active" data-mode="graph" type="button">
+                Graph
+              </button>
+              <button class="mode" data-mode="bottlenecks" type="button">
+                Bottlenecks
+              </button>
+              <button class="mode" data-mode="hotspots" type="button">
+                Hotspots
+              </button>
+              <button class="mode" data-mode="workers" type="button">
+                Workers
+              </button>
+              <button class="mode" data-mode="resources" type="button">
+                Resources
+              </button>
+              <button class="mode" data-mode="stages" type="button">
+                Stages
+              </button>
+              <button class="mode" data-mode="events" type="button">
+                Events
+              </button>
+            </div>
+          </section>
+          <section class="panel viewport-bar" aria-label="Shared viewport">
+            <div id="drillbar" class="drillbar"></div>
+            <div class="timeline-toolbar">
+              <button id="zoom-out" type="button">− Zoom</button>
+              <button id="zoom-in" type="button">+ Zoom</button>
+              <button id="pan-left" type="button">← Pan</button>
+              <span id="zoom-label" class="zoom-label">full trace</span>
+              <button id="pan-right" type="button">Pan →</button>
+              <button id="reset-view" type="button">Reset</button>
+              <span class="scrub-hint"
+                >drag/scrub · wheel to zoom · ←/→ step events · Shift+←/→
+                jump</span
+              >
+              <span id="cursor-readout" class="cursor-readout">cursor —</span>
+            </div>
+          </section>
+          <section id="graph-view" class="view active">
+            <section class="panel">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">EXECUTION GRAPH</p>
+                  <h3>Every thread's call tree · width is wall-clock time</h3>
+                </div>
+                <div class="timeline-toolbar">
+                  <button id="graph-up" type="button" title="Drill up (Esc)">
+                    ↑ Up
+                  </button>
+                  <button id="graph-in" type="button" title="Drill in (Enter)">
+                    ↓ Drill in
+                  </button>
+                  <label class="graph-color"
+                    >Color
+                    <select id="graph-color">
+                      <option value="actor">by actor</option>
+                      <option value="heat">by self time</option>
+                      <option value="thread">by thread</option>
+                    </select></label
+                  >
+                </div>
+              </div>
+              <div id="graph-crumbs" class="drillbar"></div>
+              <canvas
+                id="graph-overview"
+                class="overview-chart"
+                height="56"
+                aria-label="Run overview: drag to move the viewport"
+              ></canvas>
+              <div id="graph-scroll" class="graph-scroll">
+                <canvas
+                  id="graph-chart"
+                  class="graph-chart"
+                  tabindex="0"
+                  aria-label="Execution graph: click selects, double-click drills in"
+                ></canvas>
+                <div id="graph-tooltip" class="timeline-tooltip" hidden></div>
+              </div>
+              <p class="muted graph-hint">
+                click selects · double-click or Enter drills in · Esc drills up
+                · wheel zooms · drag pans
+              </p>
+            </section>
+            <div class="two-col">
+              <section class="panel">
+                <div class="panel-head">
+                  <div>
+                    <p class="eyebrow">SELECTED STEP</p>
+                    <h3 id="graph-node">Select a bar.</h3>
+                  </div>
+                </div>
+                <pre id="graph-measures" class="graph-measures"></pre>
+              </section>
+              <section class="panel">
+                <div class="panel-head">
+                  <div>
+                    <p class="eyebrow">CHILDREN</p>
+                    <h3>Largest nested steps</h3>
+                  </div>
+                </div>
+                <div id="graph-children" class="rank-list"></div>
+              </section>
+            </div>
+          </section>
+          <section id="bottlenecks-view" class="view">
+            <div class="two-col">
+              <section class="panel">
+                <div class="panel-head">
+                  <div>
+                    <p class="eyebrow">CRITICAL PATH</p>
+                    <h3>Largest silent gaps</h3>
+                  </div>
+                  <span id="gap-total" class="badge">—</span>
+                </div>
+                <div id="gap-list" class="rank-list"></div>
+              </section>
+              <section class="panel">
+                <div class="panel-head">
+                  <div>
+                    <p class="eyebrow">HOT LOOPS</p>
+                    <h3>Repeated operations</h3>
+                  </div>
+                </div>
+                <div id="prefix-list" class="rank-list"></div>
+              </section>
+            </div>
+            <section class="panel">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">PROFILER</p>
+                  <h3>Execution profile: stages, density and stalls</h3>
+                </div>
+                <span class="muted"
+                  >hover for exact event · zoom and pan above</span
+                >
+              </div>
+              <div class="profiler-legend" aria-label="Profiler lanes">
+                <span><i class="legend-stage"></i>stages</span
+                ><span><i class="legend-density"></i>event density</span
+                ><span><i class="legend-event"></i>events</span
+                ><span><i class="legend-gap"></i>stalls</span
+                ><span><i class="legend-cursor"></i>cursor</span>
+              </div>
+              <div class="timeline-shell">
+                <canvas
+                  id="detail-chart"
+                  class="detail-chart"
+                  height="430"
+                  tabindex="0"
+                  aria-label="Interactive execution profiler"
+                ></canvas>
+                <div id="detail-tooltip" class="timeline-tooltip" hidden></div>
+              </div>
+              <div class="cursor-metrics">
+                <article>
+                  <span>Local rate</span><strong id="cursor-rate">—</strong>
+                </article>
+                <article>
+                  <span>Previous gap</span><strong id="cursor-gap">—</strong>
+                </article>
+                <article>
+                  <span>Trace position</span
+                  ><strong id="cursor-position">—</strong>
+                </article>
+                <article>
+                  <span>Nearby events</span
+                  ><strong id="cursor-nearby">—</strong>
+                </article>
+              </div>
+              <div class="event-inspector">
+                <div class="inspector-grid">
+                  <div>
+                    <span>Event</span><strong id="inspect-index">—</strong>
+                  </div>
+                  <div>
+                    <span>Elapsed</span><strong id="inspect-elapsed">—</strong>
+                  </div>
+                  <div>
+                    <span>Timestamp</span><strong id="inspect-time">—</strong>
+                  </div>
+                  <div>
+                    <span>Message</span
+                    ><code id="inspect-message"
+                      >Scrub the timeline to inspect an event.</code
+                    >
+                  </div>
+                  <div>
+                    <span>Thread</span><strong id="inspect-thread">—</strong>
+                  </div>
+                  <div>
+                    <span>Cost</span><strong id="inspect-cost">—</strong>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </section>
+          <section id="hotspots-view" class="view">
+            <section class="panel">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">WHERE THE TIME GOES</p>
+                  <h3>Attributed time over the run, stacked by actor</h3>
+                </div>
+                <span class="muted"
+                  >each step owns the time until the next step on its
+                  thread</span
+                >
+              </div>
+              <canvas
+                id="share-chart"
+                class="share-chart"
+                height="220"
+                aria-label="Attributed time over the run by actor"
+              ></canvas>
+            </section>
+            <div class="two-col">
+              <section class="panel">
+                <div class="panel-head">
+                  <div>
+                    <p class="eyebrow">ACTORS</p>
+                    <h3>Time by actor</h3>
+                  </div>
+                  <span id="actor-total" class="badge">—</span>
+                </div>
+                <div id="actor-list" class="rank-list"></div>
+              </section>
+              <section class="panel">
+                <div class="panel-head">
+                  <div>
+                    <p class="eyebrow">OPERATIONS</p>
+                    <h3>Time by repeated operation</h3>
+                  </div>
+                </div>
+                <div id="template-list" class="rank-list"></div>
+              </section>
+            </div>
+            <section class="panel">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">SLOWEST STEPS</p>
+                  <h3>Individual steps by measured or inferred cost</h3>
+                </div>
+              </div>
+              <div id="slow-list" class="rank-list"></div>
+            </section>
+          </section>
+          <section id="workers-view" class="view">
+            <section class="panel">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">CONCURRENCY</p>
+                  <h3>Per-thread Gantt of attributed intervals</h3>
+                </div>
+                <span class="muted"
+                  >red bars are waits of 250 ms or more · follows the profiler
+                  zoom</span
+                >
+              </div>
+              <canvas
+                id="worker-chart"
+                class="gantt-chart"
+                height="160"
+                aria-label="Per-thread execution intervals"
+              ></canvas>
+            </section>
+            <section class="panel">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">THREADS</p>
+                  <h3>Worker load</h3>
+                </div>
+              </div>
+              <div id="worker-list" class="rank-list"></div>
+            </section>
+          </section>
+          <section id="resources-view" class="view">
+            <section class="panel">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">RESOURCES</p>
+                  <h3>CPU, memory and disk I/O of the whole process tree</h3>
+                </div>
+                <span id="resource-note" class="muted">—</span>
+              </div>
+              <div class="cursor-metrics">
+                <article>
+                  <span>CPU mean</span><strong id="res-cpu-mean">—</strong>
+                </article>
+                <article>
+                  <span>CPU peak</span><strong id="res-cpu-peak">—</strong>
+                </article>
+                <article>
+                  <span>Memory peak</span><strong id="res-rss-peak">—</strong>
+                </article>
+                <article>
+                  <span>Disk read</span><strong id="res-read">—</strong>
+                </article>
+                <article>
+                  <span>Disk written</span><strong id="res-write">—</strong>
+                </article>
+                <article>
+                  <span>Peak processes</span><strong id="res-procs">—</strong>
+                </article>
+              </div>
+              <div class="timeline-shell">
+                <canvas
+                  id="cpu-chart"
+                  class="resource-chart"
+                  aria-label="CPU use over time"
+                ></canvas>
+                <canvas
+                  id="mem-chart"
+                  class="resource-chart"
+                  aria-label="Memory over time"
+                ></canvas>
+                <canvas
+                  id="io-chart"
+                  class="resource-chart"
+                  aria-label="Disk I/O over time"
+                ></canvas>
+                <div
+                  id="resource-tooltip"
+                  class="timeline-tooltip"
+                  hidden
+                ></div>
+              </div>
+              <p class="muted graph-hint">
+                red bands are stalls · zoom and pan follow the shared viewport
+              </p>
+            </section>
+            <section class="panel">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">CPU-BOUND OR WAITING</p>
+                  <h3>Resource profile by actor</h3>
+                </div>
+              </div>
+              <div id="resource-actors" class="rank-list"></div>
+            </section>
+          </section>
+          <section id="stages-view" class="view">
+            <section class="panel">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">STAGE BREAKDOWN</p>
+                  <h3>Stage boundaries and inferred duration</h3>
+                </div>
+              </div>
+              <div id="stage-list" class="stage-list"></div>
+            </section>
+          </section>
+          <section id="events-view" class="view">
+            <section class="panel">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">TRACE</p>
+                  <h3>Raw event stream</h3>
+                </div>
+                <span id="event-count" class="badge">—</span>
+              </div>
+              <div id="event-list" class="event-list"></div>
+            </section>
+          </section>
+        </section>
+      </section>
+    </main>
+    <template id="tool-template">
+      <button class="tool-card" type="button">
+        <span class="tool-marker"></span
+        ><span class="tool-copy"
+          ><strong data-field="name"></strong
+          ><small data-field="meta"></small></span
+        ><span class="tool-duration" data-field="duration"></span>
+      </button>
+    </template>
+    <template id="gap-template">
+      <article class="rank-row">
+        <span class="rank-index" data-field="rank"></span>
+        <div class="rank-main">
+          <strong data-field="title"></strong
+          ><small data-field="detail"></small>
+          <div class="meter"><i data-field="bar"></i></div>
+        </div>
+        <span class="rank-value" data-field="value"></span>
+      </article>
+    </template>
+    <template id="prefix-template">
+      <article class="rank-row compact">
+        <span class="rank-index" data-field="rank"></span>
+        <div class="rank-main">
+          <strong data-field="title"></strong
+          ><small data-field="detail"></small>
+          <div class="meter"><i data-field="bar"></i></div>
+        </div>
+        <span class="rank-value" data-field="value"></span>
+      </article>
+    </template>
+    <template id="stage-template">
+      <article class="stage-row">
+        <div class="stage-time">
+          <strong data-field="duration"></strong
+          ><small data-field="start"></small>
+        </div>
+        <div class="stage-track"><i data-field="bar"></i></div>
+        <div class="stage-copy">
+          <strong data-field="name"></strong><small data-field="detail"></small>
+        </div>
+      </article>
+    </template>
+    <template id="crumb-template"
+      ><span class="crumb"
+        ><button type="button" data-field="label"></button></span
+    ></template>
+    <template id="event-template">
+      <article class="event-row">
+        <time data-field="time"></time
+        ><span class="event-delta" data-field="delta"></span
+        ><code data-field="message"></code>
+      </article>
+    </template>
+    <script src="data.js" defer></script>
+    <script src="code.js" defer></script>
+  </body>
+</html>

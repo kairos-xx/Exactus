@@ -1,0 +1,48 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ES2022",
+    "moduleResolution": "bundler",
+    "allowJs": true,
+    "checkJs": true,
+    "noEmit": true,
+    "strict": true,
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "exactOptionalPropertyTypes": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "useUnknownInCatchVariables": true,
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "maxNodeModuleJsDepth": 0,
+    "resolveJsonModule": true,
+    "skipLibCheck": false,
+    "types": ["node"],
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    // The Studio serves the top-level exactus/packages/ folder as web/packages/, so
+    // imports written against the served path resolve to the real files.
+    "rootDirs": ["exactus/tools/record/studio/web/packages", "exactus/packages"]
+  },
+  "include": ["**/*.js", "**/*.mjs", "**/*.cjs", "**/*.d.ts"],
+  "exclude": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/coverage/**",
+    "**/.cache/**",
+    "**/.venv/**",
+    "**/.history/**",
+    "**/EXACTUS_RESULTS/**",
+    "exactus/bundle/**",
+    "dev/**",
+  ]
+}

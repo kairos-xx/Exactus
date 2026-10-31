@@ -1,0 +1,7 @@
+{
+  "workflow_rows": "extension.workflows",
+  "recipe_actions": "extension.actions",
+  "screenshots": "extension.screenshots",
+  "browser_diagnostics": "extension.browser_diagnostics",
+  "server_diagnostics": "extension.server_diagnostics"
+}

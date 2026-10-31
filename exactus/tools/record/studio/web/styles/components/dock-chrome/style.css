@@ -1,0 +1,151 @@
+/**
+ * Compact headers and dock chrome.
+ *
+ * Sources: 22-dock-chrome.
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+@layer studio-base {
+  /* Source: 22-dock-chrome */
+  .panel[data-panel-id] > header {
+    border-bottom: var(--docks-panel-data-panel-id-header-border-bottom);
+    background: var(--panel-header-surface);
+    box-shadow: var(--docks-panel-data-panel-id-header-box-shadow);
+  }
+  /* Dock headers are one compact row at every panel width. */
+  .panel[data-panel-id]:not(.is-collapsed) > header {
+    box-sizing: border-box;
+    width: var(--docks-panel-id-not-is-collapsed-header-width);
+    height: var(--studio-select-padding);
+    min-height: var(--studio-select-padding);
+    padding: var(--studio-status-padding);
+    flex-flow: row nowrap;
+    overflow: visible;
+    white-space: var(--docks-panel-id-not-is-collapsed-header-white-space);
+  }
+  .panel[data-panel-id] > header > :not(.panel-tools) {
+    min-width: var(--docks-panel-id-header-not-panel-tools-min-width);
+    max-height: var(--switch-track);
+  }
+  .workspace-add {
+    flex: var(--docks-workspace-add-flex);
+    overflow: hidden;
+    text-overflow: var(--docks-workspace-add-text-overflow);
+    white-space: var(--docks-workspace-add-white-space);
+  }
+  .workspace-add > .studio-icon {
+    flex: var(--docks-workspace-add-icon-flex);
+  }
+  .timeline-toolbar,
+  .graph-toolbar {
+    height: var(--switch-track);
+    min-height: var(--switch-track);
+    flex-wrap: nowrap;
+    overflow: auto hidden;
+    white-space: var(--docks-timeline-toolbar-white-space);
+  }
+  .timeline-toolbar > :is(button, input, label, select, span),
+  .graph-toolbar > :is(button, input, label, select, span) {
+    flex: var(--docks-timeline-toolbar-is-button-flex);
+    white-space: var(--docks-timeline-toolbar-is-button-white-space);
+  }
+  .panel :where(button, a, label, th, td, dt, dd, strong, small, span),
+  .topbar :where(button, a, strong, span) {
+    min-width: var(--docks-panel-where-button-min-width);
+  }
+  .panel :where(button, a, th, td, dt, dd, strong, small),
+  .topbar :where(button, a, strong) {
+    overflow: hidden;
+    text-overflow: var(--docks-panel-where-button-text-overflow);
+    white-space: var(--docks-panel-where-button-white-space);
+  }
+  .topbar {
+    background: var(--docks-topbar-background);
+    border-bottom-color: var(--docks-topbar-border-bottom-color);
+    box-shadow: var(--docks-topbar-box-shadow);
+  }
+  .panel[data-panel-id]:not(.is-floating) {
+    border-color: var(--docks-data-panel-id-not-is-floating-border-color);
+    background: var(--panel-content-surface);
+    box-shadow: var(--docks-data-panel-id-not-is-floating-box-shadow);
+  }
+  .panel[data-panel-id]:focus-within > header {
+    border-bottom-color: var(
+      --docks-data-panel-id-focus-within-header-border-bottom-color
+    );
+    background: var(--panel-header-active-surface);
+    box-shadow: var(--docks-data-panel-id-focus-within-header-box-shadow);
+  }
+  .panel:is(.graph, .preview, .timeline) {
+    background: var(--docks-panel-is-graph-background);
+  }
+  .panel:is(.workspace, .action-library, .inspector) {
+    background: var(--docks-panel-is-workspace-background);
+  }
+  .panel:is(.table-panel, .runs) {
+    background: var(--docks-panel-is-table-panel-background);
+  }
+  .panel.is-floating {
+    background: var(--docks-panel-is-floating-background);
+  }
+  .panel[data-panel-id].is-floating > header {
+    background: var(--docks-data-panel-id-is-floating-header-background);
+    border-bottom-color: var(
+      --docks-data-panel-id-is-floating-header-border-bottom-color
+    );
+  }
+  .action-library-body,
+  .tree,
+  .inspector-content {
+    background: var(--panel-content-surface);
+    box-shadow: var(--docks-action-library-body-box-shadow);
+  }
+  .action-grid button,
+  .tree-item,
+  .run-item {
+    border-color: var(--docks-action-grid-button-border-color);
+    background: var(--docks-action-grid-button-background);
+    box-shadow: var(--docks-action-grid-button-box-shadow);
+  }
+  .panel :is(button, input, select, textarea) {
+    border-color: var(--docks-panel-is-button-border-color);
+    box-shadow: var(--docks-panel-is-button-box-shadow);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .action-grid button:hover,
+    .tree-item:hover,
+    .run-item:hover {
+      background: var(
+        --docks-action-grid-button-hover-background-media-hover-and-pointer-fine
+      );
+      border-color: var(
+        --docks-action-grid-button-hover-border-color-media-hover-and-pointer-fine
+      );
+    }
+  }
+  .panel :is(input, select, textarea),
+  .number-control {
+    background: var(--docks-panel-is-input-background);
+    box-shadow: var(--docks-panel-is-input-box-shadow);
+  }
+  .flow-node,
+  .surface-card,
+  .assertion-card {
+    border-color: var(--docks-flow-node-border-color);
+    box-shadow: var(--docks-flow-node-box-shadow);
+  }
+  .flow-node.active {
+    box-shadow: var(--docks-flow-node-active-box-shadow);
+  }
+  .tree-item.active {
+    color: var(--text-strong);
+    background: var(--docks-tree-item-active-background);
+  }
+  .panel :is(.flow-node-meta, .node-port, small),
+  .action-library-body > p,
+  .run-item small,
+  .empty-panel {
+    color: var(--text-subtle);
+    font-size: var(--docks-panel-is-flow-node-meta-font-size);
+    font-weight: var(--docks-panel-is-flow-node-meta-font-weight);
+  }
+}

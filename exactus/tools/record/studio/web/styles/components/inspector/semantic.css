@@ -1,0 +1,151 @@
+/**
+ * Contextual aliases of the inspector component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  /* 08-inspector */
+  --inspector-a-focus-visible-outline-offset: var(
+    --catalog-control-border-micro-outline-offset
+  );
+  --inspector-action-grid-button-background: var(
+    --catalog-button-color-action-background
+  );
+  --inspector-action-grid-button-border-color: var(
+    --catalog-button-border-action-darkest-border-color
+  );
+  --inspector-action-grid-button-font-size: var(
+    --catalog-button-typography-small-font-size
+  );
+  --inspector-action-grid-button-padding: var(
+    --catalog-button-measure-shortcut-padding
+  );
+  --inspector-action-library-body-p-font-size: var(
+    --catalog-surface-typography-small-font-size
+  );
+  --inspector-action-library-body-p-margin: var(
+    --catalog-surface-measure-body-p-margin
+  );
+  --inspector-button-disabled-box-shadow: var(
+    --catalog-button-effect-default-box-shadow
+  );
+  --inspector-button-disabled-cursor: var(
+    --catalog-button-cursor-default-disabled-default-cursor
+  );
+  --inspector-button-disabled-opacity: var(
+    --catalog-button-effect-default-opacity
+  );
+  --inspector-check-input-background: var(
+    --catalog-field-color-check-input-background
+  );
+  --inspector-check-input-border: var(
+    --catalog-field-border-check-input-border
+  );
+  --inspector-check-input-flex-shrink: var(
+    --catalog-field-measure-check-input-flex-shrink
+  );
+  --inspector-check-input-height: var(--catalog-field-measure-normal-height);
+  --inspector-check-input-min-height: var(
+    --catalog-field-measure-normal-min-height
+  );
+  --inspector-check-input-order: var(--catalog-field-measure-check-input-order);
+  --inspector-content-form-margin-block: var(
+    --catalog-surface-measure-small-margin-block
+  );
+  --inspector-content-select-padding: var(
+    --catalog-field-measure-compact-padding
+  );
+  --inspector-content-select-width: var(--catalog-field-measure-full-width);
+  --inspector-content-textarea-width: var(--catalog-field-measure-full-width);
+  --inspector-data-table-button-overflow-wrap: var(
+    --catalog-button-measure-table-overflow-wrap
+  );
+  --inspector-data-table-button-white-space: var(
+    --catalog-button-typography-table-white-space
+  );
+  --inspector-data-table-td-border-bottom: var(
+    --catalog-table-border-td-border-bottom
+  );
+  --inspector-data-table-td-height: var(
+    --catalog-table-measure-large-minus-hairline-height
+  );
+  --inspector-data-table-td-overflow-wrap: var(
+    --catalog-table-measure-td-overflow-wrap
+  );
+  --inspector-data-table-td-padding: var(--catalog-table-measure-td-padding);
+  --inspector-data-table-td-text-align: var(
+    --catalog-table-typography-td-text-align
+  );
+  --inspector-data-table-td-text-overflow: var(
+    --catalog-table-typography-td-text-overflow
+  );
+  --inspector-data-table-td-white-space: var(
+    --catalog-table-typography-td-white-space
+  );
+  --inspector-field-code-font: var(--catalog-field-typography-code-font);
+  --inspector-field-code-text-overflow: var(
+    --catalog-field-typography-code-text-overflow
+  );
+  --inspector-flow-node-title-small-font-family: var(
+    --catalog-header-typography-title-small-font-family
+  );
+  --inspector-header-flex-shrink: var(
+    --catalog-header-measure-default-flex-shrink
+  );
+  --inspector-item-run-action-data-state-failed-color: var(
+    --catalog-item-color-action-state-failed-color
+  );
+  --inspector-item-run-action-data-state-skipped-color: var(
+    --catalog-item-color-action-state-notice-color
+  );
+  --inspector-item-run-action-data-state-succeeded-color: var(
+    --catalog-item-color-action-color
+  );
+  --inspector-node-actions-div-gap: var(--catalog-item-measure-compact-gap);
+  --inspector-node-actions-div-min-width: var(
+    --catalog-item-measure-node-div-min-width
+  );
+  --inspector-pre-height: var(--catalog-text-measure-pre-height);
+  --inspector-pre-padding: var(--catalog-text-measure-compact-padding);
+  --inspector-run-item-small-font-size: var(
+    --catalog-label-typography-small-font-size
+  );
+  --inspector-run-item-small-min-width: var(
+    --catalog-label-measure-item-small-min-width
+  );
+  --inspector-run-item-small-overflow-wrap: var(
+    --catalog-label-measure-item-small-overflow-wrap
+  );
+  --inspector-run-item-small-white-space: var(
+    --catalog-label-typography-item-small-white-space
+  );
+  --inspector-run-item-span-min-width: var(
+    --catalog-item-measure-span-min-width
+  );
+  --inspector-run-item-span-overflow-wrap: var(
+    --catalog-item-measure-span-overflow-wrap
+  );
+  --inspector-run-item-strong-min-width: var(
+    --catalog-item-measure-strong-min-width
+  );
+  --inspector-run-item-strong-overflow-wrap: var(
+    --catalog-item-measure-strong-overflow-wrap
+  );
+  --inspector-shot-figcaption-margin-top: var(
+    --catalog-control-measure-compact-margin-top
+  );
+  --inspector-shot-img-max-height: var(
+    --catalog-control-measure-page-plus-medium-max-height
+  );
+  --inspector-shot-img-max-width: var(--catalog-control-measure-full-max-width);
+  --inspector-summary-focus-visible-outline-offset: var(
+    --catalog-label-border-micro-outline-offset
+  );
+  --inspector-textarea-focus-visible-outline-offset: var(
+    --catalog-field-border-micro-outline-offset
+  );
+  --inspector-workspace-header-padding: var(
+    --catalog-header-measure-tiny-small-padding
+  );
+  /* 01-tokens */
+  --inspector-field-code-color: var(--catalog-field-color-code-color);
+}

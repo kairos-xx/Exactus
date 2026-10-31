@@ -1,0 +1,10 @@
+{
+  "name": "exactus",
+  "private": true,
+  "devDependencies": {
+    "@medv/finder": "^4.0.2",
+    "@types/node": "24.19.0",
+    "css-selector-generator": "^3.9.4",
+    "optimal-select": "^4.0.1"
+  }
+}
