@@ -1,31 +1,31 @@
-2026-10-31T02:56:29.218+00:00 +    0.001s kwargs typehints: arguments — root /Users/joaolopes/Exactus/exactus/tests/standalone/project, output /Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/KWARGS_TYPEHINTS
-2026-10-31T02:56:29.218+00:00 +    0.001s kwargs typehints: run start
-2026-10-31T02:56:29.219+00:00 +    0.002s       progress: settling source-producing dependencies (0/1)
-2026-10-31T02:56:29.221+00:00 +    0.004s     discover: 6 python files
-2026-10-31T02:56:29.226+00:00 +    0.009s       progress: indexing — /Users/joaolopes/Exactus/exactus/tests/standalone/project/conftest.py (1/6) @thread=ThreadPoolExecutor-38_1
-2026-10-31T02:56:29.226+00:00 +    0.009s       progress: indexing — /Users/joaolopes/Exactus/exactus/tests/standalone/project/tests/__init__.py (2/6) @thread=ThreadPoolExecutor-38_4
-2026-10-31T02:56:29.227+00:00 +    0.010s       progress: indexing — /Users/joaolopes/Exactus/exactus/tests/standalone/project/__init__.py (3/6) @thread=ThreadPoolExecutor-38_0
-2026-10-31T02:56:29.227+00:00 +    0.010s       progress: indexing — /Users/joaolopes/Exactus/exactus/tests/standalone/project/tests/test_calc.py (4/6) @thread=ThreadPoolExecutor-38_5
-2026-10-31T02:56:29.227+00:00 +    0.010s       progress: indexing — /Users/joaolopes/Exactus/exactus/tests/standalone/project/python/calc.py (5/6) @thread=ThreadPoolExecutor-38_3
-2026-10-31T02:56:29.228+00:00 +    0.011s       progress: indexing — /Users/joaolopes/Exactus/exactus/tests/standalone/project/python/__init__.py (6/6) @thread=ThreadPoolExecutor-38_2
-2026-10-31T02:56:29.228+00:00 +    0.012s   stage: scan sources
-2026-10-31T02:56:29.229+00:00 +    0.012s       progress: exactusing imports and hints — /Users/joaolopes/Exactus/exactus/tests/standalone/project/__init__.py (1/6)
-2026-10-31T02:56:29.229+00:00 +    0.013s       progress: exactusing imports and hints — /Users/joaolopes/Exactus/exactus/tests/standalone/project/conftest.py (2/6)
-2026-10-31T02:56:29.230+00:00 +    0.013s       progress: exactusing imports and hints — /Users/joaolopes/Exactus/exactus/tests/standalone/project/python/__init__.py (3/6)
-2026-10-31T02:56:29.230+00:00 +    0.013s       progress: exactusing imports and hints — /Users/joaolopes/Exactus/exactus/tests/standalone/project/python/calc.py (4/6)
-2026-10-31T02:56:29.230+00:00 +    0.013s       progress: exactusing imports and hints — /Users/joaolopes/Exactus/exactus/tests/standalone/project/tests/__init__.py (5/6)
-2026-10-31T02:56:29.231+00:00 +    0.014s       progress: exactusing imports and hints — /Users/joaolopes/Exactus/exactus/tests/standalone/project/tests/test_calc.py (6/6)
-2026-10-31T02:56:29.231+00:00 +    0.014s     scan: 0 bare imports, 0 type hints, (5, 5) calls checked
-2026-10-31T02:56:29.231+00:00 +    0.014s   stage: resolve calls
-2026-10-31T02:56:29.231+00:00 +    0.014s       progress: resolving calls — /Users/joaolopes/Exactus/exactus/tests/standalone/project/__init__.py (1/6)
-2026-10-31T02:56:29.340+00:00 +    0.123s       progress: resolving calls — /Users/joaolopes/Exactus/exactus/tests/standalone/project/conftest.py (2/6)
-2026-10-31T02:56:29.340+00:00 +    0.123s       progress: resolving calls — /Users/joaolopes/Exactus/exactus/tests/standalone/project/python/__init__.py (3/6)
-2026-10-31T02:56:29.340+00:00 +    0.123s       progress: resolving calls — /Users/joaolopes/Exactus/exactus/tests/standalone/project/python/calc.py (4/6)
-2026-10-31T02:56:29.340+00:00 +    0.123s       progress: resolving calls — /Users/joaolopes/Exactus/exactus/tests/standalone/project/tests/__init__.py (5/6)
-2026-10-31T02:56:29.354+00:00 +    0.137s       progress: resolving calls — /Users/joaolopes/Exactus/exactus/tests/standalone/project/tests/test_calc.py (6/6)
-2026-10-31T02:56:29.356+00:00 +    0.139s   stage: report
-2026-10-31T02:56:29.991+00:00 +    0.774s     report: bundle written — KWARGS_TYPEHINTS.md
-2026-10-31T02:56:29.991+00:00 +    0.774s       progress: fuzzing builtins (0/1)
-2026-10-31T02:56:30.734+00:00 +    1.517s     heuristics: written — heuristics.json
-2026-10-31T02:56:30.734+00:00 +    1.517s kwargs typehints: status 0 — 0 parse failures
-2026-10-31T02:56:30.735+00:00 +    1.518s kwargs typehints: run finished — status 0
+2026-10-31T05:10:45.542+00:00 +    0.001s kwargs typehints: arguments — root /Users/joaolopes/Exactus/exactus/tests/standalone/project, output /Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/KWARGS_TYPEHINTS
+2026-10-31T05:10:45.543+00:00 +    0.001s kwargs typehints: run start
+2026-10-31T05:10:45.543+00:00 +    0.001s       progress: settling source-producing dependencies (0/1)
+2026-10-31T05:10:45.546+00:00 +    0.004s     discover: 6 python files
+2026-10-31T05:10:45.555+00:00 +    0.013s       progress: indexing — /Users/joaolopes/Exactus/exactus/tests/standalone/project/__init__.py (1/6) @thread=ThreadPoolExecutor-14_0
+2026-10-31T05:10:45.558+00:00 +    0.016s       progress: indexing — /Users/joaolopes/Exactus/exactus/tests/standalone/project/python/__init__.py (2/6) @thread=ThreadPoolExecutor-14_1
+2026-10-31T05:10:45.559+00:00 +    0.018s       progress: indexing — /Users/joaolopes/Exactus/exactus/tests/standalone/project/python/calc.py (3/6) @thread=ThreadPoolExecutor-14_1
+2026-10-31T05:10:45.561+00:00 +    0.019s       progress: indexing — /Users/joaolopes/Exactus/exactus/tests/standalone/project/conftest.py (4/6) @thread=ThreadPoolExecutor-14_0
+2026-10-31T05:10:45.562+00:00 +    0.020s       progress: indexing — /Users/joaolopes/Exactus/exactus/tests/standalone/project/tests/__init__.py (5/6) @thread=ThreadPoolExecutor-14_2
+2026-10-31T05:10:45.563+00:00 +    0.021s       progress: indexing — /Users/joaolopes/Exactus/exactus/tests/standalone/project/tests/test_calc.py (6/6) @thread=ThreadPoolExecutor-14_1
+2026-10-31T05:10:45.564+00:00 +    0.022s   stage: scan sources
+2026-10-31T05:10:45.564+00:00 +    0.022s       progress: exactusing imports and hints — /Users/joaolopes/Exactus/exactus/tests/standalone/project/__init__.py (1/6)
+2026-10-31T05:10:45.565+00:00 +    0.023s       progress: exactusing imports and hints — /Users/joaolopes/Exactus/exactus/tests/standalone/project/conftest.py (2/6)
+2026-10-31T05:10:45.565+00:00 +    0.023s       progress: exactusing imports and hints — /Users/joaolopes/Exactus/exactus/tests/standalone/project/python/__init__.py (3/6)
+2026-10-31T05:10:45.565+00:00 +    0.024s       progress: exactusing imports and hints — /Users/joaolopes/Exactus/exactus/tests/standalone/project/python/calc.py (4/6)
+2026-10-31T05:10:45.566+00:00 +    0.024s       progress: exactusing imports and hints — /Users/joaolopes/Exactus/exactus/tests/standalone/project/tests/__init__.py (5/6)
+2026-10-31T05:10:45.567+00:00 +    0.025s       progress: exactusing imports and hints — /Users/joaolopes/Exactus/exactus/tests/standalone/project/tests/test_calc.py (6/6)
+2026-10-31T05:10:45.567+00:00 +    0.025s     scan: 0 bare imports, 0 type hints, (5, 5) calls checked
+2026-10-31T05:10:45.567+00:00 +    0.025s   stage: resolve calls
+2026-10-31T05:10:45.567+00:00 +    0.025s       progress: resolving calls — /Users/joaolopes/Exactus/exactus/tests/standalone/project/__init__.py (1/6)
+2026-10-31T05:10:45.684+00:00 +    0.142s       progress: resolving calls — /Users/joaolopes/Exactus/exactus/tests/standalone/project/conftest.py (2/6)
+2026-10-31T05:10:45.684+00:00 +    0.142s       progress: resolving calls — /Users/joaolopes/Exactus/exactus/tests/standalone/project/python/__init__.py (3/6)
+2026-10-31T05:10:45.684+00:00 +    0.142s       progress: resolving calls — /Users/joaolopes/Exactus/exactus/tests/standalone/project/python/calc.py (4/6)
+2026-10-31T05:10:45.684+00:00 +    0.142s       progress: resolving calls — /Users/joaolopes/Exactus/exactus/tests/standalone/project/tests/__init__.py (5/6)
+2026-10-31T05:10:45.704+00:00 +    0.162s       progress: resolving calls — /Users/joaolopes/Exactus/exactus/tests/standalone/project/tests/test_calc.py (6/6)
+2026-10-31T05:10:45.706+00:00 +    0.164s   stage: report
+2026-10-31T05:10:46.353+00:00 +    0.812s     report: bundle written — KWARGS_TYPEHINTS.md
+2026-10-31T05:10:46.354+00:00 +    0.812s       progress: fuzzing builtins (0/1)
+2026-10-31T05:10:47.625+00:00 +    2.083s     heuristics: written — heuristics.json
+2026-10-31T05:10:47.625+00:00 +    2.083s kwargs typehints: status 0 — 0 parse failures
+2026-10-31T05:10:47.626+00:00 +    2.084s kwargs typehints: run finished — status 0

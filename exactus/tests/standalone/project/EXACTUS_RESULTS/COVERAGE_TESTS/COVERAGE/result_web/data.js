@@ -3,7 +3,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
   "analyzer": "coverage",
   "comparison": {
     "available": true,
-    "previous_generated_at": "2026-10-31T02:36:09.287478+00:00",
+    "previous_generated_at": "2026-10-31T02:56:34.662386+00:00",
     "previous_run_id": null,
     "previous_status": null,
     "previous_duration_seconds": null,
@@ -23,7 +23,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
     "meta": {
       "format": 3,
       "version": "7.17.0",
-      "timestamp": "2026-10-31T02:56:34.632869",
+      "timestamp": "2026-10-31T05:10:50.132498",
       "branch_coverage": true,
       "show_contexts": false
     },
@@ -416,8 +416,8 @@ window.__REPORT_DATA__ = JSON.parse(`{
   },
   "findings": [],
   "fingerprint": {
-    "commit": "44699a6d15abc067a4fca0d73349a1b51d916daa",
-    "tree": "da1ed611a023a1100d5395906351fec79ba6db1b",
+    "commit": "282d5c7d9518d89751b13d3619d2ee2b3307402d",
+    "tree": "5e6a63ecb4a3768a5f1d9d3776696e9531905933",
     "dirty": true,
     "python": "3.13.9",
     "ruff": "ruff 0.12.0",
@@ -428,8 +428,8 @@ window.__REPORT_DATA__ = JSON.parse(`{
     "per_file_minimum": 80.0,
     "files_below": []
   },
-  "generated_at": "2026-10-31T02:56:34.662386+00:00",
-  "generated_at_human": "31 October 2026, 02:56:34 UTC",
+  "generated_at": "2026-10-31T05:10:50.167810+00:00",
+  "generated_at_human": "31 October 2026, 05:10:50 UTC",
   "import_graph": {
     "excused_sources": [],
     "ignored_non_local_imports": [
@@ -470,11 +470,11 @@ window.__REPORT_DATA__ = JSON.parse(`{
           "evidence": [],
           "level": "TEST-0",
           "metadata": {
-            "duration_seconds": 0.0008085410081548616,
-            "finished_at": "2026-10-31T02:56:34.480178+00:00",
+            "duration_seconds": 0.001103916991269216,
+            "finished_at": "2026-10-31T05:10:49.910683+00:00",
             "size_bytes": 295,
             "source_lines": 10,
-            "started_at": "2026-10-31T02:56:34.479376+00:00",
+            "started_at": "2026-10-31T05:10:49.909585+00:00",
             "worker_name": "meaningful_0"
           },
           "metrics": {
@@ -565,7 +565,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
     "result.md": "result.md",
     "result.json": "result.json"
   },
-  "markdown": "# Combined Coverage Exactus\\n\\n**Run time:** 31 October 2026, 02:56:34 UTC\\n\\n## Change since previous report\\n\\n| Findings | Current | Previous | Delta | Added | Resolved | Unchanged |\\n|---|---:|---:|---:|---:|---:|---:|\\n| Overall | 0 | 0 | 0 | 0 | 0 | 0 |\\n\\n\\n\\n## Summary\\n\\n- Status: **PASS**\\n- Coverage gate: **90.0**\\n- Per-file gate: **80.0** (0 file(s) below)\\n- Coverage: **100%**\\n- Statements: **5**\\n- Missing lines: **0**\\n- Covered lines: **5**\\n- Reachable local targets: **2**\\n- Ignored non-local imports: **2**\\n- Unreached source files: **1**\\n- JavaScript files measured: **1**\\n- JavaScript line coverage: **100.0%**\\n- JavaScript unreached sources: **0**\\n\\n## File coverage\\n\\n| File | Statements | Missing | Coverage |\\n| --- | ---: | ---: | ---: |\\n| [\`__init__.py\`](../../../__init__.py) | 0 | 0 | 100% |\\n| [\`python/__init__.py\`](../../../python/__init__.py) | 0 | 0 | 100% |\\n| [\`python/calc.py\`](../../../python/calc.py) | 5 | 0 | 100% |\\n| [\`tests/__init__.py\`](../../../tests/__init__.py) | 0 | 0 | 100% |\\n\\n## Import graph\\n\\n### Reachable local targets\\n\\n- [\`python/__init__.py\`](../../../python/__init__.py) (module \`python\`)\\n- [\`python/calc.py\`](../../../python/calc.py) (module \`python.calc\`)\\n\\n### Unreached source files\\n\\nThese files were not reached during measurement and are excluded from the percentages above.\\n\\n- [\`conftest.py\`](../../../conftest.py)\\n\\n### Ignored non-local imports\\n\\n- \`__future__\`\\n- \`typing\`\\n\\n## JavaScript coverage\\n\\n| File | Lines | Missing | Coverage |\\n| --- | ---: | ---: | ---: |\\n| [\`web/code.js\`](../../../web/code.js) | 21 | 0 | 100.00% |\\n",
+  "markdown": "# Combined Coverage Exactus\\n\\n**Run time:** 31 October 2026, 05:10:50 UTC\\n\\n## Change since previous report\\n\\n| Findings | Current | Previous | Delta | Added | Resolved | Unchanged |\\n|---|---:|---:|---:|---:|---:|---:|\\n| Overall | 0 | 0 | 0 | 0 | 0 | 0 |\\n\\n\\n\\n## Summary\\n\\n- Status: **PASS**\\n- Coverage gate: **90.0**\\n- Per-file gate: **80.0** (0 file(s) below)\\n- Coverage: **100%**\\n- Statements: **5**\\n- Missing lines: **0**\\n- Covered lines: **5**\\n- Reachable local targets: **2**\\n- Ignored non-local imports: **2**\\n- Unreached source files: **1**\\n- JavaScript files measured: **1**\\n- JavaScript line coverage: **100.0%**\\n- JavaScript unreached sources: **0**\\n\\n## File coverage\\n\\n| File | Statements | Missing | Coverage |\\n| --- | ---: | ---: | ---: |\\n| [\`__init__.py\`](../../../__init__.py) | 0 | 0 | 100% |\\n| [\`python/__init__.py\`](../../../python/__init__.py) | 0 | 0 | 100% |\\n| [\`python/calc.py\`](../../../python/calc.py) | 5 | 0 | 100% |\\n| [\`tests/__init__.py\`](../../../tests/__init__.py) | 0 | 0 | 100% |\\n\\n## Import graph\\n\\n### Reachable local targets\\n\\n- [\`python/__init__.py\`](../../../python/__init__.py) (module \`python\`)\\n- [\`python/calc.py\`](../../../python/calc.py) (module \`python.calc\`)\\n\\n### Unreached source files\\n\\nThese files were not reached during measurement and are excluded from the percentages above.\\n\\n- [\`conftest.py\`](../../../conftest.py)\\n\\n### Ignored non-local imports\\n\\n- \`__future__\`\\n- \`typing\`\\n\\n## JavaScript coverage\\n\\n| File | Lines | Missing | Coverage |\\n| --- | ---: | ---: | ---: |\\n| [\`web/code.js\`](../../../web/code.js) | 21 | 0 | 100.00% |\\n",
   "project_href": "../../../..",
   "project_root": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
   "report_bundle": {
@@ -574,8 +574,8 @@ window.__REPORT_DATA__ = JSON.parse(`{
     "web": "result_web"
   },
   "root": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
-  "run_at": "2026-10-31T02:56:34.662386+00:00",
-  "run_at_human": "31 October 2026, 02:56:34 UTC",
+  "run_at": "2026-10-31T05:10:50.167810+00:00",
+  "run_at_human": "31 October 2026, 05:10:50 UTC",
   "schema": "project-exactus-report/v1",
   "sections": [
     {

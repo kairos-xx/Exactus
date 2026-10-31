@@ -30,7 +30,7 @@
 
 ### Files
 
-- [`.DS_Store`](.DS_Store) — Provide .DS Store project content.
+No direct files besides this README.
 
 ### Subdirectories
 

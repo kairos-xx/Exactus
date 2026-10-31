@@ -4,60 +4,60 @@
     "dropped": 0,
     "events": [
       {
-        "at": "2026-10-31T02:56:18.637942+00:00",
+        "at": "2026-10-31T05:10:41.494468+00:00",
         "level": "info",
         "message": "started: Coverage_Tests"
       },
       {
-        "at": "2026-10-31T02:56:18.638307+00:00",
+        "at": "2026-10-31T05:10:41.495970+00:00",
         "level": "info",
         "message": "step: starting (Coverage_Tests)"
       },
       {
-        "at": "2026-10-31T02:56:19.648357+00:00",
+        "at": "2026-10-31T05:10:42.502718+00:00",
         "level": "info",
         "message": "step: index sources (1 test files)"
       },
       {
-        "at": "2026-10-31T02:56:20.661713+00:00",
+        "at": "2026-10-31T05:10:46.536192+00:00",
         "level": "info",
         "message": "step: pytest shard (shard 0 exit 0)"
       },
       {
-        "at": "2026-10-31T02:56:21.695384+00:00",
+        "at": "2026-10-31T05:10:47.545845+00:00",
         "level": "info",
         "message": "step: combine coverage"
       },
       {
-        "at": "2026-10-31T02:56:34.769266+00:00",
+        "at": "2026-10-31T05:10:50.616790+00:00",
         "level": "info",
         "message": "step: javascript lane"
       },
       {
-        "at": "2026-10-31T02:56:36.692796+00:00",
+        "at": "2026-10-31T05:10:52.637241+00:00",
         "level": "info",
-        "message": "finished: DONE (exit status 0) in 18.055s"
+        "message": "finished: DONE (exit status 0) in 11.143s"
       }
     ],
     "limit": 50
   },
-  "elapsed_seconds": 18.055,
+  "elapsed_seconds": 11.143,
   "extra": {
     "exit_code": 0,
-    "previous_duration_seconds": 6.893
+    "previous_duration_seconds": 17.845
   },
-  "finished_at": "2026-10-31T02:56:36.692852+00:00",
+  "finished_at": "2026-10-31T05:10:52.637301+00:00",
   "heartbeat": {
     "alive": false,
     "interval_seconds": 1.0,
-    "last_beat": "2026-10-31T02:56:36.692860+00:00",
+    "last_beat": "2026-10-31T05:10:52.637309+00:00",
     "phase": "finished",
-    "pid": 85829
+    "pid": 99520
   },
   "items": [],
   "kind": "tool",
   "name": "coverage_tests",
-  "pipeline_run_id": "f9656595c8b74d23b2b6aec3bd0db7de",
+  "pipeline_run_id": "2c65e21142f34f8db22b09b30d9044d1",
   "progress": {
     "completed": 10,
     "current": "Coverage_Tests",
@@ -91,9 +91,9 @@
     "step": "complete",
     "total": 10
   },
-  "run_id": "f9656595c8b74d23b2b6aec3bd0db7de:coverage_tests",
+  "run_id": "2c65e21142f34f8db22b09b30d9044d1:coverage_tests",
   "schema": "exactus/activity/v1",
-  "started_at": "2026-10-31T02:56:18.637829+00:00",
+  "started_at": "2026-10-31T05:10:41.494331+00:00",
   "status": "DONE",
-  "updated_at": "2026-10-31T02:56:36.692860+00:00"
+  "updated_at": "2026-10-31T05:10:52.637309+00:00"
 }

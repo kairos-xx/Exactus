@@ -2,8 +2,8 @@
 
 This is the CSS-first view of the same counterfactual evidence stored in `report.json`.
 
-- URL A: `http://127.0.0.1:64014/index.html`
-- URL B: `http://127.0.0.1:64014/index.html`
+- URL A: `http://127.0.0.1:53025/index.html`
+- URL B: `http://127.0.0.1:53025/index.html`
 - CSS target A: `/Users/joaolopes/Exactus/exactus/packages/visual_cause/examples/web/a.css`
 - CSS target B: `/Users/joaolopes/Exactus/exactus/packages/visual_cause/examples/web/b.css`
 

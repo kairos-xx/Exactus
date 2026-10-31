@@ -1,66 +1,66 @@
-2026-10-31T02:56:18.646+00:00 +    0.001s coverage tests: arguments — root /Users/joaolopes/Exactus/exactus/tests/standalone/project, output /Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS, jobs 18
-2026-10-31T02:56:18.646+00:00 +    0.001s coverage tests: run start
-2026-10-31T02:56:18.647+00:00 +    0.002s     discover tests: 1 of 1 test files
-2026-10-31T02:56:18.647+00:00 +    0.002s   stage: index sources
-2026-10-31T02:56:18.647+00:00 +    0.002s       progress: index sources — 1 test files (1/5)
-2026-10-31T02:56:18.649+00:00 +    0.003s     graph: 2 local targets, 2 ignored imports
-2026-10-31T02:56:18.649+00:00 +    0.004s     manifest: 1 tests, 2 targets, 0 unreached, 0 omitted
-2026-10-31T02:56:18.649+00:00 +    0.004s       purge: scratch tree, 0 stray data files
-2026-10-31T02:56:18.650+00:00 +    0.004s       config: .coveragerc.collect written — 0 omitted sources, 1 source roots
-2026-10-31T02:56:18.650+00:00 +    0.004s   stage: javascript lane — background start
-2026-10-31T02:56:18.650+00:00 +    0.005s   stage: pytest shards
-2026-10-31T02:56:18.653+00:00 +    0.007s       test shards: 1 genuine cached timings; estimated milliseconds 65
-2026-10-31T02:56:18.653+00:00 +    0.007s     test shards: 1 file shards over 1 test items — sizes 1
-2026-10-31T02:56:18.654+00:00 +    0.009s     discover js tests: 1 of 1 node:test files @thread=coverage-tests-javascript
-2026-10-31T02:56:18.654+00:00 +    0.009s     javascript lane: node --test 1 files @thread=coverage-tests-javascript
-2026-10-31T02:56:18.655+00:00 +    0.010s       exec program: node — 2 argv @thread=coverage-tests-javascript
-2026-10-31T02:56:18.689+00:00 +    0.043s     exec batch: 1 commands
-2026-10-31T02:56:18.689+00:00 +    0.044s       exec: python -m — 12 argv
-2026-10-31T02:56:18.763+00:00 +    0.117s       exec program: node — exit 0 in 0.107s @thread=coverage-tests-javascript
-2026-10-31T02:56:18.971+00:00 +    0.325s     javascript: 1 v8 files merged, 0 failures — exit 0 @thread=coverage-tests-javascript
-2026-10-31T02:56:20.170+00:00 +    1.525s       exec: python — exit 0 in 1.481s
-2026-10-31T02:56:20.171+00:00 +    1.525s       progress: pytest shard — shard 0 exit 0 (1/1)
-2026-10-31T02:56:20.172+00:00 +    1.527s       test shards: 1 direct timing samples, 1 persistent cached files
-2026-10-31T02:56:20.172+00:00 +    1.527s     test shards: all finished — exits 0
-2026-10-31T02:56:20.173+00:00 +    1.527s       shard 0: exit 0 — 2 tests, 0 failures, 0 skipped, 0 warnings
-2026-10-31T02:56:21.443+00:00 +    2.798s   stage: combine coverage
-2026-10-31T02:56:21.444+00:00 +    2.798s       progress: combine coverage (3/5)
-2026-10-31T02:56:21.445+00:00 +    2.799s       exec: python -m — 6 argv
-2026-10-31T02:56:21.710+00:00 +    3.065s       exec: python — exit 0 in 0.266s
-2026-10-31T02:56:21.711+00:00 +    3.066s     coverage combine --keep --quiet — exit 0
-2026-10-31T02:56:34.478+00:00 +   15.833s     unreached: 1 of 3 source files not reached
-2026-10-31T02:56:34.478+00:00 +   15.833s   stage: meaningful classification
-2026-10-31T02:56:34.478+00:00 +   15.833s     meaningful: 1 source files selected of 1 unreached — mode require
-2026-10-31T02:56:34.479+00:00 +   15.833s     meaningful: resolved 1 candidates in 0.000s
-2026-10-31T02:56:34.479+00:00 +   15.833s     meaningful: 1 workers for 1 files
-2026-10-31T02:56:34.479+00:00 +   15.834s         meaningful: conftest.py — fast scan TEST-0 @thread=meaningful_0
-2026-10-31T02:56:34.480+00:00 +   15.834s         meaningful: conftest.py — 0 evidence items @thread=meaningful_0
-2026-10-31T02:56:34.480+00:00 +   15.835s       progress: meaningful classification — /Users/joaolopes/Exactus/exactus/tests/standalone/project/conftest.py (1/1)
-2026-10-31T02:56:34.480+00:00 +   15.835s     meaningful: 1 findings, 0 failures in 0.002s
-2026-10-31T02:56:34.508+00:00 +   15.863s     meaningful: run complete — 1 findings, 0 failures
-2026-10-31T02:56:34.510+00:00 +   15.864s     meaningful: 1 rows — 0 actionable, 1 filtered, 0 unclassified
-2026-10-31T02:56:34.511+00:00 +   15.865s       meaningful: artifact written — meaningful.json, 1 rows
-2026-10-31T02:56:34.511+00:00 +   15.865s     meaningful: 1 rows — 0 actionable, 0 analysis errors
-2026-10-31T02:56:34.511+00:00 +   15.865s     omitted: 1 sources
-2026-10-31T02:56:34.511+00:00 +   15.866s     manifest: 1 tests, 2 targets, 1 unreached, 1 omitted
-2026-10-31T02:56:34.512+00:00 +   15.866s       config: .coveragerc.combined written — 1 omitted sources, 1 source roots
-2026-10-31T02:56:34.512+00:00 +   15.866s   stage: coverage report
-2026-10-31T02:56:34.512+00:00 +   15.866s       progress: coverage report (4/5)
-2026-10-31T02:56:34.512+00:00 +   15.867s       exec: python -m — 6 argv
-2026-10-31T02:56:34.659+00:00 +   16.013s       exec: python — exit 0 in 0.146s
-2026-10-31T02:56:34.659+00:00 +   16.014s     coverage json -o /Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS/ARTIFACTS/COVERAGE/coverage_raw_py.json — exit 0
-2026-10-31T02:56:34.660+00:00 +   16.014s   stage: javascript lane — finalize
-2026-10-31T02:56:34.660+00:00 +   16.014s       progress: javascript lane (9/10)
-2026-10-31T02:56:34.660+00:00 +   16.015s       report bundle: snippets prepared in 0.000s
-2026-10-31T02:56:34.661+00:00 +   16.015s       report bundle: markdown prepared in 0.000s
-2026-10-31T02:56:35.196+00:00 +   16.551s       report bundle: generic bundle written at 0.536s
-2026-10-31T02:56:35.767+00:00 +   17.122s     report: result bundle written — /Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS/result.md
-2026-10-31T02:56:35.767+00:00 +   17.122s       report bundle: coverage report written at 1.107s
-2026-10-31T02:56:35.767+00:00 +   17.122s   stage: gates and finalization
-2026-10-31T02:56:35.768+00:00 +   17.123s       purge: scratch tree, 0 stray data files
-2026-10-31T02:56:35.768+00:00 +   17.123s   coverage tests: gates — total 100.0%, threshold status 0, execution status 0, final 0
-2026-10-31T02:56:35.769+00:00 +   17.123s   coverage tests: run finished — status 0
-2026-10-31T02:56:35.769+00:00 +   17.123s     validate: coverage 100.00% — marker, hash, and 0 critical patterns pass
-2026-10-31T02:56:35.769+00:00 +   17.124s   coverage tests: evidence validation — exit 0
-2026-10-31T02:56:36.481+00:00 +   17.836s     report: result bundle written — /Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS/result.md
-2026-10-31T02:56:36.482+00:00 +   17.836s coverage tests: done — status 0
+2026-10-31T05:10:41.509+00:00 +    0.001s coverage tests: arguments — root /Users/joaolopes/Exactus/exactus/tests/standalone/project, output /Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS, jobs 18
+2026-10-31T05:10:41.509+00:00 +    0.001s coverage tests: run start
+2026-10-31T05:10:41.510+00:00 +    0.002s     discover tests: 1 of 1 test files
+2026-10-31T05:10:41.510+00:00 +    0.002s   stage: index sources
+2026-10-31T05:10:41.510+00:00 +    0.002s       progress: index sources — 1 test files (1/5)
+2026-10-31T05:10:41.512+00:00 +    0.004s     graph: 2 local targets, 2 ignored imports
+2026-10-31T05:10:41.513+00:00 +    0.004s     manifest: 1 tests, 2 targets, 0 unreached, 0 omitted
+2026-10-31T05:10:41.513+00:00 +    0.005s       purge: scratch tree, 0 stray data files
+2026-10-31T05:10:41.518+00:00 +    0.009s       config: .coveragerc.collect written — 0 omitted sources, 1 source roots
+2026-10-31T05:10:41.518+00:00 +    0.013s   stage: javascript lane — background start
+2026-10-31T05:10:41.522+00:00 +    0.014s   stage: pytest shards
+2026-10-31T05:10:41.523+00:00 +    0.015s     discover js tests: 1 of 1 node:test files @thread=coverage-tests-javascript
+2026-10-31T05:10:41.523+00:00 +    0.015s     javascript lane: node --test 1 files @thread=coverage-tests-javascript
+2026-10-31T05:10:41.523+00:00 +    0.015s       exec program: node — 2 argv @thread=coverage-tests-javascript
+2026-10-31T05:10:41.531+00:00 +    0.023s       test shards: 1 genuine cached timings; estimated milliseconds 65
+2026-10-31T05:10:41.531+00:00 +    0.023s     test shards: 1 file shards over 1 test items — sizes 1
+2026-10-31T05:10:41.559+00:00 +    0.051s     exec batch: 1 commands
+2026-10-31T05:10:41.559+00:00 +    0.051s       exec: python3 -m — 12 argv
+2026-10-31T05:10:41.636+00:00 +    0.128s       exec program: node — exit 0 in 0.113s @thread=coverage-tests-javascript
+2026-10-31T05:10:41.856+00:00 +    0.348s     javascript: 1 v8 files merged, 0 failures — exit 0 @thread=coverage-tests-javascript
+2026-10-31T05:10:45.602+00:00 +    4.094s       exec: python3 — exit 0 in 4.043s
+2026-10-31T05:10:45.603+00:00 +    4.094s       progress: pytest shard — shard 0 exit 0 (1/1)
+2026-10-31T05:10:45.604+00:00 +    4.096s       test shards: 1 direct timing samples, 1 persistent cached files
+2026-10-31T05:10:45.605+00:00 +    4.096s     test shards: all finished — exits 0
+2026-10-31T05:10:45.605+00:00 +    4.097s       shard 0: exit 0 — 2 tests, 0 failures, 0 skipped, 0 warnings
+2026-10-31T05:10:46.880+00:00 +    5.372s   stage: combine coverage
+2026-10-31T05:10:46.880+00:00 +    5.372s       progress: combine coverage (3/5)
+2026-10-31T05:10:46.881+00:00 +    5.372s       exec: python3 -m — 6 argv
+2026-10-31T05:10:47.076+00:00 +    5.568s       exec: python3 — exit 0 in 0.195s
+2026-10-31T05:10:47.079+00:00 +    5.570s     coverage combine --keep --quiet — exit 0
+2026-10-31T05:10:49.905+00:00 +    8.397s     unreached: 1 of 3 source files not reached
+2026-10-31T05:10:49.905+00:00 +    8.397s   stage: meaningful classification
+2026-10-31T05:10:49.905+00:00 +    8.397s     meaningful: 1 source files selected of 1 unreached — mode require
+2026-10-31T05:10:49.908+00:00 +    8.400s     meaningful: resolved 1 candidates in 0.003s
+2026-10-31T05:10:49.909+00:00 +    8.400s     meaningful: 1 workers for 1 files
+2026-10-31T05:10:49.910+00:00 +    8.402s         meaningful: conftest.py — fast scan TEST-0 @thread=meaningful_0
+2026-10-31T05:10:49.910+00:00 +    8.402s         meaningful: conftest.py — 0 evidence items @thread=meaningful_0
+2026-10-31T05:10:49.912+00:00 +    8.404s       progress: meaningful classification — /Users/joaolopes/Exactus/exactus/tests/standalone/project/conftest.py (1/1)
+2026-10-31T05:10:49.913+00:00 +    8.405s     meaningful: 1 findings, 0 failures in 0.005s
+2026-10-31T05:10:49.958+00:00 +    8.450s     meaningful: run complete — 1 findings, 0 failures
+2026-10-31T05:10:49.959+00:00 +    8.451s     meaningful: 1 rows — 0 actionable, 1 filtered, 0 unclassified
+2026-10-31T05:10:49.960+00:00 +    8.452s       meaningful: artifact written — meaningful.json, 1 rows
+2026-10-31T05:10:49.960+00:00 +    8.452s     meaningful: 1 rows — 0 actionable, 0 analysis errors
+2026-10-31T05:10:49.960+00:00 +    8.452s     omitted: 1 sources
+2026-10-31T05:10:49.961+00:00 +    8.453s     manifest: 1 tests, 2 targets, 1 unreached, 1 omitted
+2026-10-31T05:10:49.962+00:00 +    8.453s       config: .coveragerc.combined written — 1 omitted sources, 1 source roots
+2026-10-31T05:10:49.962+00:00 +    8.453s   stage: coverage report
+2026-10-31T05:10:49.962+00:00 +    8.454s       progress: coverage report (4/5)
+2026-10-31T05:10:49.963+00:00 +    8.455s       exec: python3 -m — 6 argv
+2026-10-31T05:10:50.164+00:00 +    8.655s       exec: python3 — exit 0 in 0.200s
+2026-10-31T05:10:50.164+00:00 +    8.656s     coverage json -o /Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS/ARTIFACTS/COVERAGE/coverage_raw_py.json — exit 0
+2026-10-31T05:10:50.165+00:00 +    8.656s   stage: javascript lane — finalize
+2026-10-31T05:10:50.165+00:00 +    8.657s       progress: javascript lane (9/10)
+2026-10-31T05:10:50.165+00:00 +    8.657s       report bundle: snippets prepared in 0.000s
+2026-10-31T05:10:50.166+00:00 +    8.657s       report bundle: markdown prepared in 0.000s
+2026-10-31T05:10:50.825+00:00 +    9.317s       report bundle: generic bundle written at 0.660s
+2026-10-31T05:10:51.617+00:00 +   10.109s     report: result bundle written — /Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS/result.md
+2026-10-31T05:10:51.617+00:00 +   10.109s       report bundle: coverage report written at 1.452s
+2026-10-31T05:10:51.618+00:00 +   10.109s   stage: gates and finalization
+2026-10-31T05:10:51.620+00:00 +   10.112s       purge: scratch tree, 0 stray data files
+2026-10-31T05:10:51.620+00:00 +   10.112s   coverage tests: gates — total 100.0%, threshold status 0, execution status 0, final 0
+2026-10-31T05:10:51.620+00:00 +   10.112s   coverage tests: run finished — status 0
+2026-10-31T05:10:51.621+00:00 +   10.113s     validate: coverage 100.00% — marker, hash, and 0 critical patterns pass
+2026-10-31T05:10:51.621+00:00 +   10.113s   coverage tests: evidence validation — exit 0
+2026-10-31T05:10:52.307+00:00 +   10.799s     report: result bundle written — /Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS/result.md
+2026-10-31T05:10:52.307+00:00 +   10.799s coverage tests: done — status 0

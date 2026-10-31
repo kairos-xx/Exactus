@@ -4,55 +4,55 @@
     "dropped": 0,
     "events": [
       {
-        "at": "2026-10-31T02:56:04.560208+00:00",
+        "at": "2026-10-31T05:10:25.732200+00:00",
         "level": "info",
         "message": "started: Lints"
       },
       {
-        "at": "2026-10-31T02:56:04.565293+00:00",
+        "at": "2026-10-31T05:10:25.732509+00:00",
         "level": "info",
         "message": "step: starting (Lints)"
       },
       {
-        "at": "2026-10-31T02:56:05.576041+00:00",
+        "at": "2026-10-31T05:10:26.741824+00:00",
         "level": "info",
-        "message": "step: clean"
+        "message": "step: toolchain"
       },
       {
-        "at": "2026-10-31T02:56:06.582893+00:00",
+        "at": "2026-10-31T05:10:27.748412+00:00",
         "level": "info",
-        "message": "step: all lints (eslint: tests/code.test.mjs)"
+        "message": "step: all lints"
       },
       {
-        "at": "2026-10-31T02:56:09.599282+00:00",
+        "at": "2026-10-31T05:10:32.778773+00:00",
         "level": "info",
         "message": "step: compliance and report"
       },
       {
-        "at": "2026-10-31T02:56:11.358306+00:00",
+        "at": "2026-10-31T05:10:35.313400+00:00",
         "level": "info",
-        "message": "finished: DONE (exit status 0) in 6.798s"
+        "message": "finished: DONE (exit status 0) in 9.581s"
       }
     ],
     "limit": 50
   },
-  "elapsed_seconds": 6.798,
+  "elapsed_seconds": 9.581,
   "extra": {
     "exit_code": 0,
-    "previous_duration_seconds": 5.613
+    "previous_duration_seconds": 6.627
   },
-  "finished_at": "2026-10-31T02:56:11.358357+00:00",
+  "finished_at": "2026-10-31T05:10:35.313601+00:00",
   "heartbeat": {
     "alive": false,
     "interval_seconds": 1.0,
-    "last_beat": "2026-10-31T02:56:11.358361+00:00",
+    "last_beat": "2026-10-31T05:10:35.313612+00:00",
     "phase": "finished",
-    "pid": 85280
+    "pid": 98921
   },
   "items": [],
   "kind": "tool",
   "name": "lints",
-  "pipeline_run_id": "f9656595c8b74d23b2b6aec3bd0db7de",
+  "pipeline_run_id": "2c65e21142f34f8db22b09b30d9044d1",
   "progress": {
     "completed": 8,
     "current": "Lints",
@@ -86,9 +86,9 @@
     "step": "complete",
     "total": 8
   },
-  "run_id": "f9656595c8b74d23b2b6aec3bd0db7de:lints",
+  "run_id": "2c65e21142f34f8db22b09b30d9044d1:lints",
   "schema": "exactus/activity/v1",
-  "started_at": "2026-10-31T02:56:04.560095+00:00",
+  "started_at": "2026-10-31T05:10:25.732080+00:00",
   "status": "DONE",
-  "updated_at": "2026-10-31T02:56:11.358361+00:00"
+  "updated_at": "2026-10-31T05:10:35.313612+00:00"
 }

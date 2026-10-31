@@ -4,7 +4,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
   "tool": {
     "name": "docs",
     "display_name": "Documentation Exactus",
-    "version": "0.5.0"
+    "version": null
   },
   "summary": {
     "targets_eligible": 8,
@@ -42,10 +42,10 @@ window.__REPORT_DATA__ = JSON.parse(`{
   ],
   "comparison": {
     "available": true,
-    "previous_generated_at": "2026-10-31T02:36:03.136692+00:00",
-    "previous_run_id": "121cfe10a875424b95e7d42f9947eb9a:docs",
+    "previous_generated_at": "2026-10-31T02:56:19.786551+00:00",
+    "previous_run_id": "f9656595c8b74d23b2b6aec3bd0db7de:docs",
     "previous_status": "PASS",
-    "previous_duration_seconds": 0.647,
+    "previous_duration_seconds": 0.664,
     "current_total": 0,
     "previous_total": 0,
     "delta": 0,
@@ -143,7 +143,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
       }
     ]
   },
-  "duration_seconds": 0.664,
+  "duration_seconds": 0.831,
   "environment": {
     "os": "Darwin 25.3.0",
     "python": "3.13.9",
@@ -156,7 +156,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
       },
       {
         "name": "EXACTUS_PIPELINE_RUN_ID",
-        "value": "f9656595c8b74d23b2b6aec3bd0db7de"
+        "value": "2c65e21142f34f8db22b09b30d9044d1"
       },
       {
         "name": "EXACTUS_REGISTRY",
@@ -168,7 +168,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
       },
       {
         "name": "EXACTUS_RUN_ID",
-        "value": "f9656595c8b74d23b2b6aec3bd0db7de:docs"
+        "value": "2c65e21142f34f8db22b09b30d9044d1:docs"
       },
       {
         "name": "EXACTUS_TOOL",
@@ -176,7 +176,11 @@ window.__REPORT_DATA__ = JSON.parse(`{
       },
       {
         "name": "LANG",
-        "value": "C.UTF-8"
+        "value": "en_US.UTF-8"
+      },
+      {
+        "name": "TERM",
+        "value": "xterm-256color"
       }
     ]
   },
@@ -283,8 +287,8 @@ window.__REPORT_DATA__ = JSON.parse(`{
   },
   "findings": [],
   "fingerprint": {
-    "commit": "44699a6d15abc067a4fca0d73349a1b51d916daa",
-    "tree": "da1ed611a023a1100d5395906351fec79ba6db1b",
+    "commit": "282d5c7d9518d89751b13d3619d2ee2b3307402d",
+    "tree": "5e6a63ecb4a3768a5f1d9d3776696e9531905933",
     "dirty": true,
     "python": "3.13.9",
     "ruff": "ruff 0.12.0",
@@ -294,19 +298,19 @@ window.__REPORT_DATA__ = JSON.parse(`{
     "status": "PASS",
     "reason": "No blocking findings"
   },
-  "generated_at": "2026-10-31T02:56:19.786551+00:00",
-  "generated_at_human": "31 October 2026, 02:56:19 UTC",
+  "generated_at": "2026-10-31T05:10:43.649547+00:00",
+  "generated_at_human": "31 October 2026, 05:10:43 UTC",
   "invocation": {
-    "command": "/Users/joaolopes/Exactus/bin/release/exactus_macos_arm64/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=60223 --orchestrator-control-token=[redacted] --orchestrator-worker-port=60194 --orchestrator-worker-token=[redacted] '--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"docs\\",\\"module\\":\\"exactus.tools.docs.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/DOCS\\",\\"arguments\\":[],\\"run_id\\":\\"f9656595c8b74d23b2b6aec3bd0db7de:docs\\",\\"pipeline_run_id\\":\\"f9656595c8b74d23b2b6aec3bd0db7de\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}'",
+    "command": "/usr/local/bin/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=62416 --orchestrator-control-token=[redacted] --orchestrator-worker-port=62365 --orchestrator-worker-token=[redacted] '--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"docs\\",\\"module\\":\\"exactus.tools.docs.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/DOCS\\",\\"arguments\\":[],\\"run_id\\":\\"2c65e21142f34f8db22b09b30d9044d1:docs\\",\\"pipeline_run_id\\":\\"2c65e21142f34f8db22b09b30d9044d1\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}'",
     "cwd": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
     "arguments": [
       "exactus.tools.common.tool_worker",
       "ExactusTool",
-      "--orchestrator-control-port=60223",
+      "--orchestrator-control-port=62416",
       "--orchestrator-control-token=[redacted]",
-      "--orchestrator-worker-port=60194",
+      "--orchestrator-worker-port=62365",
       "--orchestrator-worker-token=[redacted]",
-      "--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"docs\\",\\"module\\":\\"exactus.tools.docs.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/DOCS\\",\\"arguments\\":[],\\"run_id\\":\\"f9656595c8b74d23b2b6aec3bd0db7de:docs\\",\\"pipeline_run_id\\":\\"f9656595c8b74d23b2b6aec3bd0db7de\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}"
+      "--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"docs\\",\\"module\\":\\"exactus.tools.docs.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/DOCS\\",\\"arguments\\":[],\\"run_id\\":\\"2c65e21142f34f8db22b09b30d9044d1:docs\\",\\"pipeline_run_id\\":\\"2c65e21142f34f8db22b09b30d9044d1\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}"
     ]
   },
   "local_links": {
@@ -322,10 +326,10 @@ window.__REPORT_DATA__ = JSON.parse(`{
     "ARTIFACTS/stdout.log": "ARTIFACTS/stdout.log",
     "ARTIFACTS/steps.txt": "ARTIFACTS/steps.txt"
   },
-  "markdown": "# Documentation Exactus\\n\\n**Run time:** 31 October 2026, 02:56:19 UTC\\n\\n## Identity\\n\\n| Field | Value |\\n|---|---|\\n| Tool | docs 0.5.0 |\\n| Run ID | f9656595c8b74d23b2b6aec3bd0db7de:docs |\\n| Pipeline run | f9656595c8b74d23b2b6aec3bd0db7de |\\n| Status | PASS |\\n| Exit code | 0 |\\n| Started | 31 October 2026, 02:56:19 UTC |\\n| Finished | 31 October 2026, 02:56:20 UTC |\\n| Duration | 0.7 s |\\n| Previous duration | 0.647s |\\n\\n## What was checked\\n\\n**Result: PASS** — 0 findings across 8 of 8 eligible targets.\\n\\n| Severity | Count |\\n|---|---:|\\n| ERROR | 0 |\\n| WARNING | 0 |\\n| INFO | 0 |\\n\\n### Change since previous report\\n\\n| Metric | Current | Previous | Delta |\\n|---|---:|---:|---:|\\n| Findings | 0 | 0 | 0 |\\n| Previous duration | 0.647s | | |\\n\\n| Finding change | Count |\\n|---|---:|\\n| Added | 0 |\\n| Resolved | 0 |\\n| Unchanged | 0 |\\n\\n#### Category findings\\n\\n| Category | Title | Findings | Previous | Delta |\\n| --- | --- | --- | --- | --- |\\n| DOC001 | Missing documentation | 0 | 0 | 0 |\\n| DOC002 | Missing parameter documentation | 0 | 0 | 0 |\\n| DOC003 | Stale parameter documentation | 0 | 0 | 0 |\\n| DOC004 | Missing return documentation | 0 | 0 | 0 |\\n| DOC005 | Return and yield mismatch | 0 | 0 | 0 |\\n| DOC006 | Missing exception documentation | 0 | 0 | 0 |\\n| DOC007 | Missing attribute documentation | 0 | 0 | 0 |\\n| DOC008 | Malformed documentation | 0 | 0 | 0 |\\n| DOC009 | Analysis failure | 0 | 0 | 0 |\\n| DOC010 | Missing description | 0 | 0 | 0 |\\n| DOC011 | Stale exception documentation | 0 | 0 | 0 |\\n| DOC012 | Stale attribute documentation | 0 | 0 | 0 |\\n\\n### Scope\\n\\n**Included**\\n\\n- \`**/*.js\`\\n- \`**/*.mjs\`\\n- \`**/*.cjs\`\\n- \`**/*.py\`\\n\\n**Excluded**\\n\\n- \`**/.agents/**\`\\n- \`**/.build-cache/**\`\\n- \`**/.cache/**\`\\n- \`**/.claude/**\`\\n- \`**/.cursor/**\`\\n- \`**/.devin/**\`\\n- \`**/.eggs/**\`\\n- \`**/.git/**\`\\n- \`**/.history/**\`\\n- \`**/.mypy_cache/**\`\\n- \`**/.pytest_cache/**\`\\n- \`**/.ruff_cache/**\`\\n- \`**/.tox/**\`\\n- \`**/.venv/**\`\\n- \`**/EXACTUS_RESULTS/**\`\\n- \`**/__pycache__/**\`\\n- \`**/build/**\`\\n- \`**/coverage_report/**\`\\n- \`**/dist/**\`\\n- \`**/env/**\`\\n- \`**/htmlcov/**\`\\n- \`**/mutants/**\`\\n- \`**/node_modules/**\`\\n- \`**/site-packages/**\`\\n- \`**/venv/**\`\\n- \`**/.*/**\`\\n- \`**/*.min.js\`\\n\\n**Skipped targets**\\n\\nNo skipped targets.\\n\\n## Setup\\n\\n### Invocation\\n\\n~~~~shell\\n/Users/joaolopes/Exactus/bin/release/exactus_macos_arm64/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=60223 --orchestrator-control-token=[redacted] --orchestrator-worker-port=60194 --orchestrator-worker-token=[redacted] '--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"docs\\",\\"module\\":\\"exactus.tools.docs.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/DOCS\\",\\"arguments\\":[],\\"run_id\\":\\"f9656595c8b74d23b2b6aec3bd0db7de:docs\\",\\"pipeline_run_id\\":\\"f9656595c8b74d23b2b6aec3bd0db7de\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}'\\n~~~~\\n\\n| Property | Value |\\n|---|---|\\n| Working directory | [/Users/joaolopes/Exactus/exactus/tests/standalone/project](../..) |\\n| Arguments | \`exactus.tools.common.tool_worker\` \`ExactusTool\` \`--orchestrator-control-port=60223\` \`--orchestrator-control-token=[redacted]\` \`--orchestrator-worker-port=60194\` \`--orchestrator-worker-token=[redacted]\` \`--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"docs\\",\\"module\\":\\"exactus.tools.docs.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/DOCS\\",\\"arguments\\":[],\\"run_id\\":\\"f9656595c8b74d23b2b6aec3bd0db7de:docs\\",\\"pipeline_run_id\\":\\"f9656595c8b74d23b2b6aec3bd0db7de\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}\` |\\n\\n### Environment\\n\\n| Property | Value |\\n|---|---|\\n| OS | Darwin 25.3.0 |\\n| Python | 3.13.9 |\\n| Node | v22.21.1 |\\n| CPU count | 18 |\\n\\n| Variable | Value |\\n| --- | --- |\\n| EXACTUS_ORCHESTRATED | 1 |\\n| EXACTUS_PIPELINE_RUN_ID | f9656595c8b74d23b2b6aec3bd0db7de |\\n| EXACTUS_REGISTRY | [/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/.runtime/runs.db](../.runtime/runs.db) |\\n| EXACTUS_ROOT | [/Users/joaolopes/Exactus/exactus/tests/standalone/project](../..) |\\n| EXACTUS_RUN_ID | f9656595c8b74d23b2b6aec3bd0db7de:docs |\\n| EXACTUS_TOOL | docs |\\n| LANG | C.UTF-8 |\\n\\n## Gate\\n\\n> **Gate: PASS** — No blocking findings\\n\\nNo blocking findings.\\n\\n## Findings\\n\\nNo findings.\\n\\n## Artifacts\\n\\n| Artifact | Path | Bytes |\\n| --- | --- | --- |\\n| @activity.json | [ARTIFACTS/@activity.json](ARTIFACTS/%40activity.json) | 1648 |\\n| README.md | [ARTIFACTS/README.md](ARTIFACTS/README.md) | 448 |\\n| stderr.log | [ARTIFACTS/stderr.log](ARTIFACTS/stderr.log) | 0 |\\n| stdout.log | [ARTIFACTS/stdout.log](ARTIFACTS/stdout.log) | 0 |\\n| steps.txt | [ARTIFACTS/steps.txt](ARTIFACTS/steps.txt) | 1754 |\\n\\n## Documentation statistics\\n\\n| Language | Files | Parsed | Failed | Symbols | Documented | Coverage % | Findings |\\n| --- | --- | --- | --- | --- | --- | --- | --- |\\n| javascript | 2 | 2 | 0 | 3 | 3 | 100.0 | 0 |\\n| python | 6 | 6 | 0 | 12 | 12 | 100.0 | 0 |\\n\\n## Analyzed code\\n\\n| Language | Files | Lines |\\n| --- | --- | --- |\\n| javascript | 2 | 35 |\\n| python | 6 | 91 |\\n\\n## Rules\\n\\n| Rule | Title | Findings |\\n| --- | --- | --- |\\n| DOC001 | Missing documentation | 0 |\\n| DOC002 | Missing parameter documentation | 0 |\\n| DOC003 | Stale parameter documentation | 0 |\\n| DOC004 | Missing return documentation | 0 |\\n| DOC005 | Return and yield mismatch | 0 |\\n| DOC006 | Missing exception documentation | 0 |\\n| DOC007 | Missing attribute documentation | 0 |\\n| DOC008 | Malformed documentation | 0 |\\n| DOC009 | Analysis failure | 0 |\\n| DOC010 | Missing description | 0 |\\n| DOC011 | Stale exception documentation | 0 |\\n| DOC012 | Stale attribute documentation | 0 |\\n\\n## Suggested documentation\\n\\nNo suggestions.\\n\\n---\\n\\nExactus · docs 0.5.0 · Run f9656595c8b74d23b2b6aec3bd0db7de:docs · Result PASS · Duration 0.7 s\\n",
+  "markdown": "# Documentation Exactus\\n\\n**Run time:** 31 October 2026, 05:10:43 UTC\\n\\n## Identity\\n\\n| Field | Value |\\n|---|---|\\n| Tool | docs |\\n| Run ID | 2c65e21142f34f8db22b09b30d9044d1:docs |\\n| Pipeline run | 2c65e21142f34f8db22b09b30d9044d1 |\\n| Status | PASS |\\n| Exit code | 0 |\\n| Started | 31 October 2026, 05:10:43 UTC |\\n| Finished | 31 October 2026, 05:10:44 UTC |\\n| Duration | 0.8 s |\\n| Previous duration | 0.664s |\\n\\n## What was checked\\n\\n**Result: PASS** — 0 findings across 8 of 8 eligible targets.\\n\\n| Severity | Count |\\n|---|---:|\\n| ERROR | 0 |\\n| WARNING | 0 |\\n| INFO | 0 |\\n\\n### Change since previous report\\n\\n| Metric | Current | Previous | Delta |\\n|---|---:|---:|---:|\\n| Findings | 0 | 0 | 0 |\\n| Previous duration | 0.664s | | |\\n\\n| Finding change | Count |\\n|---|---:|\\n| Added | 0 |\\n| Resolved | 0 |\\n| Unchanged | 0 |\\n\\n#### Category findings\\n\\n| Category | Title | Findings | Previous | Delta |\\n| --- | --- | --- | --- | --- |\\n| DOC001 | Missing documentation | 0 | 0 | 0 |\\n| DOC002 | Missing parameter documentation | 0 | 0 | 0 |\\n| DOC003 | Stale parameter documentation | 0 | 0 | 0 |\\n| DOC004 | Missing return documentation | 0 | 0 | 0 |\\n| DOC005 | Return and yield mismatch | 0 | 0 | 0 |\\n| DOC006 | Missing exception documentation | 0 | 0 | 0 |\\n| DOC007 | Missing attribute documentation | 0 | 0 | 0 |\\n| DOC008 | Malformed documentation | 0 | 0 | 0 |\\n| DOC009 | Analysis failure | 0 | 0 | 0 |\\n| DOC010 | Missing description | 0 | 0 | 0 |\\n| DOC011 | Stale exception documentation | 0 | 0 | 0 |\\n| DOC012 | Stale attribute documentation | 0 | 0 | 0 |\\n\\n### Scope\\n\\n**Included**\\n\\n- \`**/*.js\`\\n- \`**/*.mjs\`\\n- \`**/*.cjs\`\\n- \`**/*.py\`\\n\\n**Excluded**\\n\\n- \`**/.agents/**\`\\n- \`**/.build-cache/**\`\\n- \`**/.cache/**\`\\n- \`**/.claude/**\`\\n- \`**/.cursor/**\`\\n- \`**/.devin/**\`\\n- \`**/.eggs/**\`\\n- \`**/.git/**\`\\n- \`**/.history/**\`\\n- \`**/.mypy_cache/**\`\\n- \`**/.pytest_cache/**\`\\n- \`**/.ruff_cache/**\`\\n- \`**/.tox/**\`\\n- \`**/.venv/**\`\\n- \`**/EXACTUS_RESULTS/**\`\\n- \`**/__pycache__/**\`\\n- \`**/build/**\`\\n- \`**/coverage_report/**\`\\n- \`**/dist/**\`\\n- \`**/env/**\`\\n- \`**/htmlcov/**\`\\n- \`**/mutants/**\`\\n- \`**/node_modules/**\`\\n- \`**/site-packages/**\`\\n- \`**/venv/**\`\\n- \`**/.*/**\`\\n- \`**/*.min.js\`\\n\\n**Skipped targets**\\n\\nNo skipped targets.\\n\\n## Setup\\n\\n### Invocation\\n\\n~~~~shell\\n/usr/local/bin/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=62416 --orchestrator-control-token=[redacted] --orchestrator-worker-port=62365 --orchestrator-worker-token=[redacted] '--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"docs\\",\\"module\\":\\"exactus.tools.docs.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/DOCS\\",\\"arguments\\":[],\\"run_id\\":\\"2c65e21142f34f8db22b09b30d9044d1:docs\\",\\"pipeline_run_id\\":\\"2c65e21142f34f8db22b09b30d9044d1\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}'\\n~~~~\\n\\n| Property | Value |\\n|---|---|\\n| Working directory | [/Users/joaolopes/Exactus/exactus/tests/standalone/project](../..) |\\n| Arguments | \`exactus.tools.common.tool_worker\` \`ExactusTool\` \`--orchestrator-control-port=62416\` \`--orchestrator-control-token=[redacted]\` \`--orchestrator-worker-port=62365\` \`--orchestrator-worker-token=[redacted]\` \`--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"docs\\",\\"module\\":\\"exactus.tools.docs.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/DOCS\\",\\"arguments\\":[],\\"run_id\\":\\"2c65e21142f34f8db22b09b30d9044d1:docs\\",\\"pipeline_run_id\\":\\"2c65e21142f34f8db22b09b30d9044d1\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}\` |\\n\\n### Environment\\n\\n| Property | Value |\\n|---|---|\\n| OS | Darwin 25.3.0 |\\n| Python | 3.13.9 |\\n| Node | v22.21.1 |\\n| CPU count | 18 |\\n\\n| Variable | Value |\\n| --- | --- |\\n| EXACTUS_ORCHESTRATED | 1 |\\n| EXACTUS_PIPELINE_RUN_ID | 2c65e21142f34f8db22b09b30d9044d1 |\\n| EXACTUS_REGISTRY | [/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/.runtime/runs.db](../.runtime/runs.db) |\\n| EXACTUS_ROOT | [/Users/joaolopes/Exactus/exactus/tests/standalone/project](../..) |\\n| EXACTUS_RUN_ID | 2c65e21142f34f8db22b09b30d9044d1:docs |\\n| EXACTUS_TOOL | docs |\\n| LANG | en_US.UTF-8 |\\n| TERM | xterm-256color |\\n\\n## Gate\\n\\n> **Gate: PASS** — No blocking findings\\n\\nNo blocking findings.\\n\\n## Findings\\n\\nNo findings.\\n\\n## Artifacts\\n\\n| Artifact | Path | Bytes |\\n| --- | --- | --- |\\n| @activity.json | [ARTIFACTS/@activity.json](ARTIFACTS/%40activity.json) | 1648 |\\n| README.md | [ARTIFACTS/README.md](ARTIFACTS/README.md) | 448 |\\n| stderr.log | [ARTIFACTS/stderr.log](ARTIFACTS/stderr.log) | 0 |\\n| stdout.log | [ARTIFACTS/stdout.log](ARTIFACTS/stdout.log) | 0 |\\n| steps.txt | [ARTIFACTS/steps.txt](ARTIFACTS/steps.txt) | 1754 |\\n\\n## Documentation statistics\\n\\n| Language | Files | Parsed | Failed | Symbols | Documented | Coverage % | Findings |\\n| --- | --- | --- | --- | --- | --- | --- | --- |\\n| javascript | 2 | 2 | 0 | 3 | 3 | 100.0 | 0 |\\n| python | 6 | 6 | 0 | 12 | 12 | 100.0 | 0 |\\n\\n## Analyzed code\\n\\n| Language | Files | Lines |\\n| --- | --- | --- |\\n| javascript | 2 | 35 |\\n| python | 6 | 91 |\\n\\n## Rules\\n\\n| Rule | Title | Findings |\\n| --- | --- | --- |\\n| DOC001 | Missing documentation | 0 |\\n| DOC002 | Missing parameter documentation | 0 |\\n| DOC003 | Stale parameter documentation | 0 |\\n| DOC004 | Missing return documentation | 0 |\\n| DOC005 | Return and yield mismatch | 0 |\\n| DOC006 | Missing exception documentation | 0 |\\n| DOC007 | Missing attribute documentation | 0 |\\n| DOC008 | Malformed documentation | 0 |\\n| DOC009 | Analysis failure | 0 |\\n| DOC010 | Missing description | 0 |\\n| DOC011 | Stale exception documentation | 0 |\\n| DOC012 | Stale attribute documentation | 0 |\\n\\n## Suggested documentation\\n\\nNo suggestions.\\n\\n---\\n\\nExactus · docs · Run 2c65e21142f34f8db22b09b30d9044d1:docs · Result PASS · Duration 0.8 s\\n",
   "passed": true,
-  "pipeline_run_id": "f9656595c8b74d23b2b6aec3bd0db7de",
-  "previous_duration_seconds": 0.647,
+  "pipeline_run_id": "2c65e21142f34f8db22b09b30d9044d1",
+  "previous_duration_seconds": 0.664,
   "project_href": "../../..",
   "project_root": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
   "report_bundle": {
@@ -336,22 +340,22 @@ window.__REPORT_DATA__ = JSON.parse(`{
   "resume": "PASS: analyzer completed with exit status 0.",
   "root": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
   "run": {
-    "id": "f9656595c8b74d23b2b6aec3bd0db7de:docs",
-    "pipeline_id": "f9656595c8b74d23b2b6aec3bd0db7de",
+    "id": "2c65e21142f34f8db22b09b30d9044d1:docs",
+    "pipeline_id": "2c65e21142f34f8db22b09b30d9044d1",
     "status": "PASS",
     "exit_code": 0,
-    "started_at": "2026-10-31T02:56:19.725729+00:00",
-    "finished_at": "2026-10-31T02:56:20.390919+00:00",
-    "at_human": "31 October 2026, 02:56:19 UTC",
-    "started_at_human": "31 October 2026, 02:56:19 UTC",
-    "finished_at_human": "31 October 2026, 02:56:20 UTC",
-    "duration_seconds": 0.664,
-    "duration_human": "0.7 s",
+    "started_at": "2026-10-31T05:10:43.578851+00:00",
+    "finished_at": "2026-10-31T05:10:44.411853+00:00",
+    "at_human": "31 October 2026, 05:10:43 UTC",
+    "started_at_human": "31 October 2026, 05:10:43 UTC",
+    "finished_at_human": "31 October 2026, 05:10:44 UTC",
+    "duration_seconds": 0.831,
+    "duration_human": "0.8 s",
     "error": null
   },
-  "run_at": "2026-10-31T02:56:19.725729+00:00",
-  "run_at_human": "31 October 2026, 02:56:19 UTC",
-  "run_id": "f9656595c8b74d23b2b6aec3bd0db7de:docs",
+  "run_at": "2026-10-31T05:10:43.578851+00:00",
+  "run_at_human": "31 October 2026, 05:10:43 UTC",
+  "run_id": "2c65e21142f34f8db22b09b30d9044d1:docs",
   "schema": "project-exactus-report/v1",
   "scope": {
     "include": [
@@ -479,23 +483,23 @@ window.__REPORT_DATA__ = JSON.parse(`{
     "tool": {
       "name": "docs",
       "display_name": "Documentation Exactus",
-      "version": "0.5.0"
+      "version": null
     },
     "run": {
-      "id": "f9656595c8b74d23b2b6aec3bd0db7de:docs",
-      "pipeline_id": "f9656595c8b74d23b2b6aec3bd0db7de",
+      "id": "2c65e21142f34f8db22b09b30d9044d1:docs",
+      "pipeline_id": "2c65e21142f34f8db22b09b30d9044d1",
       "status": "PASS",
       "exit_code": 0,
-      "started_at": "2026-10-31T02:56:19.725729+00:00",
-      "finished_at": "2026-10-31T02:56:20.390919+00:00",
-      "at_human": "31 October 2026, 02:56:19 UTC",
-      "started_at_human": "31 October 2026, 02:56:19 UTC",
-      "finished_at_human": "31 October 2026, 02:56:20 UTC",
-      "duration_seconds": 0.664,
-      "duration_human": "0.7 s",
+      "started_at": "2026-10-31T05:10:43.578851+00:00",
+      "finished_at": "2026-10-31T05:10:44.411853+00:00",
+      "at_human": "31 October 2026, 05:10:43 UTC",
+      "started_at_human": "31 October 2026, 05:10:43 UTC",
+      "finished_at_human": "31 October 2026, 05:10:44 UTC",
+      "duration_seconds": 0.831,
+      "duration_human": "0.8 s",
       "error": null
     },
-    "previous_duration_seconds": 0.647,
+    "previous_duration_seconds": 0.664,
     "summary": {
       "targets_eligible": 8,
       "targets_analyzed": 8,
@@ -504,10 +508,10 @@ window.__REPORT_DATA__ = JSON.parse(`{
     },
     "comparison": {
       "available": true,
-      "previous_generated_at": "2026-10-31T02:36:03.136692+00:00",
-      "previous_run_id": "121cfe10a875424b95e7d42f9947eb9a:docs",
+      "previous_generated_at": "2026-10-31T02:56:19.786551+00:00",
+      "previous_run_id": "f9656595c8b74d23b2b6aec3bd0db7de:docs",
       "previous_status": "PASS",
-      "previous_duration_seconds": 0.647,
+      "previous_duration_seconds": 0.664,
       "current_total": 0,
       "previous_total": 0,
       "delta": 0,
@@ -648,16 +652,16 @@ window.__REPORT_DATA__ = JSON.parse(`{
       "skipped": []
     },
     "invocation": {
-      "command": "/Users/joaolopes/Exactus/bin/release/exactus_macos_arm64/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=60223 --orchestrator-control-token=[redacted] --orchestrator-worker-port=60194 --orchestrator-worker-token=[redacted] '--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"docs\\",\\"module\\":\\"exactus.tools.docs.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/DOCS\\",\\"arguments\\":[],\\"run_id\\":\\"f9656595c8b74d23b2b6aec3bd0db7de:docs\\",\\"pipeline_run_id\\":\\"f9656595c8b74d23b2b6aec3bd0db7de\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}'",
+      "command": "/usr/local/bin/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=62416 --orchestrator-control-token=[redacted] --orchestrator-worker-port=62365 --orchestrator-worker-token=[redacted] '--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"docs\\",\\"module\\":\\"exactus.tools.docs.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/DOCS\\",\\"arguments\\":[],\\"run_id\\":\\"2c65e21142f34f8db22b09b30d9044d1:docs\\",\\"pipeline_run_id\\":\\"2c65e21142f34f8db22b09b30d9044d1\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}'",
       "cwd": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
       "arguments": [
         "exactus.tools.common.tool_worker",
         "ExactusTool",
-        "--orchestrator-control-port=60223",
+        "--orchestrator-control-port=62416",
         "--orchestrator-control-token=[redacted]",
-        "--orchestrator-worker-port=60194",
+        "--orchestrator-worker-port=62365",
         "--orchestrator-worker-token=[redacted]",
-        "--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"docs\\",\\"module\\":\\"exactus.tools.docs.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/DOCS\\",\\"arguments\\":[],\\"run_id\\":\\"f9656595c8b74d23b2b6aec3bd0db7de:docs\\",\\"pipeline_run_id\\":\\"f9656595c8b74d23b2b6aec3bd0db7de\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}"
+        "--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"docs\\",\\"module\\":\\"exactus.tools.docs.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/DOCS\\",\\"arguments\\":[],\\"run_id\\":\\"2c65e21142f34f8db22b09b30d9044d1:docs\\",\\"pipeline_run_id\\":\\"2c65e21142f34f8db22b09b30d9044d1\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}"
       ]
     },
     "environment": {
@@ -672,7 +676,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
         },
         {
           "name": "EXACTUS_PIPELINE_RUN_ID",
-          "value": "f9656595c8b74d23b2b6aec3bd0db7de"
+          "value": "2c65e21142f34f8db22b09b30d9044d1"
         },
         {
           "name": "EXACTUS_REGISTRY",
@@ -684,7 +688,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
         },
         {
           "name": "EXACTUS_RUN_ID",
-          "value": "f9656595c8b74d23b2b6aec3bd0db7de:docs"
+          "value": "2c65e21142f34f8db22b09b30d9044d1:docs"
         },
         {
           "name": "EXACTUS_TOOL",
@@ -692,7 +696,11 @@ window.__REPORT_DATA__ = JSON.parse(`{
         },
         {
           "name": "LANG",
-          "value": "C.UTF-8"
+          "value": "en_US.UTF-8"
+        },
+        {
+          "name": "TERM",
+          "value": "xterm-256color"
         }
       ]
     },

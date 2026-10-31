@@ -1,20 +1,20 @@
 # README Exactus
 
-**Run time:** 31 October 2026, 02:56:40 UTC
+**Run time:** 31 October 2026, 05:10:57 UTC
 
 ## Identity
 
 | Field | Value |
 |---|---|
-| Tool | readme 0.5.0 |
-| Run ID | f9656595c8b74d23b2b6aec3bd0db7de:readme |
-| Pipeline run | f9656595c8b74d23b2b6aec3bd0db7de |
+| Tool | readme |
+| Run ID | 2c65e21142f34f8db22b09b30d9044d1:readme |
+| Pipeline run | 2c65e21142f34f8db22b09b30d9044d1 |
 | Status | PASS |
 | Exit code | 0 |
-| Started | 31 October 2026, 02:56:40 UTC |
-| Finished | 31 October 2026, 02:56:41 UTC |
-| Duration | 0.6 s |
-| Previous duration | 0.672s |
+| Started | 31 October 2026, 05:10:57 UTC |
+| Finished | 31 October 2026, 05:10:58 UTC |
+| Duration | 0.8 s |
+| Previous duration | 0.649s |
 
 ## What was checked
 
@@ -29,7 +29,7 @@
 | Metric | Current | Previous | Delta |
 |---|---:|---:|---:|
 | Findings | 0 | 0 | 0 |
-| Previous duration | 0.672s | | |
+| Previous duration | 0.649s | | |
 
 | Finding change | Count |
 |---|---:|
@@ -99,13 +99,13 @@ No skipped targets.
 ### Invocation
 
 ~~~~shell
-/Users/joaolopes/Exactus/bin/release/exactus_macos_arm64/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=63744 --orchestrator-control-token=[redacted] --orchestrator-worker-port=63734 --orchestrator-worker-token=[redacted] '--orchestrator-call={"args":[],"kwargs":{"request":{"identifier":"readme","module":"exactus.tools.readme.main","output":"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/README","arguments":[],"run_id":"f9656595c8b74d23b2b6aec3bd0db7de:readme","pipeline_run_id":"f9656595c8b74d23b2b6aec3bd0db7de","project_root":"/Users/joaolopes/Exactus/exactus/tests/standalone/project"}}}'
+/usr/local/bin/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=64240 --orchestrator-control-token=[redacted] --orchestrator-worker-port=64223 --orchestrator-worker-token=[redacted] '--orchestrator-call={"args":[],"kwargs":{"request":{"identifier":"readme","module":"exactus.tools.readme.main","output":"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/README","arguments":[],"run_id":"2c65e21142f34f8db22b09b30d9044d1:readme","pipeline_run_id":"2c65e21142f34f8db22b09b30d9044d1","project_root":"/Users/joaolopes/Exactus/exactus/tests/standalone/project"}}}'
 ~~~~
 
 | Property | Value |
 |---|---|
 | Working directory | [/Users/joaolopes/Exactus/exactus/tests/standalone/project](../..) |
-| Arguments | `exactus.tools.common.tool_worker` `ExactusTool` `--orchestrator-control-port=63744` `--orchestrator-control-token=[redacted]` `--orchestrator-worker-port=63734` `--orchestrator-worker-token=[redacted]` `--orchestrator-call={"args":[],"kwargs":{"request":{"identifier":"readme","module":"exactus.tools.readme.main","output":"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/README","arguments":[],"run_id":"f9656595c8b74d23b2b6aec3bd0db7de:readme","pipeline_run_id":"f9656595c8b74d23b2b6aec3bd0db7de","project_root":"/Users/joaolopes/Exactus/exactus/tests/standalone/project"}}}` |
+| Arguments | `exactus.tools.common.tool_worker` `ExactusTool` `--orchestrator-control-port=64240` `--orchestrator-control-token=[redacted]` `--orchestrator-worker-port=64223` `--orchestrator-worker-token=[redacted]` `--orchestrator-call={"args":[],"kwargs":{"request":{"identifier":"readme","module":"exactus.tools.readme.main","output":"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/README","arguments":[],"run_id":"2c65e21142f34f8db22b09b30d9044d1:readme","pipeline_run_id":"2c65e21142f34f8db22b09b30d9044d1","project_root":"/Users/joaolopes/Exactus/exactus/tests/standalone/project"}}}` |
 
 ### Environment
 
@@ -119,12 +119,13 @@ No skipped targets.
 | Variable | Value |
 | --- | --- |
 | EXACTUS_ORCHESTRATED | 1 |
-| EXACTUS_PIPELINE_RUN_ID | f9656595c8b74d23b2b6aec3bd0db7de |
+| EXACTUS_PIPELINE_RUN_ID | 2c65e21142f34f8db22b09b30d9044d1 |
 | EXACTUS_REGISTRY | [/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/.runtime/runs.db](../.runtime/runs.db) |
 | EXACTUS_ROOT | [/Users/joaolopes/Exactus/exactus/tests/standalone/project](../..) |
-| EXACTUS_RUN_ID | f9656595c8b74d23b2b6aec3bd0db7de:readme |
+| EXACTUS_RUN_ID | 2c65e21142f34f8db22b09b30d9044d1:readme |
 | EXACTUS_TOOL | readme |
-| LANG | C.UTF-8 |
+| LANG | en_US.UTF-8 |
+| TERM | xterm-256color |
 
 ## Gate
 
@@ -140,7 +141,7 @@ No findings.
 
 | Artifact | Path | Bytes |
 | --- | --- | --- |
-| @activity.json | [ARTIFACTS/@activity.json](ARTIFACTS/%40activity.json) | 1664 |
+| @activity.json | [ARTIFACTS/@activity.json](ARTIFACTS/%40activity.json) | 1662 |
 | README.md | [ARTIFACTS/README.md](ARTIFACTS/README.md) | 450 |
 | stderr.log | [ARTIFACTS/stderr.log](ARTIFACTS/stderr.log) | 0 |
 | stdout.log | [ARTIFACTS/stdout.log](ARTIFACTS/stdout.log) | 0 |
@@ -185,4 +186,4 @@ N/A — every directory with analyzed source files has a README.
 
 ---
 
-Exactus · readme 0.5.0 · Run f9656595c8b74d23b2b6aec3bd0db7de:readme · Result PASS · Duration 0.6 s
+Exactus · readme · Run 2c65e21142f34f8db22b09b30d9044d1:readme · Result PASS · Duration 0.8 s

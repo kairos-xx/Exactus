@@ -1,23 +1,23 @@
 {
   "completed": 6,
   "detail": "",
-  "elapsed_seconds": 49.036953083996195,
+  "elapsed_seconds": 49.0556603330042,
   "extra": {
     "accepting": false,
     "tty": null
   },
-  "finished_at": "2026-10-31T02:56:48.809954+00:00",
+  "finished_at": "2026-10-31T05:11:05.627558+00:00",
   "items": [],
   "kind": "pipeline",
   "name": "unified",
-  "pid": 85135,
+  "pid": 98545,
   "pipeline_run_id": null,
   "progress": 1.0,
-  "run_id": "f9656595c8b74d23b2b6aec3bd0db7de",
+  "run_id": "2c65e21142f34f8db22b09b30d9044d1",
   "schema": "exactus-run/v1",
-  "started_at": "2026-10-31T02:55:59.763420+00:00",
+  "started_at": "2026-10-31T05:10:16.518101+00:00",
   "status": "DONE",
   "step": "group 4/4",
   "total": 6,
-  "updated_at": "2026-10-31T02:56:48.809954+00:00"
+  "updated_at": "2026-10-31T05:11:05.627558+00:00"
 }

@@ -4,7 +4,7 @@
   "analyzer": "tests-tests",
   "comparison": {
     "available": true,
-    "previous_generated_at": "2026-10-31T02:36:06.304724+00:00",
+    "previous_generated_at": "2026-10-31T02:56:20.752171+00:00",
     "previous_run_id": null,
     "previous_status": "PASS",
     "previous_duration_seconds": null,
@@ -22,15 +22,15 @@
   },
   "findings": [],
   "fingerprint": {
-    "commit": "44699a6d15abc067a4fca0d73349a1b51d916daa",
-    "tree": "da1ed611a023a1100d5395906351fec79ba6db1b",
+    "commit": "282d5c7d9518d89751b13d3619d2ee2b3307402d",
+    "tree": "5e6a63ecb4a3768a5f1d9d3776696e9531905933",
     "dirty": true,
     "python": "3.13.9",
     "ruff": "ruff 0.12.0",
     "basedpyright": "basedpyright 1.40.2"
   },
-  "generated_at": "2026-10-31T02:56:20.752171+00:00",
-  "generated_at_human": "31 October 2026, 02:56:20 UTC",
+  "generated_at": "2026-10-31T05:10:46.221558+00:00",
+  "generated_at_human": "31 October 2026, 05:10:46 UTC",
   "passed": true,
   "project_href": "../../../../..",
   "project_root": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
@@ -39,8 +39,8 @@
     "json": "result.json",
     "web": "result_web"
   },
-  "run_at": "2026-10-31T02:56:20.752171+00:00",
-  "run_at_human": "31 October 2026, 02:56:20 UTC",
+  "run_at": "2026-10-31T05:10:46.221558+00:00",
+  "run_at_human": "31 October 2026, 05:10:46 UTC",
   "schema": "project-exactus-report/v1",
   "sections": [
     {
@@ -64,7 +64,7 @@
   "shared_execution_status": 0,
   "test_execution": {
     "status": 0,
-    "duration_seconds": 1.511,
+    "duration_seconds": 4.073,
     "tests": [
       {
         "shard": 0,

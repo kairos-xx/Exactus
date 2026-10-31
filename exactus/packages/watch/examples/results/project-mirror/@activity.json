@@ -10,9 +10,9 @@
   "last_operation": "sync",
   "last_relative_path": "",
   "last_transferred_bytes": 0,
-  "last_update": "2026-10-31T03:04:21.726+00:00",
+  "last_update": "2026-10-31T05:19:12.582+00:00",
   "last_update_date": "2026-10-31",
-  "last_update_time": "03:04:21.726+00:00",
+  "last_update_time": "05:19:12.582+00:00",
   "net_size_delta_bytes_this_run": 0,
   "origin": "/Users/joaolopes/Exactus/exactus/packages/watch/examples/project",
   "schema_version": 1,
@@ -23,7 +23,7 @@
     "total_entries": 5,
     "total_size_bytes": 1195
   },
-  "started_at": "2026-10-31T03:04:21.718+00:00",
+  "started_at": "2026-10-31T05:19:12.574+00:00",
   "target": {
     "directories": 1,
     "files": 4,
@@ -33,6 +33,6 @@
   },
   "transferred_bytes_this_run": 0,
   "updates_this_run": 1,
-  "watcher_pid": 97421,
+  "watcher_pid": 17798,
   "watcher_version": "3.1.0"
 }

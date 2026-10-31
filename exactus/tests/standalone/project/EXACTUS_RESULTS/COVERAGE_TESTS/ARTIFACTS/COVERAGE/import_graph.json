@@ -38,11 +38,11 @@
         "evidence": [],
         "level": "TEST-0",
         "metadata": {
-          "duration_seconds": 0.0008085410081548616,
-          "finished_at": "2026-10-31T02:56:34.480178+00:00",
+          "duration_seconds": 0.001103916991269216,
+          "finished_at": "2026-10-31T05:10:49.910683+00:00",
           "size_bytes": 295,
           "source_lines": 10,
-          "started_at": "2026-10-31T02:56:34.479376+00:00",
+          "started_at": "2026-10-31T05:10:49.909585+00:00",
           "worker_name": "meaningful_0"
         },
         "metrics": {

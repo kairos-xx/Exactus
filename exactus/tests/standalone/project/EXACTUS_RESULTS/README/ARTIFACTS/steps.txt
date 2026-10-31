@@ -1,19 +1,19 @@
-2026-10-31T02:56:40.717+00:00 +    0.001s readme: arguments — root /Users/joaolopes/Exactus/exactus/tests/standalone/project, output /Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/README, fix True
-2026-10-31T02:56:40.717+00:00 +    0.001s readme: run start
-2026-10-31T02:56:40.717+00:00 +    0.001s   stage: scan directories
-2026-10-31T02:56:40.718+00:00 +    0.003s     readme: 4 directories to inventory, 0 excluded
-2026-10-31T02:56:40.718+00:00 +    0.003s   stage: repair inventories
-2026-10-31T02:56:40.719+00:00 +    0.004s         repair: python
-2026-10-31T02:56:40.721+00:00 +    0.005s         repair: tests
-2026-10-31T02:56:40.722+00:00 +    0.006s         repair: web
-2026-10-31T02:56:40.723+00:00 +    0.008s         repair: .
-2026-10-31T02:56:40.723+00:00 +    0.008s   stage: inventory
-2026-10-31T02:56:40.723+00:00 +    0.008s       progress: inventory — . (1/4)
-2026-10-31T02:56:40.724+00:00 +    0.008s       progress: inventory — python (2/4)
-2026-10-31T02:56:40.724+00:00 +    0.008s       progress: inventory — tests (3/4)
-2026-10-31T02:56:40.724+00:00 +    0.009s       progress: inventory — web (4/4)
-2026-10-31T02:56:40.725+00:00 +    0.009s     readme: 0 findings across 4 inventories
-2026-10-31T02:56:40.729+00:00 +    0.013s     metrics: collected
-2026-10-31T02:56:40.729+00:00 +    0.013s   stage: report
-2026-10-31T02:56:41.346+00:00 +    0.630s     report: bundle written — /Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/README/README.md
-2026-10-31T02:56:41.346+00:00 +    0.630s readme: run finished — status 0
+2026-10-31T05:10:57.297+00:00 +    0.001s readme: arguments — root /Users/joaolopes/Exactus/exactus/tests/standalone/project, output /Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/README, fix True
+2026-10-31T05:10:57.298+00:00 +    0.001s readme: run start
+2026-10-31T05:10:57.298+00:00 +    0.001s   stage: scan directories
+2026-10-31T05:10:57.299+00:00 +    0.003s     readme: 4 directories to inventory, 0 excluded
+2026-10-31T05:10:57.300+00:00 +    0.003s   stage: repair inventories
+2026-10-31T05:10:57.300+00:00 +    0.003s         repair: python
+2026-10-31T05:10:57.303+00:00 +    0.006s         repair: tests
+2026-10-31T05:10:57.305+00:00 +    0.008s         repair: web
+2026-10-31T05:10:57.306+00:00 +    0.010s         repair: .
+2026-10-31T05:10:57.307+00:00 +    0.010s   stage: inventory
+2026-10-31T05:10:57.307+00:00 +    0.010s       progress: inventory — . (1/4)
+2026-10-31T05:10:57.308+00:00 +    0.011s       progress: inventory — python (2/4)
+2026-10-31T05:10:57.309+00:00 +    0.012s       progress: inventory — tests (3/4)
+2026-10-31T05:10:57.309+00:00 +    0.012s       progress: inventory — web (4/4)
+2026-10-31T05:10:57.311+00:00 +    0.014s     readme: 0 findings across 4 inventories
+2026-10-31T05:10:57.314+00:00 +    0.017s     metrics: collected
+2026-10-31T05:10:57.314+00:00 +    0.017s   stage: report
+2026-10-31T05:10:58.088+00:00 +    0.791s     report: bundle written — /Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/README/README.md
+2026-10-31T05:10:58.088+00:00 +    0.791s readme: run finished — status 0

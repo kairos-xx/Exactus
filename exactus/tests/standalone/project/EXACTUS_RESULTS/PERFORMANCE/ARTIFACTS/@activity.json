@@ -4,40 +4,40 @@
     "dropped": 0,
     "events": [
       {
-        "at": "2026-10-31T02:56:46.475423+00:00",
+        "at": "2026-10-31T05:11:03.079435+00:00",
         "level": "info",
         "message": "started: Performance"
       },
       {
-        "at": "2026-10-31T02:56:46.475722+00:00",
+        "at": "2026-10-31T05:11:03.079985+00:00",
         "level": "info",
         "message": "step: starting (Performance)"
       },
       {
-        "at": "2026-10-31T02:56:47.289143+00:00",
+        "at": "2026-10-31T05:11:04.067462+00:00",
         "level": "info",
-        "message": "finished: DONE (exit status 0) in 0.814s"
+        "message": "finished: DONE (exit status 0) in 0.988s"
       }
     ],
     "limit": 50
   },
-  "elapsed_seconds": 0.814,
+  "elapsed_seconds": 0.988,
   "extra": {
     "exit_code": 0,
-    "previous_duration_seconds": 0.907
+    "previous_duration_seconds": 0.805
   },
-  "finished_at": "2026-10-31T02:56:47.289167+00:00",
+  "finished_at": "2026-10-31T05:11:04.067493+00:00",
   "heartbeat": {
     "alive": false,
     "interval_seconds": 1.0,
-    "last_beat": "2026-10-31T02:56:47.289170+00:00",
+    "last_beat": "2026-10-31T05:11:04.067497+00:00",
     "phase": "finished",
-    "pid": 86955
+    "pid": 951
   },
   "items": [],
   "kind": "tool",
   "name": "performance",
-  "pipeline_run_id": "f9656595c8b74d23b2b6aec3bd0db7de",
+  "pipeline_run_id": "2c65e21142f34f8db22b09b30d9044d1",
   "progress": {
     "completed": 1,
     "current": "Performance",
@@ -71,9 +71,9 @@
     "step": "complete",
     "total": 1
   },
-  "run_id": "f9656595c8b74d23b2b6aec3bd0db7de:performance",
+  "run_id": "2c65e21142f34f8db22b09b30d9044d1:performance",
   "schema": "exactus/activity/v1",
-  "started_at": "2026-10-31T02:56:46.475297+00:00",
+  "started_at": "2026-10-31T05:11:03.079313+00:00",
   "status": "DONE",
-  "updated_at": "2026-10-31T02:56:47.289170+00:00"
+  "updated_at": "2026-10-31T05:11:04.067497+00:00"
 }
