@@ -321,21 +321,29 @@ class Constants:
         {
             "bind",
             "connect",
+            "connect_ex",
             "count",
             "emit",
             "end",
             "execute",
             "executemany",
             "executescript",
+            "getsockopt",
             "joinpath",
             "listen",
             "partition",
             "recv",
+            "recvfrom",
             "rpartition",
+            "send",
             "sendall",
+            "sendto",
             "set_exception",
             "set_result",
+            "setblocking",
+            "setsockopt",
             "settimeout",
+            "shutdown",
             "start",
             "submit",
             "throw",
@@ -4930,6 +4938,34 @@ def _is_positional(param: Param) -> bool:
     return param.kind in {"posonly", "poskw"}
 
 
+def _sig_positional_only(sig: Sig) -> bool:
+    """Return whether every positional parameter is `posonly`.
+
+    The receiver is dropped for instance and class methods, matching
+    the bound-call view; a ``**kwargs`` parameter makes keywords
+    legal, disqualifying the signature.
+
+    Args:
+        sig: Signature to inspect.
+
+    Returns:
+        Whether at least one positional parameter exists, all of them
+        `posonly`, and no ``**kwargs`` is accepted.
+
+    """
+    params: tuple[Param, ...] = sig.params
+    if params and sig.method in {"instance", "class"}:
+        params = params[1:]
+    if any(param.kind == "varkw" for param in params):
+        return False
+    positional: list[Param] = [
+        param for param in params if param.kind in {"posonly", "poskw"}
+    ]
+    return bool(positional) and all(
+        param.kind == "posonly" for param in positional
+    )
+
+
 def _is_posonly(param: Param) -> bool:
     """Return whether `param` is positional-only.
 
@@ -7256,6 +7292,7 @@ class CallExactusor:
         self.calls: int = 0
         self.resolved_calls: int = 0
         self.exempt_calls: int = 0
+        self._stub_posonly: frozenset[str] | None = None
 
     @staticmethod
     def unresolved_reason(*, node: Call) -> str:
@@ -7282,37 +7319,6 @@ class CallExactusor:
         if isinstance(callee, Subscript):
             return "subscript-lookup"
         return "dynamic-expression"
-
-    @staticmethod
-    def is_exempt(*, callee_text: str, node: Call) -> bool:
-        """Return whether an unresolved call cannot take keyword arguments.
-
-        Dynamic ``pytest.mark.*`` factories, methods that are positional-only
-        in the standard library, and ``lowerCamelCase`` foreign-binding
-        methods are not actionable, so they are counted apart instead of
-        being listed as unresolved.
-
-        Args:
-            callee_text: Source text of the callee.
-            node: Call node.
-
-        Returns:
-            Whether the call is exempt from the unresolved listing.
-
-        """
-        if callee_text.startswith(Constants.dynamic_callee_prefixes):
-            return True
-        if not isinstance(node.func, Attribute):
-            return False
-        attribute: str = node.func.attr
-        return (
-            attribute in Constants.positional_only_methods
-            or search(
-                pattern=Constants.foreign_binding_pattern,
-                string=attribute,
-            )
-            is not None
-        )
 
     @staticmethod
     def branch_scope(*, scope: Scope) -> Scope:
@@ -7609,6 +7615,95 @@ class CallExactusor:
             f"{obj_module}.{obj_name}",
             frozenset(),
         )
+
+    def is_exempt(
+        self: Self,
+        *,
+        callee_text: str,
+        node: Call,
+    ) -> bool:
+        """Return whether an unresolved call cannot take keyword arguments.
+
+        Dynamic ``pytest.mark.*`` factories, methods that are positional-only
+        in the standard library, and ``lowerCamelCase`` foreign-binding
+        methods are not actionable, so they are counted apart instead of
+        being listed as unresolved.
+
+        Args:
+            callee_text: Source text of the callee.
+            node: Call node.
+
+        Returns:
+            Whether the call is exempt from the unresolved listing.
+
+        """
+        if callee_text.startswith(Constants.dynamic_callee_prefixes):
+            return True
+        if not isinstance(node.func, Attribute):
+            return False
+        attribute: str = node.func.attr
+        return (
+            self.method_name_posonly(name=attribute)
+            or search(
+                pattern=Constants.foreign_binding_pattern,
+                string=attribute,
+            )
+            is not None
+        )
+
+    def method_name_posonly(self: Self, *, name: str) -> bool:
+        """Return whether a method name is positional-only by contract.
+
+        The hand-maintained ``positional_only_methods`` table covers
+        methods whose stubs cannot be found; everything else is derived
+        from the typeshed stubs of the modules the analyzed file
+        imports, so ``/`` markers are honored without naming each
+        method.
+
+        Args:
+            name: Method attribute name being called.
+
+        Returns:
+            Whether the name is positional-only in the table or in any
+            imported module's stubs.
+
+        """
+        return (
+            name in Constants.positional_only_methods
+            or name in self.stub_posonly_names()
+        )
+
+    def stub_posonly_names(self: Self) -> frozenset[str]:
+        """Collect stub-declared positional-only method names.
+
+        Every stub module the analyzed file imports is walked; a method
+        name is collected when every overload binds all positional
+        parameters ``posonly`` (and none accepts ``**kwargs``), meaning
+        no call site may safely pass those arguments by keyword.
+
+        Returns:
+            Positional-only method names for imported stub modules.
+
+        """
+        if self._stub_posonly is None:
+            names: set[str] = set()
+            imported: set[str] = set(self.module.module_aliases.values())
+            target: str
+            for target in self.module.aliases.values():
+                root, _, _ = target.partition(".")
+                imported.add(root)
+            stubs: StubIndex = self.project.stubs
+            module_name: str
+            for module_name in imported:
+                stub: StubModule | None = stubs.module(dotted=module_name)
+                if stub is not None:
+                    self._collect_stub_posonly(
+                        stub=stub,
+                        into=names,
+                        seen=set(),
+                    )
+            self._stub_posonly = frozenset(names)
+        return self._stub_posonly
 
     def record_unresolved(self: Self, *, callee_text: str, node: Call) -> None:
         """Count an unresolved call, apart when it is not actionable.
@@ -9336,7 +9431,7 @@ class CallExactusor:
         if (
             not param_sets
             and isinstance(node.func, Attribute)
-            and node.func.attr not in Constants.positional_only_methods
+            and not self.method_name_posonly(name=node.func.attr)
             and not self.receiver_is_external(node=node.func, scope=scope)
         ):
             fallback: tuple[list[tuple[Param, ...]], str] | None = (
@@ -10085,6 +10180,112 @@ class CallExactusor:
             if index < len(bindable):
                 verdicts.append(bindable[index])
         return verdicts
+
+    def _collect_stub_posonly(
+        self: Self,
+        *,
+        stub: StubModule,
+        into: set[str],
+        seen: set[str],
+    ) -> None:
+        """Collect positional-only method names from one stub module.
+
+        Args:
+            stub: Parsed stub module to walk.
+            into: Set receiving method names.
+            seen: Qualified class names already visited.
+
+        """
+        info: StubClass
+        for info in stub.classes.values():
+            self._collect_class_posonly(
+                info=info,
+                module=stub,
+                into=into,
+                seen=seen,
+            )
+
+    def _collect_class_posonly(
+        self: Self,
+        *,
+        info: StubClass,
+        module: StubModule,
+        into: set[str],
+        seen: set[str],
+    ) -> None:
+        """Collect positional-only method names from one stub class.
+
+        Args:
+            info: Stub class to walk, including nested classes.
+            module: Stub module ``info`` belongs to, for base lookups.
+            into: Set receiving method names.
+            seen: Qualified class names already visited.
+
+        """
+        qualified: str = f"{module.name}.{info.name}"
+        if qualified in seen:
+            return
+        seen.add(qualified)
+        for name, sigs in info.methods.items():
+            if all(map(_sig_positional_only, sigs)):
+                into.add(name)
+        nested: StubClass
+        for nested in info.nested.values():
+            self._collect_class_posonly(
+                info=nested,
+                module=module,
+                into=into,
+                seen=seen,
+            )
+        base: str
+        for base in info.bases:
+            found: tuple[StubClass, StubModule] | None = self._stub_base(
+                module=module,
+                base=base,
+            )
+            if found is not None:
+                self._collect_class_posonly(
+                    info=found[0],
+                    module=found[1],
+                    into=into,
+                    seen=seen,
+                )
+
+    def _stub_base(
+        self: Self,
+        *,
+        module: StubModule,
+        base: str,
+    ) -> tuple[StubClass, StubModule] | None:
+        """Resolve a stub base-class name to its class and module.
+
+        Args:
+            module: Stub module containing the class body.
+            base: Base expression as written, e.g. ``_socket.socket``.
+
+        Returns:
+            The ``(class, module)`` pair, or ``None`` when the base is
+            not a resolvable stub class.
+
+        """
+        plain: str = base.partition("[")[0].strip()
+        if not plain:
+            return None
+        if "." not in plain:
+            direct: StubClass | None = module.classes.get(plain)
+            return (direct, module) if direct is not None else None
+        parts: list[str] = plain.split(sep=".")
+        index: int
+        for index in range(len(parts) - 1, 0, -1):
+            other: StubModule | None = self.project.stubs.module(
+                dotted=".".join(parts[:index]),
+            )
+            if other is None:
+                continue
+            nested: StubClass | None = other.classes.get(parts[index])
+            if nested is not None:
+                return nested, other
+        return None
 
     def _verify_result(
         self: Self,

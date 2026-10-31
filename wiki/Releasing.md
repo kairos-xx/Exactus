@@ -16,7 +16,9 @@
 1. **Sync** — local `main` == `origin/main`, clean tree.
 2. **Docs** — update `DOCS.md` files (regenerate blocks with
    `dev/generate_docs_reference.py`), regenerate `wiki/` with
-   `dev/generate_wiki.py`.
+   `dev/generate_wiki.py`, then publish the GitHub wiki with
+   `dev/generate_wiki.py --publish` (clones `Exactus.wiki.git`,
+   syncs pages, commits, pushes — no-op when already in sync).
 3. **Gate** — bare `exactus` must be 9/9 PASS on the tagged tree.
 4. **Build** — `build_make` for the host zipapp, `bundle_make` for all
    nine `bin/release/` binaries; verify freshness signatures

@@ -196,6 +196,80 @@ def test_kwargs_exempts_positional_only_and_dynamic_callees(
     expect_equal(actual=rows, expected=[])
 
 
+def test_kwargs_setsockopt_stays_positional_on_unknown_receiver(
+    tmp_path: Path,
+) -> None:
+    """Unresolved ``setsockopt`` calls are exempt, not kwarg-flagged.
+
+    A project method sharing the socket method's name must not let the
+    unique-name fallback rewrite ``probe.setsockopt(...)`` arguments to
+    keywords the typeshed ``/`` forbids.
+
+    Args:
+        tmp_path: Per-test temporary directory.
+
+    """
+    project: Path = tmp_path / "proj"
+    project.mkdir()
+    _ = (project / "pyproject.toml").write_text(
+        data='[project]\nname = "proj"\n',
+        encoding="utf-8",
+    )
+    _ = (project / "mod.py").write_text(
+        data=(
+            dedent(
+                text="""\
+    from socket import SO_REUSEADDR, SOL_SOCKET
+
+
+    class FakeSocket:
+        def setsockopt(
+            self,
+            level: int,
+            optname: int,
+            value: int,
+        ) -> None:
+            del level, optname, value
+
+
+    def arm(probe: object) -> None:
+        probe.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
+    """,
+            )
+        ),
+        encoding="utf-8",
+    )
+    module: ModuleType = import_module(
+        name=_module_name(name="kwargs_typehints"),
+    )
+    out: Path = tmp_path / "out"
+    _ = module.main(arguments=(str(object=project), "-o", str(object=out)))
+    payload: object = loads(
+        s=(out / "result.json").read_text(encoding="utf-8"),
+    )
+    expect_equal(
+        actual=dig(document=payload, path=("summary", "exempt_call_sites")),
+        expected=1,
+    )
+    expect_equal(
+        actual=dig(
+            document=payload,
+            path=("summary", "unresolved_call_sites"),
+        ),
+        expected=0,
+    )
+    findings: list[object] = dig_list(
+        document=payload,
+        path=("findings",),
+    )
+    flagged: list[object] = [
+        finding
+        for finding in findings
+        if dig(document=finding, path=("rule",)) == "positional-argument"
+    ]
+    expect_equal(actual=flagged, expected=[])
+
+
 def test_kwargs_default_root_is_repository_root() -> None:
     """The kwargs core's ``--root`` default is the repository root."""
     root: Path = Constants.root
