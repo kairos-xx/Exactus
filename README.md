@@ -392,6 +392,7 @@ capture records — see `exactus/tools/common/sprint.py` for the directive synta
 - [`docs/`](docs/README.md) — Provide 13 selector authoring detail png content.
 - [`exactus/`](exactus/README.md) — Self-contained exactus package. The inventory below documents every direct file and child directory.
 - [`packages/`](packages/README.md) — Generated archive directory.
+- [`wiki/`](wiki/README.md) — \\[Home\\](Home.md) › Guides › Architecture
 - [`zip-components/`](zip-components/README.md) — Archives produced by `exactus.packages.zip_components` (`python exactus/packages/zip_components …`).
 
 <!-- exactus:inventory:end -->
