@@ -1,0 +1,175 @@
+/* BASE — derived values for the expression widget: theme-selected kind
+   colors, geometry bridges and the runtime menu position. References
+   PRIMARY and DYNAMIC only. Dark is the default theme; light follows
+   [data-theme="light"] or the system preference. */
+:root {
+  /* kind fills and strokes — invariant across themes */
+  --base-esw-color-kind-tag-fill: var(--primary-esw-color-kind-tag-fill);
+  --base-esw-color-kind-tag-stroke: var(--primary-esw-color-kind-tag-stroke);
+  --base-esw-color-kind-id-fill: var(--primary-esw-color-kind-id-fill);
+  --base-esw-color-kind-id-stroke: var(--primary-esw-color-kind-id-stroke);
+  --base-esw-color-kind-class-fill: var(--primary-esw-color-kind-class-fill);
+  --base-esw-color-kind-class-stroke: var(
+    --primary-esw-color-kind-class-stroke
+  );
+  --base-esw-color-kind-pseudo-class-fill: var(
+    --primary-esw-color-kind-pseudo-class-fill
+  );
+  --base-esw-color-kind-pseudo-class-stroke: var(
+    --primary-esw-color-kind-pseudo-class-stroke
+  );
+  --base-esw-color-kind-pseudo-element-fill: var(
+    --primary-esw-color-kind-pseudo-element-fill
+  );
+  --base-esw-color-kind-pseudo-element-stroke: var(
+    --primary-esw-color-kind-pseudo-element-stroke
+  );
+  --base-esw-color-kind-saved-fill: var(--primary-esw-color-kind-saved-fill);
+  --base-esw-color-kind-saved-stroke: var(
+    --primary-esw-color-kind-saved-stroke
+  );
+  --base-esw-color-kind-operator-fill: var(
+    --primary-esw-color-kind-operator-fill
+  );
+  --base-esw-color-kind-operator-stroke: var(
+    --primary-esw-color-kind-operator-stroke
+  );
+  --base-esw-color-kind-env-fill: var(--primary-esw-color-kind-env-fill);
+  --base-esw-color-kind-env-stroke: var(--primary-esw-color-kind-env-stroke);
+  --base-esw-color-kind-flow-fill: var(--primary-esw-color-kind-flow-fill);
+  --base-esw-color-kind-flow-stroke: var(--primary-esw-color-kind-flow-stroke);
+  --base-esw-color-kind-ink: var(--primary-esw-color-kind-ink);
+  /* kind fills, strokes and inks — dark default */
+  --base-esw-color-kind-attribute-fill: var(
+    --primary-esw-color-dark-kind-attribute-fill
+  );
+  --base-esw-color-kind-attribute-stroke: var(
+    --primary-esw-color-dark-kind-attribute-stroke
+  );
+  --base-esw-color-kind-attribute-ink: var(
+    --primary-esw-color-dark-kind-attribute-ink
+  );
+  --base-esw-color-kind-draft-fill: var(
+    --primary-esw-color-dark-kind-draft-fill
+  );
+  --base-esw-color-kind-draft-stroke: var(
+    --primary-esw-color-kind-draft-stroke
+  );
+  --base-esw-color-kind-draft-ink: var(--primary-esw-color-dark-kind-draft-ink);
+  /* syntax text colors — dark default */
+  --base-esw-color-text-tag: var(--primary-esw-color-dark-text-tag);
+  --base-esw-color-text-id: var(--primary-esw-color-dark-text-id);
+  --base-esw-color-text-class: var(--primary-esw-color-dark-text-class);
+  --base-esw-color-text-attribute: var(--primary-esw-color-dark-text-attribute);
+  --base-esw-color-text-pseudo-class: var(
+    --primary-esw-color-dark-text-pseudo-class
+  );
+  --base-esw-color-text-pseudo-element: var(
+    --primary-esw-color-dark-text-pseudo-element
+  );
+  --base-esw-color-text-saved: var(--primary-esw-color-dark-text-saved);
+  --base-esw-color-text-operator: var(--primary-esw-color-dark-text-operator);
+  --base-esw-color-text-env: var(--primary-esw-color-dark-text-env);
+  --base-esw-color-text-flow: var(--primary-esw-color-dark-text-flow);
+  /* pill geometry */
+  --base-esw-dimension-pill-height: var(--primary-esw-dimension-pill-height);
+  --base-esw-dimension-pill-radius: var(--primary-esw-dimension-pill-radius);
+  --base-esw-dimension-horn: var(--primary-esw-dimension-horn);
+  --base-esw-dimension-cap: var(--primary-esw-dimension-cap);
+  --base-esw-dimension-gap: var(--primary-esw-dimension-gap);
+  --base-esw-dimension-gap-descendant: var(
+    --primary-esw-dimension-gap-descendant
+  );
+  --base-esw-dimension-pad: var(--primary-esw-dimension-pad);
+  --base-esw-dimension-pad-end: var(--primary-esw-dimension-pad-end);
+  --base-esw-dimension-dot: var(--primary-esw-dimension-dot);
+  --base-esw-dimension-node-dot: var(--primary-esw-dimension-node-dot);
+  --base-esw-dimension-field-pad-block: var(
+    --primary-esw-dimension-field-pad-block
+  );
+  --base-esw-dimension-field-pad-inline: var(
+    --primary-esw-dimension-field-pad-inline
+  );
+  --base-esw-dimension-switch-inline: var(
+    --primary-esw-dimension-switch-inline
+  );
+  --base-esw-dimension-switch-block: var(--primary-esw-dimension-switch-block);
+  --base-esw-dimension-thumb: var(--primary-esw-dimension-thumb);
+  --base-esw-dimension-icon: var(--primary-esw-dimension-icon);
+  --base-esw-dimension-chip-radius: var(--primary-esw-dimension-chip-radius);
+  --base-esw-dimension-menu-max: var(--primary-esw-dimension-menu-max);
+  --base-esw-dimension-menu-min: var(--primary-esw-dimension-menu-min);
+  /* menu position — written at runtime by expression-view.js */
+  --base-esw-dimension-menu-inline: var(--dynamic-esw-menu-x, 0px);
+  --base-esw-dimension-menu-block: var(--dynamic-esw-menu-y, 100%);
+}
+[data-theme="light"] {
+  --base-esw-color-kind-attribute-fill: var(
+    --primary-esw-color-light-kind-attribute-fill
+  );
+  --base-esw-color-kind-attribute-stroke: var(
+    --primary-esw-color-light-kind-attribute-stroke
+  );
+  --base-esw-color-kind-attribute-ink: var(
+    --primary-esw-color-light-kind-attribute-ink
+  );
+  --base-esw-color-kind-draft-fill: var(
+    --primary-esw-color-light-kind-draft-fill
+  );
+  --base-esw-color-kind-draft-ink: var(
+    --primary-esw-color-light-kind-draft-ink
+  );
+  --base-esw-color-text-tag: var(--primary-esw-color-light-text-tag);
+  --base-esw-color-text-id: var(--primary-esw-color-light-text-id);
+  --base-esw-color-text-class: var(--primary-esw-color-light-text-class);
+  --base-esw-color-text-attribute: var(
+    --primary-esw-color-light-text-attribute
+  );
+  --base-esw-color-text-pseudo-class: var(
+    --primary-esw-color-light-text-pseudo-class
+  );
+  --base-esw-color-text-pseudo-element: var(
+    --primary-esw-color-light-text-pseudo-element
+  );
+  --base-esw-color-text-saved: var(--primary-esw-color-light-text-saved);
+  --base-esw-color-text-operator: var(--primary-esw-color-light-text-operator);
+  --base-esw-color-text-env: var(--primary-esw-color-light-text-env);
+  --base-esw-color-text-flow: var(--primary-esw-color-light-text-flow);
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    --base-esw-color-kind-attribute-fill: var(
+      --primary-esw-color-light-kind-attribute-fill
+    );
+    --base-esw-color-kind-attribute-stroke: var(
+      --primary-esw-color-light-kind-attribute-stroke
+    );
+    --base-esw-color-kind-attribute-ink: var(
+      --primary-esw-color-light-kind-attribute-ink
+    );
+    --base-esw-color-kind-draft-fill: var(
+      --primary-esw-color-light-kind-draft-fill
+    );
+    --base-esw-color-kind-draft-ink: var(
+      --primary-esw-color-light-kind-draft-ink
+    );
+    --base-esw-color-text-tag: var(--primary-esw-color-light-text-tag);
+    --base-esw-color-text-id: var(--primary-esw-color-light-text-id);
+    --base-esw-color-text-class: var(--primary-esw-color-light-text-class);
+    --base-esw-color-text-attribute: var(
+      --primary-esw-color-light-text-attribute
+    );
+    --base-esw-color-text-pseudo-class: var(
+      --primary-esw-color-light-text-pseudo-class
+    );
+    --base-esw-color-text-pseudo-element: var(
+      --primary-esw-color-light-text-pseudo-element
+    );
+    --base-esw-color-text-saved: var(--primary-esw-color-light-text-saved);
+    --base-esw-color-text-operator: var(
+      --primary-esw-color-light-text-operator
+    );
+    --base-esw-color-text-env: var(--primary-esw-color-light-text-env);
+    --base-esw-color-text-flow: var(--primary-esw-color-light-text-flow);
+  }
+}

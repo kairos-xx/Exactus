@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>TODO progress</title>
+    <link rel="stylesheet" href="__DASHBOARD_STYLE__" />
+  </head>
+  <body>
+    <div class="shell">
+      <header class="topbar">
+        <div class="brand">
+          <div class="logo">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+            >
+              <path d="M4 6h16M4 12h10M4 18h7" />
+              <circle cx="18" cy="12" r="2" />
+              <circle cx="15" cy="18" r="2" />
+            </svg>
+          </div>
+          <div>
+            <h1>TODO progress</h1>
+            <div class="subtitle">
+              Search and filter checklist items. Completion is not release
+              readiness.
+            </div>
+          </div>
+        </div>
+        <div class="top-actions">
+          <div class="viewtabs">
+            <button id="tabTasks" class="active">Tasks</button
+            ><button id="tabDoc">Source</button>
+          </div>
+          <button
+            class="iconbtn"
+            id="theme"
+            title="Toggle theme"
+            aria-label="Toggle theme"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M12 3a9 9 0 1 0 9 9c0-.7-.08-1.37-.23-2.02A7 7 0 0 1 12 3Z"
+              />
+            </svg></button
+          ><button class="btn" id="export">Export visible</button>
+        </div>
+      </header>
+      <section class="hero">
+        <div class="searchbox">
+          <div class="searchline">
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-4-4" /></svg
+            ><input
+              id="search"
+              class="search-input"
+              autocomplete="off"
+              placeholder="Fuzzy search tasks, IDs, sections…"
+            />
+          </div>
+          <div class="searchhelp"><span class="kbd">/</span> focus search</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Matching</div>
+          <div class="stat-value" id="matching">0</div>
+          <div class="stat-foot" id="matchingFoot">tasks</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Open</div>
+          <div class="stat-value" id="openStat">0</div>
+          <div class="stat-foot">in current result</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Critical</div>
+          <div class="stat-value" id="p0Stat">0</div>
+          <div class="stat-foot">P0 open</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Completion</div>
+          <div class="stat-value" id="completion">0%</div>
+          <div class="stat-foot" id="completionFoot">current result</div>
+        </div>
+      </section>
+      <div class="layout">
+        <aside class="filters" id="filters">
+          <div class="filter-head">
+            <strong>Filters</strong
+            ><button class="reset" id="reset">Reset all</button>
+          </div>
+          <div id="dynamicFilters"></div>
+          <div class="filter">
+            <div class="filter-title">Group results</div>
+            <select class="select" id="group">
+              <option value="none">No grouping</option>
+              <option value="category">Category</option>
+              <option value="priority">Priority</option>
+              <option value="workstream" selected>Workstream</option>
+              <option value="prefix">ID prefix</option>
+            </select>
+          </div>
+          <div class="filter">
+            <div class="filter-title">Sort</div>
+            <select class="select" id="sort">
+              <option value="document">Document order</option>
+              <option value="relevance">Search relevance</option>
+              <option value="priority">Priority</option>
+              <option value="category">Category</option>
+              <option value="id">Task ID</option>
+            </select>
+          </div>
+        </aside>
+        <main class="taskpane cards" id="pane">
+          <div class="toolbar">
+            <button class="btn mobile-filter" id="mobileFilter">Filters</button>
+            <div>
+              <div class="result-title" id="resultTitle">Open tasks</div>
+              <div class="result-sub" id="resultSub"></div>
+            </div>
+            <div class="toolbar-spacer"></div>
+          </div>
+          <div class="tasks" id="tasks"></div>
+          <div class="footer-note">
+            Generated from TODO.md | all filtering happens locally in this file
+          </div>
+        </main>
+      </div>
+      <div class="doc-workspace" id="docWorkspace" hidden>
+        <nav class="doc-nav" aria-label="TODO sections">
+          <div class="doc-nav-head"><strong>Sections</strong></div>
+          <div class="doc-nav-list" id="docNav"></div>
+        </nav>
+        <div class="docview" id="docView"></div>
+      </div>
+    </div>
+    <div class="toast" id="toast"></div>
+    <script id="task-data" type="application/json">
+      __TASK_DATA__
+    </script>
+    <script src="__DASHBOARD_SCRIPT__"></script>
+  </body>
+</html>

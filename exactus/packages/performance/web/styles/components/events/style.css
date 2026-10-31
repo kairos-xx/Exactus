@@ -1,0 +1,32 @@
+/**
+ * Raw event stream rows.
+ *
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+@layer perf-base {
+  .event-list {
+    height: var(--perf-event-height);
+    overflow: auto;
+    border-top: var(--perf-row-rule);
+  }
+  .event-row {
+    display: grid;
+    grid-template-columns: var(--perf-event-grid);
+    gap: var(--perf-row-gap);
+    padding: var(--perf-event-pad);
+    border-bottom: var(--perf-row-faint);
+    font-size: var(--perf-size-compact);
+    cursor: var(--perf-pointer);
+    border-left: var(--perf-cursor-edge);
+  }
+  .event-row time,
+  .event-delta {
+    font-family: var(--perf-mono);
+    color: var(--muted);
+  }
+  .event-row code {
+    font-family: var(--perf-mono);
+    white-space: var(--perf-wrap-pre);
+    color: var(--text);
+  }
+}

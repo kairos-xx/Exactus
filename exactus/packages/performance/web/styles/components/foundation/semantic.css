@@ -1,0 +1,12 @@
+/**
+ * Contextual aliases of the foundation component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  --perf-page-min: var(--catalog-layout-measure-page-min);
+  --perf-main-width: var(--catalog-layout-measure-main-width);
+  --perf-main-padding: var(--catalog-layout-measure-main-padding);
+  --perf-eyebrow-gap: var(--catalog-layout-measure-eyebrow-gap);
+  --perf-track-wide: var(--catalog-text-typography-track-wide);
+  --perf-weight-bold: var(--catalog-text-typography-weight-bold);
+}

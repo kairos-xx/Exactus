@@ -1,0 +1,64 @@
+/**
+ * Ranked rows, meters and badges.
+ *
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+@layer perf-base {
+  .rank-list {
+    display: grid;
+  }
+  .rank-row {
+    display: grid;
+    grid-template-columns: var(--perf-rank-grid);
+    gap: var(--perf-row-gap);
+    align-items: center;
+    padding: var(--perf-row-pad);
+    border-top: var(--perf-row-rule);
+    cursor: var(--perf-pointer);
+    transition: var(--perf-row-motion);
+  }
+  .rank-row:first-child {
+    border-top: var(--perf-no-edge);
+  }
+  .rank-index {
+    font: var(--perf-type-badge);
+    color: var(--muted);
+  }
+  .rank-main strong,
+  .rank-main small {
+    display: block;
+    overflow: hidden;
+    text-overflow: var(--perf-overflow);
+    white-space: var(--perf-nowrap);
+  }
+  .rank-main strong {
+    font-size: var(--perf-size-note);
+  }
+  .rank-main small {
+    font-size: var(--perf-size-micro);
+    color: var(--muted);
+    margin: var(--perf-caption-gap);
+  }
+  .rank-value {
+    font: var(--perf-type-metric);
+  }
+  .meter {
+    height: var(--perf-meter-thick);
+    background: var(--line);
+    border-radius: var(--perf-radius-meter);
+    overflow: hidden;
+  }
+  .meter i {
+    display: block;
+    height: var(--perf-flow-width);
+    background: var(--accent);
+    border-radius: var(--perf-radius-meter);
+  }
+  .badge {
+    font: var(--perf-type-badge);
+    background: var(--surface2);
+    border: var(--perf-panel-edge);
+    border-radius: var(--perf-radius-badge);
+    padding: var(--perf-badge-pad);
+  }
+}

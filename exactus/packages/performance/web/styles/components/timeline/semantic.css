@@ -1,0 +1,35 @@
+/**
+ * Contextual aliases of the timeline component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  --perf-cursor-tint: var(--catalog-field-color-cursor-tint);
+  --perf-ghost-tint: var(--catalog-field-color-ghost-tint);
+  --perf-action-pad: var(--catalog-layout-measure-action-pad);
+  --perf-drill-min: var(--catalog-layout-measure-drill-min);
+  --perf-crumb-pad: var(--catalog-layout-measure-crumb-pad);
+  --perf-crumb-lead: var(--catalog-layout-measure-crumb-lead);
+  --perf-chart-height: var(--catalog-layout-measure-chart-height);
+  --perf-share-height: var(--catalog-layout-measure-share-height);
+  --perf-metric-gap: var(--catalog-layout-measure-metric-gap);
+  --perf-metric-pad: var(--catalog-layout-measure-metric-pad);
+  --perf-score-gap: var(--catalog-layout-measure-score-gap);
+  --perf-inspector-pad: var(--catalog-layout-measure-detail-pad);
+  --perf-detail-gap: var(--catalog-layout-measure-detail-gap);
+  --perf-zoom-min: var(--catalog-layout-measure-zoom-min);
+  --perf-cursor-anchor: var(--catalog-layout-measure-cursor-anchor);
+  --perf-dim: var(--catalog-layout-measure-dim);
+  --perf-metric-grid: var(--catalog-layout-measure-metric-grid);
+  --perf-inspector-grid: var(--catalog-layout-measure-detail-grid);
+  --perf-select-ring: var(--catalog-field-border-select-ring);
+  --perf-row-shift: var(--catalog-layout-motion-row-shift);
+  --perf-cursor-plain: var(--catalog-layout-cursor-plain);
+  --perf-track-label: var(--catalog-text-typography-track-label);
+  --perf-crumb-glyph: var(--catalog-text-typography-crumb-glyph);
+  --perf-align-center: var(--catalog-text-typography-align-center);
+  --perf-case-upper: var(--catalog-text-typography-case-upper);
+  --perf-wrap-any: var(--catalog-text-typography-wrap-any);
+  --perf-type-score: var(--catalog-text-typography-score);
+  --perf-type-readout: var(--catalog-text-typography-readout);
+  --perf-type-zoom: var(--catalog-text-typography-zoom);
+}

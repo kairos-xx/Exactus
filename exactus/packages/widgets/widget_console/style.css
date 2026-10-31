@@ -1,0 +1,886 @@
+/* widget_console: PRIMARY literals -> BASE derivations -> CATALOG specifications ->
+   SEMANTIC aliases (single reference each), then components. The tokens are
+   shared with action_javascript, which imports this file. */
+@layer reset, tokens, base, components, utilities;
+@layer tokens {
+  :root {
+    --primary-dimension-unit: 1rem;
+    --primary-dimension-pixel: 1px;
+    --primary-percent-base: 1%;
+    --primary-number-unit: 1;
+    --primary-duration-unit: 1s;
+    --primary-font-weight-unit: 100;
+    --primary-css-font-sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+    --primary-css-font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+    --primary-css-pointer: pointer;
+    --primary-css-none: none;
+    --primary-css-ease-out: ease-out;
+    --primary-css-empty: "";
+    --primary-css-pre-wrap: pre-wrap;
+    --primary-css-anywhere: anywhere;
+    --primary-css-start: start;
+    --primary-css-glyph-open: "\25BE";
+    --primary-css-glyph-closed: "\25B8";
+    --primary-color-named-transparent: transparent;
+    --primary-color-named-currentcolor: currentcolor;
+    --primary-color-named-highlight: Highlight;
+    --primary-dimension-line: 1lh;
+    --primary-css-center: center;
+    --primary-css-top: top;
+    --primary-color-dark-raised: #272c35ff;
+    --primary-color-light-raised: #eceef2ff;
+    --primary-color-dark-field: #171a20ff;
+    --primary-color-light-field: #ffffffff;
+    --primary-color-dark-ink-primary: #eceef2ff;
+    --primary-color-light-ink-primary: #171a20ff;
+    --primary-color-dark-ink-muted: #8e97a6ff;
+    --primary-color-light-ink-muted: #667085ff;
+    --primary-color-dark-edge-subtle: #3a414dff;
+    --primary-color-light-edge-subtle: #d9dde4ff;
+    --primary-color-dark-edge-strong: #667085ff;
+    --primary-color-light-edge-strong: #8e97a6ff;
+    --primary-color-dark-accent: #3b82f6ff;
+    --primary-color-light-accent: #3b82f6ff;
+    --primary-color-dark-focus-ring: #8ab4f8ff;
+    --primary-color-light-focus-ring: #3b82f6ff;
+    --primary-color-dark-warn: #fbbf24ff;
+    --primary-color-light-warn: #a15c07ff;
+    --primary-color-dark-danger: #f87171ff;
+    --primary-color-light-danger: #b42318ff;
+    --primary-color-dark-ink-key: #8aa6efff;
+    --primary-color-light-ink-key: #2f4f9eff;
+    --primary-color-dark-ink-string: #86c96bff;
+    --primary-color-light-ink-string: #2f6a1eff;
+    --primary-color-dark-ink-boolean: #c3c9d4ff;
+    --primary-color-light-ink-boolean: #4b5361ff;
+    --primary-color-dark-tint-warn: #fbbf2420;
+    --primary-color-light-tint-warn: #a15c0720;
+    --primary-color-dark-tint-danger: #f8717120;
+    --primary-color-light-tint-danger: #b4231214;
+    --base-dimension-mini-none: calc(var(--primary-dimension-unit) * 0);
+    --base-dimension-mini-hairline: var(--primary-dimension-pixel);
+    --base-dimension-mini-fine: calc(var(--primary-dimension-unit) * 0.125);
+    --base-dimension-mini-tiny: calc(var(--primary-dimension-unit) * 0.1875);
+    --base-dimension-mini-snug: calc(var(--primary-dimension-unit) * 0.25);
+    --base-dimension-mini-compact: calc(var(--primary-dimension-unit) * 0.375);
+    --base-dimension-mini-cozy: calc(var(--primary-dimension-unit) * 0.4375);
+    --base-dimension-mini-small: calc(var(--primary-dimension-unit) * 0.5);
+    --base-dimension-mini-normal: calc(var(--primary-dimension-unit) * 0.75);
+    --base-dimension-mini-panel: calc(var(--primary-dimension-unit) * 0.875);
+    --base-dimension-mini-medium: calc(var(--primary-dimension-unit) * 1);
+    --base-dimension-mini-large: calc(var(--primary-dimension-unit) * 1.25);
+    --base-dimension-mini-xlarge: calc(var(--primary-dimension-unit) * 1.5);
+    --base-dimension-mini-fine-back: calc(
+      var(--primary-dimension-unit) * -0.125
+    );
+    --base-dimension-mini-rem-five: calc(var(--primary-dimension-unit) * 5);
+    --base-dimension-mini-rem-six: calc(var(--primary-dimension-unit) * 6);
+    --base-dimension-mini-rem-twelve: calc(var(--primary-dimension-unit) * 12);
+    --base-dimension-mini-text-caption: calc(
+      var(--primary-dimension-unit) * 0.6875
+    );
+    --base-dimension-mini-text-body: calc(var(--primary-dimension-unit) * 0.75);
+    --base-dimension-mini-touch: calc(var(--primary-dimension-unit) * 2.75);
+    --base-dimension-mini-line-box: var(--primary-dimension-line);
+    --base-dimension-mini-indent-one: calc(
+      var(--primary-dimension-unit) * 1.125
+    );
+    --base-dimension-mini-indent-two: calc(
+      var(--primary-dimension-unit) * 1.875
+    );
+    --base-dimension-mini-indent-three: calc(
+      var(--primary-dimension-unit) * 2.625
+    );
+    --base-dimension-mini-indent-four: calc(
+      var(--primary-dimension-unit) * 3.375
+    );
+    --base-dimension-mini-indent-five: calc(
+      var(--primary-dimension-unit) * 4.125
+    );
+    --base-dimension-mini-rem-thirty: calc(var(--primary-dimension-unit) * 30);
+    --base-number-one: var(--primary-number-unit);
+    --base-number-stroke: calc(var(--primary-number-unit) * 1.5);
+    --base-number-leading-body: calc(var(--primary-number-unit) * 1.45);
+    --base-weight-medium: calc(var(--primary-font-weight-unit) * 5);
+    --base-weight-semibold: calc(var(--primary-font-weight-unit) * 6);
+    --base-percent-full: calc(var(--primary-percent-base) * 100);
+    --base-percent-center: calc(var(--primary-percent-base) * 50);
+    --base-duration-fast: calc(var(--primary-duration-unit) * 0.12);
+    --base-duration-none: calc(var(--primary-duration-unit) * 0);
+    --base-css-font-sans: var(--primary-css-font-sans);
+    --base-css-font-mono: var(--primary-css-font-mono);
+    --base-css-pointer: var(--primary-css-pointer);
+    --base-css-none: var(--primary-css-none);
+    --base-css-ease-out: var(--primary-css-ease-out);
+    --base-css-empty: var(--primary-css-empty);
+    --base-css-pre-wrap: var(--primary-css-pre-wrap);
+    --base-css-anywhere: var(--primary-css-anywhere);
+    --base-css-start: var(--primary-css-start);
+    --base-css-glyph-open: var(--primary-css-glyph-open);
+    --base-css-glyph-closed: var(--primary-css-glyph-closed);
+    --base-color-named-transparent: var(--primary-color-named-transparent);
+    --base-color-named-currentcolor: var(--primary-color-named-currentcolor);
+    --base-color-named-highlight: var(--primary-color-named-highlight);
+    --base-css-center: var(--primary-css-center);
+    --base-css-top: var(--primary-css-top);
+    --base-color-raised: var(--primary-color-dark-raised);
+    --base-color-field: var(--primary-color-dark-field);
+    --base-color-ink-primary: var(--primary-color-dark-ink-primary);
+    --base-color-ink-muted: var(--primary-color-dark-ink-muted);
+    --base-color-edge-subtle: var(--primary-color-dark-edge-subtle);
+    --base-color-edge-strong: var(--primary-color-dark-edge-strong);
+    --base-color-accent: var(--primary-color-dark-accent);
+    --base-color-focus-ring: var(--primary-color-dark-focus-ring);
+    --base-color-warn: var(--primary-color-dark-warn);
+    --base-color-danger: var(--primary-color-dark-danger);
+    --base-color-ink-key: var(--primary-color-dark-ink-key);
+    --base-color-ink-string: var(--primary-color-dark-ink-string);
+    --base-color-ink-boolean: var(--primary-color-dark-ink-boolean);
+    --base-color-tint-warn: var(--primary-color-dark-tint-warn);
+    --base-color-tint-danger: var(--primary-color-dark-tint-danger);
+    --catalog-space-measure-none: var(--base-dimension-mini-none);
+    --catalog-space-measure-fine: var(--base-dimension-mini-fine);
+    --catalog-space-measure-snug: var(--base-dimension-mini-snug);
+    --catalog-space-measure-compact: var(--base-dimension-mini-compact);
+    --catalog-space-measure-small: var(--base-dimension-mini-small);
+    --catalog-space-measure-guide: var(--base-dimension-mini-cozy);
+    --catalog-size-measure-control: var(--base-dimension-mini-xlarge);
+    --catalog-size-measure-pill: var(--base-dimension-mini-large);
+    --catalog-size-measure-glyph: var(--base-dimension-mini-panel);
+    --catalog-size-measure-glyph-small: var(--base-dimension-mini-normal);
+    --catalog-size-measure-fill: var(--base-percent-full);
+    --catalog-select-measure-padding-inline: var(--base-dimension-mini-compact)
+      var(--base-dimension-mini-medium);
+    --catalog-select-measure-caret-inset: var(--base-dimension-mini-compact);
+    --catalog-select-measure-caret-top: var(--base-percent-center);
+    --catalog-select-measure-caret-nudge: var(--base-dimension-mini-fine-back);
+    --catalog-select-border-caret-stem: var(--base-dimension-mini-snug) solid
+      var(--base-color-named-currentcolor);
+    --catalog-select-border-caret-wings: var(--base-dimension-mini-tiny) solid
+      var(--base-color-named-transparent);
+    --catalog-layout-measure-flex-fixed: 0 0 auto;
+    --catalog-radius-border-small: var(--base-dimension-mini-snug);
+    --catalog-radius-border-normal: var(--base-dimension-mini-small);
+    --catalog-radius-border-chip: var(--base-dimension-mini-normal);
+    --catalog-rule-border-edge: var(--base-dimension-mini-hairline) solid
+      var(--base-color-edge-subtle);
+    --catalog-rule-border-edge-strong: var(--base-dimension-mini-hairline) solid
+      var(--base-color-edge-strong);
+    --catalog-rule-border-edge-clear: var(--base-dimension-mini-hairline) solid
+      var(--base-color-named-transparent);
+    --catalog-rule-border-edge-forced: var(--base-dimension-mini-hairline) solid
+      var(--base-color-named-highlight);
+    --catalog-rule-border-focus-outline: var(--base-dimension-mini-fine) solid
+      var(--base-color-focus-ring);
+    --catalog-text-typography-caption: var(--base-dimension-mini-text-caption);
+    --catalog-text-typography-micro: var(--base-dimension-mini-text-caption);
+    --catalog-text-typography-body: var(--base-dimension-mini-text-body);
+    --catalog-text-typography-weight-medium: var(--base-weight-medium);
+    --catalog-text-typography-weight-semibold: var(--base-weight-semibold);
+    --catalog-text-typography-leading-flush: var(--base-number-one);
+    --catalog-text-typography-leading-body: var(--base-number-leading-body);
+    --catalog-text-typography-font-sans: var(--base-css-font-sans);
+    --catalog-text-typography-font-mono: var(--base-css-font-mono);
+    --catalog-text-typography-align-start: var(--base-css-start);
+    --catalog-text-typography-wrap-preserve: var(--base-css-pre-wrap);
+    --catalog-text-typography-wrap-anywhere: var(--base-css-anywhere);
+    --catalog-text-typography-content-empty: var(--base-css-empty);
+    --catalog-glyph-typography-open: var(--base-css-glyph-open);
+    --catalog-glyph-typography-closed: var(--base-css-glyph-closed);
+    --catalog-glyph-border-stroke-width: var(--base-number-stroke);
+    --catalog-surface-color-raised: var(--base-color-raised);
+    --catalog-surface-color-field: var(--base-color-field);
+    --catalog-ink-color-primary: var(--base-color-ink-primary);
+    --catalog-ink-color-muted: var(--base-color-ink-muted);
+    --catalog-ink-color-warn: var(--base-color-warn);
+    --catalog-ink-color-danger: var(--base-color-danger);
+    --catalog-ink-color-key: var(--base-color-ink-key);
+    --catalog-ink-color-string: var(--base-color-ink-string);
+    --catalog-ink-color-boolean: var(--base-color-ink-boolean);
+    --catalog-edge-color-subtle: var(--base-color-edge-subtle);
+    --catalog-edge-color-accent: var(--base-color-accent);
+    --catalog-edge-color-warn: var(--base-color-warn);
+    --catalog-edge-color-danger: var(--base-color-danger);
+    --catalog-surface-color-transparent: var(--base-color-named-transparent);
+    --catalog-paint-color-none: var(--base-css-none);
+    --catalog-paint-color-current: var(--base-color-named-currentcolor);
+    --catalog-control-motion-duration-fast: var(--base-duration-fast);
+    --catalog-control-motion-duration-none: var(--base-duration-none);
+    --catalog-control-motion-ease: var(--base-css-ease-out);
+    --catalog-control-cursor-action: var(--base-css-pointer);
+    --catalog-console-measure-min-size: var(--base-dimension-mini-rem-twelve);
+    --catalog-console-measure-max-size: var(--base-dimension-mini-rem-thirty);
+    --catalog-console-measure-list-min: var(--base-dimension-mini-rem-five);
+    --catalog-console-measure-search-min: var(--base-dimension-mini-rem-six);
+    --catalog-console-measure-stack-max: var(--base-dimension-mini-rem-twelve);
+    --catalog-console-measure-line-box: var(--base-dimension-mini-line-box);
+    --catalog-console-measure-indent-one: var(--base-dimension-mini-indent-one);
+    --catalog-console-measure-indent-two: var(--base-dimension-mini-indent-two);
+    --catalog-console-measure-indent-three: var(
+      --base-dimension-mini-indent-three
+    );
+    --catalog-console-measure-indent-four: var(
+      --base-dimension-mini-indent-four
+    );
+    --catalog-console-measure-indent-five: var(
+      --base-dimension-mini-indent-five
+    );
+    --catalog-layout-measure-flex-grow: 1 1 0%;
+    --catalog-text-typography-align-center: var(--base-css-center);
+    --catalog-text-typography-align-top: var(--base-css-top);
+    --catalog-surface-color-warn: var(--base-color-tint-warn);
+    --catalog-surface-color-danger: var(--base-color-tint-danger);
+    --space-none: var(--catalog-space-measure-none);
+    --space-fine: var(--catalog-space-measure-fine);
+    --space-snug: var(--catalog-space-measure-snug);
+    --space-compact: var(--catalog-space-measure-compact);
+    --space-small: var(--catalog-space-measure-small);
+    --space-tree-guide: var(--catalog-space-measure-guide);
+    --size-control: var(--catalog-size-measure-control);
+    --size-pill: var(--catalog-size-measure-pill);
+    --size-glyph: var(--catalog-size-measure-glyph);
+    --size-glyph-small: var(--catalog-size-measure-glyph-small);
+    --size-fill: var(--catalog-size-measure-fill);
+    --select-padding-inline: var(--catalog-select-measure-padding-inline);
+    --select-caret-inset: var(--catalog-select-measure-caret-inset);
+    --select-caret-top: var(--catalog-select-measure-caret-top);
+    --select-caret-nudge: var(--catalog-select-measure-caret-nudge);
+    --select-caret-stem: var(--catalog-select-border-caret-stem);
+    --select-caret-wings: var(--catalog-select-border-caret-wings);
+    --flex-fixed: var(--catalog-layout-measure-flex-fixed);
+    --radius-small: var(--catalog-radius-border-small);
+    --radius-normal: var(--catalog-radius-border-normal);
+    --radius-chip: var(--catalog-radius-border-chip);
+    --rule-edge: var(--catalog-rule-border-edge);
+    --rule-edge-strong: var(--catalog-rule-border-edge-strong);
+    --rule-edge-clear: var(--catalog-rule-border-edge-clear);
+    --rule-edge-forced: var(--catalog-rule-border-edge-forced);
+    --focus-outline: var(--catalog-rule-border-focus-outline);
+    --text-caption: var(--catalog-text-typography-caption);
+    --text-micro: var(--catalog-text-typography-micro);
+    --text-body: var(--catalog-text-typography-body);
+    --weight-medium: var(--catalog-text-typography-weight-medium);
+    --weight-semibold: var(--catalog-text-typography-weight-semibold);
+    --leading-flush: var(--catalog-text-typography-leading-flush);
+    --leading-body: var(--catalog-text-typography-leading-body);
+    --font-sans: var(--catalog-text-typography-font-sans);
+    --font-mono: var(--catalog-text-typography-font-mono);
+    --align-start: var(--catalog-text-typography-align-start);
+    --wrap-preserve: var(--catalog-text-typography-wrap-preserve);
+    --wrap-anywhere: var(--catalog-text-typography-wrap-anywhere);
+    --content-empty: var(--catalog-text-typography-content-empty);
+    --glyph-open: var(--catalog-glyph-typography-open);
+    --glyph-closed: var(--catalog-glyph-typography-closed);
+    --stroke-glyph: var(--catalog-glyph-border-stroke-width);
+    --surface-raised: var(--catalog-surface-color-raised);
+    --surface-field: var(--catalog-surface-color-field);
+    --ink-primary: var(--catalog-ink-color-primary);
+    --ink-muted: var(--catalog-ink-color-muted);
+    --ink-warn: var(--catalog-ink-color-warn);
+    --ink-danger: var(--catalog-ink-color-danger);
+    --ink-key: var(--catalog-ink-color-key);
+    --ink-string: var(--catalog-ink-color-string);
+    --ink-boolean: var(--catalog-ink-color-boolean);
+    --edge-subtle: var(--catalog-edge-color-subtle);
+    --edge-accent: var(--catalog-edge-color-accent);
+    --edge-warn: var(--catalog-edge-color-warn);
+    --edge-danger: var(--catalog-edge-color-danger);
+    --surface-transparent: var(--catalog-surface-color-transparent);
+    --paint-none: var(--catalog-paint-color-none);
+    --paint-current: var(--catalog-paint-color-current);
+    --motion-duration-fast: var(--catalog-control-motion-duration-fast);
+    --motion-duration-none: var(--catalog-control-motion-duration-none);
+    --motion-ease: var(--catalog-control-motion-ease);
+    --cursor-action: var(--catalog-control-cursor-action);
+    --size-console-min: var(--catalog-console-measure-min-size);
+    --size-console-max: var(--catalog-console-measure-max-size);
+    --size-list-min: var(--catalog-console-measure-list-min);
+    --size-search-min: var(--catalog-console-measure-search-min);
+    --size-stack-max: var(--catalog-console-measure-stack-max);
+    --size-line-box: var(--catalog-console-measure-line-box);
+    --space-indent-one: var(--catalog-console-measure-indent-one);
+    --space-indent-two: var(--catalog-console-measure-indent-two);
+    --space-indent-three: var(--catalog-console-measure-indent-three);
+    --space-indent-four: var(--catalog-console-measure-indent-four);
+    --space-indent-five: var(--catalog-console-measure-indent-five);
+    --flex-grow: var(--catalog-layout-measure-flex-grow);
+    --align-center: var(--catalog-text-typography-align-center);
+    --align-top: var(--catalog-text-typography-align-top);
+    --surface-warn: var(--catalog-surface-color-warn);
+    --surface-danger: var(--catalog-surface-color-danger);
+  }
+  @media (pointer: coarse) {
+    :root {
+      --catalog-size-measure-control: var(--base-dimension-mini-touch);
+    }
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --base-color-raised: var(--primary-color-light-raised);
+      --base-color-field: var(--primary-color-light-field);
+      --base-color-ink-primary: var(--primary-color-light-ink-primary);
+      --base-color-ink-muted: var(--primary-color-light-ink-muted);
+      --base-color-edge-subtle: var(--primary-color-light-edge-subtle);
+      --base-color-edge-strong: var(--primary-color-light-edge-strong);
+      --base-color-accent: var(--primary-color-light-accent);
+      --base-color-focus-ring: var(--primary-color-light-focus-ring);
+      --base-color-warn: var(--primary-color-light-warn);
+      --base-color-danger: var(--primary-color-light-danger);
+      --base-color-ink-key: var(--primary-color-light-ink-key);
+      --base-color-ink-string: var(--primary-color-light-ink-string);
+      --base-color-ink-boolean: var(--primary-color-light-ink-boolean);
+      --base-color-tint-warn: var(--primary-color-light-tint-warn);
+      --base-color-tint-danger: var(--primary-color-light-tint-danger);
+    }
+  }
+  :root[data-theme="light"],
+  .jc-console[data-theme="light"] {
+    --base-color-raised: var(--primary-color-light-raised);
+    --base-color-field: var(--primary-color-light-field);
+    --base-color-ink-primary: var(--primary-color-light-ink-primary);
+    --base-color-ink-muted: var(--primary-color-light-ink-muted);
+    --base-color-edge-subtle: var(--primary-color-light-edge-subtle);
+    --base-color-edge-strong: var(--primary-color-light-edge-strong);
+    --base-color-accent: var(--primary-color-light-accent);
+    --base-color-focus-ring: var(--primary-color-light-focus-ring);
+    --base-color-warn: var(--primary-color-light-warn);
+    --base-color-danger: var(--primary-color-light-danger);
+    --base-color-ink-key: var(--primary-color-light-ink-key);
+    --base-color-ink-string: var(--primary-color-light-ink-string);
+    --base-color-ink-boolean: var(--primary-color-light-ink-boolean);
+    --base-color-tint-warn: var(--primary-color-light-tint-warn);
+    --base-color-tint-danger: var(--primary-color-light-tint-danger);
+    --catalog-rule-border-edge: var(--base-dimension-mini-hairline) solid
+      var(--base-color-edge-subtle);
+    --catalog-rule-border-edge-strong: var(--base-dimension-mini-hairline) solid
+      var(--base-color-edge-strong);
+    --catalog-rule-border-focus-outline: var(--base-dimension-mini-fine) solid
+      var(--base-color-focus-ring);
+    --catalog-surface-color-raised: var(--base-color-raised);
+    --catalog-surface-color-field: var(--base-color-field);
+    --catalog-ink-color-primary: var(--base-color-ink-primary);
+    --catalog-ink-color-muted: var(--base-color-ink-muted);
+    --catalog-ink-color-warn: var(--base-color-warn);
+    --catalog-ink-color-danger: var(--base-color-danger);
+    --catalog-ink-color-key: var(--base-color-ink-key);
+    --catalog-ink-color-string: var(--base-color-ink-string);
+    --catalog-ink-color-boolean: var(--base-color-ink-boolean);
+    --catalog-edge-color-subtle: var(--base-color-edge-subtle);
+    --catalog-edge-color-accent: var(--base-color-accent);
+    --catalog-edge-color-warn: var(--base-color-warn);
+    --catalog-edge-color-danger: var(--base-color-danger);
+    --catalog-surface-color-warn: var(--base-color-tint-warn);
+    --catalog-surface-color-danger: var(--base-color-tint-danger);
+    --rule-edge: var(--catalog-rule-border-edge);
+    --rule-edge-strong: var(--catalog-rule-border-edge-strong);
+    --focus-outline: var(--catalog-rule-border-focus-outline);
+    --surface-raised: var(--catalog-surface-color-raised);
+    --surface-field: var(--catalog-surface-color-field);
+    --ink-primary: var(--catalog-ink-color-primary);
+    --ink-muted: var(--catalog-ink-color-muted);
+    --ink-warn: var(--catalog-ink-color-warn);
+    --ink-danger: var(--catalog-ink-color-danger);
+    --ink-key: var(--catalog-ink-color-key);
+    --ink-string: var(--catalog-ink-color-string);
+    --ink-boolean: var(--catalog-ink-color-boolean);
+    --edge-subtle: var(--catalog-edge-color-subtle);
+    --edge-accent: var(--catalog-edge-color-accent);
+    --edge-warn: var(--catalog-edge-color-warn);
+    --edge-danger: var(--catalog-edge-color-danger);
+    --surface-warn: var(--catalog-surface-color-warn);
+    --surface-danger: var(--catalog-surface-color-danger);
+  }
+  .jc-console[data-theme="dark"] {
+    --base-color-raised: var(--primary-color-dark-raised);
+    --base-color-field: var(--primary-color-dark-field);
+    --base-color-ink-primary: var(--primary-color-dark-ink-primary);
+    --base-color-ink-muted: var(--primary-color-dark-ink-muted);
+    --base-color-edge-subtle: var(--primary-color-dark-edge-subtle);
+    --base-color-edge-strong: var(--primary-color-dark-edge-strong);
+    --base-color-accent: var(--primary-color-dark-accent);
+    --base-color-focus-ring: var(--primary-color-dark-focus-ring);
+    --base-color-warn: var(--primary-color-dark-warn);
+    --base-color-danger: var(--primary-color-dark-danger);
+    --base-color-ink-key: var(--primary-color-dark-ink-key);
+    --base-color-ink-string: var(--primary-color-dark-ink-string);
+    --base-color-ink-boolean: var(--primary-color-dark-ink-boolean);
+    --base-color-tint-warn: var(--primary-color-dark-tint-warn);
+    --base-color-tint-danger: var(--primary-color-dark-tint-danger);
+    --catalog-rule-border-edge: var(--base-dimension-mini-hairline) solid
+      var(--base-color-edge-subtle);
+    --catalog-rule-border-edge-strong: var(--base-dimension-mini-hairline) solid
+      var(--base-color-edge-strong);
+    --catalog-rule-border-focus-outline: var(--base-dimension-mini-fine) solid
+      var(--base-color-focus-ring);
+    --catalog-surface-color-raised: var(--base-color-raised);
+    --catalog-surface-color-field: var(--base-color-field);
+    --catalog-ink-color-primary: var(--base-color-ink-primary);
+    --catalog-ink-color-muted: var(--base-color-ink-muted);
+    --catalog-ink-color-warn: var(--base-color-warn);
+    --catalog-ink-color-danger: var(--base-color-danger);
+    --catalog-ink-color-key: var(--base-color-ink-key);
+    --catalog-ink-color-string: var(--base-color-ink-string);
+    --catalog-ink-color-boolean: var(--base-color-ink-boolean);
+    --catalog-edge-color-subtle: var(--base-color-edge-subtle);
+    --catalog-edge-color-accent: var(--base-color-accent);
+    --catalog-edge-color-warn: var(--base-color-warn);
+    --catalog-edge-color-danger: var(--base-color-danger);
+    --catalog-surface-color-warn: var(--base-color-tint-warn);
+    --catalog-surface-color-danger: var(--base-color-tint-danger);
+    --rule-edge: var(--catalog-rule-border-edge);
+    --rule-edge-strong: var(--catalog-rule-border-edge-strong);
+    --focus-outline: var(--catalog-rule-border-focus-outline);
+    --surface-raised: var(--catalog-surface-color-raised);
+    --surface-field: var(--catalog-surface-color-field);
+    --ink-primary: var(--catalog-ink-color-primary);
+    --ink-muted: var(--catalog-ink-color-muted);
+    --ink-warn: var(--catalog-ink-color-warn);
+    --ink-danger: var(--catalog-ink-color-danger);
+    --ink-key: var(--catalog-ink-color-key);
+    --ink-string: var(--catalog-ink-color-string);
+    --ink-boolean: var(--catalog-ink-color-boolean);
+    --edge-subtle: var(--catalog-edge-color-subtle);
+    --edge-accent: var(--catalog-edge-color-accent);
+    --edge-warn: var(--catalog-edge-color-warn);
+    --edge-danger: var(--catalog-edge-color-danger);
+    --surface-warn: var(--catalog-surface-color-warn);
+    --surface-danger: var(--catalog-surface-color-danger);
+  }
+}
+@layer reset {
+  .jc-console,
+  .jc-console button,
+  .jc-console div,
+  .jc-console h2,
+  .jc-console input,
+  .jc-console label,
+  .jc-console option,
+  .jc-console p,
+  .jc-console pre,
+  .jc-console section,
+  .jc-console select,
+  .jc-console span,
+  .jc-console svg,
+  .jc-console table,
+  .jc-console td,
+  .jc-console th,
+  .jc-console tr {
+    box-sizing: border-box;
+  }
+  .jc-console button,
+  .jc-console input,
+  .jc-console select {
+    font: inherit;
+  }
+  .jc-console p,
+  .jc-console pre {
+    margin: var(--space-none);
+  }
+}
+@layer components {
+  /* Shell: the size container for the narrow-width tier. */
+  .jc-console {
+    container-name: jc-console;
+    container-type: inline-size;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-compact);
+    block-size: var(--size-fill);
+    min-block-size: var(--size-console-min);
+    max-block-size: var(--size-console-max);
+    padding: var(--space-compact);
+    border: var(--rule-edge);
+    border-radius: var(--radius-normal);
+    background-color: var(--surface-raised);
+    color: var(--ink-primary);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+  }
+  .jc-head,
+  .jc-tools {
+    display: flex;
+    align-items: center;
+    gap: var(--space-snug);
+    min-block-size: var(--size-control);
+  }
+  .jc-head {
+    flex-wrap: wrap;
+  }
+  .jc-tools {
+    flex-wrap: nowrap;
+  }
+  .jc-title {
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-flush);
+  }
+  .jc-spacer {
+    flex: var(--flex-grow);
+  }
+  /* Ghost icon buttons and outlined count chips. */
+  .jc-button,
+  .jc-chip {
+    display: inline-flex;
+    flex: var(--flex-fixed);
+    align-items: center;
+    justify-content: center;
+    border: var(--rule-edge-clear);
+    background-color: var(--surface-transparent);
+    color: var(--ink-primary);
+    cursor: var(--cursor-action);
+    line-height: var(--leading-flush);
+    transition-duration: var(--motion-duration-fast);
+    transition-property: background-color, color;
+    transition-timing-function: var(--motion-ease);
+  }
+  .jc-button {
+    inline-size: var(--size-control);
+    block-size: var(--size-control);
+    padding: var(--space-none);
+    border-radius: var(--radius-small);
+  }
+  .jc-ico {
+    inline-size: var(--size-glyph);
+    block-size: var(--size-glyph);
+    fill: var(--paint-none);
+    stroke: var(--paint-current);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: var(--stroke-glyph);
+  }
+  .jc-button[aria-pressed="true"] {
+    border-color: var(--edge-accent);
+    background-color: var(--surface-field);
+  }
+  .jc-chip {
+    gap: var(--space-snug);
+    block-size: var(--size-pill);
+    padding-inline: var(--space-small);
+    border-color: var(--edge-subtle);
+    border-radius: var(--radius-chip);
+    background-color: var(--surface-field);
+    font-size: var(--text-caption);
+    font-weight: var(--weight-medium);
+  }
+  .jc-chip[data-level="error"] {
+    border-color: var(--edge-danger);
+    color: var(--ink-danger);
+  }
+  .jc-chip[data-level="warn"] {
+    border-color: var(--edge-warn);
+    color: var(--ink-warn);
+  }
+  .jc-chip[aria-pressed="true"] {
+    background-color: var(--surface-raised);
+  }
+  .jc-chip .jc-ico {
+    inline-size: var(--size-glyph-small);
+    block-size: var(--size-glyph-small);
+  }
+  /* Filter row: search field and a compact level dropdown. */
+  .jc-search {
+    display: flex;
+    flex: var(--flex-grow);
+    align-items: center;
+    gap: var(--space-snug);
+    min-inline-size: var(--size-search-min);
+    block-size: var(--size-control);
+    padding-inline: var(--space-compact);
+    border: var(--rule-edge-strong);
+    border-radius: var(--radius-small);
+    background-color: var(--surface-field);
+    color: var(--ink-muted);
+  }
+  .jc-search:focus-within {
+    outline: var(--focus-outline);
+    outline-offset: var(--space-none);
+  }
+  .jc-search input {
+    flex: var(--flex-grow);
+    min-inline-size: var(--space-none);
+    padding: var(--space-none);
+    border-style: none;
+    background-color: var(--surface-transparent);
+    color: var(--ink-primary);
+    font-size: var(--text-body);
+    outline-style: none;
+  }
+  .jc-select {
+    position: relative;
+    display: inline-flex;
+    flex: var(--flex-fixed);
+    align-items: center;
+  }
+  .jc-select select {
+    appearance: none;
+    block-size: var(--size-control);
+    padding-inline: var(--select-padding-inline);
+    border: var(--rule-edge-strong);
+    border-radius: var(--radius-small);
+    background-color: var(--surface-field);
+    color: var(--ink-primary);
+    cursor: var(--cursor-action);
+    field-sizing: content;
+    font-size: var(--text-body);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-flush);
+  }
+  .jc-select::after {
+    content: var(--content-empty);
+    position: absolute;
+    inset-block-start: var(--select-caret-top);
+    inset-inline-end: var(--select-caret-inset);
+    margin-block-start: var(--select-caret-nudge);
+    border-block-start: var(--select-caret-stem);
+    border-inline: var(--select-caret-wings);
+    pointer-events: none;
+  }
+  /* Message list. */
+  .jc-list {
+    flex: var(--flex-grow);
+    min-block-size: var(--size-list-min);
+    overflow: auto;
+    border: var(--rule-edge);
+    border-radius: var(--radius-normal);
+    background-color: var(--surface-field);
+    font-family: var(--font-mono);
+    font-size: var(--text-body);
+  }
+  .jc-empty,
+  .jc-trimmed {
+    padding: var(--space-small);
+    color: var(--ink-muted);
+    font-family: var(--font-sans);
+    font-size: var(--text-caption);
+    text-align: var(--align-center);
+  }
+  .jc-entry {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-snug);
+    padding-block: var(--space-fine);
+    padding-inline: var(--space-compact);
+    color: var(--ink-primary);
+  }
+  .jc-entry + .jc-entry {
+    border-block-start: var(--rule-edge);
+  }
+  .jc-entry[data-depth="1"] {
+    padding-inline-start: var(--space-indent-one);
+  }
+  .jc-entry[data-depth="2"] {
+    padding-inline-start: var(--space-indent-two);
+  }
+  .jc-entry[data-depth="3"] {
+    padding-inline-start: var(--space-indent-three);
+  }
+  .jc-entry[data-depth="4"] {
+    padding-inline-start: var(--space-indent-four);
+  }
+  .jc-entry[data-depth="5"] {
+    padding-inline-start: var(--space-indent-five);
+  }
+  .jc-entry[data-level="warn"] {
+    background-color: var(--surface-warn);
+    color: var(--ink-warn);
+  }
+  .jc-entry[data-level="error"] {
+    background-color: var(--surface-danger);
+    color: var(--ink-danger);
+  }
+  .jc-entry[data-level="debug"],
+  .jc-entry[data-kind="input"] {
+    color: var(--ink-muted);
+  }
+  .jc-entry[data-kind="group"] {
+    font-weight: var(--weight-semibold);
+  }
+  .jc-entry[data-kind="divider"] {
+    align-items: center;
+    padding-block: var(--space-snug);
+    color: var(--ink-muted);
+    font-family: var(--font-sans);
+    font-size: var(--text-caption);
+  }
+  .jc-rule {
+    flex: var(--flex-grow);
+    border-block-start: var(--rule-edge);
+  }
+  .jc-marker {
+    display: inline-flex;
+    flex: var(--flex-fixed);
+    align-items: center;
+    justify-content: center;
+    inline-size: var(--size-glyph);
+    block-size: var(--size-line-box);
+    color: var(--ink-muted);
+  }
+  .jc-marker .jc-ico {
+    inline-size: var(--size-glyph-small);
+    block-size: var(--size-glyph-small);
+  }
+  .jc-entry[data-level="info"] .jc-marker {
+    color: var(--ink-key);
+  }
+  .jc-time,
+  .jc-source,
+  .jc-repeat {
+    flex: var(--flex-fixed);
+    color: var(--ink-muted);
+    font-size: var(--text-micro);
+    line-height: var(--size-line-box);
+  }
+  .jc-time {
+    display: none;
+  }
+  .jc-console[data-time="true"] .jc-time {
+    display: inline;
+  }
+  .jc-source {
+    padding: var(--space-none);
+    border-style: none;
+    background-color: var(--surface-transparent);
+    cursor: var(--cursor-action);
+    font-family: inherit;
+  }
+  .jc-repeat {
+    padding-inline: var(--space-snug);
+    border: var(--rule-edge);
+    border-color: var(--edge-accent);
+    border-radius: var(--radius-chip);
+    color: var(--ink-key);
+  }
+  .jc-message {
+    flex: var(--flex-grow);
+    min-inline-size: var(--space-none);
+    overflow-wrap: var(--wrap-anywhere);
+    white-space: var(--wrap-preserve);
+  }
+  .jc-text {
+    color: inherit;
+  }
+  /* Inspector: values, members and disclosure. */
+  .jc-v[data-type="string"] {
+    color: var(--ink-string);
+  }
+  .jc-entry[data-level="warn"] .jc-v[data-type="string"],
+  .jc-entry[data-level="error"] .jc-v[data-type="string"] {
+    color: inherit;
+  }
+  .jc-v[data-type="number"],
+  .jc-v[data-type="bigint"] {
+    color: var(--ink-warn);
+  }
+  .jc-v[data-type="boolean"] {
+    color: var(--ink-boolean);
+  }
+  .jc-v[data-type="undefined"],
+  .jc-v[data-type="null"],
+  .jc-v[data-type="accessor"] {
+    color: var(--ink-muted);
+  }
+  .jc-v[data-type="function"],
+  .jc-v[data-type="symbol"],
+  .jc-v[data-type="regexp"],
+  .jc-v[data-type="date"] {
+    color: var(--ink-key);
+  }
+  .jc-v[data-type="error"] {
+    color: var(--ink-danger);
+  }
+  .jc-object-head {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--space-fine);
+    cursor: var(--cursor-action);
+  }
+  .jc-twisty {
+    flex: var(--flex-fixed);
+    inline-size: var(--size-glyph-small);
+    padding: var(--space-none);
+    border-style: none;
+    background-color: var(--surface-transparent);
+    color: var(--ink-muted);
+    cursor: var(--cursor-action);
+    font-size: var(--text-micro);
+    line-height: var(--leading-flush);
+  }
+  .jc-twisty::before {
+    content: var(--glyph-closed);
+  }
+  .jc-twisty[aria-expanded="true"]::before {
+    content: var(--glyph-open);
+  }
+  .jc-object[data-open="true"] {
+    display: block;
+  }
+  .jc-children {
+    margin-inline-start: var(--space-tree-guide);
+    padding-inline-start: var(--space-small);
+    border-inline-start: var(--rule-edge);
+  }
+  .jc-key {
+    color: var(--ink-key);
+  }
+  .jc-key[data-index],
+  .jc-sep,
+  .jc-more {
+    color: var(--ink-muted);
+  }
+  .jc-stack {
+    max-block-size: var(--size-stack-max);
+    overflow: auto;
+    color: var(--ink-muted);
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    white-space: var(--wrap-preserve);
+  }
+  .jc-table {
+    border-collapse: collapse;
+    font-size: var(--text-caption);
+  }
+  .jc-table th,
+  .jc-table td {
+    padding-block: var(--space-fine);
+    padding-inline: var(--space-small);
+    border: var(--rule-edge);
+    text-align: var(--align-start);
+    vertical-align: var(--align-top);
+  }
+  .jc-table th {
+    background-color: var(--surface-raised);
+    color: var(--ink-muted);
+    font-weight: var(--weight-medium);
+  }
+  .jc-list:focus-visible {
+    outline: var(--focus-outline);
+    outline-offset: var(--space-none);
+  }
+}
+@media (hover: hover) and (pointer: fine) {
+  .jc-button:hover,
+  .jc-chip:hover,
+  .jc-select select:hover {
+    background-color: var(--surface-field);
+  }
+  .jc-source:hover {
+    color: var(--ink-primary);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .jc-button,
+  .jc-chip {
+    transition-duration: var(--motion-duration-none);
+  }
+}
+@media (forced-colors: active) {
+  .jc-chip,
+  .jc-button[aria-pressed="true"] {
+    border: var(--rule-edge-forced);
+  }
+}
+@layer utilities {
+  .jc-console [hidden] {
+    display: none;
+  }
+}

@@ -1,0 +1,13 @@
+/**
+ * Contextual aliases of the workspace component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  --perf-heading-gap: var(--catalog-layout-measure-heading-gap);
+  --perf-segment-pad: var(--catalog-layout-measure-segment-pad);
+  --perf-segment-height: var(--catalog-layout-measure-segment-height);
+  --perf-split-grid: var(--catalog-layout-measure-split-grid);
+  --perf-radius-segment: var(--catalog-field-border-radius-segment);
+  --perf-chip-shadow: var(--catalog-layout-effect-chip-shadow);
+  --perf-size-heading: var(--catalog-text-typography-size-heading);
+}

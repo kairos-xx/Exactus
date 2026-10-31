@@ -1,0 +1,12 @@
+/**
+ * Contextual aliases of the events component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  --perf-mono: var(--catalog-text-typography-mono);
+  --perf-event-height: var(--catalog-layout-measure-event-height);
+  --perf-event-pad: var(--catalog-layout-measure-event-pad);
+  --perf-event-grid: var(--catalog-layout-measure-event-grid);
+  --perf-row-faint: var(--catalog-field-border-row-faint);
+  --perf-cursor-edge: var(--catalog-field-border-cursor-edge);
+}

@@ -1,0 +1,539 @@
+:root {
+  --primary-app-color-white-1000-a100: #ffffffff;
+  --primary-ese-color-gray-260-a100: #242424ff;
+  --primary-ese-color-gray-874-a100: #d5d5d7ff;
+  --primary-ese-color-gray-787-a100: #b9b9bdff;
+  --primary-ese-color-violet-931-a100: #dce9ffff;
+  --primary-ese-color-teal-952-a100: #e4f4e9ff;
+  --primary-ese-color-pink-933-a100: #efe4f7ff;
+  --primary-ese-color-gray-956-a100: #f0f0f2ff;
+  --primary-ese-color-gray-961-a100: #f2f2f3ff;
+  --primary-ese-color-violet-636-a100: #4c82ffff;
+  --primary-ese-color-orange-634-a100: #e45151ff;
+  --primary-ese-color-gray-569-a100: #777777ff;
+  --primary-ese-color-named-transparent: transparent;
+  --primary-ese-css-pre: pre;
+  --primary-pixel-unit: 1px;
+  --primary-number-unit: 1;
+  --primary-esd-css-ui-minus-monospace: ui-monospace;
+  --primary-ese-css-sfmono-minus-regular: sfmono-regular;
+  --primary-ese-css-menlo: menlo;
+  --primary-esd-css-monospace: monospace;
+  --primary-ese-color-black-0-a7: #00000012;
+  --primary-ese-css-in: in;
+  --primary-ese-css-srgb: srgb;
+  --primary-percent-base: 1%;
+  --primary-ese-color-gray-627-a100: #888888ff;
+  --primary-ese-color-violet-636-a13: #4c82ff22;
+  --primary-em-unit: 1em;
+  --primary-ese-color-violet-636-a6: #4c82ff10;
+  --primary-ese-css-inset: inset;
+  --primary-viewport-width-unit: 1vw;
+  --primary-ese-color-black-0-a20: #00000033;
+  --primary-esd-css-solid: solid;
+  --primary-ese-css-text: text;
+  --primary-app-css-pointer: pointer;
+  --primary-rep-css-max-minus-content: max-content;
+  --base-app-color-white-1000-a100: var(--primary-app-color-white-1000-a100);
+  --base-ese-color-gray-260-a100: var(--primary-ese-color-gray-260-a100);
+  --base-ese-color-gray-874-a100: var(--primary-ese-color-gray-874-a100);
+  --base-ese-color-gray-787-a100: var(--primary-ese-color-gray-787-a100);
+  --base-ese-color-violet-931-a100: var(--primary-ese-color-violet-931-a100);
+  --base-ese-color-teal-952-a100: var(--primary-ese-color-teal-952-a100);
+  --base-ese-color-pink-933-a100: var(--primary-ese-color-pink-933-a100);
+  --base-ese-color-gray-956-a100: var(--primary-ese-color-gray-956-a100);
+  --base-ese-color-gray-961-a100: var(--primary-ese-color-gray-961-a100);
+  --base-ese-color-violet-636-a100: var(--primary-ese-color-violet-636-a100);
+  --base-ese-color-orange-634-a100: var(--primary-ese-color-orange-634-a100);
+  --base-ese-color-gray-569-a100: var(--primary-ese-color-gray-569-a100);
+  --base-ese-color-named-transparent: var(
+    --primary-ese-color-named-transparent
+  );
+  --base-ese-css-pre: var(--primary-ese-css-pre);
+  --base-ese-dimension-one-seven-pixel: calc(17 * var(--primary-pixel-unit));
+  --base-ese-number-one-point-two-five: calc(1.25 * var(--primary-number-unit));
+  --base-esd-css-ui-minus-monospace: var(--primary-esd-css-ui-minus-monospace);
+  --base-ese-css-sfmono-minus-regular: var(
+    --primary-ese-css-sfmono-minus-regular
+  );
+  --base-ese-css-menlo: var(--primary-ese-css-menlo);
+  --base-esd-css-monospace: var(--primary-esd-css-monospace);
+  --base-esd-dimension-one-pixel: var(--primary-pixel-unit);
+  --base-ese-dimension-five-four-pixel: calc(54 * var(--primary-pixel-unit));
+  --base-esd-dimension-eight-pixel: calc(8 * var(--primary-pixel-unit));
+  --base-ese-dimension-one-zero-pixel: calc(10 * var(--primary-pixel-unit));
+  --base-esd-dimension-one-two-pixel: calc(12 * var(--primary-pixel-unit));
+  --base-ese-dimension-nine-nine-nine-pixel: calc(
+    999 * var(--primary-pixel-unit)
+  );
+  --base-esd-dimension-two-pixel: calc(2 * var(--primary-pixel-unit));
+  --base-ese-color-black-0-a7: var(--primary-ese-color-black-0-a7);
+  --base-ese-dimension-three-six-pixel: calc(36 * var(--primary-pixel-unit));
+  --base-ese-css-in: var(--primary-ese-css-in);
+  --base-ese-css-srgb: var(--primary-ese-css-srgb);
+  --base-ese-percent-nine-seven: calc(97 * var(--primary-percent-base));
+  --base-ese-color-gray-627-a100: var(--primary-ese-color-gray-627-a100);
+  --base-ese-percent-nine-five: calc(95 * var(--primary-percent-base));
+  --base-ese-percent-nine-four: calc(94 * var(--primary-percent-base));
+  --base-ese-dimension-minus-two-pixel: calc(-2 * var(--primary-pixel-unit));
+  --base-ese-color-violet-636-a13: var(--primary-ese-color-violet-636-a13);
+  --base-ese-dimension-five-pixel: calc(5 * var(--primary-pixel-unit));
+  --base-ese-number-six-zero-zero: calc(600 * var(--primary-number-unit));
+  --base-ese-dimension-four-pixel: calc(4 * var(--primary-pixel-unit));
+  --base-ese-dimension-three-zero-pixel: calc(30 * var(--primary-pixel-unit));
+  --base-ese-dimension-three-pixel: calc(3 * var(--primary-pixel-unit));
+  --base-ese-number-six-five-zero: calc(650 * var(--primary-number-unit));
+  --base-ese-dimension-zero-point-seven-five-em: calc(
+    0.75 * var(--primary-em-unit)
+  );
+  --base-ese-dimension-two-seven-pixel: calc(27 * var(--primary-pixel-unit));
+  --base-esd-dimension-one-eight-pixel: calc(18 * var(--primary-pixel-unit));
+  --base-ese-color-violet-636-a6: var(--primary-ese-color-violet-636-a6);
+  --base-ese-css-inset: var(--primary-ese-css-inset);
+  --base-ese-number-two-one-four-seven-four-eight-three-six-four-seven: calc(
+    2147483647 * var(--primary-number-unit)
+  );
+  --base-ese-dimension-six-two-zero-pixel: calc(
+    620 * var(--primary-pixel-unit)
+  );
+  --base-ese-dimension-one-zero-zero-viewport-width: calc(
+    100 * var(--primary-viewport-width-unit)
+  );
+  --base-esd-dimension-two-zero-pixel: calc(20 * var(--primary-pixel-unit));
+  --base-ese-dimension-two-zero-zero-pixel: calc(
+    200 * var(--primary-pixel-unit)
+  );
+  --base-ese-color-black-0-a20: var(--primary-ese-color-black-0-a20);
+  --base-ese-ese-call-bg: color-mix(in srgb, #ffffffff 97%, #888888ff);
+  --base-ese-ese-call-bg-nested: color-mix(in srgb, #ffffffff 95%, #dce9ffff);
+  --base-ese-ese-call-bg-deep: color-mix(in srgb, #ffffffff 94%, #efe4f7ff);
+  --base-esd-css-solid: var(--primary-esd-css-solid);
+  --base-ese-css-text: var(--primary-ese-css-text);
+  --base-app-css-pointer: var(--primary-app-css-pointer);
+  --base-rep-css-max-minus-content: var(--primary-rep-css-max-minus-content);
+  --catalog-palette-color-app-accent-contrast: var(
+    --base-app-color-white-1000-a100
+  );
+  --catalog-layout-color-ese-ese-fg: var(--base-ese-color-gray-260-a100);
+  --catalog-layout-color-ese-ese-line: var(--base-ese-color-gray-874-a100);
+  --catalog-layout-color-ese-ese-line-strong: var(
+    --base-ese-color-gray-787-a100
+  );
+  --catalog-layout-color-ese-ese-blue: var(--base-ese-color-violet-931-a100);
+  --catalog-layout-color-ese-ese-green: var(--base-ese-color-teal-952-a100);
+  --catalog-layout-color-ese-ese-purple: var(--base-ese-color-pink-933-a100);
+  --catalog-layout-color-ese-ese-hover: var(--base-ese-color-gray-956-a100);
+  --catalog-layout-color-ese-ese-option-bg: var(--base-ese-color-gray-961-a100);
+  --catalog-layout-color-ese-ese-focus: var(--base-ese-color-violet-636-a100);
+  --catalog-layout-color-ese-ese-error: var(--base-ese-color-orange-634-a100);
+  --catalog-layout-color-ese-ese-muted: var(--base-ese-color-gray-569-a100);
+  --catalog-layout-measure-ese-ese-surface: var(
+    --base-ese-color-named-transparent
+  );
+  --catalog-layout-measure-ese-ese-pre: var(--base-ese-css-pre);
+  --catalog-text-typography-ese-ese-font:
+    var(--base-ese-dimension-one-seven-pixel)/var(
+        --base-ese-number-one-point-two-five
+      )
+      var(--base-esd-css-ui-minus-monospace),
+    var(--base-ese-css-sfmono-minus-regular), var(--base-ese-css-menlo),
+    var(--base-esd-css-monospace);
+  --catalog-layout-measure-ese-ese-gap: var(--base-esd-dimension-one-pixel);
+  --catalog-layout-measure-ese-ese-editor-min-height: var(
+    --base-ese-dimension-five-four-pixel
+  );
+  --catalog-layout-measure-ese-ese-editor-padding: var(
+      --base-esd-dimension-eight-pixel
+    )
+    var(--base-ese-dimension-one-zero-pixel);
+  --catalog-layout-measure-esd-demo-card-padding: var(
+    --base-esd-dimension-one-two-pixel
+  );
+  --catalog-field-border-ese-ese-radius-pill: var(
+    --base-ese-dimension-nine-nine-nine-pixel
+  );
+  --catalog-layout-effect-ese-ese-shadow-editor: 0
+    var(--base-esd-dimension-two-pixel) var(--base-esd-dimension-eight-pixel)
+    var(--base-ese-color-black-0-a7);
+  --catalog-layout-measure-ese-ese-call-margin: var(
+      --base-esd-dimension-one-pixel
+    )
+    var(--base-esd-dimension-two-pixel);
+  --catalog-layout-measure-ese-ese-call-min-height: var(
+    --base-ese-dimension-three-six-pixel
+  );
+  --catalog-layout-measure-ese-ese-call-padding: var(
+      --base-esd-dimension-two-pixel
+    )
+    0;
+  --catalog-layout-measure-esd-demo-mark-offset: var(
+    --base-esd-dimension-two-pixel
+  );
+  --catalog-layout-measure-ese-ese-call-bg: var(--base-ese-ese-call-bg);
+  --catalog-layout-measure-ese-ese-call-bg-nested: var(
+    --base-ese-ese-call-bg-nested
+  );
+  --catalog-layout-measure-ese-ese-call-bg-deep: var(
+    --base-ese-ese-call-bg-deep
+  );
+  --catalog-layout-measure-ese-ese-call-offset: var(
+    --base-ese-dimension-minus-two-pixel
+  );
+  --catalog-layout-measure-ese-ese-active-ring: 0 0 0
+    var(--base-esd-dimension-two-pixel) var(--base-ese-color-violet-636-a13);
+  --catalog-layout-measure-ese-ese-paren-padding: 0
+    var(--base-ese-dimension-five-pixel);
+  --catalog-layout-measure-ese-ese-paren-weight: var(
+    --base-ese-number-six-zero-zero
+  );
+  --catalog-layout-measure-ese-ese-op-indent: var(
+    --base-ese-dimension-four-pixel
+  );
+  --catalog-layout-measure-ese-ese-control-min-height: var(
+    --base-ese-dimension-three-zero-pixel
+  );
+  --catalog-layout-measure-ese-ese-control-padding: var(
+      --base-ese-dimension-three-pixel
+    )
+    var(--base-esd-dimension-eight-pixel);
+  --catalog-layout-measure-ese-ese-op-weight: var(
+    --base-ese-number-six-five-zero
+  );
+  --catalog-layout-measure-ese-ese-arrow-pad: var(
+    --base-ese-dimension-five-pixel
+  );
+  --catalog-layout-measure-ese-ese-arrow-size: var(
+    --base-ese-dimension-zero-point-seven-five-em
+  );
+  --catalog-layout-measure-ese-ese-separator-padding: 0
+    var(--base-ese-dimension-three-pixel);
+  --catalog-layout-color-ese-ese-caret-min-width: var(
+    --base-ese-dimension-three-pixel
+  );
+  --catalog-layout-color-ese-ese-caret-min-height: var(
+    --base-ese-dimension-two-seven-pixel
+  );
+  --catalog-layout-measure-esd-demo-icon-size: var(
+    --base-esd-dimension-one-eight-pixel
+  );
+  --catalog-layout-color-ese-ese-caret-focus-bg: var(
+    --base-ese-color-violet-636-a6
+  );
+  --catalog-layout-effect-ese-ese-caret-focus-shadow: var(--base-ese-css-inset)
+    0 var(--base-ese-dimension-minus-two-pixel)
+    var(--base-ese-color-violet-636-a100);
+  --catalog-layout-effect-ese-ese-atom-focus-shadow: var(--base-ese-css-inset) 0
+    0 0 var(--base-esd-dimension-two-pixel)
+    var(--base-ese-color-violet-636-a100);
+  --catalog-layout-measure-ese-ese-z-options: var(
+    --base-ese-number-two-one-four-seven-four-eight-three-six-four-seven
+  );
+  --catalog-layout-measure-ese-ese-options-max-width: min(
+    var(--base-ese-dimension-six-two-zero-pixel),
+    calc(
+      var(--base-ese-dimension-one-zero-zero-viewport-width) -
+        var(--base-esd-dimension-two-zero-pixel)
+    )
+  );
+  --catalog-layout-measure-ese-ese-options-max-height: var(
+    --base-ese-dimension-two-zero-zero-pixel
+  );
+  --catalog-layout-measure-esd-demo-toolbar-gap: var(
+    --base-esd-dimension-eight-pixel
+  );
+  --catalog-layout-effect-ese-ese-options-shadow: 0
+    var(--base-esd-dimension-one-two-pixel)
+    var(--base-ese-dimension-three-six-pixel) var(--base-ese-color-black-0-a20);
+  --catalog-field-border-ese-ese-editor-border: var(
+      --base-esd-dimension-one-pixel
+    )
+    var(--base-esd-css-solid) var(--base-ese-color-gray-787-a100);
+  --catalog-control-cursor-ese-ese-editor-cursor: var(--base-ese-css-text);
+  --catalog-field-border-ese-ese-call-border: var(
+      --base-esd-dimension-two-pixel
+    )
+    var(--base-esd-css-solid) var(--base-ese-color-gray-874-a100);
+  --catalog-layout-measure-app-body-margin: 0;
+  --catalog-control-cursor-app-switch-cursor: var(--base-app-css-pointer);
+  --catalog-field-border-ese-ese-open-border-radius: var(
+      --base-ese-dimension-nine-nine-nine-pixel
+    )
+    0 0 var(--base-ese-dimension-nine-nine-nine-pixel);
+  --catalog-field-border-ese-ese-close-border-radius: 0
+    var(--base-ese-dimension-nine-nine-nine-pixel)
+    var(--base-ese-dimension-nine-nine-nine-pixel) 0;
+  --catalog-field-border-ese-ese-atom-border: var(
+      --base-esd-dimension-one-pixel
+    )
+    var(--base-esd-css-solid) var(--base-ese-color-gray-874-a100);
+  --catalog-layout-measure-ese-ese-options-width: var(
+    --base-rep-css-max-minus-content
+  );
+  --ese-ese-editor-border: var(--catalog-field-border-ese-ese-editor-border);
+  --ese-ese-editor-cursor: var(--catalog-control-cursor-ese-ese-editor-cursor);
+  --ese-ese-call-border: var(--catalog-field-border-ese-ese-call-border);
+  --ese-ese-call-border-left-width: var(
+    --catalog-layout-measure-app-body-margin
+  );
+  --ese-ese-call-border-right-width: var(
+    --catalog-layout-measure-app-body-margin
+  );
+  --ese-ese-paren-cursor: var(--catalog-control-cursor-app-switch-cursor);
+  --ese-ese-open-border-left: var(--catalog-field-border-ese-ese-call-border);
+  --ese-ese-open-border-radius: var(
+    --catalog-field-border-ese-ese-open-border-radius
+  );
+  --ese-ese-close-border-right: var(--catalog-field-border-ese-ese-call-border);
+  --ese-ese-close-border-radius: var(
+    --catalog-field-border-ese-ese-close-border-radius
+  );
+  --ese-ese-atom-border: var(--catalog-field-border-ese-ese-atom-border);
+  --ese-ese-atom-outline: var(--catalog-layout-measure-app-body-margin);
+  --ese-ese-predicate-border-left: var(
+    --catalog-field-border-ese-ese-atom-border
+  );
+  --ese-ese-options-width: var(--catalog-layout-measure-ese-ese-options-width);
+  --ese-ese-bg: var(--catalog-palette-color-app-accent-contrast);
+  --ese-ese-fg: var(--catalog-layout-color-ese-ese-fg);
+  --ese-ese-line: var(--catalog-layout-color-ese-ese-line);
+  --ese-ese-line-strong: var(--catalog-layout-color-ese-ese-line-strong);
+  --ese-ese-blue: var(--catalog-layout-color-ese-ese-blue);
+  --ese-ese-green: var(--catalog-layout-color-ese-ese-green);
+  --ese-ese-purple: var(--catalog-layout-color-ese-ese-purple);
+  --ese-hover: var(--catalog-layout-color-ese-ese-hover);
+  --ese-ese-option-bg: var(--catalog-layout-color-ese-ese-option-bg);
+  --ese-ese-focus: var(--catalog-layout-color-ese-ese-focus);
+  --ese-error: var(--catalog-layout-color-ese-ese-error);
+  --ese-ese-muted: var(--catalog-layout-color-ese-ese-muted);
+  --ese-surface: var(--catalog-layout-measure-ese-ese-surface);
+  --ese-pre: var(--catalog-layout-measure-ese-ese-pre);
+  --ese-ese-font: var(--catalog-text-typography-ese-ese-font);
+  --ese-gap: var(--catalog-layout-measure-ese-ese-gap);
+  --ese-ese-editor-min-height: var(
+    --catalog-layout-measure-ese-ese-editor-min-height
+  );
+  --ese-ese-editor-padding: var(
+    --catalog-layout-measure-ese-ese-editor-padding
+  );
+  --ese-ese-radius: var(--catalog-layout-measure-esd-demo-card-padding);
+  --ese-radius-pill: var(--catalog-field-border-ese-ese-radius-pill);
+  --ese-ese-shadow-editor: var(--catalog-layout-effect-ese-ese-shadow-editor);
+  --ese-call-margin: var(--catalog-layout-measure-ese-ese-call-margin);
+  --ese-ese-call-min-height: var(
+    --catalog-layout-measure-ese-ese-call-min-height
+  );
+  --ese-call-padding: var(--catalog-layout-measure-ese-ese-call-padding);
+  --ese-call-border-width: var(--catalog-layout-measure-esd-demo-mark-offset);
+  --ese-call-bg: var(--catalog-layout-measure-ese-ese-call-bg);
+  --ese-call-bg-nested: var(--catalog-layout-measure-ese-ese-call-bg-nested);
+  --ese-call-bg-deep: var(--catalog-layout-measure-ese-ese-call-bg-deep);
+  --ese-call-offset: var(--catalog-layout-measure-ese-ese-call-offset);
+  --ese-active-ring: var(--catalog-layout-measure-ese-ese-active-ring);
+  --ese-paren-padding: var(--catalog-layout-measure-ese-ese-paren-padding);
+  --ese-paren-weight: var(--catalog-layout-measure-ese-ese-paren-weight);
+  --ese-op-indent: var(--catalog-layout-measure-ese-ese-op-indent);
+  --ese-border-thin: var(--catalog-layout-measure-ese-ese-gap);
+  --ese-ese-control-min-height: var(
+    --catalog-layout-measure-ese-ese-control-min-height
+  );
+  --ese-ese-control-padding: var(
+    --catalog-layout-measure-ese-ese-control-padding
+  );
+  --ese-op-weight: var(--catalog-layout-measure-ese-ese-op-weight);
+  --ese-arrow-pad: var(--catalog-layout-measure-ese-ese-arrow-pad);
+  --ese-arrow-size: var(--catalog-layout-measure-ese-ese-arrow-size);
+  --ese-separator-padding: var(
+    --catalog-layout-measure-ese-ese-separator-padding
+  );
+  --ese-caret-min-width: var(--catalog-layout-color-ese-ese-caret-min-width);
+  --ese-caret-min-height: var(--catalog-layout-color-ese-ese-caret-min-height);
+  --ese-caret-padding: var(--catalog-layout-measure-ese-ese-call-margin);
+  --ese-caret-radius: var(--catalog-layout-measure-ese-ese-op-indent);
+  --ese-caret-focus-width: var(--catalog-layout-measure-esd-demo-icon-size);
+  --ese-caret-focus-bg: var(--catalog-layout-color-ese-ese-caret-focus-bg);
+  --ese-caret-focus-shadow: var(
+    --catalog-layout-effect-ese-ese-caret-focus-shadow
+  );
+  --ese-atom-focus-shadow: var(
+    --catalog-layout-effect-ese-ese-atom-focus-shadow
+  );
+  --ese-z-options: var(--catalog-layout-measure-ese-ese-z-options);
+  --ese-options-gap: var(--catalog-layout-measure-ese-ese-arrow-pad);
+  --ese-options-max-width: var(
+    --catalog-layout-measure-ese-ese-options-max-width
+  );
+  --ese-options-max-height: var(
+    --catalog-layout-measure-ese-ese-options-max-height
+  );
+  --ese-options-padding: var(--catalog-layout-measure-esd-demo-toolbar-gap);
+  --ese-options-shadow: var(--catalog-layout-effect-ese-ese-options-shadow);
+}
+.ese-editor,
+.ese-options {
+  font: var(--ese-ese-font);
+  color: var(--ese-ese-fg);
+}
+.ese-editor {
+  display: flex;
+  align-items: center;
+  align-content: flex-start;
+  flex-wrap: wrap;
+  gap: var(--ese-gap);
+  min-height: var(--ese-ese-editor-min-height);
+  padding: var(--ese-ese-editor-padding);
+  border: var(--ese-ese-editor-border);
+  border-radius: var(--ese-ese-radius);
+  background: var(--ese-ese-bg);
+  overflow: auto;
+  cursor: var(--ese-ese-editor-cursor);
+  box-shadow: var(--ese-ese-shadow-editor);
+}
+.ese-node,
+.ese-call,
+.ese-args {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--ese-gap);
+}
+.ese-call {
+  position: relative;
+  min-height: var(--ese-ese-call-min-height);
+  padding: var(--ese-call-padding);
+  border: var(--ese-ese-call-border);
+  border-left-width: var(--ese-ese-call-border-left-width);
+  border-right-width: var(--ese-ese-call-border-right-width);
+  border-radius: var(--ese-radius-pill);
+  background: var(--ese-call-bg);
+}
+.ese-call .ese-call {
+  margin: var(--ese-call-margin);
+  background: var(--ese-call-bg-nested);
+}
+.ese-call .ese-call .ese-call {
+  background: var(--ese-call-bg-deep);
+}
+.ese-paren {
+  align-self: stretch;
+  display: inline-flex;
+  align-items: center;
+  padding: var(--ese-paren-padding);
+  color: var(--ese-ese-muted);
+  font-weight: var(--ese-paren-weight);
+  background: var(--ese-surface);
+  user-select: none;
+  cursor: var(--ese-ese-paren-cursor);
+}
+.ese-open {
+  border-left: var(--ese-ese-open-border-left);
+  border-radius: var(--ese-ese-open-border-radius);
+  margin-left: var(--ese-call-offset);
+}
+.ese-close {
+  border-right: var(--ese-ese-close-border-right);
+  border-radius: var(--ese-ese-close-border-radius);
+  margin-right: var(--ese-call-offset);
+}
+.ese-call.ese-active {
+  border-color: var(--ese-ese-focus);
+  box-shadow: var(--ese-active-ring);
+}
+.ese-call.ese-active > .ese-open,
+.ese-call.ese-active > .ese-close {
+  border-color: var(--ese-ese-focus);
+  color: var(--ese-ese-focus);
+}
+.ese-op-wrap {
+  display: inline-flex;
+  margin-left: var(--ese-op-indent);
+}
+.ese-operator,
+.ese-option {
+  appearance: none;
+  border: var(--ese-ese-editor-border);
+  border-radius: var(--ese-radius-pill);
+  min-height: var(--ese-ese-control-min-height);
+  padding: var(--ese-ese-control-padding);
+  background: var(--ese-ese-blue);
+  font: inherit;
+  color: inherit;
+  cursor: var(--ese-ese-paren-cursor);
+}
+.ese-operator {
+  font-weight: var(--ese-op-weight);
+}
+.ese-arrow {
+  padding-left: var(--ese-arrow-pad);
+  font-size: var(--ese-arrow-size);
+}
+.ese-atom {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--ese-ese-control-min-height);
+  border: var(--ese-ese-atom-border);
+  border-radius: var(--ese-radius-pill);
+  background: var(--ese-ese-green);
+  outline: var(--ese-ese-atom-outline);
+  cursor: var(--ese-ese-editor-cursor);
+  white-space: var(--ese-pre);
+}
+.ese-selector {
+  padding: var(--ese-ese-control-padding);
+}
+.ese-predicate {
+  padding: var(--ese-ese-control-padding);
+  border-left: var(--ese-ese-predicate-border-left);
+  background: var(--ese-ese-purple);
+  border-radius: var(--ese-radius-pill);
+}
+.ese-separator {
+  padding: var(--ese-separator-padding);
+  user-select: none;
+}
+.ese-caret {
+  display: inline-block;
+  min-width: var(--ese-caret-min-width);
+  min-height: var(--ese-caret-min-height);
+  padding: var(--ese-caret-padding);
+  border-radius: var(--ese-caret-radius);
+  outline: var(--ese-ese-atom-outline);
+  white-space: var(--ese-pre);
+  cursor: var(--ese-ese-editor-cursor);
+}
+.ese-caret:focus {
+  min-width: var(--ese-caret-focus-width);
+  background: var(--ese-caret-focus-bg);
+  box-shadow: var(--ese-caret-focus-shadow);
+}
+.ese-atom:focus {
+  box-shadow: var(--ese-atom-focus-shadow);
+}
+.ese-editor[data-invalid] {
+  border-color: var(--ese-error);
+}
+.ese-options {
+  position: fixed;
+  z-index: var(--ese-z-options);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ese-options-gap);
+  width: var(--ese-ese-options-width);
+  max-width: var(--ese-options-max-width);
+  max-height: var(--ese-options-max-height);
+  overflow: auto;
+  padding: var(--ese-options-padding);
+  border: var(--ese-ese-editor-border);
+  border-radius: var(--ese-ese-radius);
+  background: var(--ese-ese-bg);
+  box-shadow: var(--ese-options-shadow);
+}
+.ese-options[hidden] {
+  display: none;
+}
+.ese-option {
+  background: var(--ese-ese-option-bg);
+}
+.ese-option:hover {
+  background: var(--ese-ese-blue);
+  border-color: var(--ese-ese-focus);
+}

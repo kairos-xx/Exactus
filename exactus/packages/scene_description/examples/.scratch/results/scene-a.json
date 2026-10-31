@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "url": "https://example.test/",
+    "variant": "A"
+  },
+  "reference": {},
+  "elements": {
+    "header": {
+      "selector": "header",
+      "tag": "header",
+      "name": "Site header"
+    }
+  }
+}

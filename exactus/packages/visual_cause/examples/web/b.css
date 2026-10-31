@@ -1,0 +1,173 @@
+:root {
+  --primary-vcd-color-ink-black: #111416ff;
+  --primary-vcd-color-slate: #202529ff;
+  --primary-vcd-color-fog: #e8eaedff;
+  --primary-vcd-color-ash: #9aa1a7ff;
+  --primary-vcd-color-sky: #a4c9e8ff;
+  --primary-vcd-color-graphite: #394047ff;
+  --primary-vcd-css-sans-serif: sans-serif;
+  --primary-vcd-css-solid: solid;
+  --primary-vcd-css-auto: auto;
+  --primary-pixel-unit: 1px;
+  --primary-number-unit: 1;
+  --primary-percent-base: 1%;
+  --primary-viewport-height-unit: 1vh;
+  --primary-vcd-color-steel: #29343dff;
+  --base-vcd-color-ink-black: var(--primary-vcd-color-ink-black);
+  --base-vcd-color-slate: var(--primary-vcd-color-slate);
+  --base-vcd-color-fog: var(--primary-vcd-color-fog);
+  --base-vcd-color-ash: var(--primary-vcd-color-ash);
+  --base-vcd-color-sky: var(--primary-vcd-color-sky);
+  --base-vcd-color-graphite: var(--primary-vcd-color-graphite);
+  --base-vcd-css-sans-serif: var(--primary-vcd-css-sans-serif);
+  --base-vcd-css-solid: var(--primary-vcd-css-solid);
+  --base-vcd-css-auto: var(--primary-vcd-css-auto);
+  --base-vcd-dimension-one-pixel: var(--primary-pixel-unit);
+  --base-vcd-dimension-eight-pixel: calc(8 * var(--primary-pixel-unit));
+  --base-vcd-dimension-ten-pixel: calc(10 * var(--primary-pixel-unit));
+  --base-vcd-dimension-twelve-pixel: calc(12 * var(--primary-pixel-unit));
+  --base-vcd-dimension-sixteen-pixel: calc(16 * var(--primary-pixel-unit));
+  --base-vcd-dimension-twenty-four-pixel: calc(24 * var(--primary-pixel-unit));
+  --base-vcd-dimension-thirty-two-pixel: calc(32 * var(--primary-pixel-unit));
+  --base-vcd-dimension-forty-eight-pixel: calc(48 * var(--primary-pixel-unit));
+  --base-vcd-dimension-seven-twenty-pixel: calc(
+    720 * var(--primary-pixel-unit)
+  );
+  --base-vcd-dimension-full: calc(100 * var(--primary-percent-base));
+  --base-vcd-dimension-viewport-full: calc(
+    100 * var(--primary-viewport-height-unit)
+  );
+  --base-vcd-number-seven-hundred: calc(700 * var(--primary-number-unit));
+  --base-vcd-color-steel: var(--primary-vcd-color-steel);
+  --base-vcd-dimension-twenty-pixel: calc(20 * var(--primary-pixel-unit));
+  --base-vcd-dimension-twenty-eight-pixel: calc(28 * var(--primary-pixel-unit));
+  --catalog-page-color-background: var(--base-vcd-color-ink-black);
+  --catalog-page-color-text: var(--base-vcd-color-fog);
+  --catalog-page-color-muted: var(--base-vcd-color-ash);
+  --catalog-page-typography-family: var(--base-vcd-css-sans-serif);
+  --catalog-page-measure-padding: var(--base-vcd-dimension-forty-eight-pixel);
+  --catalog-page-measure-margin: 0;
+  --catalog-page-measure-min-height: var(--base-vcd-dimension-viewport-full);
+  --catalog-column-measure-width: min(
+    var(--base-vcd-dimension-seven-twenty-pixel),
+    var(--base-vcd-dimension-full)
+  );
+  --catalog-column-measure-margin: 0 var(--base-vcd-css-auto);
+  --catalog-heading-measure-margin: var(--base-vcd-dimension-eight-pixel) 0;
+  --catalog-cards-measure-columns: 1fr 1fr;
+  --catalog-cards-measure-gap: var(--base-vcd-dimension-sixteen-pixel);
+  --catalog-cards-measure-margin: var(--base-vcd-dimension-thirty-two-pixel) 0;
+  --catalog-card-measure-padding: var(--base-vcd-dimension-twenty-four-pixel);
+  --catalog-card-border-edge: var(--base-vcd-dimension-one-pixel)
+    var(--base-vcd-css-solid) var(--base-vcd-color-graphite);
+  --catalog-card-measure-radius: var(--base-vcd-dimension-twelve-pixel);
+  --catalog-card-color-surface: var(--base-vcd-color-slate);
+  --catalog-card-measure-copy-margin: 0;
+  --catalog-action-measure-padding: var(--base-vcd-dimension-ten-pixel)
+    var(--base-vcd-dimension-sixteen-pixel);
+  --catalog-action-border-none: 0;
+  --catalog-action-measure-radius: var(--base-vcd-dimension-eight-pixel);
+  --catalog-action-color-background: var(--base-vcd-color-sky);
+  --catalog-action-color-text: var(--base-vcd-color-ink-black);
+  --catalog-action-typography-weight: var(--base-vcd-number-seven-hundred);
+  --catalog-card-color-raised: var(--base-vcd-color-steel);
+  --catalog-card-measure-roomy-padding: var(
+    --base-vcd-dimension-thirty-two-pixel
+  );
+  --catalog-card-measure-round-radius: var(
+    --base-vcd-dimension-twenty-eight-pixel
+  );
+  --catalog-action-motion-nudge: translateX(
+    var(--base-vcd-dimension-twenty-pixel)
+  );
+  --vcd-page-background: var(--catalog-page-color-background);
+  --vcd-page-text: var(--catalog-page-color-text);
+  --vcd-page-muted: var(--catalog-page-color-muted);
+  --vcd-page-family: var(--catalog-page-typography-family);
+  --vcd-page-padding: var(--catalog-page-measure-padding);
+  --vcd-page-margin: var(--catalog-page-measure-margin);
+  --vcd-page-min-height: var(--catalog-page-measure-min-height);
+  --vcd-column-width: var(--catalog-column-measure-width);
+  --vcd-column-margin: var(--catalog-column-measure-margin);
+  --vcd-heading-margin: var(--catalog-heading-measure-margin);
+  --vcd-cards-columns: var(--catalog-cards-measure-columns);
+  --vcd-cards-gap: var(--catalog-cards-measure-gap);
+  --vcd-cards-margin: var(--catalog-cards-measure-margin);
+  --vcd-card-padding: var(--catalog-card-measure-padding);
+  --vcd-card-border: var(--catalog-card-border-edge);
+  --vcd-card-radius: var(--catalog-card-measure-radius);
+  --vcd-card-surface: var(--catalog-card-color-surface);
+  --vcd-card-copy-margin: var(--catalog-card-measure-copy-margin);
+  --vcd-action-padding: var(--catalog-action-measure-padding);
+  --vcd-action-border: var(--catalog-action-border-none);
+  --vcd-action-radius: var(--catalog-action-measure-radius);
+  --vcd-action-background: var(--catalog-action-color-background);
+  --vcd-action-text: var(--catalog-action-color-text);
+  --vcd-action-weight: var(--catalog-action-typography-weight);
+  --vcd-card-raised-surface: var(--catalog-card-color-raised);
+  --vcd-card-roomy-padding: var(--catalog-card-measure-roomy-padding);
+  --vcd-card-round-radius: var(--catalog-card-measure-round-radius);
+  --vcd-action-nudge: var(--catalog-action-motion-nudge);
+}
+html,
+body,
+main,
+section,
+article,
+h1,
+h2,
+p,
+button {
+  box-sizing: border-box;
+}
+body {
+  margin: var(--vcd-page-margin);
+  min-height: var(--vcd-page-min-height);
+  padding: var(--vcd-page-padding);
+  background: var(--vcd-page-background);
+  color: var(--vcd-page-text);
+  font-family: var(--vcd-page-family);
+}
+.demo {
+  width: var(--vcd-column-width);
+  margin: var(--vcd-column-margin);
+}
+.eyebrow,
+.intro {
+  color: var(--vcd-page-muted);
+}
+h1 {
+  margin: var(--vcd-heading-margin);
+}
+.cards {
+  display: grid;
+  grid-template-columns: var(--vcd-cards-columns);
+  gap: var(--vcd-cards-gap);
+  margin: var(--vcd-cards-margin);
+}
+.card {
+  padding: var(--vcd-card-padding);
+  border: var(--vcd-card-border);
+  border-radius: var(--vcd-card-radius);
+  background: var(--vcd-card-surface);
+}
+.card h2,
+.card p {
+  margin-top: var(--vcd-card-copy-margin);
+}
+.primary {
+  background: var(--vcd-card-raised-surface);
+  padding: var(--vcd-card-roomy-padding);
+}
+.secondary {
+  border-radius: var(--vcd-card-round-radius);
+}
+.action {
+  padding: var(--vcd-action-padding);
+  border: var(--vcd-action-border);
+  border-radius: var(--vcd-action-radius);
+  background: var(--vcd-action-background);
+  color: var(--vcd-action-text);
+  font-weight: var(--vcd-action-weight);
+  transform: var(--vcd-action-nudge);
+}

@@ -1,0 +1,4800 @@
+:root {
+  --primary-viewport-height-unit: 1vh;
+  --primary-pixel-unit: 1px;
+  --primary-esd-css-solid: solid;
+  --primary-degree-unit: 1deg;
+  --primary-em-unit: 1em;
+  --primary-number-unit: 1;
+  --primary-fraction-unit: 1fr;
+  --primary-ese-color-named-transparent: transparent;
+  --primary-cer-css-uppercase: uppercase;
+  --primary-ese-css-in: in;
+  --primary-ese-css-srgb: srgb;
+  --primary-percent-base: 1%;
+  --primary-tds-css-transform: transform;
+  --primary-second-unit: 1s;
+  --primary-cer-css-ease: ease;
+  --primary-cer-css-left: left;
+  --primary-clk-css-ellipsis: ellipsis;
+  --primary-clk-css-nowrap: nowrap;
+  --primary-rep-css-right: right;
+  --primary-clk-css-center: center;
+  --primary-esd-css-auto: auto;
+  --primary-cer-css-background: background;
+  --primary-tds-color-red-715-a100: #ff6b7aff;
+  --primary-tds-color-amber-802-a100: #f7ad55ff;
+  --primary-tds-color-violet-732-a100: #73a8ffff;
+  --primary-tds-color-violet-703-a100: #9a8cffff;
+  --primary-tds-color-blue-831-a100: #67d8ffff;
+  --primary-tds-color-teal-832-a100: #7de0aaff;
+  --primary-tds-color-pink-798-a100: #d7a4ffff;
+  --primary-tds-color-yellow-888-a100: #ffd477ff;
+  --primary-tds-color-red-799-a100: #ff9da8ff;
+  --primary-cer-css-none: none;
+  --primary-cer-css-underline: underline;
+  --primary-tds-css-line-minus-through: line-through;
+  --primary-rep-css-normal: normal;
+  --primary-cer-css-opacity: opacity;
+  --primary-ese-css-pre: pre;
+  --primary-tds-color-green-695-a100: #3fb950ff;
+  --primary-rep-css-italic: italic;
+  --primary-tds-color-blue-786-a100: #79c0ffff;
+  --primary-tds-color-pink-801-a100: #d2a8ffff;
+  --primary-tds-css-flashline: flashline;
+  --primary-tds-css-ease-minus-out: ease-out;
+  --primary-viewport-width-unit: 1vw;
+  --primary-rep-css-auto-minus-fill: auto-fill;
+  --primary-esd-css-ui-minus-monospace: ui-monospace;
+  --primary-clk-css-sfmono-minus-regular: SFMono-Regular;
+  --primary-clk-css-menlo: Menlo;
+  --primary-esd-css-monospace: monospace;
+  --primary-tds-color-yellow-856-a100: #f5c96bff;
+  --primary-tds-color-teal-791-a100: #56d6a2ff;
+  --primary-cer-css-color: color;
+  --primary-esd-css-pre-minus-wrap: pre-wrap;
+  --primary-rep-css-anywhere: anywhere;
+  --primary-tds-color-red-744-a100: #ff7d90ff;
+  --primary-tds-css-ui-minus-sans-minus-serif: ui-sans-serif;
+  --primary-vca-css-minus-apple-minus-system: -apple-system;
+  --primary-vca-css-blinkmacsystemfont: BlinkMacSystemFont;
+  --primary-vca-css-quote-segoe-x-ui-quote: "Segoe UI";
+  --primary-app-css-sans-minus-serif: sans-serif;
+  --primary-app-css-pointer: pointer;
+  --primary-rep-css-top: top;
+  --primary-clk-css-empty: "";
+  --primary-esd-css-middle: middle;
+  --base-clk-dimension-one-zero-zero-viewport-height: calc(
+    100 * var(--primary-viewport-height-unit)
+  );
+  --base-tds-dimension-one-six-eight-zero-pixel: calc(
+    1680 * var(--primary-pixel-unit)
+  );
+  --base-vca-dimension-two-four-pixel: calc(24 * var(--primary-pixel-unit));
+  --base-esd-dimension-one-four-pixel: calc(14 * var(--primary-pixel-unit));
+  --base-esd-dimension-one-eight-pixel: calc(18 * var(--primary-pixel-unit));
+  --base-esd-dimension-one-two-pixel: calc(12 * var(--primary-pixel-unit));
+  --base-esd-dimension-four-zero-pixel: calc(40 * var(--primary-pixel-unit));
+  --base-esd-dimension-one-pixel: var(--primary-pixel-unit);
+  --base-esd-css-solid: var(--primary-esd-css-solid);
+  --base-tds-tds-line: var(--dynamic-tds-line);
+  --base-tds-angle-one-three-five-degree: calc(
+    135 * var(--primary-degree-unit)
+  );
+  --base-tds-tds-paneltwo: var(--dynamic-tds-panel2);
+  --base-tds-tds-panel: var(--dynamic-tds-panel);
+  --base-tds-dimension-minus-zero-point-zero-two-em: calc(
+    -0.02 * var(--primary-em-unit)
+  );
+  --base-ese-dimension-three-pixel: calc(3 * var(--primary-pixel-unit));
+  --base-esd-dimension-eight-pixel: calc(8 * var(--primary-pixel-unit));
+  --base-ese-dimension-one-zero-pixel: calc(10 * var(--primary-pixel-unit));
+  --base-tds-dimension-nine-pixel: calc(9 * var(--primary-pixel-unit));
+  --base-clk-dimension-one-one-pixel: calc(11 * var(--primary-pixel-unit));
+  --base-ese-dimension-one-seven-pixel: calc(17 * var(--primary-pixel-unit));
+  --base-tds-number-one-point-eight: calc(1.8 * var(--primary-number-unit));
+  --base-tds-fraction-one-point-four-fraction: calc(
+    1.4 * var(--primary-fraction-unit)
+  );
+  --base-clk-number-four: calc(4 * var(--primary-number-unit));
+  --base-tds-dimension-one-two-zero-pixel: calc(
+    120 * var(--primary-pixel-unit)
+  );
+  --base-tds-fraction-zero-point-three-five-fraction: calc(
+    0.35 * var(--primary-fraction-unit)
+  );
+  --base-esd-dimension-two-zero-pixel: calc(20 * var(--primary-pixel-unit));
+  --base-ese-color-named-transparent: var(
+    --primary-ese-color-named-transparent
+  );
+  --base-clk-dimension-two-two-pixel: calc(22 * var(--primary-pixel-unit));
+  --base-ese-number-six-five-zero: calc(650 * var(--primary-number-unit));
+  --base-tds-dimension-minus-zero-point-zero-two-five-em: calc(
+    -0.025 * var(--primary-em-unit)
+  );
+  --base-ese-dimension-five-pixel: calc(5 * var(--primary-pixel-unit));
+  --base-esd-dimension-two-pixel: calc(2 * var(--primary-pixel-unit));
+  --base-vca-dimension-one-six-pixel: calc(16 * var(--primary-pixel-unit));
+  --base-cer-css-uppercase: var(--primary-cer-css-uppercase);
+  --base-clk-dimension-zero-point-zero-eight-em: calc(
+    0.08 * var(--primary-em-unit)
+  );
+  --base-tds-dimension-two-five-pixel: calc(25 * var(--primary-pixel-unit));
+  --base-tds-number-seven-five-zero: calc(750 * var(--primary-number-unit));
+  --base-tds-dimension-six-pixel: calc(6 * var(--primary-pixel-unit));
+  --base-ese-dimension-four-pixel: calc(4 * var(--primary-pixel-unit));
+  --base-tds-dimension-three-zero-zero-pixel: calc(
+    300 * var(--primary-pixel-unit)
+  );
+  --base-clk-fraction-one-fraction: var(--primary-fraction-unit);
+  --base-tds-dimension-two-eight-pixel: calc(28 * var(--primary-pixel-unit));
+  --base-tds-dimension-one-five-pixel: calc(15 * var(--primary-pixel-unit));
+  --base-tds-dimension-one-three-pixel: calc(13 * var(--primary-pixel-unit));
+  --base-app-number-seven-zero-zero: calc(700 * var(--primary-number-unit));
+  --base-tds-dimension-zero-point-zero-seven-em: calc(
+    0.07 * var(--primary-em-unit)
+  );
+  --base-tds-dimension-seven-pixel: calc(7 * var(--primary-pixel-unit));
+  --base-ese-dimension-nine-nine-nine-pixel: calc(
+    999 * var(--primary-pixel-unit)
+  );
+  --base-ese-css-in: var(--primary-ese-css-in);
+  --base-ese-css-srgb: var(--primary-ese-css-srgb);
+  --base-tds-tds-accent: var(--dynamic-tds-accent);
+  --base-tds-percent-one-four: calc(14 * var(--primary-percent-base));
+  --base-cer-percent-five-zero: calc(50 * var(--primary-percent-base));
+  --base-tds-dimension-three-four-zero-pixel: calc(
+    340 * var(--primary-pixel-unit)
+  );
+  --base-tds-css-transform: var(--primary-tds-css-transform);
+  --base-cer-duration-zero-point-one-five-second: calc(
+    0.15 * var(--primary-second-unit)
+  );
+  --base-cer-css-ease: var(--primary-cer-css-ease);
+  --base-app-number-two: calc(2 * var(--primary-number-unit));
+  --base-tds-angle-nine-zero-degree: calc(90 * var(--primary-degree-unit));
+  --base-cer-css-left: var(--primary-cer-css-left);
+  --base-ese-number-one-point-two-five: calc(1.25 * var(--primary-number-unit));
+  --base-clk-css-ellipsis: var(--primary-clk-css-ellipsis);
+  --base-clk-css-nowrap: var(--primary-clk-css-nowrap);
+  --base-rep-css-right: var(--primary-rep-css-right);
+  --base-clk-css-center: var(--primary-clk-css-center);
+  --base-tds-dimension-three-eight-pixel: calc(38 * var(--primary-pixel-unit));
+  --base-ese-percent-nine-four: calc(94 * var(--primary-percent-base));
+  --base-tds-dimension-five-zero-zero-pixel: calc(
+    500 * var(--primary-pixel-unit)
+  );
+  --base-tds-dimension-five-three-pixel: calc(53 * var(--primary-pixel-unit));
+  --base-tds-number-three: calc(3 * var(--primary-number-unit));
+  --base-tds-dimension-zero-point-zero-five-em: calc(
+    0.05 * var(--primary-em-unit)
+  );
+  --base-esd-css-auto: var(--primary-esd-css-auto);
+  --base-cer-css-background: var(--primary-cer-css-background);
+  --base-cer-duration-zero-point-one-two-second: calc(
+    0.12 * var(--primary-second-unit)
+  );
+  --base-tds-dimension-one-point-five-pixel: calc(
+    1.5 * var(--primary-pixel-unit)
+  );
+  --base-tds-number-two-point-four: calc(2.4 * var(--primary-number-unit));
+  --base-tds-color-red-715-a100: var(--primary-tds-color-red-715-a100);
+  --base-tds-percent-four-five: calc(45 * var(--primary-percent-base));
+  --base-tds-percent-one-two: calc(12 * var(--primary-percent-base));
+  --base-tds-color-amber-802-a100: var(--primary-tds-color-amber-802-a100);
+  --base-tds-color-violet-732-a100: var(--primary-tds-color-violet-732-a100);
+  --base-tds-color-violet-703-a100: var(--primary-tds-color-violet-703-a100);
+  --base-tds-color-blue-831-a100: var(--primary-tds-color-blue-831-a100);
+  --base-tds-percent-one-one: calc(11 * var(--primary-percent-base));
+  --base-tds-percent-three-eight: calc(38 * var(--primary-percent-base));
+  --base-tds-color-teal-832-a100: var(--primary-tds-color-teal-832-a100);
+  --base-tds-color-pink-798-a100: var(--primary-tds-color-pink-798-a100);
+  --base-tds-color-yellow-888-a100: var(--primary-tds-color-yellow-888-a100);
+  --base-tds-color-red-799-a100: var(--primary-tds-color-red-799-a100);
+  --base-tds-tds-accenttwo: var(--dynamic-tds-accent2);
+  --base-tds-percent-four-two: calc(42 * var(--primary-percent-base));
+  --base-tds-number-one-point-four-eight: calc(
+    1.48 * var(--primary-number-unit)
+  );
+  --base-cer-css-none: var(--primary-cer-css-none);
+  --base-cer-css-underline: var(--primary-cer-css-underline);
+  --base-tds-css-line-minus-through: var(--primary-tds-css-line-minus-through);
+  --base-cer-percent-two-eight: calc(28 * var(--primary-percent-base));
+  --base-rep-css-normal: var(--primary-rep-css-normal);
+  --base-tds-tds-d: var(--dynamic-tds-d);
+  --base-tds-dimension-eight-zero-pixel: calc(80 * var(--primary-pixel-unit));
+  --base-tds-dimension-six-zero-pixel: calc(60 * var(--primary-pixel-unit));
+  --base-tds-number-one-point-five-five: calc(
+    1.55 * var(--primary-number-unit)
+  );
+  --base-tds-dimension-one-one-zero-zero-pixel: calc(
+    1100 * var(--primary-pixel-unit)
+  );
+  --base-cer-number-four-zero-zero: calc(400 * var(--primary-number-unit));
+  --base-cer-css-opacity: var(--primary-cer-css-opacity);
+  --base-tds-duration-zero-point-one-second: calc(
+    0.1 * var(--primary-second-unit)
+  );
+  --base-tds-dimension-zero-point-nine-em: calc(0.9 * var(--primary-em-unit));
+  --base-ese-css-pre: var(--primary-ese-css-pre);
+  --base-cer-dimension-one-em: var(--primary-em-unit);
+  --base-tds-color-green-695-a100: var(--primary-tds-color-green-695-a100);
+  --base-rep-css-italic: var(--primary-rep-css-italic);
+  --base-tds-color-blue-786-a100: var(--primary-tds-color-blue-786-a100);
+  --base-tds-color-pink-801-a100: var(--primary-tds-color-pink-801-a100);
+  --base-ese-number-six-zero-zero: calc(600 * var(--primary-number-unit));
+  --base-app-percent-four-zero: calc(40 * var(--primary-percent-base));
+  --base-tds-css-flashline: var(--primary-tds-css-flashline);
+  --base-tds-duration-one-point-eight-second: calc(
+    1.8 * var(--primary-second-unit)
+  );
+  --base-tds-css-ease-minus-out: var(--primary-tds-css-ease-minus-out);
+  --base-tds-color-rgb-two-five-five-two-one-three-seven-nine-three-five: rgb(
+    calc(var(--primary-number-unit) * 255)
+      calc(var(--primary-number-unit) * 213)
+      calc(var(--primary-number-unit) * 79) /
+      calc(var(--primary-percent-base) * 35)
+  );
+  --base-ese-dimension-three-zero-pixel: calc(30 * var(--primary-pixel-unit));
+  --base-clk-dimension-four-viewport-width: calc(
+    4 * var(--primary-viewport-width-unit)
+  );
+  --base-tds-dimension-six-four-pixel: calc(64 * var(--primary-pixel-unit));
+  --base-tds-number-one-point-six-five: calc(1.65 * var(--primary-number-unit));
+  --base-tds-dimension-one-one-eight-zero-pixel: calc(
+    1180 * var(--primary-pixel-unit)
+  );
+  --base-tds-dimension-three-four-pixel: calc(34 * var(--primary-pixel-unit));
+  --base-tds-dimension-one-nine-pixel: calc(19 * var(--primary-pixel-unit));
+  --base-tds-tds-text: var(--dynamic-tds-text);
+  --base-tds-percent-eight-eight: calc(88 * var(--primary-percent-base));
+  --base-tds-tds-muted: var(--dynamic-tds-muted);
+  --base-tds-dimension-zero-point-eight-two-em: calc(
+    0.82 * var(--primary-em-unit)
+  );
+  --base-rep-css-auto-minus-fill: var(--primary-rep-css-auto-minus-fill);
+  --base-tds-dimension-three-six-zero-pixel: calc(
+    360 * var(--primary-pixel-unit)
+  );
+  --base-clk-number-minus-one: calc(-1 * var(--primary-number-unit));
+  --base-tds-duration-zero-point-two-second: calc(
+    0.2 * var(--primary-second-unit)
+  );
+  --base-tds-number-two-zero: calc(20 * var(--primary-number-unit));
+  --base-tds-dimension-four-two-zero-pixel: calc(
+    420 * var(--primary-pixel-unit)
+  );
+  --base-tds-color-rgb-zero-zero-zero-eight: rgb(
+    calc(var(--primary-number-unit) * 0) calc(var(--primary-number-unit) * 0)
+      calc(var(--primary-number-unit) * 0) /
+      calc(var(--primary-percent-base) * 8)
+  );
+  --base-tds-percent-four-eight: calc(48 * var(--primary-percent-base));
+  --base-tds-dimension-minus-one-pixel: calc(-1 * var(--primary-pixel-unit));
+  --base-tds-color-rgb-zero-zero-zero-one-two: rgb(
+    calc(var(--primary-number-unit) * 0) calc(var(--primary-number-unit) * 0)
+      calc(var(--primary-number-unit) * 0) /
+      calc(var(--primary-percent-base) * 12)
+  );
+  --base-tds-dimension-zero-point-zero-five-five-em: calc(
+    0.055 * var(--primary-em-unit)
+  );
+  --base-tds-number-six-two-zero: calc(620 * var(--primary-number-unit));
+  --base-tds-dimension-minus-zero-point-zero-zero-eight-em: calc(
+    -0.008 * var(--primary-em-unit)
+  );
+  --base-esd-css-ui-minus-monospace: var(--primary-esd-css-ui-minus-monospace);
+  --base-clk-css-sfmono-minus-regular: var(
+    --primary-clk-css-sfmono-minus-regular
+  );
+  --base-clk-css-menlo: var(--primary-clk-css-menlo);
+  --base-esd-css-monospace: var(--primary-esd-css-monospace);
+  --base-tds-color-rgb-zero-zero-zero-nine: rgb(
+    calc(var(--primary-number-unit) * 0) calc(var(--primary-number-unit) * 0)
+      calc(var(--primary-number-unit) * 0) /
+      calc(var(--primary-percent-base) * 9)
+  );
+  --base-tds-number-seven-six-zero: calc(760 * var(--primary-number-unit));
+  --base-cer-dimension-minus-zero-point-zero-one-em: calc(
+    -0.01 * var(--primary-em-unit)
+  );
+  --base-tds-dimension-nine-zero-pixel: calc(90 * var(--primary-pixel-unit));
+  --base-tds-dimension-zero-point-zero-one-five-em: calc(
+    0.015 * var(--primary-em-unit)
+  );
+  --base-tds-color-yellow-856-a100: var(--primary-tds-color-yellow-856-a100);
+  --base-tds-percent-nine: calc(9 * var(--primary-percent-base));
+  --base-tds-dimension-one-two-eight-zero-pixel: calc(
+    1280 * var(--primary-pixel-unit)
+  );
+  --base-ese-dimension-three-six-pixel: calc(36 * var(--primary-pixel-unit));
+  --base-tds-dimension-two-one-pixel: calc(21 * var(--primary-pixel-unit));
+  --base-tds-dimension-two-six-pixel: calc(26 * var(--primary-pixel-unit));
+  --base-tds-color-teal-791-a100: var(--primary-tds-color-teal-791-a100);
+  --base-tds-number-zero-point-seven-two: calc(
+    0.72 * var(--primary-number-unit)
+  );
+  --base-tds-percent-six-five: calc(65 * var(--primary-percent-base));
+  --base-tds-dimension-five-zero-pixel: calc(50 * var(--primary-pixel-unit));
+  --base-tds-dimension-four-two-pixel: calc(42 * var(--primary-pixel-unit));
+  --base-tds-dimension-four-eight-pixel: calc(48 * var(--primary-pixel-unit));
+  --base-tds-dimension-nine-six-pixel: calc(96 * var(--primary-pixel-unit));
+  --base-tds-number-one-point-six-eight: calc(
+    1.68 * var(--primary-number-unit)
+  );
+  --base-cer-dimension-four-four-pixel: calc(44 * var(--primary-pixel-unit));
+  --base-rep-number-one-point-three: calc(1.3 * var(--primary-number-unit));
+  --base-tds-number-one-point-three-five: calc(
+    1.35 * var(--primary-number-unit)
+  );
+  --base-tds-percent-nine-two: calc(92 * var(--primary-percent-base));
+  --base-cer-percent-eight-zero: calc(80 * var(--primary-percent-base));
+  --base-tds-number-one-point-seven: calc(1.7 * var(--primary-number-unit));
+  --base-tds-number-seven-two-zero: calc(720 * var(--primary-number-unit));
+  --base-tds-percent-eight-four: calc(84 * var(--primary-percent-base));
+  --base-tds-number-one-point-six: calc(1.6 * var(--primary-number-unit));
+  --base-tds-dimension-one-point-zero-five-em: calc(
+    1.05 * var(--primary-em-unit)
+  );
+  --base-tds-percent-seven-two: calc(72 * var(--primary-percent-base));
+  --base-tds-dimension-four-six-pixel: calc(46 * var(--primary-pixel-unit));
+  --base-tds-percent-eight-two: calc(82 * var(--primary-percent-base));
+  --base-tds-tds-bg: var(--dynamic-tds-bg);
+  --base-tds-number-zero-point-six-two: calc(0.62 * var(--primary-number-unit));
+  --base-tds-percent-three-two: calc(32 * var(--primary-percent-base));
+  --base-tds-number-one-point-four-five: calc(
+    1.45 * var(--primary-number-unit)
+  );
+  --base-tds-number-eight-zero-zero: calc(800 * var(--primary-number-unit));
+  --base-tds-percent-one-zero: calc(10 * var(--primary-percent-base));
+  --base-app-percent-nine-zero: calc(90 * var(--primary-percent-base));
+  --base-tds-number-five-two-zero: calc(520 * var(--primary-number-unit));
+  --base-tds-dimension-zero-point-six-em: calc(0.6 * var(--primary-em-unit));
+  --base-tds-dimension-five-six-pixel: calc(56 * var(--primary-pixel-unit));
+  --base-tds-number-zero-point-six-eight: calc(
+    0.68 * var(--primary-number-unit)
+  );
+  --base-tds-duration-zero-point-one-six-second: calc(
+    0.16 * var(--primary-second-unit)
+  );
+  --base-cer-angle-one-eight-zero-degree: calc(
+    180 * var(--primary-degree-unit)
+  );
+  --base-tds-number-one-point-six-two: calc(1.62 * var(--primary-number-unit));
+  --base-tds-dimension-zero-point-seven-eight-em: calc(
+    0.78 * var(--primary-em-unit)
+  );
+  --base-esd-dimension-two-two-zero-pixel: calc(
+    220 * var(--primary-pixel-unit)
+  );
+  --base-tds-dimension-two-eight-zero-pixel: calc(
+    280 * var(--primary-pixel-unit)
+  );
+  --base-tds-dimension-seven-zero-pixel: calc(70 * var(--primary-pixel-unit));
+  --base-tds-number-one-point-one-two: calc(1.12 * var(--primary-number-unit));
+  --base-tds-dimension-minus-zero-point-zero-three-five-em: calc(
+    -0.035 * var(--primary-em-unit)
+  );
+  --base-tds-dimension-two-three-pixel: calc(23 * var(--primary-pixel-unit));
+  --base-cer-number-one-point-two: calc(1.2 * var(--primary-number-unit));
+  --base-tds-number-one-point-two-eight: calc(
+    1.28 * var(--primary-number-unit)
+  );
+  --base-tds-number-one-point-four: calc(1.4 * var(--primary-number-unit));
+  --base-tds-dimension-minus-two-four-pixel: calc(
+    -24 * var(--primary-pixel-unit)
+  );
+  --base-cer-css-color: var(--primary-cer-css-color);
+  --base-tds-number-eight: calc(8 * var(--primary-number-unit));
+  --base-esd-css-pre-minus-wrap: var(--primary-esd-css-pre-minus-wrap);
+  --base-rep-css-anywhere: var(--primary-rep-css-anywhere);
+  --base-tds-color-red-744-a100: var(--primary-tds-color-red-744-a100);
+  --base-tds-css-ui-minus-sans-minus-serif: var(
+    --primary-tds-css-ui-minus-sans-minus-serif
+  );
+  --base-vca-css-minus-apple-minus-system: var(
+    --primary-vca-css-minus-apple-minus-system
+  );
+  --base-vca-css-blinkmacsystemfont: var(--primary-vca-css-blinkmacsystemfont);
+  --base-vca-css-quote-segoe-x-ui-quote: var(
+    --primary-vca-css-quote-segoe-x-ui-quote
+  );
+  --base-app-css-sans-minus-serif: var(--primary-app-css-sans-minus-serif);
+  --base-tds-dashboard-background-three: color-mix(
+    in srgb,
+    var(--dynamic-tds-accent) 14%,
+    var(--dynamic-tds-panel2)
+  );
+  --base-tds-dashboard-box-shadow-one: 0 0 0 3px
+    color-mix(in srgb, var(--dynamic-tds-accent) 14%, transparent);
+  --base-tds-dashboard-background-four: color-mix(
+    in srgb,
+    var(--dynamic-tds-panel) 94%,
+    transparent
+  );
+  --base-tds-dashboard-border-color-one: color-mix(
+    in srgb,
+    #ff6b7aff 45%,
+    var(--dynamic-tds-line)
+  );
+  --base-tds-dashboard-background-five: color-mix(
+    in srgb,
+    #ff6b7aff 12%,
+    var(--dynamic-tds-panel2)
+  );
+  --base-tds-dashboard-border-color-two: color-mix(
+    in srgb,
+    #f7ad55ff 45%,
+    var(--dynamic-tds-line)
+  );
+  --base-tds-dashboard-background-six: color-mix(
+    in srgb,
+    #f7ad55ff 12%,
+    var(--dynamic-tds-panel2)
+  );
+  --base-tds-dashboard-border-color-three: color-mix(
+    in srgb,
+    #73a8ffff 45%,
+    var(--dynamic-tds-line)
+  );
+  --base-tds-dashboard-background-seven: color-mix(
+    in srgb,
+    #73a8ffff 12%,
+    var(--dynamic-tds-panel2)
+  );
+  --base-tds-dashboard-border-color-four: color-mix(
+    in srgb,
+    #9a8cffff 45%,
+    var(--dynamic-tds-line)
+  );
+  --base-tds-dashboard-background-eight: color-mix(
+    in srgb,
+    #9a8cffff 12%,
+    var(--dynamic-tds-panel2)
+  );
+  --base-tds-dashboard-background-nine: color-mix(
+    in srgb,
+    #67d8ffff 11%,
+    var(--dynamic-tds-panel2)
+  );
+  --base-tds-dashboard-border-color-five: color-mix(
+    in srgb,
+    #67d8ffff 38%,
+    var(--dynamic-tds-line)
+  );
+  --base-tds-dashboard-background-onezero: color-mix(
+    in srgb,
+    #7de0aaff 11%,
+    var(--dynamic-tds-panel2)
+  );
+  --base-tds-dashboard-border-color-six: color-mix(
+    in srgb,
+    #7de0aaff 38%,
+    var(--dynamic-tds-line)
+  );
+  --base-tds-dashboard-background-oneone: color-mix(
+    in srgb,
+    #d7a4ffff 11%,
+    var(--dynamic-tds-panel2)
+  );
+  --base-tds-dashboard-border-color-seven: color-mix(
+    in srgb,
+    #d7a4ffff 38%,
+    var(--dynamic-tds-line)
+  );
+  --base-tds-dashboard-background-onetwo: color-mix(
+    in srgb,
+    #ffd477ff 11%,
+    var(--dynamic-tds-panel2)
+  );
+  --base-tds-dashboard-border-color-eight: color-mix(
+    in srgb,
+    #ffd477ff 38%,
+    var(--dynamic-tds-line)
+  );
+  --base-tds-dashboard-background-onethree: color-mix(
+    in srgb,
+    #ff9da8ff 11%,
+    var(--dynamic-tds-panel2)
+  );
+  --base-tds-dashboard-border-color-nine: color-mix(
+    in srgb,
+    #ff9da8ff 38%,
+    var(--dynamic-tds-line)
+  );
+  --base-tds-dashboard-background-onefour: color-mix(
+    in srgb,
+    var(--dynamic-tds-accent2) 12%,
+    var(--dynamic-tds-panel2)
+  );
+  --base-tds-dashboard-border-color-onezero: color-mix(
+    in srgb,
+    var(--dynamic-tds-accent2) 42%,
+    var(--dynamic-tds-line)
+  );
+  --base-tds-dashboard-background-onefive: color-mix(
+    in srgb,
+    var(--dynamic-tds-accent) 28%,
+    transparent
+  );
+  --base-tds-dashboard-color-nine: color-mix(
+    in srgb,
+    var(--dynamic-tds-text) 88%,
+    var(--dynamic-tds-muted)
+  );
+  --base-tds-dashboard-border-color-oneone: color-mix(
+    in srgb,
+    var(--dynamic-tds-accent) 48%,
+    var(--dynamic-tds-line)
+  );
+  --base-tds-dashboard-border-color-onetwo: color-mix(
+    in srgb,
+    #f5c96bff 38%,
+    var(--dynamic-tds-line)
+  );
+  --base-tds-dashboard-background-oneeight: color-mix(
+    in srgb,
+    #f5c96bff 9%,
+    var(--dynamic-tds-panel2)
+  );
+  --base-tds-dashboard-background-onenine: color-mix(
+    in srgb,
+    var(--dynamic-tds-panel2) 65%,
+    transparent
+  );
+  --base-tds-dashboard-color-onezero: color-mix(
+    in srgb,
+    var(--dynamic-tds-text) 92%,
+    var(--dynamic-tds-muted)
+  );
+  --base-tds-dashboard-color-oneone: color-mix(
+    in srgb,
+    var(--dynamic-tds-text) 80%,
+    var(--dynamic-tds-muted)
+  );
+  --base-tds-dashboard-color-onetwo: color-mix(
+    in srgb,
+    var(--dynamic-tds-text) 84%,
+    var(--dynamic-tds-muted)
+  );
+  --base-tds-dashboard-background-twozero: color-mix(
+    in srgb,
+    var(--dynamic-tds-muted) 72%,
+    transparent
+  );
+  --base-tds-dashboard-background-twoone: color-mix(
+    in srgb,
+    var(--dynamic-tds-panel) 82%,
+    var(--dynamic-tds-bg)
+  );
+  --base-tds-dashboard-border-color-onethree: color-mix(
+    in srgb,
+    var(--dynamic-tds-accent) 32%,
+    var(--dynamic-tds-line)
+  );
+  --base-tds-dashboard-background-twotwo: color-mix(
+    in srgb,
+    #ff6b7aff 10%,
+    transparent
+  );
+  --base-tds-dashboard-border-color-onefour: color-mix(
+    in srgb,
+    #ff6b7aff 38%,
+    var(--dynamic-tds-line)
+  );
+  --base-tds-dashboard-background-twothree: color-mix(
+    in srgb,
+    #f7ad55ff 10%,
+    transparent
+  );
+  --base-tds-dashboard-border-color-onefive: color-mix(
+    in srgb,
+    #f7ad55ff 38%,
+    var(--dynamic-tds-line)
+  );
+  --base-tds-dashboard-background-twofour: color-mix(
+    in srgb,
+    #73a8ffff 10%,
+    transparent
+  );
+  --base-tds-dashboard-border-color-onesix: color-mix(
+    in srgb,
+    #73a8ffff 38%,
+    var(--dynamic-tds-line)
+  );
+  --base-tds-dashboard-background-twofive: color-mix(
+    in srgb,
+    #9a8cffff 10%,
+    transparent
+  );
+  --base-tds-dashboard-border-color-oneseven: color-mix(
+    in srgb,
+    #9a8cffff 38%,
+    var(--dynamic-tds-line)
+  );
+  --base-tds-dashboard-color-onethree: color-mix(
+    in srgb,
+    var(--dynamic-tds-text) 90%,
+    var(--dynamic-tds-muted)
+  );
+  --base-tds-dashboard-color-onefour: color-mix(
+    in srgb,
+    var(--dynamic-tds-text) 72%,
+    var(--dynamic-tds-muted)
+  );
+  --base-tds-color-rgb-zero-zero-zero-two-four: rgb(
+    calc(var(--primary-number-unit) * 0) calc(var(--primary-number-unit) * 0)
+      calc(var(--primary-number-unit) * 0) /
+      calc(var(--primary-percent-base) * 24)
+  );
+  --base-tds-dimension-four-five-pixel: calc(45 * var(--primary-pixel-unit));
+  --base-tds-color-rgb-three-five-four-five-seven-five-nine: rgb(
+    calc(var(--primary-number-unit) * 35) calc(var(--primary-number-unit) * 45)
+      calc(var(--primary-number-unit) * 75) /
+      calc(var(--primary-percent-base) * 9)
+  );
+  --base-app-css-pointer: var(--primary-app-css-pointer);
+  --base-tds-tds-done: var(--dynamic-tds-done);
+  --base-rep-css-top: var(--primary-rep-css-top);
+  --base-clk-css-empty: var(--primary-clk-css-empty);
+  --base-tds-tds-pct: var(--dynamic-tds-pct);
+  --base-esd-css-middle: var(--primary-esd-css-middle);
+  --catalog-layout-measure-clk-demo-block-size-two: var(
+    --base-clk-dimension-one-zero-zero-viewport-height
+  );
+  --catalog-layout-measure-tds-dashboard-max-width-one: var(
+    --base-tds-dimension-one-six-eight-zero-pixel
+  );
+  --catalog-layout-measure-vdd-frame-padding: var(
+    --base-vca-dimension-two-four-pixel
+  );
+  --catalog-field-border-vdd-radius: var(--base-esd-dimension-one-four-pixel);
+  --catalog-layout-measure-esd-demo-icon-size: var(
+    --base-esd-dimension-one-eight-pixel
+  );
+  --catalog-layout-measure-esd-demo-card-padding: var(
+    --base-esd-dimension-one-two-pixel
+  );
+  --catalog-layout-measure-tds-dashboard-width-one: var(
+    --base-esd-dimension-four-zero-pixel
+  );
+  --catalog-layout-border-tds-dashboard-border-one: var(
+      --base-esd-dimension-one-pixel
+    )
+    var(--base-esd-css-solid) var(--base-tds-tds-line);
+  --catalog-layout-color-tds-dashboard-background-one: linear-gradient(
+    var(--base-tds-angle-one-three-five-degree),
+    var(--base-tds-tds-paneltwo),
+    var(--base-tds-tds-panel)
+  );
+  --catalog-layout-typography-tds-dashboard-letter-spacing-one: var(
+    --base-tds-dimension-minus-zero-point-zero-two-em
+  );
+  --catalog-layout-color-ese-ese-caret-min-width: var(
+    --base-ese-dimension-three-pixel
+  );
+  --catalog-layout-measure-esd-demo-toolbar-gap: var(
+    --base-esd-dimension-eight-pixel
+  );
+  --catalog-field-border-vdd-search-border-radius: var(
+    --base-ese-dimension-one-zero-pixel
+  );
+  --catalog-layout-measure-tds-dashboard-padding-two: var(
+      --base-tds-dimension-nine-pixel
+    )
+    var(--base-clk-dimension-one-one-pixel);
+  --catalog-text-typography-vca-htwo-font-size: var(
+    --base-ese-dimension-one-seven-pixel
+  );
+  --catalog-layout-color-tds-dashboard-stroke-width-one: var(
+    --base-tds-number-one-point-eight
+  );
+  --catalog-layout-measure-tds-dashboard-grid-template-columns-one: minmax(
+      0,
+      var(--base-tds-fraction-one-point-four-fraction)
+    )
+    repeat(
+      var(--base-clk-number-four),
+      minmax(
+        var(--base-tds-dimension-one-two-zero-pixel),
+        var(--base-tds-fraction-zero-point-three-five-fraction)
+      )
+    );
+  --catalog-text-typography-vdd-brand-font-size: var(
+    --base-esd-dimension-two-zero-pixel
+  );
+  --catalog-layout-measure-ese-ese-surface: var(
+    --base-ese-color-named-transparent
+  );
+  --catalog-layout-measure-clk-demo-width-nine: var(
+    --base-clk-dimension-two-two-pixel
+  );
+  --catalog-layout-measure-ese-ese-op-weight: var(
+    --base-ese-number-six-five-zero
+  );
+  --catalog-layout-typography-tds-dashboard-letter-spacing-two: var(
+    --base-tds-dimension-minus-zero-point-zero-two-five-em
+  );
+  --catalog-layout-measure-vdd-event-gap: var(
+    --base-clk-dimension-one-one-pixel
+  );
+  --catalog-field-border-vdd-button-border-radius: var(
+    --base-tds-dimension-nine-pixel
+  );
+  --catalog-layout-measure-ese-ese-arrow-pad: var(
+    --base-ese-dimension-five-pixel
+  );
+  --catalog-layout-measure-tds-dashboard-padding-four: var(
+      --base-esd-dimension-two-pixel
+    )
+    var(--base-ese-dimension-five-pixel);
+  --catalog-layout-measure-vca-space-four: var(
+    --base-vca-dimension-one-six-pixel
+  );
+  --catalog-layout-measure-cer-cerulean-zerosixone: var(
+    --base-cer-css-uppercase
+  );
+  --catalog-layout-typography-clk-demo-letter-spacing-six: var(
+    --base-clk-dimension-zero-point-zero-eight-em
+  );
+  --catalog-text-typography-vdd-metric-font-size: var(
+    --base-tds-dimension-two-five-pixel
+  );
+  --catalog-text-typography-vdd-brand-font-weight: var(
+    --base-tds-number-seven-five-zero
+  );
+  --catalog-field-border-vca-overlay-note-border-radius: var(
+    --base-tds-dimension-six-pixel
+  );
+  --catalog-layout-measure-ese-ese-op-indent: var(
+    --base-ese-dimension-four-pixel
+  );
+  --catalog-layout-measure-tds-dashboard-grid-template-columns-two: var(
+      --base-tds-dimension-three-zero-zero-pixel
+    )
+    minmax(0, var(--base-clk-fraction-one-fraction));
+  --catalog-layout-measure-tds-dashboard-max-height-one: calc(
+    var(--base-clk-dimension-one-zero-zero-viewport-height) -
+      var(--base-tds-dimension-two-eight-pixel)
+  );
+  --catalog-text-typography-vdd-panel-font-size: var(
+    --base-tds-dimension-one-five-pixel
+  );
+  --catalog-field-border-vdd-metric-border-radius: var(
+    --base-tds-dimension-one-three-pixel
+  );
+  --catalog-layout-measure-tds-dashboard-padding-six: var(
+      --base-esd-dimension-one-four-pixel
+    )
+    0;
+  --catalog-text-typography-app-font-weight-bold: var(
+    --base-app-number-seven-zero-zero
+  );
+  --catalog-layout-typography-tds-dashboard-letter-spacing-four: var(
+    --base-tds-dimension-zero-point-zero-seven-em
+  );
+  --catalog-layout-measure-tds-dashboard-gap-five: var(
+    --base-tds-dimension-seven-pixel
+  );
+  --catalog-field-border-ese-ese-radius-pill: var(
+    --base-ese-dimension-nine-nine-nine-pixel
+  );
+  --catalog-layout-measure-tds-dashboard-padding-seven: var(
+      --base-tds-dimension-six-pixel
+    )
+    var(--base-tds-dimension-nine-pixel);
+  --catalog-layout-color-tds-dashboard-background-three: var(
+    --base-tds-dashboard-background-three
+  );
+  --catalog-field-border-vdd-avatar-border-radius: var(
+    --base-cer-percent-five-zero
+  );
+  --catalog-layout-measure-tds-dashboard-padding-eight: var(
+      --base-tds-dimension-seven-pixel
+    )
+    var(--base-ese-dimension-one-zero-pixel);
+  --catalog-layout-measure-tds-dashboard-max-height-two: var(
+    --base-tds-dimension-three-four-zero-pixel
+  );
+  --catalog-layout-measure-ese-ese-call-padding: var(
+      --base-esd-dimension-two-pixel
+    )
+    0;
+  --catalog-layout-measure-tds-dashboard-margin-two: var(
+      --base-ese-dimension-four-pixel
+    )
+    0 var(--base-ese-dimension-four-pixel)
+    var(--base-ese-dimension-one-zero-pixel);
+  --catalog-layout-measure-tds-dashboard-flex-one: 0 0
+    var(--base-esd-dimension-one-four-pixel);
+  --catalog-layout-motion-tds-dashboard-transition-one: var(
+      --base-tds-css-transform
+    )
+    var(--base-cer-duration-zero-point-one-five-second) var(--base-cer-css-ease);
+  --catalog-layout-measure-app-page-gutter-multiplier: var(
+    --base-app-number-two
+  );
+  --catalog-layout-effect-tds-dashboard-transform-one: rotate(
+    var(--base-tds-angle-nine-zero-degree)
+  );
+  --catalog-layout-measure-cer-cerulean-zerofiveeight: var(--base-cer-css-left);
+  --catalog-layout-measure-tds-dashboard-padding-onezero: var(
+      --base-tds-dimension-seven-pixel
+    )
+    var(--base-tds-dimension-nine-pixel);
+  --catalog-layout-typography-tds-dashboard-line-height-one: var(
+    --base-ese-number-one-point-two-five
+  );
+  --catalog-layout-typography-clk-demo-text-overflow-twoeight: var(
+    --base-clk-css-ellipsis
+  );
+  --catalog-layout-measure-clk-demo-white-space-twonine: var(
+    --base-clk-css-nowrap
+  );
+  --catalog-layout-measure-tds-dashboard-margin-three: var(
+      --base-esd-dimension-one-pixel
+    )
+    0 var(--base-ese-dimension-four-pixel) var(--base-esd-dimension-two-pixel);
+  --catalog-layout-color-tds-dashboard-background-position-one: var(
+      --base-rep-css-right
+    )
+    var(--base-clk-dimension-one-one-pixel) var(--base-clk-css-center);
+  --catalog-layout-measure-tds-dashboard-padding-oneone: var(
+      --base-tds-dimension-nine-pixel
+    )
+    var(--base-tds-dimension-three-eight-pixel)
+    var(--base-tds-dimension-nine-pixel) var(--base-clk-dimension-one-one-pixel);
+  --catalog-layout-effect-tds-dashboard-box-shadow-one: var(
+    --base-tds-dashboard-box-shadow-one
+  );
+  --catalog-layout-measure-tds-dashboard-padding-onetwo: var(
+      --base-tds-dimension-one-three-pixel
+    )
+    var(--base-vca-dimension-one-six-pixel);
+  --catalog-layout-color-tds-dashboard-background-four: var(
+    --base-tds-dashboard-background-four
+  );
+  --catalog-layout-effect-tds-dashboard-backdrop-filter-one: blur(
+    var(--base-esd-dimension-one-two-pixel)
+  );
+  --catalog-layout-measure-tds-dashboard-z-index-one: var(
+    --base-clk-number-four
+  );
+  --catalog-layout-measure-tds-dashboard-min-height-two: var(
+    --base-tds-dimension-five-zero-zero-pixel
+  );
+  --catalog-layout-measure-tds-dashboard-top-two: var(
+    --base-tds-dimension-five-three-pixel
+  );
+  --catalog-layout-measure-tds-dashboard-z-index-two: var(
+    --base-tds-number-three
+  );
+  --catalog-layout-measure-tds-dashboard-padding-onethree: var(
+      --base-tds-dimension-nine-pixel
+    )
+    var(--base-vca-dimension-one-six-pixel);
+  --catalog-layout-typography-tds-dashboard-letter-spacing-five: var(
+    --base-tds-dimension-zero-point-zero-five-em
+  );
+  --catalog-layout-measure-tds-dashboard-grid-template-columns-three: var(
+      --base-clk-dimension-two-two-pixel
+    )
+    minmax(0, var(--base-clk-fraction-one-fraction)) var(--base-esd-css-auto);
+  --catalog-layout-motion-tds-dashboard-transition-two: var(
+      --base-cer-css-background
+    )
+    var(--base-cer-duration-zero-point-one-two-second) var(--base-cer-css-ease);
+  --catalog-layout-border-tds-dashboard-border-two: var(
+      --base-tds-dimension-one-point-five-pixel
+    )
+    var(--base-esd-css-solid) var(--base-tds-tds-line);
+  --catalog-layout-measure-esd-demo-mark-offset: var(
+    --base-esd-dimension-two-pixel
+  );
+  --catalog-layout-color-tds-dashboard-stroke-width-three: var(
+    --base-tds-number-two-point-four
+  );
+  --catalog-layout-measure-tds-dashboard-padding-onefour: var(
+      --base-ese-dimension-three-pixel
+    )
+    var(--base-tds-dimension-six-pixel);
+  --catalog-palette-border-tds-dashboard-border-color-one: var(
+    --base-tds-dashboard-border-color-one
+  );
+  --catalog-layout-color-tds-dashboard-background-five: var(
+    --base-tds-dashboard-background-five
+  );
+  --catalog-palette-border-tds-dashboard-border-color-two: var(
+    --base-tds-dashboard-border-color-two
+  );
+  --catalog-layout-color-tds-dashboard-background-six: var(
+    --base-tds-dashboard-background-six
+  );
+  --catalog-palette-border-tds-dashboard-border-color-three: var(
+    --base-tds-dashboard-border-color-three
+  );
+  --catalog-layout-color-tds-dashboard-background-seven: var(
+    --base-tds-dashboard-background-seven
+  );
+  --catalog-palette-border-tds-dashboard-border-color-four: var(
+    --base-tds-dashboard-border-color-four
+  );
+  --catalog-layout-color-tds-dashboard-background-eight: var(
+    --base-tds-dashboard-background-eight
+  );
+  --catalog-palette-color-tds-dashboard-color-one: var(
+    --base-tds-color-blue-831-a100
+  );
+  --catalog-layout-color-tds-dashboard-background-nine: var(
+    --base-tds-dashboard-background-nine
+  );
+  --catalog-palette-border-tds-dashboard-border-color-five: var(
+    --base-tds-dashboard-border-color-five
+  );
+  --catalog-palette-color-tds-dashboard-color-two: var(
+    --base-tds-color-teal-832-a100
+  );
+  --catalog-layout-color-tds-dashboard-background-onezero: var(
+    --base-tds-dashboard-background-onezero
+  );
+  --catalog-palette-border-tds-dashboard-border-color-six: var(
+    --base-tds-dashboard-border-color-six
+  );
+  --catalog-palette-color-tds-dashboard-color-three: var(
+    --base-tds-color-pink-798-a100
+  );
+  --catalog-layout-color-tds-dashboard-background-oneone: var(
+    --base-tds-dashboard-background-oneone
+  );
+  --catalog-palette-border-tds-dashboard-border-color-seven: var(
+    --base-tds-dashboard-border-color-seven
+  );
+  --catalog-palette-color-tds-dashboard-color-four: var(
+    --base-tds-color-yellow-888-a100
+  );
+  --catalog-layout-color-tds-dashboard-background-onetwo: var(
+    --base-tds-dashboard-background-onetwo
+  );
+  --catalog-palette-border-tds-dashboard-border-color-eight: var(
+    --base-tds-dashboard-border-color-eight
+  );
+  --catalog-palette-color-tds-dashboard-color-five: var(
+    --base-tds-color-red-799-a100
+  );
+  --catalog-layout-color-tds-dashboard-background-onethree: var(
+    --base-tds-dashboard-background-onethree
+  );
+  --catalog-palette-border-tds-dashboard-border-color-nine: var(
+    --base-tds-dashboard-border-color-nine
+  );
+  --catalog-layout-color-tds-dashboard-background-onefour: var(
+    --base-tds-dashboard-background-onefour
+  );
+  --catalog-palette-border-tds-dashboard-border-color-onezero: var(
+    --base-tds-dashboard-border-color-onezero
+  );
+  --catalog-layout-typography-tds-dashboard-line-height-two: var(
+    --base-tds-number-one-point-four-eight
+  );
+  --catalog-text-typography-vca-nav-text-decoration: var(--base-cer-css-none);
+  --catalog-layout-measure-cer-cerulean-zerosevenzero: var(
+    --base-cer-css-underline
+  );
+  --catalog-layout-typography-tds-dashboard-text-decoration-three: var(
+    --base-tds-css-line-minus-through
+  );
+  --catalog-layout-color-tds-dashboard-background-onefive: var(
+    --base-tds-dashboard-background-onefive
+  );
+  --catalog-layout-measure-rep-kv-label-tracking: var(--base-rep-css-normal);
+  --catalog-layout-measure-tds-dashboard-padding-left-three: calc(
+    var(--base-tds-tds-d) * var(--base-esd-dimension-one-two-pixel)
+  );
+  --catalog-layout-typography-clk-demo-text-align-four: var(
+    --base-clk-css-center
+  );
+  --catalog-layout-measure-tds-dashboard-padding-onefive: var(
+      --base-tds-dimension-eight-zero-pixel
+    )
+    var(--base-esd-dimension-two-zero-pixel);
+  --catalog-layout-measure-tds-dashboard-padding-onesix: var(
+      --base-esd-dimension-one-two-pixel
+    )
+    var(--base-vca-dimension-one-six-pixel);
+  --catalog-layout-measure-tds-dashboard-padding-oneseven: var(
+      --base-tds-dimension-seven-pixel
+    )
+    var(--base-esd-dimension-one-two-pixel);
+  --catalog-layout-measure-tds-dashboard-padding-oneeight: var(
+      --base-esd-dimension-one-eight-pixel
+    )
+    var(--base-tds-dimension-two-eight-pixel)
+    var(--base-tds-dimension-six-zero-pixel);
+  --catalog-layout-typography-tds-dashboard-line-height-three: var(
+    --base-tds-number-one-point-five-five
+  );
+  --catalog-layout-measure-tds-dashboard-max-width-two: var(
+    --base-tds-dimension-one-one-zero-zero-pixel
+  );
+  --catalog-layout-measure-tds-dashboard-margin-four: var(
+      --base-esd-dimension-one-four-pixel
+    )
+    0 var(--base-ese-dimension-four-pixel);
+  --catalog-layout-measure-cer-cerulean-zerothreeone: var(
+    --base-cer-number-four-zero-zero
+  );
+  --catalog-layout-motion-tds-dashboard-transition-three: var(
+      --base-cer-css-opacity
+    )
+    var(--base-tds-duration-zero-point-one-second);
+  --catalog-layout-measure-tds-dashboard-padding-onenine: var(
+      --base-esd-dimension-one-pixel
+    )
+    0;
+  --catalog-layout-measure-tds-dashboard-padding-left-four: calc(
+    var(--base-tds-tds-d) * var(--base-vca-dimension-one-six-pixel) +
+      var(--base-tds-dimension-six-pixel)
+  );
+  --catalog-text-typography-tds-dashboard-font-size-onetwo: var(
+    --base-tds-dimension-zero-point-nine-em
+  );
+  --catalog-layout-measure-tds-dashboard-padding-twozero: var(
+      --base-esd-dimension-one-pixel
+    )
+    var(--base-ese-dimension-five-pixel);
+  --catalog-layout-measure-tds-dashboard-padding-twoone: var(
+      --base-ese-dimension-one-zero-pixel
+    )
+    var(--base-esd-dimension-one-two-pixel);
+  --catalog-layout-measure-tds-dashboard-margin-five: var(
+      --base-tds-dimension-six-pixel
+    )
+    0;
+  --catalog-layout-measure-ese-ese-pre: var(--base-ese-css-pre);
+  --catalog-layout-measure-tds-dashboard-min-height-three: var(
+    --base-cer-dimension-one-em
+  );
+  --catalog-palette-color-tds-dashboard-color-six: var(
+    --base-tds-color-green-695-a100
+  );
+  --catalog-layout-measure-rep-italic: var(--base-rep-css-italic);
+  --catalog-palette-color-tds-dashboard-color-seven: var(
+    --base-tds-color-blue-786-a100
+  );
+  --catalog-palette-color-tds-dashboard-color-eight: var(
+    --base-tds-color-pink-801-a100
+  );
+  --catalog-layout-measure-ese-ese-paren-weight: var(
+    --base-ese-number-six-zero-zero
+  );
+  --catalog-layout-measure-app-bar-a-height: var(--base-app-percent-four-zero);
+  --catalog-layout-measure-tds-dashboard-padding-twotwo: var(
+      --base-ese-dimension-four-pixel
+    )
+    var(--base-tds-dimension-nine-pixel);
+  --catalog-layout-motion-tds-dashboard-animation-one: var(
+      --base-tds-css-flashline
+    )
+    var(--base-tds-duration-one-point-eight-second)
+    var(--base-tds-css-ease-minus-out);
+  --catalog-layout-color-tds-dashboard-background-onesix: var(
+    --base-tds-color-rgb-two-five-five-two-one-three-seven-nine-three-five
+  );
+  --catalog-layout-measure-tds-dashboard-padding-twothree: var(
+      --base-ese-dimension-three-zero-pixel
+    )
+    clamp(
+      var(--base-esd-dimension-one-eight-pixel),
+      var(--base-clk-dimension-four-viewport-width),
+      var(--base-tds-dimension-six-four-pixel)
+    )
+    var(--base-tds-dimension-eight-zero-pixel);
+  --catalog-layout-typography-tds-dashboard-line-height-four: var(
+    --base-tds-number-one-point-six-five
+  );
+  --catalog-layout-measure-tds-dashboard-max-width-three: var(
+    --base-tds-dimension-one-one-eight-zero-pixel
+  );
+  --catalog-layout-measure-tds-dashboard-margin-top-eight: var(
+    --base-tds-dimension-three-four-pixel
+  );
+  --catalog-layout-measure-tds-dashboard-padding-twofour: var(
+      --base-esd-dimension-one-eight-pixel
+    )
+    0 var(--base-ese-dimension-one-zero-pixel);
+  --catalog-text-typography-vca-metric-font-size: var(
+    --base-tds-dimension-two-eight-pixel
+  );
+  --catalog-text-typography-tds-dashboard-font-size-onefive: var(
+    --base-tds-dimension-one-nine-pixel
+  );
+  --catalog-palette-color-tds-dashboard-color-nine: var(
+    --base-tds-dashboard-color-nine
+  );
+  --catalog-layout-measure-tds-dashboard-margin-six: var(
+      --base-ese-dimension-five-pixel
+    )
+    0;
+  --catalog-layout-measure-tds-dashboard-margin-seven: var(
+      --base-ese-dimension-three-pixel
+    )
+    0;
+  --catalog-layout-measure-tds-dashboard-left-one: calc(
+    var(--base-tds-tds-d) * var(--base-vca-dimension-one-six-pixel) -
+      var(--base-tds-dimension-seven-pixel)
+  );
+  --catalog-layout-measure-tds-dashboard-top-three: var(
+    --base-tds-dimension-zero-point-eight-two-em
+  );
+  --catalog-layout-measure-tds-dashboard-grid-template-columns-four: var(
+      --base-esd-dimension-two-zero-pixel
+    )
+    minmax(0, var(--base-clk-fraction-one-fraction));
+  --catalog-layout-measure-ese-ese-gap: var(--base-esd-dimension-one-pixel);
+  --catalog-layout-measure-vca-overlay-note-padding: var(
+      --base-ese-dimension-four-pixel
+    )
+    var(--base-tds-dimension-seven-pixel);
+  --catalog-layout-measure-vca-activity-row-padding: var(
+      --base-esd-dimension-one-two-pixel
+    )
+    0;
+  --catalog-layout-measure-tds-dashboard-padding-twosix: var(
+      --base-ese-dimension-one-zero-pixel
+    )
+    var(--base-esd-dimension-one-four-pixel);
+  --catalog-layout-border-tds-dashboard-border-left-two: var(
+      --base-ese-dimension-three-pixel
+    )
+    var(--base-esd-css-solid) var(--base-tds-tds-accent);
+  --catalog-field-border-tds-dashboard-border-radius-oneone: 0
+    var(--base-esd-dimension-eight-pixel) var(--base-esd-dimension-eight-pixel)
+    0;
+  --catalog-layout-measure-tds-dashboard-grid-template-columns-five: repeat(
+    var(--base-rep-css-auto-minus-fill),
+    minmax(
+      var(--base-tds-dimension-three-six-zero-pixel),
+      var(--base-clk-fraction-one-fraction)
+    )
+  );
+  --catalog-layout-measure-tds-dashboard-grid-column-one: 1/var(
+      --base-clk-number-minus-one
+    );
+  --catalog-layout-effect-tds-dashboard-transform-two: translateY(
+    var(--base-esd-dimension-eight-pixel)
+  );
+  --catalog-layout-motion-tds-dashboard-transition-four: var(
+    --base-tds-duration-zero-point-two-second
+  );
+  --catalog-layout-measure-tds-dashboard-z-index-three: var(
+    --base-tds-number-two-zero
+  );
+  --catalog-layout-measure-vdd-metrics-grid-template-columns: repeat(
+    var(--base-clk-number-four),
+    var(--base-clk-fraction-one-fraction)
+  );
+  --catalog-layout-measure-clk-demo-grid-template-columns-fourzero: var(
+    --base-clk-fraction-one-fraction
+  );
+  --catalog-layout-measure-clk-demo-grid-template-columns-threesix: repeat(
+    var(--base-app-number-two),
+    var(--base-clk-fraction-one-fraction)
+  );
+  --catalog-layout-measure-tds-dashboard-grid-template-columns-nine: repeat(
+    var(--base-rep-css-auto-minus-fill),
+    minmax(
+      var(--base-tds-dimension-four-two-zero-pixel),
+      var(--base-clk-fraction-one-fraction)
+    )
+  );
+  --catalog-layout-measure-tds-dashboard-grid-template-columns-onezero: var(
+      --base-ese-dimension-four-pixel
+    )
+    minmax(0, var(--base-clk-fraction-one-fraction));
+  --catalog-layout-effect-tds-dashboard-box-shadow-two: 0
+    var(--base-ese-dimension-five-pixel)
+    var(--base-esd-dimension-one-eight-pixel)
+    var(--base-tds-color-rgb-zero-zero-zero-eight);
+  --catalog-palette-border-tds-dashboard-border-color-oneone: var(
+    --base-tds-dashboard-border-color-oneone
+  );
+  --catalog-layout-effect-tds-dashboard-transform-three: translateY(
+    var(--base-tds-dimension-minus-one-pixel)
+  );
+  --catalog-layout-effect-tds-dashboard-box-shadow-three: 0
+    var(--base-ese-dimension-one-zero-pixel)
+    var(--base-tds-dimension-two-eight-pixel)
+    var(--base-tds-color-rgb-zero-zero-zero-one-two);
+  --catalog-layout-measure-tds-dashboard-padding-threeone: var(
+      --base-esd-dimension-one-four-pixel
+    )
+    var(--base-tds-dimension-one-five-pixel)
+    var(--base-tds-dimension-one-three-pixel);
+  --catalog-layout-typography-tds-dashboard-letter-spacing-six: var(
+    --base-tds-dimension-zero-point-zero-five-five-em
+  );
+  --catalog-layout-measure-tds-dashboard-margin-nine: var(
+      --base-clk-dimension-one-one-pixel
+    )
+    0 var(--base-ese-dimension-one-zero-pixel);
+  --catalog-text-typography-tds-dashboard-font-weight-six: var(
+    --base-tds-number-six-two-zero
+  );
+  --catalog-layout-typography-tds-dashboard-letter-spacing-seven: var(
+    --base-tds-dimension-minus-zero-point-zero-zero-eight-em
+  );
+  --catalog-text-typography-tds-dashboard-font-one:
+    var(--base-tds-dimension-nine-pixel) var(--base-esd-css-ui-minus-monospace),
+    var(--base-clk-css-sfmono-minus-regular), var(--base-clk-css-menlo),
+    var(--base-esd-css-monospace);
+  --catalog-layout-measure-tds-dashboard-grid-template-columns-oneone: minmax(
+      0,
+      var(--base-clk-fraction-one-fraction)
+    )
+    var(--base-esd-css-auto);
+  --catalog-layout-measure-tds-dashboard-padding-threetwo: var(
+      --base-esd-dimension-one-four-pixel
+    )
+    var(--base-vca-dimension-one-six-pixel);
+  --catalog-layout-color-tds-dashboard-background-oneseven: linear-gradient(
+    var(--base-tds-angle-one-three-five-degree),
+    var(--base-tds-tds-panel),
+    var(--base-tds-tds-paneltwo)
+  );
+  --catalog-layout-effect-tds-dashboard-box-shadow-four: 0
+    var(--base-esd-dimension-eight-pixel)
+    var(--base-clk-dimension-two-two-pixel)
+    var(--base-tds-color-rgb-zero-zero-zero-nine);
+  --catalog-text-typography-tds-dashboard-font-weight-seven: var(
+    --base-tds-number-seven-six-zero
+  );
+  --catalog-layout-measure-cer-cerulean-zerothreezero: var(
+    --base-cer-dimension-minus-zero-point-zero-one-em
+  );
+  --catalog-text-typography-tds-dashboard-font-two:
+    var(--base-app-number-seven-zero-zero)
+      var(--base-clk-dimension-one-one-pixel)
+      var(--base-esd-css-ui-minus-monospace),
+    var(--base-clk-css-sfmono-minus-regular), var(--base-clk-css-menlo),
+    var(--base-esd-css-monospace);
+  --catalog-layout-measure-tds-dashboard-width-eight: var(
+    --base-tds-dimension-nine-zero-pixel
+  );
+  --catalog-layout-typography-tds-dashboard-letter-spacing-nine: var(
+    --base-tds-dimension-zero-point-zero-one-five-em
+  );
+  --catalog-palette-border-tds-dashboard-border-color-onetwo: var(
+    --base-tds-dashboard-border-color-onetwo
+  );
+  --catalog-layout-color-tds-dashboard-background-oneeight: var(
+    --base-tds-dashboard-background-oneeight
+  );
+  --catalog-layout-measure-vdd-frame-max-width: var(
+    --base-tds-dimension-one-two-eight-zero-pixel
+  );
+  --catalog-layout-measure-tds-dashboard-padding-threethree: var(
+      --base-tds-dimension-two-eight-pixel
+    )
+    var(--base-ese-dimension-three-six-pixel)
+    var(--base-tds-dimension-eight-zero-pixel);
+  --catalog-layout-measure-tds-dashboard-padding-threefour: var(
+      --base-vca-dimension-one-six-pixel
+    )
+    var(--base-esd-dimension-one-eight-pixel);
+  --catalog-text-typography-tds-dashboard-font-size-oneseven: var(
+    --base-tds-dimension-two-one-pixel
+  );
+  --catalog-layout-measure-vca-overlay-note-right: var(
+    --base-tds-dimension-two-six-pixel
+  );
+  --catalog-layout-measure-tds-dashboard-padding-threefive: var(
+      --base-esd-dimension-one-two-pixel
+    )
+    var(--base-esd-dimension-one-four-pixel);
+  --catalog-field-border-tds-dashboard-border-radius-onethree: 0
+    var(--base-ese-dimension-one-zero-pixel)
+    var(--base-ese-dimension-one-zero-pixel) 0;
+  --catalog-layout-measure-tds-dashboard-padding-threesix: var(
+      --base-tds-dimension-nine-pixel
+    )
+    var(--base-esd-dimension-one-two-pixel) var(--base-tds-dimension-nine-pixel)
+    calc(
+      var(--base-tds-tds-d) * var(--base-vca-dimension-one-six-pixel) +
+        var(--base-esd-dimension-one-two-pixel)
+    );
+  --catalog-layout-border-tds-dashboard-border-left-three: var(
+      --base-ese-dimension-three-pixel
+    )
+    var(--base-esd-css-solid) var(--base-tds-color-yellow-856-a100);
+  --catalog-layout-border-tds-dashboard-border-left-four: var(
+      --base-ese-dimension-three-pixel
+    )
+    var(--base-esd-css-solid) var(--base-tds-color-teal-791-a100);
+  --catalog-layout-effect-tds-dashboard-opacity-one: var(
+    --base-tds-number-zero-point-seven-two
+  );
+  --catalog-layout-measure-tds-dashboard-padding-threeseven: var(
+      --base-ese-dimension-five-pixel
+    )
+    var(--base-ese-dimension-one-zero-pixel)
+    var(--base-ese-dimension-five-pixel)
+    calc(
+      var(--base-tds-tds-d) * var(--base-vca-dimension-one-six-pixel) +
+        var(--base-ese-dimension-one-zero-pixel)
+    );
+  --catalog-layout-color-tds-dashboard-background-onenine: var(
+    --base-tds-dashboard-background-onenine
+  );
+  --catalog-layout-measure-tds-dashboard-padding-threeeight: var(
+      --base-esd-dimension-one-four-pixel
+    )
+    var(--base-esd-dimension-one-two-pixel)
+    var(--base-tds-dimension-five-zero-pixel);
+  --catalog-layout-measure-tds-dashboard-padding-threenine: var(
+      --base-tds-dimension-four-two-pixel
+    )
+    var(--base-tds-dimension-four-eight-pixel)
+    var(--base-tds-dimension-nine-six-pixel);
+  --catalog-layout-typography-tds-dashboard-line-height-five: var(
+    --base-tds-number-one-point-six-eight
+  );
+  --catalog-layout-measure-tds-dashboard-margin-onezero: var(
+      --base-cer-dimension-four-four-pixel
+    )
+    0 var(--base-esd-dimension-one-eight-pixel);
+  --catalog-layout-measure-tds-dashboard-padding-fourzero: var(
+      --base-esd-dimension-one-eight-pixel
+    )
+    var(--base-esd-dimension-two-zero-pixel);
+  --catalog-layout-measure-tds-dashboard-margin-oneone: var(
+      --base-tds-dimension-three-four-pixel
+    )
+    0 var(--base-esd-dimension-one-four-pixel);
+  --catalog-layout-measure-tds-dashboard-padding-fourone: 0 0
+    var(--base-ese-dimension-one-zero-pixel);
+  --catalog-layout-typography-rep-line-height-tight: var(
+    --base-rep-number-one-point-three
+  );
+  --catalog-layout-measure-tds-dashboard-margin-onetwo: var(
+      --base-tds-dimension-two-eight-pixel
+    )
+    0 var(--base-ese-dimension-one-zero-pixel);
+  --catalog-layout-typography-tds-dashboard-line-height-seven: var(
+    --base-tds-number-one-point-three-five
+  );
+  --catalog-palette-color-tds-dashboard-color-onezero: var(
+    --base-tds-dashboard-color-onezero
+  );
+  --catalog-layout-measure-tds-dashboard-margin-onethree: var(
+      --base-tds-dimension-seven-pixel
+    )
+    0;
+  --catalog-palette-color-tds-dashboard-color-oneone: var(
+    --base-tds-dashboard-color-oneone
+  );
+  --catalog-layout-typography-tds-dashboard-line-height-eight: var(
+    --base-tds-number-one-point-seven
+  );
+  --catalog-text-typography-tds-dashboard-font-weight-eight: var(
+    --base-tds-number-seven-two-zero
+  );
+  --catalog-layout-measure-tds-dashboard-padding-fourtwo: var(
+      --base-ese-dimension-four-pixel
+    )
+    var(--base-esd-dimension-eight-pixel) var(--base-ese-dimension-four-pixel)
+    calc(
+      var(--base-tds-tds-d) * var(--base-clk-dimension-two-two-pixel) +
+        var(--base-clk-dimension-two-two-pixel)
+    );
+  --catalog-palette-color-tds-dashboard-color-onetwo: var(
+    --base-tds-dashboard-color-onetwo
+  );
+  --catalog-layout-typography-tds-dashboard-line-height-nine: var(
+    --base-tds-number-one-point-six
+  );
+  --catalog-layout-measure-tds-dashboard-left-two: calc(
+    var(--base-tds-tds-d) * var(--base-clk-dimension-two-two-pixel) +
+      var(--base-tds-dimension-six-pixel)
+  );
+  --catalog-layout-measure-tds-dashboard-top-four: var(
+    --base-tds-dimension-one-point-zero-five-em
+  );
+  --catalog-layout-color-tds-dashboard-background-twozero: var(
+    --base-tds-dashboard-background-twozero
+  );
+  --catalog-layout-measure-tds-dashboard-grid-template-columns-onetwo: var(
+      --base-clk-dimension-two-two-pixel
+    )
+    minmax(0, var(--base-clk-fraction-one-fraction));
+  --catalog-layout-measure-tds-dashboard-padding-fourthree: var(
+      --base-clk-dimension-one-one-pixel
+    )
+    var(--base-esd-dimension-one-four-pixel)
+    var(--base-clk-dimension-one-one-pixel)
+    calc(
+      var(--base-tds-tds-d) * var(--base-clk-dimension-two-two-pixel) +
+        var(--base-esd-dimension-one-four-pixel)
+    );
+  --catalog-layout-measure-tds-dashboard-min-height-four: var(
+    --base-tds-dimension-four-six-pixel
+  );
+  --catalog-layout-color-tds-dashboard-background-twoone: var(
+    --base-tds-dashboard-background-twoone
+  );
+  --catalog-layout-effect-tds-dashboard-opacity-two: var(
+    --base-tds-number-zero-point-six-two
+  );
+  --catalog-palette-border-tds-dashboard-border-color-onethree: var(
+    --base-tds-dashboard-border-color-onethree
+  );
+  --catalog-layout-typography-tds-dashboard-line-height-onezero: var(
+    --base-tds-number-one-point-four-five
+  );
+  --catalog-text-typography-vca-brand-mark-font-weight: var(
+    --base-tds-number-eight-zero-zero
+  );
+  --catalog-layout-color-tds-dashboard-background-twotwo: var(
+    --base-tds-dashboard-background-twotwo
+  );
+  --catalog-palette-border-tds-dashboard-border-color-onefour: var(
+    --base-tds-dashboard-border-color-onefour
+  );
+  --catalog-layout-color-tds-dashboard-background-twothree: var(
+    --base-tds-dashboard-background-twothree
+  );
+  --catalog-palette-border-tds-dashboard-border-color-onefive: var(
+    --base-tds-dashboard-border-color-onefive
+  );
+  --catalog-layout-color-tds-dashboard-background-twofour: var(
+    --base-tds-dashboard-background-twofour
+  );
+  --catalog-palette-border-tds-dashboard-border-color-onesix: var(
+    --base-tds-dashboard-border-color-onesix
+  );
+  --catalog-layout-color-tds-dashboard-background-twofive: var(
+    --base-tds-dashboard-background-twofive
+  );
+  --catalog-palette-border-tds-dashboard-border-color-oneseven: var(
+    --base-tds-dashboard-border-color-oneseven
+  );
+  --catalog-palette-color-tds-dashboard-color-onethree: var(
+    --base-tds-dashboard-color-onethree
+  );
+  --catalog-text-typography-tds-dashboard-font-weight-onezero: var(
+    --base-tds-number-five-two-zero
+  );
+  --catalog-layout-measure-tds-dashboard-padding-fourfour: var(
+      --base-esd-dimension-one-two-pixel
+    )
+    var(--base-tds-dimension-one-five-pixel);
+  --catalog-palette-color-tds-dashboard-color-onefour: var(
+    --base-tds-dashboard-color-onefour
+  );
+  --catalog-layout-measure-tds-dashboard-height-onetwo: var(
+    --base-tds-dimension-zero-point-six-em
+  );
+  --catalog-layout-measure-tds-dashboard-margin-onefive: var(
+      --base-tds-dimension-two-eight-pixel
+    )
+    0;
+  --catalog-layout-measure-tds-dashboard-padding-fourfive: var(
+      --base-esd-dimension-one-eight-pixel
+    )
+    var(--base-esd-dimension-one-two-pixel)
+    var(--base-tds-dimension-five-six-pixel);
+  --catalog-layout-measure-esd-demo-toolbar-margin: var(
+      --base-esd-dimension-eight-pixel
+    )
+    0;
+  --catalog-layout-measure-tds-dashboard-grid-template-columns-onethree: var(
+      --base-clk-dimension-two-two-pixel
+    )
+    minmax(0, var(--base-clk-fraction-one-fraction))
+    var(--base-clk-dimension-two-two-pixel);
+  --catalog-layout-effect-tds-dashboard-opacity-three: var(
+    --base-tds-number-zero-point-six-eight
+  );
+  --catalog-layout-motion-tds-dashboard-transition-five: var(
+      --base-tds-css-transform
+    )
+    var(--base-tds-duration-zero-point-one-six-second) var(--base-cer-css-ease);
+  --catalog-layout-effect-tds-dashboard-transform-four: rotate(
+    var(--base-cer-angle-one-eight-zero-degree)
+  );
+  --catalog-layout-measure-tds-dashboard-margin-oneseven: 0
+    var(--base-esd-dimension-one-four-pixel)
+    var(--base-vca-dimension-one-six-pixel)
+    var(--base-ese-dimension-three-six-pixel);
+  --catalog-layout-measure-tds-dashboard-padding-foursix: var(
+      --base-esd-dimension-one-eight-pixel
+    )
+    var(--base-clk-dimension-two-two-pixel)
+    var(--base-esd-dimension-eight-pixel);
+  --catalog-layout-measure-tds-dashboard-margin-oneeight: var(
+      --base-ese-dimension-four-pixel
+    )
+    0;
+  --catalog-layout-measure-tds-dashboard-padding-fourseven: var(
+      --base-esd-dimension-two-pixel
+    )
+    0 var(--base-esd-dimension-two-pixel)
+    calc(
+      var(--base-tds-tds-d) * var(--base-clk-dimension-two-two-pixel) +
+        var(--base-esd-dimension-two-zero-pixel)
+    );
+  --catalog-layout-typography-tds-dashboard-line-height-oneone: var(
+    --base-tds-number-one-point-six-two
+  );
+  --catalog-layout-measure-tds-dashboard-left-three: calc(
+    var(--base-tds-tds-d) * var(--base-clk-dimension-two-two-pixel) +
+      var(--base-ese-dimension-five-pixel)
+  );
+  --catalog-layout-measure-tds-dashboard-top-five: var(
+    --base-tds-dimension-zero-point-seven-eight-em
+  );
+  --catalog-layout-measure-tds-dashboard-grid-template-columns-onefour: minmax(
+      var(--base-esd-dimension-two-two-zero-pixel),
+      var(--base-tds-dimension-two-eight-zero-pixel)
+    )
+    minmax(0, var(--base-clk-fraction-one-fraction));
+  --catalog-layout-measure-tds-dashboard-padding-foureight: var(
+      --base-esd-dimension-two-pixel
+    )
+    var(--base-ese-dimension-four-pixel) var(--base-esd-dimension-one-two-pixel);
+  --catalog-layout-measure-tds-dashboard-padding-fournine: var(
+      --base-tds-dimension-seven-pixel
+    )
+    var(--base-esd-dimension-eight-pixel);
+  --catalog-layout-measure-tds-dashboard-padding-fivezero: var(
+      --base-ese-dimension-one-zero-pixel
+    )
+    var(--base-esd-dimension-two-zero-pixel)
+    var(--base-tds-dimension-seven-zero-pixel);
+  --catalog-layout-measure-ese-ese-control-min-height: var(
+    --base-ese-dimension-three-zero-pixel
+  );
+  --catalog-layout-typography-tds-dashboard-line-height-onetwo: var(
+    --base-tds-number-one-point-one-two
+  );
+  --catalog-layout-typography-tds-dashboard-letter-spacing-onezero: var(
+    --base-tds-dimension-minus-zero-point-zero-three-five-em
+  );
+  --catalog-layout-measure-tds-dashboard-margin-onenine: var(
+      --base-esd-dimension-eight-pixel
+    )
+    0 var(--base-vca-dimension-two-four-pixel);
+  --catalog-text-typography-tds-dashboard-font-size-onenine: var(
+    --base-tds-dimension-two-three-pixel
+  );
+  --catalog-layout-measure-cer-cerulean-zerotwonine: var(
+    --base-cer-number-one-point-two
+  );
+  --catalog-layout-measure-tds-dashboard-padding-fiveone: 0 0
+    var(--base-tds-dimension-nine-pixel);
+  --catalog-layout-typography-tds-dashboard-line-height-onefour: var(
+    --base-tds-number-one-point-two-eight
+  );
+  --catalog-layout-measure-tds-dashboard-margin-twozero: var(
+      --base-tds-dimension-two-six-pixel
+    )
+    0 var(--base-ese-dimension-one-zero-pixel);
+  --catalog-layout-measure-tds-dashboard-margin-twoone: var(
+      --base-tds-dimension-two-one-pixel
+    )
+    0 var(--base-esd-dimension-eight-pixel);
+  --catalog-layout-typography-tds-dashboard-line-height-onefive: var(
+    --base-tds-number-one-point-four
+  );
+  --catalog-layout-measure-tds-dashboard-margin-twotwo: var(
+      --base-ese-dimension-one-seven-pixel
+    )
+    0 var(--base-tds-dimension-seven-pixel);
+  --catalog-layout-measure-tds-dashboard-margin-left-two: var(
+    --base-tds-dimension-minus-two-four-pixel
+  );
+  --catalog-layout-motion-tds-dashboard-transition-six:
+    var(--base-tds-css-transform)
+      var(--base-tds-duration-zero-point-one-six-second)
+      var(--base-cer-css-ease),
+    var(--base-cer-css-color) var(--base-tds-duration-zero-point-one-six-second)
+      var(--base-cer-css-ease);
+  --catalog-layout-measure-tds-dashboard-margin-twothree: 0
+    var(--base-esd-dimension-one-four-pixel)
+    var(--base-esd-dimension-one-eight-pixel)
+    var(--base-ese-dimension-three-six-pixel);
+  --catalog-layout-measure-tds-dashboard-padding-fivetwo: var(
+      --base-vca-dimension-one-six-pixel
+    )
+    var(--base-esd-dimension-two-zero-pixel) var(--base-tds-dimension-six-pixel);
+  --catalog-layout-measure-tds-dashboard-z-index-four: var(
+    --base-tds-number-eight
+  );
+  --catalog-layout-measure-tds-dashboard-padding-fivethree: var(
+      --base-tds-dimension-nine-pixel
+    )
+    var(--base-ese-dimension-one-zero-pixel);
+  --catalog-layout-measure-tds-dashboard-padding-fivefour: var(
+      --base-esd-dimension-eight-pixel
+    )
+    var(--base-ese-dimension-one-zero-pixel)
+    var(--base-tds-dimension-six-zero-pixel);
+  --catalog-layout-measure-esd-demo-pre-wrap: var(
+    --base-esd-css-pre-minus-wrap
+  );
+  --catalog-layout-measure-rep-wrap: var(--base-rep-css-anywhere);
+  --catalog-text-typography-tds-dashboard-font-three:
+    var(--base-esd-dimension-one-two-pixel)/var(--base-tds-number-one-point-six)
+      var(--base-esd-css-ui-minus-monospace),
+    var(--base-esd-css-monospace);
+  --catalog-layout-motion-tds-dashboard-scroll-margin-top-four: var(
+    --base-tds-dimension-eight-zero-pixel
+  );
+  --catalog-layout-border-tds-dashboard-outline-one: var(
+      --base-esd-dimension-two-pixel
+    )
+    var(--base-esd-css-solid) var(--base-tds-tds-text);
+  --catalog-layout-color-tds-good: var(--base-tds-color-teal-791-a100);
+  --catalog-layout-color-tds-warn: var(--base-tds-color-yellow-856-a100);
+  --catalog-layout-color-tds-danger: var(--base-tds-color-red-744-a100);
+  --catalog-layout-color-tds-pzero: var(--base-tds-color-red-715-a100);
+  --catalog-layout-color-tds-pone: var(--base-tds-color-amber-802-a100);
+  --catalog-layout-color-tds-ptwo: var(--base-tds-color-violet-732-a100);
+  --catalog-layout-color-tds-pthree: var(--base-tds-color-violet-703-a100);
+  --catalog-layout-effect-tds-shadow: 0
+    var(--base-esd-dimension-one-eight-pixel)
+    var(--base-tds-dimension-six-zero-pixel)
+    var(--base-tds-color-rgb-zero-zero-zero-two-four);
+  --catalog-layout-measure-tds-sans:
+    var(--base-tds-css-ui-minus-sans-minus-serif),
+    var(--base-vca-css-minus-apple-minus-system),
+    var(--base-vca-css-blinkmacsystemfont),
+    var(--base-vca-css-quote-segoe-x-ui-quote),
+    var(--base-app-css-sans-minus-serif);
+  --catalog-layout-measure-tds-mono:
+    var(--base-esd-css-ui-minus-monospace),
+    var(--base-clk-css-sfmono-minus-regular), var(--base-clk-css-menlo),
+    var(--base-esd-css-monospace);
+  --catalog-layout-effect-tds-light-shadow: 0
+    var(--base-vca-dimension-one-six-pixel)
+    var(--base-tds-dimension-four-five-pixel)
+    var(--base-tds-color-rgb-three-five-four-five-seven-five-nine);
+  --catalog-layout-measure-app-body-margin: 0;
+  --catalog-palette-color-tds-body-background: var(--base-tds-tds-bg);
+  --catalog-palette-color-tds-body-color: var(--base-tds-tds-text);
+  --catalog-control-cursor-app-switch-cursor: var(--base-app-css-pointer);
+  --catalog-layout-measure-app-page-margin-inline: var(--base-esd-css-auto);
+  --catalog-palette-color-tds-subtitle-color: var(--base-tds-tds-muted);
+  --catalog-palette-color-tds-btn-background: var(--base-tds-tds-panel);
+  --catalog-palette-color-tds-btn-btn-background: var(--base-tds-tds-paneltwo);
+  --catalog-field-border-tds-btn-border-color: var(--base-tds-tds-accent);
+  --catalog-palette-color-tds-iconbtn-stroke: currentColor;
+  --catalog-layout-measure-tds-searchline-flex: 0 0 var(--base-esd-css-auto);
+  --catalog-layout-measure-esd-textarea-width: 100%;
+  --catalog-layout-measure-tds-chip-flex: 1 1 var(--base-esd-css-auto);
+  --catalog-palette-color-tds-select-background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23949caf' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m7 10 5 5 5-5'/%3E%3C/svg%3E");
+  --catalog-layout-measure-vdd-bar-flex: 1;
+  --catalog-palette-color-tds-ongoing-color: var(--base-tds-tds-accenttwo);
+  --catalog-layout-measure-vca-frame-margin: 0 var(--base-esd-css-auto);
+  --catalog-layer-effect-tds-anchor-opacity: 0%;
+  --catalog-palette-color-tds-mdbox-color: var(--base-tds-tds-done);
+  --catalog-layout-measure-rep-thumb-object-position: var(--base-rep-css-top);
+  --catalog-text-typography-clk-target-resize-handle-content: var(
+    --base-clk-css-empty
+  );
+  --catalog-palette-color-tds-group-progress-background: var(
+    --base-tds-tds-line
+  );
+  --catalog-layout-measure-tds-group-progress-width: var(--base-tds-tds-pct);
+  --catalog-layout-measure-esd-card-vertical-align: var(--base-esd-css-middle);
+  --tds-body-margin: var(--catalog-layout-measure-app-body-margin);
+  --tds-body-background: var(--catalog-palette-color-tds-body-background);
+  --tds-body-color: var(--catalog-palette-color-tds-body-color);
+  --tds-button-cursor: var(--catalog-control-cursor-app-switch-cursor);
+  --tds-frame-margin: var(--catalog-layout-measure-app-page-margin-inline);
+  --tds-brand-min-width: var(--catalog-layout-measure-app-body-margin);
+  --tds-subtitle-color: var(--catalog-palette-color-tds-subtitle-color);
+  --tds-top-actions-margin-left: var(
+    --catalog-layout-measure-app-page-margin-inline
+  );
+  --tds-btn-background: var(--catalog-palette-color-tds-btn-background);
+  --tds-btn-background-two: var(--catalog-palette-color-tds-btn-btn-background);
+  --tds-btn-border-color: var(--catalog-field-border-tds-btn-border-color);
+  --tds-iconbtn-fill: var(--catalog-text-typography-vca-nav-text-decoration);
+  --tds-iconbtn-stroke: var(--catalog-palette-color-tds-iconbtn-stroke);
+  --tds-searchline-flex: var(--catalog-layout-measure-tds-searchline-flex);
+  --tds-search-input-width: var(--catalog-layout-measure-esd-textarea-width);
+  --tds-search-input-border: var(--catalog-layout-measure-app-body-margin);
+  --tds-search-input-outline: var(--catalog-layout-measure-app-body-margin);
+  --tds-reset-background: var(
+    --catalog-text-typography-vca-nav-text-decoration
+  );
+  --tds-reset-color: var(--catalog-field-border-tds-btn-border-color);
+  --tds-filter-border-top: var(--catalog-layout-measure-app-body-margin);
+  --tds-dot-background: var(--catalog-palette-color-tds-subtitle-color);
+  --tds-ws-tree-list-style: var(
+    --catalog-text-typography-vca-nav-text-decoration
+  );
+  --tds-chip-flex: var(--catalog-layout-measure-tds-chip-flex);
+  --tds-select-background-color: var(
+    --catalog-palette-color-tds-btn-btn-background
+  );
+  --tds-select-background-image: var(
+    --catalog-palette-color-tds-select-background-image
+  );
+  --tds-toolbar-top: var(--catalog-layout-measure-app-body-margin);
+  --tds-toolbar-spacer-flex: var(--catalog-layout-measure-vdd-bar-flex);
+  --tds-ongoing-color: var(--catalog-palette-color-tds-ongoing-color);
+  --tds-meta-tree-flex-basis: var(--catalog-layout-measure-esd-textarea-width);
+  --tds-docview-margin: var(--catalog-layout-measure-vca-frame-margin);
+  --tds-anchor-opacity: var(--catalog-layer-effect-tds-anchor-opacity);
+  --tds-anchor-opacity-two: var(--catalog-layout-measure-esd-textarea-width);
+  --tds-mdbox-color: var(--catalog-palette-color-tds-mdbox-color);
+  --tds-codeblock-padding: var(--catalog-layout-measure-app-body-margin);
+  --tds-mdtable-vertical-align: var(
+    --catalog-layout-measure-rep-thumb-object-position
+  );
+  --tds-mdli-content: var(
+    --catalog-text-typography-clk-target-resize-handle-content
+  );
+  --tds-doc-cat-line-height: var(--catalog-layout-measure-vdd-bar-flex);
+  --tds-toast-background: var(--catalog-palette-color-tds-body-color);
+  --tds-toast-color: var(--catalog-palette-color-tds-body-background);
+  --tds-show-transform: var(--catalog-text-typography-vca-nav-text-decoration);
+  --tds-filters-max-height: var(
+    --catalog-text-typography-vca-nav-text-decoration
+  );
+  --tds-task-gap: var(--catalog-layout-measure-app-body-margin);
+  --tds-crumb-max-width: var(--catalog-layout-measure-esd-textarea-width);
+  --tds-group-progress-background: var(
+    --catalog-palette-color-tds-group-progress-background
+  );
+  --tds-group-progress-height: var(--catalog-layout-measure-esd-textarea-width);
+  --tds-group-progress-width: var(
+    --catalog-layout-measure-tds-group-progress-width
+  );
+  --tds-task-status-margin-left: var(--catalog-layout-measure-app-body-margin);
+  --tds-docview-max-width: var(
+    --catalog-text-typography-vca-nav-text-decoration
+  );
+  --tds-mdh-border-radius: var(--catalog-layout-measure-app-body-margin);
+  --tds-mdtask-box-shadow: var(
+    --catalog-text-typography-vca-nav-text-decoration
+  );
+  --tds-task-chevron-stroke: var(--catalog-palette-color-tds-subtitle-color);
+  --tds-anchor-vertical-align: var(
+    --catalog-layout-measure-esd-card-vertical-align
+  );
+  --tds-mdtask-border-color: var(
+    --catalog-palette-color-tds-group-progress-background
+  );
+  --tds-task-detail-width: var(--catalog-layout-measure-app-page-margin-inline);
+  --tds-viewtabs-flex-shrink: var(--catalog-layout-measure-app-body-margin);
+}
+@layer dashboard-foundation, dashboard-document, dashboard-rich,
+  dashboard-refinement, dashboard-workspace;
+@layer dashboard-foundation {
+  :root {
+    /* Shared declaration tokens preserve the supplied visual values. */
+    /* Shared declaration tokens preserve the supplied visual values. */
+    --tds-dashboard-min-height-one: var(
+      --catalog-layout-measure-clk-demo-block-size-two
+    );
+    --tds-dashboard-max-width-one: var(
+      --catalog-layout-measure-tds-dashboard-max-width-one
+    );
+    --tds-dashboard-padding-one: var(
+      --catalog-layout-measure-vdd-frame-padding
+    );
+    --tds-dashboard-gap-one: var(--catalog-field-border-vdd-radius);
+    --tds-dashboard-margin-bottom-one: var(
+      --catalog-layout-measure-esd-demo-icon-size
+    );
+    --tds-dashboard-gap-two: var(
+      --catalog-layout-measure-esd-demo-card-padding
+    );
+    --tds-dashboard-width-one: var(
+      --catalog-layout-measure-tds-dashboard-width-one
+    );
+    --tds-dashboard-height-one: var(
+      --catalog-layout-measure-tds-dashboard-width-one
+    );
+    --tds-dashboard-border-one: var(
+      --catalog-layout-border-tds-dashboard-border-one
+    );
+    --tds-dashboard-border-radius-one: var(
+      --catalog-layout-measure-esd-demo-card-padding
+    );
+    --tds-dashboard-background-one: var(
+      --catalog-layout-color-tds-dashboard-background-one
+    );
+    --tds-dashboard-font-size-one: var(
+      --catalog-layout-measure-esd-demo-icon-size
+    );
+    --tds-dashboard-letter-spacing-one: var(
+      --catalog-layout-typography-tds-dashboard-letter-spacing-one
+    );
+    --tds-dashboard-font-size-two: var(
+      --catalog-layout-measure-esd-demo-card-padding
+    );
+    --tds-dashboard-margin-top-one: var(
+      --catalog-layout-color-ese-ese-caret-min-width
+    );
+    --tds-dashboard-gap-three: var(
+      --catalog-layout-measure-esd-demo-toolbar-gap
+    );
+    --tds-dashboard-border-radius-two: var(
+      --catalog-field-border-vdd-search-border-radius
+    );
+    --tds-dashboard-padding-two: var(
+      --catalog-layout-measure-tds-dashboard-padding-two
+    );
+    --tds-dashboard-width-two: var(
+      --catalog-text-typography-vca-htwo-font-size
+    );
+    --tds-dashboard-height-two: var(
+      --catalog-text-typography-vca-htwo-font-size
+    );
+    --tds-dashboard-stroke-width-one: var(
+      --catalog-layout-color-tds-dashboard-stroke-width-one
+    );
+    --tds-dashboard-grid-template-columns-one: var(
+      --catalog-layout-measure-tds-dashboard-grid-template-columns-one
+    );
+    --tds-dashboard-padding-three: var(
+      --catalog-text-typography-vdd-brand-font-size
+    );
+    --tds-dashboard-gap-four: var(
+      --catalog-field-border-vdd-search-border-radius
+    );
+    --tds-dashboard-background-two: var(
+      --catalog-layout-measure-ese-ese-surface
+    );
+    --tds-dashboard-font-size-three: var(
+      --catalog-layout-measure-clk-demo-width-nine
+    );
+    --tds-dashboard-font-weight-one: var(
+      --catalog-layout-measure-ese-ese-op-weight
+    );
+    --tds-dashboard-letter-spacing-two: var(
+      --catalog-layout-typography-tds-dashboard-letter-spacing-two
+    );
+    --tds-dashboard-font-size-four: var(--catalog-layout-measure-vdd-event-gap);
+    --tds-dashboard-margin-top-two: var(
+      --catalog-field-border-vdd-button-border-radius
+    );
+    --tds-dashboard-font-size-five: var(
+      --catalog-field-border-vdd-search-border-radius
+    );
+    --tds-dashboard-border-radius-three: var(
+      --catalog-layout-measure-ese-ese-arrow-pad
+    );
+    --tds-dashboard-padding-four: var(
+      --catalog-layout-measure-tds-dashboard-padding-four
+    );
+    --tds-dashboard-padding-five: var(--catalog-layout-measure-vca-space-four);
+    --tds-dashboard-text-transform-one: var(
+      --catalog-layout-measure-cer-cerulean-zerosixone
+    );
+    --tds-dashboard-letter-spacing-three: var(
+      --catalog-layout-typography-clk-demo-letter-spacing-six
+    );
+    --tds-dashboard-font-size-six: var(
+      --catalog-text-typography-vdd-metric-font-size
+    );
+    --tds-dashboard-font-weight-two: var(
+      --catalog-text-typography-vdd-brand-font-weight
+    );
+    --tds-dashboard-margin-top-three: var(
+      --catalog-field-border-vca-overlay-note-border-radius
+    );
+    --tds-dashboard-margin-top-four: var(
+      --catalog-layout-measure-ese-ese-op-indent
+    );
+    --tds-dashboard-grid-template-columns-two: var(
+      --catalog-layout-measure-tds-dashboard-grid-template-columns-two
+    );
+    --tds-dashboard-top-one: var(--catalog-field-border-vdd-radius);
+    --tds-dashboard-max-height-one: var(
+      --catalog-layout-measure-tds-dashboard-max-height-one
+    );
+    --tds-dashboard-margin-bottom-two: var(
+      --catalog-text-typography-vdd-panel-font-size
+    );
+    --tds-dashboard-font-size-seven: var(
+      --catalog-field-border-vdd-metric-border-radius
+    );
+    --tds-dashboard-border-top-one: var(
+      --catalog-layout-border-tds-dashboard-border-one
+    );
+    --tds-dashboard-padding-six: var(
+      --catalog-layout-measure-tds-dashboard-padding-six
+    );
+    --tds-dashboard-font-weight-three: var(
+      --catalog-text-typography-app-font-weight-bold
+    );
+    --tds-dashboard-letter-spacing-four: var(
+      --catalog-layout-typography-tds-dashboard-letter-spacing-four
+    );
+    --tds-dashboard-margin-bottom-three: var(
+      --catalog-field-border-vdd-button-border-radius
+    );
+    --tds-dashboard-gap-five: var(
+      --catalog-layout-measure-tds-dashboard-gap-five
+    );
+    --tds-dashboard-border-radius-four: var(
+      --catalog-field-border-ese-ese-radius-pill
+    );
+    --tds-dashboard-padding-seven: var(
+      --catalog-layout-measure-tds-dashboard-padding-seven
+    );
+    --tds-dashboard-gap-six: var(
+      --catalog-field-border-vca-overlay-note-border-radius
+    );
+    --tds-dashboard-background-three: var(
+      --catalog-layout-color-tds-dashboard-background-three
+    );
+    --tds-dashboard-width-three: var(
+      --catalog-layout-measure-tds-dashboard-gap-five
+    );
+    --tds-dashboard-height-three: var(
+      --catalog-layout-measure-tds-dashboard-gap-five
+    );
+    --tds-dashboard-border-radius-five: var(
+      --catalog-field-border-vdd-avatar-border-radius
+    );
+    --tds-dashboard-border-radius-six: var(
+      --catalog-field-border-vdd-button-border-radius
+    );
+    --tds-dashboard-padding-eight: var(
+      --catalog-layout-measure-tds-dashboard-padding-eight
+    );
+    --tds-dashboard-max-height-two: var(
+      --catalog-layout-measure-tds-dashboard-max-height-two
+    );
+    --tds-dashboard-margin-one: var(
+      --catalog-layout-measure-ese-ese-call-padding
+    );
+    --tds-dashboard-border-left-one: var(
+      --catalog-layout-border-tds-dashboard-border-one
+    );
+    --tds-dashboard-margin-two: var(
+      --catalog-layout-measure-tds-dashboard-margin-two
+    );
+    --tds-dashboard-padding-left-one: var(
+      --catalog-field-border-vdd-button-border-radius
+    );
+    --tds-dashboard-padding-nine: var(
+      --catalog-layout-measure-ese-ese-call-padding
+    );
+    --tds-dashboard-width-four: var(--catalog-field-border-vdd-radius);
+    --tds-dashboard-height-four: var(--catalog-field-border-vdd-radius);
+    --tds-dashboard-flex-one: var(
+      --catalog-layout-measure-tds-dashboard-flex-one
+    );
+    --tds-dashboard-transition-one: var(
+      --catalog-layout-motion-tds-dashboard-transition-one
+    );
+    --tds-dashboard-stroke-width-two: var(
+      --catalog-layout-measure-app-page-gutter-multiplier
+    );
+    --tds-dashboard-transform-one: var(
+      --catalog-layout-effect-tds-dashboard-transform-one
+    );
+    --tds-dashboard-text-align-one: var(
+      --catalog-layout-measure-cer-cerulean-zerofiveeight
+    );
+    --tds-dashboard-padding-onezero: var(
+      --catalog-layout-measure-tds-dashboard-padding-onezero
+    );
+    --tds-dashboard-line-height-one: var(
+      --catalog-layout-typography-tds-dashboard-line-height-one
+    );
+    --tds-dashboard-text-overflow-one: var(
+      --catalog-layout-typography-clk-demo-text-overflow-twoeight
+    );
+    --tds-dashboard-white-space-one: var(
+      --catalog-layout-measure-clk-demo-white-space-twonine
+    );
+    --tds-dashboard-padding-left-two: var(
+      --catalog-layout-measure-esd-demo-toolbar-gap
+    );
+    --tds-dashboard-margin-three: var(
+      --catalog-layout-measure-tds-dashboard-margin-three
+    );
+    --tds-dashboard-background-position-one: var(
+      --catalog-layout-color-tds-dashboard-background-position-one
+    );
+    --tds-dashboard-background-size-one: var(
+      --catalog-layout-measure-vca-space-four
+    );
+    --tds-dashboard-padding-oneone: var(
+      --catalog-layout-measure-tds-dashboard-padding-oneone
+    );
+    --tds-dashboard-box-shadow-one: var(
+      --catalog-layout-effect-tds-dashboard-box-shadow-one
+    );
+    --tds-dashboard-padding-onetwo: var(
+      --catalog-layout-measure-tds-dashboard-padding-onetwo
+    );
+    --tds-dashboard-border-bottom-one: var(
+      --catalog-layout-border-tds-dashboard-border-one
+    );
+    --tds-dashboard-background-four: var(
+      --catalog-layout-color-tds-dashboard-background-four
+    );
+    --tds-dashboard-backdrop-filter-one: var(
+      --catalog-layout-effect-tds-dashboard-backdrop-filter-one
+    );
+    --tds-dashboard-z-index-one: var(
+      --catalog-layout-measure-tds-dashboard-z-index-one
+    );
+    --tds-dashboard-min-height-two: var(
+      --catalog-layout-measure-tds-dashboard-min-height-two
+    );
+    --tds-dashboard-top-two: var(
+      --catalog-layout-measure-tds-dashboard-top-two
+    );
+    --tds-dashboard-z-index-two: var(
+      --catalog-layout-measure-tds-dashboard-z-index-two
+    );
+    --tds-dashboard-padding-onethree: var(
+      --catalog-layout-measure-tds-dashboard-padding-onethree
+    );
+    --tds-dashboard-letter-spacing-five: var(
+      --catalog-layout-typography-tds-dashboard-letter-spacing-five
+    );
+    --tds-dashboard-grid-template-columns-three: var(
+      --catalog-layout-measure-tds-dashboard-grid-template-columns-three
+    );
+    --tds-dashboard-gap-seven: var(--catalog-layout-measure-vdd-event-gap);
+    --tds-dashboard-transition-two: var(
+      --catalog-layout-motion-tds-dashboard-transition-two
+    );
+    --tds-dashboard-border-two: var(
+      --catalog-layout-border-tds-dashboard-border-two
+    );
+    --tds-dashboard-margin-top-five: var(
+      --catalog-layout-measure-esd-demo-mark-offset
+    );
+    --tds-dashboard-width-five: var(
+      --catalog-field-border-vdd-metric-border-radius
+    );
+    --tds-dashboard-height-five: var(
+      --catalog-field-border-vdd-metric-border-radius
+    );
+    --tds-dashboard-stroke-width-three: var(
+      --catalog-layout-color-tds-dashboard-stroke-width-three
+    );
+    --tds-dashboard-padding-onefour: var(
+      --catalog-layout-measure-tds-dashboard-padding-onefour
+    );
+    --tds-dashboard-border-radius-seven: var(
+      --catalog-field-border-vca-overlay-note-border-radius
+    );
+    --tds-dashboard-border-color-one: var(
+      --catalog-palette-border-tds-dashboard-border-color-one
+    );
+    --tds-dashboard-background-five: var(
+      --catalog-layout-color-tds-dashboard-background-five
+    );
+    --tds-dashboard-border-color-two: var(
+      --catalog-palette-border-tds-dashboard-border-color-two
+    );
+    --tds-dashboard-background-six: var(
+      --catalog-layout-color-tds-dashboard-background-six
+    );
+    --tds-dashboard-border-color-three: var(
+      --catalog-palette-border-tds-dashboard-border-color-three
+    );
+    --tds-dashboard-background-seven: var(
+      --catalog-layout-color-tds-dashboard-background-seven
+    );
+    --tds-dashboard-border-color-four: var(
+      --catalog-palette-border-tds-dashboard-border-color-four
+    );
+    --tds-dashboard-background-eight: var(
+      --catalog-layout-color-tds-dashboard-background-eight
+    );
+    --tds-dashboard-color-one: var(
+      --catalog-palette-color-tds-dashboard-color-one
+    );
+    --tds-dashboard-background-nine: var(
+      --catalog-layout-color-tds-dashboard-background-nine
+    );
+    --tds-dashboard-border-color-five: var(
+      --catalog-palette-border-tds-dashboard-border-color-five
+    );
+    --tds-dashboard-color-two: var(
+      --catalog-palette-color-tds-dashboard-color-two
+    );
+    --tds-dashboard-background-onezero: var(
+      --catalog-layout-color-tds-dashboard-background-onezero
+    );
+    --tds-dashboard-border-color-six: var(
+      --catalog-palette-border-tds-dashboard-border-color-six
+    );
+    --tds-dashboard-color-three: var(
+      --catalog-palette-color-tds-dashboard-color-three
+    );
+    --tds-dashboard-background-oneone: var(
+      --catalog-layout-color-tds-dashboard-background-oneone
+    );
+    --tds-dashboard-border-color-seven: var(
+      --catalog-palette-border-tds-dashboard-border-color-seven
+    );
+    --tds-dashboard-color-four: var(
+      --catalog-palette-color-tds-dashboard-color-four
+    );
+    --tds-dashboard-background-onetwo: var(
+      --catalog-layout-color-tds-dashboard-background-onetwo
+    );
+    --tds-dashboard-border-color-eight: var(
+      --catalog-palette-border-tds-dashboard-border-color-eight
+    );
+    --tds-dashboard-color-five: var(
+      --catalog-palette-color-tds-dashboard-color-five
+    );
+    --tds-dashboard-background-onethree: var(
+      --catalog-layout-color-tds-dashboard-background-onethree
+    );
+    --tds-dashboard-border-color-nine: var(
+      --catalog-palette-border-tds-dashboard-border-color-nine
+    );
+    --tds-dashboard-background-onefour: var(
+      --catalog-layout-color-tds-dashboard-background-onefour
+    );
+    --tds-dashboard-border-color-onezero: var(
+      --catalog-palette-border-tds-dashboard-border-color-onezero
+    );
+    --tds-dashboard-line-height-two: var(
+      --catalog-layout-typography-tds-dashboard-line-height-two
+    );
+    --tds-dashboard-margin-top-six: var(
+      --catalog-layout-measure-ese-ese-arrow-pad
+    );
+    --tds-dashboard-text-decoration-one: var(
+      --catalog-text-typography-vca-nav-text-decoration
+    );
+    --tds-dashboard-text-decoration-two: var(
+      --catalog-layout-measure-cer-cerulean-zerosevenzero
+    );
+    --tds-dashboard-text-decoration-three: var(
+      --catalog-layout-typography-tds-dashboard-text-decoration-three
+    );
+    --tds-dashboard-background-onefive: var(
+      --catalog-layout-color-tds-dashboard-background-onefive
+    );
+    --tds-dashboard-border-radius-eight: var(
+      --catalog-layout-color-ese-ese-caret-min-width
+    );
+    --tds-dashboard-margin-top-seven: var(
+      --catalog-layout-measure-tds-dashboard-gap-five
+    );
+    --tds-dashboard-white-space-two: var(
+      --catalog-layout-measure-rep-kv-label-tracking
+    );
+    --tds-dashboard-padding-left-three: var(
+      --catalog-layout-measure-tds-dashboard-padding-left-three
+    );
+    --tds-dashboard-font-size-eight: var(
+      --catalog-field-border-vdd-button-border-radius
+    );
+    --tds-dashboard-text-align-two: var(
+      --catalog-layout-typography-clk-demo-text-align-four
+    );
+    --tds-dashboard-padding-onefive: var(
+      --catalog-layout-measure-tds-dashboard-padding-onefive
+    );
+    --tds-dashboard-padding-onesix: var(
+      --catalog-layout-measure-tds-dashboard-padding-onesix
+    );
+    --tds-dashboard-padding-oneseven: var(
+      --catalog-layout-measure-tds-dashboard-padding-oneseven
+    );
+    --tds-dashboard-padding-oneeight: var(
+      --catalog-layout-measure-tds-dashboard-padding-oneeight
+    );
+    --tds-dashboard-line-height-three: var(
+      --catalog-layout-typography-tds-dashboard-line-height-three
+    );
+    --tds-dashboard-max-width-two: var(
+      --catalog-layout-measure-tds-dashboard-max-width-two
+    );
+    --tds-dashboard-margin-four: var(
+      --catalog-layout-measure-tds-dashboard-margin-four
+    );
+    --tds-dashboard-font-size-nine: var(
+      --catalog-text-typography-vdd-brand-font-size
+    );
+    --tds-dashboard-padding-bottom-one: var(
+      --catalog-layout-measure-ese-ese-arrow-pad
+    );
+    --tds-dashboard-font-size-onezero: var(
+      --catalog-text-typography-vca-htwo-font-size
+    );
+    --tds-dashboard-font-size-oneone: var(
+      --catalog-text-typography-vdd-panel-font-size
+    );
+    --tds-dashboard-font-weight-four: var(
+      --catalog-layout-measure-cer-cerulean-zerothreeone
+    );
+    --tds-dashboard-transition-three: var(
+      --catalog-layout-motion-tds-dashboard-transition-three
+    );
+    --tds-dashboard-padding-onenine: var(
+      --catalog-layout-measure-tds-dashboard-padding-onenine
+    );
+    --tds-dashboard-padding-left-four: var(
+      --catalog-layout-measure-tds-dashboard-padding-left-four
+    );
+    --tds-dashboard-height-six: var(
+      --catalog-layout-measure-esd-demo-toolbar-gap
+    );
+    --tds-dashboard-font-size-onetwo: var(
+      --catalog-text-typography-tds-dashboard-font-size-onetwo
+    );
+    --tds-dashboard-padding-twozero: var(
+      --catalog-layout-measure-tds-dashboard-padding-twozero
+    );
+    --tds-dashboard-border-radius-nine: var(
+      --catalog-layout-measure-ese-ese-op-indent
+    );
+    --tds-dashboard-padding-twoone: var(
+      --catalog-layout-measure-tds-dashboard-padding-twoone
+    );
+    --tds-dashboard-margin-five: var(
+      --catalog-layout-measure-tds-dashboard-margin-five
+    );
+    --tds-dashboard-white-space-three: var(
+      --catalog-layout-measure-ese-ese-pre
+    );
+    --tds-dashboard-min-height-three: var(
+      --catalog-layout-measure-tds-dashboard-min-height-three
+    );
+    --tds-dashboard-color-six: var(
+      --catalog-palette-color-tds-dashboard-color-six
+    );
+    --tds-dashboard-font-style-one: var(--catalog-layout-measure-rep-italic);
+    --tds-dashboard-color-seven: var(
+      --catalog-palette-color-tds-dashboard-color-seven
+    );
+    --tds-dashboard-color-eight: var(
+      --catalog-palette-color-tds-dashboard-color-eight
+    );
+    --tds-dashboard-font-weight-five: var(
+      --catalog-layout-measure-ese-ese-paren-weight
+    );
+    --tds-dashboard-min-width-one: var(
+      --catalog-layout-measure-app-bar-a-height
+    );
+    --tds-dashboard-padding-twotwo: var(
+      --catalog-layout-measure-tds-dashboard-padding-twotwo
+    );
+    --tds-dashboard-animation-one: var(
+      --catalog-layout-motion-tds-dashboard-animation-one
+    );
+    --tds-dashboard-background-onesix: var(
+      --catalog-layout-color-tds-dashboard-background-onesix
+    );
+    --tds-dashboard-padding-twothree: var(
+      --catalog-layout-measure-tds-dashboard-padding-twothree
+    );
+    --tds-dashboard-font-size-onethree: var(--catalog-field-border-vdd-radius);
+    --tds-dashboard-line-height-four: var(
+      --catalog-layout-typography-tds-dashboard-line-height-four
+    );
+    --tds-dashboard-max-width-three: var(
+      --catalog-layout-measure-tds-dashboard-max-width-three
+    );
+    --tds-dashboard-scroll-margin-top-one: var(
+      --catalog-layout-measure-vdd-frame-padding
+    );
+    --tds-dashboard-margin-top-eight: var(
+      --catalog-layout-measure-tds-dashboard-margin-top-eight
+    );
+    --tds-dashboard-padding-twofour: var(
+      --catalog-layout-measure-tds-dashboard-padding-twofour
+    );
+    --tds-dashboard-font-size-onefour: var(
+      --catalog-layout-measure-vdd-frame-padding
+    );
+    --tds-dashboard-margin-top-nine: var(
+      --catalog-text-typography-vca-metric-font-size
+    );
+    --tds-dashboard-padding-top-one: var(
+      --catalog-layout-measure-esd-demo-card-padding
+    );
+    --tds-dashboard-font-size-onefive: var(
+      --catalog-text-typography-tds-dashboard-font-size-onefive
+    );
+    --tds-dashboard-margin-top-onezero: var(
+      --catalog-layout-measure-clk-demo-width-nine
+    );
+    --tds-dashboard-font-size-onesix: var(
+      --catalog-layout-measure-vca-space-four
+    );
+    --tds-dashboard-color-nine: var(
+      --catalog-palette-color-tds-dashboard-color-nine
+    );
+    --tds-dashboard-margin-six: var(
+      --catalog-layout-measure-tds-dashboard-margin-six
+    );
+    --tds-dashboard-margin-seven: var(
+      --catalog-layout-measure-tds-dashboard-margin-seven
+    );
+    --tds-dashboard-padding-top-two: var(
+      --catalog-layout-color-ese-ese-caret-min-width
+    );
+    --tds-dashboard-padding-bottom-two: var(
+      --catalog-layout-color-ese-ese-caret-min-width
+    );
+    --tds-dashboard-left-one: var(
+      --catalog-layout-measure-tds-dashboard-left-one
+    );
+    --tds-dashboard-top-three: var(
+      --catalog-layout-measure-tds-dashboard-top-three
+    );
+    --tds-dashboard-width-six: var(--catalog-layout-measure-ese-ese-op-indent);
+    --tds-dashboard-height-seven: var(
+      --catalog-layout-measure-ese-ese-op-indent
+    );
+    --tds-dashboard-grid-template-columns-four: var(
+      --catalog-layout-measure-tds-dashboard-grid-template-columns-four
+    );
+    --tds-dashboard-gap-eight: var(
+      --catalog-field-border-vdd-button-border-radius
+    );
+    --tds-dashboard-padding-top-three: var(
+      --catalog-layout-measure-tds-dashboard-gap-five
+    );
+    --tds-dashboard-padding-bottom-three: var(
+      --catalog-layout-measure-tds-dashboard-gap-five
+    );
+    --tds-dashboard-border-radius-onezero: var(
+      --catalog-layout-measure-esd-demo-toolbar-gap
+    );
+    --tds-dashboard-padding-top-four: var(
+      --catalog-layout-measure-esd-demo-mark-offset
+    );
+    --tds-dashboard-vertical-align-one: var(
+      --catalog-layout-measure-ese-ese-gap
+    );
+    --tds-dashboard-margin-right-one: var(
+      --catalog-layout-measure-ese-ese-arrow-pad
+    );
+    --tds-dashboard-padding-twofive: var(
+      --catalog-layout-measure-vca-overlay-note-padding
+    );
+    --tds-dashboard-margin-eight: var(
+      --catalog-layout-measure-vca-activity-row-padding
+    );
+    --tds-dashboard-padding-twosix: var(
+      --catalog-layout-measure-tds-dashboard-padding-twosix
+    );
+    --tds-dashboard-border-left-two: var(
+      --catalog-layout-border-tds-dashboard-border-left-two
+    );
+    --tds-dashboard-border-radius-oneone: var(
+      --catalog-field-border-tds-dashboard-border-radius-oneone
+    );
+    --tds-dashboard-padding-top-five: var(
+      --catalog-layout-measure-esd-demo-toolbar-gap
+    );
+    --tds-dashboard-padding-bottom-four: var(
+      --catalog-layout-measure-esd-demo-toolbar-gap
+    );
+    --tds-dashboard-padding-twoseven: var(
+      --catalog-layout-measure-esd-demo-card-padding
+    );
+    --tds-dashboard-grid-template-columns-five: var(
+      --catalog-layout-measure-tds-dashboard-grid-template-columns-five
+    );
+    --tds-dashboard-grid-column-one: var(
+      --catalog-layout-measure-tds-dashboard-grid-column-one
+    );
+    --tds-dashboard-right-one: var(
+      --catalog-text-typography-vdd-brand-font-size
+    );
+    --tds-dashboard-bottom-one: var(
+      --catalog-text-typography-vdd-brand-font-size
+    );
+    --tds-dashboard-transform-two: var(
+      --catalog-layout-effect-tds-dashboard-transform-two
+    );
+    --tds-dashboard-transition-four: var(
+      --catalog-layout-motion-tds-dashboard-transition-four
+    );
+    --tds-dashboard-z-index-three: var(
+      --catalog-layout-measure-tds-dashboard-z-index-three
+    );
+    --tds-dashboard-grid-template-columns-six: var(
+      --catalog-layout-measure-vdd-metrics-grid-template-columns
+    );
+    --tds-dashboard-grid-template-columns-seven: var(
+      --catalog-layout-measure-clk-demo-grid-template-columns-fourzero
+    );
+    --tds-dashboard-padding-twoeight: var(
+      --catalog-field-border-vdd-search-border-radius
+    );
+    --tds-dashboard-grid-template-columns-eight: var(
+      --catalog-layout-measure-clk-demo-grid-template-columns-threesix
+    );
+    --tds-dashboard-padding-twonine: var(
+      --catalog-layout-measure-esd-demo-toolbar-gap
+    );
+    --tds-dashboard-order-one: var(
+      --catalog-layout-measure-tds-dashboard-z-index-two
+    );
+    --tds-dashboard-padding-threezero: var(--catalog-field-border-vdd-radius);
+    --tds-dashboard-grid-template-columns-nine: var(
+      --catalog-layout-measure-tds-dashboard-grid-template-columns-nine
+    );
+    --tds-dashboard-grid-template-columns-onezero: var(
+      --catalog-layout-measure-tds-dashboard-grid-template-columns-onezero
+    );
+    --tds-dashboard-border-radius-onetwo: var(
+      --catalog-field-border-vdd-radius
+    );
+    --tds-dashboard-box-shadow-two: var(
+      --catalog-layout-effect-tds-dashboard-box-shadow-two
+    );
+    --tds-dashboard-border-color-oneone: var(
+      --catalog-palette-border-tds-dashboard-border-color-oneone
+    );
+    --tds-dashboard-transform-three: var(
+      --catalog-layout-effect-tds-dashboard-transform-three
+    );
+    --tds-dashboard-box-shadow-three: var(
+      --catalog-layout-effect-tds-dashboard-box-shadow-three
+    );
+    --tds-dashboard-padding-threeone: var(
+      --catalog-layout-measure-tds-dashboard-padding-threeone
+    );
+    --tds-dashboard-letter-spacing-six: var(
+      --catalog-layout-typography-tds-dashboard-letter-spacing-six
+    );
+    --tds-dashboard-margin-nine: var(
+      --catalog-layout-measure-tds-dashboard-margin-nine
+    );
+    --tds-dashboard-font-weight-six: var(
+      --catalog-text-typography-tds-dashboard-font-weight-six
+    );
+    --tds-dashboard-letter-spacing-seven: var(
+      --catalog-layout-typography-tds-dashboard-letter-spacing-seven
+    );
+    --tds-dashboard-text-decoration-thickness-one: var(
+      --catalog-layout-measure-ese-ese-gap
+    );
+    --tds-dashboard-padding-top-six: var(
+      --catalog-field-border-vdd-search-border-radius
+    );
+    --tds-dashboard-gap-nine: var(--catalog-layout-measure-ese-ese-arrow-pad);
+    --tds-dashboard-width-seven: var(
+      --catalog-layout-measure-esd-demo-card-padding
+    );
+    --tds-dashboard-height-eight: var(
+      --catalog-layout-measure-esd-demo-card-padding
+    );
+    --tds-dashboard-font-one: var(
+      --catalog-text-typography-tds-dashboard-font-one
+    );
+    --tds-dashboard-grid-template-columns-oneone: var(
+      --catalog-layout-measure-tds-dashboard-grid-template-columns-oneone
+    );
+    --tds-dashboard-padding-threetwo: var(
+      --catalog-layout-measure-tds-dashboard-padding-threetwo
+    );
+    --tds-dashboard-background-oneseven: var(
+      --catalog-layout-color-tds-dashboard-background-oneseven
+    );
+    --tds-dashboard-box-shadow-four: var(
+      --catalog-layout-effect-tds-dashboard-box-shadow-four
+    );
+    --tds-dashboard-font-weight-seven: var(
+      --catalog-text-typography-tds-dashboard-font-weight-seven
+    );
+    --tds-dashboard-letter-spacing-eight: var(
+      --catalog-layout-measure-cer-cerulean-zerothreezero
+    );
+    --tds-dashboard-font-two: var(
+      --catalog-text-typography-tds-dashboard-font-two
+    );
+    --tds-dashboard-width-eight: var(
+      --catalog-layout-measure-tds-dashboard-width-eight
+    );
+    --tds-dashboard-height-nine: var(
+      --catalog-layout-measure-ese-ese-arrow-pad
+    );
+    --tds-dashboard-letter-spacing-nine: var(
+      --catalog-layout-typography-tds-dashboard-letter-spacing-nine
+    );
+    --tds-dashboard-border-color-onetwo: var(
+      --catalog-palette-border-tds-dashboard-border-color-onetwo
+    );
+    --tds-dashboard-background-oneeight: var(
+      --catalog-layout-color-tds-dashboard-background-oneeight
+    );
+    --tds-dashboard-max-width-four: var(
+      --catalog-layout-measure-vdd-frame-max-width
+    );
+    --tds-dashboard-padding-threethree: var(
+      --catalog-layout-measure-tds-dashboard-padding-threethree
+    );
+    --tds-dashboard-scroll-margin-top-two: var(
+      --catalog-text-typography-vdd-brand-font-size
+    );
+    --tds-dashboard-padding-threefour: var(
+      --catalog-layout-measure-tds-dashboard-padding-threefour
+    );
+    --tds-dashboard-font-size-oneseven: var(
+      --catalog-text-typography-tds-dashboard-font-size-oneseven
+    );
+    --tds-dashboard-margin-top-oneone: var(
+      --catalog-layout-measure-vca-overlay-note-right
+    );
+    --tds-dashboard-padding-threefive: var(
+      --catalog-layout-measure-tds-dashboard-padding-threefive
+    );
+    --tds-dashboard-border-radius-onethree: var(
+      --catalog-field-border-tds-dashboard-border-radius-onethree
+    );
+    --tds-dashboard-padding-threesix: var(
+      --catalog-layout-measure-tds-dashboard-padding-threesix
+    );
+    --tds-dashboard-border-left-three: var(
+      --catalog-layout-border-tds-dashboard-border-left-three
+    );
+    --tds-dashboard-border-left-four: var(
+      --catalog-layout-border-tds-dashboard-border-left-four
+    );
+    --tds-dashboard-opacity-one: var(
+      --catalog-layout-effect-tds-dashboard-opacity-one
+    );
+    --tds-dashboard-padding-threeseven: var(
+      --catalog-layout-measure-tds-dashboard-padding-threeseven
+    );
+    --tds-dashboard-border-radius-onefour: var(
+      --catalog-layout-measure-tds-dashboard-gap-five
+    );
+    --tds-dashboard-background-onenine: var(
+      --catalog-layout-color-tds-dashboard-background-onenine
+    );
+    --tds-dashboard-padding-threeeight: var(
+      --catalog-layout-measure-tds-dashboard-padding-threeeight
+    );
+    --tds-dashboard-padding-threenine: var(
+      --catalog-layout-measure-tds-dashboard-padding-threenine
+    );
+    --tds-dashboard-line-height-five: var(
+      --catalog-layout-typography-tds-dashboard-line-height-five
+    );
+    --tds-dashboard-margin-onezero: var(
+      --catalog-layout-measure-tds-dashboard-margin-onezero
+    );
+    --tds-dashboard-padding-fourzero: var(
+      --catalog-layout-measure-tds-dashboard-padding-fourzero
+    );
+    --tds-dashboard-margin-oneone: var(
+      --catalog-layout-measure-tds-dashboard-margin-oneone
+    );
+    --tds-dashboard-padding-fourone: var(
+      --catalog-layout-measure-tds-dashboard-padding-fourone
+    );
+    --tds-dashboard-line-height-six: var(
+      --catalog-layout-typography-rep-line-height-tight
+    );
+    --tds-dashboard-margin-onetwo: var(
+      --catalog-layout-measure-tds-dashboard-margin-onetwo
+    );
+    --tds-dashboard-line-height-seven: var(
+      --catalog-layout-typography-tds-dashboard-line-height-seven
+    );
+    --tds-dashboard-color-onezero: var(
+      --catalog-palette-color-tds-dashboard-color-onezero
+    );
+    --tds-dashboard-margin-onethree: var(
+      --catalog-layout-measure-tds-dashboard-margin-onethree
+    );
+    --tds-dashboard-color-oneone: var(
+      --catalog-palette-color-tds-dashboard-color-oneone
+    );
+    --tds-dashboard-line-height-eight: var(
+      --catalog-layout-typography-tds-dashboard-line-height-eight
+    );
+    --tds-dashboard-font-weight-eight: var(
+      --catalog-text-typography-tds-dashboard-font-weight-eight
+    );
+    --tds-dashboard-height-onezero: var(
+      --catalog-field-border-vdd-search-border-radius
+    );
+    --tds-dashboard-padding-fourtwo: var(
+      --catalog-layout-measure-tds-dashboard-padding-fourtwo
+    );
+    --tds-dashboard-color-onetwo: var(
+      --catalog-palette-color-tds-dashboard-color-onetwo
+    );
+    --tds-dashboard-line-height-nine: var(
+      --catalog-layout-typography-tds-dashboard-line-height-nine
+    );
+    --tds-dashboard-left-two: var(
+      --catalog-layout-measure-tds-dashboard-left-two
+    );
+    --tds-dashboard-top-four: var(
+      --catalog-layout-measure-tds-dashboard-top-four
+    );
+    --tds-dashboard-width-nine: var(--catalog-layout-measure-ese-ese-arrow-pad);
+    --tds-dashboard-background-twozero: var(
+      --catalog-layout-color-tds-dashboard-background-twozero
+    );
+    --tds-dashboard-grid-template-columns-onetwo: var(
+      --catalog-layout-measure-tds-dashboard-grid-template-columns-onetwo
+    );
+    --tds-dashboard-padding-fourthree: var(
+      --catalog-layout-measure-tds-dashboard-padding-fourthree
+    );
+    --tds-dashboard-min-height-four: var(
+      --catalog-layout-measure-tds-dashboard-min-height-four
+    );
+    --tds-dashboard-background-twoone: var(
+      --catalog-layout-color-tds-dashboard-background-twoone
+    );
+    --tds-dashboard-opacity-two: var(
+      --catalog-layout-effect-tds-dashboard-opacity-two
+    );
+    --tds-dashboard-border-color-onethree: var(
+      --catalog-palette-border-tds-dashboard-border-color-onethree
+    );
+    --tds-dashboard-width-onezero: var(
+      --catalog-layout-measure-esd-demo-icon-size
+    );
+    --tds-dashboard-height-oneone: var(
+      --catalog-layout-measure-esd-demo-icon-size
+    );
+    --tds-dashboard-line-height-onezero: var(
+      --catalog-layout-typography-tds-dashboard-line-height-onezero
+    );
+    --tds-dashboard-font-weight-nine: var(
+      --catalog-text-typography-vca-brand-mark-font-weight
+    );
+    --tds-dashboard-background-twotwo: var(
+      --catalog-layout-color-tds-dashboard-background-twotwo
+    );
+    --tds-dashboard-border-color-onefour: var(
+      --catalog-palette-border-tds-dashboard-border-color-onefour
+    );
+    --tds-dashboard-background-twothree: var(
+      --catalog-layout-color-tds-dashboard-background-twothree
+    );
+    --tds-dashboard-border-color-onefive: var(
+      --catalog-palette-border-tds-dashboard-border-color-onefive
+    );
+    --tds-dashboard-background-twofour: var(
+      --catalog-layout-color-tds-dashboard-background-twofour
+    );
+    --tds-dashboard-border-color-onesix: var(
+      --catalog-palette-border-tds-dashboard-border-color-onesix
+    );
+    --tds-dashboard-background-twofive: var(
+      --catalog-layout-color-tds-dashboard-background-twofive
+    );
+    --tds-dashboard-border-color-oneseven: var(
+      --catalog-palette-border-tds-dashboard-border-color-oneseven
+    );
+    --tds-dashboard-color-onethree: var(
+      --catalog-palette-color-tds-dashboard-color-onethree
+    );
+    --tds-dashboard-font-weight-onezero: var(
+      --catalog-text-typography-tds-dashboard-font-weight-onezero
+    );
+    --tds-dashboard-margin-onefour: var(
+      --catalog-layout-measure-tds-dashboard-padding-six
+    );
+    --tds-dashboard-padding-fourfour: var(
+      --catalog-layout-measure-tds-dashboard-padding-fourfour
+    );
+    --tds-dashboard-color-onefour: var(
+      --catalog-palette-color-tds-dashboard-color-onefour
+    );
+    --tds-dashboard-height-onetwo: var(
+      --catalog-layout-measure-tds-dashboard-height-onetwo
+    );
+    --tds-dashboard-margin-onefive: var(
+      --catalog-layout-measure-tds-dashboard-margin-onefive
+    );
+    --tds-dashboard-padding-fourfive: var(
+      --catalog-layout-measure-tds-dashboard-padding-fourfive
+    );
+    --tds-dashboard-padding-left-five: var(
+      --catalog-field-border-vdd-search-border-radius
+    );
+    --tds-dashboard-margin-onesix: var(
+      --catalog-layout-measure-esd-demo-toolbar-margin
+    );
+    --tds-dashboard-grid-template-columns-onethree: var(
+      --catalog-layout-measure-tds-dashboard-grid-template-columns-onethree
+    );
+    --tds-dashboard-opacity-three: var(
+      --catalog-layout-effect-tds-dashboard-opacity-three
+    );
+    --tds-dashboard-transition-five: var(
+      --catalog-layout-motion-tds-dashboard-transition-five
+    );
+    --tds-dashboard-transform-four: var(
+      --catalog-layout-effect-tds-dashboard-transform-four
+    );
+    --tds-dashboard-margin-oneseven: var(
+      --catalog-layout-measure-tds-dashboard-margin-oneseven
+    );
+    --tds-dashboard-padding-foursix: var(
+      --catalog-layout-measure-tds-dashboard-padding-foursix
+    );
+    --tds-dashboard-margin-oneeight: var(
+      --catalog-layout-measure-tds-dashboard-margin-oneeight
+    );
+    --tds-dashboard-padding-fourseven: var(
+      --catalog-layout-measure-tds-dashboard-padding-fourseven
+    );
+    --tds-dashboard-line-height-oneone: var(
+      --catalog-layout-typography-tds-dashboard-line-height-oneone
+    );
+    --tds-dashboard-left-three: var(
+      --catalog-layout-measure-tds-dashboard-left-three
+    );
+    --tds-dashboard-top-five: var(
+      --catalog-layout-measure-tds-dashboard-top-five
+    );
+    --tds-dashboard-margin-left-one: var(
+      --catalog-text-typography-vdd-brand-font-size
+    );
+    --tds-dashboard-padding-left-six: var(--catalog-field-border-vdd-radius);
+    --tds-dashboard-grid-template-columns-onefour: var(
+      --catalog-layout-measure-tds-dashboard-grid-template-columns-onefour
+    );
+    --tds-dashboard-gap-onezero: var(
+      --catalog-layout-measure-esd-demo-icon-size
+    );
+    --tds-dashboard-padding-foureight: var(
+      --catalog-layout-measure-tds-dashboard-padding-foureight
+    );
+    --tds-dashboard-margin-bottom-four: var(
+      --catalog-layout-measure-esd-demo-toolbar-gap
+    );
+    --tds-dashboard-gap-oneone: var(
+      --catalog-layout-measure-esd-demo-mark-offset
+    );
+    --tds-dashboard-padding-fournine: var(
+      --catalog-layout-measure-tds-dashboard-padding-fournine
+    );
+    --tds-dashboard-padding-left-seven: var(
+      --catalog-layout-measure-vca-space-four
+    );
+    --tds-dashboard-padding-left-eight: var(
+      --catalog-text-typography-vca-metric-font-size
+    );
+    --tds-dashboard-margin-top-onetwo: var(
+      --catalog-layout-measure-ese-ese-gap
+    );
+    --tds-dashboard-padding-fivezero: var(
+      --catalog-layout-measure-tds-dashboard-padding-fivezero
+    );
+    --tds-dashboard-scroll-margin-top-three: var(
+      --catalog-layout-measure-esd-demo-icon-size
+    );
+    --tds-dashboard-font-size-oneeight: var(
+      --catalog-layout-measure-ese-ese-control-min-height
+    );
+    --tds-dashboard-line-height-onetwo: var(
+      --catalog-layout-typography-tds-dashboard-line-height-onetwo
+    );
+    --tds-dashboard-letter-spacing-onezero: var(
+      --catalog-layout-typography-tds-dashboard-letter-spacing-onezero
+    );
+    --tds-dashboard-margin-onenine: var(
+      --catalog-layout-measure-tds-dashboard-margin-onenine
+    );
+    --tds-dashboard-padding-bottom-five: var(--catalog-field-border-vdd-radius);
+    --tds-dashboard-font-size-onenine: var(
+      --catalog-text-typography-tds-dashboard-font-size-onenine
+    );
+    --tds-dashboard-line-height-onethree: var(
+      --catalog-layout-measure-cer-cerulean-zerotwonine
+    );
+    --tds-dashboard-padding-fiveone: var(
+      --catalog-layout-measure-tds-dashboard-padding-fiveone
+    );
+    --tds-dashboard-line-height-onefour: var(
+      --catalog-layout-typography-tds-dashboard-line-height-onefour
+    );
+    --tds-dashboard-margin-twozero: var(
+      --catalog-layout-measure-tds-dashboard-margin-twozero
+    );
+    --tds-dashboard-margin-twoone: var(
+      --catalog-layout-measure-tds-dashboard-margin-twoone
+    );
+    --tds-dashboard-line-height-onefive: var(
+      --catalog-layout-typography-tds-dashboard-line-height-onefive
+    );
+    --tds-dashboard-margin-twotwo: var(
+      --catalog-layout-measure-tds-dashboard-margin-twotwo
+    );
+    --tds-dashboard-width-oneone: var(
+      --catalog-text-typography-vdd-brand-font-size
+    );
+    --tds-dashboard-height-onethree: var(
+      --catalog-text-typography-vdd-brand-font-size
+    );
+    --tds-dashboard-margin-left-two: var(
+      --catalog-layout-measure-tds-dashboard-margin-left-two
+    );
+    --tds-dashboard-transition-six: var(
+      --catalog-layout-motion-tds-dashboard-transition-six
+    );
+    --tds-dashboard-margin-twothree: var(
+      --catalog-layout-measure-tds-dashboard-margin-twothree
+    );
+    --tds-dashboard-padding-fivetwo: var(
+      --catalog-layout-measure-tds-dashboard-padding-fivetwo
+    );
+    --tds-dashboard-z-index-four: var(
+      --catalog-layout-measure-tds-dashboard-z-index-four
+    );
+    --tds-dashboard-padding-fivethree: var(
+      --catalog-layout-measure-tds-dashboard-padding-fivethree
+    );
+    --tds-dashboard-padding-bottom-six: var(
+      --catalog-layout-measure-esd-demo-mark-offset
+    );
+    --tds-dashboard-padding-fivefour: var(
+      --catalog-layout-measure-tds-dashboard-padding-fivefour
+    );
+    --tds-dashboard-white-space-four: var(
+      --catalog-layout-measure-esd-demo-pre-wrap
+    );
+    --tds-dashboard-overflow-wrap-one: var(--catalog-layout-measure-rep-wrap);
+    --tds-dashboard-font-three: var(
+      --catalog-text-typography-tds-dashboard-font-three
+    );
+    --tds-dashboard-scroll-margin-top-four: var(
+      --catalog-layout-motion-tds-dashboard-scroll-margin-top-four
+    );
+    --tds-dashboard-outline-one: var(
+      --catalog-layout-border-tds-dashboard-outline-one
+    );
+    --tds-dashboard-outline-offset-one: var(
+      --catalog-layout-measure-esd-demo-mark-offset
+    );
+    --dynamic-tds-bg: #0b0d12ff;
+    --dynamic-tds-panel: #12151dff;
+    --dynamic-tds-panel2: #171b25ff;
+    --dynamic-tds-line: #272d3aff;
+    --dynamic-tds-text: #f4f6fbff;
+    --dynamic-tds-muted: #949cafff;
+    --dynamic-tds-accent: #8aa4ffff;
+    --dynamic-tds-accent2: #a78bfaff;
+    --tds-good: var(--catalog-layout-color-tds-good);
+    --tds-warn: var(--catalog-layout-color-tds-warn);
+    --danger: var(--catalog-layout-color-tds-danger);
+    --p0: var(--catalog-layout-color-tds-pzero);
+    --p1: var(--catalog-layout-color-tds-pone);
+    --p2: var(--catalog-layout-color-tds-ptwo);
+    --p3: var(--catalog-layout-color-tds-pthree);
+    --shadow: var(--catalog-layout-effect-tds-shadow);
+    --tds-radius: var(--catalog-layout-measure-esd-demo-icon-size);
+    --gap: var(--catalog-field-border-vdd-radius);
+    --sans: var(--catalog-layout-measure-tds-sans);
+    --mono: var(--catalog-layout-measure-tds-mono);
+  }
+  [data-theme="light"] {
+    --dynamic-tds-bg: #f4f6faff;
+    --dynamic-tds-panel: #ffffffff;
+    --dynamic-tds-panel2: #f8f9fcff;
+    --dynamic-tds-line: #dfe3ecff;
+    --dynamic-tds-text: #171a22ff;
+    --dynamic-tds-muted: #687084ff;
+    --dynamic-tds-accent: #4667d8ff;
+    --dynamic-tds-accent2: #7959d5ff;
+    --shadow: var(--catalog-layout-effect-tds-light-shadow);
+  }
+  :where(
+    html,
+    body,
+    aside,
+    button,
+    div,
+    header,
+    input,
+    main,
+    nav,
+    option,
+    section,
+    select,
+    span,
+    strong,
+    svg,
+    circle,
+    path,
+    a,
+    blockquote,
+    code,
+    details,
+    summary,
+    table,
+    tbody,
+    td,
+    th,
+    thead,
+    tr
+  ) {
+    box-sizing: border-box;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    margin: var(--tds-body-margin);
+    background: var(--tds-body-background);
+    color: var(--tds-body-color);
+    font-family: var(--sans);
+    min-height: var(--tds-dashboard-min-height-one);
+  }
+  button,
+  input,
+  select {
+    font: inherit;
+    color: inherit;
+  }
+  button {
+    cursor: var(--tds-button-cursor);
+  }
+  .shell {
+    max-width: var(--tds-dashboard-max-width-one);
+    margin: var(--tds-frame-margin);
+    padding: var(--tds-dashboard-padding-one);
+  }
+  .topbar {
+    display: flex;
+    align-items: center;
+    gap: var(--tds-dashboard-gap-one);
+    margin-bottom: var(--tds-dashboard-margin-bottom-one);
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: var(--tds-dashboard-gap-two);
+    min-width: var(--tds-brand-min-width);
+  }
+  .logo {
+    width: var(--tds-dashboard-width-one);
+    height: var(--tds-dashboard-height-one);
+    border: var(--tds-dashboard-border-one);
+    border-radius: var(--tds-dashboard-border-radius-one);
+    display: grid;
+    place-items: center;
+    background: var(--tds-dashboard-background-one);
+    box-shadow: var(--shadow);
+  }
+  h1 {
+    font-size: var(--tds-dashboard-font-size-one);
+    margin: var(--tds-body-margin);
+    letter-spacing: var(--tds-dashboard-letter-spacing-one);
+  }
+  .subtitle {
+    font-size: var(--tds-dashboard-font-size-two);
+    color: var(--tds-subtitle-color);
+    margin-top: var(--tds-dashboard-margin-top-one);
+  }
+  .top-actions {
+    margin-left: var(--tds-top-actions-margin-left);
+    display: flex;
+    gap: var(--tds-dashboard-gap-three);
+  }
+  .iconbtn,
+  .btn {
+    border: var(--tds-dashboard-border-one);
+    background: var(--tds-btn-background);
+    border-radius: var(--tds-dashboard-border-radius-two);
+    padding: var(--tds-dashboard-padding-two);
+  }
+  .iconbtn {
+    display: grid;
+    place-items: center;
+  }
+  .iconbtn:hover,
+  .btn:hover {
+    background: var(--tds-btn-background-two);
+    border-color: var(--tds-btn-border-color);
+  }
+  .iconbtn svg {
+    width: var(--tds-dashboard-width-two);
+    height: var(--tds-dashboard-height-two);
+    fill: var(--tds-iconbtn-fill);
+    stroke: var(--tds-iconbtn-stroke);
+    stroke-width: var(--tds-dashboard-stroke-width-one);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .hero {
+    display: grid;
+    grid-template-columns: var(--tds-dashboard-grid-template-columns-one);
+    gap: var(--gap);
+    margin-bottom: var(--gap);
+  }
+  .searchbox,
+  .stat,
+  .filters,
+  .taskpane {
+    background: var(--tds-btn-background);
+    border: var(--tds-dashboard-border-one);
+    border-radius: var(--tds-radius);
+    box-shadow: var(--shadow);
+  }
+  .searchbox {
+    padding: var(--tds-dashboard-padding-three);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .searchline {
+    display: flex;
+    align-items: center;
+    gap: var(--tds-dashboard-gap-four);
+  }
+  .searchline svg {
+    flex: var(--tds-searchline-flex);
+    color: var(--tds-subtitle-color);
+  }
+  .search-input {
+    width: var(--tds-search-input-width);
+    border: var(--tds-search-input-border);
+    outline: var(--tds-search-input-outline);
+    background: var(--tds-dashboard-background-two);
+    font-size: var(--tds-dashboard-font-size-three);
+    font-weight: var(--tds-dashboard-font-weight-one);
+    letter-spacing: var(--tds-dashboard-letter-spacing-two);
+  }
+  .searchhelp {
+    font-size: var(--tds-dashboard-font-size-four);
+    color: var(--tds-subtitle-color);
+    margin-top: var(--tds-dashboard-margin-top-two);
+  }
+  .kbd {
+    font-family: var(--mono);
+    font-size: var(--tds-dashboard-font-size-five);
+    border: var(--tds-dashboard-border-one);
+    background: var(--tds-btn-background-two);
+    border-radius: var(--tds-dashboard-border-radius-three);
+    padding: var(--tds-dashboard-padding-four);
+  }
+  .stat {
+    padding: var(--tds-dashboard-padding-five);
+  }
+  .stat-label {
+    font-size: var(--tds-dashboard-font-size-four);
+    color: var(--tds-subtitle-color);
+    text-transform: var(--tds-dashboard-text-transform-one);
+    letter-spacing: var(--tds-dashboard-letter-spacing-three);
+  }
+  .stat-value {
+    font-family: var(--mono);
+    font-size: var(--tds-dashboard-font-size-six);
+    font-weight: var(--tds-dashboard-font-weight-two);
+    margin-top: var(--tds-dashboard-margin-top-three);
+  }
+  .stat-foot {
+    font-size: var(--tds-dashboard-font-size-four);
+    color: var(--tds-subtitle-color);
+    margin-top: var(--tds-dashboard-margin-top-four);
+  }
+  .layout {
+    display: grid;
+    grid-template-columns: var(--tds-dashboard-grid-template-columns-two);
+    gap: var(--gap);
+    align-items: start;
+  }
+  .filters {
+    padding: var(--tds-dashboard-padding-five);
+    position: sticky;
+    top: var(--tds-dashboard-top-one);
+    max-height: var(--tds-dashboard-max-height-one);
+    overflow: auto;
+  }
+  .filter-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--tds-dashboard-margin-bottom-two);
+  }
+  .filter-head strong {
+    font-size: var(--tds-dashboard-font-size-seven);
+  }
+  .reset {
+    border: var(--tds-search-input-border);
+    background: var(--tds-reset-background);
+    color: var(--tds-reset-color);
+    font-size: var(--tds-dashboard-font-size-four);
+  }
+  .filter {
+    border-top: var(--tds-dashboard-border-top-one);
+    padding: var(--tds-dashboard-padding-six);
+  }
+  .filter:first-of-type {
+    border-top: var(--tds-filter-border-top);
+  }
+  .filter-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: var(--tds-dashboard-font-size-four);
+    font-weight: var(--tds-dashboard-font-weight-three);
+    text-transform: var(--tds-dashboard-text-transform-one);
+    letter-spacing: var(--tds-dashboard-letter-spacing-four);
+    color: var(--tds-subtitle-color);
+    margin-bottom: var(--tds-dashboard-margin-bottom-three);
+  }
+  .choices {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--tds-dashboard-gap-five);
+  }
+  .chip {
+    border: var(--tds-dashboard-border-one);
+    background: var(--tds-btn-background-two);
+    border-radius: var(--tds-dashboard-border-radius-four);
+    padding: var(--tds-dashboard-padding-seven);
+    font-size: var(--tds-dashboard-font-size-four);
+    display: flex;
+    gap: var(--tds-dashboard-gap-six);
+    align-items: center;
+  }
+  .chip.active {
+    border-color: var(--tds-btn-border-color);
+    background: var(--tds-dashboard-background-three);
+    color: var(--tds-body-color);
+  }
+  .dot {
+    width: var(--tds-dashboard-width-three);
+    height: var(--tds-dashboard-height-three);
+    border-radius: var(--tds-dashboard-border-radius-five);
+    background: var(--tds-dot-background);
+  }
+  .chip[data-v="P0"] .dot {
+    background: var(--p0);
+  }
+  .chip[data-v="P1"] .dot {
+    background: var(--p1);
+  }
+  .chip[data-v="P2"] .dot {
+    background: var(--p2);
+  }
+  .chip[data-v="P3"] .dot {
+    background: var(--p3);
+  }
+  .count {
+    font-family: var(--mono);
+    color: var(--tds-subtitle-color);
+    font-size: var(--tds-dashboard-font-size-five);
+  }
+  .chip.partial {
+    border-style: dashed;
+    border-color: var(--tds-btn-border-color);
+  }
+  .ws-search {
+    width: var(--tds-search-input-width);
+    border: var(--tds-dashboard-border-one);
+    background: var(--tds-btn-background-two);
+    border-radius: var(--tds-dashboard-border-radius-six);
+    padding: var(--tds-dashboard-padding-eight);
+    font-size: var(--tds-dashboard-font-size-two);
+    outline: var(--tds-search-input-outline);
+    margin-bottom: var(--tds-dashboard-margin-bottom-three);
+  }
+  .ws-search:focus {
+    border-color: var(--tds-btn-border-color);
+  }
+  .ws-tree {
+    max-height: var(--tds-dashboard-max-height-two);
+    overflow: auto;
+  }
+  .ws-node {
+    margin: var(--tds-dashboard-margin-one);
+  }
+  .ws-kids {
+    border-left: var(--tds-dashboard-border-left-one);
+    margin: var(--tds-dashboard-margin-two);
+    padding-left: var(--tds-dashboard-padding-left-one);
+  }
+  .ws-tree details > summary {
+    display: flex;
+    align-items: center;
+    gap: var(--tds-dashboard-gap-six);
+    cursor: var(--tds-button-cursor);
+    list-style: var(--tds-ws-tree-list-style);
+    padding: var(--tds-dashboard-padding-nine);
+  }
+  .ws-tree summary::-webkit-details-marker {
+    display: none;
+  }
+  .ws-chevron {
+    width: var(--tds-dashboard-width-four);
+    height: var(--tds-dashboard-height-four);
+    flex: var(--tds-dashboard-flex-one);
+    color: var(--tds-subtitle-color);
+    transition: var(--tds-dashboard-transition-one);
+    fill: var(--tds-iconbtn-fill);
+    stroke: var(--tds-iconbtn-stroke);
+    stroke-width: var(--tds-dashboard-stroke-width-two);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .ws-tree details[open] > summary > .ws-chevron {
+    transform: var(--tds-dashboard-transform-one);
+  }
+  .meta span {
+    white-space: var(--tds-dashboard-white-space-one);
+  }
+  .ws-tree .chip {
+    flex: var(--tds-chip-flex);
+    min-width: var(--tds-brand-min-width);
+    justify-content: flex-start;
+    text-align: var(--tds-dashboard-text-align-one);
+    border-radius: var(--tds-dashboard-border-radius-six);
+    padding: var(--tds-dashboard-padding-onezero);
+    line-height: var(--tds-dashboard-line-height-one);
+  }
+  .ws-tree .chip > span:first-child {
+    min-width: var(--tds-brand-min-width);
+    overflow: hidden;
+    text-overflow: var(--tds-dashboard-text-overflow-one);
+    white-space: var(--tds-dashboard-white-space-one);
+  }
+  .ws-tree .chip .count {
+    margin-left: var(--tds-top-actions-margin-left);
+    padding-left: var(--tds-dashboard-padding-left-two);
+  }
+  .ws-path {
+    display: block;
+    color: var(--tds-subtitle-color);
+    font-size: var(--tds-dashboard-font-size-five);
+    margin: var(--tds-dashboard-margin-three);
+  }
+  .select {
+    width: var(--tds-search-input-width);
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: var(--tds-select-background-color);
+    background-image: var(--tds-select-background-image);
+    background-repeat: no-repeat;
+    background-position: var(--tds-dashboard-background-position-one);
+    background-size: var(--tds-dashboard-background-size-one);
+    border: var(--tds-dashboard-border-one);
+    border-radius: var(--tds-dashboard-border-radius-two);
+    padding: var(--tds-dashboard-padding-oneone);
+    outline: var(--tds-search-input-outline);
+  }
+  .select:focus {
+    border-color: var(--tds-btn-border-color);
+    box-shadow: var(--tds-dashboard-box-shadow-one);
+  }
+  .taskpane {
+    overflow: hidden;
+  }
+  .toolbar {
+    padding: var(--tds-dashboard-padding-onetwo);
+    border-bottom: var(--tds-dashboard-border-bottom-one);
+    display: flex;
+    align-items: center;
+    gap: var(--tds-dashboard-gap-four);
+    position: sticky;
+    top: var(--tds-toolbar-top);
+    background: var(--tds-dashboard-background-four);
+    backdrop-filter: var(--tds-dashboard-backdrop-filter-one);
+    z-index: var(--tds-dashboard-z-index-one);
+  }
+  .result-title {
+    font-size: var(--tds-dashboard-font-size-seven);
+    font-weight: var(--tds-dashboard-font-weight-three);
+  }
+  .result-sub {
+    font-size: var(--tds-dashboard-font-size-four);
+    color: var(--tds-subtitle-color);
+  }
+  .toolbar-spacer {
+    flex: var(--tds-toolbar-spacer-flex);
+  }
+  .tasks {
+    min-height: var(--tds-dashboard-min-height-two);
+  }
+  .group-title {
+    position: sticky;
+    top: var(--tds-dashboard-top-two);
+    z-index: var(--tds-dashboard-z-index-two);
+    padding: var(--tds-dashboard-padding-onethree);
+    background: var(--tds-btn-background-two);
+    border-bottom: var(--tds-dashboard-border-bottom-one);
+    border-top: var(--tds-dashboard-border-top-one);
+    font-size: var(--tds-dashboard-font-size-four);
+    font-weight: var(--tds-dashboard-font-weight-two);
+    letter-spacing: var(--tds-dashboard-letter-spacing-five);
+    text-transform: var(--tds-dashboard-text-transform-one);
+    display: flex;
+    justify-content: space-between;
+  }
+  .task {
+    display: grid;
+    grid-template-columns: var(--tds-dashboard-grid-template-columns-three);
+    gap: var(--tds-dashboard-gap-seven);
+    padding: var(--tds-dashboard-padding-onetwo);
+    border-bottom: var(--tds-dashboard-border-bottom-one);
+    transition: var(--tds-dashboard-transition-two);
+  }
+  .task:hover {
+    background: var(--tds-btn-background-two);
+  }
+  .check {
+    width: var(--tds-dashboard-width-two);
+    height: var(--tds-dashboard-height-two);
+    border: var(--tds-dashboard-border-two);
+    border-radius: var(--tds-dashboard-border-radius-three);
+    margin-top: var(--tds-dashboard-margin-top-five);
+    display: grid;
+    place-items: center;
+    color: var(--tds-good);
+  }
+  .task.done .check {
+    border-color: var(--tds-good);
+  }
+  .check svg {
+    width: var(--tds-dashboard-width-five);
+    height: var(--tds-dashboard-height-five);
+    fill: var(--tds-iconbtn-fill);
+    stroke: var(--tds-iconbtn-stroke);
+    stroke-width: var(--tds-dashboard-stroke-width-three);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .task-main {
+    min-width: var(--tds-brand-min-width);
+  }
+  .task-top {
+    display: flex;
+    align-items: center;
+    gap: var(--tds-dashboard-gap-five);
+    flex-wrap: wrap;
+  }
+  .task-id {
+    font-family: var(--mono);
+    font-size: var(--tds-dashboard-font-size-four);
+    color: var(--tds-reset-color);
+    font-weight: var(--tds-dashboard-font-weight-three);
+  }
+  .badge {
+    font-size: var(--tds-dashboard-font-size-five);
+    padding: var(--tds-dashboard-padding-onefour);
+    border-radius: var(--tds-dashboard-border-radius-seven);
+    background: var(--tds-btn-background-two);
+    border: var(--tds-dashboard-border-one);
+    white-space: var(--tds-dashboard-white-space-one);
+  }
+  .badge.priority {
+    font-family: var(--mono);
+    font-weight: var(--tds-dashboard-font-weight-two);
+  }
+  .badge.p0 {
+    color: var(--p0);
+    border-color: var(--tds-dashboard-border-color-one);
+    background: var(--tds-dashboard-background-five);
+  }
+  .badge.p1 {
+    color: var(--p1);
+    border-color: var(--tds-dashboard-border-color-two);
+    background: var(--tds-dashboard-background-six);
+  }
+  .badge.p2 {
+    color: var(--p2);
+    border-color: var(--tds-dashboard-border-color-three);
+    background: var(--tds-dashboard-background-seven);
+  }
+  .badge.p3 {
+    color: var(--p3);
+    border-color: var(--tds-dashboard-border-color-four);
+    background: var(--tds-dashboard-background-eight);
+  }
+  .badge.category.frontend {
+    color: var(--tds-dashboard-color-one);
+    background: var(--tds-dashboard-background-nine);
+    border-color: var(--tds-dashboard-border-color-five);
+  }
+  .badge.category.backend {
+    color: var(--tds-dashboard-color-two);
+    background: var(--tds-dashboard-background-onezero);
+    border-color: var(--tds-dashboard-border-color-six);
+  }
+  .badge.category.documentation {
+    color: var(--tds-dashboard-color-three);
+    background: var(--tds-dashboard-background-oneone);
+    border-color: var(--tds-dashboard-border-color-seven);
+  }
+  .badge.category.testing-qa {
+    color: var(--tds-dashboard-color-four);
+    background: var(--tds-dashboard-background-onetwo);
+    border-color: var(--tds-dashboard-border-color-eight);
+  }
+  .badge.category.devops-release {
+    color: var(--tds-dashboard-color-five);
+    background: var(--tds-dashboard-background-onethree);
+    border-color: var(--tds-dashboard-border-color-nine);
+  }
+  .badge.ongoing {
+    color: var(--tds-ongoing-color);
+    background: var(--tds-dashboard-background-onefour);
+    border-color: var(--tds-dashboard-border-color-onezero);
+  }
+  .task-text {
+    display: block;
+    font-size: var(--tds-dashboard-font-size-seven);
+    line-height: var(--tds-dashboard-line-height-two);
+    margin-top: var(--tds-dashboard-margin-top-six);
+    color: inherit;
+    text-decoration: var(--tds-dashboard-text-decoration-one);
+  }
+  a.task-text:hover {
+    color: var(--tds-reset-color);
+  }
+  a.task-id {
+    text-decoration: var(--tds-dashboard-text-decoration-one);
+  }
+  a.task-id:hover {
+    text-decoration: var(--tds-dashboard-text-decoration-two);
+  }
+  .task.done .task-text {
+    text-decoration: var(--tds-dashboard-text-decoration-three);
+    color: var(--tds-subtitle-color);
+  }
+  mark {
+    background: var(--tds-dashboard-background-onefive);
+    color: inherit;
+    border-radius: var(--tds-dashboard-border-radius-eight);
+  }
+  .meta {
+    display: flex;
+    gap: var(--tds-dashboard-gap-five);
+    flex-wrap: wrap;
+    margin-top: var(--tds-dashboard-margin-top-seven);
+    font-size: var(--tds-dashboard-font-size-five);
+    color: var(--tds-subtitle-color);
+  }
+  .meta .meta-tree {
+    display: block;
+    flex-basis: var(--tds-meta-tree-flex-basis);
+    white-space: var(--tds-dashboard-white-space-two);
+  }
+  .meta .meta-tree .mt {
+    display: block;
+    padding-left: var(--tds-dashboard-padding-left-three);
+    white-space: var(--tds-dashboard-white-space-two);
+    color: inherit;
+    text-decoration: var(--tds-dashboard-text-decoration-one);
+  }
+  .meta .meta-tree .mt:hover {
+    color: var(--tds-reset-color);
+    text-decoration: var(--tds-dashboard-text-decoration-two);
+  }
+  .meta .meta-tree .mt-line {
+    font-family: var(--mono);
+    font-size: var(--tds-dashboard-font-size-eight);
+    color: var(--tds-reset-color);
+  }
+  .score {
+    font-family: var(--mono);
+    font-size: var(--tds-dashboard-font-size-eight);
+    color: var(--tds-subtitle-color);
+    align-self: center;
+  }
+  .empty {
+    text-align: var(--tds-dashboard-text-align-two);
+    padding: var(--tds-dashboard-padding-onefive);
+    color: var(--tds-subtitle-color);
+  }
+  .footer-note {
+    padding: var(--tds-dashboard-padding-onesix);
+    color: var(--tds-subtitle-color);
+    font-size: var(--tds-dashboard-font-size-five);
+    text-align: var(--tds-dashboard-text-align-two);
+  }
+  .viewtabs {
+    display: flex;
+    border: var(--tds-dashboard-border-one);
+    border-radius: var(--tds-dashboard-border-radius-six);
+    overflow: hidden;
+  }
+  .viewtabs button {
+    border: var(--tds-search-input-border);
+    background: var(--tds-dashboard-background-two);
+    color: var(--tds-body-color);
+    padding: var(--tds-dashboard-padding-oneseven);
+    font-size: var(--tds-dashboard-font-size-four);
+    cursor: var(--tds-button-cursor);
+  }
+  .viewtabs button.active {
+    background: var(--tds-btn-background-two);
+    color: var(--tds-reset-color);
+  }
+  .docview {
+    padding: var(--tds-dashboard-padding-oneeight);
+    font-size: var(--tds-dashboard-font-size-seven);
+    line-height: var(--tds-dashboard-line-height-three);
+    max-width: var(--tds-dashboard-max-width-two);
+    margin: var(--tds-docview-margin);
+  }
+  .docview .mdh {
+    position: relative;
+    margin: var(--tds-dashboard-margin-four);
+    font-weight: var(--tds-dashboard-font-weight-three);
+  }
+  .docview h2.mdh {
+    font-size: var(--tds-dashboard-font-size-nine);
+    border-bottom: var(--tds-dashboard-border-bottom-one);
+    padding-bottom: var(--tds-dashboard-padding-bottom-one);
+  }
+  .docview h3.mdh {
+    font-size: var(--tds-dashboard-font-size-onezero);
+  }
+  .docview h4.mdh {
+    font-size: var(--tds-dashboard-font-size-oneone);
+  }
+  .docview h5.mdh,
+  .docview h6.mdh {
+    font-size: var(--tds-dashboard-font-size-seven);
+    color: var(--tds-subtitle-color);
+  }
+  .docview .mdh .anchor {
+    color: var(--tds-subtitle-color);
+    text-decoration: var(--tds-dashboard-text-decoration-one);
+    font-weight: var(--tds-dashboard-font-weight-four);
+    opacity: var(--tds-anchor-opacity);
+    transition: var(--tds-dashboard-transition-three);
+  }
+  .docview .mdh:hover .anchor {
+    opacity: var(--tds-anchor-opacity-two);
+  }
+  .docview .mdp,
+  .docview .mdli,
+  .docview .mdtask {
+    padding: var(--tds-dashboard-padding-onenine);
+  }
+  .docview .mdli,
+  .docview .mdtask {
+    padding-left: var(--tds-dashboard-padding-left-four);
+  }
+  .docview .mdtask .mdbox {
+    font-family: var(--mono);
+  }
+  .docview .mdtask.done {
+    color: var(--tds-subtitle-color);
+  }
+  .docview .mdtask.done .mdbox {
+    color: var(--tds-mdbox-color);
+  }
+  .docview .mdblank {
+    height: var(--tds-dashboard-height-six);
+  }
+  .docview code {
+    font-family: var(--mono);
+    font-size: var(--tds-dashboard-font-size-onetwo);
+    background: var(--tds-btn-background-two);
+    padding: var(--tds-dashboard-padding-twozero);
+    border-radius: var(--tds-dashboard-border-radius-nine);
+  }
+  .docview .codeblock {
+    background: var(--tds-btn-background-two);
+    border: var(--tds-dashboard-border-one);
+    border-radius: var(--tds-dashboard-border-radius-six);
+    padding: var(--tds-dashboard-padding-twoone);
+    overflow-x: auto;
+    margin: var(--tds-dashboard-margin-five);
+  }
+  .docview .codeblock .cl {
+    display: block;
+    font-family: var(--mono);
+    font-size: var(--tds-dashboard-font-size-four);
+    white-space: var(--tds-dashboard-white-space-three);
+    min-height: var(--tds-dashboard-min-height-three);
+  }
+  .docview .codeblock code {
+    background: var(--tds-dashboard-background-two);
+    padding: var(--tds-codeblock-padding);
+  }
+  .docview .tok-s {
+    color: var(--tds-dashboard-color-six);
+  }
+  .docview .tok-c {
+    color: var(--tds-subtitle-color);
+    font-style: var(--tds-dashboard-font-style-one);
+  }
+  .docview .tok-n {
+    color: var(--tds-dashboard-color-seven);
+  }
+  .docview .tok-k {
+    color: var(--tds-dashboard-color-eight);
+    font-weight: var(--tds-dashboard-font-weight-five);
+  }
+  .docview .mdtable {
+    overflow-x: auto;
+    margin: var(--tds-dashboard-margin-five);
+  }
+  .docview .mdtable table {
+    border-collapse: collapse;
+    font-size: var(--tds-dashboard-font-size-two);
+    min-width: var(--tds-dashboard-min-width-one);
+  }
+  .docview .mdtable th,
+  .docview .mdtable td {
+    border: var(--tds-dashboard-border-one);
+    padding: var(--tds-dashboard-padding-twotwo);
+    text-align: var(--tds-dashboard-text-align-one);
+    vertical-align: var(--tds-mdtable-vertical-align);
+  }
+  .docview .mdtable th {
+    background: var(--tds-btn-background-two);
+  }
+  .docview .doclink {
+    color: var(--tds-reset-color);
+  }
+  .docview .flash {
+    animation: var(--tds-dashboard-animation-one);
+  }
+  @keyframes flashline {
+    0% {
+      background: var(--tds-dashboard-background-onesix);
+    }
+    100% {
+      background: var(--tds-dashboard-background-two);
+    }
+  }
+}
+@layer dashboard-document {
+  .docview {
+    padding: var(--tds-dashboard-padding-twothree);
+    font-size: var(--tds-dashboard-font-size-onethree);
+    line-height: var(--tds-dashboard-line-height-four);
+    max-width: var(--tds-dashboard-max-width-three);
+    margin: var(--tds-docview-margin);
+  }
+  .docview .mdh {
+    scroll-margin-top: var(--tds-dashboard-scroll-margin-top-one);
+  }
+  .docview h2.mdh {
+    margin-top: var(--tds-dashboard-margin-top-eight);
+    padding: var(--tds-dashboard-padding-twofour);
+    font-size: var(--tds-dashboard-font-size-onefour);
+    letter-spacing: var(--tds-dashboard-letter-spacing-two);
+  }
+  .docview h3.mdh {
+    margin-top: var(--tds-dashboard-margin-top-nine);
+    padding-top: var(--tds-dashboard-padding-top-one);
+    font-size: var(--tds-dashboard-font-size-onefive);
+    color: var(--tds-body-color);
+  }
+  .docview h4.mdh {
+    margin-top: var(--tds-dashboard-margin-top-onezero);
+    font-size: var(--tds-dashboard-font-size-onesix);
+    color: var(--tds-body-color);
+  }
+  .docview .mdp {
+    color: var(--tds-dashboard-color-nine);
+    margin: var(--tds-dashboard-margin-six);
+  }
+  .docview .mdli {
+    position: relative;
+    margin: var(--tds-dashboard-margin-seven);
+    padding-top: var(--tds-dashboard-padding-top-two);
+    padding-bottom: var(--tds-dashboard-padding-bottom-two);
+  }
+  .docview .mdli::before {
+    content: var(--tds-mdli-content);
+    position: absolute;
+    left: var(--tds-dashboard-left-one);
+    top: var(--tds-dashboard-top-three);
+    width: var(--tds-dashboard-width-six);
+    height: var(--tds-dashboard-height-seven);
+    border-radius: var(--tds-dashboard-border-radius-five);
+    background: var(--tds-dot-background);
+  }
+  .docview .mdtask {
+    display: grid;
+    grid-template-columns: var(--tds-dashboard-grid-template-columns-four);
+    gap: var(--tds-dashboard-gap-eight);
+    align-items: start;
+    margin: var(--tds-dashboard-margin-six);
+    padding-top: var(--tds-dashboard-padding-top-three);
+    padding-bottom: var(--tds-dashboard-padding-bottom-three);
+    border-radius: var(--tds-dashboard-border-radius-onezero);
+  }
+  .docview .mdtask:hover {
+    background: var(--tds-btn-background-two);
+  }
+  .docview .mdbox {
+    display: grid;
+    place-items: center;
+    padding-top: var(--tds-dashboard-padding-top-four);
+  }
+  .docview .doc-cat {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: var(--tds-dashboard-vertical-align-one);
+    margin-right: var(--tds-dashboard-margin-right-one);
+    font-size: var(--tds-dashboard-font-size-five);
+    font-weight: var(--tds-dashboard-font-weight-three);
+    line-height: var(--tds-doc-cat-line-height);
+    padding: var(--tds-dashboard-padding-twofive);
+    border: var(--tds-dashboard-border-one);
+    border-radius: var(--tds-dashboard-border-radius-four);
+    white-space: var(--tds-dashboard-white-space-one);
+  }
+  .docview .doc-cat.frontend {
+    color: var(--tds-dashboard-color-one);
+    background: var(--tds-dashboard-background-nine);
+    border-color: var(--tds-dashboard-border-color-five);
+  }
+  .docview .doc-cat.backend {
+    color: var(--tds-dashboard-color-two);
+    background: var(--tds-dashboard-background-onezero);
+    border-color: var(--tds-dashboard-border-color-six);
+  }
+  .docview .doc-cat.documentation {
+    color: var(--tds-dashboard-color-three);
+    background: var(--tds-dashboard-background-oneone);
+    border-color: var(--tds-dashboard-border-color-seven);
+  }
+  .docview .doc-cat.testing {
+    color: var(--tds-dashboard-color-four);
+    background: var(--tds-dashboard-background-onetwo);
+    border-color: var(--tds-dashboard-border-color-eight);
+  }
+  .docview .doc-cat.devops {
+    color: var(--tds-dashboard-color-five);
+    background: var(--tds-dashboard-background-onethree);
+    border-color: var(--tds-dashboard-border-color-nine);
+  }
+  .docview blockquote {
+    margin: var(--tds-dashboard-margin-eight);
+    padding: var(--tds-dashboard-padding-twosix);
+    border-left: var(--tds-dashboard-border-left-two);
+    background: var(--tds-btn-background-two);
+    color: var(--tds-subtitle-color);
+    border-radius: var(--tds-dashboard-border-radius-oneone);
+  }
+  .mobile-filter {
+    display: none;
+  }
+  .compact .task {
+    padding-top: var(--tds-dashboard-padding-top-five);
+    padding-bottom: var(--tds-dashboard-padding-bottom-four);
+  }
+  .compact .meta {
+    margin-top: var(--tds-dashboard-margin-top-four);
+  }
+  .compact .task-text {
+    margin-top: var(--tds-dashboard-margin-top-five);
+  }
+  .cards .tasks {
+    padding: var(--tds-dashboard-padding-twoseven);
+    display: grid;
+    grid-template-columns: var(--tds-dashboard-grid-template-columns-five);
+    gap: var(--tds-dashboard-gap-four);
+  }
+  .cards .task {
+    border: var(--tds-dashboard-border-one);
+    border-radius: var(--tds-dashboard-border-radius-one);
+    background: var(--tds-btn-background-two);
+  }
+  .cards .group-title {
+    grid-column: var(--tds-dashboard-grid-column-one);
+    border-radius: var(--tds-dashboard-border-radius-onezero);
+    top: var(--tds-dashboard-top-two);
+  }
+  .toast {
+    position: fixed;
+    right: var(--tds-dashboard-right-one);
+    bottom: var(--tds-dashboard-bottom-one);
+    background: var(--tds-toast-background);
+    color: var(--tds-toast-color);
+    padding: var(--tds-dashboard-padding-twosix);
+    border-radius: var(--tds-dashboard-border-radius-six);
+    font-size: var(--tds-dashboard-font-size-four);
+    opacity: var(--tds-anchor-opacity);
+    transform: var(--tds-dashboard-transform-two);
+    transition: var(--tds-dashboard-transition-four);
+    pointer-events: none;
+    z-index: var(--tds-dashboard-z-index-three);
+  }
+  .toast.show {
+    opacity: var(--tds-anchor-opacity-two);
+    transform: var(--tds-show-transform);
+  }
+  @media (width <= 1100px) {
+    .hero {
+      grid-template-columns: var(--tds-dashboard-grid-template-columns-six);
+    }
+    .searchbox {
+      grid-column: var(--tds-dashboard-grid-column-one);
+    }
+    .layout {
+      grid-template-columns: var(--tds-dashboard-grid-template-columns-seven);
+    }
+    .filters {
+      position: static;
+      max-height: var(--tds-filters-max-height);
+      display: none;
+    }
+    .filters.open {
+      display: block;
+    }
+    .docview {
+      padding: var(--tds-dashboard-padding-twothree);
+      font-size: var(--tds-dashboard-font-size-onethree);
+      line-height: var(--tds-dashboard-line-height-four);
+      max-width: var(--tds-dashboard-max-width-three);
+      margin: var(--tds-docview-margin);
+    }
+    .docview .mdh {
+      scroll-margin-top: var(--tds-dashboard-scroll-margin-top-one);
+    }
+    .docview h2.mdh {
+      margin-top: var(--tds-dashboard-margin-top-eight);
+      padding: var(--tds-dashboard-padding-twofour);
+      font-size: var(--tds-dashboard-font-size-onefour);
+      letter-spacing: var(--tds-dashboard-letter-spacing-two);
+    }
+    .docview h3.mdh {
+      margin-top: var(--tds-dashboard-margin-top-nine);
+      padding-top: var(--tds-dashboard-padding-top-one);
+      font-size: var(--tds-dashboard-font-size-onefive);
+      color: var(--tds-body-color);
+    }
+    .docview h4.mdh {
+      margin-top: var(--tds-dashboard-margin-top-onezero);
+      font-size: var(--tds-dashboard-font-size-onesix);
+      color: var(--tds-body-color);
+    }
+    .docview .mdp {
+      color: var(--tds-dashboard-color-nine);
+      margin: var(--tds-dashboard-margin-six);
+    }
+    .docview .mdli {
+      position: relative;
+      margin: var(--tds-dashboard-margin-seven);
+      padding-top: var(--tds-dashboard-padding-top-two);
+      padding-bottom: var(--tds-dashboard-padding-bottom-two);
+    }
+    .docview .mdli::before {
+      content: var(--tds-mdli-content);
+      position: absolute;
+      left: var(--tds-dashboard-left-one);
+      top: var(--tds-dashboard-top-three);
+      width: var(--tds-dashboard-width-six);
+      height: var(--tds-dashboard-height-seven);
+      border-radius: var(--tds-dashboard-border-radius-five);
+      background: var(--tds-dot-background);
+    }
+    .docview .mdtask {
+      display: grid;
+      grid-template-columns: var(--tds-dashboard-grid-template-columns-four);
+      gap: var(--tds-dashboard-gap-eight);
+      align-items: start;
+      margin: var(--tds-dashboard-margin-six);
+      padding-top: var(--tds-dashboard-padding-top-three);
+      padding-bottom: var(--tds-dashboard-padding-bottom-three);
+      border-radius: var(--tds-dashboard-border-radius-onezero);
+    }
+    .docview .mdtask:hover {
+      background: var(--tds-btn-background-two);
+    }
+    .docview .mdbox {
+      display: grid;
+      place-items: center;
+      padding-top: var(--tds-dashboard-padding-top-four);
+    }
+    .docview .doc-cat {
+      display: inline-flex;
+      align-items: center;
+      vertical-align: var(--tds-dashboard-vertical-align-one);
+      margin-right: var(--tds-dashboard-margin-right-one);
+      font-size: var(--tds-dashboard-font-size-five);
+      font-weight: var(--tds-dashboard-font-weight-three);
+      line-height: var(--tds-doc-cat-line-height);
+      padding: var(--tds-dashboard-padding-twofive);
+      border: var(--tds-dashboard-border-one);
+      border-radius: var(--tds-dashboard-border-radius-four);
+      white-space: var(--tds-dashboard-white-space-one);
+    }
+    .docview .doc-cat.frontend {
+      color: var(--tds-dashboard-color-one);
+      background: var(--tds-dashboard-background-nine);
+      border-color: var(--tds-dashboard-border-color-five);
+    }
+    .docview .doc-cat.backend {
+      color: var(--tds-dashboard-color-two);
+      background: var(--tds-dashboard-background-onezero);
+      border-color: var(--tds-dashboard-border-color-six);
+    }
+    .docview .doc-cat.documentation {
+      color: var(--tds-dashboard-color-three);
+      background: var(--tds-dashboard-background-oneone);
+      border-color: var(--tds-dashboard-border-color-seven);
+    }
+    .docview .doc-cat.testing {
+      color: var(--tds-dashboard-color-four);
+      background: var(--tds-dashboard-background-onetwo);
+      border-color: var(--tds-dashboard-border-color-eight);
+    }
+    .docview .doc-cat.devops {
+      color: var(--tds-dashboard-color-five);
+      background: var(--tds-dashboard-background-onethree);
+      border-color: var(--tds-dashboard-border-color-nine);
+    }
+    .docview blockquote {
+      margin: var(--tds-dashboard-margin-eight);
+      padding: var(--tds-dashboard-padding-twosix);
+      border-left: var(--tds-dashboard-border-left-two);
+      background: var(--tds-btn-background-two);
+      color: var(--tds-subtitle-color);
+      border-radius: var(--tds-dashboard-border-radius-oneone);
+    }
+    .mobile-filter {
+      display: inline-flex;
+    }
+  }
+  @media (width <= 700px) {
+    .shell {
+      padding: var(--tds-dashboard-padding-twoeight);
+    }
+    .hero {
+      grid-template-columns: var(--tds-dashboard-grid-template-columns-eight);
+    }
+    .stat {
+      padding: var(--tds-dashboard-padding-twoseven);
+    }
+    .stat-value {
+      font-size: var(--tds-dashboard-font-size-nine);
+    }
+    .cards .tasks {
+      grid-template-columns: var(--tds-dashboard-grid-template-columns-seven);
+      padding: var(--tds-dashboard-padding-twonine);
+    }
+    .toolbar {
+      flex-wrap: wrap;
+    }
+    .result-sub {
+      width: var(--tds-search-input-width);
+      order: var(--tds-dashboard-order-one);
+    }
+    .topbar .subtitle {
+      display: none;
+    }
+  }
+}
+@layer dashboard-rich {
+  /* Rich task and section presentation */
+  .tasks {
+    padding: var(--tds-dashboard-padding-threezero);
+    background: var(--tds-body-background);
+  }
+  .cards .tasks {
+    grid-template-columns: var(--tds-dashboard-grid-template-columns-nine);
+    gap: var(--tds-dashboard-gap-two);
+  }
+  .task {
+    position: relative;
+    grid-template-columns: var(--tds-dashboard-grid-template-columns-onezero);
+    gap: var(--tds-task-gap);
+    padding: var(--tds-codeblock-padding);
+    overflow: hidden;
+    border: var(--tds-dashboard-border-one);
+    border-radius: var(--tds-dashboard-border-radius-onetwo);
+    background: var(--tds-btn-background);
+    box-shadow: var(--tds-dashboard-box-shadow-two);
+  }
+  .task:hover {
+    background: var(--tds-btn-background);
+    border-color: var(--tds-dashboard-border-color-oneone);
+    transform: var(--tds-dashboard-transform-three);
+    box-shadow: var(--tds-dashboard-box-shadow-three);
+  }
+  .task-rail {
+    background: var(--tds-dot-background);
+  }
+  .task[data-priority="P0"] .task-rail {
+    background: var(--p0);
+  }
+  .task[data-priority="P1"] .task-rail {
+    background: var(--p1);
+  }
+  .task[data-priority="P2"] .task-rail {
+    background: var(--p2);
+  }
+  .task[data-priority="P3"] .task-rail {
+    background: var(--p3);
+  }
+  .task-body {
+    min-width: var(--tds-brand-min-width);
+    padding: var(--tds-dashboard-padding-threeone);
+  }
+  .task-header {
+    display: flex;
+    align-items: center;
+    gap: var(--tds-dashboard-gap-five);
+    flex-wrap: wrap;
+  }
+  .task-status {
+    margin-left: var(--tds-top-actions-margin-left);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--tds-dashboard-gap-six);
+    font-size: var(--tds-dashboard-font-size-five);
+    font-weight: var(--tds-dashboard-font-weight-two);
+    text-transform: var(--tds-dashboard-text-transform-one);
+    letter-spacing: var(--tds-dashboard-letter-spacing-six);
+    color: var(--tds-subtitle-color);
+  }
+  .task-status svg {
+    width: var(--tds-dashboard-width-four);
+    height: var(--tds-dashboard-height-four);
+    fill: var(--tds-iconbtn-fill);
+    stroke: var(--tds-iconbtn-stroke);
+    stroke-width: var(--tds-dashboard-stroke-width-two);
+  }
+  .task.done .task-status {
+    color: var(--tds-good);
+  }
+  .task-title {
+    display: block;
+    margin: var(--tds-dashboard-margin-nine);
+    color: var(--tds-body-color);
+    text-decoration: var(--tds-dashboard-text-decoration-one);
+    font-size: var(--tds-dashboard-font-size-onethree);
+    line-height: var(--tds-dashboard-line-height-two);
+    font-weight: var(--tds-dashboard-font-weight-six);
+    letter-spacing: var(--tds-dashboard-letter-spacing-seven);
+  }
+  .task-title:hover {
+    color: var(--tds-reset-color);
+  }
+  .task.done .task-title {
+    color: var(--tds-subtitle-color);
+    text-decoration: var(--tds-dashboard-text-decoration-three);
+    text-decoration-thickness: var(
+      --tds-dashboard-text-decoration-thickness-one
+    );
+  }
+  .task-context {
+    border-top: var(--tds-dashboard-border-top-one);
+    padding-top: var(--tds-dashboard-padding-top-six);
+    display: grid;
+    gap: var(--tds-dashboard-gap-five);
+  }
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: var(--tds-dashboard-gap-nine);
+    min-width: var(--tds-brand-min-width);
+    flex-wrap: wrap;
+  }
+  .crumb {
+    color: var(--tds-subtitle-color);
+    font-size: var(--tds-dashboard-font-size-five);
+    text-decoration: var(--tds-dashboard-text-decoration-one);
+    max-width: var(--tds-crumb-max-width);
+    overflow: hidden;
+    text-overflow: var(--tds-dashboard-text-overflow-one);
+    white-space: var(--tds-dashboard-white-space-one);
+  }
+  .crumb:hover {
+    color: var(--tds-reset-color);
+  }
+  .crumb-sep {
+    width: var(--tds-dashboard-width-seven);
+    height: var(--tds-dashboard-height-eight);
+    flex: var(--tds-searchline-flex);
+    color: var(--tds-subtitle-color);
+    fill: var(--tds-iconbtn-fill);
+    stroke: var(--tds-iconbtn-stroke);
+    stroke-width: var(--tds-dashboard-stroke-width-two);
+  }
+  .task-source {
+    display: flex;
+    align-items: center;
+    gap: var(--tds-dashboard-gap-six);
+    color: var(--tds-subtitle-color);
+    font: var(--tds-dashboard-font-one);
+    text-decoration: var(--tds-dashboard-text-decoration-one);
+  }
+  .task-source svg {
+    width: var(--tds-dashboard-width-seven);
+    height: var(--tds-dashboard-height-eight);
+    fill: var(--tds-iconbtn-fill);
+    stroke: var(--tds-iconbtn-stroke);
+    stroke-width: var(--tds-dashboard-stroke-width-one);
+  }
+  .task-source:hover {
+    color: var(--tds-reset-color);
+  }
+  .group-card {
+    grid-column: var(--tds-dashboard-grid-column-one);
+    display: grid;
+    grid-template-columns: var(--tds-dashboard-grid-template-columns-oneone);
+    gap: var(--tds-dashboard-gap-one);
+    align-items: center;
+    padding: var(--tds-dashboard-padding-threetwo);
+    margin-top: var(--tds-dashboard-margin-top-four);
+    border: var(--tds-dashboard-border-one);
+    border-radius: var(--tds-dashboard-border-radius-onetwo);
+    background: var(--tds-dashboard-background-oneseven);
+    position: sticky;
+    top: var(--tds-dashboard-top-two);
+    z-index: var(--tds-dashboard-z-index-two);
+    box-shadow: var(--tds-dashboard-box-shadow-four);
+  }
+  .group-name {
+    font-size: var(--tds-dashboard-font-size-onethree);
+    font-weight: var(--tds-dashboard-font-weight-seven);
+    letter-spacing: var(--tds-dashboard-letter-spacing-eight);
+  }
+  .group-path {
+    margin-top: var(--tds-dashboard-margin-top-four);
+    color: var(--tds-subtitle-color);
+    font-size: var(--tds-dashboard-font-size-five);
+  }
+  .group-stats {
+    display: flex;
+    align-items: center;
+    gap: var(--tds-dashboard-gap-eight);
+  }
+  .group-count {
+    font: var(--tds-dashboard-font-two);
+  }
+  .group-progress {
+    width: var(--tds-dashboard-width-eight);
+    height: var(--tds-dashboard-height-nine);
+    border-radius: var(--tds-dashboard-border-radius-four);
+    overflow: hidden;
+    background: var(--tds-group-progress-background);
+  }
+  .group-progress > span {
+    display: block;
+    height: var(--tds-group-progress-height);
+    width: var(--tds-group-progress-width);
+    background: var(--tds-good);
+    border-radius: inherit;
+  }
+  .group-open {
+    font-size: var(--tds-dashboard-font-size-five);
+    color: var(--tds-subtitle-color);
+    white-space: var(--tds-dashboard-white-space-one);
+  }
+  .badge {
+    font-weight: var(--tds-dashboard-font-weight-three);
+    letter-spacing: var(--tds-dashboard-letter-spacing-nine);
+  }
+  .badge.status-open {
+    color: var(--tds-warn);
+    border-color: var(--tds-dashboard-border-color-onetwo);
+    background: var(--tds-dashboard-background-oneeight);
+  }
+  .docview {
+    max-width: var(--tds-dashboard-max-width-four);
+    padding: var(--tds-dashboard-padding-threethree);
+  }
+  .docview .mdh {
+    scroll-margin-top: var(--tds-dashboard-scroll-margin-top-two);
+  }
+  .docview h2.mdh {
+    margin-top: var(--tds-dashboard-margin-top-eight);
+    padding: var(--tds-dashboard-padding-threefour);
+    border: var(--tds-dashboard-border-one);
+    border-radius: var(--tds-dashboard-border-radius-onetwo);
+    background: var(--tds-dashboard-background-oneseven);
+    font-size: var(--tds-dashboard-font-size-oneseven);
+  }
+  .docview h3.mdh {
+    margin-top: var(--tds-dashboard-margin-top-oneone);
+    padding: var(--tds-dashboard-padding-threefive);
+    border-left: var(--tds-dashboard-border-left-two);
+    background: var(--tds-btn-background);
+    border-radius: var(--tds-dashboard-border-radius-onethree);
+  }
+  .docview .mdtask {
+    margin: var(--tds-dashboard-margin-five);
+    padding: var(--tds-dashboard-padding-threesix);
+    border: var(--tds-dashboard-border-one);
+    border-radius: var(--tds-dashboard-border-radius-six);
+    background: var(--tds-btn-background);
+  }
+  .docview .mdtask.open {
+    border-left: var(--tds-dashboard-border-left-three);
+  }
+  .docview .mdtask.done {
+    border-left: var(--tds-dashboard-border-left-four);
+    opacity: var(--tds-dashboard-opacity-one);
+  }
+  .docview .mdli {
+    margin: var(--tds-dashboard-margin-seven);
+    padding: var(--tds-dashboard-padding-threeseven);
+    border-radius: var(--tds-dashboard-border-radius-onefour);
+    background: var(--tds-dashboard-background-onenine);
+  }
+  @media (width <= 700px) {
+    .cards .tasks {
+      grid-template-columns: var(--tds-dashboard-grid-template-columns-seven);
+    }
+    .task-body {
+      padding: var(--tds-dashboard-padding-twoseven);
+    }
+    .group-card {
+      grid-template-columns: var(--tds-dashboard-grid-template-columns-seven);
+      position: static;
+    }
+    .group-stats {
+      justify-content: space-between;
+    }
+    .task-status {
+      margin-left: var(--tds-task-status-margin-left);
+    }
+    .docview {
+      padding: var(--tds-dashboard-padding-threeeight);
+    }
+  }
+}
+@layer dashboard-refinement {
+  /* Document-view hierarchy refinement */
+  .docview {
+    max-width: var(--tds-docview-max-width);
+    width: var(--tds-search-input-width);
+    padding: var(--tds-dashboard-padding-threenine);
+    font-size: var(--tds-dashboard-font-size-onethree);
+    line-height: var(--tds-dashboard-line-height-five);
+  }
+  .docview h2.mdh {
+    margin: var(--tds-dashboard-margin-onezero);
+    padding: var(--tds-dashboard-padding-fourzero);
+    border: var(--tds-dashboard-border-one);
+    border-radius: var(--tds-dashboard-border-radius-onetwo);
+    background: var(--tds-btn-background);
+    font-size: var(--tds-dashboard-font-size-three);
+    line-height: var(--tds-dashboard-line-height-one);
+    letter-spacing: var(--tds-dashboard-letter-spacing-two);
+  }
+  .docview h3.mdh {
+    margin: var(--tds-dashboard-margin-oneone);
+    padding: var(--tds-dashboard-padding-fourone);
+    border: var(--tds-search-input-border);
+    border-bottom: var(--tds-dashboard-border-bottom-one);
+    background: var(--tds-reset-background);
+    border-radius: var(--tds-mdh-border-radius);
+    font-size: var(--tds-dashboard-font-size-one);
+    line-height: var(--tds-dashboard-line-height-six);
+  }
+  .docview h4.mdh {
+    margin: var(--tds-dashboard-margin-onetwo);
+    font-size: var(--tds-dashboard-font-size-oneone);
+    line-height: var(--tds-dashboard-line-height-seven);
+    color: var(--tds-dashboard-color-onezero);
+  }
+  .docview .mdp {
+    margin: var(--tds-dashboard-margin-onethree);
+    color: var(--tds-dashboard-color-oneone);
+    line-height: var(--tds-dashboard-line-height-eight);
+  }
+  .docview .mdp > strong:first-child {
+    color: var(--tds-body-color);
+    font-weight: var(--tds-dashboard-font-weight-eight);
+  }
+  .docview .mdblank {
+    height: var(--tds-dashboard-height-onezero);
+  }
+  .docview .mdli {
+    position: relative;
+    margin: var(--tds-dashboard-margin-one);
+    padding: var(--tds-dashboard-padding-fourtwo);
+    border: var(--tds-search-input-border);
+    background: var(--tds-reset-background);
+    border-radius: var(--tds-mdh-border-radius);
+    color: var(--tds-dashboard-color-onetwo);
+    line-height: var(--tds-dashboard-line-height-nine);
+  }
+  .docview .mdli::before {
+    left: var(--tds-dashboard-left-two);
+    top: var(--tds-dashboard-top-four);
+    width: var(--tds-dashboard-width-nine);
+    height: var(--tds-dashboard-height-nine);
+    background: var(--tds-dashboard-background-twozero);
+  }
+  .docview .mdtask {
+    display: grid;
+    grid-template-columns: var(--tds-dashboard-grid-template-columns-onetwo);
+    gap: var(--tds-dashboard-gap-two);
+    align-items: center;
+    margin: var(--tds-dashboard-margin-onethree);
+    padding: var(--tds-dashboard-padding-fourthree);
+    min-height: var(--tds-dashboard-min-height-four);
+    border: var(--tds-dashboard-border-one);
+    border-left: var(--tds-dashboard-border-left-three);
+    border-radius: var(--tds-dashboard-border-radius-two);
+    background: var(--tds-dashboard-background-twoone);
+    box-shadow: var(--tds-mdtask-box-shadow);
+  }
+  .docview .mdtask.done {
+    border-left-color: var(--tds-good);
+    opacity: var(--tds-dashboard-opacity-two);
+  }
+  .docview .mdtask:hover {
+    background: var(--tds-btn-background-two);
+    border-color: var(--tds-dashboard-border-color-onethree);
+  }
+  .docview .mdbox {
+    display: grid;
+    place-items: center;
+    align-self: center;
+    width: var(--tds-dashboard-width-onezero);
+    height: var(--tds-dashboard-height-oneone);
+    padding: var(--tds-codeblock-padding);
+    color: var(--tds-warn);
+  }
+  .docview .mdtask.done .mdbox {
+    color: var(--tds-good);
+  }
+  .docview .mdbox svg {
+    display: block;
+    width: var(--tds-dashboard-width-two);
+    height: var(--tds-dashboard-height-two);
+  }
+  .docview .doc-task-body {
+    min-width: var(--tds-brand-min-width);
+    display: flex;
+    align-items: center;
+    gap: var(--tds-dashboard-gap-three);
+    flex-wrap: wrap;
+    line-height: var(--tds-dashboard-line-height-onezero);
+  }
+  .docview .doc-task-id {
+    font-family: var(--mono);
+    font-size: var(--tds-dashboard-font-size-four);
+    font-weight: var(--tds-dashboard-font-weight-two);
+    color: var(--tds-reset-color);
+    letter-spacing: var(--tds-dashboard-letter-spacing-nine);
+  }
+  .docview .doc-task-priority {
+    font-family: var(--mono);
+    font-size: var(--tds-dashboard-font-size-five);
+    font-weight: var(--tds-dashboard-font-weight-nine);
+    padding: var(--tds-dashboard-padding-onefour);
+    border: var(--tds-dashboard-border-one);
+    border-radius: var(--tds-dashboard-border-radius-seven);
+  }
+  .docview .doc-task-priority.p0 {
+    color: var(--p0);
+    background: var(--tds-dashboard-background-twotwo);
+    border-color: var(--tds-dashboard-border-color-onefour);
+  }
+  .docview .doc-task-priority.p1 {
+    color: var(--p1);
+    background: var(--tds-dashboard-background-twothree);
+    border-color: var(--tds-dashboard-border-color-onefive);
+  }
+  .docview .doc-task-priority.p2 {
+    color: var(--p2);
+    background: var(--tds-dashboard-background-twofour);
+    border-color: var(--tds-dashboard-border-color-onesix);
+  }
+  .docview .doc-task-priority.p3 {
+    color: var(--p3);
+    background: var(--tds-dashboard-background-twofive);
+    border-color: var(--tds-dashboard-border-color-oneseven);
+  }
+  .docview .doc-task-text {
+    color: var(--tds-dashboard-color-onethree);
+    font-weight: var(--tds-dashboard-font-weight-onezero);
+  }
+  .docview .mdtask.done .doc-task-text {
+    text-decoration: var(--tds-dashboard-text-decoration-one);
+    color: var(--tds-subtitle-color);
+  }
+  .docview .doc-cat {
+    margin: var(--tds-body-margin);
+    font-size: var(--tds-dashboard-font-size-eight);
+    font-weight: var(--tds-dashboard-font-weight-seven);
+    padding: var(--tds-dashboard-padding-twofive);
+  }
+  .docview blockquote {
+    margin: var(--tds-dashboard-margin-onefour);
+    padding: var(--tds-dashboard-padding-fourfour);
+    color: var(--tds-dashboard-color-onefour);
+    line-height: var(--tds-dashboard-line-height-four);
+  }
+  .docview blockquote .bqline {
+    margin: var(--tds-dashboard-margin-one);
+  }
+  .docview blockquote .bqline:empty {
+    height: var(--tds-dashboard-height-onetwo);
+  }
+  .docview hr {
+    margin: var(--tds-dashboard-margin-onefive);
+    border: var(--tds-search-input-border);
+    border-top: var(--tds-dashboard-border-top-one);
+  }
+  @media (width <= 700px) {
+    .docview {
+      padding: var(--tds-dashboard-padding-fourfive);
+    }
+    .docview .mdtask {
+      padding-left: var(--tds-dashboard-padding-left-five);
+    }
+    .docview .doc-task-body {
+      gap: var(--tds-dashboard-gap-six);
+    }
+  }
+  .docview .mdtask-panel {
+    margin: var(--tds-dashboard-margin-onesix);
+    border-radius: var(--tds-dashboard-border-radius-two);
+  }
+  .docview .mdtask-panel > summary {
+    list-style: var(--tds-ws-tree-list-style);
+    cursor: var(--tds-button-cursor);
+  }
+  .docview .mdtask-panel > summary::-webkit-details-marker {
+    display: none;
+  }
+  .docview .mdtask-panel .mdtask {
+    grid-template-columns: var(--tds-dashboard-grid-template-columns-onethree);
+    margin: var(--tds-body-margin);
+    width: var(--tds-search-input-width);
+  }
+  .docview .mdtask-panel.done .mdtask {
+    border-left-color: var(--tds-good);
+    opacity: var(--tds-dashboard-opacity-three);
+  }
+  .docview .task-chevron {
+    width: var(--tds-dashboard-width-onezero);
+    height: var(--tds-dashboard-height-oneone);
+    fill: var(--tds-iconbtn-fill);
+    stroke: var(--tds-task-chevron-stroke);
+    stroke-width: var(--tds-dashboard-stroke-width-two);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: var(--tds-dashboard-transition-five);
+  }
+  .docview .mdtask-panel[open] .task-chevron {
+    transform: var(--tds-dashboard-transform-four);
+  }
+  .docview .task-detail {
+    margin: var(--tds-dashboard-margin-oneseven);
+    padding: var(--tds-dashboard-padding-foursix);
+    border-left: var(--tds-dashboard-border-left-one);
+    max-width: var(--tds-docview-max-width);
+    color: var(--tds-dashboard-color-onetwo);
+  }
+  .docview .task-detail-p {
+    margin: var(--tds-dashboard-margin-five);
+    max-width: var(--tds-docview-max-width);
+    width: var(--tds-search-input-width);
+    line-height: var(--tds-dashboard-line-height-five);
+  }
+  .docview .task-detail-p strong:first-child {
+    color: var(--tds-body-color);
+    font-weight: var(--tds-dashboard-font-weight-eight);
+  }
+  .docview .task-detail-li {
+    position: relative;
+    margin: var(--tds-dashboard-margin-oneeight);
+    padding: var(--tds-dashboard-padding-fourseven);
+    max-width: var(--tds-docview-max-width);
+    width: var(--tds-search-input-width);
+    line-height: var(--tds-dashboard-line-height-oneone);
+  }
+  .docview .task-detail-li::before {
+    content: var(--tds-mdli-content);
+    position: absolute;
+    left: var(--tds-dashboard-left-three);
+    top: var(--tds-dashboard-top-five);
+    width: var(--tds-dashboard-width-nine);
+    height: var(--tds-dashboard-height-nine);
+    border-radius: var(--tds-dashboard-border-radius-five);
+    background: var(--tds-dot-background);
+  }
+  .docview .task-detail-gap {
+    height: var(--tds-dashboard-height-six);
+  }
+  @media (width <= 700px) {
+    .docview .task-detail {
+      margin-left: var(--tds-dashboard-margin-left-one);
+      padding-left: var(--tds-dashboard-padding-left-six);
+    }
+  }
+}
+@layer dashboard-workspace {
+  /* Document workspace: section navigation + semantic hierarchy. */
+  .doc-workspace {
+    display: grid;
+    grid-template-columns: var(--tds-dashboard-grid-template-columns-onefour);
+    gap: var(--tds-dashboard-gap-onezero);
+    align-items: start;
+  }
+  .doc-workspace[hidden] {
+    display: none;
+  }
+  .layout[hidden] {
+    display: none;
+  }
+  .doc-nav {
+    position: sticky;
+    top: var(--tds-dashboard-top-one);
+    max-height: var(--tds-dashboard-max-height-one);
+    overflow: auto;
+    background: var(--tds-btn-background);
+    border: var(--tds-dashboard-border-one);
+    border-radius: var(--tds-radius);
+    padding: var(--tds-dashboard-padding-threezero);
+    box-shadow: var(--shadow);
+  }
+  .doc-nav-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--tds-dashboard-gap-four);
+    padding: var(--tds-dashboard-padding-foureight);
+    border-bottom: var(--tds-dashboard-border-bottom-one);
+    margin-bottom: var(--tds-dashboard-margin-bottom-four);
+  }
+  .doc-nav-head strong {
+    font-size: var(--tds-dashboard-font-size-four);
+    letter-spacing: var(--tds-dashboard-letter-spacing-three);
+    text-transform: var(--tds-dashboard-text-transform-one);
+    color: var(--tds-subtitle-color);
+  }
+  .doc-nav-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--tds-dashboard-gap-oneone);
+  }
+  .doc-nav-link {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--tds-dashboard-gap-three);
+    width: var(--tds-search-input-width);
+    padding: var(--tds-dashboard-padding-fournine);
+    border: var(--tds-search-input-border);
+    border-radius: var(--tds-dashboard-border-radius-onezero);
+    background: var(--tds-dashboard-background-two);
+    color: var(--tds-subtitle-color);
+    text-decoration: var(--tds-dashboard-text-decoration-one);
+    font-size: var(--tds-dashboard-font-size-four);
+    line-height: var(--tds-dashboard-line-height-seven);
+    text-align: var(--tds-dashboard-text-align-one);
+  }
+  .doc-nav-link:hover,
+  .doc-nav-link.active {
+    background: var(--tds-btn-background-two);
+    color: var(--tds-body-color);
+  }
+  .doc-nav-link[data-depth="1"] {
+    font-weight: var(--tds-dashboard-font-weight-seven);
+    color: var(--tds-body-color);
+    font-size: var(--tds-dashboard-font-size-two);
+    margin-top: var(--tds-dashboard-margin-top-four);
+  }
+  .doc-nav-link[data-depth="2"] {
+    padding-left: var(--tds-dashboard-padding-left-seven);
+  }
+  .doc-nav-link[data-depth="3"] {
+    padding-left: var(--tds-dashboard-padding-left-eight);
+    font-size: var(--tds-dashboard-font-size-five);
+  }
+  .doc-nav-link svg {
+    width: var(--tds-dashboard-width-five);
+    height: var(--tds-dashboard-height-five);
+    flex: var(--tds-searchline-flex);
+    margin-top: var(--tds-dashboard-margin-top-onetwo);
+    fill: var(--tds-iconbtn-fill);
+    stroke: var(--tds-iconbtn-stroke);
+    stroke-width: var(--tds-dashboard-stroke-width-one);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .docview {
+    max-width: var(--tds-docview-max-width);
+    margin: var(--tds-body-margin);
+    padding: var(--tds-dashboard-padding-fivezero);
+    min-width: var(--tds-brand-min-width);
+  }
+  .docview .mdh {
+    scroll-margin-top: var(--tds-dashboard-scroll-margin-top-three);
+    color: var(--tds-body-color);
+  }
+  .docview h1.mdh {
+    font-size: var(--tds-dashboard-font-size-oneeight);
+    line-height: var(--tds-dashboard-line-height-onetwo);
+    letter-spacing: var(--tds-dashboard-letter-spacing-onezero);
+    margin: var(--tds-dashboard-margin-onenine);
+    padding-bottom: var(--tds-dashboard-padding-bottom-five);
+    border: var(--tds-search-input-border);
+    border-bottom: var(--tds-dashboard-border-bottom-one);
+    border-radius: var(--tds-mdh-border-radius);
+    background: var(--tds-reset-background);
+  }
+  .docview h2.mdh {
+    font-size: var(--tds-dashboard-font-size-onenine);
+    line-height: var(--tds-dashboard-line-height-onethree);
+    letter-spacing: var(--tds-dashboard-letter-spacing-two);
+    margin: var(--tds-dashboard-margin-oneone);
+    padding: var(--tds-dashboard-padding-fiveone);
+    border: var(--tds-search-input-border);
+    border-bottom: var(--tds-dashboard-border-bottom-one);
+    border-radius: var(--tds-mdh-border-radius);
+    background: var(--tds-reset-background);
+  }
+  .docview h3.mdh {
+    font-size: var(--tds-dashboard-font-size-one);
+    line-height: var(--tds-dashboard-line-height-onefour);
+    margin: var(--tds-dashboard-margin-twozero);
+    color: var(--tds-dashboard-color-onezero);
+  }
+  .docview h4.mdh {
+    font-size: var(--tds-dashboard-font-size-oneone);
+    line-height: var(--tds-dashboard-line-height-seven);
+    margin: var(--tds-dashboard-margin-twoone);
+    color: var(--tds-dashboard-color-onetwo);
+  }
+  .docview h5.mdh,
+  .docview h6.mdh {
+    font-size: var(--tds-dashboard-font-size-two);
+    line-height: var(--tds-dashboard-line-height-onefive);
+    margin: var(--tds-dashboard-margin-twotwo);
+    text-transform: var(--tds-dashboard-text-transform-one);
+    letter-spacing: var(--tds-dashboard-letter-spacing-six);
+    color: var(--tds-subtitle-color);
+  }
+  .docview .mdh .anchor {
+    display: inline-grid;
+    place-items: center;
+    width: var(--tds-dashboard-width-oneone);
+    height: var(--tds-dashboard-height-onethree);
+    margin-left: var(--tds-dashboard-margin-left-two);
+    vertical-align: var(--tds-anchor-vertical-align);
+  }
+  .docview .mdh .anchor svg {
+    width: var(--tds-dashboard-width-five);
+    height: var(--tds-dashboard-height-five);
+    fill: var(--tds-iconbtn-fill);
+    stroke: var(--tds-iconbtn-stroke);
+    stroke-width: var(--tds-dashboard-stroke-width-one);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .docview .mdtask-static {
+    margin: var(--tds-dashboard-margin-onesix);
+  }
+  .docview .mdtask-panel {
+    margin: var(--tds-dashboard-margin-onesix);
+  }
+  .docview .mdtask-panel > summary {
+    cursor: var(--tds-button-cursor);
+  }
+  .docview .mdtask-panel > summary:hover {
+    background: var(--tds-btn-background-two);
+  }
+  .docview .mdtask-static .mdtask {
+    margin: var(--tds-body-margin);
+    grid-template-columns: var(--tds-dashboard-grid-template-columns-onetwo);
+  }
+  .docview .mdtask-panel .mdtask {
+    grid-template-columns: var(--tds-dashboard-grid-template-columns-onethree);
+  }
+  .docview .mdtask-static .mdtask:hover {
+    background: var(--tds-dashboard-background-twoone);
+    border-color: var(--tds-mdtask-border-color);
+  }
+  .docview .task-chevron {
+    width: var(--tds-dashboard-width-onezero);
+    height: var(--tds-dashboard-height-oneone);
+    place-self: center end;
+    fill: var(--tds-iconbtn-fill);
+    stroke: var(--tds-task-chevron-stroke);
+    stroke-width: var(--tds-dashboard-stroke-width-two);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: var(--tds-dashboard-transition-six);
+  }
+  .docview .mdtask-panel:hover .task-chevron {
+    color: var(--tds-body-color);
+  }
+  .docview .task-detail {
+    margin: var(--tds-dashboard-margin-twothree);
+    padding: var(--tds-dashboard-padding-fivetwo);
+    border-left: var(--tds-dashboard-border-left-one);
+    width: var(--tds-task-detail-width);
+    max-width: var(--tds-docview-max-width);
+  }
+  .docview .task-detail-p,
+  .docview .task-detail-li {
+    max-width: var(--tds-docview-max-width);
+    width: var(--tds-task-detail-width);
+  }
+  @media (width <= 1000px) {
+    .doc-workspace {
+      grid-template-columns: var(--tds-dashboard-grid-template-columns-seven);
+    }
+    .doc-nav {
+      position: sticky;
+      top: var(--tds-toolbar-top);
+      z-index: var(--tds-dashboard-z-index-four);
+      max-height: var(--tds-filters-max-height);
+      padding: var(--tds-dashboard-padding-fivethree);
+    }
+    .doc-nav-head {
+      display: none;
+    }
+    .doc-nav-list {
+      flex-direction: row;
+      overflow-x: auto;
+      gap: var(--tds-dashboard-gap-nine);
+      padding-bottom: var(--tds-dashboard-padding-bottom-six);
+    }
+    .doc-nav-link {
+      flex: var(--tds-searchline-flex);
+      width: var(--tds-task-detail-width);
+      white-space: var(--tds-dashboard-white-space-one);
+      border: var(--tds-dashboard-border-one);
+      background: var(--tds-btn-background);
+    }
+    .doc-nav-link[data-depth="2"],
+    .doc-nav-link[data-depth="3"] {
+      padding-left: var(--tds-dashboard-padding-left-two);
+    }
+    .doc-nav-link[data-depth="3"] {
+      display: none;
+    }
+    .docview {
+      padding: var(--tds-dashboard-padding-fivefour);
+    }
+  }
+  .source-line {
+    white-space: var(--tds-dashboard-white-space-four);
+    overflow-wrap: var(--tds-dashboard-overflow-wrap-one);
+    font: var(--tds-dashboard-font-three);
+    scroll-margin-top: var(--tds-dashboard-scroll-margin-top-four);
+  }
+  .source-line:target {
+    background: var(--tds-btn-background-two);
+  }
+  [hidden][hidden] {
+    display: none;
+  }
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  select:focus-visible {
+    outline: var(--tds-dashboard-outline-one);
+    outline-offset: var(--tds-dashboard-outline-offset-one);
+  }
+  @media (width <= 600px) {
+    .topbar {
+      flex-wrap: wrap;
+      gap: var(--tds-dashboard-gap-two);
+    }
+    .brand {
+      flex-basis: var(--tds-meta-tree-flex-basis);
+    }
+    .top-actions {
+      width: var(--tds-search-input-width);
+      justify-content: space-between;
+    }
+    .viewtabs {
+      flex-shrink: var(--tds-viewtabs-flex-shrink);
+    }
+    .viewtabs button {
+      white-space: var(--tds-dashboard-white-space-one);
+    }
+    .search-input {
+      font-size: var(--tds-dashboard-font-size-onesix);
+    }
+  }
+}

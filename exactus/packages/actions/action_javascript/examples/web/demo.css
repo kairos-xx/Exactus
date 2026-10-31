@@ -1,0 +1,201 @@
+/* action_javascript demo host: its own token stack for demo-only values. */
+@layer reset, tokens, base, components, utilities;
+@layer tokens {
+  :root {
+    --primary-css-auto: auto;
+    --primary-color-dark-page: #0f1115ff;
+    --primary-color-light-page: #f6f7f9ff;
+    --base-dimension-mini-rem-sixty: calc(var(--primary-dimension-unit) * 60);
+    --base-dimension-mini-host-width: calc(
+      var(--primary-dimension-unit) * 21.25
+    );
+    --base-dimension-mini-host-wide: calc(var(--primary-dimension-unit) * 40);
+    --base-number-layer-top: calc(var(--primary-number-unit) * 30);
+    --base-percent-offscreen: calc(var(--primary-percent-base) * -200);
+    --base-css-auto: var(--primary-css-auto);
+    --base-color-page: var(--primary-color-dark-page);
+    --catalog-space-measure-medium: var(--base-dimension-mini-medium);
+    --catalog-space-measure-auto: var(--base-css-auto);
+    --catalog-layout-measure-columns: minmax(0, 1fr);
+    --catalog-surface-color-page: var(--base-color-page);
+    --catalog-layer-effect-top: var(--base-number-layer-top);
+    --catalog-control-effect-transform-none: var(--base-css-none);
+    --catalog-control-effect-transform-offscreen: translateY(
+      var(--base-percent-offscreen)
+    );
+    --catalog-demo-measure-max-size: var(--base-dimension-mini-rem-sixty);
+    --catalog-demo-measure-host-width: var(--base-dimension-mini-host-width);
+    --catalog-demo-measure-host-wide: var(--base-dimension-mini-host-wide);
+    --catalog-demo-typography-title: var(--base-dimension-mini-medium);
+    --space-medium: var(--catalog-space-measure-medium);
+    --space-auto: var(--catalog-space-measure-auto);
+    --content-columns: var(--catalog-layout-measure-columns);
+    --surface-page: var(--catalog-surface-color-page);
+    --layer-top: var(--catalog-layer-effect-top);
+    --transform-none: var(--catalog-control-effect-transform-none);
+    --transform-offscreen: var(--catalog-control-effect-transform-offscreen);
+    --size-demo-max: var(--catalog-demo-measure-max-size);
+    --size-demo-host: var(--catalog-demo-measure-host-width);
+    --size-demo-host-wide: var(--catalog-demo-measure-host-wide);
+    --text-title: var(--catalog-demo-typography-title);
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --base-color-page: var(--primary-color-light-page);
+    }
+  }
+  :root[data-theme="light"],
+  .demo[data-theme="light"] {
+    --base-color-page: var(--primary-color-light-page);
+    --base-color-raised: var(--primary-color-light-raised);
+    --base-color-field: var(--primary-color-light-field);
+    --base-color-ink-primary: var(--primary-color-light-ink-primary);
+    --base-color-ink-muted: var(--primary-color-light-ink-muted);
+    --base-color-edge-strong: var(--primary-color-light-edge-strong);
+    --base-color-accent: var(--primary-color-light-accent);
+    --base-color-on-accent: var(--primary-color-light-on-accent);
+    --catalog-rule-border-edge-strong: var(--base-dimension-mini-hairline) solid
+      var(--base-color-edge-strong);
+    --catalog-surface-color-page: var(--base-color-page);
+    --catalog-surface-color-raised: var(--base-color-raised);
+    --catalog-surface-color-field: var(--base-color-field);
+    --catalog-surface-color-accent: var(--base-color-accent);
+    --catalog-ink-color-primary: var(--base-color-ink-primary);
+    --catalog-ink-color-muted: var(--base-color-ink-muted);
+    --catalog-ink-color-on-accent: var(--base-color-on-accent);
+    --catalog-edge-color-accent: var(--base-color-accent);
+    --rule-edge-strong: var(--catalog-rule-border-edge-strong);
+    --surface-page: var(--catalog-surface-color-page);
+    --surface-raised: var(--catalog-surface-color-raised);
+    --surface-field: var(--catalog-surface-color-field);
+    --surface-accent: var(--catalog-surface-color-accent);
+    --ink-primary: var(--catalog-ink-color-primary);
+    --ink-muted: var(--catalog-ink-color-muted);
+    --ink-on-accent: var(--catalog-ink-color-on-accent);
+    --edge-accent: var(--catalog-edge-color-accent);
+  }
+  .demo[data-theme="dark"] {
+    --base-color-page: var(--primary-color-dark-page);
+    --base-color-raised: var(--primary-color-dark-raised);
+    --base-color-field: var(--primary-color-dark-field);
+    --base-color-ink-primary: var(--primary-color-dark-ink-primary);
+    --base-color-ink-muted: var(--primary-color-dark-ink-muted);
+    --base-color-edge-strong: var(--primary-color-dark-edge-strong);
+    --base-color-accent: var(--primary-color-dark-accent);
+    --base-color-on-accent: var(--primary-color-dark-on-accent);
+    --catalog-rule-border-edge-strong: var(--base-dimension-mini-hairline) solid
+      var(--base-color-edge-strong);
+    --catalog-surface-color-page: var(--base-color-page);
+    --catalog-surface-color-raised: var(--base-color-raised);
+    --catalog-surface-color-field: var(--base-color-field);
+    --catalog-surface-color-accent: var(--base-color-accent);
+    --catalog-ink-color-primary: var(--base-color-ink-primary);
+    --catalog-ink-color-muted: var(--base-color-ink-muted);
+    --catalog-ink-color-on-accent: var(--base-color-on-accent);
+    --catalog-edge-color-accent: var(--base-color-accent);
+    --rule-edge-strong: var(--catalog-rule-border-edge-strong);
+    --surface-page: var(--catalog-surface-color-page);
+    --surface-raised: var(--catalog-surface-color-raised);
+    --surface-field: var(--catalog-surface-color-field);
+    --surface-accent: var(--catalog-surface-color-accent);
+    --ink-primary: var(--catalog-ink-color-primary);
+    --ink-muted: var(--catalog-ink-color-muted);
+    --ink-on-accent: var(--catalog-ink-color-on-accent);
+    --edge-accent: var(--catalog-edge-color-accent);
+  }
+}
+@layer reset {
+  body,
+  h1,
+  p {
+    margin: var(--space-none);
+  }
+  .demo,
+  .demo-button,
+  .demo-host {
+    box-sizing: border-box;
+  }
+}
+@layer base {
+  body {
+    background-color: var(--surface-page);
+  }
+}
+@layer components {
+  .demo {
+    display: grid;
+    align-content: start;
+    gap: var(--space-medium);
+    max-inline-size: var(--size-demo-max);
+    margin-inline: var(--space-auto);
+    padding: var(--space-medium);
+    background-color: var(--surface-page);
+    color: var(--ink-primary);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+  }
+  .demo-skip {
+    position: fixed;
+    z-index: var(--layer-top);
+    inset-block-start: var(--space-compact);
+    inset-inline-start: var(--space-compact);
+    padding-block: var(--space-snug);
+    padding-inline: var(--space-small);
+    border-radius: var(--radius-small);
+    background-color: var(--surface-accent);
+    color: var(--ink-on-accent);
+    transform: var(--transform-offscreen);
+  }
+  .demo-skip:focus-visible {
+    transform: var(--transform-none);
+  }
+  .demo-head {
+    display: grid;
+    gap: var(--space-fine);
+  }
+  .demo-title {
+    font-size: var(--text-title);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-flush);
+  }
+  .demo-note {
+    color: var(--ink-muted);
+  }
+  .demo-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-snug);
+  }
+  .demo-button {
+    block-size: var(--size-control);
+    padding-inline: var(--space-compact);
+    border: var(--rule-edge-strong);
+    border-radius: var(--radius-small);
+    background-color: var(--surface-field);
+    color: var(--ink-primary);
+    cursor: var(--cursor-action);
+    font: inherit;
+    font-weight: var(--weight-medium);
+  }
+  .demo-stage {
+    display: grid;
+    grid-template-columns: var(--content-columns);
+    justify-items: start;
+  }
+  .demo-host {
+    inline-size: var(--size-demo-host);
+    max-inline-size: var(--size-fill);
+  }
+  .demo-host[data-size="wide"] {
+    inline-size: var(--size-demo-host-wide);
+  }
+  .demo-button[aria-pressed="true"] {
+    border-color: var(--edge-accent);
+  }
+}
+@media (hover: hover) and (pointer: fine) {
+  .demo-button:hover {
+    background-color: var(--surface-raised);
+  }
+}

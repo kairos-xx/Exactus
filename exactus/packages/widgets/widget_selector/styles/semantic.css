@@ -1,0 +1,165 @@
+/* SEMANTIC — contextual aliases for the expression widget. Every alias is
+   exactly one CATALOG reference; the `esw` scope prevents collisions with
+   editor and studio tokens. Per-kind pill aliases (--esw-fill, --esw-stroke)
+   are redefined inside shape selectors in components/widget.css. */
+:root {
+  /* surfaces, inks, signals */
+  --esw-surface: var(--catalog-surface-color-ws-field);
+  --esw-surface-raised: var(--catalog-surface-color-ws-raised);
+  --esw-text: var(--catalog-ink-color-ws-primary);
+  --esw-text-muted: var(--catalog-ink-color-ws-muted);
+  --esw-border: var(--catalog-edge-color-ws-subtle);
+  --esw-border-strong: var(--catalog-edge-color-ws-strong);
+  --esw-focus: var(--catalog-edge-color-ws-focus);
+  --esw-ok: var(--catalog-signal-color-ws-ok);
+  --esw-warn: var(--catalog-signal-color-ws-warn);
+  --esw-bad: var(--catalog-signal-color-ws-bad);
+  --esw-idle: var(--catalog-signal-color-ws-idle);
+  --esw-accent: var(--catalog-surface-color-ws-accent);
+  --esw-accent-ink: var(--catalog-ink-color-ws-on-accent);
+  --esw-transparent: var(--catalog-surface-color-ws-transparent);
+  /* typography */
+  --esw-font-ui: var(--catalog-text-typography-ws-ui);
+  --esw-font-ui-medium: var(--catalog-text-typography-ws-ui-medium);
+  --esw-font-ui-title: var(--catalog-text-typography-ws-ui-title);
+  --esw-font-code-strong: var(--catalog-text-typography-ws-code-strong);
+  --esw-font-code-medium: var(--catalog-text-typography-ws-code-medium);
+  --esw-font-code-small: var(--catalog-text-typography-ws-code-small);
+  --esw-family-mono: var(--catalog-text-typography-ws-family-mono);
+  --esw-text-small: var(--catalog-text-typography-ws-size-small);
+  --esw-text-detail: var(--catalog-text-typography-ws-size-detail);
+  --esw-weight-medium: var(--catalog-text-typography-ws-weight-medium);
+  --esw-weight-semibold: var(--catalog-text-typography-ws-weight-semibold);
+  --esw-weight-bold: var(--catalog-text-typography-ws-weight-bold);
+  --esw-leading-flush: var(--catalog-text-typography-ws-leading-flush);
+  --esw-leading-relaxed: var(--catalog-text-typography-ws-leading-relaxed);
+  --esw-tracking-label: var(--catalog-text-typography-ws-tracking-label);
+  --esw-case-upper: var(--catalog-text-typography-ws-case-upper);
+  --esw-space-nowrap: var(--catalog-text-typography-ws-space-nowrap);
+  --esw-space-pre-wrap: var(--catalog-text-typography-ws-space-pre-wrap);
+  --esw-wrap-anywhere: var(--catalog-text-typography-ws-wrap-anywhere);
+  --esw-overflow-ellipsis: var(--catalog-text-typography-ws-ellipsis);
+  --esw-content-empty: var(--catalog-text-typography-ws-content-empty);
+  --esw-content-branch-closed: var(
+    --catalog-text-typography-ws-content-branch-closed
+  );
+  --esw-content-branch-open: var(
+    --catalog-text-typography-ws-content-branch-open
+  );
+  --esw-decoration-error: var(--catalog-text-typography-ws-decoration-error);
+  --esw-decoration-warning: var(
+    --catalog-text-typography-ws-decoration-warning
+  );
+  /* syntax token colors */
+  --esw-text-tag: var(--catalog-token-color-esw-tag);
+  --esw-text-id: var(--catalog-token-color-esw-id);
+  --esw-text-class: var(--catalog-token-color-esw-class);
+  --esw-text-attribute: var(--catalog-token-color-esw-attribute);
+  --esw-text-pseudo-class: var(--catalog-token-color-esw-pseudo-class);
+  --esw-text-pseudo-element: var(--catalog-token-color-esw-pseudo-element);
+  --esw-text-saved: var(--catalog-token-color-esw-saved);
+  --esw-text-operator: var(--catalog-token-color-esw-operator);
+  --esw-text-env: var(--catalog-token-color-esw-env);
+  --esw-text-flow: var(--catalog-token-color-esw-stream);
+  /* kind fills for node dots */
+  --esw-kind-tag-fill: var(--catalog-pill-color-esw-tag-fill);
+  --esw-kind-id-fill: var(--catalog-pill-color-esw-id-fill);
+  --esw-kind-class-fill: var(--catalog-pill-color-esw-class-fill);
+  --esw-kind-attribute-stroke: var(--catalog-pill-color-esw-attribute-stroke);
+  --esw-kind-pseudo-class-fill: var(--catalog-pill-color-esw-pseudo-class-fill);
+  --esw-kind-pseudo-element-fill: var(
+    --catalog-pill-color-esw-pseudo-element-fill
+  );
+  --esw-kind-saved-fill: var(--catalog-pill-color-esw-saved-fill);
+  --esw-kind-operator-fill: var(--catalog-pill-color-esw-operator-fill);
+  /* pill inks */
+  --esw-kind-ink: var(--catalog-pill-color-esw-ink);
+  --esw-kind-attribute-ink: var(--catalog-pill-color-esw-attribute-ink);
+  --esw-kind-draft-ink: var(--catalog-pill-color-esw-draft-ink);
+  /* spacing and sizes */
+  --esw-gap: var(--catalog-space-measure-ws-small);
+  --esw-gap-small: var(--catalog-space-measure-ws-tiny);
+  --esw-gap-large: var(--catalog-space-measure-ws-large);
+  --esw-pad-none: var(--catalog-space-measure-ws-none);
+  --esw-inset-none: var(--catalog-space-measure-ws-none);
+  --esw-push: var(--catalog-space-measure-ws-auto);
+  --esw-item-pad: var(--catalog-space-measure-ws-item-pad);
+  --esw-link-pad: var(--catalog-space-measure-ws-link-pad);
+  --esw-btn-pad: var(--catalog-button-measure-esw-pad);
+  --esw-chip-pad: var(--catalog-chip-measure-esw-pad);
+  --esw-group-margin: var(--catalog-space-measure-esw-group-margin);
+  --esw-draft-collapse: var(--catalog-space-measure-ws-draft-collapse);
+  --esw-node-pad-block: var(--catalog-space-measure-ws-node-pad-block);
+  --esw-size-fill: var(--catalog-size-measure-ws-fill);
+  --esw-size-none: var(--catalog-size-measure-ws-none);
+  --esw-size-fit: var(--catalog-size-measure-ws-fit);
+  --esw-hairline: var(--catalog-size-measure-ws-hairline);
+  --esw-control-height: var(--catalog-size-measure-ws-control);
+  --esw-field-min: var(--catalog-size-measure-ws-field-min);
+  --esw-field-pad: var(--catalog-field-measure-esw-pad);
+  --esw-mirror-min: var(--catalog-size-measure-ws-mirror-min);
+  --esw-draft-min: var(--catalog-size-measure-ws-character);
+  --esw-radius: var(--catalog-radius-border-ws-medium);
+  --esw-radius-small: var(--catalog-radius-border-ws-small);
+  --esw-radius-round: var(--catalog-radius-border-ws-round);
+  --esw-flex-fill: var(--catalog-layout-measure-ws-flex-fill);
+  --esw-flex-none: var(--catalog-layout-measure-ws-flex-none);
+  /* pill geometry */
+  --esw-pill-height: var(--catalog-pill-measure-esw-height);
+  --esw-horn: var(--catalog-pill-measure-esw-horn);
+  --esw-cap: var(--catalog-pill-measure-esw-cap);
+  --esw-shape-gap: var(--catalog-pill-measure-esw-gap);
+  --esw-shape-gap-descendant: var(--catalog-pill-measure-esw-gap-descendant);
+  --esw-pill-pad: var(--catalog-pill-measure-esw-pad);
+  --esw-pill-pad-end: var(--catalog-pill-measure-esw-pad-end);
+  --esw-radius-pill: var(--catalog-pill-border-esw-radius);
+  --esw-radius-pill-open: var(--catalog-pill-border-esw-radius-open);
+  --esw-dot-size: var(--catalog-size-measure-esw-dot);
+  --esw-node-dot-size: var(--catalog-size-measure-esw-node-dot);
+  --esw-icon-size: var(--catalog-size-measure-esw-icon);
+  --esw-radius-chip: var(--catalog-chip-border-esw-radius);
+  /* switch */
+  --esw-switch-inline: var(--catalog-switch-measure-esw-inline);
+  --esw-switch-block: var(--catalog-switch-measure-esw-block);
+  --esw-thumb-size: var(--catalog-switch-measure-esw-thumb);
+  --esw-switch-inset: var(--catalog-switch-measure-esw-inset);
+  --esw-radius-switch: var(--catalog-switch-border-esw-radius);
+  --esw-thumb-on: var(--catalog-switch-effect-esw-thumb-on);
+  --esw-thumb-motion: var(--catalog-switch-motion-esw-thumb);
+  /* menu */
+  --esw-menu-x: var(--catalog-menu-measure-esw-offset-inline);
+  --esw-menu-y: var(--catalog-menu-measure-esw-offset-block);
+  --esw-menu-min: var(--catalog-menu-measure-esw-min);
+  --esw-menu-max: var(--catalog-menu-measure-esw-max);
+  --esw-layer-menu: var(--catalog-layer-effect-ws-menu);
+  /* grid */
+  --esw-grid-panes: var(--catalog-layout-measure-esw-panes);
+  --esw-grid-pick-row: var(--catalog-layout-measure-esw-pick-row);
+  /* borders, outlines and glyph rules */
+  --esw-rule-strong: var(--catalog-rule-border-ws-strong);
+  --esw-rule-subtle: var(--catalog-rule-border-ws-subtle);
+  --esw-rule-transparent: var(--catalog-rule-border-ws-transparent);
+  --esw-rule-frame: var(--catalog-rule-border-ws-frame);
+  --esw-rule-forced: var(--catalog-rule-border-ws-forced);
+  --esw-rule-none: var(--catalog-rule-border-ws-none);
+  --esw-rule-draft: var(--catalog-field-border-ws-draft);
+  --esw-outline-focus: var(--catalog-field-border-ws-focus);
+  --esw-outline-error: var(--catalog-field-border-ws-outline-error);
+  --esw-outline-warning: var(--catalog-field-border-ws-outline-warning);
+  --esw-outline-offset: var(--catalog-field-measure-ws-outline-offset);
+  --esw-outline-offset-none: var(
+    --catalog-field-measure-ws-outline-offset-none
+  );
+  --esw-marker-side: var(--catalog-glyph-border-ws-marker);
+  --esw-marker-tip: var(--catalog-glyph-border-ws-marker-fill);
+  --esw-fill-none: var(--catalog-glyph-color-ws-none);
+  --esw-stroke-current: var(--catalog-glyph-color-ws-current);
+  --esw-stroke-width: var(--catalog-glyph-border-ws-stroke-width);
+  /* cursors, opacity, motion */
+  --esw-cursor-point: var(--catalog-control-cursor-ws-point);
+  --esw-cursor-text: var(--catalog-control-cursor-ws-text);
+  --esw-cursor-blocked: var(--catalog-control-cursor-ws-blocked);
+  --esw-opacity-dim: var(--catalog-control-effect-ws-opacity-dim);
+  --esw-opacity-soft: var(--catalog-control-effect-ws-opacity-soft);
+  --esw-motion-none: var(--catalog-control-motion-ws-none);
+}

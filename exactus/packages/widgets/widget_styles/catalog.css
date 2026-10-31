@@ -1,0 +1,154 @@
+/* CATALOG — generic design specifications shared by widget consumers.
+   Names are --catalog-<generic-component>-<domain>-<rule>; every rule part
+   carries the `ws` scope. References BASE only; composition lives here. */
+:root {
+  /* surfaces and fills */
+  --catalog-surface-color-ws-page: var(--base-ws-color-page);
+  --catalog-surface-color-ws-field: var(--base-ws-color-field);
+  --catalog-surface-color-ws-raised: var(--base-ws-color-raised);
+  --catalog-surface-color-ws-accent: var(--base-ws-color-accent);
+  --catalog-surface-color-ws-transparent: var(
+    --base-ws-color-named-transparent
+  );
+  /* inks */
+  --catalog-ink-color-ws-primary: var(--base-ws-color-ink-primary);
+  --catalog-ink-color-ws-muted: var(--base-ws-color-ink-muted);
+  --catalog-ink-color-ws-on-accent: var(--base-ws-color-ink-on-accent);
+  /* status signals */
+  --catalog-signal-color-ws-ok: var(--base-ws-color-ok);
+  --catalog-signal-color-ws-warn: var(--base-ws-color-warn);
+  --catalog-signal-color-ws-bad: var(--base-ws-color-bad);
+  --catalog-signal-color-ws-idle: var(--base-ws-color-idle);
+  /* edges */
+  --catalog-edge-color-ws-subtle: var(--base-ws-color-edge-subtle);
+  --catalog-edge-color-ws-strong: var(--base-ws-color-edge-strong);
+  --catalog-edge-color-ws-focus: var(--base-ws-color-focus);
+  /* borders and outlines */
+  --catalog-rule-border-ws-strong: var(--base-ws-dimension-hairline)
+    var(--base-ws-css-solid) var(--base-ws-color-edge-strong);
+  --catalog-rule-border-ws-subtle: var(--base-ws-dimension-hairline)
+    var(--base-ws-css-solid) var(--base-ws-color-edge-subtle);
+  --catalog-rule-border-ws-transparent: var(--base-ws-dimension-hairline)
+    var(--base-ws-css-solid) var(--base-ws-color-named-transparent);
+  --catalog-rule-border-ws-forced: var(--base-ws-dimension-hairline)
+    var(--base-ws-css-solid) var(--base-ws-color-forced-button-text);
+  --catalog-rule-border-ws-frame: var(--base-ws-dimension-hairline)
+    var(--base-ws-css-solid) var(--base-ws-color-named-currentcolor);
+  --catalog-rule-border-ws-none: var(--base-ws-css-none);
+  --catalog-field-border-ws-focus: var(--base-ws-dimension-fine-border)
+    var(--base-ws-css-solid) var(--base-ws-color-focus);
+  --catalog-field-border-ws-outline-error: var(--base-ws-dimension-fine-border)
+    var(--base-ws-css-wavy) var(--base-ws-color-bad);
+  --catalog-field-border-ws-outline-warning: var(
+      --base-ws-dimension-fine-border
+    )
+    var(--base-ws-css-wavy) var(--base-ws-color-warn);
+  --catalog-field-border-ws-outline-ok: var(--base-ws-dimension-fine-border)
+    var(--base-ws-css-solid) var(--base-ws-color-ok);
+  --catalog-field-border-ws-draft: var(--base-ws-dimension-thin)
+    var(--base-ws-css-dotted) var(--base-ws-color-ink-muted);
+  --catalog-field-measure-ws-outline-offset: var(--base-ws-dimension-hairline);
+  --catalog-field-measure-ws-outline-offset-none: var(--base-ws-dimension-none);
+  /* glyph specs */
+  --catalog-glyph-border-ws-marker: var(--base-ws-dimension-marker)
+    var(--base-ws-css-solid) var(--base-ws-color-named-transparent);
+  --catalog-glyph-border-ws-marker-fill: var(--base-ws-dimension-marker-fill)
+    var(--base-ws-css-solid) var(--base-ws-color-named-currentcolor);
+  --catalog-glyph-border-ws-stroke-width: var(--base-ws-number-stroke);
+  --catalog-glyph-color-ws-none: var(--base-ws-css-none);
+  --catalog-glyph-color-ws-current: var(--base-ws-color-named-currentcolor);
+  /* control treatment */
+  --catalog-control-cursor-ws-point: var(--base-ws-css-pointer);
+  --catalog-control-cursor-ws-text: var(--base-ws-css-text-cursor);
+  --catalog-control-cursor-ws-blocked: var(--base-ws-css-not-allowed);
+  --catalog-control-cursor-ws-crosshair: var(--base-ws-css-crosshair);
+  --catalog-control-effect-ws-opacity-dim: var(--base-ws-number-dim);
+  --catalog-control-effect-ws-opacity-half: var(--base-ws-number-half);
+  --catalog-control-effect-ws-opacity-soft: var(--base-ws-number-soft);
+  --catalog-control-motion-ws-none: var(--base-ws-css-none);
+  --catalog-layer-effect-ws-menu: var(--base-ws-number-layer-menu);
+  /* spacing */
+  --catalog-space-measure-ws-none: var(--base-ws-dimension-none);
+  --catalog-space-measure-ws-fine: var(--base-ws-dimension-fine);
+  --catalog-space-measure-ws-tiny: var(--base-ws-dimension-tiny);
+  --catalog-space-measure-ws-small: var(--base-ws-dimension-small);
+  --catalog-space-measure-ws-medium: var(--base-ws-dimension-medium);
+  --catalog-space-measure-ws-large: var(--base-ws-dimension-large);
+  --catalog-space-measure-ws-huge: var(--base-ws-dimension-huge);
+  --catalog-space-measure-ws-auto: var(--base-ws-css-auto);
+  --catalog-space-measure-ws-link-pad: var(--base-ws-dimension-hairline)
+    var(--base-ws-dimension-small);
+  --catalog-space-measure-ws-item-pad: var(--base-ws-dimension-tiny)
+    var(--base-ws-dimension-small);
+  --catalog-space-measure-ws-comfortable-pad: var(--base-ws-dimension-medium)
+    var(--base-ws-dimension-large);
+  --catalog-space-measure-ws-node-pad-block: var(--base-ws-dimension-hairline);
+  --catalog-space-measure-ws-draft-collapse: var(--base-ws-dimension-none)
+    var(--base-ws-dimension-hairline-back);
+  /* sizes */
+  --catalog-size-measure-ws-fill: var(--base-ws-percent-full);
+  --catalog-size-measure-ws-none: var(--base-ws-dimension-none);
+  --catalog-size-measure-ws-fit: var(--base-ws-css-max-content);
+  --catalog-size-measure-ws-control: var(--base-ws-dimension-control);
+  --catalog-size-measure-ws-touch-target: var(--base-ws-dimension-touch-target);
+  --catalog-size-measure-ws-field-min: var(--base-ws-dimension-field-min);
+  --catalog-size-measure-ws-content-max: var(--base-ws-dimension-content-max);
+  --catalog-size-measure-ws-mirror-min: var(--base-ws-dimension-mirror-min);
+  --catalog-size-measure-ws-character: var(--base-ws-dimension-character);
+  --catalog-size-measure-ws-hairline: var(--base-ws-dimension-hairline);
+  /* radii */
+  --catalog-radius-border-ws-small: var(--base-ws-dimension-radius-small);
+  --catalog-radius-border-ws-medium: var(--base-ws-dimension-radius-medium);
+  --catalog-radius-border-ws-round: var(--base-ws-percent-half);
+  /* layout */
+  --catalog-layout-measure-ws-flex-fill: 1 1 var(--base-ws-css-auto);
+  --catalog-layout-measure-ws-flex-none: var(--base-ws-css-none);
+  --catalog-layout-measure-ws-flex-one: var(--base-ws-number-flush);
+  --catalog-layout-measure-ws-align-top: var(--base-ws-css-top);
+  /* typography */
+  --catalog-text-typography-ws-ui: var(--base-ws-dimension-text-body)
+    var(--base-ws-css-font-sans);
+  --catalog-text-typography-ws-ui-medium: var(--base-ws-weight-medium)
+    var(--base-ws-dimension-text-body) var(--base-ws-css-font-sans);
+  --catalog-text-typography-ws-ui-large: var(--base-ws-dimension-text-large)
+    var(--base-ws-css-font-sans);
+  --catalog-text-typography-ws-ui-title: var(--base-ws-weight-semibold)
+    var(--base-ws-dimension-text-micro) var(--base-ws-css-font-sans);
+  --catalog-text-typography-ws-code-strong: var(--base-ws-weight-semibold)
+    var(--base-ws-dimension-text-body) var(--base-ws-css-font-mono);
+  --catalog-text-typography-ws-code-medium: var(--base-ws-weight-medium)
+    var(--base-ws-dimension-text-body) var(--base-ws-css-font-mono);
+  --catalog-text-typography-ws-code-small: var(--base-ws-dimension-text-small)
+    var(--base-ws-css-font-mono);
+  --catalog-text-typography-ws-size-small: var(--base-ws-dimension-text-small);
+  --catalog-text-typography-ws-size-detail: var(
+    --base-ws-dimension-text-detail
+  );
+  --catalog-text-typography-ws-size-micro: var(--base-ws-dimension-text-micro);
+  --catalog-text-typography-ws-weight-medium: var(--base-ws-weight-medium);
+  --catalog-text-typography-ws-weight-semibold: var(--base-ws-weight-semibold);
+  --catalog-text-typography-ws-weight-bold: var(--base-ws-weight-bold);
+  --catalog-text-typography-ws-leading-flush: var(--base-ws-number-flush);
+  --catalog-text-typography-ws-leading-relaxed: var(--base-ws-number-leading);
+  --catalog-text-typography-ws-tracking-label: var(
+    --base-ws-dimension-tracking-label
+  );
+  --catalog-text-typography-ws-case-upper: var(--base-ws-css-uppercase);
+  --catalog-text-typography-ws-space-nowrap: var(--base-ws-css-nowrap);
+  --catalog-text-typography-ws-space-pre-wrap: var(--base-ws-css-pre-wrap);
+  --catalog-text-typography-ws-wrap-anywhere: var(--base-ws-css-anywhere);
+  --catalog-text-typography-ws-ellipsis: var(--base-ws-css-ellipsis);
+  --catalog-text-typography-ws-content-empty: var(--base-ws-css-empty);
+  --catalog-text-typography-ws-align-left: var(--base-ws-css-left);
+  --catalog-text-typography-ws-content-branch-closed: var(
+    --base-ws-css-branch-closed
+  );
+  --catalog-text-typography-ws-content-branch-open: var(
+    --base-ws-css-branch-open
+  );
+  --catalog-text-typography-ws-decoration-error: var(--base-ws-css-underline)
+    var(--base-ws-css-wavy) var(--base-ws-color-bad);
+  --catalog-text-typography-ws-decoration-warning: var(--base-ws-css-underline)
+    var(--base-ws-css-wavy) var(--base-ws-color-warn);
+  --catalog-text-typography-ws-family-mono: var(--base-ws-css-font-mono);
+}

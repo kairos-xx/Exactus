@@ -1,0 +1,15 @@
+/**
+ * Contextual aliases of the rankings component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  --perf-row-pad: var(--catalog-layout-measure-row-pad);
+  --perf-caption-gap: var(--catalog-layout-measure-caption-gap);
+  --perf-meter-thick: var(--catalog-layout-measure-meter-thick);
+  --perf-badge-pad: var(--catalog-layout-measure-badge-pad);
+  --perf-rank-grid: var(--catalog-layout-measure-rank-grid);
+  --perf-radius-meter: var(--catalog-field-border-radius-meter);
+  --perf-radius-badge: var(--catalog-field-border-radius-badge);
+  --perf-overflow: var(--catalog-text-typography-overflow);
+  --perf-nowrap: var(--catalog-text-typography-wrap-none);
+}

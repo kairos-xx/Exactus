@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Console Widget</title>
+    <link rel="stylesheet" href="../../style.css" />
+    <link rel="stylesheet" href="demo.css" />
+    <script type="module" src="code.js"></script>
+  </head>
+  <body>
+    <a class="demo-skip" href="#demo">Skip to the demo</a>
+    <main id="demo" class="demo">
+      <header class="demo-head">
+        <h1 class="demo-title">Console widget</h1>
+        <p class="demo-note">Click an action to write to the console.</p>
+      </header>
+      <section class="demo-actions" aria-label="Console actions">
+        <button class="demo-button" type="button" data-action="log">Log</button>
+        <button class="demo-button" type="button" data-action="levels">
+          Levels
+        </button>
+        <button class="demo-button" type="button" data-action="object">
+          Object
+        </button>
+        <button class="demo-button" type="button" data-action="collections">
+          Map &amp; Set
+        </button>
+        <button class="demo-button" type="button" data-action="error">
+          Error
+        </button>
+        <button class="demo-button" type="button" data-action="table">
+          Table
+        </button>
+        <button class="demo-button" type="button" data-action="group">
+          Group
+        </button>
+        <button class="demo-button" type="button" data-action="repeat">
+          Repeat
+        </button>
+        <button class="demo-button" type="button" data-action="format">
+          Format
+        </button>
+        <button class="demo-button" type="button" data-action="uncaught">
+          Uncaught
+        </button>
+        <button class="demo-button" type="button" data-action="flood">
+          Flood
+        </button>
+      </section>
+      <section class="demo-stage" aria-label="Console preview">
+        <div
+          id="console-host"
+          class="demo-host"
+          data-component="console-host"
+        ></div>
+      </section>
+    </main>
+  </body>
+</html>

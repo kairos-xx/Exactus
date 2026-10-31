@@ -1,0 +1,10 @@
+/**
+ * Contextual aliases of the tooltips component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  --perf-tip-pad: var(--catalog-layout-measure-tip-pad);
+  --perf-tip-width: var(--catalog-layout-measure-tip-width);
+  --perf-tip-layer: var(--catalog-layout-measure-tip-layer);
+  --perf-radius-tip: var(--catalog-field-border-radius-tip);
+}

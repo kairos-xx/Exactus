@@ -1,0 +1,13 @@
+{
+	"name": "extended-selector-local-libraries",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"verify": "node verify.mjs"
+	},
+	"dependencies": {
+		"css-selector-generator": "3.9.4",
+		"optimal-select": "4.0.1",
+		"@medv/finder": "4.0.2"
+	}
+}

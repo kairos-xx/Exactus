@@ -1,0 +1,16 @@
+{
+  "change_trees": [
+    {
+      "selector": "#cta",
+      "categories": [
+        "layout"
+      ],
+      "mechanisms": [
+        "script"
+      ],
+      "root_cause": {
+        "rule": "demo"
+      }
+    }
+  ]
+}

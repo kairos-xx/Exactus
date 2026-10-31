@@ -1,0 +1,779 @@
+:root {
+  --primary-clk-color-gray-143-a100: #080a0cff;
+  --primary-clk-color-gray-193-a100: #111519ff;
+  --primary-clk-color-gray-956-a100: #edf1f4ff;
+  --primary-clk-color-gray-671-a100: #8d979fff;
+  --primary-clk-color-gray-309-a100: #293139ff;
+  --primary-rem-unit: 1rem;
+  --primary-viewport-width-unit: 1vw;
+  --primary-viewport-height-unit: 1vh;
+  --primary-esd-css-ui-minus-monospace: ui-monospace;
+  --primary-clk-css-sfmono-minus-regular: SFMono-Regular;
+  --primary-clk-css-menlo: Menlo;
+  --primary-clk-css-monaco: Monaco;
+  --primary-clk-css-consolas: Consolas;
+  --primary-esd-css-monospace: monospace;
+  --primary-clk-css-center: center;
+  --primary-em-unit: 1em;
+  --primary-ese-color-named-transparent: transparent;
+  --primary-number-unit: 1;
+  --primary-pixel-unit: 1px;
+  --primary-esd-css-solid: solid;
+  --primary-clk-css-auto-minus-fit: auto-fit;
+  --primary-fraction-unit: 1fr;
+  --primary-clk-css-ellipsis: ellipsis;
+  --primary-clk-css-nowrap: nowrap;
+  --primary-esd-css-auto: auto;
+  --primary-clk-css-start: start;
+  --primary-clk-css-visible: visible;
+  --primary-clk-css-nwse-minus-resize: nwse-resize;
+  --primary-clk-css-empty: "";
+  --primary-clk-css-stable: stable;
+  --base-clk-color-gray-143-a100: var(--primary-clk-color-gray-143-a100);
+  --base-clk-color-gray-193-a100: var(--primary-clk-color-gray-193-a100);
+  --base-clk-color-gray-956-a100: var(--primary-clk-color-gray-956-a100);
+  --base-clk-color-gray-671-a100: var(--primary-clk-color-gray-671-a100);
+  --base-clk-color-gray-309-a100: var(--primary-clk-color-gray-309-a100);
+  --base-app-dimension-zero-point-seven-five-rem: calc(
+    0.75 * var(--primary-rem-unit)
+  );
+  --base-app-dimension-one-rem: var(--primary-rem-unit);
+  --base-clk-dimension-four-viewport-width: calc(
+    4 * var(--primary-viewport-width-unit)
+  );
+  --base-clk-dimension-three-rem: calc(3 * var(--primary-rem-unit));
+  --base-ese-dimension-one-zero-zero-viewport-width: calc(
+    100 * var(--primary-viewport-width-unit)
+  );
+  --base-clk-dimension-one-zero-zero-viewport-height: calc(
+    100 * var(--primary-viewport-height-unit)
+  );
+  --base-esd-css-ui-minus-monospace: var(--primary-esd-css-ui-minus-monospace);
+  --base-clk-css-sfmono-minus-regular: var(
+    --primary-clk-css-sfmono-minus-regular
+  );
+  --base-clk-css-menlo: var(--primary-clk-css-menlo);
+  --base-clk-css-monaco: var(--primary-clk-css-monaco);
+  --base-clk-css-consolas: var(--primary-clk-css-consolas);
+  --base-esd-css-monospace: var(--primary-esd-css-monospace);
+  --base-clk-css-center: var(--primary-clk-css-center);
+  --base-clk-dimension-one-point-two-rem: calc(1.2 * var(--primary-rem-unit));
+  --base-clk-dimension-zero-point-zero-eight-em: calc(
+    0.08 * var(--primary-em-unit)
+  );
+  --base-ese-color-named-transparent: var(
+    --primary-ese-color-named-transparent
+  );
+  --base-clk-number-one-zero-zero-zero: calc(1000 * var(--primary-number-unit));
+  --base-clk-dimension-two-two-pixel: calc(22 * var(--primary-pixel-unit));
+  --base-esd-dimension-two-pixel: calc(2 * var(--primary-pixel-unit));
+  --base-esd-css-solid: var(--primary-esd-css-solid);
+  --base-ese-dimension-minus-two-pixel: calc(-2 * var(--primary-pixel-unit));
+  --base-ese-dimension-four-pixel: calc(4 * var(--primary-pixel-unit));
+  --base-clk-dimension-one-one-pixel: calc(11 * var(--primary-pixel-unit));
+  --base-clk-number-minus-one: calc(-1 * var(--primary-number-unit));
+  --base-app-dimension-zero-point-five-rem: calc(0.5 * var(--primary-rem-unit));
+  --base-clk-css-auto-minus-fit: var(--primary-clk-css-auto-minus-fit);
+  --base-clk-dimension-nine-rem: calc(9 * var(--primary-rem-unit));
+  --base-clk-fraction-one-fraction: var(--primary-fraction-unit);
+  --base-clk-number-four: calc(4 * var(--primary-number-unit));
+  --base-esd-dimension-one-pixel: var(--primary-pixel-unit);
+  --base-clk-dimension-zero-point-three-rem: calc(
+    0.3 * var(--primary-rem-unit)
+  );
+  --base-clk-css-ellipsis: var(--primary-clk-css-ellipsis);
+  --base-clk-css-nowrap: var(--primary-clk-css-nowrap);
+  --base-app-number-two: calc(2 * var(--primary-number-unit));
+  --base-clk-dimension-one-zero-rem: calc(10 * var(--primary-rem-unit));
+  --base-clk-dimension-zero-point-three-five-rem: calc(
+    0.35 * var(--primary-rem-unit)
+  );
+  --base-clk-dimension-zero-point-six-rem: calc(0.6 * var(--primary-rem-unit));
+  --base-clk-dimension-two-zero-rem: calc(20 * var(--primary-rem-unit));
+  --base-esd-css-auto: var(--primary-esd-css-auto);
+  --base-clk-dimension-two-six-rem: calc(26 * var(--primary-rem-unit));
+  --base-clk-number-one-zero: calc(10 * var(--primary-number-unit));
+  --base-clk-dimension-minus-zero-point-seven-five-rem: calc(
+    -0.75 * var(--primary-rem-unit)
+  );
+  --base-clk-dimension-zero-point-eight-five-rem: calc(
+    0.85 * var(--primary-rem-unit)
+  );
+  --base-clk-dimension-zero-point-nine-five-rem: calc(
+    0.95 * var(--primary-rem-unit)
+  );
+  --base-clk-css-start: var(--primary-clk-css-start);
+  --base-clk-dimension-seven-zero-rem: calc(70 * var(--primary-rem-unit));
+  --base-clk-dimension-three-two-rem: calc(32 * var(--primary-rem-unit));
+  --base-clk-dimension-one-eight-rem: calc(18 * var(--primary-rem-unit));
+  --base-app-dimension-eight-rem: calc(8 * var(--primary-rem-unit));
+  --base-clk-dimension-five-rem: calc(5 * var(--primary-rem-unit));
+  --base-esd-dimension-eight-pixel: calc(8 * var(--primary-pixel-unit));
+  --base-clk-css-visible: var(--primary-clk-css-visible);
+  --base-clk-css-nwse-minus-resize: var(--primary-clk-css-nwse-minus-resize);
+  --base-clk-css-empty: var(--primary-clk-css-empty);
+  --base-clk-css-stable: var(--primary-clk-css-stable);
+  --catalog-layout-color-clk-demo-bg: var(--base-clk-color-gray-143-a100);
+  --catalog-layout-color-clk-demo-panel: var(--base-clk-color-gray-193-a100);
+  --catalog-layout-typography-clk-demo-text: var(
+    --base-clk-color-gray-956-a100
+  );
+  --catalog-layout-color-clk-demo-muted: var(--base-clk-color-gray-671-a100);
+  --catalog-layout-border-clk-demo-border: var(--base-clk-color-gray-309-a100);
+  --catalog-field-border-app-radius: var(
+    --base-app-dimension-zero-point-seven-five-rem
+  );
+  --catalog-layout-measure-app-space: var(--base-app-dimension-one-rem);
+  --catalog-layout-measure-clk-demo-padding: clamp(
+    var(--base-app-dimension-one-rem),
+    var(--base-clk-dimension-four-viewport-width),
+    var(--base-clk-dimension-three-rem)
+  );
+  --catalog-layout-measure-clk-demo-inline-size-one: var(
+    --base-ese-dimension-one-zero-zero-viewport-width
+  );
+  --catalog-layout-measure-clk-demo-block-size-two: var(
+    --base-clk-dimension-one-zero-zero-viewport-height
+  );
+  --catalog-text-typography-clk-demo-font-family-three:
+    var(--base-esd-css-ui-minus-monospace),
+    var(--base-clk-css-sfmono-minus-regular), var(--base-clk-css-menlo),
+    var(--base-clk-css-monaco), var(--base-clk-css-consolas),
+    var(--base-esd-css-monospace);
+  --catalog-layout-typography-clk-demo-text-align-four: var(
+    --base-clk-css-center
+  );
+  --catalog-text-typography-clk-demo-font-size-five: var(
+    --base-clk-dimension-one-point-two-rem
+  );
+  --catalog-layout-typography-clk-demo-letter-spacing-six: var(
+    --base-clk-dimension-zero-point-zero-eight-em
+  );
+  --catalog-layout-measure-ese-ese-surface: var(
+    --base-ese-color-named-transparent
+  );
+  --catalog-layout-measure-clk-demo-z-index-eight: var(
+    --base-clk-number-one-zero-zero-zero
+  );
+  --catalog-layout-measure-clk-demo-width-nine: var(
+    --base-clk-dimension-two-two-pixel
+  );
+  --catalog-layout-border-clk-demo-outline-oneone: var(
+      --base-esd-dimension-two-pixel
+    )
+    var(--base-esd-css-solid) var(--base-clk-color-gray-956-a100);
+  --catalog-layout-measure-ese-ese-call-offset: var(
+    --base-ese-dimension-minus-two-pixel
+  );
+  --catalog-layout-measure-ese-ese-op-indent: var(
+    --base-ese-dimension-four-pixel
+  );
+  --catalog-layout-measure-vdd-event-gap: var(
+    --base-clk-dimension-one-one-pixel
+  );
+  --catalog-layout-border-clk-demo-border-right-oneseven: var(
+      --base-esd-dimension-two-pixel
+    )
+    var(--base-esd-css-solid) var(--base-clk-color-gray-671-a100);
+  --catalog-layout-measure-clk-demo-grid-column-onenine: 1 /
+    var(--base-clk-number-minus-one);
+  --catalog-layout-measure-app-space-half: var(
+    --base-app-dimension-zero-point-five-rem
+  );
+  --catalog-layout-measure-clk-demo-grid-template-columns-twoone: repeat(
+    var(--base-clk-css-auto-minus-fit),
+    minmax(
+      var(--base-clk-dimension-nine-rem),
+      var(--base-clk-fraction-one-fraction)
+    )
+  );
+  --catalog-layout-measure-clk-demo-grid-template-columns-twotwo: repeat(
+    var(--base-clk-number-four),
+    minmax(0, var(--base-clk-fraction-one-fraction))
+  );
+  --catalog-layout-border-clk-demo-border-twofive: var(
+      --base-esd-dimension-one-pixel
+    )
+    var(--base-esd-css-solid) var(--base-clk-color-gray-309-a100);
+  --catalog-layout-measure-clk-demo-gap-twoseven: var(
+    --base-clk-dimension-zero-point-three-rem
+  );
+  --catalog-layout-typography-clk-demo-text-overflow-twoeight: var(
+    --base-clk-css-ellipsis
+  );
+  --catalog-layout-measure-clk-demo-white-space-twonine: var(
+    --base-clk-css-nowrap
+  );
+  --catalog-layout-measure-clk-demo-grid-template-columns-threezero: repeat(
+    var(--base-app-number-two),
+    minmax(0, var(--base-clk-fraction-one-fraction))
+  );
+  --catalog-layout-measure-clk-demo-grid-template-columns-threeone: minmax(
+    0,
+    var(--base-clk-fraction-one-fraction)
+  );
+  --catalog-layout-measure-clk-demo-grid-template-columns-threetwo: repeat(
+    var(--base-clk-number-four),
+    minmax(
+      var(--base-clk-dimension-one-zero-rem),
+      var(--base-clk-fraction-one-fraction)
+    )
+  );
+  --catalog-layout-measure-clk-demo-gap-threethree: var(
+    --base-clk-dimension-zero-point-three-five-rem
+  );
+  --catalog-layout-measure-clk-demo-gap-threefour: var(
+    --base-clk-dimension-zero-point-six-rem
+  );
+  --catalog-layout-measure-clk-demo-grid-template-columns-threesix: repeat(
+    var(--base-app-number-two),
+    var(--base-clk-fraction-one-fraction)
+  );
+  --catalog-layout-measure-clk-demo-grid-template-rows-threeseven: var(
+      --base-clk-dimension-two-zero-rem
+    )
+    var(--base-esd-css-auto);
+  --catalog-layout-measure-clk-demo-grid-template-rows-threeeight: var(
+      --base-esd-css-auto
+    )
+    minmax(0, var(--base-clk-fraction-one-fraction));
+  --catalog-layout-measure-clk-demo-grid-template-columns-fourzero: var(
+    --base-clk-fraction-one-fraction
+  );
+  --catalog-layout-measure-clk-demo-grid-template-columns-fourone: minmax(
+      0,
+      var(--base-clk-fraction-one-fraction)
+    )
+    var(--base-clk-dimension-two-six-rem);
+  --catalog-layout-measure-clk-demo-inline-size-fourthree: var(
+    --base-clk-dimension-two-six-rem
+  );
+  --catalog-layout-measure-clk-demo-z-index-fourfive: var(
+    --base-clk-number-one-zero
+  );
+  --catalog-layout-measure-clk-demo-margin-foursix: var(
+      --base-clk-dimension-minus-zero-point-seven-five-rem
+    )
+    var(--base-clk-dimension-minus-zero-point-seven-five-rem)
+    var(--base-app-dimension-zero-point-seven-five-rem);
+  --catalog-layout-measure-clk-demo-padding-fourseven: var(
+    --base-clk-dimension-zero-point-eight-five-rem
+  );
+  --catalog-text-typography-clk-demo-font-size-fournine: var(
+    --base-clk-dimension-zero-point-nine-five-rem
+  );
+  --catalog-layout-typography-clk-demo-text-align-fivezero: var(
+    --base-clk-css-start
+  );
+  --catalog-layout-measure-clk-demo-inline-size-fiveone: min(
+    100%,
+    var(--base-clk-dimension-seven-zero-rem)
+  );
+  --catalog-layout-measure-clk-demo-block-size-fivetwo: min(
+    100%,
+    var(--base-clk-dimension-three-two-rem)
+  );
+  --catalog-layout-measure-clk-demo-min-inline-size-fivethree: var(
+    --base-clk-dimension-one-eight-rem
+  );
+  --catalog-layout-measure-app-hero-height: var(--base-app-dimension-eight-rem);
+  --catalog-layout-measure-clk-demo-grid-template-columns-fivefive: minmax(
+      0,
+      var(--base-clk-fraction-one-fraction)
+    )
+    var(--base-clk-dimension-five-rem);
+  --catalog-layout-measure-esd-demo-toolbar-gap: var(
+    --base-esd-dimension-eight-pixel
+  );
+  --catalog-layout-measure-app-page-margin-inline: var(--base-esd-css-auto);
+  --catalog-layout-measure-clk-demo-overflow-fiveeight: var(
+    --base-clk-css-visible
+  );
+  --catalog-layout-measure-app-body-margin: 0;
+  --catalog-control-cursor-clk-target-resize-handle-cursor: var(
+    --base-clk-css-nwse-minus-resize
+  );
+  --catalog-text-typography-clk-target-resize-handle-content: var(
+    --base-clk-css-empty
+  );
+  --catalog-layout-measure-esd-textarea-width: 100%;
+  --catalog-layout-motion-clk-demo-sidebar-scrollbar-gutter: var(
+    --base-clk-css-stable
+  );
+  --clk-body-margin: var(--catalog-layout-measure-app-body-margin);
+  --clk-body-padding: var(--catalog-layout-measure-app-body-margin);
+  --clk-analog-clock-mount-inset: var(--catalog-layout-measure-app-body-margin);
+  --clk-target-resize-handle-border: var(
+    --catalog-layout-measure-app-body-margin
+  );
+  --clk-target-resize-handle-border-radius: var(
+    --catalog-layout-measure-app-body-margin
+  );
+  --clk-target-resize-handle-right: var(
+    --catalog-layout-measure-app-body-margin
+  );
+  --clk-target-resize-handle-bottom: var(
+    --catalog-layout-measure-app-body-margin
+  );
+  --clk-target-resize-handle-cursor: var(
+    --catalog-control-cursor-clk-target-resize-handle-cursor
+  );
+  --clk-target-resize-handle-content: var(
+    --catalog-text-typography-clk-target-resize-handle-content
+  );
+  --clk-number-combo-min-width: var(--catalog-layout-measure-app-body-margin);
+  --clk-number-combo-width: var(--catalog-layout-measure-esd-textarea-width);
+  --clk-structure-field-min-inline-size: var(
+    --catalog-layout-measure-app-body-margin
+  );
+  --clk-structure-field-inline-size: var(
+    --catalog-layout-measure-esd-textarea-width
+  );
+  --clk-demo-shell-block-size: var(
+    --catalog-layout-measure-app-page-margin-inline
+  );
+  --clk-demo-shell-min-block-size: var(
+    --catalog-layout-measure-app-body-margin
+  );
+  --clk-demo-sidebar-scrollbar-gutter: var(
+    --catalog-layout-motion-clk-demo-sidebar-scrollbar-gutter
+  );
+  --clk-demo-sidebar-inset-block-start: var(
+    --catalog-layout-measure-app-body-margin
+  );
+  --clk-demo-sidebar-letter-spacing: var(
+    --catalog-layout-measure-app-body-margin
+  );
+  --clk-analog-clock-target-max-inline-size: var(
+    --catalog-layout-measure-esd-textarea-width
+  );
+  --clk-analog-clock-target-max-block-size: var(
+    --catalog-layout-measure-esd-textarea-width
+  );
+  --demo-bg: var(--catalog-layout-color-clk-demo-bg);
+  --demo-panel: var(--catalog-layout-color-clk-demo-panel);
+  --demo-text: var(--catalog-layout-typography-clk-demo-text);
+  --demo-muted: var(--catalog-layout-color-clk-demo-muted);
+  --demo-border: var(--catalog-layout-border-clk-demo-border);
+  --demo-radius: var(--catalog-field-border-app-radius);
+  --demo-gap: var(--catalog-layout-measure-app-space);
+  --demo-padding: var(--catalog-layout-measure-clk-demo-padding);
+  --clk-demo-inline-size-one: var(
+    --catalog-layout-measure-clk-demo-inline-size-one
+  );
+  --clk-demo-block-size-two: var(
+    --catalog-layout-measure-clk-demo-block-size-two
+  );
+  --clk-demo-font-family-three: var(
+    --catalog-text-typography-clk-demo-font-family-three
+  );
+  --clk-demo-text-align-four: var(
+    --catalog-layout-typography-clk-demo-text-align-four
+  );
+  --clk-demo-font-size-five: var(
+    --catalog-text-typography-clk-demo-font-size-five
+  );
+  --clk-demo-letter-spacing-six: var(
+    --catalog-layout-typography-clk-demo-letter-spacing-six
+  );
+  --clk-demo-background-seven: var(--catalog-layout-measure-ese-ese-surface);
+  --clk-demo-z-index-eight: var(
+    --catalog-layout-measure-clk-demo-z-index-eight
+  );
+  --clk-demo-width-nine: var(--catalog-layout-measure-clk-demo-width-nine);
+  --clk-demo-height-onezero: var(--catalog-layout-measure-clk-demo-width-nine);
+  --clk-demo-outline-oneone: var(
+    --catalog-layout-border-clk-demo-outline-oneone
+  );
+  --clk-demo-outline-offset-onetwo: var(
+    --catalog-layout-measure-ese-ese-call-offset
+  );
+  --clk-demo-right-onethree: var(--catalog-layout-measure-ese-ese-op-indent);
+  --clk-demo-bottom-onefour: var(--catalog-layout-measure-ese-ese-op-indent);
+  --clk-demo-width-onefive: var(--catalog-layout-measure-vdd-event-gap);
+  --clk-demo-height-onesix: var(--catalog-layout-measure-vdd-event-gap);
+  --clk-demo-border-right-oneseven: var(
+    --catalog-layout-border-clk-demo-border-right-oneseven
+  );
+  --clk-demo-border-bottom-oneeight: var(
+    --catalog-layout-border-clk-demo-border-right-oneseven
+  );
+  --clk-demo-grid-column-onenine: var(
+    --catalog-layout-measure-clk-demo-grid-column-onenine
+  );
+  --clk-demo-gap-twozero: var(--catalog-layout-measure-app-space-half);
+  --clk-demo-grid-template-columns-twoone: var(
+    --catalog-layout-measure-clk-demo-grid-template-columns-twoone
+  );
+  --clk-demo-grid-template-columns-twotwo: var(
+    --catalog-layout-measure-clk-demo-grid-template-columns-twotwo
+  );
+  --clk-demo-gap-twothree: var(--catalog-field-border-app-radius);
+  --clk-demo-padding-twofour: var(--catalog-field-border-app-radius);
+  --clk-demo-border-twofive: var(
+    --catalog-layout-border-clk-demo-border-twofive
+  );
+  --clk-demo-border-radius-twosix: var(--catalog-layout-measure-app-space-half);
+  --clk-demo-gap-twoseven: var(--catalog-layout-measure-clk-demo-gap-twoseven);
+  --clk-demo-text-overflow-twoeight: var(
+    --catalog-layout-typography-clk-demo-text-overflow-twoeight
+  );
+  --clk-demo-white-space-twonine: var(
+    --catalog-layout-measure-clk-demo-white-space-twonine
+  );
+  --clk-demo-grid-template-columns-threezero: var(
+    --catalog-layout-measure-clk-demo-grid-template-columns-threezero
+  );
+  --clk-demo-grid-template-columns-threeone: var(
+    --catalog-layout-measure-clk-demo-grid-template-columns-threeone
+  );
+  --clk-demo-grid-template-columns-threetwo: var(
+    --catalog-layout-measure-clk-demo-grid-template-columns-threetwo
+  );
+  --clk-demo-gap-threethree: var(
+    --catalog-layout-measure-clk-demo-gap-threethree
+  );
+  --clk-demo-gap-threefour: var(
+    --catalog-layout-measure-clk-demo-gap-threefour
+  );
+  --clk-demo-font-size-threefive: var(--catalog-field-border-app-radius);
+  --clk-demo-grid-template-columns-threesix: var(
+    --catalog-layout-measure-clk-demo-grid-template-columns-threesix
+  );
+  --clk-demo-grid-template-rows-threeseven: var(
+    --catalog-layout-measure-clk-demo-grid-template-rows-threeseven
+  );
+  --clk-demo-grid-template-rows-threeeight: var(
+    --catalog-layout-measure-clk-demo-grid-template-rows-threeeight
+  );
+  --clk-demo-gap-threenine: var(--catalog-layout-measure-app-space);
+  --clk-demo-grid-template-columns-fourzero: var(
+    --catalog-layout-measure-clk-demo-grid-template-columns-fourzero
+  );
+  --clk-demo-grid-template-columns-fourone: var(
+    --catalog-layout-measure-clk-demo-grid-template-columns-fourone
+  );
+  --clk-demo-padding-fourtwo: var(--catalog-layout-measure-app-space);
+  --clk-demo-inline-size-fourthree: var(
+    --catalog-layout-measure-clk-demo-inline-size-fourthree
+  );
+  --clk-demo-border-inline-start-fourfour: var(
+    --catalog-layout-border-clk-demo-border-twofive
+  );
+  --clk-demo-z-index-fourfive: var(
+    --catalog-layout-measure-clk-demo-z-index-fourfive
+  );
+  --clk-demo-margin-foursix: var(
+    --catalog-layout-measure-clk-demo-margin-foursix
+  );
+  --clk-demo-padding-fourseven: var(
+    --catalog-layout-measure-clk-demo-padding-fourseven
+  );
+  --clk-demo-border-block-end-foureight: var(
+    --catalog-layout-border-clk-demo-border-twofive
+  );
+  --clk-demo-font-size-fournine: var(
+    --catalog-text-typography-clk-demo-font-size-fournine
+  );
+  --clk-demo-text-align-fivezero: var(
+    --catalog-layout-typography-clk-demo-text-align-fivezero
+  );
+  --clk-demo-inline-size-fiveone: var(
+    --catalog-layout-measure-clk-demo-inline-size-fiveone
+  );
+  --clk-demo-block-size-fivetwo: var(
+    --catalog-layout-measure-clk-demo-block-size-fivetwo
+  );
+  --clk-demo-min-inline-size-fivethree: var(
+    --catalog-layout-measure-clk-demo-min-inline-size-fivethree
+  );
+  --clk-demo-min-block-size-fivefour: var(
+    --catalog-layout-measure-app-hero-height
+  );
+  --clk-demo-grid-template-columns-fivefive: var(
+    --catalog-layout-measure-clk-demo-grid-template-columns-fivefive
+  );
+  --clk-demo-gap-fivesix: var(--catalog-layout-measure-esd-demo-toolbar-gap);
+  --clk-demo-block-size-fiveseven: var(
+    --catalog-layout-measure-app-page-margin-inline
+  );
+  --clk-demo-overflow-fiveeight: var(
+    --catalog-layout-measure-clk-demo-overflow-fiveeight
+  );
+}
+html,
+body,
+main,
+section,
+aside,
+div,
+span,
+p,
+h1,
+h2,
+label,
+input,
+select,
+option,
+output,
+button {
+  box-sizing: border-box;
+}
+html {
+  color-scheme: dark;
+}
+body {
+  margin: var(--clk-body-margin);
+  padding: var(--clk-body-padding);
+  inline-size: var(--clk-demo-inline-size-one);
+  block-size: var(--clk-demo-block-size-two);
+  overflow: hidden;
+  background: var(--demo-bg);
+  color: var(--demo-text);
+  font-family: var(--clk-demo-font-family-three);
+}
+main {
+  inline-size: var(--clk-demo-inline-size-one);
+  block-size: var(--clk-demo-block-size-two);
+  margin: var(--clk-body-margin);
+}
+h1 {
+  text-align: var(--clk-demo-text-align-four);
+  font-size: var(--clk-demo-font-size-five);
+  letter-spacing: var(--clk-demo-letter-spacing-six);
+}
+.analog-clock-mount {
+  position: absolute;
+  inset: var(--clk-analog-clock-mount-inset);
+}
+.target-resize-handle {
+  padding: var(--clk-body-padding);
+  border: var(--clk-target-resize-handle-border);
+  border-radius: var(--clk-target-resize-handle-border-radius);
+  background: var(--clk-demo-background-seven);
+  position: absolute;
+  z-index: var(--clk-demo-z-index-eight);
+  right: var(--clk-target-resize-handle-right);
+  bottom: var(--clk-target-resize-handle-bottom);
+  width: var(--clk-demo-width-nine);
+  height: var(--clk-demo-height-onezero);
+  cursor: var(--clk-target-resize-handle-cursor);
+  touch-action: none;
+}
+.target-resize-handle:focus-visible {
+  outline: var(--clk-demo-outline-oneone);
+  outline-offset: var(--clk-demo-outline-offset-onetwo);
+}
+.target-resize-handle::after {
+  content: var(--clk-target-resize-handle-content);
+  position: absolute;
+  right: var(--clk-demo-right-onethree);
+  bottom: var(--clk-demo-bottom-onefour);
+  width: var(--clk-demo-width-onefive);
+  height: var(--clk-demo-height-onesix);
+  border-right: var(--clk-demo-border-right-oneseven);
+  border-bottom: var(--clk-demo-border-bottom-oneeight);
+}
+.structure-control {
+  grid-column: var(--clk-demo-grid-column-onenine);
+}
+.structure-editor,
+.group-values {
+  display: grid;
+  gap: var(--clk-demo-gap-twozero);
+}
+.group-values {
+  grid-template-columns: var(--clk-demo-grid-template-columns-twoone);
+}
+.structure-row {
+  display: grid;
+  grid-template-columns: var(--clk-demo-grid-template-columns-twotwo);
+  gap: var(--clk-demo-gap-twothree);
+  padding: var(--clk-demo-padding-twofour);
+  border: var(--clk-demo-border-twofive);
+  border-radius: var(--clk-demo-border-radius-twosix);
+  align-items: end;
+}
+.structure-row > strong {
+  grid-column: var(--clk-demo-grid-column-onenine);
+}
+.number-combo {
+  display: grid;
+  grid-template-columns: var(--clk-demo-grid-template-columns-fivefive);
+  align-items: center;
+  gap: var(--clk-demo-gap-fivesix);
+}
+.number-combo input {
+  min-width: var(--clk-number-combo-min-width);
+  width: var(--clk-number-combo-width);
+  box-sizing: border-box;
+}
+.structure-field {
+  display: grid;
+  gap: var(--clk-demo-gap-twoseven);
+  min-inline-size: var(--clk-structure-field-min-inline-size);
+}
+.structure-field > span {
+  overflow: hidden;
+  text-overflow: var(--clk-demo-text-overflow-twoeight);
+  white-space: var(--clk-demo-white-space-twonine);
+}
+.structure-field > input:not([type="checkbox"]) {
+  inline-size: var(--clk-structure-field-inline-size);
+  min-inline-size: var(--clk-structure-field-min-inline-size);
+  box-sizing: border-box;
+}
+.structure-field-checkbox {
+  display: flex;
+  align-items: center;
+  gap: var(--clk-demo-gap-twozero);
+  align-self: center;
+}
+.structure-remove {
+  align-self: end;
+}
+@media (width <= 72rem) {
+  .structure-row {
+    grid-template-columns: var(--clk-demo-grid-template-columns-threezero);
+  }
+}
+@media (width <= 40rem) {
+  .structure-row {
+    grid-template-columns: var(--clk-demo-grid-template-columns-threeone);
+  }
+}
+.controls {
+  display: grid;
+  grid-template-columns: var(--clk-demo-grid-template-columns-threetwo);
+  gap: var(--demo-gap);
+  margin-block-start: var(--demo-gap);
+  padding: var(--demo-gap);
+  border: var(--clk-demo-border-twofive);
+  border-radius: var(--demo-radius);
+  background: var(--demo-panel);
+}
+.control {
+  display: grid;
+  gap: var(--clk-demo-gap-threethree);
+}
+.control-row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--clk-demo-gap-threefour);
+}
+label,
+output {
+  font-size: var(--clk-demo-font-size-threefive);
+}
+label {
+  color: var(--demo-muted);
+}
+input[type="range"],
+input[type="text"],
+select {
+  inline-size: var(--clk-structure-field-inline-size);
+}
+@media (width <= 70rem) {
+  .controls {
+    grid-template-columns: var(--clk-demo-grid-template-columns-threesix);
+  }
+}
+@media (width <= 38rem) {
+  .demo-shell {
+    grid-template-columns: var(--clk-demo-grid-template-columns-threeone);
+    grid-template-rows: var(--clk-demo-grid-template-rows-threeseven);
+    block-size: var(--clk-demo-shell-block-size);
+    overflow: visible;
+  }
+  body {
+    overflow: auto;
+  }
+  .demo-sidebar {
+    inline-size: var(--clk-structure-field-inline-size);
+    block-size: var(--clk-demo-shell-block-size);
+    box-sizing: border-box;
+    overflow: visible;
+  }
+  .demo-preview {
+    grid-template-rows: var(--clk-demo-grid-template-rows-threeeight);
+    gap: var(--clk-demo-gap-threenine);
+  }
+  .analog-clock-target {
+    min-inline-size: var(--clk-structure-field-min-inline-size);
+  }
+  .controls {
+    grid-template-columns: var(--clk-demo-grid-template-columns-fourzero);
+  }
+  input,
+  select {
+    box-sizing: border-box;
+  }
+}
+.demo-shell {
+  display: grid;
+  grid-template-columns: var(--clk-demo-grid-template-columns-fourone);
+  inline-size: var(--clk-demo-inline-size-one);
+  block-size: var(--clk-demo-block-size-two);
+  min-inline-size: var(--clk-structure-field-min-inline-size);
+  min-block-size: var(--clk-demo-shell-min-block-size);
+  overflow: hidden;
+}
+.demo-preview {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-inline-size: var(--clk-structure-field-min-inline-size);
+  min-block-size: var(--clk-demo-shell-min-block-size);
+  overflow: hidden;
+  padding: var(--clk-demo-padding-fourtwo);
+  background: var(--demo-bg);
+}
+.demo-sidebar {
+  position: relative;
+  inline-size: var(--clk-demo-inline-size-fourthree);
+  block-size: var(--clk-demo-block-size-two);
+  min-inline-size: var(--clk-structure-field-min-inline-size);
+  min-block-size: var(--clk-demo-shell-min-block-size);
+  overflow: hidden auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: var(--clk-demo-sidebar-scrollbar-gutter);
+  padding: var(--clk-demo-padding-twofour);
+  border-inline-start: var(--clk-demo-border-inline-start-fourfour);
+  background: var(--demo-panel);
+}
+.demo-sidebar > h1 {
+  position: sticky;
+  inset-block-start: var(--clk-demo-sidebar-inset-block-start);
+  z-index: var(--clk-demo-z-index-fourfive);
+  margin: var(--clk-demo-margin-foursix);
+  padding: var(--clk-demo-padding-fourseven);
+  border-block-end: var(--clk-demo-border-block-end-foureight);
+  background: var(--demo-panel);
+  font-size: var(--clk-demo-font-size-fournine);
+  text-align: var(--clk-demo-text-align-fivezero);
+  letter-spacing: var(--clk-demo-sidebar-letter-spacing);
+}
+.demo-sidebar .controls {
+  display: grid;
+  grid-template-columns: var(--clk-demo-grid-template-columns-fourzero);
+  gap: var(--clk-demo-gap-threefour);
+  margin: var(--clk-body-margin);
+  padding: var(--clk-body-padding);
+  border: var(--clk-target-resize-handle-border);
+  background: var(--clk-demo-background-seven);
+}
+.analog-clock-target {
+  position: relative;
+  inline-size: var(--clk-demo-inline-size-fiveone);
+  block-size: var(--clk-demo-block-size-fivetwo);
+  min-inline-size: var(--clk-demo-min-inline-size-fivethree);
+  min-block-size: var(--clk-demo-min-block-size-fivefour);
+  max-inline-size: var(--clk-analog-clock-target-max-inline-size);
+  max-block-size: var(--clk-analog-clock-target-max-block-size);
+  overflow: hidden;
+  border: var(--clk-demo-border-twofive);
+  border-radius: var(--demo-radius);
+}
+.resize-help {
+  display: none;
+}

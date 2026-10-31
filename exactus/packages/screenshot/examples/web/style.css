@@ -1,0 +1,144 @@
+:root {
+  --primary-scr-color-ink: #edf1f4ff;
+  --primary-scr-color-paper: #0b0d10ff;
+  --primary-scr-color-panel: #151a20ff;
+  --primary-scr-color-card: #1d242cff;
+  --primary-scr-color-accent: #4f9cf9ff;
+  --primary-scr-color-muted: #8d979fff;
+  --primary-scr-color-border: #293139ff;
+  --primary-rem-unit: 1rem;
+  --primary-pixel-unit: 1px;
+  --primary-number-unit: 1;
+  --primary-esd-css-auto: auto;
+  --primary-esd-css-solid: solid;
+  --primary-esd-css-center: center;
+  --primary-sans-font: system-ui, sans-serif;
+  --base-scr-color-ink: var(--primary-scr-color-ink);
+  --base-scr-color-paper: var(--primary-scr-color-paper);
+  --base-scr-color-panel: var(--primary-scr-color-panel);
+  --base-scr-color-card: var(--primary-scr-color-card);
+  --base-scr-color-accent: var(--primary-scr-color-accent);
+  --base-scr-color-muted: var(--primary-scr-color-muted);
+  --base-scr-color-border: var(--primary-scr-color-border);
+  --base-scr-dimension-quarter-rem: calc(0.25 * var(--primary-rem-unit));
+  --base-scr-dimension-half-rem: calc(0.5 * var(--primary-rem-unit));
+  --base-scr-dimension-rem: var(--primary-rem-unit);
+  --base-scr-dimension-two-rem: calc(2 * var(--primary-rem-unit));
+  --base-scr-dimension-feed-limit: calc(28 * var(--primary-rem-unit));
+  --base-scr-dimension-shell-limit: calc(60 * var(--primary-rem-unit));
+  --base-scr-dimension-pixel: var(--primary-pixel-unit);
+  --base-scr-dimension-zero: calc(0 * var(--primary-rem-unit));
+  --base-scr-font-family: var(--primary-sans-font);
+  --base-scr-css-auto: var(--primary-esd-css-auto);
+  --base-scr-css-solid: var(--primary-esd-css-solid);
+  --base-scr-css-center: var(--primary-esd-css-center);
+  --catalog-scr-color-page-background: var(--base-scr-color-paper);
+  --catalog-scr-color-page-color: var(--base-scr-color-ink);
+  --catalog-scr-typography-page-font-family: var(--base-scr-font-family);
+  --catalog-scr-measure-page-margin: var(--base-scr-dimension-zero);
+  --catalog-scr-color-panel-background: var(--base-scr-color-panel);
+  --catalog-scr-color-card-background: var(--base-scr-color-card);
+  --catalog-scr-color-accent-color: var(--base-scr-color-accent);
+  --catalog-scr-color-muted-color: var(--base-scr-color-muted);
+  --catalog-scr-border-border-line: var(--base-scr-dimension-pixel)
+    var(--base-scr-css-solid) var(--base-scr-color-border);
+  --catalog-scr-measure-panel-radius: var(--base-scr-dimension-half-rem);
+  --catalog-scr-measure-space-loose: var(--base-scr-dimension-two-rem);
+  --catalog-scr-measure-stack-gap: var(--base-scr-dimension-half-rem);
+  --catalog-scr-measure-card-padding: var(--base-scr-dimension-rem);
+  --catalog-scr-measure-feed-limit: var(--base-scr-dimension-feed-limit);
+  --catalog-scr-measure-feed-overflow: var(--base-scr-css-auto);
+  --catalog-scr-measure-column-inline-size: var(
+    --base-scr-dimension-shell-limit
+  );
+  --catalog-scr-measure-margin-auto: var(--base-scr-css-auto);
+  --catalog-scr-typography-text-center: var(--base-scr-css-center);
+  --catalog-scr-measure-heading-margin: var(--base-scr-dimension-zero)
+    var(--base-scr-dimension-zero) var(--base-scr-dimension-half-rem);
+  --catalog-scr-measure-copy-margin: var(--base-scr-dimension-zero);
+  --scr-page-background: var(--catalog-scr-color-page-background);
+  --scr-page-color: var(--catalog-scr-color-page-color);
+  --scr-page-font-family: var(--catalog-scr-typography-page-font-family);
+  --scr-page-margin: var(--catalog-scr-measure-page-margin);
+  --scr-shell-max-inline-size: var(--catalog-scr-measure-column-inline-size);
+  --scr-shell-margin-inline: var(--catalog-scr-measure-margin-auto);
+  --scr-shell-padding-block: var(--catalog-scr-measure-space-loose);
+  --scr-title-margin: var(--catalog-scr-measure-heading-margin);
+  --scr-title-color: var(--catalog-scr-color-page-color);
+  --scr-subtitle-color: var(--catalog-scr-color-muted-color);
+  --scr-subtitle-margin: var(--catalog-scr-measure-copy-margin);
+  --scr-feed-background: var(--catalog-scr-color-panel-background);
+  --scr-feed-border: var(--catalog-scr-border-border-line);
+  --scr-feed-border-radius: var(--catalog-scr-measure-panel-radius);
+  --scr-feed-padding: var(--catalog-scr-measure-card-padding);
+  --scr-feed-gap: var(--catalog-scr-measure-stack-gap);
+  --scr-feed-max-block-size: var(--catalog-scr-measure-feed-limit);
+  --scr-feed-overflow-y: var(--catalog-scr-measure-feed-overflow);
+  --scr-card-background: var(--catalog-scr-color-card-background);
+  --scr-card-border: var(--catalog-scr-border-border-line);
+  --scr-card-border-radius: var(--catalog-scr-measure-panel-radius);
+  --scr-card-padding: var(--catalog-scr-measure-card-padding);
+  --scr-card-index-color: var(--catalog-scr-color-accent-color);
+  --scr-card-title-color: var(--catalog-scr-color-page-color);
+  --scr-card-title-margin: var(--catalog-scr-measure-heading-margin);
+  --scr-card-copy-color: var(--catalog-scr-color-muted-color);
+  --scr-card-copy-margin: var(--catalog-scr-measure-copy-margin);
+  --scr-tail-color: var(--catalog-scr-color-muted-color);
+  --scr-tail-border-block-start: var(--catalog-scr-border-border-line);
+  --scr-tail-margin-block-start: var(--catalog-scr-measure-space-loose);
+  --scr-tail-padding-block: var(--catalog-scr-measure-space-loose);
+  --scr-tail-text-align: var(--catalog-scr-typography-text-center);
+}
+body {
+  margin: var(--scr-page-margin);
+  background: var(--scr-page-background);
+  color: var(--scr-page-color);
+  font-family: var(--scr-page-font-family);
+}
+.shell {
+  max-inline-size: var(--scr-shell-max-inline-size);
+  margin-inline: var(--scr-shell-margin-inline);
+  padding-block: var(--scr-shell-padding-block);
+}
+.masthead h1 {
+  margin: var(--scr-title-margin);
+  color: var(--scr-title-color);
+}
+.subtitle {
+  margin: var(--scr-subtitle-margin);
+  color: var(--scr-subtitle-color);
+}
+.feed {
+  display: grid;
+  gap: var(--scr-feed-gap);
+  padding: var(--scr-feed-padding);
+  background: var(--scr-feed-background);
+  border: var(--scr-feed-border);
+  border-radius: var(--scr-feed-border-radius);
+  max-block-size: var(--scr-feed-max-block-size);
+  overflow-y: var(--scr-feed-overflow-y);
+}
+.card {
+  padding: var(--scr-card-padding);
+  background: var(--scr-card-background);
+  border: var(--scr-card-border);
+  border-radius: var(--scr-card-border-radius);
+}
+.card-index {
+  color: var(--scr-card-index-color);
+}
+.card h2 {
+  margin: var(--scr-card-title-margin);
+  color: var(--scr-card-title-color);
+}
+.card p {
+  margin: var(--scr-card-copy-margin);
+  color: var(--scr-card-copy-color);
+}
+.tail {
+  margin-block-start: var(--scr-tail-margin-block-start);
+  padding-block: var(--scr-tail-padding-block);
+  border-block-start: var(--scr-tail-border-block-start);
+  color: var(--scr-tail-color);
+  text-align: var(--scr-tail-text-align);
+}

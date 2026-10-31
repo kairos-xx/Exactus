@@ -1,0 +1,20 @@
+{
+  "service": {
+    "root": "/absolute/path/to/project",
+    "host": "127.0.0.1",
+    "port": 6100,
+    "ngrok": false,
+    "check-timeout": 900.0,
+    "log-level": "info"
+  },
+  "cloudflare": {
+    "worker-url": "https://exactus-mcp-router.<workers-subdomain>.workers.dev",
+    "cloudflared": "cloudflared",
+    "startup-timeout": 30.0,
+    "restart-delay": 1.0,
+    "secrets": [
+      "EXACTUS_MCP_CLOUDFLARE_CONTROL_SECRET",
+      "Worker-only OAUTH_LOGIN_SECRET"
+    ]
+  }
+}

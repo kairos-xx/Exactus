@@ -1,0 +1,140 @@
+@import url("../../../action_javascript/style.css");
+@layer base, components;
+@layer base {
+  body,
+  button,
+  div,
+  form,
+  header,
+  input,
+  main,
+  output,
+  pre,
+  section,
+  select {
+    box-sizing: border-box;
+  }
+  body {
+    margin: var(--space-none);
+    background-color: var(--surface-field);
+    color: var(--ink-primary);
+    font-family: var(--font-sans);
+  }
+  button,
+  input,
+  select {
+    min-block-size: var(--size-control);
+    padding-inline: var(--space-compact);
+    border: var(--rule-edge-strong);
+    border-radius: var(--radius-small);
+    font: inherit;
+  }
+  input,
+  select,
+  pre,
+  .drop-target,
+  .scroll-target {
+    background-color: var(--surface-field);
+    color: var(--ink-primary);
+  }
+  :focus-visible {
+    outline: var(--focus-outline);
+    outline-offset: var(--space-fine);
+  }
+}
+@layer components {
+  .skip {
+    display: inline-block;
+    padding: var(--space-compact);
+    color: var(--ink-primary);
+  }
+  .demo-shell,
+  .demo-header,
+  .demo-card,
+  .pointer-studio,
+  .pointer-heading,
+  .pointer-fields,
+  .pointer-field,
+  .pointer-action-label {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-small);
+  }
+  .demo-shell {
+    inline-size: var(--size-fill);
+    padding: var(--space-small);
+  }
+  .demo-header p,
+  .demo-card p,
+  .pointer-description,
+  .eyebrow {
+    margin: var(--space-none);
+  }
+  .demo-header p,
+  .demo-card p,
+  .pointer-description,
+  output {
+    color: var(--ink-muted);
+  }
+  .eyebrow {
+    color: var(--ink-key);
+    font-weight: var(--weight-semibold);
+  }
+  .demo-layout,
+  .target-grid,
+  .demo-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-small);
+  }
+  .flex-item {
+    flex: var(--flex-grow);
+  }
+  .demo-column {
+    flex-basis: var(--size-console-max);
+  }
+  .target-item {
+    flex-basis: var(--size-search-min);
+  }
+  .demo-card {
+    min-inline-size: var(--size-search-min);
+    padding: var(--space-small);
+    border: var(--rule-edge);
+    border-radius: var(--radius-normal);
+    background-color: var(--surface-raised);
+  }
+  .pointer-field-label {
+    color: var(--ink-muted);
+  }
+  button {
+    background-color: var(--surface-accent);
+    color: var(--ink-on-accent);
+    cursor: var(--cursor-action);
+  }
+  button.secondary {
+    background-color: var(--surface-field);
+    color: var(--ink-primary);
+  }
+  pre,
+  .drop-target,
+  .scroll-target {
+    min-block-size: var(--size-console-min);
+    margin: var(--space-none);
+    padding: var(--space-small);
+    overflow: auto;
+    border: var(--rule-edge);
+    border-radius: var(--radius-normal);
+  }
+  .drop-target,
+  .scroll-target {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .scroll-target {
+    max-block-size: var(--size-console-min);
+  }
+  .scroll-target > div {
+    min-block-size: var(--size-console-max);
+  }
+}

@@ -1,0 +1,174 @@
+{
+  "version": 2,
+  "global": {
+    "defaults": {
+      "duration_seconds": 100,
+      "tick_seconds": 1,
+      "identity": {
+        "include_arguments": false
+      },
+      "arguments": {
+        "policy": "inherit"
+      },
+      "on_create": {
+        "missing": "start",
+        "starting": "reuse",
+        "running": "reset",
+        "paused": "resume",
+        "waiting_dependency": "reset",
+        "waiting_concurrency": "reset",
+        "waiting_resource": "reset",
+        "waiting_children": "reset",
+        "completed": "restart",
+        "failed": "restart",
+        "killed": "restart",
+        "cancelled": "restart"
+      },
+      "on_dependency_request": {
+        "missing": "start",
+        "starting": "reuse",
+        "running": "reuse",
+        "paused": "reuse",
+        "waiting_dependency": "reuse",
+        "waiting_concurrency": "reuse",
+        "waiting_resource": "reuse",
+        "waiting_children": "reuse",
+        "completed": "reuse",
+        "failed": "restart",
+        "killed": "restart",
+        "cancelled": "restart"
+      },
+      "timeouts": {
+        "run_seconds": null,
+        "dependency_seconds": null,
+        "waiting_seconds": null,
+        "on_timeout": "fail"
+      },
+      "retry": {
+        "max_attempts": 1,
+        "delay_seconds": 1,
+        "backoff": 2.0,
+        "max_delay_seconds": 30
+      },
+      "completion": {
+        "on_dependency_failure": "fail",
+        "on_child_failure": "fail",
+        "cancel_remaining": false
+      },
+      "scheduling": {
+        "priority": 50
+      }
+    },
+    "queue": {
+      "strategy": "priority_fifo"
+    },
+    "resources": {
+      "gpu": {
+        "capacity": 1
+      },
+      "browser": {
+        "capacity": 4
+      }
+    },
+    "rules": []
+  },
+  "templates": {
+    "counter_leaf": {
+      "executor": {
+        "type": "counter"
+      },
+      "depends_on": [],
+      "on_create": {
+        "running": "reuse"
+      }
+    }
+  },
+  "processes": {
+    "A": {
+      "extends": "counter_leaf"
+    },
+    "B": {
+      "executor": {
+        "type": "counter"
+      },
+      "depends_on": [
+        {
+          "process": "A",
+          "scope": "context",
+          "completion": "success",
+          "arguments": {
+            "policy": "inherit"
+          }
+        }
+      ]
+    },
+    "C": {
+      "executor": {
+        "type": "counter"
+      },
+      "depends_on": [
+        {
+          "process": "B",
+          "scope": "context",
+          "completion": "success",
+          "arguments": {
+            "policy": "inherit"
+          }
+        }
+      ],
+      "concurrency": {
+        "group": "process:C",
+        "scope": "global",
+        "max_running": 1,
+        "on_conflict": "wait",
+        "queue": "fifo"
+      }
+    },
+    "D": {
+      "extends": "counter_leaf"
+    },
+    "E": {
+      "mode": "fanout_join",
+      "children": [
+        {
+          "process": "C",
+          "scope": "context",
+          "arguments": {
+            "policy": "inherit"
+          }
+        },
+        {
+          "process": "D",
+          "scope": "context",
+          "arguments": {
+            "policy": "inherit"
+          }
+        }
+      ],
+      "launch": "parallel",
+      "completion": {
+        "strategy": "all",
+        "on_child_failure": "fail",
+        "cancel_remaining": false
+      },
+      "children_policy": {
+        "missing": "start",
+        "starting": "restart",
+        "running": "restart",
+        "paused": "restart",
+        "waiting_dependency": "restart",
+        "waiting_concurrency": "restart",
+        "waiting_resource": "restart",
+        "waiting_children": "restart",
+        "completed": "reuse",
+        "failed": "restart",
+        "killed": "restart",
+        "cancelled": "restart"
+      },
+      "display": {
+        "children": "all",
+        "layout": "lines"
+      }
+    }
+  }
+}

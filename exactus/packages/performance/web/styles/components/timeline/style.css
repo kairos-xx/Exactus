@@ -1,0 +1,160 @@
+/**
+ * Interactive drill-down workspace: toolbar, charts, cursor metrics and inspector.
+ *
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+@layer perf-base {
+  .timeline-shell {
+    position: relative;
+    border: var(--perf-panel-edge);
+    border-radius: var(--perf-radius-shell);
+    overflow: hidden;
+    background: var(--perf-shell-fill);
+  }
+  .timeline-toolbar,
+  .drillbar,
+  .cursor-metrics,
+  .inspector-grid {
+    display: flex;
+    gap: var(--perf-row-gap);
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .timeline-toolbar {
+    margin-bottom: var(--perf-bar-gap);
+  }
+  .timeline-toolbar button,
+  .timeline-toolbar select,
+  .drillbar button {
+    border: var(--perf-panel-edge);
+    background: var(--surface2);
+    color: var(--text);
+    border-radius: var(--perf-radius-action);
+    padding: var(--perf-action-pad);
+    cursor: var(--perf-pointer);
+  }
+  .crumb button {
+    padding: var(--perf-crumb-pad);
+  }
+  .timeline-toolbar button:hover,
+  .drillbar button:hover {
+    border-color: var(--accent);
+  }
+  .timeline-toolbar button:disabled {
+    opacity: var(--perf-dim);
+    cursor: var(--perf-cursor-plain);
+  }
+  .drillbar {
+    margin: var(--perf-drill-gap);
+    min-height: var(--perf-drill-min);
+  }
+  .crumb {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--perf-crumb-gap);
+  }
+  .crumb + .crumb::before {
+    content: var(--perf-crumb-glyph);
+    color: var(--muted);
+    margin-right: var(--perf-crumb-lead);
+  }
+  .cursor-readout {
+    margin-left: var(--perf-flow-margin);
+    font: var(--perf-type-readout);
+    color: var(--muted);
+  }
+  .share-chart {
+    height: var(--perf-share-height);
+  }
+  .share-chart,
+  .gantt-chart {
+    width: var(--perf-chart-width);
+    display: block;
+  }
+  .detail-chart {
+    height: var(--perf-chart-height);
+    cursor: var(--perf-crosshair);
+    touch-action: none;
+    user-select: none;
+  }
+  .cursor-metrics {
+    margin-top: var(--perf-metric-gap);
+    display: grid;
+    grid-template-columns: var(--perf-metric-grid);
+  }
+  .cursor-metrics article {
+    padding: var(--perf-metric-pad);
+    border: var(--perf-panel-edge);
+    border-radius: var(--perf-radius-card);
+    background: var(--surface2);
+  }
+  .cursor-metrics span,
+  .inspector-grid span {
+    display: block;
+    color: var(--muted);
+    font-size: var(--perf-size-compact);
+    text-transform: var(--perf-case-upper);
+    letter-spacing: var(--perf-track-label);
+  }
+  .cursor-metrics strong {
+    display: block;
+    margin-top: var(--perf-score-gap);
+    font: var(--perf-type-score);
+  }
+  .event-inspector {
+    margin-top: var(--perf-metric-gap);
+    border-top: var(--perf-row-rule);
+    padding-top: var(--perf-inspector-pad);
+  }
+  .inspector-grid {
+    display: grid;
+    grid-template-columns: var(--perf-inspector-grid);
+  }
+  .inspector-grid strong,
+  .inspector-grid code {
+    display: block;
+    margin-top: var(--perf-detail-gap);
+    overflow-wrap: var(--perf-wrap-any);
+  }
+  .scrub-hint {
+    color: var(--muted);
+    font-size: var(--perf-size-note);
+  }
+  .rank-row:hover,
+  .stage-row:hover {
+    background: var(--surface2);
+    transform: var(--perf-row-shift);
+  }
+  .rank-row.selected,
+  .stage-row.selected {
+    outline: var(--perf-select-ring);
+    background: var(--perf-select-tint);
+  }
+  .event-row:hover {
+    background: var(--surface2);
+  }
+  .event-row.cursor-event {
+    border-left-color: var(--accent);
+    background: var(--perf-cursor-tint);
+    scroll-margin-block: var(--perf-cursor-anchor);
+  }
+  .event-row.near-cursor {
+    background: var(--perf-ghost-tint);
+  }
+  .zoom-label {
+    min-width: var(--perf-zoom-min);
+    text-align: var(--perf-align-center);
+    font: var(--perf-type-zoom);
+    color: var(--muted);
+  }
+  @media (width <=800px) {
+    .cursor-metrics,
+    .inspector-grid {
+      grid-template-columns: var(--perf-kpi-grid-narrow);
+    }
+    .cursor-readout {
+      width: var(--perf-flow-width);
+      margin-left: var(--perf-flush);
+    }
+  }
+}

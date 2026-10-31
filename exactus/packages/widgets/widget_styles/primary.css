@@ -1,0 +1,74 @@
+/* PRIMARY — literal inputs: units, keywords, named colors and the widget
+   palette. No references, no functions. Shared unit primitives keep the
+   repository-wide names; widget-family literals carry the `ws` scope. */
+:root {
+  /* shared unit primitives */
+  --primary-dimension-pixel: 1px;
+  --primary-dimension-em: 1em;
+  --primary-dimension-character: 1ch;
+  --primary-dimension-fraction: 1fr;
+  --primary-percent-base: 1%;
+  --primary-number-unit: 1;
+  --primary-duration-unit: 1s;
+  --primary-font-weight-unit: 100;
+  /* font stacks */
+  --primary-css-font-sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --primary-ws-css-font-mono:
+    ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  /* keyword literals */
+  --primary-css-auto: auto;
+  --primary-css-none: none;
+  --primary-css-normal: normal;
+  --primary-css-pointer: pointer;
+  --primary-css-not-allowed: not-allowed;
+  --primary-css-crosshair: crosshair;
+  --primary-css-nowrap: nowrap;
+  --primary-css-pre-wrap: pre-wrap;
+  --primary-css-anywhere: anywhere;
+  --primary-css-uppercase: uppercase;
+  --primary-css-underline: underline;
+  --primary-css-ellipsis: ellipsis;
+  --primary-css-max-content: max-content;
+  --primary-css-solid: solid;
+  --primary-css-empty: "";
+  --primary-ws-css-text-cursor: text;
+  --primary-ws-css-dashed: dashed;
+  --primary-ws-css-dotted: dotted;
+  --primary-ws-css-wavy: wavy;
+  --primary-ws-css-left: left;
+  --primary-ws-css-top: top;
+  --primary-ws-css-branch-closed: "▸";
+  --primary-ws-css-branch-open: "▾";
+  /* named and forced-colors keyword literals */
+  --primary-color-named-transparent: transparent;
+  --primary-color-named-currentcolor: currentcolor;
+  --primary-color-named-highlight: Highlight;
+  --primary-ws-color-forced-canvas: Canvas;
+  --primary-ws-color-forced-field: Field;
+  --primary-ws-color-forced-button-face: ButtonFace;
+  --primary-ws-color-forced-canvas-text: CanvasText;
+  --primary-ws-color-forced-gray-text: GrayText;
+  --primary-ws-color-forced-button-border: ButtonBorder;
+  --primary-ws-color-forced-button-text: ButtonText;
+  /* neutral ramp and brand colors */
+  --primary-ws-color-gray-50: #f6f7f9ff;
+  --primary-ws-color-gray-100: #eceef2ff;
+  --primary-ws-color-gray-200: #d9dde4ff;
+  --primary-ws-color-gray-300: #bcc3ceff;
+  --primary-ws-color-gray-400: #8e97a6ff;
+  --primary-ws-color-gray-500: #667085ff;
+  --primary-ws-color-gray-700: #3a414dff;
+  --primary-ws-color-gray-800: #272c35ff;
+  --primary-ws-color-gray-850: #20242bff;
+  --primary-ws-color-gray-900: #171a20ff;
+  --primary-ws-color-gray-950: #0f1115ff;
+  --primary-ws-color-white: #ffffffff;
+  --primary-ws-color-blue-500: #3b82f6ff;
+  --primary-ws-color-blue-300: #8ab4f8ff;
+  --primary-ws-color-green-700: #15803dff;
+  --primary-ws-color-green-400: #4ade80ff;
+  --primary-ws-color-red-700: #b42318ff;
+  --primary-ws-color-red-400: #f87171ff;
+  --primary-ws-color-amber-700: #a15c07ff;
+  --primary-ws-color-amber-400: #fbbf24ff;
+}

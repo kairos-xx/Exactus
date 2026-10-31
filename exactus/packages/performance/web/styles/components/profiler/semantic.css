@@ -1,0 +1,21 @@
+/**
+ * Contextual aliases of the profiler component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  --accent2: var(--catalog-field-color-mint);
+  --warn: var(--catalog-field-color-amber);
+  --perf-tooltip-fill: var(--catalog-field-color-tooltip-fill);
+  --perf-scrub-inset: var(--catalog-layout-measure-scrub-inset);
+  --perf-legend-gap: var(--catalog-layout-measure-legend-gap);
+  --perf-legend-margin: var(--catalog-layout-measure-legend-margin);
+  --perf-swatch-width: var(--catalog-layout-measure-swatch-width);
+  --perf-swatch-height: var(--catalog-layout-measure-swatch-height);
+  --perf-bubble-pad: var(--catalog-layout-measure-bubble-pad);
+  --perf-bubble-max: var(--catalog-layout-measure-bubble-max);
+  --perf-bubble-layer: var(--catalog-layout-measure-bubble-layer);
+  --perf-scrub-ring: var(--catalog-field-border-scrub-ring);
+  --perf-radius-swatch: var(--catalog-field-border-radius-swatch);
+  --perf-accent-wash: var(--catalog-layout-effect-accent-wash);
+  --perf-press: var(--catalog-layout-motion-press);
+}

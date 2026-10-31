@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>AnalogClock Demo</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="demo-shell">
+      <section class="demo-preview">
+        <h1>SEVEN SEGMENT TIMECODE WIDGET</h1>
+        <div id="analog-clock-target" class="analog-clock-target">
+          <div id="analog-clock-mount" class="analog-clock-mount"></div>
+          <button
+            type="button"
+            class="target-resize-handle"
+            aria-label="Resize target. Use arrow keys to change size."
+          ></button>
+        </div>
+        <p class="resize-help">
+          Drag the target's bottom-right resize handle. The widget preserves its
+          aspect ratio and refits automatically.
+        </p>
+      </section>
+      <aside class="demo-sidebar">
+        <h1>Display settings</h1>
+        <section class="controls" aria-label="All widget settings">
+          <div class="control structure-control">
+            <label>Group values</label>
+            <div id="group-values" class="group-values"></div>
+            <div class="control-row">
+              <button id="clear-values" type="button">Clear values</button>
+              <button id="resume-live" type="button">Resume live</button>
+            </div>
+          </div>
+          <div class="control">
+            <label for="live">Live clock</label>
+            <input id="live" type="checkbox" checked />
+          </div>
+          <div class="control">
+            <h2>Widget</h2>
+            <label for="mode">Display mode</label>
+            <select id="mode">
+              <option value="segment">7 segment</option>
+              <option value="matrix">Dot matrix</option>
+            </select>
+          </div>
+          <div class="control">
+            <label for="template">Legacy template import</label>
+            <input
+              id="template"
+              type="text"
+              value="dd:dd:dd.dd"
+              placeholder="e.g. dd:dd:dd.dd"
+            />
+            <button id="import-template" type="button">Import structure</button>
+          </div>
+          <div class="control">
+            <h2>Matrix layout</h2>
+            <label for="matrix-layout">Matrix sizing</label>
+            <select id="matrix-layout">
+              <option value="content">Content bounding box</option>
+              <option value="target">Full target</option>
+            </select>
+          </div>
+          <div class="control">
+            <div class="control-row">
+              <label for="matrix-rows">Matrix rows</label
+              ><output id="matrix-rows-out">7</output>
+            </div>
+            <input id="matrix-rows" type="range" min="5" max="15" value="7" />
+          </div>
+          <div class="control">
+            <div class="control-row">
+              <label for="matrix-columns">Digit matrix columns</label
+              ><output id="matrix-columns-out">5</output>
+            </div>
+            <input
+              id="matrix-columns"
+              type="range"
+              min="3"
+              max="11"
+              value="5"
+            />
+          </div>
+          <div class="control structure-control">
+            <h2>Groups &amp; markers — visual styles are per item</h2>
+            <label>Groups / markers</label>
+            <div id="structure-editor" class="structure-editor"></div>
+            <button id="add-group" type="button">Add group</button>
+          </div>
+          <div class="control">
+            <div class="control-row">
+              <label for="fps">FPS</label><output id="fps-out">30</output>
+            </div>
+            <input id="fps" type="range" min="1" max="120" value="30" />
+          </div>
+          <div class="control">
+            <div class="control-row">
+              <label for="separator-width">Separator width</label
+              ><output id="separator-width-out">24</output>
+            </div>
+            <input
+              id="separator-width"
+              type="range"
+              min="2"
+              max="60"
+              value="24"
+            />
+          </div>
+          <div class="control">
+            <div class="control-row">
+              <label for="segment-on-duration">ON transition</label
+              ><output id="segment-on-duration-out">120 ms</output>
+            </div>
+            <input
+              id="segment-on-duration"
+              type="range"
+              min="0"
+              max="2000"
+              step="10"
+              value="120"
+            />
+          </div>
+          <div class="control">
+            <div class="control-row">
+              <label for="segment-off-duration">OFF transition</label
+              ><output id="segment-off-duration-out">300 ms</output>
+            </div>
+            <input
+              id="segment-off-duration"
+              type="range"
+              min="0"
+              max="2000"
+              step="10"
+              value="300"
+            />
+          </div>
+          <div class="control">
+            <label for="transition-easing">Transition easing</label>
+            <input
+              id="transition-easing"
+              type="text"
+              value="cubic-bezier(.2,.8,.2,1)"
+            />
+          </div>
+          <div class="control">
+            <label for="blink-separators">Blink separators on second</label
+            ><input id="blink-separators" type="checkbox" checked />
+          </div>
+          <div class="control">
+            <div class="control-row">
+              <label for="dot-blink-duration">Dot blink duration</label
+              ><output id="dot-blink-duration-out">160 ms</output>
+            </div>
+            <input
+              id="dot-blink-duration"
+              type="range"
+              min="0"
+              max="1500"
+              step="10"
+              value="160"
+            />
+          </div>
+          <div class="control">
+            <label for="rec-visible">REC visibility</label>
+            <select id="rec-visible">
+              <option value="visible">Visible</option>
+              <option value="reserved">Hidden, reserve space</option>
+              <option value="hidden">Hidden completely</option>
+            </select>
+          </div>
+          <div class="control">
+            <label for="rec-enabled">REC enabled</label
+            ><input id="rec-enabled" type="checkbox" checked />
+          </div>
+          <div class="control">
+            <label for="recording">Recording</label
+            ><input id="recording" type="checkbox" checked />
+          </div>
+          <div class="control">
+            <label for="rec-pulse">REC pulse</label
+            ><input id="rec-pulse" type="checkbox" checked />
+          </div>
+          <div class="control">
+            <div class="control-row">
+              <label for="rec-led-size">REC LED size</label
+              ><output id="rec-led-size-out">12</output>
+            </div>
+            <input id="rec-led-size" type="range" min="1" max="40" value="12" />
+          </div>
+          <div class="control">
+            <label for="rec-led-on-color">REC LED ON color</label
+            ><input id="rec-led-on-color" type="color" value="#ff2d2d" />
+          </div>
+          <div class="control">
+            <label for="rec-led-off-color">REC LED OFF color</label
+            ><input id="rec-led-off-color" type="color" value="#3b1818" />
+          </div>
+          <div class="control">
+            <label for="rec-led-glow-color">REC LED glow color</label
+            ><input id="rec-led-glow-color" type="color" value="#ff2d2d" />
+          </div>
+          <div class="control">
+            <div class="control-row">
+              <label for="rec-led-glow-size">REC LED glow amount</label
+              ><output id="rec-led-glow-size-out">12</output>
+            </div>
+            <input
+              id="rec-led-glow-size"
+              type="range"
+              min="0"
+              max="40"
+              value="12"
+            />
+          </div>
+          <div class="control">
+            <div class="control-row">
+              <label for="rec-pulse-duration">REC pulse duration</label
+              ><output id="rec-pulse-duration-out">1000 ms</output>
+            </div>
+            <input
+              id="rec-pulse-duration"
+              type="range"
+              min="100"
+              max="5000"
+              step="50"
+              value="1000"
+            />
+          </div>
+          <div class="control">
+            <label for="rec-label">REC label</label
+            ><input id="rec-label" type="text" value="REC" />
+          </div>
+          <div class="control">
+            <label for="rec-font-family">REC font family</label
+            ><input
+              id="rec-font-family"
+              type="text"
+              value="ui-monospace, SFMono-Regular, Menlo, monospace"
+            />
+          </div>
+          <div class="control">
+            <div class="control-row">
+              <label for="rec-font-size">REC font size</label
+              ><output id="rec-font-size-out">15</output>
+            </div>
+            <input
+              id="rec-font-size"
+              type="range"
+              min="1"
+              max="60"
+              value="15"
+            />
+          </div>
+          <div class="control">
+            <div class="control-row">
+              <label for="rec-font-weight">REC font weight</label
+              ><output id="rec-font-weight-out">700</output>
+            </div>
+            <input
+              id="rec-font-weight"
+              type="range"
+              min="100"
+              max="900"
+              step="100"
+              value="700"
+            />
+          </div>
+          <div class="control">
+            <div class="control-row">
+              <label for="rec-letter-spacing">REC letter spacing</label
+              ><output id="rec-letter-spacing-out">2</output>
+            </div>
+            <input
+              id="rec-letter-spacing"
+              type="range"
+              min="-5"
+              max="20"
+              step=".5"
+              value="2"
+            />
+          </div>
+          <div class="control">
+            <label for="rec-text-color">REC text color</label
+            ><input id="rec-text-color" type="color" value="#aeb3ba" />
+          </div>
+          <div class="control">
+            <div class="control-row">
+              <label for="rec-gap">LED ↔ REC distance</label
+              ><output id="rec-gap-out">10</output>
+            </div>
+            <input id="rec-gap" type="range" min="0" max="50" value="10" />
+          </div>
+          <div class="control">
+            <div class="control-row">
+              <label for="rec-widget-gap">Clock ↔ REC distance</label
+              ><output id="rec-widget-gap-out">20</output>
+            </div>
+            <input
+              id="rec-widget-gap"
+              type="range"
+              min="0"
+              max="100"
+              value="20"
+            />
+          </div>
+          <div class="control">
+            <label for="background">Widget background</label
+            ><input id="background" type="color" value="#080a0c" />
+          </div>
+          <div class="control">
+            <label for="align">Widget alignment</label>
+            <select id="align">
+              <option value="flex-start">Start</option>
+              <option value="center" selected>Center</option>
+              <option value="flex-end">End</option>
+            </select>
+          </div>
+          <div class="control">
+            <div class="control-row">
+              <label for="padding">Widget padding</label
+              ><output id="padding-out">0</output>
+            </div>
+            <input id="padding" type="range" min="0" max="80" value="0" />
+          </div>
+          <div class="control">
+            <label>Actions</label>
+            <button id="blink-now" type="button">Blink separators now</button>
+            <button id="reset-settings" type="button">
+              Reset all settings
+            </button>
+          </div>
+        </section>
+      </aside>
+    </main>
+    <script src="../../widget_clock.js" defer></script>
+    <script src="code.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,146 @@
+:root {
+  --primary-esd-css-system-minus-ui: system-ui;
+  --primary-esd-css-light: light;
+  --primary-esd-css-dark: dark;
+  --primary-pixel-unit: 1px;
+  --primary-esd-css-auto: auto;
+  --primary-number-unit: 1;
+  --primary-esd-css-ui-minus-monospace: ui-monospace;
+  --primary-esd-css-monospace: monospace;
+  --primary-esd-css-pre-minus-wrap: pre-wrap;
+  --primary-esd-css-solid: solid;
+  --primary-esd-color-gray-738-a100: #aaaaaaff;
+  --primary-esd-css-middle: middle;
+  --base-esd-css-system-minus-ui: var(--primary-esd-css-system-minus-ui);
+  --base-esd-css-light: var(--primary-esd-css-light);
+  --base-esd-css-dark: var(--primary-esd-css-dark);
+  --base-esd-dimension-one-zero-zero-zero-pixel: calc(
+    1000 * var(--primary-pixel-unit)
+  );
+  --base-esd-dimension-four-zero-pixel: calc(40 * var(--primary-pixel-unit));
+  --base-esd-css-auto: var(--primary-esd-css-auto);
+  --base-esd-dimension-two-zero-pixel: calc(20 * var(--primary-pixel-unit));
+  --base-esd-dimension-two-two-zero-pixel: calc(
+    220 * var(--primary-pixel-unit)
+  );
+  --base-esd-dimension-one-four-pixel: calc(14 * var(--primary-pixel-unit));
+  --base-esd-number-one-point-five: calc(1.5 * var(--primary-number-unit));
+  --base-esd-css-ui-minus-monospace: var(--primary-esd-css-ui-minus-monospace);
+  --base-esd-css-monospace: var(--primary-esd-css-monospace);
+  --base-esd-css-pre-minus-wrap: var(--primary-esd-css-pre-minus-wrap);
+  --base-esd-dimension-eight-pixel: calc(8 * var(--primary-pixel-unit));
+  --base-esd-dimension-one-two-pixel: calc(12 * var(--primary-pixel-unit));
+  --base-esd-dimension-one-pixel: var(--primary-pixel-unit);
+  --base-esd-css-solid: var(--primary-esd-css-solid);
+  --base-esd-color-gray-738-a100: var(--primary-esd-color-gray-738-a100);
+  --base-esd-dimension-one-eight-pixel: calc(18 * var(--primary-pixel-unit));
+  --base-esd-dimension-two-pixel: calc(2 * var(--primary-pixel-unit));
+  --base-esd-css-middle: var(--primary-esd-css-middle);
+  --catalog-text-typography-esd-demo-font-ui: var(
+    --base-esd-css-system-minus-ui
+  );
+  --catalog-layout-measure-esd-demo-scheme: var(--base-esd-css-light)
+    var(--base-esd-css-dark);
+  --catalog-layout-measure-esd-demo-page-width: var(
+    --base-esd-dimension-one-zero-zero-zero-pixel
+  );
+  --catalog-layout-measure-esd-demo-page-margin: var(
+      --base-esd-dimension-four-zero-pixel
+    )
+    var(--base-esd-css-auto);
+  --catalog-layout-measure-esd-demo-page-padding: 0
+    var(--base-esd-dimension-two-zero-pixel);
+  --catalog-layout-measure-esd-demo-area-min-height: var(
+    --base-esd-dimension-two-two-zero-pixel
+  );
+  --catalog-text-typography-esd-demo-font-mono:
+    var(--base-esd-dimension-one-four-pixel)/var(
+        --base-esd-number-one-point-five
+      )
+      var(--base-esd-css-ui-minus-monospace),
+    var(--base-esd-css-monospace);
+  --catalog-layout-measure-esd-demo-pre-wrap: var(
+    --base-esd-css-pre-minus-wrap
+  );
+  --catalog-layout-measure-esd-demo-toolbar-gap: var(
+    --base-esd-dimension-eight-pixel
+  );
+  --catalog-layout-measure-esd-demo-toolbar-margin: var(
+      --base-esd-dimension-eight-pixel
+    )
+    0;
+  --catalog-layout-measure-esd-demo-card-padding: var(
+    --base-esd-dimension-one-two-pixel
+  );
+  --catalog-layout-border-esd-demo-card-border: var(
+      --base-esd-dimension-one-pixel
+    )
+    var(--base-esd-css-solid) var(--base-esd-color-gray-738-a100);
+  --catalog-layout-measure-esd-demo-icon-size: var(
+    --base-esd-dimension-one-eight-pixel
+  );
+  --catalog-layout-measure-esd-demo-mark: var(--base-esd-dimension-two-pixel)
+    var(--base-esd-css-solid) currentcolor;
+  --catalog-layout-measure-esd-demo-mark-offset: var(
+    --base-esd-dimension-two-pixel
+  );
+  --catalog-layout-measure-esd-textarea-width: 100%;
+  --catalog-layout-measure-esd-card-vertical-align: var(--base-esd-css-middle);
+  --esd-textarea-width: var(--catalog-layout-measure-esd-textarea-width);
+  --esd-card-vertical-align: var(
+    --catalog-layout-measure-esd-card-vertical-align
+  );
+  --demo-font-ui: var(--catalog-text-typography-esd-demo-font-ui);
+  --demo-scheme: var(--catalog-layout-measure-esd-demo-scheme);
+  --demo-page-width: var(--catalog-layout-measure-esd-demo-page-width);
+  --demo-page-margin: var(--catalog-layout-measure-esd-demo-page-margin);
+  --demo-page-padding: var(--catalog-layout-measure-esd-demo-page-padding);
+  --demo-area-min-height: var(
+    --catalog-layout-measure-esd-demo-area-min-height
+  );
+  --demo-font-mono: var(--catalog-text-typography-esd-demo-font-mono);
+  --demo-pre-wrap: var(--catalog-layout-measure-esd-demo-pre-wrap);
+  --demo-toolbar-gap: var(--catalog-layout-measure-esd-demo-toolbar-gap);
+  --demo-toolbar-margin: var(--catalog-layout-measure-esd-demo-toolbar-margin);
+  --demo-card-padding: var(--catalog-layout-measure-esd-demo-card-padding);
+  --demo-card-border: var(--catalog-layout-border-esd-demo-card-border);
+  --demo-card-margin: var(--catalog-layout-measure-esd-demo-toolbar-gap);
+  --demo-icon-size: var(--catalog-layout-measure-esd-demo-icon-size);
+  --demo-mark: var(--catalog-layout-measure-esd-demo-mark);
+  --demo-mark-offset: var(--catalog-layout-measure-esd-demo-mark-offset);
+  font-family: var(--demo-font-ui);
+  color-scheme: var(--demo-scheme);
+}
+body {
+  max-width: var(--demo-page-width);
+  margin: var(--demo-page-margin);
+  padding: var(--demo-page-padding);
+}
+textarea {
+  box-sizing: border-box;
+  width: var(--esd-textarea-width);
+  min-height: var(--demo-area-min-height);
+  font: var(--demo-font-mono);
+}
+pre {
+  white-space: var(--demo-pre-wrap);
+}
+.toolbar {
+  display: flex;
+  gap: var(--demo-toolbar-gap);
+  margin: var(--demo-toolbar-margin);
+}
+.card {
+  padding: var(--demo-card-padding);
+  border: var(--demo-card-border);
+  margin: var(--demo-card-margin);
+}
+.card > svg {
+  width: var(--demo-icon-size);
+  height: var(--demo-icon-size);
+  vertical-align: var(--esd-card-vertical-align);
+}
+[extended-selector] {
+  outline: var(--demo-mark);
+  outline-offset: var(--demo-mark-offset);
+}

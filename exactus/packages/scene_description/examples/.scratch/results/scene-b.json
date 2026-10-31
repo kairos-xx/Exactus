@@ -1,0 +1,19 @@
+{
+  "metadata": {
+    "url": "https://example.test/",
+    "variant": "B"
+  },
+  "reference": {},
+  "elements": {
+    "header": {
+      "selector": "header",
+      "tag": "header",
+      "name": "Site header"
+    },
+    "cta": {
+      "selector": "#cta",
+      "tag": "button",
+      "name": "Go"
+    }
+  }
+}

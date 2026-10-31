@@ -1,0 +1,68 @@
+{
+  "change_trees": [
+    {
+      "selector": "#cta",
+      "categories": [
+        "layout"
+      ],
+      "mechanisms": [
+        "script"
+      ],
+      "root_cause": {
+        "rule": "demo"
+      },
+      "visual_description": {
+        "selector": "#cta",
+        "summary": "button \u201cGo\u201d appeared.",
+        "details": [
+          "The element is present in B but not in A."
+        ],
+        "categories": [
+          "layout"
+        ],
+        "mechanisms": [
+          "script"
+        ],
+        "root_cause": {
+          "rule": "demo"
+        }
+      }
+    }
+  ],
+  "change_description": {
+    "schema": "scene-description/visual-cause/v1",
+    "summary": "1 changed rendered element described from A to B.",
+    "elements": [
+      {
+        "selector": "#cta",
+        "summary": "button \u201cGo\u201d appeared.",
+        "details": [
+          "The element is present in B but not in A."
+        ],
+        "categories": [
+          "layout"
+        ],
+        "mechanisms": [
+          "script"
+        ],
+        "root_cause": {
+          "rule": "demo"
+        }
+      }
+    ],
+    "scene_a": {
+      "metadata": {
+        "url": "https://example.test/",
+        "variant": "A"
+      },
+      "reference": {}
+    },
+    "scene_b": {
+      "metadata": {
+        "url": "https://example.test/",
+        "variant": "B"
+      },
+      "reference": {}
+    }
+  }
+}

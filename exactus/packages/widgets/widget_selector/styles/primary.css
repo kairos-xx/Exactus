@@ -1,0 +1,81 @@
+/* PRIMARY — literal inputs for the expression widget: the syntax kind
+   palette (dark defaults with light variants) and the pill geometry from
+   docs/todo/pills.svg at scale 1. No references, no functions.
+   Theme-invariant values are unqualified; theme-varying values carry the
+   `dark`/`light` qualifier and BASE selects between them. */
+:root {
+  /* kind fills and strokes — invariant across themes */
+  --primary-esw-color-kind-tag-fill: #3f5fb0ff;
+  --primary-esw-color-kind-tag-stroke: #2c4686ff;
+  --primary-esw-color-kind-id-fill: #1f7f86ff;
+  --primary-esw-color-kind-id-stroke: #155d62ff;
+  --primary-esw-color-kind-class-fill: #3f7d2aff;
+  --primary-esw-color-kind-class-stroke: #2c5a1dff;
+  --primary-esw-color-kind-pseudo-class-fill: #9a5b00ff;
+  --primary-esw-color-kind-pseudo-class-stroke: #6f4100ff;
+  --primary-esw-color-kind-pseudo-element-fill: #7b3fa8ff;
+  --primary-esw-color-kind-pseudo-element-stroke: #592b79ff;
+  --primary-esw-color-kind-saved-fill: #b3363bff;
+  --primary-esw-color-kind-saved-stroke: #82262aff;
+  --primary-esw-color-kind-operator-fill: #5b6270ff;
+  --primary-esw-color-kind-operator-stroke: #3f4551ff;
+  --primary-esw-color-kind-env-fill: #4a4fb5ff;
+  --primary-esw-color-kind-env-stroke: #34388aff;
+  --primary-esw-color-kind-flow-fill: #1a7a62ff;
+  --primary-esw-color-kind-flow-stroke: #115643ff;
+  --primary-esw-color-kind-ink: #ffffffff;
+  --primary-esw-color-kind-draft-stroke: #8e97a6ff;
+  /* kind fills, strokes and inks — theme-varying */
+  --primary-esw-color-dark-kind-attribute-fill: #4b5361ff;
+  --primary-esw-color-dark-kind-attribute-stroke: #6b7482ff;
+  --primary-esw-color-dark-kind-attribute-ink: #f1f3f6ff;
+  --primary-esw-color-dark-kind-draft-fill: #272c35ff;
+  --primary-esw-color-dark-kind-draft-ink: #f1f3f6ff;
+  --primary-esw-color-light-kind-attribute-fill: #d9dde4ff;
+  --primary-esw-color-light-kind-attribute-stroke: #a3abb8ff;
+  --primary-esw-color-light-kind-attribute-ink: #1b1f24ff;
+  --primary-esw-color-light-kind-draft-fill: #eceef2ff;
+  --primary-esw-color-light-kind-draft-ink: #1b1f24ff;
+  /* syntax text colors — dark */
+  --primary-esw-color-dark-text-tag: #8aa6efff;
+  --primary-esw-color-dark-text-id: #5fc9d0ff;
+  --primary-esw-color-dark-text-class: #86c96bff;
+  --primary-esw-color-dark-text-attribute: #c3c9d4ff;
+  --primary-esw-color-dark-text-pseudo-class: #f0b04aff;
+  --primary-esw-color-dark-text-pseudo-element: #c79af0ff;
+  --primary-esw-color-dark-text-saved: #f08488ff;
+  --primary-esw-color-dark-text-operator: #aab2c0ff;
+  --primary-esw-color-dark-text-env: #9fa4f2ff;
+  --primary-esw-color-dark-text-flow: #55d1adff;
+  /* syntax text colors — light */
+  --primary-esw-color-light-text-tag: #2f4f9eff;
+  --primary-esw-color-light-text-id: #176a70ff;
+  --primary-esw-color-light-text-class: #2f6a1eff;
+  --primary-esw-color-light-text-attribute: #4b5361ff;
+  --primary-esw-color-light-text-pseudo-class: #8a5000ff;
+  --primary-esw-color-light-text-pseudo-element: #6a3590ff;
+  --primary-esw-color-light-text-saved: #a3282dff;
+  --primary-esw-color-light-text-operator: #4b5361ff;
+  --primary-esw-color-light-text-env: #3a3fa0ff;
+  --primary-esw-color-light-text-flow: #11634fff;
+  /* pill geometry — docs/todo/pills.svg at scale 1 */
+  --primary-esw-dimension-pill-height: 20px;
+  --primary-esw-dimension-pill-radius: 10px;
+  --primary-esw-dimension-horn: 6px;
+  --primary-esw-dimension-cap: 15px;
+  --primary-esw-dimension-gap: 3px;
+  --primary-esw-dimension-gap-descendant: 9px;
+  --primary-esw-dimension-pad: 8px;
+  --primary-esw-dimension-pad-end: 5px;
+  --primary-esw-dimension-dot: 9px;
+  --primary-esw-dimension-node-dot: 8px;
+  --primary-esw-dimension-field-pad-block: 5px;
+  --primary-esw-dimension-field-pad-inline: 7px;
+  --primary-esw-dimension-switch-inline: 28px;
+  --primary-esw-dimension-switch-block: 16px;
+  --primary-esw-dimension-thumb: 12px;
+  --primary-esw-dimension-icon: 14px;
+  --primary-esw-dimension-chip-radius: 12px;
+  --primary-esw-dimension-menu-max: 260px;
+  --primary-esw-dimension-menu-min: 220px;
+}

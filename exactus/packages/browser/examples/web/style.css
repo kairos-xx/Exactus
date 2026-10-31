@@ -1,0 +1,98 @@
+:root {
+  --primary-brw-css-canvas: Canvas;
+  --primary-brw-css-canvas-text: CanvasText;
+  --primary-brw-css-system-ui: system-ui;
+  --primary-brw-css-sans-serif: sans-serif;
+  --primary-brw-css-solid: solid;
+  --primary-brw-css-current-color: currentcolor;
+  --primary-brw-css-auto: auto;
+  --primary-brw-css-pre-wrap: pre-wrap;
+  --primary-pixel-unit: 1px;
+  --primary-rem-unit: 1rem;
+  --base-brw-css-canvas: var(--primary-brw-css-canvas);
+  --base-brw-css-canvas-text: var(--primary-brw-css-canvas-text);
+  --base-brw-css-system-ui: var(--primary-brw-css-system-ui);
+  --base-brw-css-sans-serif: var(--primary-brw-css-sans-serif);
+  --base-brw-css-solid: var(--primary-brw-css-solid);
+  --base-brw-css-current-color: var(--primary-brw-css-current-color);
+  --base-brw-css-auto: var(--primary-brw-css-auto);
+  --base-brw-css-pre-wrap: var(--primary-brw-css-pre-wrap);
+  --base-brw-dimension-one-pixel: var(--primary-pixel-unit);
+  --base-brw-dimension-one-rem: var(--primary-rem-unit);
+  --base-brw-dimension-half-rem: calc(0.5 * var(--primary-rem-unit));
+  --base-brw-dimension-two-rem: calc(2 * var(--primary-rem-unit));
+  --base-brw-dimension-fifty-two-rem: calc(52 * var(--primary-rem-unit));
+  --catalog-page-color-brw-demo-background: var(--base-brw-css-canvas);
+  --catalog-page-color-brw-demo-foreground: var(--base-brw-css-canvas-text);
+  --catalog-text-typography-brw-demo-font:
+    var(--base-brw-css-system-ui), var(--base-brw-css-sans-serif);
+  --catalog-layout-measure-brw-demo-body-margin: 0;
+  --catalog-layout-measure-brw-demo-page-width: var(
+    --base-brw-dimension-fifty-two-rem
+  );
+  --catalog-layout-measure-brw-demo-page-margin: var(--base-brw-css-auto);
+  --catalog-layout-measure-brw-demo-page-padding: var(
+    --base-brw-dimension-two-rem
+  );
+  --catalog-layout-measure-brw-demo-gap: var(--base-brw-dimension-one-rem);
+  --catalog-layout-measure-brw-demo-control-padding: var(
+    --base-brw-dimension-one-rem
+  );
+  --catalog-layout-measure-brw-demo-output-offset: var(
+    --base-brw-dimension-one-rem
+  );
+  --catalog-layout-measure-brw-demo-radius: var(--base-brw-dimension-half-rem);
+  --catalog-layout-measure-brw-demo-wrap: var(--base-brw-css-pre-wrap);
+  --catalog-layout-border-brw-demo-control: var(--base-brw-dimension-one-pixel)
+    var(--base-brw-css-solid) var(--base-brw-css-current-color);
+  --brw-demo-background: var(--catalog-page-color-brw-demo-background);
+  --brw-demo-foreground: var(--catalog-page-color-brw-demo-foreground);
+  --brw-demo-font: var(--catalog-text-typography-brw-demo-font);
+  --brw-demo-body-margin: var(--catalog-layout-measure-brw-demo-body-margin);
+  --brw-demo-page-width: var(--catalog-layout-measure-brw-demo-page-width);
+  --brw-demo-page-margin: var(--catalog-layout-measure-brw-demo-page-margin);
+  --brw-demo-page-padding: var(--catalog-layout-measure-brw-demo-page-padding);
+  --brw-demo-gap: var(--catalog-layout-measure-brw-demo-gap);
+  --brw-demo-control-padding: var(
+    --catalog-layout-measure-brw-demo-control-padding
+  );
+  --brw-demo-output-offset: var(
+    --catalog-layout-measure-brw-demo-output-offset
+  );
+  --brw-demo-radius: var(--catalog-layout-measure-brw-demo-radius);
+  --brw-demo-wrap: var(--catalog-layout-measure-brw-demo-wrap);
+  --brw-demo-control-border: var(--catalog-layout-border-brw-demo-control);
+}
+html,
+body,
+main,
+button,
+output {
+  box-sizing: border-box;
+}
+body {
+  margin: var(--brw-demo-body-margin);
+  background: var(--brw-demo-background);
+  color: var(--brw-demo-foreground);
+  font-family: var(--brw-demo-font);
+}
+main {
+  max-width: var(--brw-demo-page-width);
+  margin: var(--brw-demo-page-margin);
+  padding: var(--brw-demo-page-padding);
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--brw-demo-gap);
+}
+button {
+  border: var(--brw-demo-control-border);
+  border-radius: var(--brw-demo-radius);
+  padding: var(--brw-demo-control-padding);
+}
+output {
+  display: block;
+  margin-top: var(--brw-demo-output-offset);
+  white-space: var(--brw-demo-wrap);
+}

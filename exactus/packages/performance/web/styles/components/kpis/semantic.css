@@ -1,0 +1,12 @@
+/**
+ * Contextual aliases of the kpis component. Each alias selects exactly one CATALOG
+ * specification for one declaration.
+ */
+:root {
+  --radius: var(--catalog-field-border-card-radius);
+  --perf-card-padding: var(--catalog-layout-measure-card-padding);
+  --perf-stat-gap: var(--catalog-layout-measure-stat-gap);
+  --perf-kpi-grid: var(--catalog-layout-measure-kpi-grid);
+  --perf-size-stat: var(--catalog-text-typography-size-stat);
+  --perf-track-snug: var(--catalog-text-typography-track-snug);
+}

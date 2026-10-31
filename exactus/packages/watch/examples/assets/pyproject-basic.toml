@@ -1,0 +1,16 @@
+[tool.watch]
+# Paths are relative to the project root containing pyproject.toml.
+run = true
+source = "."
+destination = "../project-watch-copy"
+interval = 0.5
+settle-time = 0.5
+exclude = [
+    ".git",
+    ".DS_Store",
+    "__pycache__",
+    "*.pyc",
+]
+initial-sync = true
+mirror-deletes = false
+quiet = false

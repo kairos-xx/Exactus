@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
+    <title>Pointer Action Frontend</title>
+    <link rel="stylesheet" href="demo.css" />
+    <script type="module" src="code.js"></script>
+  </head>
+  <body>
+    <a class="skip" href="#pointer-demo">Skip to pointer action</a>
+    <main class="demo-shell">
+      <header class="demo-header">
+        <p class="eyebrow">Flow Studio action package</p>
+        <h1>Pointer &amp; touch</h1>
+        <p>
+          Choose one interaction, configure only its relevant fields, and
+          inspect the runtime-ready form values.
+        </p>
+      </header>
+      <section class="demo-layout" aria-label="Pointer action demonstration">
+        <form id="pointer-demo" class="demo-card flex-item demo-column">
+          <div id="pointer-host"></div>
+          <div class="demo-actions">
+            <button type="submit">Preview action</button>
+            <button id="reset" class="secondary" type="button">Reset</button>
+          </div>
+        </form>
+        <section
+          class="demo-card preview-card flex-item demo-column"
+          aria-labelledby="preview-title"
+        >
+          <div>
+            <p class="eyebrow">Submitted values</p>
+            <h2 id="preview-title">Action document</h2>
+          </div>
+          <pre id="preview" aria-live="polite"></pre>
+        </section>
+      </section>
+      <section class="demo-card target-card" aria-labelledby="targets-title">
+        <div>
+          <p class="eyebrow">Interaction playground</p>
+          <h2 id="targets-title">Live targets</h2>
+          <p>
+            Use these selectors in the action form:
+            <code>#primary-target</code>, <code>#drag-source</code>,
+            <code>#drop-zone</code>, or <code>#scroll-target</code>.
+          </p>
+        </div>
+        <div class="target-grid">
+          <button
+            id="primary-target"
+            class="flex-item target-item"
+            type="button"
+          >
+            Click or hover me
+          </button>
+          <button
+            id="drag-source"
+            class="secondary flex-item target-item"
+            type="button"
+            draggable="true"
+          >
+            Drag source
+          </button>
+          <div
+            id="drop-zone"
+            class="drop-target flex-item target-item"
+            tabindex="0"
+          >
+            Drop zone
+          </div>
+          <div
+            id="scroll-target"
+            class="scroll-target flex-item target-item"
+            tabindex="0"
+          >
+            <div>Scrollable target</div>
+          </div>
+        </div>
+        <output id="activity" aria-live="polite"
+          >No target interaction yet.</output
+        >
+      </section>
+    </main>
+  </body>
+</html>

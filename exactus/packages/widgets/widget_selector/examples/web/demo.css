@@ -1,0 +1,209 @@
+/* Demo page chrome only; the widget itself is styled by style.css.
+   The `esd` scope (extended-selector demo) carries the demo-page token
+   chain: PRIMARY literals -> BASE bridges (incl. runtime DYNAMIC) ->
+   CATALOG specs -> SEMANTIC aliases consumed by the rules below. */
+:root {
+  /* PRIMARY — demo layout literals */
+  --primary-esd-dimension-page-gap: 24px;
+  --primary-esd-dimension-page-pad: 20px;
+  --primary-esd-dimension-text-title: 15px;
+  --primary-esd-dimension-bar-margin: 14px;
+  --primary-esd-dimension-button-pad-inline: 10px;
+  --primary-esd-dimension-panel-gap: 14px;
+  --primary-esd-dimension-stage-gap: 10px;
+  --primary-esd-dimension-stage-pad: 14px;
+  --primary-esd-dimension-card-radius: 6px;
+  --primary-esd-dimension-card-pad: 10px;
+  --primary-esd-dimension-card-button: 26px;
+  --primary-esd-dimension-panel-default: 360px;
+  /* BASE — derived values and runtime bridges (written by demo.js) */
+  --base-esd-dimension-page-gap: var(--primary-esd-dimension-page-gap);
+  --base-esd-dimension-page-pad: var(--primary-esd-dimension-page-pad);
+  --base-esd-dimension-text-title: var(--primary-esd-dimension-text-title);
+  --base-esd-dimension-bar-margin: var(--primary-esd-dimension-bar-margin);
+  --base-esd-dimension-button-pad-inline: var(
+    --primary-esd-dimension-button-pad-inline
+  );
+  --base-esd-dimension-panel-gap: var(--primary-esd-dimension-panel-gap);
+  --base-esd-dimension-stage-gap: var(--primary-esd-dimension-stage-gap);
+  --base-esd-dimension-stage-pad: var(--primary-esd-dimension-stage-pad);
+  --base-esd-dimension-card-radius: var(--primary-esd-dimension-card-radius);
+  --base-esd-dimension-card-pad: var(--primary-esd-dimension-card-pad);
+  --base-esd-dimension-card-button: var(--primary-esd-dimension-card-button);
+  --base-esd-dimension-panel-inline: var(
+    --dynamic-esd-panel-w,
+    var(--primary-esd-dimension-panel-default)
+  );
+  --base-esd-dimension-highlight-inline: var(--dynamic-esd-hl-x, 0px);
+  --base-esd-dimension-highlight-block: var(--dynamic-esd-hl-y, 0px);
+  --base-esd-dimension-highlight-width: var(--dynamic-esd-hl-w, 0px);
+  --base-esd-dimension-highlight-height: var(--dynamic-esd-hl-h, 0px);
+  /* CATALOG — generic specs for the demo chrome */
+  --catalog-space-measure-esd-page-gap: var(--base-esd-dimension-page-gap);
+  --catalog-space-measure-esd-page-pad: var(--base-esd-dimension-page-pad);
+  --catalog-space-measure-esd-bar-margin: var(--base-esd-dimension-bar-margin);
+  --catalog-space-measure-esd-panel-gap: var(--base-esd-dimension-panel-gap);
+  --catalog-space-measure-esd-stage-gap: var(--base-esd-dimension-stage-gap);
+  --catalog-space-measure-esd-stage-pad: var(--base-esd-dimension-stage-pad);
+  --catalog-space-measure-esd-card-pad: var(--base-esd-dimension-card-pad);
+  --catalog-space-measure-esd-heading-margin: var(--base-ws-dimension-none)
+    var(--base-ws-dimension-none) var(--base-ws-dimension-large);
+  --catalog-layout-measure-esd-panes: minmax(
+      var(--base-ws-dimension-none),
+      var(--base-ws-dimension-fraction)
+    )
+    minmax(var(--base-ws-dimension-none), var(--base-ws-dimension-fraction));
+  --catalog-button-measure-esd-pad: var(--base-ws-dimension-none)
+    var(--base-esd-dimension-button-pad-inline);
+  --catalog-size-measure-esd-panel: var(--base-esd-dimension-panel-inline);
+  --catalog-size-measure-esd-card-button: var(--base-esd-dimension-card-button);
+  --catalog-radius-border-esd-card: var(--base-esd-dimension-card-radius);
+  --catalog-text-typography-esd-size-title: var(
+    --base-esd-dimension-text-title
+  );
+  --catalog-highlight-measure-esd-x: var(--base-esd-dimension-highlight-inline);
+  --catalog-highlight-measure-esd-y: var(--base-esd-dimension-highlight-block);
+  --catalog-highlight-measure-esd-w: var(--base-esd-dimension-highlight-width);
+  --catalog-highlight-measure-esd-h: var(--base-esd-dimension-highlight-height);
+  /* SEMANTIC — contextual aliases */
+  --esd-margin-none: var(--catalog-space-measure-ws-none);
+  --esd-page: var(--catalog-surface-color-ws-page);
+  --esd-text: var(--catalog-ink-color-ws-primary);
+  --esd-font-ui: var(--catalog-text-typography-ws-ui-large);
+  --esd-page-gap: var(--catalog-space-measure-esd-page-gap);
+  --esd-page-pad: var(--catalog-space-measure-esd-page-pad);
+  --esd-grid-panes: var(--catalog-layout-measure-esd-panes);
+  --esd-text-title: var(--catalog-text-typography-esd-size-title);
+  --esd-heading-margin: var(--catalog-space-measure-esd-heading-margin);
+  --esd-gap-medium: var(--catalog-space-measure-ws-medium);
+  --esd-bar-margin: var(--catalog-space-measure-esd-bar-margin);
+  --esd-control: var(--catalog-size-measure-ws-control);
+  --esd-btn-pad: var(--catalog-button-measure-esd-pad);
+  --esd-rule-strong: var(--catalog-rule-border-ws-strong);
+  --esd-rule-subtle: var(--catalog-rule-border-ws-subtle);
+  --esd-surface-raised: var(--catalog-surface-color-ws-raised);
+  --esd-surface-field: var(--catalog-surface-color-ws-field);
+  --esd-radius: var(--catalog-radius-border-ws-medium);
+  --esd-radius-small: var(--catalog-radius-border-ws-small);
+  --esd-cursor-point: var(--catalog-control-cursor-ws-point);
+  --esd-cursor-crosshair: var(--catalog-control-cursor-ws-crosshair);
+  --esd-panel-w: var(--catalog-size-measure-esd-panel);
+  --esd-size-fill: var(--catalog-size-measure-ws-fill);
+  --esd-panel-gap: var(--catalog-space-measure-esd-panel-gap);
+  --esd-pad-large: var(--catalog-space-measure-ws-large);
+  --esd-stage-gap: var(--catalog-space-measure-esd-stage-gap);
+  --esd-stage-pad: var(--catalog-space-measure-esd-stage-pad);
+  --esd-card-radius: var(--catalog-radius-border-esd-card);
+  --esd-card-pad: var(--catalog-space-measure-esd-card-pad);
+  --esd-flex-one: var(--catalog-layout-measure-ws-flex-one);
+  --esd-weight-semibold: var(--catalog-text-typography-ws-weight-semibold);
+  --esd-card-button: var(--catalog-size-measure-esd-card-button);
+  --esd-accent: var(--catalog-surface-color-ws-accent);
+  --esd-accent-ink: var(--catalog-ink-color-ws-on-accent);
+  --esd-opacity-half: var(--catalog-control-effect-ws-opacity-half);
+  --esd-inset-none: var(--catalog-space-measure-ws-none);
+  --esd-hl-x: var(--catalog-highlight-measure-esd-x);
+  --esd-hl-y: var(--catalog-highlight-measure-esd-y);
+  --esd-hl-w: var(--catalog-highlight-measure-esd-w);
+  --esd-hl-h: var(--catalog-highlight-measure-esd-h);
+  --esd-outline-ok: var(--catalog-field-border-ws-outline-ok);
+  --esd-outline-offset: var(--catalog-field-measure-ws-outline-offset);
+  --esd-transparent: var(--catalog-surface-color-ws-transparent);
+}
+body {
+  margin: var(--esd-margin-none);
+  background: var(--esd-page);
+  color: var(--esd-text);
+  font: var(--esd-font-ui);
+}
+.wrap {
+  display: grid;
+  grid-template-columns: var(--esd-grid-panes);
+  gap: var(--esd-page-gap);
+  padding: var(--esd-page-pad);
+  align-items: start;
+}
+h1 {
+  font-size: var(--esd-text-title);
+  margin: var(--esd-heading-margin);
+}
+.bar {
+  display: flex;
+  gap: var(--esd-gap-medium);
+  align-items: center;
+  margin-bottom: var(--esd-bar-margin);
+  flex-wrap: wrap;
+}
+.bar button {
+  height: var(--esd-control);
+  padding: var(--esd-btn-pad);
+  border: var(--esd-rule-strong);
+  background: var(--esd-surface-raised);
+  color: inherit;
+  border-radius: var(--esd-radius-small);
+  cursor: var(--esd-cursor-point);
+}
+.demo-panel {
+  inline-size: var(--esd-panel-w);
+  max-inline-size: var(--esd-size-fill);
+  background: var(--esd-surface-raised);
+  border: var(--esd-rule-subtle);
+  border-radius: var(--esd-radius);
+  padding: var(--esd-pad-large);
+  display: grid;
+  gap: var(--esd-panel-gap);
+}
+.demo-stage {
+  position: relative;
+  background: var(--esd-surface-field);
+  border: var(--esd-rule-subtle);
+  border-radius: var(--esd-radius);
+  padding: var(--esd-stage-pad);
+  display: grid;
+  gap: var(--esd-stage-gap);
+}
+.card {
+  border: var(--esd-rule-strong);
+  border-radius: var(--esd-card-radius);
+  padding: var(--esd-card-pad);
+  display: flex;
+  gap: var(--esd-gap-medium);
+  align-items: center;
+}
+.card .title {
+  flex: var(--esd-flex-one);
+  font-weight: var(--esd-weight-semibold);
+}
+.card button {
+  height: var(--esd-card-button);
+  padding: var(--esd-btn-pad);
+  border-radius: var(--esd-radius-small);
+  border: var(--esd-rule-strong);
+  background: var(--esd-accent);
+  color: var(--esd-accent-ink);
+}
+.card button:disabled {
+  opacity: var(--esd-opacity-half);
+}
+.hidden-card {
+  display: none;
+}
+.demo-layer {
+  position: absolute;
+  inset: var(--esd-inset-none);
+  pointer-events: none;
+}
+.hl {
+  position: absolute;
+  left: var(--esd-hl-x);
+  top: var(--esd-hl-y);
+  width: var(--esd-hl-w);
+  height: var(--esd-hl-h);
+  outline: var(--esd-outline-ok);
+  outline-offset: var(--esd-outline-offset);
+  background: var(--esd-transparent);
+  border-radius: var(--esd-radius-small);
+}
+[data-picking="true"] .demo-stage :is(div, span, button) {
+  cursor: var(--esd-cursor-crosshair);
+}

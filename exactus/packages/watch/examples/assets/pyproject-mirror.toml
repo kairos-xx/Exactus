@@ -1,0 +1,20 @@
+[tool.watch]
+# A true mirror: destination deletions follow source deletions.
+run = true
+source = "."
+destination = "../project-mirror"
+interval = 0.25
+settle-time = 0.75
+exclude = [
+    ".git",
+    ".DS_Store",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".coverage",
+    "__pycache__",
+    "*.pyc",
+    "*.tmp",
+]
+initial-sync = true
+mirror-deletes = true
+quiet = false

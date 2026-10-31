@@ -1,0 +1,30 @@
+/** DYNAMIC — theme literals.
+ * Dark defaults; `:root.light` supplies the light values. Written only by the theme toggle class.
+ */
+:root {
+  --dynamic-perf-canvas: #0b0d10ff;
+  --dynamic-perf-panel: #111419ff;
+  --dynamic-perf-raised: #171b21ff;
+  --dynamic-perf-edge: #262c35ff;
+  --dynamic-perf-ink: #eef2f7ff;
+  --dynamic-perf-faint: #8d98a8ff;
+  --dynamic-perf-signal: #8fc7ffff;
+  --dynamic-perf-mint: #b9f5cfff;
+  --dynamic-perf-amber: #ffbd69ff;
+  --dynamic-perf-ember: #ff7b86ff;
+  --dynamic-perf-shade: #00000055;
+}
+:root.light {
+  --dynamic-perf-canvas: #f3f5f8ff;
+  --dynamic-perf-panel: #ffffffff;
+  --dynamic-perf-raised: #f7f9fbff;
+  --dynamic-perf-edge: #dce2e9ff;
+  --dynamic-perf-ink: #161a20ff;
+  --dynamic-perf-faint: #667080ff;
+  --dynamic-perf-signal: #1267a8ff;
+  --dynamic-perf-mint: #087b45ff;
+  --dynamic-perf-amber: #a75a00ff;
+  --dynamic-perf-ember: #b52335ff;
+  --dynamic-perf-shade: #1d2b3a12;
+  color-scheme: light;
+}

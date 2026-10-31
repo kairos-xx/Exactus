@@ -1,0 +1,8 @@
+{
+	"name": "name",
+	"items": {
+		"$path": "items",
+		"$default": [],
+		"$sort_by": "rank"
+	}
+}

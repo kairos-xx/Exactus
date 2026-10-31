@@ -1,0 +1,255 @@
+/** CATALOG — generic specifications.
+ * Assembled from BASE values.
+ */
+:root {
+  --catalog-field-color-canvas: var(--base-perf-color-canvas);
+  --catalog-field-color-panel: var(--base-perf-color-panel);
+  --catalog-field-color-raised: var(--base-perf-color-raised);
+  --catalog-field-color-edge: var(--base-perf-color-edge);
+  --catalog-field-color-signal: var(--base-perf-color-signal);
+  --catalog-field-color-mint: var(--base-perf-color-mint);
+  --catalog-field-color-amber: var(--base-perf-color-amber);
+  --catalog-field-color-ember: var(--base-perf-color-ember);
+  --catalog-field-color-clear: var(--base-perf-color-clear);
+  --catalog-field-color-topbar-mist: var(--base-perf-color-topbar-mist);
+  --catalog-field-color-edge-faint: var(--base-perf-color-edge-faint);
+  --catalog-field-color-tooltip-fill: var(--base-perf-color-tooltip-fill);
+  --catalog-field-color-well-fill: var(--base-perf-color-shell-fill);
+  --catalog-field-color-select-tint: var(--base-perf-color-select-tint);
+  --catalog-field-color-cursor-tint: var(--base-perf-color-cursor-tint);
+  --catalog-field-color-halo-tint: var(--base-perf-color-halo-tint);
+  --catalog-field-color-ghost-tint: var(--base-perf-color-ghost-tint);
+  --catalog-text-typography-plain: var(--base-perf-typography-decoration-none);
+  --catalog-text-color-ink: var(--base-perf-color-ink);
+  --catalog-text-color-faint: var(--base-perf-color-faint);
+  --catalog-field-color-mark: var(--base-perf-color-signal);
+  --catalog-layout-measure-flush: var(--base-perf-space-none);
+  --catalog-layout-measure-full: var(--base-perf-measure-flow);
+  --catalog-layout-measure-auto: var(--base-perf-measure-auto);
+  --catalog-layout-measure-page-min: var(--base-perf-measure-page-min);
+  --catalog-layout-measure-full-share: var(--base-perf-measure-flow-share);
+  --catalog-layout-measure-topbar-height: var(
+    --base-perf-measure-topbar-height
+  );
+  --catalog-layout-measure-topbar-padding: var(--base-perf-space-broad)
+    var(--base-perf-space-grand);
+  --catalog-layout-measure-main-width: var(--base-perf-measure-main-width);
+  --catalog-layout-measure-main-padding: var(--base-perf-measure-main-padding);
+  --catalog-layout-measure-main-padding-compact: var(--base-perf-space-roomy);
+  --catalog-layout-measure-cluster-gap: var(--base-perf-space-cozy);
+  --catalog-layout-measure-search-height: var(
+    --base-perf-measure-search-height
+  );
+  --catalog-layout-measure-search-min: var(--base-perf-measure-search-min);
+  --catalog-layout-measure-search-padding: var(--base-perf-space-none)
+    var(--base-perf-space-even);
+  --catalog-layout-measure-search-gap: var(--base-perf-space-close);
+  --catalog-layout-measure-control-padding: var(--base-perf-space-none)
+    var(--base-perf-space-roomy);
+  --catalog-layout-measure-notice-padding: var(--base-perf-space-even)
+    var(--base-perf-space-roomy);
+  --catalog-layout-measure-block-gap: var(--base-perf-space-even);
+  --catalog-layout-measure-notice-gap: var(--base-perf-space-ample);
+  --catalog-layout-measure-card-gap: var(--base-perf-space-even);
+  --catalog-layout-measure-card-padding: var(--base-perf-space-ample)
+    var(--base-perf-space-broad);
+  --catalog-layout-measure-panel-padding: var(--base-perf-space-broad);
+  --catalog-layout-measure-panel-gap: var(--base-perf-space-roomy);
+  --catalog-layout-measure-dot-size: var(--base-perf-space-close);
+  --catalog-layout-measure-dot-margin: var(--base-perf-space-none)
+    var(--base-perf-space-snug) var(--base-perf-space-none)
+    var(--base-perf-space-cozy);
+  --catalog-layout-measure-sidebar-padding: var(--base-perf-space-roomy);
+  --catalog-layout-measure-sidebar-offset: var(
+    --base-perf-measure-sidebar-offset
+  );
+  --catalog-layout-measure-toollist-gap: var(--base-perf-space-snug);
+  --catalog-layout-measure-card-pad: var(--base-perf-space-cozy);
+  --catalog-layout-measure-marker-height: var(
+    --base-perf-measure-marker-height
+  );
+  --catalog-layout-measure-note-gap: var(--base-perf-space-fine);
+  --catalog-layout-measure-heading-gap: var(--base-perf-space-none)
+    var(--base-perf-space-none) var(--base-perf-space-fine);
+  --catalog-layout-measure-eyebrow-gap: var(--base-perf-space-none)
+    var(--base-perf-space-none) var(--base-perf-space-snug);
+  --catalog-layout-measure-segment-pad: var(--base-perf-space-fine);
+  --catalog-layout-measure-segment-height: var(
+    --base-perf-measure-segment-height
+  );
+  --catalog-layout-measure-segment-offset: var(--base-perf-space-roomy);
+  --catalog-layout-measure-row-gap: var(--base-perf-space-cozy);
+  --catalog-layout-measure-row-pad: var(--base-perf-space-cozy)
+    var(--base-perf-space-none);
+  --catalog-layout-measure-caption-gap: var(--base-perf-space-fine)
+    var(--base-perf-space-none) var(--base-perf-space-close);
+  --catalog-layout-measure-stat-gap: var(--base-perf-space-snug)
+    var(--base-perf-space-none) var(--base-perf-space-fine);
+  --catalog-layout-measure-meter-thick: var(--base-perf-space-fine);
+  --catalog-layout-measure-badge-pad: var(--base-perf-space-snug)
+    var(--base-perf-space-close);
+  --catalog-layout-measure-stage-gap: var(--base-perf-space-roomy);
+  --catalog-layout-measure-stage-pad: var(--base-perf-space-roomy)
+    var(--base-perf-space-none);
+  --catalog-layout-measure-track-thick: var(--base-perf-space-snug);
+  --catalog-layout-measure-event-height: var(--base-perf-measure-event-height);
+  --catalog-layout-measure-event-pad: var(--base-perf-space-close)
+    var(--base-perf-space-fine);
+  --catalog-layout-measure-tip-pad: var(--base-perf-space-close)
+    var(--base-perf-space-cozy);
+  --catalog-layout-measure-tip-width: var(--base-perf-measure-tip-width);
+  --catalog-layout-measure-bar-gap: var(--base-perf-space-cozy);
+  --catalog-layout-measure-action-pad: var(--base-perf-space-close)
+    var(--base-perf-space-cozy);
+  --catalog-layout-measure-drill-min: var(--base-perf-measure-drill-min);
+  --catalog-layout-measure-drill-gap: var(--base-perf-space-none)
+    var(--base-perf-space-none) var(--base-perf-space-even);
+  --catalog-layout-measure-crumb-gap: var(--base-perf-space-snug);
+  --catalog-layout-measure-crumb-pad: var(--base-perf-space-fine)
+    var(--base-perf-space-close);
+  --catalog-layout-measure-crumb-lead: var(--base-perf-space-fine);
+  --catalog-layout-measure-chart-height: var(--base-perf-measure-chart-height);
+  --catalog-layout-measure-share-height: var(--base-perf-measure-share-height);
+  --catalog-layout-measure-plotted-height: var(
+    --base-perf-measure-graph-height
+  );
+  --catalog-layout-measure-overview-height: var(
+    --base-perf-measure-overview-height
+  );
+  --catalog-layout-measure-resource-height: var(
+    --base-perf-measure-resource-height
+  );
+  --catalog-layout-measure-metric-gap: var(--base-perf-space-even);
+  --catalog-layout-measure-metric-pad: var(--base-perf-space-even);
+  --catalog-layout-measure-score-gap: var(--base-perf-space-fine);
+  --catalog-layout-measure-detail-pad: var(--base-perf-space-roomy);
+  --catalog-layout-measure-detail-gap: var(--base-perf-space-snug);
+  --catalog-layout-measure-zoom-min: var(--base-perf-measure-zoom-min);
+  --catalog-layout-measure-cursor-anchor: var(
+    --base-perf-measure-cursor-anchor
+  );
+  --catalog-layout-measure-scrub-inset: calc(
+    -1 * var(--base-perf-space-hairline)
+  );
+  --catalog-layout-measure-legend-gap: var(--base-perf-space-roomy);
+  --catalog-layout-measure-legend-margin: var(--base-perf-space-fine)
+    var(--base-perf-space-none) var(--base-perf-space-cozy);
+  --catalog-layout-measure-swatch-width: var(--base-perf-space-roomy);
+  --catalog-layout-measure-swatch-height: var(--base-perf-space-snug);
+  --catalog-layout-measure-bubble-pad: var(--base-perf-space-close)
+    var(--base-perf-space-cozy);
+  --catalog-layout-measure-bubble-max: var(--base-perf-measure-bubble-max);
+  --catalog-layout-measure-tip-layer: var(--base-perf-measure-tip-layer);
+  --catalog-layout-measure-topbar-layer: var(--base-perf-measure-topbar-layer);
+  --catalog-layout-measure-bubble-layer: var(--base-perf-measure-bubble-layer);
+  --catalog-layout-measure-dim: var(--base-perf-measure-dim);
+  --catalog-layout-measure-stack-gap: var(--base-perf-space-cozy);
+  --catalog-layout-measure-kpi-grid: var(--base-perf-measure-kpi-grid);
+  --catalog-layout-measure-kpi-grid-wide: var(
+    --base-perf-measure-kpi-grid-wide
+  );
+  --catalog-layout-measure-kpi-grid-narrow: var(
+    --base-perf-measure-kpi-grid-narrow
+  );
+  --catalog-layout-measure-layout-grid: var(--base-perf-measure-layout-grid);
+  --catalog-layout-measure-layout-grid-compact: var(
+    --base-perf-measure-layout-grid-compact
+  );
+  --catalog-layout-measure-toollist-grid: var(
+    --base-perf-measure-toollist-grid
+  );
+  --catalog-layout-measure-card-grid: var(--base-perf-measure-card-grid);
+  --catalog-layout-measure-split-grid: var(--base-perf-measure-split-grid);
+  --catalog-layout-measure-rank-grid: var(--base-perf-measure-rank-grid);
+  --catalog-layout-measure-stage-grid: var(--base-perf-measure-stage-grid);
+  --catalog-layout-measure-stage-grid-compact: var(
+    --base-perf-measure-stage-grid-compact
+  );
+  --catalog-layout-measure-event-grid: var(--base-perf-measure-event-grid);
+  --catalog-layout-measure-event-grid-compact: var(
+    --base-perf-measure-event-grid-compact
+  );
+  --catalog-layout-measure-metric-grid: var(--base-perf-measure-metric-grid);
+  --catalog-layout-measure-detail-grid: var(--base-perf-measure-inspector-grid);
+  --catalog-field-border-card-radius: var(--base-perf-space-ample);
+  --catalog-field-border-panel-edge: var(--base-perf-border-panel-edge);
+  --catalog-field-border-card-edge: var(--base-perf-border-card-edge);
+  --catalog-field-border-notice-edge: var(--base-perf-border-status-edge);
+  --catalog-field-border-row-rule: var(--base-perf-border-row-rule);
+  --catalog-field-border-row-faint: var(--base-perf-border-row-faint);
+  --catalog-field-border-select-ring: var(--base-perf-border-select-ring);
+  --catalog-field-border-scrub-ring: var(--base-perf-border-scrub-ring);
+  --catalog-field-border-cursor-edge: var(--base-perf-border-cursor-edge);
+  --catalog-field-border-no-edge: var(--base-perf-border-no-edge);
+  --catalog-field-border-radius-card: var(--base-perf-space-cozy);
+  --catalog-field-border-radius-segment: var(--base-perf-space-even);
+  --catalog-field-border-radius-well: var(--base-perf-space-even);
+  --catalog-field-border-radius-action: var(--base-perf-space-close);
+  --catalog-field-border-radius-tip: var(--base-perf-space-close);
+  --catalog-field-border-radius-track: var(--base-perf-space-snug);
+  --catalog-field-border-radius-swatch: var(--base-perf-space-fine);
+  --catalog-field-border-radius-meter: var(--base-perf-space-fine);
+  --catalog-field-border-radius-marker: var(--base-perf-space-snug);
+  --catalog-field-border-radius-badge: var(--base-perf-space-wide);
+  --catalog-field-border-radius-round: var(--base-perf-border-radius-round);
+  --catalog-layout-effect-card-shadow: var(--base-perf-effect-card-shadow);
+  --catalog-layout-effect-chip-shadow: var(--base-perf-effect-chip-shadow);
+  --catalog-layout-effect-glass: var(--base-perf-effect-glass);
+  --catalog-layout-effect-accent-wash: var(--base-perf-effect-accent-wash);
+  --catalog-layout-motion-row-shift: var(--base-perf-motion-row-shift);
+  --catalog-layout-motion-press: var(--base-perf-motion-press);
+  --catalog-layout-motion-row-motion: var(--base-perf-motion-row-motion);
+  --catalog-layout-cursor-pointer: var(--base-perf-cursor-pointer);
+  --catalog-layout-cursor-plain: var(--base-perf-cursor-plain);
+  --catalog-layout-cursor-crosshair: var(--base-perf-cursor-crosshair);
+  --catalog-text-typography-sans: var(--base-perf-typography-sans);
+  --catalog-text-typography-mono: var(--base-perf-typography-mono);
+  --catalog-text-typography-size-hero: var(--base-perf-typography-size-hero);
+  --catalog-text-typography-size-heading: var(
+    --base-perf-typography-size-heading
+  );
+  --catalog-text-typography-size-panel: var(--base-perf-typography-size-panel);
+  --catalog-text-typography-size-sub: var(--base-perf-typography-size-sub);
+  --catalog-text-typography-size-stat: var(--base-perf-typography-size-stat);
+  --catalog-text-typography-size-body: var(--base-perf-typography-size-body);
+  --catalog-text-typography-size-note: var(--base-perf-typography-size-note);
+  --catalog-text-typography-size-compact: var(
+    --base-perf-typography-size-compact
+  );
+  --catalog-text-typography-size-micro: var(--base-perf-typography-size-micro);
+  --catalog-text-typography-track-wide: var(--base-perf-typography-track-wide);
+  --catalog-text-typography-track-tight: var(
+    --base-perf-typography-track-tight
+  );
+  --catalog-text-typography-track-snug: var(--base-perf-typography-track-snug);
+  --catalog-text-typography-track-firm: var(--base-perf-typography-track-firm);
+  --catalog-text-typography-track-label: var(
+    --base-perf-typography-track-label
+  );
+  --catalog-text-typography-weight-bold: var(
+    --base-perf-typography-weight-bold
+  );
+  --catalog-text-typography-crumb-glyph: var(
+    --base-perf-typography-crumb-glyph
+  );
+  --catalog-text-typography-overflow: var(--base-perf-typography-overflow);
+  --catalog-text-typography-align-start: var(
+    --base-perf-typography-align-start
+  );
+  --catalog-text-typography-align-center: var(
+    --base-perf-typography-align-center
+  );
+  --catalog-text-typography-case-title: var(--base-perf-typography-case-title);
+  --catalog-text-typography-case-upper: var(--base-perf-typography-case-upper);
+  --catalog-text-typography-wrap-none: var(--base-perf-typography-wrap-none);
+  --catalog-text-typography-wrap-pre: var(--base-perf-typography-wrap-pre);
+  --catalog-text-typography-wrap-line: var(--base-perf-typography-wrap-line);
+  --catalog-text-typography-wrap-any: var(--base-perf-typography-wrap-any);
+  --catalog-text-typography-metric: var(--base-perf-typography-metric);
+  --catalog-text-typography-badge: var(--base-perf-typography-badge);
+  --catalog-text-typography-clock: var(--base-perf-typography-clock);
+  --catalog-text-typography-score: var(--base-perf-typography-score);
+  --catalog-text-typography-readout: var(--base-perf-typography-readout);
+  --catalog-text-typography-zoom: var(--base-perf-typography-zoom);
+  --catalog-text-typography-tip: var(--base-perf-typography-tip);
+}

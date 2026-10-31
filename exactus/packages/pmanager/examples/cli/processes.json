@@ -1,0 +1,25 @@
+{
+  "version": 2,
+  "global": {
+    "defaults": {
+      "duration_seconds": 1,
+      "tick_seconds": 0.1
+    }
+  },
+  "templates": {},
+  "processes": {
+    "source": {
+      "executor": {
+        "type": "counter"
+      }
+    },
+    "pipeline": {
+      "children": [
+        {
+          "process": "source",
+          "scope": "context"
+        }
+      ]
+    }
+  }
+}

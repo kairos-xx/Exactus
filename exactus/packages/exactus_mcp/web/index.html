@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Exactus MCP activity</title>
+    <link rel="stylesheet" href="/assets/service.css" />
+    <script src="/assets/app.js" type="module"></script>
+  </head>
+  <body>
+    <main>
+      <header class="page-header">
+        <div>
+          <h1>Exactus MCP</h1>
+          <p>Live connection and request activity.</p>
+        </div>
+        <p class="status" role="status">
+          <span class="status-dot" aria-hidden="true"></span>
+          Online
+        </p>
+      </header>
+      <section aria-label="Service metrics" class="metrics">
+        <div class="metric">
+          <strong id="total-calls">0</strong>
+          <span>Total calls</span>
+        </div>
+        <div class="metric">
+          <strong id="active-calls">0</strong>
+          <span>Active now</span>
+        </div>
+        <div class="metric">
+          <strong id="service-phase">Running</strong>
+          <span>Service phase</span>
+        </div>
+      </section>
+      <section aria-labelledby="connection-title" class="panel">
+        <h2 id="connection-title">Service address</h2>
+        <p>Copy this address into your client.</p>
+        <div class="endpoint-row">
+          <code id="mcp-url">Loading endpoint…</code>
+          <button id="copy-endpoint" type="button">Copy address</button>
+        </div>
+        <p id="copy-status" class="supporting" aria-live="polite"></p>
+      </section>
+      <section aria-labelledby="security-title" class="panel">
+        <h2 id="security-title">Access</h2>
+        <p>
+          Use the secret shown in the server terminal. It is never shown here.
+        </p>
+      </section>
+      <section aria-labelledby="activity-title" class="panel activity-panel">
+        <div class="section-heading">
+          <div>
+            <h2 id="activity-title">MCP request log</h2>
+            <p>Recent redacted requests, answers, and timing metadata.</p>
+          </div>
+          <button id="refresh-activity" type="button">Refresh log</button>
+        </div>
+        <p id="activity-note" class="supporting" role="status"></p>
+        <div class="table-scroll" tabindex="0" aria-label="MCP activity log">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Time</th>
+                <th scope="col">Tool</th>
+                <th scope="col">State</th>
+                <th scope="col">Duration</th>
+                <th scope="col">Request</th>
+                <th scope="col">Answer</th>
+              </tr>
+            </thead>
+            <tbody id="activity-rows"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

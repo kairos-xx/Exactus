@@ -1,0 +1,156 @@
+/* BASE — reusable derived values: theme role colors, measures, typography
+   units and keyword bridges. References PRIMARY and DYNAMIC only.
+   Dark is the default theme; light follows [data-theme="light"] or the
+   system preference; forced-colors maps roles onto system colors. */
+:root {
+  /* keyword and font bridges */
+  --base-ws-css-font-sans: var(--primary-css-font-sans);
+  --base-ws-css-font-mono: var(--primary-ws-css-font-mono);
+  --base-ws-css-auto: var(--primary-css-auto);
+  --base-ws-css-none: var(--primary-css-none);
+  --base-ws-css-normal: var(--primary-css-normal);
+  --base-ws-css-pointer: var(--primary-css-pointer);
+  --base-ws-css-not-allowed: var(--primary-css-not-allowed);
+  --base-ws-css-crosshair: var(--primary-css-crosshair);
+  --base-ws-css-nowrap: var(--primary-css-nowrap);
+  --base-ws-css-pre-wrap: var(--primary-css-pre-wrap);
+  --base-ws-css-anywhere: var(--primary-css-anywhere);
+  --base-ws-css-uppercase: var(--primary-css-uppercase);
+  --base-ws-css-underline: var(--primary-css-underline);
+  --base-ws-css-ellipsis: var(--primary-css-ellipsis);
+  --base-ws-css-max-content: var(--primary-css-max-content);
+  --base-ws-css-solid: var(--primary-css-solid);
+  --base-ws-css-empty: var(--primary-css-empty);
+  --base-ws-css-text-cursor: var(--primary-ws-css-text-cursor);
+  --base-ws-css-dashed: var(--primary-ws-css-dashed);
+  --base-ws-css-dotted: var(--primary-ws-css-dotted);
+  --base-ws-css-wavy: var(--primary-ws-css-wavy);
+  --base-ws-css-left: var(--primary-ws-css-left);
+  --base-ws-css-top: var(--primary-ws-css-top);
+  --base-ws-css-branch-closed: var(--primary-ws-css-branch-closed);
+  --base-ws-css-branch-open: var(--primary-ws-css-branch-open);
+  /* named colors */
+  --base-ws-color-named-transparent: var(--primary-color-named-transparent);
+  --base-ws-color-named-currentcolor: var(--primary-color-named-currentcolor);
+  --base-ws-color-named-highlight: var(--primary-color-named-highlight);
+  --base-ws-color-forced-button-text: var(
+    --primary-ws-color-forced-button-text
+  );
+  /* text sizes */
+  --base-ws-dimension-text-micro: calc(var(--primary-dimension-pixel) * 10);
+  --base-ws-dimension-text-detail: calc(var(--primary-dimension-pixel) * 10.5);
+  --base-ws-dimension-text-small: calc(var(--primary-dimension-pixel) * 11);
+  --base-ws-dimension-text-body: calc(var(--primary-dimension-pixel) * 12);
+  --base-ws-dimension-text-large: calc(var(--primary-dimension-pixel) * 13);
+  /* spacing scale */
+  --base-ws-dimension-fine: calc(var(--primary-dimension-pixel) * 2);
+  --base-ws-dimension-tiny: calc(var(--primary-dimension-pixel) * 4);
+  --base-ws-dimension-small: calc(var(--primary-dimension-pixel) * 6);
+  --base-ws-dimension-medium: calc(var(--primary-dimension-pixel) * 8);
+  --base-ws-dimension-large: calc(var(--primary-dimension-pixel) * 12);
+  --base-ws-dimension-huge: calc(var(--primary-dimension-pixel) * 16);
+  /* measures */
+  --base-ws-dimension-none: calc(var(--primary-dimension-pixel) * 0);
+  --base-ws-dimension-hairline: var(--primary-dimension-pixel);
+  --base-ws-dimension-hairline-back: calc(var(--primary-dimension-pixel) * -1);
+  --base-ws-dimension-thin: calc(var(--primary-dimension-pixel) * 1.5);
+  --base-ws-dimension-fine-border: calc(var(--primary-dimension-pixel) * 2);
+  --base-ws-dimension-marker: calc(var(--primary-dimension-pixel) * 3);
+  --base-ws-dimension-marker-fill: calc(var(--primary-dimension-pixel) * 4);
+  --base-ws-dimension-radius-small: calc(var(--primary-dimension-pixel) * 4);
+  --base-ws-dimension-radius-medium: calc(var(--primary-dimension-pixel) * 8);
+  --base-ws-dimension-control: calc(var(--primary-dimension-pixel) * 24);
+  --base-ws-dimension-touch-target: calc(var(--primary-dimension-pixel) * 44);
+  --base-ws-dimension-field-min: calc(var(--primary-dimension-pixel) * 30);
+  --base-ws-dimension-content-max: calc(var(--primary-dimension-pixel) * 960);
+  --base-ws-dimension-tracking-label: calc(var(--primary-dimension-em) * 0.05);
+  --base-ws-dimension-mirror-min: calc(var(--primary-dimension-em) * 3);
+  --base-ws-dimension-character: var(--primary-dimension-character);
+  --base-ws-dimension-fraction: var(--primary-dimension-fraction);
+  /* fractions and numbers */
+  --base-ws-percent-full: calc(var(--primary-percent-base) * 100);
+  --base-ws-percent-half: calc(var(--primary-percent-base) * 50);
+  --base-ws-number-flush: var(--primary-number-unit);
+  --base-ws-number-leading: calc(var(--primary-number-unit) * 1.5);
+  --base-ws-number-dim: calc(var(--primary-number-unit) * 0.45);
+  --base-ws-number-half: calc(var(--primary-number-unit) * 0.5);
+  --base-ws-number-soft: calc(var(--primary-number-unit) * 0.85);
+  --base-ws-number-layer-menu: calc(var(--primary-number-unit) * 5);
+  --base-ws-number-stroke: calc(var(--primary-number-unit) * 1.6);
+  /* font weights */
+  --base-ws-weight-medium: calc(var(--primary-font-weight-unit) * 5);
+  --base-ws-weight-semibold: calc(var(--primary-font-weight-unit) * 6);
+  --base-ws-weight-bold: calc(var(--primary-font-weight-unit) * 7);
+  /* motion */
+  --base-ws-duration-fast: calc(var(--primary-duration-unit) * 0.12);
+  --base-ws-duration-medium: calc(var(--primary-duration-unit) * 0.22);
+}
+:root,
+[data-theme="dark"] {
+  color-scheme: dark;
+  --base-ws-color-page: var(--primary-ws-color-gray-950);
+  --base-ws-color-field: var(--primary-ws-color-gray-900);
+  --base-ws-color-raised: var(--primary-ws-color-gray-800);
+  --base-ws-color-ink-primary: var(--primary-ws-color-gray-100);
+  --base-ws-color-ink-muted: var(--primary-ws-color-gray-400);
+  --base-ws-color-ink-on-accent: var(--primary-ws-color-white);
+  --base-ws-color-edge-subtle: var(--primary-ws-color-gray-700);
+  --base-ws-color-edge-strong: var(--primary-ws-color-gray-500);
+  --base-ws-color-accent: var(--primary-ws-color-blue-500);
+  --base-ws-color-focus: var(--primary-ws-color-blue-300);
+  --base-ws-color-ok: var(--primary-ws-color-green-400);
+  --base-ws-color-warn: var(--primary-ws-color-amber-400);
+  --base-ws-color-bad: var(--primary-ws-color-red-400);
+  --base-ws-color-idle: var(--primary-ws-color-gray-400);
+}
+[data-theme="light"] {
+  color-scheme: light;
+  --base-ws-color-page: var(--primary-ws-color-gray-50);
+  --base-ws-color-field: var(--primary-ws-color-white);
+  --base-ws-color-raised: var(--primary-ws-color-gray-100);
+  --base-ws-color-ink-primary: var(--primary-ws-color-gray-900);
+  --base-ws-color-ink-muted: var(--primary-ws-color-gray-500);
+  --base-ws-color-edge-subtle: var(--primary-ws-color-gray-200);
+  --base-ws-color-edge-strong: var(--primary-ws-color-gray-400);
+  --base-ws-color-accent: var(--primary-ws-color-blue-500);
+  --base-ws-color-focus: var(--primary-ws-color-blue-500);
+  --base-ws-color-ok: var(--primary-ws-color-green-700);
+  --base-ws-color-warn: var(--primary-ws-color-amber-700);
+  --base-ws-color-bad: var(--primary-ws-color-red-700);
+  --base-ws-color-idle: var(--primary-ws-color-gray-500);
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    color-scheme: light;
+    --base-ws-color-page: var(--primary-ws-color-gray-50);
+    --base-ws-color-field: var(--primary-ws-color-white);
+    --base-ws-color-raised: var(--primary-ws-color-gray-100);
+    --base-ws-color-ink-primary: var(--primary-ws-color-gray-900);
+    --base-ws-color-ink-muted: var(--primary-ws-color-gray-500);
+    --base-ws-color-edge-subtle: var(--primary-ws-color-gray-200);
+    --base-ws-color-edge-strong: var(--primary-ws-color-gray-400);
+    --base-ws-color-focus: var(--primary-ws-color-blue-500);
+    --base-ws-color-ok: var(--primary-ws-color-green-700);
+    --base-ws-color-warn: var(--primary-ws-color-amber-700);
+    --base-ws-color-bad: var(--primary-ws-color-red-700);
+    --base-ws-color-idle: var(--primary-ws-color-gray-500);
+  }
+}
+@media (forced-colors: active) {
+  :root,
+  [data-theme] {
+    --base-ws-color-page: var(--primary-ws-color-forced-canvas);
+    --base-ws-color-field: var(--primary-ws-color-forced-field);
+    --base-ws-color-raised: var(--primary-ws-color-forced-button-face);
+    --base-ws-color-ink-primary: var(--primary-ws-color-forced-canvas-text);
+    --base-ws-color-ink-muted: var(--primary-ws-color-forced-gray-text);
+    --base-ws-color-edge-subtle: var(--primary-ws-color-forced-button-border);
+    --base-ws-color-edge-strong: var(--primary-ws-color-forced-button-text);
+    --base-ws-color-accent: var(--primary-color-named-highlight);
+    --base-ws-color-focus: var(--primary-color-named-highlight);
+    --base-ws-color-ok: var(--primary-ws-color-forced-canvas-text);
+    --base-ws-color-warn: var(--primary-ws-color-forced-canvas-text);
+    --base-ws-color-bad: var(--primary-ws-color-forced-canvas-text);
+    --base-ws-color-idle: var(--primary-ws-color-forced-gray-text);
+  }
+}

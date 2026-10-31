@@ -1,0 +1,12 @@
+{
+  "name": "exactus-mcp-router",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "node --check worker.js",
+    "test": "node --test router.test.js"
+  },
+  "devDependencies": {
+    "wrangler": "4.45.0"
+  }
+}

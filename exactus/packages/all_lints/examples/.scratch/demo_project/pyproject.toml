@@ -1,0 +1,5 @@
+[tool.ruff]
+extend-exclude = ["fixtures", "generated"]
+
+[tool.basedpyright]
+exclude = ["**/stubs"]

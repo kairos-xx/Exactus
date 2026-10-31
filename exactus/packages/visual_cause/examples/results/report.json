@@ -1,0 +1,4501 @@
+{
+  "url": "http://127.0.0.1:64014/index.html",
+  "url_a": "http://127.0.0.1:64014/index.html",
+  "url_b": "http://127.0.0.1:64014/index.html",
+  "native_styles": {
+    "a": false,
+    "b": false
+  },
+  "target_a": {
+    "source": "/Users/joaolopes/Exactus/exactus/packages/visual_cause/examples/web/a.css",
+    "kind": "file",
+    "files": [
+      "/Users/joaolopes/Exactus/exactus/packages/visual_cause/examples/web/a.css"
+    ],
+    "file_count": 1
+  },
+  "target_b": {
+    "source": "/Users/joaolopes/Exactus/exactus/packages/visual_cause/examples/web/b.css",
+    "kind": "file",
+    "files": [
+      "/Users/joaolopes/Exactus/exactus/packages/visual_cause/examples/web/b.css"
+    ],
+    "file_count": 1
+  },
+  "css_a": "/Users/joaolopes/Exactus/exactus/packages/visual_cause/examples/web/a.css",
+  "css_b": "/Users/joaolopes/Exactus/exactus/packages/visual_cause/examples/web/b.css",
+  "baseline_changed_pixels": 8170,
+  "screenshot_scale": 2.0,
+  "structural_analysis": {
+    "canvas": {
+      "width": 1180,
+      "height": 900
+    },
+    "changed_region_count": 8,
+    "changed_region_area": 70250.0,
+    "changed_region_area_ratio": 0.066149,
+    "largest_region_area": 51744.0,
+    "horizontal_bands": [
+      {
+        "start": 201.0,
+        "end": 227.0,
+        "coverage": 0.022
+      },
+      {
+        "start": 201.0,
+        "end": 227.0,
+        "coverage": 0.022
+      },
+      {
+        "start": 202.0,
+        "end": 349.0,
+        "coverage": 0.2983
+      },
+      {
+        "start": 323.0,
+        "end": 349.0,
+        "coverage": 0.2983
+      },
+      {
+        "start": 365.0,
+        "end": 400.0,
+        "coverage": 0.0966
+      },
+      {
+        "start": 379.0,
+        "end": 382.0,
+        "coverage": 0.0034
+      },
+      {
+        "start": 381.0,
+        "end": 416.0,
+        "coverage": 0.0966
+      },
+      {
+        "start": 395.0,
+        "end": 400.0,
+        "coverage": 0.0017
+      }
+    ],
+    "vertical_bands": [
+      {
+        "start": 598.0,
+        "end": 624.0,
+        "coverage": 0.0289
+      },
+      {
+        "start": 924.0,
+        "end": 950.0,
+        "coverage": 0.0289
+      },
+      {
+        "start": 230.0,
+        "end": 582.0,
+        "coverage": 0.1633
+      },
+      {
+        "start": 598.0,
+        "end": 950.0,
+        "coverage": 0.0289
+      },
+      {
+        "start": 230.0,
+        "end": 344.0,
+        "coverage": 0.0389
+      },
+      {
+        "start": 249.0,
+        "end": 253.0,
+        "coverage": 0.0033
+      },
+      {
+        "start": 250.0,
+        "end": 364.0,
+        "coverage": 0.0389
+      },
+      {
+        "start": 281.0,
+        "end": 283.0,
+        "coverage": 0.0056
+      }
+    ],
+    "alignment_pairs": {
+      "left": 4,
+      "right": 4,
+      "top": 3,
+      "bottom": 4
+    },
+    "repeated_geometry_groups": [
+      {
+        "size": "352x148",
+        "count": 2
+      }
+    ],
+    "affected_element_count": 9
+  },
+  "minimal_cause_sets": {},
+  "container_queries": [],
+  "regions": [
+    {
+      "x": 598.0,
+      "y": 201.0,
+      "width": 26.0,
+      "height": 26.0
+    },
+    {
+      "x": 924.0,
+      "y": 201.0,
+      "width": 26.0,
+      "height": 26.0
+    },
+    {
+      "x": 230.0,
+      "y": 202.0,
+      "width": 352.0,
+      "height": 147.0
+    },
+    {
+      "x": 598.0,
+      "y": 323.0,
+      "width": 352.0,
+      "height": 26.0
+    },
+    {
+      "x": 230.0,
+      "y": 365.0,
+      "width": 114.0,
+      "height": 35.0
+    },
+    {
+      "x": 249.0,
+      "y": 379.0,
+      "width": 4.0,
+      "height": 3.0
+    },
+    {
+      "x": 250.0,
+      "y": 381.0,
+      "width": 114.0,
+      "height": 35.0
+    },
+    {
+      "x": 281.0,
+      "y": 395.0,
+      "width": 2.0,
+      "height": 5.0
+    }
+  ],
+  "affected_elements": [
+    {
+      "selector": "html > body",
+      "tag": "body",
+      "text": "VISUAL CAUSE Four intentional CSS changes A deliberately small example for inspecting causal evidence. Primary card Its background and padding change. Secondary card Its border radius changes. Run analysis",
+      "rect": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 1180.0,
+        "height": 900.0
+      },
+      "position": "static",
+      "z_index": "auto"
+    },
+    {
+      "selector": "html > body > main.demo",
+      "tag": "main",
+      "text": "VISUAL CAUSE Four intentional CSS changes A deliberately small example for inspecting causal evidence. Primary card Its background and padding change. Secondary card Its border radius changes. Run analysis",
+      "rect": {
+        "x": 230.0,
+        "y": 64.0,
+        "width": 720.0,
+        "height": 351.90625
+      },
+      "position": "static",
+      "z_index": "auto"
+    },
+    {
+      "selector": "html > body > main.demo > section.cards",
+      "tag": "section",
+      "text": "Primary card Its background and padding change. Secondary card Its border radius changes.",
+      "rect": {
+        "x": 230.0,
+        "y": 201.0,
+        "width": 720.0,
+        "height": 147.90625
+      },
+      "position": "static",
+      "z_index": "auto"
+    },
+    {
+      "selector": "html > body > main.demo > section.cards > article.card.primary:nth-of-type(1)",
+      "tag": "article",
+      "text": "Primary card Its background and padding change.",
+      "rect": {
+        "x": 230.0,
+        "y": 201.0,
+        "width": 352.0,
+        "height": 147.90625
+      },
+      "position": "static",
+      "z_index": "auto"
+    },
+    {
+      "selector": "html > body > main.demo > section.cards > article.card.primary:nth-of-type(1) > h2",
+      "tag": "h2",
+      "text": "Primary card",
+      "rect": {
+        "x": 263.0,
+        "y": 234.0,
+        "width": 286.0,
+        "height": 28.0
+      },
+      "position": "static",
+      "z_index": "auto"
+    },
+    {
+      "selector": "html > body > main.demo > section.cards > article.card.primary:nth-of-type(1) > p",
+      "tag": "p",
+      "text": "Its background and padding change.",
+      "rect": {
+        "x": 263.0,
+        "y": 281.90625,
+        "width": 286.0,
+        "height": 18.0
+      },
+      "position": "static",
+      "z_index": "auto"
+    },
+    {
+      "selector": "html > body > main.demo > section.cards > article.card.secondary:nth-of-type(2)",
+      "tag": "article",
+      "text": "Secondary card Its border radius changes.",
+      "rect": {
+        "x": 598.0,
+        "y": 201.0,
+        "width": 352.0,
+        "height": 147.90625
+      },
+      "position": "static",
+      "z_index": "auto"
+    },
+    {
+      "selector": "html > body > main.demo > section.cards > article.card.secondary:nth-of-type(2) > h2",
+      "tag": "h2",
+      "text": "Secondary card",
+      "rect": {
+        "x": 623.0,
+        "y": 226.0,
+        "width": 302.0,
+        "height": 28.0
+      },
+      "position": "static",
+      "z_index": "auto"
+    },
+    {
+      "selector": "html > body > main.demo > button.action",
+      "tag": "button",
+      "text": "Run analysis",
+      "rect": {
+        "x": 250.0,
+        "y": 380.90625,
+        "width": 114.234375,
+        "height": 35.0
+      },
+      "position": "static",
+      "z_index": "auto"
+    }
+  ],
+  "layout_evidence": [
+    {
+      "selector": "html > body > main.demo",
+      "dom_path": "html-root/body[1]/main[0]",
+      "changes": {
+        "height": {
+          "a": "335.906px",
+          "b": "351.906px"
+        }
+      },
+      "resolved_grid_tracks": {
+        "columns": "none",
+        "rows": "none"
+      },
+      "container": {
+        "type": "normal",
+        "name": "none",
+        "width": 720.0,
+        "height": 351.90625
+      }
+    },
+    {
+      "selector": "html > body > main.demo > section.cards",
+      "dom_path": "html-root/body[1]/main[0]/section[3]",
+      "changes": {
+        "grid-template-rows": {
+          "a": "131.906px",
+          "b": "147.906px"
+        },
+        "height": {
+          "a": "131.906px",
+          "b": "147.906px"
+        }
+      },
+      "resolved_grid_tracks": {
+        "columns": "352px 352px",
+        "rows": "147.906px"
+      },
+      "container": {
+        "type": "normal",
+        "name": "none",
+        "width": 720.0,
+        "height": 147.90625
+      }
+    },
+    {
+      "selector": "html > body > main.demo > section.cards > article.card.primary:nth-of-type(1)",
+      "dom_path": "html-root/body[1]/main[0]/section[3]/article[0]",
+      "changes": {
+        "height": {
+          "a": "131.906px",
+          "b": "147.906px"
+        }
+      },
+      "resolved_grid_tracks": {
+        "columns": "none",
+        "rows": "none"
+      },
+      "container": {
+        "type": "normal",
+        "name": "none",
+        "width": 352.0,
+        "height": 147.90625
+      }
+    },
+    {
+      "selector": "html > body > main.demo > section.cards > article.card.primary:nth-of-type(1) > h2",
+      "dom_path": "html-root/body[1]/main[0]/section[3]/article[0]/h2[0]",
+      "changes": {
+        "width": {
+          "a": "302px",
+          "b": "286px"
+        }
+      },
+      "resolved_grid_tracks": {
+        "columns": "none",
+        "rows": "none"
+      },
+      "container": {
+        "type": "normal",
+        "name": "none",
+        "width": 286.0,
+        "height": 28.0
+      }
+    },
+    {
+      "selector": "html > body > main.demo > section.cards > article.card.primary:nth-of-type(1) > p",
+      "dom_path": "html-root/body[1]/main[0]/section[3]/article[0]/p[1]",
+      "changes": {
+        "width": {
+          "a": "302px",
+          "b": "286px"
+        }
+      },
+      "resolved_grid_tracks": {
+        "columns": "none",
+        "rows": "none"
+      },
+      "container": {
+        "type": "normal",
+        "name": "none",
+        "width": 286.0,
+        "height": 18.0
+      }
+    },
+    {
+      "selector": "html > body > main.demo > section.cards > article.card.secondary:nth-of-type(2)",
+      "dom_path": "html-root/body[1]/main[0]/section[3]/article[1]",
+      "changes": {
+        "height": {
+          "a": "131.906px",
+          "b": "147.906px"
+        }
+      },
+      "resolved_grid_tracks": {
+        "columns": "none",
+        "rows": "none"
+      },
+      "container": {
+        "type": "normal",
+        "name": "none",
+        "width": 352.0,
+        "height": 147.90625
+      }
+    }
+  ],
+  "change_trees": [
+    {
+      "selector": "html > body",
+      "categories": [
+        "color",
+        "style"
+      ],
+      "change_origin": [
+        "computed-style"
+      ],
+      "mechanisms": [
+        "paint"
+      ],
+      "geometry": {
+        "position": {
+          "a_x": 0.0,
+          "a_y": 0.0,
+          "b_x": 0.0,
+          "b_y": 0.0,
+          "delta_x": 0.0,
+          "delta_y": 0.0
+        },
+        "size": {
+          "a_width": 1180.0,
+          "a_height": 900.0,
+          "b_width": 1180.0,
+          "b_height": 900.0,
+          "delta_width": 0.0,
+          "delta_height": 0.0
+        }
+      },
+      "computed_style_changes": {
+        "color": {
+          "--primary-vcd-color-steel": {
+            "a": "",
+            "b": "#29343dff"
+          },
+          "--catalog-card-color-raised": {
+            "a": "",
+            "b": "#29343dff"
+          },
+          "--base-vcd-color-steel": {
+            "a": "",
+            "b": "#29343dff"
+          }
+        },
+        "other": {
+          "--base-vcd-dimension-twenty-pixel": {
+            "a": "",
+            "b": "calc(20 * 1px)"
+          },
+          "--catalog-card-measure-round-radius": {
+            "a": "",
+            "b": "calc(28 * 1px)"
+          },
+          "--catalog-action-motion-nudge": {
+            "a": "",
+            "b": "translateX(\n    calc(20 * 1px)\n  )"
+          },
+          "--vcd-card-roomy-padding": {
+            "a": "",
+            "b": "calc(32 * 1px)"
+          },
+          "--vcd-card-round-radius": {
+            "a": "",
+            "b": "calc(28 * 1px)"
+          },
+          "--vcd-card-raised-surface": {
+            "a": "",
+            "b": "#29343dff"
+          },
+          "--base-vcd-dimension-twenty-eight-pixel": {
+            "a": "",
+            "b": "calc(28 * 1px)"
+          },
+          "--catalog-card-measure-roomy-padding": {
+            "a": "",
+            "b": "calc(32 * 1px)"
+          },
+          "--vcd-action-nudge": {
+            "a": "",
+            "b": "translateX(\n    calc(20 * 1px)\n  )"
+          }
+        }
+      },
+      "causes": [],
+      "css_provenance": [],
+      "css_value_provenance": [],
+      "cascade_provenance": null,
+      "css_variables": {
+        "usage": [],
+        "chains": []
+      },
+      "interaction_causes": [],
+      "content_change": null,
+      "caused_by": [],
+      "root_cause": null,
+      "visual_impact": {
+        "changed_pixels": 62071
+      },
+      "relations": {
+        "descendants": [
+          {
+            "selector": "html > body > main.demo",
+            "categories": [
+              "size",
+              "color",
+              "style"
+            ],
+            "change_origin": [
+              "computed-style"
+            ],
+            "mechanisms": [
+              "layout",
+              "paint",
+              "transform"
+            ],
+            "geometry": {
+              "position": {
+                "a_x": 230.0,
+                "a_y": 64.0,
+                "b_x": 230.0,
+                "b_y": 64.0,
+                "delta_x": 0.0,
+                "delta_y": 0.0
+              },
+              "size": {
+                "a_width": 720.0,
+                "a_height": 335.90625,
+                "b_width": 720.0,
+                "b_height": 351.90625,
+                "delta_width": 0.0,
+                "delta_height": 16.0
+              }
+            },
+            "computed_style_changes": {
+              "box_model": {
+                "height": {
+                  "a": "335.906px",
+                  "b": "351.906px"
+                }
+              },
+              "color": {
+                "--primary-vcd-color-steel": {
+                  "a": "",
+                  "b": "#29343dff"
+                },
+                "--catalog-card-color-raised": {
+                  "a": "",
+                  "b": "#29343dff"
+                },
+                "--base-vcd-color-steel": {
+                  "a": "",
+                  "b": "#29343dff"
+                }
+              },
+              "transform": {
+                "perspective-origin": {
+                  "a": "360px 167.953px",
+                  "b": "360px 175.953px"
+                },
+                "transform-origin": {
+                  "a": "360px 167.953px",
+                  "b": "360px 175.953px"
+                }
+              },
+              "other": {
+                "block-size": {
+                  "a": "335.906px",
+                  "b": "351.906px"
+                },
+                "--base-vcd-dimension-twenty-pixel": {
+                  "a": "",
+                  "b": "calc(20 * 1px)"
+                },
+                "--catalog-card-measure-round-radius": {
+                  "a": "",
+                  "b": "calc(28 * 1px)"
+                },
+                "--catalog-action-motion-nudge": {
+                  "a": "",
+                  "b": "translateX(\n    calc(20 * 1px)\n  )"
+                },
+                "--vcd-card-roomy-padding": {
+                  "a": "",
+                  "b": "calc(32 * 1px)"
+                },
+                "--vcd-card-round-radius": {
+                  "a": "",
+                  "b": "calc(28 * 1px)"
+                },
+                "--vcd-card-raised-surface": {
+                  "a": "",
+                  "b": "#29343dff"
+                },
+                "--base-vcd-dimension-twenty-eight-pixel": {
+                  "a": "",
+                  "b": "calc(28 * 1px)"
+                },
+                "--catalog-card-measure-roomy-padding": {
+                  "a": "",
+                  "b": "calc(32 * 1px)"
+                },
+                "--vcd-action-nudge": {
+                  "a": "",
+                  "b": "translateX(\n    calc(20 * 1px)\n  )"
+                }
+              }
+            },
+            "causes": [],
+            "css_provenance": [
+              {
+                "rule_index": 9,
+                "rule_selector": ".primary",
+                "property": "padding-top",
+                "authored_value": "",
+                "computed_b": "0px",
+                "improvement": 7612.0,
+                "local_improvement": 8.0,
+                "confidence": 0.9317013463892289,
+                "proven": true,
+                "direct_local_evidence": true,
+                "matched_by_rule": false,
+                "impact_kind": "propagated-structural-or-inherited",
+                "role": "declaration-ablation",
+                "value_ast": {
+                  "kind": "value",
+                  "text": "",
+                  "start": 0,
+                  "end": 0,
+                  "children": []
+                }
+              },
+              {
+                "rule_index": 9,
+                "rule_selector": ".primary",
+                "property": "padding-right",
+                "authored_value": "",
+                "computed_b": "0px",
+                "improvement": 7612.0,
+                "local_improvement": 8.0,
+                "confidence": 0.9317013463892289,
+                "proven": true,
+                "direct_local_evidence": true,
+                "matched_by_rule": false,
+                "impact_kind": "propagated-structural-or-inherited",
+                "role": "declaration-ablation",
+                "value_ast": {
+                  "kind": "value",
+                  "text": "",
+                  "start": 0,
+                  "end": 0,
+                  "children": []
+                }
+              },
+              {
+                "rule_index": 9,
+                "rule_selector": ".primary",
+                "property": "padding-bottom",
+                "authored_value": "",
+                "computed_b": "0px",
+                "improvement": 7612.0,
+                "local_improvement": 20.0,
+                "confidence": 0.9317013463892289,
+                "proven": true,
+                "direct_local_evidence": true,
+                "matched_by_rule": false,
+                "impact_kind": "propagated-structural-or-inherited",
+                "role": "declaration-ablation",
+                "value_ast": {
+                  "kind": "value",
+                  "text": "",
+                  "start": 0,
+                  "end": 0,
+                  "children": []
+                }
+              },
+              {
+                "rule_index": 9,
+                "rule_selector": ".primary",
+                "property": "padding-left",
+                "authored_value": "",
+                "computed_b": "0px",
+                "improvement": 7612.0,
+                "local_improvement": 20.0,
+                "confidence": 0.9317013463892289,
+                "proven": true,
+                "direct_local_evidence": true,
+                "matched_by_rule": false,
+                "impact_kind": "propagated-structural-or-inherited",
+                "role": "declaration-ablation",
+                "value_ast": {
+                  "kind": "value",
+                  "text": "",
+                  "start": 0,
+                  "end": 0,
+                  "children": []
+                }
+              },
+              {
+                "rule_index": 11,
+                "rule_selector": ".action",
+                "property": "padding-top",
+                "authored_value": "",
+                "computed_b": "0px",
+                "improvement": 182.0,
+                "local_improvement": 8.0,
+                "confidence": 0.022276621787025705,
+                "proven": true,
+                "direct_local_evidence": true,
+                "matched_by_rule": false,
+                "impact_kind": "propagated-structural-or-inherited",
+                "role": "declaration-ablation",
+                "value_ast": {
+                  "kind": "value",
+                  "text": "",
+                  "start": 0,
+                  "end": 0,
+                  "children": []
+                }
+              },
+              {
+                "rule_index": 11,
+                "rule_selector": ".action",
+                "property": "padding-right",
+                "authored_value": "",
+                "computed_b": "0px",
+                "improvement": 182.0,
+                "local_improvement": 8.0,
+                "confidence": 0.022276621787025705,
+                "proven": true,
+                "direct_local_evidence": true,
+                "matched_by_rule": false,
+                "impact_kind": "propagated-structural-or-inherited",
+                "role": "declaration-ablation",
+                "value_ast": {
+                  "kind": "value",
+                  "text": "",
+                  "start": 0,
+                  "end": 0,
+                  "children": []
+                }
+              },
+              {
+                "rule_index": 11,
+                "rule_selector": ".action",
+                "property": "padding-bottom",
+                "authored_value": "",
+                "computed_b": "0px",
+                "improvement": 182.0,
+                "local_improvement": 15.0,
+                "confidence": 0.022276621787025705,
+                "proven": true,
+                "direct_local_evidence": true,
+                "matched_by_rule": false,
+                "impact_kind": "propagated-structural-or-inherited",
+                "role": "declaration-ablation",
+                "value_ast": {
+                  "kind": "value",
+                  "text": "",
+                  "start": 0,
+                  "end": 0,
+                  "children": []
+                }
+              },
+              {
+                "rule_index": 11,
+                "rule_selector": ".action",
+                "property": "padding-left",
+                "authored_value": "",
+                "computed_b": "0px",
+                "improvement": 182.0,
+                "local_improvement": 15.0,
+                "confidence": 0.022276621787025705,
+                "proven": true,
+                "direct_local_evidence": true,
+                "matched_by_rule": false,
+                "impact_kind": "propagated-structural-or-inherited",
+                "role": "declaration-ablation",
+                "value_ast": {
+                  "kind": "value",
+                  "text": "",
+                  "start": 0,
+                  "end": 0,
+                  "children": []
+                }
+              },
+              {
+                "rule_index": 11,
+                "rule_selector": ".action",
+                "property": "border-top-color",
+                "authored_value": "",
+                "computed_b": "rgb(232, 234, 237)",
+                "improvement": 182.0,
+                "local_improvement": 15.0,
+                "confidence": 0.022276621787025705,
+                "proven": true,
+                "direct_local_evidence": true,
+                "matched_by_rule": false,
+                "impact_kind": "propagated-structural-or-inherited",
+                "role": "declaration-ablation",
+                "value_ast": {
+                  "kind": "value",
+                  "text": "",
+                  "start": 0,
+                  "end": 0,
+                  "children": []
+                }
+              },
+              {
+                "rule_index": 11,
+                "rule_selector": ".action",
+                "property": "border-top-style",
+                "authored_value": "",
+                "computed_b": "none",
+                "improvement": 182.0,
+                "local_improvement": 15.0,
+                "confidence": 0.022276621787025705,
+                "proven": true,
+                "direct_local_evidence": true,
+                "matched_by_rule": false,
+                "impact_kind": "propagated-structural-or-inherited",
+                "role": "declaration-ablation",
+                "value_ast": {
+                  "kind": "value",
+                  "text": "",
+                  "start": 0,
+                  "end": 0,
+                  "children": []
+                }
+              },
+              {
+                "rule_index": 11,
+                "rule_selector": ".action",
+                "property": "border-top-width",
+                "authored_value": "",
+                "computed_b": "0px",
+                "improvement": 182.0,
+                "local_improvement": 20.0,
+                "confidence": 0.022276621787025705,
+                "proven": true,
+                "direct_local_evidence": true,
+                "matched_by_rule": false,
+                "impact_kind": "propagated-structural-or-inherited",
+                "role": "declaration-ablation",
+                "value_ast": {
+                  "kind": "value",
+                  "text": "",
+                  "start": 0,
+                  "end": 0,
+                  "children": []
+                }
+              },
+              {
+                "rule_index": 11,
+                "rule_selector": ".action",
+                "property": "border-right-color",
+                "authored_value": "",
+                "computed_b": "rgb(232, 234, 237)",
+                "improvement": 182.0,
+                "local_improvement": 20.0,
+                "confidence": 0.022276621787025705,
+                "proven": true,
+                "direct_local_evidence": true,
+                "matched_by_rule": false,
+                "impact_kind": "propagated-structural-or-inherited",
+                "role": "declaration-ablation",
+                "value_ast": {
+                  "kind": "value",
+                  "text": "",
+                  "start": 0,
+                  "end": 0,
+                  "children": []
+                }
+              },
+              {
+                "rule_index": 11,
+                "rule_selector": ".action",
+                "property": "border-right-style",
+                "authored_value": "",
+                "computed_b": "none",
+                "improvement": 182.0,
+                "local_improvement": 20.0,
+                "confidence": 0.022276621787025705,
+                "proven": true,
+                "direct_local_evidence": true,
+                "matched_by_rule": false,
+                "impact_kind": "propagated-structural-or-inherited",
+                "role": "declaration-ablation",
+                "value_ast": {
+                  "kind": "value",
+                  "text": "",
+                  "start": 0,
+                  "end": 0,
+                  "children": []
+                }
+              },
+              {
+                "rule_index": 11,
+                "rule_selector": ".action",
+                "property": "border-right-width",
+                "authored_value": "",
+                "computed_b": "0px",
+                "improvement": 182.0,
+                "local_improvement": 20.0,
+                "confidence": 0.022276621787025705,
+                "proven": true,
+                "direct_local_evidence": true,
+                "matched_by_rule": false,
+                "impact_kind": "propagated-structural-or-inherited",
+                "role": "declaration-ablation",
+                "value_ast": {
+                  "kind": "value",
+                  "text": "",
+                  "start": 0,
+                  "end": 0,
+                  "children": []
+                }
+              },
+              {
+                "rule_index": 11,
+                "rule_selector": ".action",
+                "property": "border-bottom-color",
+                "authored_value": "",
+                "computed_b": "rgb(232, 234, 237)",
+                "improvement": 182.0,
+                "local_improvement": 20.0,
+                "confidence": 0.022276621787025705,
+                "proven": true,
+                "direct_local_evidence": true,
+                "matched_by_rule": false,
+                "impact_kind": "propagated-structural-or-inherited",
+                "role": "declaration-ablation",
+                "value_ast": {
+                  "kind": "value",
+                  "text": "",
+                  "start": 0,
+                  "end": 0,
+                  "children": []
+                }
+              },
+              {
+                "rule_index": 11,
+                "rule_selector": ".action",
+                "property": "border-bottom-style",
+                "authored_value": "",
+                "computed_b": "none",
+                "improvement": 182.0,
+                "local_improvement": 20.0,
+                "confidence": 0.022276621787025705,
+                "proven": true,
+                "direct_local_evidence": true,
+                "matched_by_rule": false,
+                "impact_kind": "propagated-structural-or-inherited",
+                "role": "declaration-ablation",
+                "value_ast": {
+                  "kind": "value",
+                  "text": "",
+                  "start": 0,
+                  "end": 0,
+                  "children": []
+                }
+              },
+              {
+                "rule_index": 11,
+                "rule_selector": ".action",
+                "property": "border-bottom-width",
+                "authored_value": "",
+                "computed_b": "0px",
+                "improvement": 182.0,
+                "local_improvement": 14.0,
+                "confidence": 0.022276621787025705,
+                "proven": true,
+                "direct_local_evidence": true,
+                "matched_by_rule": false,
+                "impact_kind": "propagated-structural-or-inherited",
+                "role": "declaration-ablation",
+                "value_ast": {
+                  "kind": "value",
+                  "text": "",
+                  "start": 0,
+                  "end": 0,
+                  "children": []
+                }
+              },
+              {
+                "rule_index": 11,
+                "rule_selector": ".action",
+                "property": "border-left-color",
+                "authored_value": "",
+                "computed_b": "rgb(232, 234, 237)",
+                "improvement": 182.0,
+                "local_improvement": 14.0,
+                "confidence": 0.022276621787025705,
+                "proven": true,
+                "direct_local_evidence": true,
+                "matched_by_rule": false,
+                "impact_kind": "propagated-structural-or-inherited",
+                "role": "declaration-ablation",
+                "value_ast": {
+                  "kind": "value",
+                  "text": "",
+                  "start": 0,
+                  "end": 0,
+                  "children": []
+                }
+              },
+              {
+                "rule_index": 11,
+                "rule_selector": ".action",
+                "property": "border-left-style",
+                "authored_value": "",
+                "computed_b": "none",
+                "improvement": 182.0,
+                "local_improvement": 14.0,
+                "confidence": 0.022276621787025705,
+                "proven": true,
+                "direct_local_evidence": true,
+                "matched_by_rule": false,
+                "impact_kind": "propagated-structural-or-inherited",
+                "role": "declaration-ablation",
+                "value_ast": {
+                  "kind": "value",
+                  "text": "",
+                  "start": 0,
+                  "end": 0,
+                  "children": []
+                }
+              },
+              {
+                "rule_index": 11,
+                "rule_selector": ".action",
+                "property": "border-left-width",
+                "authored_value": "",
+                "computed_b": "0px",
+                "improvement": 182.0,
+                "local_improvement": 14.0,
+                "confidence": 0.022276621787025705,
+                "proven": true,
+                "direct_local_evidence": true,
+                "matched_by_rule": false,
+                "impact_kind": "propagated-structural-or-inherited",
+                "role": "declaration-ablation",
+                "value_ast": {
+                  "kind": "value",
+                  "text": "",
+                  "start": 0,
+                  "end": 0,
+                  "children": []
+                }
+              },
+              {
+                "rule_index": 11,
+                "rule_selector": ".action",
+                "property": "border-image-source",
+                "authored_value": "",
+                "computed_b": "none",
+                "improvement": 182.0,
+                "local_improvement": 14.0,
+                "confidence": 0.022276621787025705,
+                "proven": true,
+                "direct_local_evidence": true,
+                "matched_by_rule": false,
+                "impact_kind": "propagated-structural-or-inherited",
+                "role": "declaration-ablation",
+                "value_ast": {
+                  "kind": "value",
+                  "text": "",
+                  "start": 0,
+                  "end": 0,
+                  "children": []
+                }
+              },
+              {
+                "rule_index": 11,
+                "rule_selector": ".action",
+                "property": "border-image-slice",
+                "authored_value": "",
+                "computed_b": "100%",
+                "improvement": 182.0,
+                "local_improvement": 14.0,
+                "confidence": 0.022276621787025705,
+                "proven": true,
+                "direct_local_evidence": true,
+                "matched_by_rule": false,
+                "impact_kind": "propagated-structural-or-inherited",
+                "role": "declaration-ablation",
+                "value_ast": {
+                  "kind": "value",
+                  "text": "",
+                  "start": 0,
+                  "end": 0,
+                  "children": []
+                }
+              },
+              {
+                "rule_index": 11,
+                "rule_selector": ".action",
+                "property": "border-image-width",
+                "authored_value": "",
+                "computed_b": "1",
+                "improvement": 182.0,
+                "local_improvement": 14.0,
+                "confidence": 0.022276621787025705,
+                "proven": true,
+                "direct_local_evidence": true,
+                "matched_by_rule": false,
+                "impact_kind": "propagated-structural-or-inherited",
+                "role": "declaration-ablation",
+                "value_ast": {
+                  "kind": "value",
+                  "text": "",
+                  "start": 0,
+                  "end": 0,
+                  "children": []
+                }
+              },
+              {
+                "rule_index": 11,
+                "rule_selector": ".action",
+                "property": "border-image-outset",
+                "authored_value": "",
+                "computed_b": "0",
+                "improvement": 182.0,
+                "local_improvement": 14.0,
+                "confidence": 0.022276621787025705,
+                "proven": true,
+                "direct_local_evidence": true,
+                "matched_by_rule": false,
+                "impact_kind": "propagated-structural-or-inherited",
+                "role": "declaration-ablation",
+                "value_ast": {
+                  "kind": "value",
+                  "text": "",
+                  "start": 0,
+                  "end": 0,
+                  "children": []
+                }
+              },
+              {
+                "rule_index": 11,
+                "rule_selector": ".action",
+                "property": "border-image-repeat",
+                "authored_value": "",
+                "computed_b": "stretch",
+                "improvement": 182.0,
+                "local_improvement": 14.0,
+                "confidence": 0.022276621787025705,
+                "proven": true,
+                "direct_local_evidence": true,
+                "matched_by_rule": false,
+                "impact_kind": "propagated-structural-or-inherited",
+                "role": "declaration-ablation",
+                "value_ast": {
+                  "kind": "value",
+                  "text": "",
+                  "start": 0,
+                  "end": 0,
+                  "children": []
+                }
+              },
+              {
+                "rule_index": 11,
+                "rule_selector": ".action",
+                "property": "border-top-left-radius",
+                "authored_value": "",
+                "computed_b": "0px",
+                "improvement": 182.0,
+                "local_improvement": 14.0,
+                "confidence": 0.022276621787025705,
+                "proven": true,
+                "direct_local_evidence": true,
+                "matched_by_rule": false,
+                "impact_kind": "propagated-structural-or-inherited",
+                "role": "declaration-ablation",
+                "value_ast": {
+                  "kind": "value",
+                  "text": "",
+                  "start": 0,
+                  "end": 0,
+                  "children": []
+                }
+              },
+              {
+                "rule_index": 11,
+                "rule_selector": ".action",
+                "property": "border-top-right-radius",
+                "authored_value": "",
+                "computed_b": "0px",
+                "improvement": 182.0,
+                "local_improvement": 14.0,
+                "confidence": 0.022276621787025705,
+                "proven": true,
+                "direct_local_evidence": true,
+                "matched_by_rule": false,
+                "impact_kind": "propagated-structural-or-inherited",
+                "role": "declaration-ablation",
+                "value_ast": {
+                  "kind": "value",
+                  "text": "",
+                  "start": 0,
+                  "end": 0,
+                  "children": []
+                }
+              },
+              {
+                "rule_index": 11,
+                "rule_selector": ".action",
+                "property": "border-bottom-right-radius",
+                "authored_value": "",
+                "computed_b": "0px",
+                "improvement": 182.0,
+                "local_improvement": 14.0,
+                "confidence": 0.022276621787025705,
+                "proven": true,
+                "direct_local_evidence": true,
+                "matched_by_rule": false,
+                "impact_kind": "propagated-structural-or-inherited",
+                "role": "declaration-ablation",
+                "value_ast": {
+                  "kind": "value",
+                  "text": "",
+                  "start": 0,
+                  "end": 0,
+                  "children": []
+                }
+              },
+              {
+                "rule_index": 11,
+                "rule_selector": ".action",
+                "property": "border-bottom-left-radius",
+                "authored_value": "",
+                "computed_b": "0px",
+                "improvement": 182.0,
+                "local_improvement": 14.0,
+                "confidence": 0.022276621787025705,
+                "proven": true,
+                "direct_local_evidence": true,
+                "matched_by_rule": false,
+                "impact_kind": "propagated-structural-or-inherited",
+                "role": "declaration-ablation",
+                "value_ast": {
+                  "kind": "value",
+                  "text": "",
+                  "start": 0,
+                  "end": 0,
+                  "children": []
+                }
+              },
+              {
+                "rule_index": 11,
+                "rule_selector": ".action",
+                "property": "background-image",
+                "authored_value": "",
+                "computed_b": "none",
+                "improvement": 182.0,
+                "local_improvement": 14.0,
+                "confidence": 0.022276621787025705,
+                "proven": true,
+                "direct_local_evidence": true,
+                "matched_by_rule": false,
+                "impact_kind": "propagated-structural-or-inherited",
+                "role": "declaration-ablation",
+                "value_ast": {
+                  "kind": "value",
+                  "text": "",
+                  "start": 0,
+                  "end": 0,
+                  "children": []
+                }
+              },
+              {
+                "rule_index": 11,
+                "rule_selector": ".action",
+                "property": "background-position-x",
+                "authored_value": "",
+                "computed_b": "",
+                "improvement": 182.0,
+                "local_improvement": 14.0,
+                "confidence": 0.022276621787025705,
+                "proven": true,
+                "direct_local_evidence": true,
+                "matched_by_rule": false,
+                "impact_kind": "propagated-structural-or-inherited",
+                "role": "declaration-ablation",
+                "value_ast": {
+                  "kind": "value",
+                  "text": "",
+                  "start": 0,
+                  "end": 0,
+                  "children": []
+                }
+              },
+              {
+                "rule_index": 11,
+                "rule_selector": ".action",
+                "property": "background-position-y",
+                "authored_value": "",
+                "computed_b": "",
+                "improvement": 182.0,
+                "local_improvement": 14.0,
+                "confidence": 0.022276621787025705,
+                "proven": true,
+                "direct_local_evidence": true,
+                "matched_by_rule": false,
+                "impact_kind": "propagated-structural-or-inherited",
+                "role": "declaration-ablation",
+                "value_ast": {
+                  "kind": "value",
+                  "text": "",
+                  "start": 0,
+                  "end": 0,
+                  "children": []
+                }
+              },
+              {
+                "rule_index": 11,
+                "rule_selector": ".action",
+                "property": "background-size",
+                "authored_value": "",
+                "computed_b": "auto",
+                "improvement": 182.0,
+                "local_improvement": 14.0,
+                "confidence": 0.022276621787025705,
+                "proven": true,
+                "direct_local_evidence": true,
+                "matched_by_rule": false,
+                "impact_kind": "propagated-structural-or-inherited",
+                "role": "declaration-ablation",
+                "value_ast": {
+                  "kind": "value",
+                  "text": "",
+                  "start": 0,
+                  "end": 0,
+                  "children": []
+                }
+              },
+              {
+                "rule_index": 11,
+                "rule_selector": ".action",
+                "property": "background-repeat",
+                "authored_value": "",
+                "computed_b": "repeat",
+                "improvement": 182.0,
+                "local_improvement": 14.0,
+                "confidence": 0.022276621787025705,
+                "proven": true,
+                "direct_local_evidence": true,
+                "matched_by_rule": false,
+                "impact_kind": "propagated-structural-or-inherited",
+                "role": "declaration-ablation",
+                "value_ast": {
+                  "kind": "value",
+                  "text": "",
+                  "start": 0,
+                  "end": 0,
+                  "children": []
+                }
+              },
+              {
+                "rule_index": 11,
+                "rule_selector": ".action",
+                "property": "background-attachment",
+                "authored_value": "",
+                "computed_b": "scroll",
+                "improvement": 182.0,
+                "local_improvement": 14.0,
+                "confidence": 0.022276621787025705,
+                "proven": true,
+                "direct_local_evidence": true,
+                "matched_by_rule": false,
+                "impact_kind": "propagated-structural-or-inherited",
+                "role": "declaration-ablation",
+                "value_ast": {
+                  "kind": "value",
+                  "text": "",
+                  "start": 0,
+                  "end": 0,
+                  "children": []
+                }
+              },
+              {
+                "rule_index": 11,
+                "rule_selector": ".action",
+                "property": "background-origin",
+                "authored_value": "",
+                "computed_b": "padding-box",
+                "improvement": 182.0,
+                "local_improvement": 14.0,
+                "confidence": 0.022276621787025705,
+                "proven": true,
+                "direct_local_evidence": true,
+                "matched_by_rule": false,
+                "impact_kind": "propagated-structural-or-inherited",
+                "role": "declaration-ablation",
+                "value_ast": {
+                  "kind": "value",
+                  "text": "",
+                  "start": 0,
+                  "end": 0,
+                  "children": []
+                }
+              },
+              {
+                "rule_index": 11,
+                "rule_selector": ".action",
+                "property": "background-clip",
+                "authored_value": "",
+                "computed_b": "border-box",
+                "improvement": 182.0,
+                "local_improvement": 14.0,
+                "confidence": 0.022276621787025705,
+                "proven": true,
+                "direct_local_evidence": true,
+                "matched_by_rule": false,
+                "impact_kind": "propagated-structural-or-inherited",
+                "role": "declaration-ablation",
+                "value_ast": {
+                  "kind": "value",
+                  "text": "",
+                  "start": 0,
+                  "end": 0,
+                  "children": []
+                }
+              },
+              {
+                "rule_index": 11,
+                "rule_selector": ".action",
+                "property": "background-color",
+                "authored_value": "",
+                "computed_b": "rgba(0, 0, 0, 0)",
+                "improvement": 182.0,
+                "local_improvement": 14.0,
+                "confidence": 0.022276621787025705,
+                "proven": true,
+                "direct_local_evidence": true,
+                "matched_by_rule": false,
+                "impact_kind": "propagated-structural-or-inherited",
+                "role": "declaration-ablation",
+                "value_ast": {
+                  "kind": "value",
+                  "text": "",
+                  "start": 0,
+                  "end": 0,
+                  "children": []
+                }
+              },
+              {
+                "rule_index": 11,
+                "rule_selector": ".action",
+                "property": "color",
+                "authored_value": "var(--vcd-action-text)",
+                "computed_b": "rgb(232, 234, 237)",
+                "improvement": 182.0,
+                "local_improvement": 14.0,
+                "confidence": 0.022276621787025705,
+                "proven": true,
+                "direct_local_evidence": true,
+                "matched_by_rule": false,
+                "impact_kind": "propagated-structural-or-inherited",
+                "role": "declaration-ablation",
+                "value_ast": {
+                  "kind": "value",
+                  "text": "var(--vcd-action-text)",
+                  "start": 0,
+                  "end": 22,
+                  "children": [
+                    {
+                      "kind": "function:var",
+                      "text": "var(--vcd-action-text)",
+                      "start": 0,
+                      "end": 22
+                    }
+                  ]
+                }
+              },
+              {
+                "rule_index": 11,
+                "rule_selector": ".action",
+                "property": "font-weight",
+                "authored_value": "var(--vcd-action-weight)",
+                "computed_b": "400",
+                "improvement": 182.0,
+                "local_improvement": 14.0,
+                "confidence": 0.022276621787025705,
+                "proven": true,
+                "direct_local_evidence": true,
+                "matched_by_rule": false,
+                "impact_kind": "propagated-structural-or-inherited",
+                "role": "declaration-ablation",
+                "value_ast": {
+                  "kind": "value",
+                  "text": "var(--vcd-action-weight)",
+                  "start": 0,
+                  "end": 24,
+                  "children": [
+                    {
+                      "kind": "function:var",
+                      "text": "var(--vcd-action-weight)",
+                      "start": 0,
+                      "end": 24
+                    }
+                  ]
+                }
+              },
+              {
+                "rule_index": 11,
+                "rule_selector": ".action",
+                "property": "transform",
+                "authored_value": "var(--vcd-action-nudge)",
+                "computed_b": "none",
+                "improvement": 182.0,
+                "local_improvement": 14.0,
+                "confidence": 0.022276621787025705,
+                "proven": true,
+                "direct_local_evidence": true,
+                "matched_by_rule": false,
+                "impact_kind": "propagated-structural-or-inherited",
+                "role": "declaration-ablation",
+                "value_ast": {
+                  "kind": "value",
+                  "text": "var(--vcd-action-nudge)",
+                  "start": 0,
+                  "end": 23,
+                  "children": [
+                    {
+                      "kind": "function:var",
+                      "text": "var(--vcd-action-nudge)",
+                      "start": 0,
+                      "end": 23
+                    }
+                  ]
+                }
+              }
+            ],
+            "css_value_provenance": [],
+            "cascade_provenance": null,
+            "css_variables": {
+              "usage": [],
+              "chains": []
+            },
+            "interaction_causes": [],
+            "content_change": {
+              "intrinsic_geometry": {
+                "scroll_height": {
+                  "a": 336.0,
+                  "b": 352.0
+                },
+                "client_height": {
+                  "a": 336.0,
+                  "b": 352.0
+                }
+              }
+            },
+            "caused_by": [],
+            "root_cause": {
+              "rule_index": 9,
+              "rule_selector": ".primary",
+              "property": "padding-top",
+              "authored_value": "",
+              "computed_b": "0px",
+              "improvement": 7612.0,
+              "local_improvement": 8.0,
+              "confidence": 0.9317013463892289,
+              "proven": true,
+              "direct_local_evidence": true,
+              "matched_by_rule": false,
+              "impact_kind": "propagated-structural-or-inherited",
+              "role": "declaration-ablation",
+              "value_ast": {
+                "kind": "value",
+                "text": "",
+                "start": 0,
+                "end": 0,
+                "children": []
+              }
+            },
+            "visual_impact": {
+              "changed_pixels": 62071
+            },
+            "relations": {
+              "descendants": [
+                {
+                  "selector": "html > body > main.demo > section.cards",
+                  "categories": [
+                    "size",
+                    "color",
+                    "style"
+                  ],
+                  "change_origin": [
+                    "computed-style"
+                  ],
+                  "mechanisms": [
+                    "layout",
+                    "paint",
+                    "transform"
+                  ],
+                  "geometry": {
+                    "position": {
+                      "a_x": 230.0,
+                      "a_y": 201.0,
+                      "b_x": 230.0,
+                      "b_y": 201.0,
+                      "delta_x": 0.0,
+                      "delta_y": 0.0
+                    },
+                    "size": {
+                      "a_width": 720.0,
+                      "a_height": 131.90625,
+                      "b_width": 720.0,
+                      "b_height": 147.90625,
+                      "delta_width": 0.0,
+                      "delta_height": 16.0
+                    }
+                  },
+                  "computed_style_changes": {
+                    "layout": {
+                      "grid-template-rows": {
+                        "a": "131.906px",
+                        "b": "147.906px"
+                      }
+                    },
+                    "box_model": {
+                      "height": {
+                        "a": "131.906px",
+                        "b": "147.906px"
+                      }
+                    },
+                    "color": {
+                      "--primary-vcd-color-steel": {
+                        "a": "",
+                        "b": "#29343dff"
+                      },
+                      "--catalog-card-color-raised": {
+                        "a": "",
+                        "b": "#29343dff"
+                      },
+                      "--base-vcd-color-steel": {
+                        "a": "",
+                        "b": "#29343dff"
+                      }
+                    },
+                    "transform": {
+                      "perspective-origin": {
+                        "a": "360px 65.9531px",
+                        "b": "360px 73.9531px"
+                      },
+                      "transform-origin": {
+                        "a": "360px 65.9531px",
+                        "b": "360px 73.9531px"
+                      }
+                    },
+                    "other": {
+                      "block-size": {
+                        "a": "131.906px",
+                        "b": "147.906px"
+                      },
+                      "--base-vcd-dimension-twenty-pixel": {
+                        "a": "",
+                        "b": "calc(20 * 1px)"
+                      },
+                      "--catalog-card-measure-round-radius": {
+                        "a": "",
+                        "b": "calc(28 * 1px)"
+                      },
+                      "--catalog-action-motion-nudge": {
+                        "a": "",
+                        "b": "translateX(\n    calc(20 * 1px)\n  )"
+                      },
+                      "--vcd-card-roomy-padding": {
+                        "a": "",
+                        "b": "calc(32 * 1px)"
+                      },
+                      "--vcd-card-round-radius": {
+                        "a": "",
+                        "b": "calc(28 * 1px)"
+                      },
+                      "--vcd-card-raised-surface": {
+                        "a": "",
+                        "b": "#29343dff"
+                      },
+                      "--base-vcd-dimension-twenty-eight-pixel": {
+                        "a": "",
+                        "b": "calc(28 * 1px)"
+                      },
+                      "--catalog-card-measure-roomy-padding": {
+                        "a": "",
+                        "b": "calc(32 * 1px)"
+                      },
+                      "--vcd-action-nudge": {
+                        "a": "",
+                        "b": "translateX(\n    calc(20 * 1px)\n  )"
+                      }
+                    }
+                  },
+                  "causes": [],
+                  "css_provenance": [
+                    {
+                      "rule_index": 9,
+                      "rule_selector": ".primary",
+                      "property": "padding-top",
+                      "authored_value": "",
+                      "computed_b": "0px",
+                      "improvement": 7612.0,
+                      "local_improvement": 8.0,
+                      "confidence": 0.9317013463892289,
+                      "proven": true,
+                      "direct_local_evidence": true,
+                      "matched_by_rule": false,
+                      "impact_kind": "propagated-structural-or-inherited",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "",
+                        "start": 0,
+                        "end": 0,
+                        "children": []
+                      }
+                    },
+                    {
+                      "rule_index": 9,
+                      "rule_selector": ".primary",
+                      "property": "padding-right",
+                      "authored_value": "",
+                      "computed_b": "0px",
+                      "improvement": 7612.0,
+                      "local_improvement": 8.0,
+                      "confidence": 0.9317013463892289,
+                      "proven": true,
+                      "direct_local_evidence": true,
+                      "matched_by_rule": false,
+                      "impact_kind": "propagated-structural-or-inherited",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "",
+                        "start": 0,
+                        "end": 0,
+                        "children": []
+                      }
+                    },
+                    {
+                      "rule_index": 9,
+                      "rule_selector": ".primary",
+                      "property": "padding-bottom",
+                      "authored_value": "",
+                      "computed_b": "0px",
+                      "improvement": 7612.0,
+                      "local_improvement": 21.0,
+                      "confidence": 0.9317013463892289,
+                      "proven": true,
+                      "direct_local_evidence": true,
+                      "matched_by_rule": false,
+                      "impact_kind": "propagated-structural-or-inherited",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "",
+                        "start": 0,
+                        "end": 0,
+                        "children": []
+                      }
+                    },
+                    {
+                      "rule_index": 9,
+                      "rule_selector": ".primary",
+                      "property": "padding-left",
+                      "authored_value": "",
+                      "computed_b": "0px",
+                      "improvement": 7612.0,
+                      "local_improvement": 21.0,
+                      "confidence": 0.9317013463892289,
+                      "proven": true,
+                      "direct_local_evidence": true,
+                      "matched_by_rule": false,
+                      "impact_kind": "propagated-structural-or-inherited",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "",
+                        "start": 0,
+                        "end": 0,
+                        "children": []
+                      }
+                    }
+                  ],
+                  "css_value_provenance": [],
+                  "cascade_provenance": null,
+                  "css_variables": {
+                    "usage": [],
+                    "chains": []
+                  },
+                  "interaction_causes": [],
+                  "content_change": {
+                    "intrinsic_geometry": {
+                      "scroll_height": {
+                        "a": 132.0,
+                        "b": 148.0
+                      },
+                      "client_height": {
+                        "a": 132.0,
+                        "b": 148.0
+                      }
+                    }
+                  },
+                  "caused_by": [],
+                  "root_cause": {
+                    "rule_index": 9,
+                    "rule_selector": ".primary",
+                    "property": "padding-top",
+                    "authored_value": "",
+                    "computed_b": "0px",
+                    "improvement": 7612.0,
+                    "local_improvement": 8.0,
+                    "confidence": 0.9317013463892289,
+                    "proven": true,
+                    "direct_local_evidence": true,
+                    "matched_by_rule": false,
+                    "impact_kind": "propagated-structural-or-inherited",
+                    "role": "declaration-ablation",
+                    "value_ast": {
+                      "kind": "value",
+                      "text": "",
+                      "start": 0,
+                      "end": 0,
+                      "children": []
+                    }
+                  },
+                  "visual_impact": {
+                    "changed_pixels": 57160
+                  },
+                  "relations": {
+                    "descendants": [
+                      {
+                        "selector": "html > body > main.demo > section.cards > article.card.primary:nth-of-type(1)",
+                        "categories": [
+                          "size",
+                          "color",
+                          "style"
+                        ],
+                        "change_origin": [
+                          "computed-style"
+                        ],
+                        "mechanisms": [
+                          "layout",
+                          "paint",
+                          "transform"
+                        ],
+                        "geometry": {
+                          "position": {
+                            "a_x": 230.0,
+                            "a_y": 201.0,
+                            "b_x": 230.0,
+                            "b_y": 201.0,
+                            "delta_x": 0.0,
+                            "delta_y": 0.0
+                          },
+                          "size": {
+                            "a_width": 352.0,
+                            "a_height": 131.90625,
+                            "b_width": 352.0,
+                            "b_height": 147.90625,
+                            "delta_width": 0.0,
+                            "delta_height": 16.0
+                          }
+                        },
+                        "computed_style_changes": {
+                          "box_model": {
+                            "height": {
+                              "a": "131.906px",
+                              "b": "147.906px"
+                            },
+                            "padding-bottom": {
+                              "a": "24px",
+                              "b": "32px"
+                            },
+                            "padding-left": {
+                              "a": "24px",
+                              "b": "32px"
+                            },
+                            "padding-right": {
+                              "a": "24px",
+                              "b": "32px"
+                            },
+                            "padding-top": {
+                              "a": "24px",
+                              "b": "32px"
+                            }
+                          },
+                          "color": {
+                            "background-color": {
+                              "a": "rgb(32, 37, 41)",
+                              "b": "rgb(41, 52, 61)"
+                            },
+                            "--primary-vcd-color-steel": {
+                              "a": "",
+                              "b": "#29343dff"
+                            },
+                            "--catalog-card-color-raised": {
+                              "a": "",
+                              "b": "#29343dff"
+                            },
+                            "--base-vcd-color-steel": {
+                              "a": "",
+                              "b": "#29343dff"
+                            }
+                          },
+                          "transform": {
+                            "perspective-origin": {
+                              "a": "176px 65.9531px",
+                              "b": "176px 73.9531px"
+                            },
+                            "transform-origin": {
+                              "a": "176px 65.9531px",
+                              "b": "176px 73.9531px"
+                            }
+                          },
+                          "other": {
+                            "block-size": {
+                              "a": "131.906px",
+                              "b": "147.906px"
+                            },
+                            "padding-block-end": {
+                              "a": "24px",
+                              "b": "32px"
+                            },
+                            "padding-block-start": {
+                              "a": "24px",
+                              "b": "32px"
+                            },
+                            "padding-inline-end": {
+                              "a": "24px",
+                              "b": "32px"
+                            },
+                            "padding-inline-start": {
+                              "a": "24px",
+                              "b": "32px"
+                            },
+                            "--base-vcd-dimension-twenty-pixel": {
+                              "a": "",
+                              "b": "calc(20 * 1px)"
+                            },
+                            "--catalog-card-measure-round-radius": {
+                              "a": "",
+                              "b": "calc(28 * 1px)"
+                            },
+                            "--catalog-action-motion-nudge": {
+                              "a": "",
+                              "b": "translateX(\n    calc(20 * 1px)\n  )"
+                            },
+                            "--vcd-card-roomy-padding": {
+                              "a": "",
+                              "b": "calc(32 * 1px)"
+                            },
+                            "--vcd-card-round-radius": {
+                              "a": "",
+                              "b": "calc(28 * 1px)"
+                            },
+                            "--vcd-card-raised-surface": {
+                              "a": "",
+                              "b": "#29343dff"
+                            },
+                            "--base-vcd-dimension-twenty-eight-pixel": {
+                              "a": "",
+                              "b": "calc(28 * 1px)"
+                            },
+                            "--catalog-card-measure-roomy-padding": {
+                              "a": "",
+                              "b": "calc(32 * 1px)"
+                            },
+                            "--vcd-action-nudge": {
+                              "a": "",
+                              "b": "translateX(\n    calc(20 * 1px)\n  )"
+                            }
+                          }
+                        },
+                        "causes": [
+                          {
+                            "selector": ".primary",
+                            "declarations": [
+                              "background-image: ",
+                              "background-position-x: ",
+                              "background-position-y: ",
+                              "background-size: ",
+                              "background-repeat: ",
+                              "background-attachment: ",
+                              "background-origin: ",
+                              "background-clip: ",
+                              "background-color: ",
+                              "padding-top: ",
+                              "padding-right: ",
+                              "padding-bottom: ",
+                              "padding-left: "
+                            ],
+                            "pixels_explained": 7612,
+                            "explanation_ratio": 0.9317013463892289
+                          }
+                        ],
+                        "css_provenance": [
+                          {
+                            "rule_index": 9,
+                            "rule_selector": ".primary",
+                            "property": "background-image",
+                            "authored_value": "",
+                            "computed_b": "none",
+                            "improvement": 7612.0,
+                            "local_improvement": 0.0,
+                            "confidence": 0.9317013463892289,
+                            "proven": true,
+                            "direct_local_evidence": false,
+                            "matched_by_rule": true,
+                            "impact_kind": "matched-changed-element",
+                            "role": "declaration-ablation",
+                            "value_ast": {
+                              "kind": "value",
+                              "text": "",
+                              "start": 0,
+                              "end": 0,
+                              "children": []
+                            }
+                          },
+                          {
+                            "rule_index": 9,
+                            "rule_selector": ".primary",
+                            "property": "background-position-x",
+                            "authored_value": "",
+                            "computed_b": "",
+                            "improvement": 7612.0,
+                            "local_improvement": 0.0,
+                            "confidence": 0.9317013463892289,
+                            "proven": true,
+                            "direct_local_evidence": false,
+                            "matched_by_rule": true,
+                            "impact_kind": "matched-changed-element",
+                            "role": "declaration-ablation",
+                            "value_ast": {
+                              "kind": "value",
+                              "text": "",
+                              "start": 0,
+                              "end": 0,
+                              "children": []
+                            }
+                          },
+                          {
+                            "rule_index": 9,
+                            "rule_selector": ".primary",
+                            "property": "background-position-y",
+                            "authored_value": "",
+                            "computed_b": "",
+                            "improvement": 7612.0,
+                            "local_improvement": 0.0,
+                            "confidence": 0.9317013463892289,
+                            "proven": true,
+                            "direct_local_evidence": false,
+                            "matched_by_rule": true,
+                            "impact_kind": "matched-changed-element",
+                            "role": "declaration-ablation",
+                            "value_ast": {
+                              "kind": "value",
+                              "text": "",
+                              "start": 0,
+                              "end": 0,
+                              "children": []
+                            }
+                          },
+                          {
+                            "rule_index": 9,
+                            "rule_selector": ".primary",
+                            "property": "background-size",
+                            "authored_value": "",
+                            "computed_b": "auto",
+                            "improvement": 7612.0,
+                            "local_improvement": 0.0,
+                            "confidence": 0.9317013463892289,
+                            "proven": true,
+                            "direct_local_evidence": false,
+                            "matched_by_rule": true,
+                            "impact_kind": "matched-changed-element",
+                            "role": "declaration-ablation",
+                            "value_ast": {
+                              "kind": "value",
+                              "text": "",
+                              "start": 0,
+                              "end": 0,
+                              "children": []
+                            }
+                          },
+                          {
+                            "rule_index": 9,
+                            "rule_selector": ".primary",
+                            "property": "background-repeat",
+                            "authored_value": "",
+                            "computed_b": "repeat",
+                            "improvement": 7612.0,
+                            "local_improvement": 0.0,
+                            "confidence": 0.9317013463892289,
+                            "proven": true,
+                            "direct_local_evidence": false,
+                            "matched_by_rule": true,
+                            "impact_kind": "matched-changed-element",
+                            "role": "declaration-ablation",
+                            "value_ast": {
+                              "kind": "value",
+                              "text": "",
+                              "start": 0,
+                              "end": 0,
+                              "children": []
+                            }
+                          },
+                          {
+                            "rule_index": 9,
+                            "rule_selector": ".primary",
+                            "property": "background-attachment",
+                            "authored_value": "",
+                            "computed_b": "scroll",
+                            "improvement": 7612.0,
+                            "local_improvement": 0.0,
+                            "confidence": 0.9317013463892289,
+                            "proven": true,
+                            "direct_local_evidence": false,
+                            "matched_by_rule": true,
+                            "impact_kind": "matched-changed-element",
+                            "role": "declaration-ablation",
+                            "value_ast": {
+                              "kind": "value",
+                              "text": "",
+                              "start": 0,
+                              "end": 0,
+                              "children": []
+                            }
+                          },
+                          {
+                            "rule_index": 9,
+                            "rule_selector": ".primary",
+                            "property": "background-origin",
+                            "authored_value": "",
+                            "computed_b": "padding-box",
+                            "improvement": 7612.0,
+                            "local_improvement": 0.0,
+                            "confidence": 0.9317013463892289,
+                            "proven": true,
+                            "direct_local_evidence": false,
+                            "matched_by_rule": true,
+                            "impact_kind": "matched-changed-element",
+                            "role": "declaration-ablation",
+                            "value_ast": {
+                              "kind": "value",
+                              "text": "",
+                              "start": 0,
+                              "end": 0,
+                              "children": []
+                            }
+                          },
+                          {
+                            "rule_index": 9,
+                            "rule_selector": ".primary",
+                            "property": "background-clip",
+                            "authored_value": "",
+                            "computed_b": "border-box",
+                            "improvement": 7612.0,
+                            "local_improvement": 0.0,
+                            "confidence": 0.9317013463892289,
+                            "proven": true,
+                            "direct_local_evidence": false,
+                            "matched_by_rule": true,
+                            "impact_kind": "matched-changed-element",
+                            "role": "declaration-ablation",
+                            "value_ast": {
+                              "kind": "value",
+                              "text": "",
+                              "start": 0,
+                              "end": 0,
+                              "children": []
+                            }
+                          },
+                          {
+                            "rule_index": 9,
+                            "rule_selector": ".primary",
+                            "property": "background-color",
+                            "authored_value": "",
+                            "computed_b": "rgb(41, 52, 61)",
+                            "improvement": 7612.0,
+                            "local_improvement": 1.0,
+                            "confidence": 0.9317013463892289,
+                            "proven": true,
+                            "direct_local_evidence": true,
+                            "matched_by_rule": true,
+                            "impact_kind": "direct-local",
+                            "role": "declaration-ablation",
+                            "value_ast": {
+                              "kind": "value",
+                              "text": "",
+                              "start": 0,
+                              "end": 0,
+                              "children": []
+                            }
+                          },
+                          {
+                            "rule_index": 9,
+                            "rule_selector": ".primary",
+                            "property": "padding-top",
+                            "authored_value": "",
+                            "computed_b": "32px",
+                            "improvement": 7612.0,
+                            "local_improvement": 11.0,
+                            "confidence": 0.9317013463892289,
+                            "proven": true,
+                            "direct_local_evidence": true,
+                            "matched_by_rule": true,
+                            "impact_kind": "direct-local",
+                            "role": "declaration-ablation",
+                            "value_ast": {
+                              "kind": "value",
+                              "text": "",
+                              "start": 0,
+                              "end": 0,
+                              "children": []
+                            }
+                          },
+                          {
+                            "rule_index": 9,
+                            "rule_selector": ".primary",
+                            "property": "padding-right",
+                            "authored_value": "",
+                            "computed_b": "32px",
+                            "improvement": 7612.0,
+                            "local_improvement": 13.0,
+                            "confidence": 0.9317013463892289,
+                            "proven": true,
+                            "direct_local_evidence": true,
+                            "matched_by_rule": true,
+                            "impact_kind": "direct-local",
+                            "role": "declaration-ablation",
+                            "value_ast": {
+                              "kind": "value",
+                              "text": "",
+                              "start": 0,
+                              "end": 0,
+                              "children": []
+                            }
+                          },
+                          {
+                            "rule_index": 9,
+                            "rule_selector": ".primary",
+                            "property": "padding-bottom",
+                            "authored_value": "",
+                            "computed_b": "32px",
+                            "improvement": 7612.0,
+                            "local_improvement": 27.0,
+                            "confidence": 0.9317013463892289,
+                            "proven": true,
+                            "direct_local_evidence": true,
+                            "matched_by_rule": true,
+                            "impact_kind": "direct-local",
+                            "role": "declaration-ablation",
+                            "value_ast": {
+                              "kind": "value",
+                              "text": "",
+                              "start": 0,
+                              "end": 0,
+                              "children": []
+                            }
+                          },
+                          {
+                            "rule_index": 9,
+                            "rule_selector": ".primary",
+                            "property": "padding-left",
+                            "authored_value": "",
+                            "computed_b": "32px",
+                            "improvement": 7612.0,
+                            "local_improvement": 29.0,
+                            "confidence": 0.9317013463892289,
+                            "proven": true,
+                            "direct_local_evidence": true,
+                            "matched_by_rule": true,
+                            "impact_kind": "direct-local",
+                            "role": "declaration-ablation",
+                            "value_ast": {
+                              "kind": "value",
+                              "text": "",
+                              "start": 0,
+                              "end": 0,
+                              "children": []
+                            }
+                          }
+                        ],
+                        "css_value_provenance": [],
+                        "cascade_provenance": null,
+                        "css_variables": {
+                          "usage": [],
+                          "chains": []
+                        },
+                        "interaction_causes": [],
+                        "content_change": {
+                          "intrinsic_geometry": {
+                            "scroll_height": {
+                              "a": 130.0,
+                              "b": 146.0
+                            },
+                            "client_height": {
+                              "a": 130.0,
+                              "b": 146.0
+                            }
+                          }
+                        },
+                        "caused_by": [],
+                        "root_cause": {
+                          "rule_index": 9,
+                          "rule_selector": ".primary",
+                          "property": "background-image",
+                          "authored_value": "",
+                          "computed_b": "none",
+                          "improvement": 7612.0,
+                          "local_improvement": 0.0,
+                          "confidence": 0.9317013463892289,
+                          "proven": true,
+                          "direct_local_evidence": false,
+                          "matched_by_rule": true,
+                          "impact_kind": "matched-changed-element",
+                          "role": "declaration-ablation",
+                          "value_ast": {
+                            "kind": "value",
+                            "text": "",
+                            "start": 0,
+                            "end": 0,
+                            "children": []
+                          }
+                        },
+                        "visual_impact": {
+                          "changed_pixels": 51084
+                        },
+                        "relations": {
+                          "descendants": [
+                            {
+                              "selector": "html > body > main.demo > section.cards > article.card.primary:nth-of-type(1) > h2",
+                              "categories": [
+                                "position",
+                                "size",
+                                "color",
+                                "style"
+                              ],
+                              "change_origin": [
+                                "computed-style"
+                              ],
+                              "mechanisms": [
+                                "layout",
+                                "paint",
+                                "transform"
+                              ],
+                              "geometry": {
+                                "position": {
+                                  "a_x": 255.0,
+                                  "a_y": 226.0,
+                                  "b_x": 263.0,
+                                  "b_y": 234.0,
+                                  "delta_x": 8.0,
+                                  "delta_y": 8.0
+                                },
+                                "size": {
+                                  "a_width": 302.0,
+                                  "a_height": 28.0,
+                                  "b_width": 286.0,
+                                  "b_height": 28.0,
+                                  "delta_width": -16.0,
+                                  "delta_height": 0.0
+                                }
+                              },
+                              "computed_style_changes": {
+                                "box_model": {
+                                  "width": {
+                                    "a": "302px",
+                                    "b": "286px"
+                                  }
+                                },
+                                "color": {
+                                  "--primary-vcd-color-steel": {
+                                    "a": "",
+                                    "b": "#29343dff"
+                                  },
+                                  "--catalog-card-color-raised": {
+                                    "a": "",
+                                    "b": "#29343dff"
+                                  },
+                                  "--base-vcd-color-steel": {
+                                    "a": "",
+                                    "b": "#29343dff"
+                                  }
+                                },
+                                "transform": {
+                                  "perspective-origin": {
+                                    "a": "151px 14px",
+                                    "b": "143px 14px"
+                                  },
+                                  "transform-origin": {
+                                    "a": "151px 14px",
+                                    "b": "143px 14px"
+                                  }
+                                },
+                                "other": {
+                                  "inline-size": {
+                                    "a": "302px",
+                                    "b": "286px"
+                                  },
+                                  "--base-vcd-dimension-twenty-pixel": {
+                                    "a": "",
+                                    "b": "calc(20 * 1px)"
+                                  },
+                                  "--catalog-card-measure-round-radius": {
+                                    "a": "",
+                                    "b": "calc(28 * 1px)"
+                                  },
+                                  "--catalog-action-motion-nudge": {
+                                    "a": "",
+                                    "b": "translateX(\n    calc(20 * 1px)\n  )"
+                                  },
+                                  "--vcd-card-roomy-padding": {
+                                    "a": "",
+                                    "b": "calc(32 * 1px)"
+                                  },
+                                  "--vcd-card-round-radius": {
+                                    "a": "",
+                                    "b": "calc(28 * 1px)"
+                                  },
+                                  "--vcd-card-raised-surface": {
+                                    "a": "",
+                                    "b": "#29343dff"
+                                  },
+                                  "--base-vcd-dimension-twenty-eight-pixel": {
+                                    "a": "",
+                                    "b": "calc(28 * 1px)"
+                                  },
+                                  "--catalog-card-measure-roomy-padding": {
+                                    "a": "",
+                                    "b": "calc(32 * 1px)"
+                                  },
+                                  "--vcd-action-nudge": {
+                                    "a": "",
+                                    "b": "translateX(\n    calc(20 * 1px)\n  )"
+                                  }
+                                }
+                              },
+                              "causes": [],
+                              "css_provenance": [
+                                {
+                                  "rule_index": 9,
+                                  "rule_selector": ".primary",
+                                  "property": "padding-top",
+                                  "authored_value": "",
+                                  "computed_b": "0px",
+                                  "improvement": 7612.0,
+                                  "local_improvement": 8.0,
+                                  "confidence": 0.9317013463892289,
+                                  "proven": true,
+                                  "direct_local_evidence": true,
+                                  "matched_by_rule": false,
+                                  "impact_kind": "propagated-structural-or-inherited",
+                                  "role": "declaration-ablation",
+                                  "value_ast": {
+                                    "kind": "value",
+                                    "text": "",
+                                    "start": 0,
+                                    "end": 0,
+                                    "children": []
+                                  }
+                                },
+                                {
+                                  "rule_index": 9,
+                                  "rule_selector": ".primary",
+                                  "property": "padding-right",
+                                  "authored_value": "",
+                                  "computed_b": "0px",
+                                  "improvement": 7612.0,
+                                  "local_improvement": 16.0,
+                                  "confidence": 0.9317013463892289,
+                                  "proven": true,
+                                  "direct_local_evidence": true,
+                                  "matched_by_rule": false,
+                                  "impact_kind": "propagated-structural-or-inherited",
+                                  "role": "declaration-ablation",
+                                  "value_ast": {
+                                    "kind": "value",
+                                    "text": "",
+                                    "start": 0,
+                                    "end": 0,
+                                    "children": []
+                                  }
+                                },
+                                {
+                                  "rule_index": 9,
+                                  "rule_selector": ".primary",
+                                  "property": "padding-bottom",
+                                  "authored_value": "",
+                                  "computed_b": "0px",
+                                  "improvement": 7612.0,
+                                  "local_improvement": 16.0,
+                                  "confidence": 0.9317013463892289,
+                                  "proven": true,
+                                  "direct_local_evidence": true,
+                                  "matched_by_rule": false,
+                                  "impact_kind": "propagated-structural-or-inherited",
+                                  "role": "declaration-ablation",
+                                  "value_ast": {
+                                    "kind": "value",
+                                    "text": "",
+                                    "start": 0,
+                                    "end": 0,
+                                    "children": []
+                                  }
+                                },
+                                {
+                                  "rule_index": 9,
+                                  "rule_selector": ".primary",
+                                  "property": "padding-left",
+                                  "authored_value": "",
+                                  "computed_b": "0px",
+                                  "improvement": 7612.0,
+                                  "local_improvement": 36.0,
+                                  "confidence": 0.9317013463892289,
+                                  "proven": true,
+                                  "direct_local_evidence": true,
+                                  "matched_by_rule": false,
+                                  "impact_kind": "propagated-structural-or-inherited",
+                                  "role": "declaration-ablation",
+                                  "value_ast": {
+                                    "kind": "value",
+                                    "text": "",
+                                    "start": 0,
+                                    "end": 0,
+                                    "children": []
+                                  }
+                                }
+                              ],
+                              "css_value_provenance": [],
+                              "cascade_provenance": null,
+                              "css_variables": {
+                                "usage": [],
+                                "chains": []
+                              },
+                              "interaction_causes": [],
+                              "content_change": {
+                                "intrinsic_geometry": {
+                                  "scroll_width": {
+                                    "a": 302.0,
+                                    "b": 286.0
+                                  },
+                                  "client_width": {
+                                    "a": 302.0,
+                                    "b": 286.0
+                                  }
+                                }
+                              },
+                              "caused_by": [],
+                              "root_cause": {
+                                "rule_index": 9,
+                                "rule_selector": ".primary",
+                                "property": "padding-top",
+                                "authored_value": "",
+                                "computed_b": "0px",
+                                "improvement": 7612.0,
+                                "local_improvement": 8.0,
+                                "confidence": 0.9317013463892289,
+                                "proven": true,
+                                "direct_local_evidence": true,
+                                "matched_by_rule": false,
+                                "impact_kind": "propagated-structural-or-inherited",
+                                "role": "declaration-ablation",
+                                "value_ast": {
+                                  "kind": "value",
+                                  "text": "",
+                                  "start": 0,
+                                  "end": 0,
+                                  "children": []
+                                }
+                              },
+                              "visual_impact": {
+                                "changed_pixels": 8108
+                              },
+                              "relations": {
+                                "descendants": [],
+                                "siblings": [
+                                  {
+                                    "selector": "html > body > main.demo > section.cards > article.card.primary:nth-of-type(1) > p"
+                                  }
+                                ],
+                                "overlaps": []
+                              }
+                            },
+                            {
+                              "selector": "html > body > main.demo > section.cards > article.card.primary:nth-of-type(1) > p",
+                              "categories": [
+                                "position",
+                                "size",
+                                "color",
+                                "style"
+                              ],
+                              "change_origin": [
+                                "computed-style"
+                              ],
+                              "mechanisms": [
+                                "layout",
+                                "paint",
+                                "transform"
+                              ],
+                              "geometry": {
+                                "position": {
+                                  "a_x": 255.0,
+                                  "a_y": 273.90625,
+                                  "b_x": 263.0,
+                                  "b_y": 281.90625,
+                                  "delta_x": 8.0,
+                                  "delta_y": 8.0
+                                },
+                                "size": {
+                                  "a_width": 302.0,
+                                  "a_height": 18.0,
+                                  "b_width": 286.0,
+                                  "b_height": 18.0,
+                                  "delta_width": -16.0,
+                                  "delta_height": 0.0
+                                }
+                              },
+                              "computed_style_changes": {
+                                "box_model": {
+                                  "width": {
+                                    "a": "302px",
+                                    "b": "286px"
+                                  }
+                                },
+                                "color": {
+                                  "--primary-vcd-color-steel": {
+                                    "a": "",
+                                    "b": "#29343dff"
+                                  },
+                                  "--catalog-card-color-raised": {
+                                    "a": "",
+                                    "b": "#29343dff"
+                                  },
+                                  "--base-vcd-color-steel": {
+                                    "a": "",
+                                    "b": "#29343dff"
+                                  }
+                                },
+                                "transform": {
+                                  "perspective-origin": {
+                                    "a": "151px 9px",
+                                    "b": "143px 9px"
+                                  },
+                                  "transform-origin": {
+                                    "a": "151px 9px",
+                                    "b": "143px 9px"
+                                  }
+                                },
+                                "other": {
+                                  "inline-size": {
+                                    "a": "302px",
+                                    "b": "286px"
+                                  },
+                                  "--base-vcd-dimension-twenty-pixel": {
+                                    "a": "",
+                                    "b": "calc(20 * 1px)"
+                                  },
+                                  "--catalog-card-measure-round-radius": {
+                                    "a": "",
+                                    "b": "calc(28 * 1px)"
+                                  },
+                                  "--catalog-action-motion-nudge": {
+                                    "a": "",
+                                    "b": "translateX(\n    calc(20 * 1px)\n  )"
+                                  },
+                                  "--vcd-card-roomy-padding": {
+                                    "a": "",
+                                    "b": "calc(32 * 1px)"
+                                  },
+                                  "--vcd-card-round-radius": {
+                                    "a": "",
+                                    "b": "calc(28 * 1px)"
+                                  },
+                                  "--vcd-card-raised-surface": {
+                                    "a": "",
+                                    "b": "#29343dff"
+                                  },
+                                  "--base-vcd-dimension-twenty-eight-pixel": {
+                                    "a": "",
+                                    "b": "calc(28 * 1px)"
+                                  },
+                                  "--catalog-card-measure-roomy-padding": {
+                                    "a": "",
+                                    "b": "calc(32 * 1px)"
+                                  },
+                                  "--vcd-action-nudge": {
+                                    "a": "",
+                                    "b": "translateX(\n    calc(20 * 1px)\n  )"
+                                  }
+                                }
+                              },
+                              "causes": [],
+                              "css_provenance": [
+                                {
+                                  "rule_index": 9,
+                                  "rule_selector": ".primary",
+                                  "property": "padding-top",
+                                  "authored_value": "",
+                                  "computed_b": "0px",
+                                  "improvement": 7612.0,
+                                  "local_improvement": 8.0,
+                                  "confidence": 0.9317013463892289,
+                                  "proven": true,
+                                  "direct_local_evidence": true,
+                                  "matched_by_rule": false,
+                                  "impact_kind": "propagated-structural-or-inherited",
+                                  "role": "declaration-ablation",
+                                  "value_ast": {
+                                    "kind": "value",
+                                    "text": "",
+                                    "start": 0,
+                                    "end": 0,
+                                    "children": []
+                                  }
+                                },
+                                {
+                                  "rule_index": 9,
+                                  "rule_selector": ".primary",
+                                  "property": "padding-right",
+                                  "authored_value": "",
+                                  "computed_b": "0px",
+                                  "improvement": 7612.0,
+                                  "local_improvement": 16.0,
+                                  "confidence": 0.9317013463892289,
+                                  "proven": true,
+                                  "direct_local_evidence": true,
+                                  "matched_by_rule": false,
+                                  "impact_kind": "propagated-structural-or-inherited",
+                                  "role": "declaration-ablation",
+                                  "value_ast": {
+                                    "kind": "value",
+                                    "text": "",
+                                    "start": 0,
+                                    "end": 0,
+                                    "children": []
+                                  }
+                                },
+                                {
+                                  "rule_index": 9,
+                                  "rule_selector": ".primary",
+                                  "property": "padding-bottom",
+                                  "authored_value": "",
+                                  "computed_b": "0px",
+                                  "improvement": 7612.0,
+                                  "local_improvement": 16.0,
+                                  "confidence": 0.9317013463892289,
+                                  "proven": true,
+                                  "direct_local_evidence": true,
+                                  "matched_by_rule": false,
+                                  "impact_kind": "propagated-structural-or-inherited",
+                                  "role": "declaration-ablation",
+                                  "value_ast": {
+                                    "kind": "value",
+                                    "text": "",
+                                    "start": 0,
+                                    "end": 0,
+                                    "children": []
+                                  }
+                                },
+                                {
+                                  "rule_index": 9,
+                                  "rule_selector": ".primary",
+                                  "property": "padding-left",
+                                  "authored_value": "",
+                                  "computed_b": "0px",
+                                  "improvement": 7612.0,
+                                  "local_improvement": 36.0,
+                                  "confidence": 0.9317013463892289,
+                                  "proven": true,
+                                  "direct_local_evidence": true,
+                                  "matched_by_rule": false,
+                                  "impact_kind": "propagated-structural-or-inherited",
+                                  "role": "declaration-ablation",
+                                  "value_ast": {
+                                    "kind": "value",
+                                    "text": "",
+                                    "start": 0,
+                                    "end": 0,
+                                    "children": []
+                                  }
+                                }
+                              ],
+                              "css_value_provenance": [],
+                              "cascade_provenance": null,
+                              "css_variables": {
+                                "usage": [],
+                                "chains": []
+                              },
+                              "interaction_causes": [],
+                              "content_change": {
+                                "intrinsic_geometry": {
+                                  "scroll_width": {
+                                    "a": 302.0,
+                                    "b": 286.0
+                                  },
+                                  "client_width": {
+                                    "a": 302.0,
+                                    "b": 286.0
+                                  }
+                                }
+                              },
+                              "caused_by": [],
+                              "root_cause": {
+                                "rule_index": 9,
+                                "rule_selector": ".primary",
+                                "property": "padding-top",
+                                "authored_value": "",
+                                "computed_b": "0px",
+                                "improvement": 7612.0,
+                                "local_improvement": 8.0,
+                                "confidence": 0.9317013463892289,
+                                "proven": true,
+                                "direct_local_evidence": true,
+                                "matched_by_rule": false,
+                                "impact_kind": "propagated-structural-or-inherited",
+                                "role": "declaration-ablation",
+                                "value_ast": {
+                                  "kind": "value",
+                                  "text": "",
+                                  "start": 0,
+                                  "end": 0,
+                                  "children": []
+                                }
+                              },
+                              "visual_impact": {
+                                "changed_pixels": 5384
+                              },
+                              "relations": {
+                                "descendants": [],
+                                "siblings": [
+                                  {
+                                    "selector": "html > body > main.demo > section.cards > article.card.primary:nth-of-type(1) > h2"
+                                  }
+                                ],
+                                "overlaps": []
+                              }
+                            }
+                          ],
+                          "siblings": [
+                            {
+                              "selector": "html > body > main.demo > section.cards > article.card.secondary:nth-of-type(2)"
+                            }
+                          ],
+                          "overlaps": []
+                        }
+                      },
+                      {
+                        "selector": "html > body > main.demo > section.cards > article.card.secondary:nth-of-type(2)",
+                        "categories": [
+                          "size",
+                          "color",
+                          "style"
+                        ],
+                        "change_origin": [
+                          "computed-style"
+                        ],
+                        "mechanisms": [
+                          "layout",
+                          "paint",
+                          "transform"
+                        ],
+                        "geometry": {
+                          "position": {
+                            "a_x": 598.0,
+                            "a_y": 201.0,
+                            "b_x": 598.0,
+                            "b_y": 201.0,
+                            "delta_x": 0.0,
+                            "delta_y": 0.0
+                          },
+                          "size": {
+                            "a_width": 352.0,
+                            "a_height": 131.90625,
+                            "b_width": 352.0,
+                            "b_height": 147.90625,
+                            "delta_width": 0.0,
+                            "delta_height": 16.0
+                          }
+                        },
+                        "computed_style_changes": {
+                          "box_model": {
+                            "border-bottom-left-radius": {
+                              "a": "12px",
+                              "b": "28px"
+                            },
+                            "border-bottom-right-radius": {
+                              "a": "12px",
+                              "b": "28px"
+                            },
+                            "border-top-left-radius": {
+                              "a": "12px",
+                              "b": "28px"
+                            },
+                            "border-top-right-radius": {
+                              "a": "12px",
+                              "b": "28px"
+                            },
+                            "height": {
+                              "a": "131.906px",
+                              "b": "147.906px"
+                            }
+                          },
+                          "color": {
+                            "--primary-vcd-color-steel": {
+                              "a": "",
+                              "b": "#29343dff"
+                            },
+                            "--catalog-card-color-raised": {
+                              "a": "",
+                              "b": "#29343dff"
+                            },
+                            "--base-vcd-color-steel": {
+                              "a": "",
+                              "b": "#29343dff"
+                            }
+                          },
+                          "transform": {
+                            "perspective-origin": {
+                              "a": "176px 65.9531px",
+                              "b": "176px 73.9531px"
+                            },
+                            "transform-origin": {
+                              "a": "176px 65.9531px",
+                              "b": "176px 73.9531px"
+                            }
+                          },
+                          "other": {
+                            "block-size": {
+                              "a": "131.906px",
+                              "b": "147.906px"
+                            },
+                            "border-end-end-radius": {
+                              "a": "12px",
+                              "b": "28px"
+                            },
+                            "border-end-start-radius": {
+                              "a": "12px",
+                              "b": "28px"
+                            },
+                            "border-start-end-radius": {
+                              "a": "12px",
+                              "b": "28px"
+                            },
+                            "border-start-start-radius": {
+                              "a": "12px",
+                              "b": "28px"
+                            },
+                            "--base-vcd-dimension-twenty-pixel": {
+                              "a": "",
+                              "b": "calc(20 * 1px)"
+                            },
+                            "--catalog-card-measure-round-radius": {
+                              "a": "",
+                              "b": "calc(28 * 1px)"
+                            },
+                            "--catalog-action-motion-nudge": {
+                              "a": "",
+                              "b": "translateX(\n    calc(20 * 1px)\n  )"
+                            },
+                            "--vcd-card-roomy-padding": {
+                              "a": "",
+                              "b": "calc(32 * 1px)"
+                            },
+                            "--vcd-card-round-radius": {
+                              "a": "",
+                              "b": "calc(28 * 1px)"
+                            },
+                            "--vcd-card-raised-surface": {
+                              "a": "",
+                              "b": "#29343dff"
+                            },
+                            "--base-vcd-dimension-twenty-eight-pixel": {
+                              "a": "",
+                              "b": "calc(28 * 1px)"
+                            },
+                            "--catalog-card-measure-roomy-padding": {
+                              "a": "",
+                              "b": "calc(32 * 1px)"
+                            },
+                            "--vcd-action-nudge": {
+                              "a": "",
+                              "b": "translateX(\n    calc(20 * 1px)\n  )"
+                            }
+                          }
+                        },
+                        "causes": [
+                          {
+                            "selector": ".secondary",
+                            "declarations": [
+                              "border-top-left-radius: ",
+                              "border-top-right-radius: ",
+                              "border-bottom-right-radius: ",
+                              "border-bottom-left-radius: "
+                            ],
+                            "pixels_explained": 57,
+                            "explanation_ratio": 0.0069767441860465115
+                          }
+                        ],
+                        "css_provenance": [
+                          {
+                            "rule_index": 9,
+                            "rule_selector": ".primary",
+                            "property": "padding-top",
+                            "authored_value": "",
+                            "computed_b": "24px",
+                            "improvement": 7612.0,
+                            "local_improvement": 8.0,
+                            "confidence": 0.9317013463892289,
+                            "proven": true,
+                            "direct_local_evidence": true,
+                            "matched_by_rule": false,
+                            "impact_kind": "propagated-structural-or-inherited",
+                            "role": "declaration-ablation",
+                            "value_ast": {
+                              "kind": "value",
+                              "text": "",
+                              "start": 0,
+                              "end": 0,
+                              "children": []
+                            }
+                          },
+                          {
+                            "rule_index": 9,
+                            "rule_selector": ".primary",
+                            "property": "padding-right",
+                            "authored_value": "",
+                            "computed_b": "24px",
+                            "improvement": 7612.0,
+                            "local_improvement": 8.0,
+                            "confidence": 0.9317013463892289,
+                            "proven": true,
+                            "direct_local_evidence": true,
+                            "matched_by_rule": false,
+                            "impact_kind": "propagated-structural-or-inherited",
+                            "role": "declaration-ablation",
+                            "value_ast": {
+                              "kind": "value",
+                              "text": "",
+                              "start": 0,
+                              "end": 0,
+                              "children": []
+                            }
+                          },
+                          {
+                            "rule_index": 9,
+                            "rule_selector": ".primary",
+                            "property": "padding-bottom",
+                            "authored_value": "",
+                            "computed_b": "24px",
+                            "improvement": 7612.0,
+                            "local_improvement": 20.0,
+                            "confidence": 0.9317013463892289,
+                            "proven": true,
+                            "direct_local_evidence": true,
+                            "matched_by_rule": false,
+                            "impact_kind": "propagated-structural-or-inherited",
+                            "role": "declaration-ablation",
+                            "value_ast": {
+                              "kind": "value",
+                              "text": "",
+                              "start": 0,
+                              "end": 0,
+                              "children": []
+                            }
+                          },
+                          {
+                            "rule_index": 9,
+                            "rule_selector": ".primary",
+                            "property": "padding-left",
+                            "authored_value": "",
+                            "computed_b": "24px",
+                            "improvement": 7612.0,
+                            "local_improvement": 20.0,
+                            "confidence": 0.9317013463892289,
+                            "proven": true,
+                            "direct_local_evidence": true,
+                            "matched_by_rule": false,
+                            "impact_kind": "propagated-structural-or-inherited",
+                            "role": "declaration-ablation",
+                            "value_ast": {
+                              "kind": "value",
+                              "text": "",
+                              "start": 0,
+                              "end": 0,
+                              "children": []
+                            }
+                          },
+                          {
+                            "rule_index": 10,
+                            "rule_selector": ".secondary",
+                            "property": "border-top-left-radius",
+                            "authored_value": "",
+                            "computed_b": "28px",
+                            "improvement": 57.0,
+                            "local_improvement": 2.0,
+                            "confidence": 0.0069767441860465115,
+                            "proven": true,
+                            "direct_local_evidence": true,
+                            "matched_by_rule": true,
+                            "impact_kind": "direct-local",
+                            "role": "declaration-ablation",
+                            "value_ast": {
+                              "kind": "value",
+                              "text": "",
+                              "start": 0,
+                              "end": 0,
+                              "children": []
+                            }
+                          },
+                          {
+                            "rule_index": 10,
+                            "rule_selector": ".secondary",
+                            "property": "border-top-right-radius",
+                            "authored_value": "",
+                            "computed_b": "28px",
+                            "improvement": 57.0,
+                            "local_improvement": 4.0,
+                            "confidence": 0.0069767441860465115,
+                            "proven": true,
+                            "direct_local_evidence": true,
+                            "matched_by_rule": true,
+                            "impact_kind": "direct-local",
+                            "role": "declaration-ablation",
+                            "value_ast": {
+                              "kind": "value",
+                              "text": "",
+                              "start": 0,
+                              "end": 0,
+                              "children": []
+                            }
+                          },
+                          {
+                            "rule_index": 10,
+                            "rule_selector": ".secondary",
+                            "property": "border-bottom-right-radius",
+                            "authored_value": "",
+                            "computed_b": "28px",
+                            "improvement": 57.0,
+                            "local_improvement": 6.0,
+                            "confidence": 0.0069767441860465115,
+                            "proven": true,
+                            "direct_local_evidence": true,
+                            "matched_by_rule": true,
+                            "impact_kind": "direct-local",
+                            "role": "declaration-ablation",
+                            "value_ast": {
+                              "kind": "value",
+                              "text": "",
+                              "start": 0,
+                              "end": 0,
+                              "children": []
+                            }
+                          },
+                          {
+                            "rule_index": 10,
+                            "rule_selector": ".secondary",
+                            "property": "border-bottom-left-radius",
+                            "authored_value": "",
+                            "computed_b": "28px",
+                            "improvement": 57.0,
+                            "local_improvement": 8.0,
+                            "confidence": 0.0069767441860465115,
+                            "proven": true,
+                            "direct_local_evidence": true,
+                            "matched_by_rule": true,
+                            "impact_kind": "direct-local",
+                            "role": "declaration-ablation",
+                            "value_ast": {
+                              "kind": "value",
+                              "text": "",
+                              "start": 0,
+                              "end": 0,
+                              "children": []
+                            }
+                          }
+                        ],
+                        "css_value_provenance": [],
+                        "cascade_provenance": null,
+                        "css_variables": {
+                          "usage": [],
+                          "chains": []
+                        },
+                        "interaction_causes": [],
+                        "content_change": {
+                          "intrinsic_geometry": {
+                            "scroll_height": {
+                              "a": 130.0,
+                              "b": 146.0
+                            },
+                            "client_height": {
+                              "a": 130.0,
+                              "b": 146.0
+                            }
+                          }
+                        },
+                        "caused_by": [],
+                        "root_cause": {
+                          "rule_index": 9,
+                          "rule_selector": ".primary",
+                          "property": "padding-top",
+                          "authored_value": "",
+                          "computed_b": "24px",
+                          "improvement": 7612.0,
+                          "local_improvement": 8.0,
+                          "confidence": 0.9317013463892289,
+                          "proven": true,
+                          "direct_local_evidence": true,
+                          "matched_by_rule": false,
+                          "impact_kind": "propagated-structural-or-inherited",
+                          "role": "declaration-ablation",
+                          "value_ast": {
+                            "kind": "value",
+                            "text": "",
+                            "start": 0,
+                            "end": 0,
+                            "children": []
+                          }
+                        },
+                        "visual_impact": {
+                          "changed_pixels": 6076
+                        },
+                        "relations": {
+                          "descendants": [
+                            {
+                              "selector": "html > body > main.demo > section.cards > article.card.secondary:nth-of-type(2) > h2",
+                              "categories": [
+                                "color",
+                                "style"
+                              ],
+                              "change_origin": [
+                                "computed-style"
+                              ],
+                              "mechanisms": [
+                                "paint"
+                              ],
+                              "geometry": {
+                                "position": {
+                                  "a_x": 623.0,
+                                  "a_y": 226.0,
+                                  "b_x": 623.0,
+                                  "b_y": 226.0,
+                                  "delta_x": 0.0,
+                                  "delta_y": 0.0
+                                },
+                                "size": {
+                                  "a_width": 302.0,
+                                  "a_height": 28.0,
+                                  "b_width": 302.0,
+                                  "b_height": 28.0,
+                                  "delta_width": 0.0,
+                                  "delta_height": 0.0
+                                }
+                              },
+                              "computed_style_changes": {
+                                "color": {
+                                  "--primary-vcd-color-steel": {
+                                    "a": "",
+                                    "b": "#29343dff"
+                                  },
+                                  "--catalog-card-color-raised": {
+                                    "a": "",
+                                    "b": "#29343dff"
+                                  },
+                                  "--base-vcd-color-steel": {
+                                    "a": "",
+                                    "b": "#29343dff"
+                                  }
+                                },
+                                "other": {
+                                  "--base-vcd-dimension-twenty-pixel": {
+                                    "a": "",
+                                    "b": "calc(20 * 1px)"
+                                  },
+                                  "--catalog-card-measure-round-radius": {
+                                    "a": "",
+                                    "b": "calc(28 * 1px)"
+                                  },
+                                  "--catalog-action-motion-nudge": {
+                                    "a": "",
+                                    "b": "translateX(\n    calc(20 * 1px)\n  )"
+                                  },
+                                  "--vcd-card-roomy-padding": {
+                                    "a": "",
+                                    "b": "calc(32 * 1px)"
+                                  },
+                                  "--vcd-card-round-radius": {
+                                    "a": "",
+                                    "b": "calc(28 * 1px)"
+                                  },
+                                  "--vcd-card-raised-surface": {
+                                    "a": "",
+                                    "b": "#29343dff"
+                                  },
+                                  "--base-vcd-dimension-twenty-eight-pixel": {
+                                    "a": "",
+                                    "b": "calc(28 * 1px)"
+                                  },
+                                  "--catalog-card-measure-roomy-padding": {
+                                    "a": "",
+                                    "b": "calc(32 * 1px)"
+                                  },
+                                  "--vcd-action-nudge": {
+                                    "a": "",
+                                    "b": "translateX(\n    calc(20 * 1px)\n  )"
+                                  }
+                                }
+                              },
+                              "causes": [],
+                              "css_provenance": [],
+                              "css_value_provenance": [],
+                              "cascade_provenance": null,
+                              "css_variables": {
+                                "usage": [],
+                                "chains": []
+                              },
+                              "interaction_causes": [],
+                              "content_change": null,
+                              "caused_by": [],
+                              "root_cause": null,
+                              "visual_impact": {
+                                "changed_pixels": 0
+                              },
+                              "relations": {
+                                "descendants": [],
+                                "siblings": [],
+                                "overlaps": []
+                              }
+                            }
+                          ],
+                          "siblings": [
+                            {
+                              "selector": "html > body > main.demo > section.cards > article.card.primary:nth-of-type(1)"
+                            }
+                          ],
+                          "overlaps": []
+                        }
+                      }
+                    ],
+                    "siblings": [
+                      {
+                        "selector": "html > body > main.demo > button.action"
+                      }
+                    ],
+                    "overlaps": []
+                  }
+                },
+                {
+                  "selector": "html > body > main.demo > button.action",
+                  "categories": [
+                    "position",
+                    "color",
+                    "style"
+                  ],
+                  "change_origin": [
+                    "computed-style"
+                  ],
+                  "mechanisms": [
+                    "paint",
+                    "transform"
+                  ],
+                  "geometry": {
+                    "position": {
+                      "a_x": 230.0,
+                      "a_y": 364.90625,
+                      "b_x": 250.0,
+                      "b_y": 380.90625,
+                      "delta_x": 20.0,
+                      "delta_y": 16.0
+                    },
+                    "size": {
+                      "a_width": 114.234375,
+                      "a_height": 35.0,
+                      "b_width": 114.234375,
+                      "b_height": 35.0,
+                      "delta_width": 0.0,
+                      "delta_height": 0.0
+                    }
+                  },
+                  "computed_style_changes": {
+                    "color": {
+                      "--primary-vcd-color-steel": {
+                        "a": "",
+                        "b": "#29343dff"
+                      },
+                      "--catalog-card-color-raised": {
+                        "a": "",
+                        "b": "#29343dff"
+                      },
+                      "--base-vcd-color-steel": {
+                        "a": "",
+                        "b": "#29343dff"
+                      }
+                    },
+                    "transform": {
+                      "transform": {
+                        "a": "matrix(1, 0, 0, 1, 0, 0)",
+                        "b": "matrix(1, 0, 0, 1, 20, 0)"
+                      }
+                    },
+                    "other": {
+                      "--base-vcd-dimension-twenty-pixel": {
+                        "a": "",
+                        "b": "calc(20 * 1px)"
+                      },
+                      "--catalog-card-measure-round-radius": {
+                        "a": "",
+                        "b": "calc(28 * 1px)"
+                      },
+                      "--catalog-action-motion-nudge": {
+                        "a": "",
+                        "b": "translateX(\n    calc(20 * 1px)\n  )"
+                      },
+                      "--vcd-card-roomy-padding": {
+                        "a": "",
+                        "b": "calc(32 * 1px)"
+                      },
+                      "--vcd-card-round-radius": {
+                        "a": "",
+                        "b": "calc(28 * 1px)"
+                      },
+                      "--vcd-card-raised-surface": {
+                        "a": "",
+                        "b": "#29343dff"
+                      },
+                      "--base-vcd-dimension-twenty-eight-pixel": {
+                        "a": "",
+                        "b": "calc(28 * 1px)"
+                      },
+                      "--catalog-card-measure-roomy-padding": {
+                        "a": "",
+                        "b": "calc(32 * 1px)"
+                      },
+                      "--vcd-action-nudge": {
+                        "a": "",
+                        "b": "translateX(\n    calc(20 * 1px)\n  )"
+                      }
+                    }
+                  },
+                  "causes": [
+                    {
+                      "selector": ".action",
+                      "declarations": [
+                        "padding-top: ",
+                        "padding-right: ",
+                        "padding-bottom: ",
+                        "padding-left: ",
+                        "border-top-color: ",
+                        "border-top-style: ",
+                        "border-top-width: ",
+                        "border-right-color: ",
+                        "border-right-style: ",
+                        "border-right-width: ",
+                        "border-bottom-color: ",
+                        "border-bottom-style: ",
+                        "border-bottom-width: ",
+                        "border-left-color: ",
+                        "border-left-style: ",
+                        "border-left-width: ",
+                        "border-image-source: ",
+                        "border-image-slice: ",
+                        "border-image-width: ",
+                        "border-image-outset: ",
+                        "border-image-repeat: ",
+                        "border-top-left-radius: ",
+                        "border-top-right-radius: ",
+                        "border-bottom-right-radius: ",
+                        "border-bottom-left-radius: ",
+                        "background-image: ",
+                        "background-position-x: ",
+                        "background-position-y: ",
+                        "background-size: ",
+                        "background-repeat: ",
+                        "background-attachment: ",
+                        "background-origin: ",
+                        "background-clip: ",
+                        "background-color: ",
+                        "color: var(--vcd-action-text)",
+                        "font-weight: var(--vcd-action-weight)",
+                        "transform: var(--vcd-action-nudge)"
+                      ],
+                      "pixels_explained": 182,
+                      "explanation_ratio": 0.022276621787025705
+                    }
+                  ],
+                  "css_provenance": [
+                    {
+                      "rule_index": 9,
+                      "rule_selector": ".primary",
+                      "property": "padding-top",
+                      "authored_value": "",
+                      "computed_b": "10px",
+                      "improvement": 7612.0,
+                      "local_improvement": 8.0,
+                      "confidence": 0.9317013463892289,
+                      "proven": true,
+                      "direct_local_evidence": true,
+                      "matched_by_rule": false,
+                      "impact_kind": "propagated-structural-or-inherited",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "",
+                        "start": 0,
+                        "end": 0,
+                        "children": []
+                      }
+                    },
+                    {
+                      "rule_index": 9,
+                      "rule_selector": ".primary",
+                      "property": "padding-right",
+                      "authored_value": "",
+                      "computed_b": "16px",
+                      "improvement": 7612.0,
+                      "local_improvement": 8.0,
+                      "confidence": 0.9317013463892289,
+                      "proven": true,
+                      "direct_local_evidence": true,
+                      "matched_by_rule": false,
+                      "impact_kind": "propagated-structural-or-inherited",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "",
+                        "start": 0,
+                        "end": 0,
+                        "children": []
+                      }
+                    },
+                    {
+                      "rule_index": 9,
+                      "rule_selector": ".primary",
+                      "property": "padding-bottom",
+                      "authored_value": "",
+                      "computed_b": "10px",
+                      "improvement": 7612.0,
+                      "local_improvement": 16.0,
+                      "confidence": 0.9317013463892289,
+                      "proven": true,
+                      "direct_local_evidence": true,
+                      "matched_by_rule": false,
+                      "impact_kind": "propagated-structural-or-inherited",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "",
+                        "start": 0,
+                        "end": 0,
+                        "children": []
+                      }
+                    },
+                    {
+                      "rule_index": 9,
+                      "rule_selector": ".primary",
+                      "property": "padding-left",
+                      "authored_value": "",
+                      "computed_b": "16px",
+                      "improvement": 7612.0,
+                      "local_improvement": 16.0,
+                      "confidence": 0.9317013463892289,
+                      "proven": true,
+                      "direct_local_evidence": true,
+                      "matched_by_rule": false,
+                      "impact_kind": "propagated-structural-or-inherited",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "",
+                        "start": 0,
+                        "end": 0,
+                        "children": []
+                      }
+                    },
+                    {
+                      "rule_index": 11,
+                      "rule_selector": ".action",
+                      "property": "padding-top",
+                      "authored_value": "",
+                      "computed_b": "10px",
+                      "improvement": 182.0,
+                      "local_improvement": 0.0,
+                      "confidence": 0.022276621787025705,
+                      "proven": true,
+                      "direct_local_evidence": false,
+                      "matched_by_rule": true,
+                      "impact_kind": "matched-changed-element",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "",
+                        "start": 0,
+                        "end": 0,
+                        "children": []
+                      }
+                    },
+                    {
+                      "rule_index": 11,
+                      "rule_selector": ".action",
+                      "property": "padding-right",
+                      "authored_value": "",
+                      "computed_b": "16px",
+                      "improvement": 182.0,
+                      "local_improvement": 0.0,
+                      "confidence": 0.022276621787025705,
+                      "proven": true,
+                      "direct_local_evidence": false,
+                      "matched_by_rule": true,
+                      "impact_kind": "matched-changed-element",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "",
+                        "start": 0,
+                        "end": 0,
+                        "children": []
+                      }
+                    },
+                    {
+                      "rule_index": 11,
+                      "rule_selector": ".action",
+                      "property": "padding-bottom",
+                      "authored_value": "",
+                      "computed_b": "10px",
+                      "improvement": 182.0,
+                      "local_improvement": 0.0,
+                      "confidence": 0.022276621787025705,
+                      "proven": true,
+                      "direct_local_evidence": false,
+                      "matched_by_rule": true,
+                      "impact_kind": "matched-changed-element",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "",
+                        "start": 0,
+                        "end": 0,
+                        "children": []
+                      }
+                    },
+                    {
+                      "rule_index": 11,
+                      "rule_selector": ".action",
+                      "property": "padding-left",
+                      "authored_value": "",
+                      "computed_b": "16px",
+                      "improvement": 182.0,
+                      "local_improvement": 0.0,
+                      "confidence": 0.022276621787025705,
+                      "proven": true,
+                      "direct_local_evidence": false,
+                      "matched_by_rule": true,
+                      "impact_kind": "matched-changed-element",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "",
+                        "start": 0,
+                        "end": 0,
+                        "children": []
+                      }
+                    },
+                    {
+                      "rule_index": 11,
+                      "rule_selector": ".action",
+                      "property": "border-top-color",
+                      "authored_value": "",
+                      "computed_b": "rgb(17, 20, 22)",
+                      "improvement": 182.0,
+                      "local_improvement": 0.0,
+                      "confidence": 0.022276621787025705,
+                      "proven": true,
+                      "direct_local_evidence": false,
+                      "matched_by_rule": true,
+                      "impact_kind": "matched-changed-element",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "",
+                        "start": 0,
+                        "end": 0,
+                        "children": []
+                      }
+                    },
+                    {
+                      "rule_index": 11,
+                      "rule_selector": ".action",
+                      "property": "border-top-style",
+                      "authored_value": "",
+                      "computed_b": "none",
+                      "improvement": 182.0,
+                      "local_improvement": 0.0,
+                      "confidence": 0.022276621787025705,
+                      "proven": true,
+                      "direct_local_evidence": false,
+                      "matched_by_rule": true,
+                      "impact_kind": "matched-changed-element",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "",
+                        "start": 0,
+                        "end": 0,
+                        "children": []
+                      }
+                    },
+                    {
+                      "rule_index": 11,
+                      "rule_selector": ".action",
+                      "property": "border-top-width",
+                      "authored_value": "",
+                      "computed_b": "0px",
+                      "improvement": 182.0,
+                      "local_improvement": 0.0,
+                      "confidence": 0.022276621787025705,
+                      "proven": true,
+                      "direct_local_evidence": false,
+                      "matched_by_rule": true,
+                      "impact_kind": "matched-changed-element",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "",
+                        "start": 0,
+                        "end": 0,
+                        "children": []
+                      }
+                    },
+                    {
+                      "rule_index": 11,
+                      "rule_selector": ".action",
+                      "property": "border-right-color",
+                      "authored_value": "",
+                      "computed_b": "rgb(17, 20, 22)",
+                      "improvement": 182.0,
+                      "local_improvement": 0.0,
+                      "confidence": 0.022276621787025705,
+                      "proven": true,
+                      "direct_local_evidence": false,
+                      "matched_by_rule": true,
+                      "impact_kind": "matched-changed-element",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "",
+                        "start": 0,
+                        "end": 0,
+                        "children": []
+                      }
+                    },
+                    {
+                      "rule_index": 11,
+                      "rule_selector": ".action",
+                      "property": "border-right-style",
+                      "authored_value": "",
+                      "computed_b": "none",
+                      "improvement": 182.0,
+                      "local_improvement": 0.0,
+                      "confidence": 0.022276621787025705,
+                      "proven": true,
+                      "direct_local_evidence": false,
+                      "matched_by_rule": true,
+                      "impact_kind": "matched-changed-element",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "",
+                        "start": 0,
+                        "end": 0,
+                        "children": []
+                      }
+                    },
+                    {
+                      "rule_index": 11,
+                      "rule_selector": ".action",
+                      "property": "border-right-width",
+                      "authored_value": "",
+                      "computed_b": "0px",
+                      "improvement": 182.0,
+                      "local_improvement": 0.0,
+                      "confidence": 0.022276621787025705,
+                      "proven": true,
+                      "direct_local_evidence": false,
+                      "matched_by_rule": true,
+                      "impact_kind": "matched-changed-element",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "",
+                        "start": 0,
+                        "end": 0,
+                        "children": []
+                      }
+                    },
+                    {
+                      "rule_index": 11,
+                      "rule_selector": ".action",
+                      "property": "border-bottom-color",
+                      "authored_value": "",
+                      "computed_b": "rgb(17, 20, 22)",
+                      "improvement": 182.0,
+                      "local_improvement": 0.0,
+                      "confidence": 0.022276621787025705,
+                      "proven": true,
+                      "direct_local_evidence": false,
+                      "matched_by_rule": true,
+                      "impact_kind": "matched-changed-element",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "",
+                        "start": 0,
+                        "end": 0,
+                        "children": []
+                      }
+                    },
+                    {
+                      "rule_index": 11,
+                      "rule_selector": ".action",
+                      "property": "border-bottom-style",
+                      "authored_value": "",
+                      "computed_b": "none",
+                      "improvement": 182.0,
+                      "local_improvement": 0.0,
+                      "confidence": 0.022276621787025705,
+                      "proven": true,
+                      "direct_local_evidence": false,
+                      "matched_by_rule": true,
+                      "impact_kind": "matched-changed-element",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "",
+                        "start": 0,
+                        "end": 0,
+                        "children": []
+                      }
+                    },
+                    {
+                      "rule_index": 11,
+                      "rule_selector": ".action",
+                      "property": "border-bottom-width",
+                      "authored_value": "",
+                      "computed_b": "0px",
+                      "improvement": 182.0,
+                      "local_improvement": 0.0,
+                      "confidence": 0.022276621787025705,
+                      "proven": true,
+                      "direct_local_evidence": false,
+                      "matched_by_rule": true,
+                      "impact_kind": "matched-changed-element",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "",
+                        "start": 0,
+                        "end": 0,
+                        "children": []
+                      }
+                    },
+                    {
+                      "rule_index": 11,
+                      "rule_selector": ".action",
+                      "property": "border-left-color",
+                      "authored_value": "",
+                      "computed_b": "rgb(17, 20, 22)",
+                      "improvement": 182.0,
+                      "local_improvement": 0.0,
+                      "confidence": 0.022276621787025705,
+                      "proven": true,
+                      "direct_local_evidence": false,
+                      "matched_by_rule": true,
+                      "impact_kind": "matched-changed-element",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "",
+                        "start": 0,
+                        "end": 0,
+                        "children": []
+                      }
+                    },
+                    {
+                      "rule_index": 11,
+                      "rule_selector": ".action",
+                      "property": "border-left-style",
+                      "authored_value": "",
+                      "computed_b": "none",
+                      "improvement": 182.0,
+                      "local_improvement": 0.0,
+                      "confidence": 0.022276621787025705,
+                      "proven": true,
+                      "direct_local_evidence": false,
+                      "matched_by_rule": true,
+                      "impact_kind": "matched-changed-element",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "",
+                        "start": 0,
+                        "end": 0,
+                        "children": []
+                      }
+                    },
+                    {
+                      "rule_index": 11,
+                      "rule_selector": ".action",
+                      "property": "border-left-width",
+                      "authored_value": "",
+                      "computed_b": "0px",
+                      "improvement": 182.0,
+                      "local_improvement": 0.0,
+                      "confidence": 0.022276621787025705,
+                      "proven": true,
+                      "direct_local_evidence": false,
+                      "matched_by_rule": true,
+                      "impact_kind": "matched-changed-element",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "",
+                        "start": 0,
+                        "end": 0,
+                        "children": []
+                      }
+                    },
+                    {
+                      "rule_index": 11,
+                      "rule_selector": ".action",
+                      "property": "border-image-source",
+                      "authored_value": "",
+                      "computed_b": "none",
+                      "improvement": 182.0,
+                      "local_improvement": 0.0,
+                      "confidence": 0.022276621787025705,
+                      "proven": true,
+                      "direct_local_evidence": false,
+                      "matched_by_rule": true,
+                      "impact_kind": "matched-changed-element",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "",
+                        "start": 0,
+                        "end": 0,
+                        "children": []
+                      }
+                    },
+                    {
+                      "rule_index": 11,
+                      "rule_selector": ".action",
+                      "property": "border-image-slice",
+                      "authored_value": "",
+                      "computed_b": "100%",
+                      "improvement": 182.0,
+                      "local_improvement": 0.0,
+                      "confidence": 0.022276621787025705,
+                      "proven": true,
+                      "direct_local_evidence": false,
+                      "matched_by_rule": true,
+                      "impact_kind": "matched-changed-element",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "",
+                        "start": 0,
+                        "end": 0,
+                        "children": []
+                      }
+                    },
+                    {
+                      "rule_index": 11,
+                      "rule_selector": ".action",
+                      "property": "border-image-width",
+                      "authored_value": "",
+                      "computed_b": "1",
+                      "improvement": 182.0,
+                      "local_improvement": 0.0,
+                      "confidence": 0.022276621787025705,
+                      "proven": true,
+                      "direct_local_evidence": false,
+                      "matched_by_rule": true,
+                      "impact_kind": "matched-changed-element",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "",
+                        "start": 0,
+                        "end": 0,
+                        "children": []
+                      }
+                    },
+                    {
+                      "rule_index": 11,
+                      "rule_selector": ".action",
+                      "property": "border-image-outset",
+                      "authored_value": "",
+                      "computed_b": "0",
+                      "improvement": 182.0,
+                      "local_improvement": 0.0,
+                      "confidence": 0.022276621787025705,
+                      "proven": true,
+                      "direct_local_evidence": false,
+                      "matched_by_rule": true,
+                      "impact_kind": "matched-changed-element",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "",
+                        "start": 0,
+                        "end": 0,
+                        "children": []
+                      }
+                    },
+                    {
+                      "rule_index": 11,
+                      "rule_selector": ".action",
+                      "property": "border-image-repeat",
+                      "authored_value": "",
+                      "computed_b": "stretch",
+                      "improvement": 182.0,
+                      "local_improvement": 0.0,
+                      "confidence": 0.022276621787025705,
+                      "proven": true,
+                      "direct_local_evidence": false,
+                      "matched_by_rule": true,
+                      "impact_kind": "matched-changed-element",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "",
+                        "start": 0,
+                        "end": 0,
+                        "children": []
+                      }
+                    },
+                    {
+                      "rule_index": 11,
+                      "rule_selector": ".action",
+                      "property": "border-top-left-radius",
+                      "authored_value": "",
+                      "computed_b": "8px",
+                      "improvement": 182.0,
+                      "local_improvement": 0.0,
+                      "confidence": 0.022276621787025705,
+                      "proven": true,
+                      "direct_local_evidence": false,
+                      "matched_by_rule": true,
+                      "impact_kind": "matched-changed-element",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "",
+                        "start": 0,
+                        "end": 0,
+                        "children": []
+                      }
+                    },
+                    {
+                      "rule_index": 11,
+                      "rule_selector": ".action",
+                      "property": "border-top-right-radius",
+                      "authored_value": "",
+                      "computed_b": "8px",
+                      "improvement": 182.0,
+                      "local_improvement": 0.0,
+                      "confidence": 0.022276621787025705,
+                      "proven": true,
+                      "direct_local_evidence": false,
+                      "matched_by_rule": true,
+                      "impact_kind": "matched-changed-element",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "",
+                        "start": 0,
+                        "end": 0,
+                        "children": []
+                      }
+                    },
+                    {
+                      "rule_index": 11,
+                      "rule_selector": ".action",
+                      "property": "border-bottom-right-radius",
+                      "authored_value": "",
+                      "computed_b": "8px",
+                      "improvement": 182.0,
+                      "local_improvement": 0.0,
+                      "confidence": 0.022276621787025705,
+                      "proven": true,
+                      "direct_local_evidence": false,
+                      "matched_by_rule": true,
+                      "impact_kind": "matched-changed-element",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "",
+                        "start": 0,
+                        "end": 0,
+                        "children": []
+                      }
+                    },
+                    {
+                      "rule_index": 11,
+                      "rule_selector": ".action",
+                      "property": "border-bottom-left-radius",
+                      "authored_value": "",
+                      "computed_b": "8px",
+                      "improvement": 182.0,
+                      "local_improvement": 0.0,
+                      "confidence": 0.022276621787025705,
+                      "proven": true,
+                      "direct_local_evidence": false,
+                      "matched_by_rule": true,
+                      "impact_kind": "matched-changed-element",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "",
+                        "start": 0,
+                        "end": 0,
+                        "children": []
+                      }
+                    },
+                    {
+                      "rule_index": 11,
+                      "rule_selector": ".action",
+                      "property": "background-image",
+                      "authored_value": "",
+                      "computed_b": "none",
+                      "improvement": 182.0,
+                      "local_improvement": 0.0,
+                      "confidence": 0.022276621787025705,
+                      "proven": true,
+                      "direct_local_evidence": false,
+                      "matched_by_rule": true,
+                      "impact_kind": "matched-changed-element",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "",
+                        "start": 0,
+                        "end": 0,
+                        "children": []
+                      }
+                    },
+                    {
+                      "rule_index": 11,
+                      "rule_selector": ".action",
+                      "property": "background-position-x",
+                      "authored_value": "",
+                      "computed_b": "",
+                      "improvement": 182.0,
+                      "local_improvement": 0.0,
+                      "confidence": 0.022276621787025705,
+                      "proven": true,
+                      "direct_local_evidence": false,
+                      "matched_by_rule": true,
+                      "impact_kind": "matched-changed-element",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "",
+                        "start": 0,
+                        "end": 0,
+                        "children": []
+                      }
+                    },
+                    {
+                      "rule_index": 11,
+                      "rule_selector": ".action",
+                      "property": "background-position-y",
+                      "authored_value": "",
+                      "computed_b": "",
+                      "improvement": 182.0,
+                      "local_improvement": 0.0,
+                      "confidence": 0.022276621787025705,
+                      "proven": true,
+                      "direct_local_evidence": false,
+                      "matched_by_rule": true,
+                      "impact_kind": "matched-changed-element",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "",
+                        "start": 0,
+                        "end": 0,
+                        "children": []
+                      }
+                    },
+                    {
+                      "rule_index": 11,
+                      "rule_selector": ".action",
+                      "property": "background-size",
+                      "authored_value": "",
+                      "computed_b": "auto",
+                      "improvement": 182.0,
+                      "local_improvement": 0.0,
+                      "confidence": 0.022276621787025705,
+                      "proven": true,
+                      "direct_local_evidence": false,
+                      "matched_by_rule": true,
+                      "impact_kind": "matched-changed-element",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "",
+                        "start": 0,
+                        "end": 0,
+                        "children": []
+                      }
+                    },
+                    {
+                      "rule_index": 11,
+                      "rule_selector": ".action",
+                      "property": "background-repeat",
+                      "authored_value": "",
+                      "computed_b": "repeat",
+                      "improvement": 182.0,
+                      "local_improvement": 0.0,
+                      "confidence": 0.022276621787025705,
+                      "proven": true,
+                      "direct_local_evidence": false,
+                      "matched_by_rule": true,
+                      "impact_kind": "matched-changed-element",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "",
+                        "start": 0,
+                        "end": 0,
+                        "children": []
+                      }
+                    },
+                    {
+                      "rule_index": 11,
+                      "rule_selector": ".action",
+                      "property": "background-attachment",
+                      "authored_value": "",
+                      "computed_b": "scroll",
+                      "improvement": 182.0,
+                      "local_improvement": 0.0,
+                      "confidence": 0.022276621787025705,
+                      "proven": true,
+                      "direct_local_evidence": false,
+                      "matched_by_rule": true,
+                      "impact_kind": "matched-changed-element",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "",
+                        "start": 0,
+                        "end": 0,
+                        "children": []
+                      }
+                    },
+                    {
+                      "rule_index": 11,
+                      "rule_selector": ".action",
+                      "property": "background-origin",
+                      "authored_value": "",
+                      "computed_b": "padding-box",
+                      "improvement": 182.0,
+                      "local_improvement": 0.0,
+                      "confidence": 0.022276621787025705,
+                      "proven": true,
+                      "direct_local_evidence": false,
+                      "matched_by_rule": true,
+                      "impact_kind": "matched-changed-element",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "",
+                        "start": 0,
+                        "end": 0,
+                        "children": []
+                      }
+                    },
+                    {
+                      "rule_index": 11,
+                      "rule_selector": ".action",
+                      "property": "background-clip",
+                      "authored_value": "",
+                      "computed_b": "border-box",
+                      "improvement": 182.0,
+                      "local_improvement": 0.0,
+                      "confidence": 0.022276621787025705,
+                      "proven": true,
+                      "direct_local_evidence": false,
+                      "matched_by_rule": true,
+                      "impact_kind": "matched-changed-element",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "",
+                        "start": 0,
+                        "end": 0,
+                        "children": []
+                      }
+                    },
+                    {
+                      "rule_index": 11,
+                      "rule_selector": ".action",
+                      "property": "background-color",
+                      "authored_value": "",
+                      "computed_b": "rgb(164, 201, 232)",
+                      "improvement": 182.0,
+                      "local_improvement": 0.0,
+                      "confidence": 0.022276621787025705,
+                      "proven": true,
+                      "direct_local_evidence": false,
+                      "matched_by_rule": true,
+                      "impact_kind": "matched-changed-element",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "",
+                        "start": 0,
+                        "end": 0,
+                        "children": []
+                      }
+                    },
+                    {
+                      "rule_index": 11,
+                      "rule_selector": ".action",
+                      "property": "color",
+                      "authored_value": "var(--vcd-action-text)",
+                      "computed_b": "rgb(17, 20, 22)",
+                      "improvement": 182.0,
+                      "local_improvement": 0.0,
+                      "confidence": 0.022276621787025705,
+                      "proven": true,
+                      "direct_local_evidence": false,
+                      "matched_by_rule": true,
+                      "impact_kind": "matched-changed-element",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "var(--vcd-action-text)",
+                        "start": 0,
+                        "end": 22,
+                        "children": [
+                          {
+                            "kind": "function:var",
+                            "text": "var(--vcd-action-text)",
+                            "start": 0,
+                            "end": 22
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "rule_index": 11,
+                      "rule_selector": ".action",
+                      "property": "font-weight",
+                      "authored_value": "var(--vcd-action-weight)",
+                      "computed_b": "700",
+                      "improvement": 182.0,
+                      "local_improvement": 0.0,
+                      "confidence": 0.022276621787025705,
+                      "proven": true,
+                      "direct_local_evidence": false,
+                      "matched_by_rule": true,
+                      "impact_kind": "matched-changed-element",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "var(--vcd-action-weight)",
+                        "start": 0,
+                        "end": 24,
+                        "children": [
+                          {
+                            "kind": "function:var",
+                            "text": "var(--vcd-action-weight)",
+                            "start": 0,
+                            "end": 24
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "rule_index": 11,
+                      "rule_selector": ".action",
+                      "property": "transform",
+                      "authored_value": "var(--vcd-action-nudge)",
+                      "computed_b": "matrix(1, 0, 0, 1, 20, 0)",
+                      "improvement": 182.0,
+                      "local_improvement": 0.0,
+                      "confidence": 0.022276621787025705,
+                      "proven": true,
+                      "direct_local_evidence": false,
+                      "matched_by_rule": true,
+                      "impact_kind": "matched-changed-element",
+                      "role": "declaration-ablation",
+                      "value_ast": {
+                        "kind": "value",
+                        "text": "var(--vcd-action-nudge)",
+                        "start": 0,
+                        "end": 23,
+                        "children": [
+                          {
+                            "kind": "function:var",
+                            "text": "var(--vcd-action-nudge)",
+                            "start": 0,
+                            "end": 23
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "css_value_provenance": [],
+                  "cascade_provenance": null,
+                  "css_variables": {
+                    "usage": [],
+                    "chains": []
+                  },
+                  "interaction_causes": [],
+                  "content_change": null,
+                  "caused_by": [],
+                  "root_cause": {
+                    "rule_index": 9,
+                    "rule_selector": ".primary",
+                    "property": "padding-top",
+                    "authored_value": "",
+                    "computed_b": "10px",
+                    "improvement": 7612.0,
+                    "local_improvement": 8.0,
+                    "confidence": 0.9317013463892289,
+                    "proven": true,
+                    "direct_local_evidence": true,
+                    "matched_by_rule": false,
+                    "impact_kind": "propagated-structural-or-inherited",
+                    "role": "declaration-ablation",
+                    "value_ast": {
+                      "kind": "value",
+                      "text": "",
+                      "start": 0,
+                      "end": 0,
+                      "children": []
+                    }
+                  },
+                  "visual_impact": {
+                    "changed_pixels": 2857
+                  },
+                  "relations": {
+                    "descendants": [],
+                    "siblings": [
+                      {
+                        "selector": "html > body > main.demo > section.cards"
+                      }
+                    ],
+                    "overlaps": []
+                  }
+                }
+              ],
+              "siblings": [],
+              "overlaps": []
+            }
+          }
+        ],
+        "siblings": [],
+        "overlaps": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+/**
+ * Panel surfaces, headings, legend dots and canvases.
+ *
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+@layer perf-base {
+  .hero-panel {
+    padding: var(--perf-panel-padding);
+    margin-bottom: var(--perf-block-gap);
+  }
+  .panel-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--perf-status-gap);
+    margin-bottom: var(--perf-panel-gap);
+  }
+  .panel-head h2,
+  .panel-head h3 {
+    margin: var(--perf-flush);
+    letter-spacing: var(--perf-track-firm);
+  }
+  .panel-head h2 {
+    font-size: var(--perf-size-panel);
+  }
+  .panel-head h3 {
+    font-size: var(--perf-size-sub);
+  }
+  .legend,
+  .muted {
+    color: var(--muted);
+    font-size: var(--perf-size-note);
+  }
+  .dot {
+    width: var(--perf-dot-size);
+    height: var(--perf-dot-size);
+    border-radius: var(--perf-radius-round);
+    display: inline-block;
+    margin: var(--perf-dot-margin);
+  }
+  .dot.active {
+    background: var(--accent);
+  }
+  .dot.stall {
+    background: var(--danger);
+  }
+  canvas {
+    display: block;
+    width: var(--perf-flow-width);
+    max-width: var(--perf-flow-width);
+  }
+}

@@ -1,0 +1,183 @@
+@import url("/assets/primary.css");
+@import url("/assets/base.css");
+@import url("/assets/catalog.css");
+:root {
+  --semantic-mcp-page-background: var(--catalog-surface-color-ws-page);
+  --semantic-mcp-panel-background: var(--catalog-surface-color-ws-field);
+  --semantic-mcp-metric-background: var(--catalog-surface-color-ws-raised);
+  --semantic-mcp-button-background: var(--catalog-surface-color-ws-accent);
+  --semantic-mcp-primary-text: var(--catalog-ink-color-ws-primary);
+  --semantic-mcp-secondary-text: var(--catalog-ink-color-ws-muted);
+  --semantic-mcp-button-text: var(--catalog-ink-color-ws-on-accent);
+  --semantic-mcp-online-signal: var(--catalog-signal-color-ws-ok);
+  --semantic-mcp-panel-border: var(--catalog-rule-border-ws-subtle);
+  --semantic-mcp-focus-border: var(--catalog-field-border-ws-focus);
+  --semantic-mcp-page-space: var(--catalog-space-measure-ws-huge);
+  --semantic-mcp-section-space: var(--catalog-space-measure-ws-large);
+  --semantic-mcp-item-space: var(--catalog-space-measure-ws-medium);
+  --semantic-mcp-inline-space: var(--catalog-space-measure-ws-small);
+  --semantic-mcp-flush-space: var(--catalog-space-measure-ws-none);
+  --semantic-mcp-full-size: var(--catalog-size-measure-ws-fill);
+  --semantic-mcp-content-max: var(--catalog-size-measure-ws-content-max);
+  --semantic-mcp-touch-target: var(--catalog-size-measure-ws-touch-target);
+  --semantic-mcp-size-field-min: var(--catalog-size-measure-ws-field-min);
+  --semantic-mcp-page-margin: var(--catalog-space-measure-ws-auto);
+  --semantic-mcp-panel-radius: var(--catalog-radius-border-ws-medium);
+  --semantic-mcp-control-radius: var(--catalog-radius-border-ws-small);
+  --semantic-mcp-body-type: var(--catalog-text-typography-ws-ui-large);
+  --semantic-mcp-heading-type: var(--catalog-text-typography-ws-ui-medium);
+  --semantic-mcp-code-type: var(--catalog-text-typography-ws-code-medium);
+  --semantic-mcp-detail-type: var(--catalog-text-typography-ws-code-small);
+  --semantic-mcp-button-cursor: var(--catalog-control-cursor-ws-point);
+  --semantic-mcp-endpoint-flex: var(--catalog-layout-measure-ws-flex-fill);
+  --semantic-mcp-endpoint-wrap: var(--catalog-text-typography-ws-wrap-anywhere);
+  --semantic-mcp-text-align: var(--catalog-text-typography-ws-align-left);
+  --semantic-mcp-cell-align: var(--catalog-layout-measure-ws-align-top);
+  --semantic-mcp-control-padding: var(
+    --catalog-space-measure-ws-comfortable-pad
+  );
+}
+html,
+body {
+  min-height: var(--semantic-mcp-full-size);
+}
+body {
+  margin: var(--semantic-mcp-flush-space);
+  background: var(--semantic-mcp-page-background);
+  color: var(--semantic-mcp-primary-text);
+  font: var(--semantic-mcp-body-type);
+}
+main {
+  display: flex;
+  flex-direction: column;
+  width: var(--semantic-mcp-full-size);
+  max-width: var(--semantic-mcp-content-max);
+  margin: var(--semantic-mcp-page-margin);
+  gap: var(--semantic-mcp-section-space);
+  padding: var(--semantic-mcp-page-space);
+  box-sizing: border-box;
+}
+.page-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--semantic-mcp-section-space);
+}
+h1,
+h2,
+p {
+  margin: var(--semantic-mcp-flush-space);
+}
+h1,
+h2 {
+  font: var(--semantic-mcp-heading-type);
+}
+.page-header div,
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--semantic-mcp-item-space);
+}
+.metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--semantic-mcp-item-space);
+}
+.metric {
+  display: flex;
+  flex: var(--semantic-mcp-endpoint-flex);
+  flex-direction: column;
+  min-width: var(--semantic-mcp-size-field-min);
+  gap: var(--semantic-mcp-inline-space);
+  padding: var(--semantic-mcp-section-space);
+  border: var(--semantic-mcp-panel-border);
+  border-radius: var(--semantic-mcp-panel-radius);
+  background: var(--semantic-mcp-metric-background);
+}
+.metric strong {
+  font: var(--semantic-mcp-heading-type);
+}
+.metric span {
+  color: var(--semantic-mcp-secondary-text);
+}
+.status,
+.endpoint-row {
+  display: flex;
+  align-items: center;
+  gap: var(--semantic-mcp-inline-space);
+}
+.section-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: var(--semantic-mcp-item-space);
+}
+.section-heading > div {
+  display: flex;
+  flex-direction: column;
+  gap: var(--semantic-mcp-inline-space);
+}
+.table-scroll {
+  width: var(--semantic-mcp-full-size);
+  overflow: auto;
+}
+table {
+  width: var(--semantic-mcp-full-size);
+  border-collapse: collapse;
+}
+th,
+td {
+  padding: var(--semantic-mcp-item-space);
+  border-bottom: var(--semantic-mcp-panel-border);
+  text-align: var(--semantic-mcp-text-align);
+  vertical-align: var(--semantic-mcp-cell-align);
+}
+th {
+  color: var(--semantic-mcp-secondary-text);
+  font: var(--semantic-mcp-heading-type);
+}
+td {
+  font: var(--semantic-mcp-detail-type);
+  overflow-wrap: var(--semantic-mcp-endpoint-wrap);
+}
+.status-dot {
+  width: var(--semantic-mcp-item-space);
+  height: var(--semantic-mcp-item-space);
+  border-radius: var(--semantic-mcp-panel-radius);
+  background: var(--semantic-mcp-online-signal);
+}
+.panel {
+  padding: var(--semantic-mcp-section-space);
+  border: var(--semantic-mcp-panel-border);
+  border-radius: var(--semantic-mcp-panel-radius);
+  background: var(--semantic-mcp-panel-background);
+}
+.endpoint-row {
+  flex-wrap: wrap;
+}
+code {
+  flex: var(--semantic-mcp-endpoint-flex);
+  overflow-wrap: var(--semantic-mcp-endpoint-wrap);
+  color: var(--semantic-mcp-primary-text);
+  font: var(--semantic-mcp-code-type);
+}
+button {
+  min-height: var(--semantic-mcp-touch-target);
+  padding: var(--semantic-mcp-control-padding);
+  border: var(--semantic-mcp-panel-border);
+  border-radius: var(--semantic-mcp-control-radius);
+  background: var(--semantic-mcp-button-background);
+  color: var(--semantic-mcp-button-text);
+  cursor: var(--semantic-mcp-button-cursor);
+  font: var(--semantic-mcp-heading-type);
+}
+button:focus-visible {
+  outline: var(--semantic-mcp-focus-border);
+}
+.supporting,
+.page-header p,
+.panel > p {
+  color: var(--semantic-mcp-secondary-text);
+}

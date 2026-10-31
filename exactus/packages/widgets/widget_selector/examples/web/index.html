@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
+    <title>Expression widget</title>
+    <link rel="stylesheet" href="../../../widget_styles/style.css" />
+    <link rel="stylesheet" href="../../style.css" />
+    <link rel="stylesheet" href="demo.css" />
+    <script type="module" src="demo.js"></script>
+  </head>
+  <body>
+    <main class="wrap">
+      <section aria-labelledby="demo-title">
+        <h1 id="demo-title">Expression widget</h1>
+        <div class="bar">
+          <label for="width">Panel width <span id="readout">360px</span></label>
+          <input
+            id="width"
+            type="range"
+            min="200"
+            max="1000"
+            step="10"
+            value="360"
+          />
+          <button type="button" data-theme-choice="dark">Dark</button>
+          <button type="button" data-theme-choice="light">Light</button>
+        </div>
+        <div id="panel" class="demo-panel">
+          <textarea id="expression" name="expression"></textarea>
+          <textarea id="checks" name="checks"></textarea>
+        </div>
+      </section>
+      <section aria-label="Sample page">
+        <h1>Sample page (the widget selects in here)</h1>
+        <div id="stage" class="demo-stage">
+          <div class="card">
+            <span class="title">Order #1</span
+            ><button type="button">Save order</button>
+          </div>
+          <div class="card">
+            <span class="title">Order #2</span
+            ><button type="button">Save as draft</button>
+          </div>
+          <div class="card">
+            <span class="title">Order #3</span
+            ><button type="button" disabled>Save order</button>
+          </div>
+          <div class="card hidden-card">
+            <span class="title">Hidden</span
+            ><button type="button">Save hidden</button>
+          </div>
+          <div id="layer" class="demo-layer"></div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

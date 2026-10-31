@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
+    <title>Request Studio</title>
+    <link rel="stylesheet" href="style.css" />
+    <script type="module" src="code.js"></script>
+  </head>
+  <body>
+    <svg class="sprite" hidden aria-hidden="true" focusable="false">
+      <symbol id="i-braces" viewBox="0 0 16 16">
+        <path
+          d="M5.5 2.5c-1.5 0-2 .6-2 2v2c0 1-.5 1.5-1.5 1.5 1 0 1.5.5 1.5 1.5v2c0 1.4.5 2 2 2M10.5 2.5c1.5 0 2 .6 2 2v2c0 1 .5 1.5 1.5 1.5-1 0-1.5.5-1.5 1.5v2c0 1.4-.5 2-2 2"
+        />
+      </symbol>
+      <symbol id="i-plus" viewBox="0 0 16 16">
+        <path d="M8 3.5v9M3.5 8h9" />
+      </symbol>
+      <symbol id="i-x" viewBox="0 0 16 16">
+        <path d="M4 4l8 8M12 4l-8 8" />
+      </symbol>
+      <symbol id="i-check" viewBox="0 0 16 16">
+        <path d="M3.5 8.5l3 3 6-6.5" />
+      </symbol>
+      <symbol id="i-copy" viewBox="0 0 16 16">
+        <rect x="5.5" y="5.5" width="8" height="8" rx="2" />
+        <path
+          d="M10.5 5.5v-1a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h1"
+        />
+      </symbol>
+      <symbol id="i-eye" viewBox="0 0 16 16">
+        <path d="M1 8s2.6-4.5 7-4.5S15 8 15 8s-2.6 4.5-7 4.5S1 8 1 8Z" />
+        <circle cx="8" cy="8" r="2" />
+      </symbol>
+      <symbol id="i-arrow" viewBox="0 0 16 16">
+        <path d="M3 8h9M8.5 4.5L12 8l-3.5 3.5" />
+      </symbol>
+    </svg>
+    <a class="skip" href="#studio">Skip to request</a>
+    <main id="studio" class="shell">
+      <section class="card" aria-labelledby="title">
+        <header class="topbar">
+          <h1 id="title" class="title">Request Studio</h1>
+          <div class="tools">
+            <span class="select">
+              <select id="transport" aria-label="Transport">
+                <option value="http">HTTP</option>
+                <option value="websocket">WebSocket</option>
+              </select>
+            </span>
+            <button
+              id="variables-toggle"
+              class="icon"
+              type="button"
+              aria-expanded="false"
+              aria-controls="variables"
+              aria-label="Variables"
+              title="Variables"
+            >
+              <svg class="glyph" aria-hidden="true">
+                <use href="#i-braces" />
+              </svg>
+            </button>
+          </div>
+        </header>
+        <aside
+          id="variables"
+          class="drawer"
+          aria-labelledby="variables-title"
+          hidden
+        >
+          <div class="drawer-head">
+            <h2 id="variables-title" class="title">Variables</h2>
+            <button
+              id="variables-close"
+              class="icon"
+              type="button"
+              aria-label="Close variables"
+              title="Close"
+            >
+              <svg class="glyph" aria-hidden="true">
+                <use href="#i-x" />
+              </svg>
+            </button>
+          </div>
+          <p class="hint">Type <kbd>@</kbd> in any field to insert one.</p>
+          <div id="variable-list" class="variable-list"></div>
+          <button id="variable-add" class="add" type="button">
+            <svg class="glyph" aria-hidden="true">
+              <use href="#i-plus" />
+            </svg>
+            <span class="add-label">New variable</span>
+          </button>
+        </aside>
+        <div class="content">
+          <div class="request">
+            <div class="request-line">
+              <span class="select method-select">
+                <select id="method" aria-label="HTTP method">
+                  <option>GET</option>
+                  <option>POST</option>
+                  <option>PUT</option>
+                  <option>PATCH</option>
+                  <option>DELETE</option>
+                  <option>HEAD</option>
+                  <option>OPTIONS</option>
+                </select>
+              </span>
+              <div class="url-wrap token-host">
+                <span class="sr" id="url-label">Request URL</span>
+                <div
+                  id="url"
+                  class="token-input token-editor"
+                  contenteditable="true"
+                  role="textbox"
+                  aria-labelledby="url-label"
+                  data-placeholder="Request URL"
+                  spellcheck="false"
+                ></div>
+                <output id="resolved-url" for="url"></output>
+              </div>
+              <button id="send" class="send" type="button">
+                Send<span class="send-mark" aria-hidden="true"
+                  ><svg class="glyph">
+                    <use href="#i-arrow" /></svg
+                ></span>
+              </button>
+            </div>
+            <div class="tabs" role="tablist" aria-label="Request configuration">
+              <button
+                class="tab active"
+                id="params-tab"
+                data-tab="params"
+                type="button"
+                role="tab"
+                aria-selected="true"
+                aria-controls="params-panel"
+              >
+                Params <span id="params-count" class="count">0</span>
+              </button>
+              <button
+                class="tab"
+                id="headers-tab"
+                data-tab="headers"
+                type="button"
+                role="tab"
+                aria-selected="false"
+                aria-controls="headers-panel"
+              >
+                Headers <span id="headers-count" class="count">0</span>
+              </button>
+              <button
+                class="tab"
+                id="body-tab"
+                data-tab="body"
+                type="button"
+                role="tab"
+                aria-selected="false"
+                aria-controls="body-panel"
+              >
+                Body
+              </button>
+              <button
+                class="tab"
+                id="cookies-tab"
+                data-tab="cookies"
+                type="button"
+                role="tab"
+                aria-selected="false"
+                aria-controls="cookies-panel"
+              >
+                Cookies <span id="cookies-count" class="count">0</span>
+              </button>
+              <button
+                class="tab websocket-only"
+                id="messages-tab"
+                data-tab="messages"
+                type="button"
+                role="tab"
+                aria-selected="false"
+                aria-controls="messages-panel"
+                hidden
+              >
+                Messages <span id="messages-count" class="count">0</span>
+              </button>
+            </div>
+            <section
+              id="params-panel"
+              class="panel"
+              data-panel="params"
+              role="tabpanel"
+              aria-labelledby="params-tab"
+            >
+              <div class="panel-head">
+                <h2 class="sr">Query parameters</h2>
+                <button
+                  class="add"
+                  data-add="params"
+                  type="button"
+                  aria-label="Add parameter"
+                  title="Add parameter"
+                >
+                  <svg class="glyph" aria-hidden="true">
+                    <use href="#i-plus" />
+                  </svg>
+                  <span class="add-label">Add</span>
+                </button>
+              </div>
+              <div id="params-table" class="table"></div>
+            </section>
+            <section
+              id="headers-panel"
+              class="panel"
+              data-panel="headers"
+              role="tabpanel"
+              aria-labelledby="headers-tab"
+              hidden
+            >
+              <div class="panel-head">
+                <h2 class="sr">Request headers</h2>
+                <button
+                  class="add"
+                  data-add="headers"
+                  type="button"
+                  aria-label="Add header"
+                  title="Add header"
+                >
+                  <svg class="glyph" aria-hidden="true">
+                    <use href="#i-plus" />
+                  </svg>
+                  <span class="add-label">Add</span>
+                </button>
+              </div>
+              <div id="headers-table" class="table"></div>
+            </section>
+            <section
+              id="body-panel"
+              class="panel"
+              data-panel="body"
+              role="tabpanel"
+              aria-labelledby="body-tab"
+              hidden
+            >
+              <div class="panel-head">
+                <h2 class="sr">Request body</h2>
+                <div class="body-tools">
+                  <div
+                    id="body-mode"
+                    class="segmented"
+                    role="group"
+                    aria-label="Body view"
+                  >
+                    <button class="active" type="button" data-body-mode="tree">
+                      Tree</button
+                    ><button type="button" data-body-mode="source">
+                      Source
+                    </button>
+                  </div>
+                  <button
+                    id="body-format-action"
+                    class="add"
+                    type="button"
+                    hidden
+                  >
+                    Format
+                  </button>
+                  <label class="format">
+                    <span class="sr">Body format</span>
+                    <span class="select">
+                      <select id="body-format">
+                        <option value="json">JSON</option>
+                        <option value="text">Text</option>
+                        <option value="xml">XML</option>
+                      </select>
+                    </span>
+                  </label>
+                </div>
+              </div>
+              <div
+                id="body-tree"
+                class="structured-tree body-tree"
+                aria-label="Structured request body"
+              ></div>
+              <div id="body-source" class="token-host" hidden>
+                <div
+                  id="body"
+                  class="token-input token-editor code"
+                  contenteditable="true"
+                  role="textbox"
+                  aria-multiline="true"
+                  aria-label="Request body"
+                  data-placeholder="Request body"
+                  spellcheck="false"
+                ></div>
+              </div>
+            </section>
+            <section
+              id="cookies-panel"
+              class="panel"
+              data-panel="cookies"
+              role="tabpanel"
+              aria-labelledby="cookies-tab"
+              hidden
+            >
+              <div class="panel-head">
+                <h2 class="sr">Cookies</h2>
+                <button
+                  class="add"
+                  data-add="cookies"
+                  type="button"
+                  aria-label="Add cookie"
+                  title="Add cookie"
+                >
+                  <svg class="glyph" aria-hidden="true">
+                    <use href="#i-plus" />
+                  </svg>
+                  <span class="add-label">Add</span>
+                </button>
+              </div>
+              <div id="cookies-table" class="table"></div>
+            </section>
+            <section
+              id="messages-panel"
+              class="panel websocket-only"
+              data-panel="messages"
+              role="tabpanel"
+              aria-labelledby="messages-tab"
+              hidden
+            >
+              <div class="panel-head">
+                <h2 class="sr">WebSocket messages</h2>
+                <button id="ws-clear" class="add" type="button">Clear</button>
+              </div>
+              <div class="ws-options">
+                <label class="ws-protocol-label">
+                  <span class="sr">Subprotocols</span>
+                  <input
+                    id="ws-protocols"
+                    class="field"
+                    type="text"
+                    placeholder="Subprotocols: graphql-ws, chat"
+                    autocomplete="off"
+                    spellcheck="false"
+                  />
+                </label>
+                <span id="ws-state" class="ws-state" data-state="closed"
+                  ><i></i> Disconnected</span
+                >
+              </div>
+              <div
+                id="ws-log"
+                class="ws-log"
+                role="log"
+                aria-live="polite"
+                aria-label="WebSocket message log"
+              >
+                <p class="ws-empty">Connect to send and receive messages.</p>
+              </div>
+              <div class="ws-composer token-host">
+                <div
+                  id="ws-message"
+                  class="token-input token-editor code"
+                  contenteditable="true"
+                  role="textbox"
+                  aria-multiline="true"
+                  aria-label="WebSocket message"
+                  data-placeholder="Message, @ for variables"
+                  spellcheck="false"
+                ></div>
+                <button id="ws-send" class="send" type="button" disabled>
+                  Send<span class="send-mark" aria-hidden="true"
+                    ><svg class="glyph">
+                      <use href="#i-arrow" /></svg
+                  ></span>
+                </button>
+              </div>
+            </section>
+          </div>
+          <section class="response" aria-labelledby="response-title">
+            <div class="response-head">
+              <div class="response-label">
+                <h2 id="response-title" class="title">Response</h2>
+                <span id="response-meta"><i></i> Ready</span>
+              </div>
+              <button
+                id="copy"
+                class="icon"
+                type="button"
+                aria-label="Copy response"
+                title="Copy response"
+              >
+                <svg class="glyph" aria-hidden="true">
+                  <use href="#i-copy" />
+                </svg>
+              </button>
+            </div>
+            <div
+              id="response-view"
+              class="response-view"
+              tabindex="0"
+              aria-label="JSON response tree"
+            >
+              <div id="response-text"></div>
+            </div>
+            <form
+              id="capture"
+              class="capture capture-popover"
+              role="dialog"
+              aria-label="Create variable"
+              hidden
+            >
+              <span id="capture-path" class="capture-path"></span
+              ><input
+                id="capture-name"
+                class="field"
+                type="text"
+                aria-label="New variable name"
+                placeholder="variableName"
+                autocomplete="off"
+                spellcheck="false"
+              /><button
+                class="capture-save"
+                type="submit"
+                aria-label="Save variable"
+                title="Save variable"
+              >
+                <svg class="glyph" aria-hidden="true">
+                  <use href="#i-check" />
+                </svg>
+              </button>
+            </form>
+          </section>
+        </div>
+      </section>
+    </main>
+    <div
+      id="autocomplete"
+      class="autocomplete"
+      role="tree"
+      aria-label="Variable suggestions"
+      hidden
+    ></div>
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+    <template id="row-template">
+      <div class="row">
+        <label class="check toggle"
+          ><input class="enabled" type="checkbox" checked /><span
+            class="toggle-track"
+            aria-hidden="true"
+            ><span class="toggle-thumb"></span></span
+          ><span class="sr">Enable row</span></label
+        >
+        <div class="token-host">
+          <div
+            class="key token-input token-editor"
+            contenteditable="true"
+            role="textbox"
+            aria-label="Key"
+            data-placeholder="Key"
+            spellcheck="false"
+          ></div>
+        </div>
+        <div class="token-host">
+          <div
+            class="value token-input token-editor"
+            contenteditable="true"
+            role="textbox"
+            aria-label="Value"
+            data-placeholder="Value"
+            spellcheck="false"
+          ></div>
+        </div>
+        <button class="delete icon" type="button" aria-label="Delete row">
+          <svg class="glyph" aria-hidden="true">
+            <use href="#i-x" />
+          </svg>
+        </button>
+      </div>
+    </template>
+    <template id="variable-template">
+      <div class="variable">
+        <div class="variable-name">
+          <span>@</span><input class="v-name" aria-label="Variable name" />
+        </div>
+        <input class="v-value" aria-label="Variable value" /><button
+          class="secret icon"
+          type="button"
+          aria-label="Toggle secret"
+        >
+          <svg class="glyph" aria-hidden="true">
+            <use href="#i-eye" />
+          </svg></button
+        ><button
+          class="delete v-delete icon"
+          type="button"
+          aria-label="Delete variable"
+        >
+          <svg class="glyph" aria-hidden="true">
+            <use href="#i-x" />
+          </svg>
+        </button>
+      </div>
+    </template>
+  </body>
+</html>

@@ -1,0 +1,65 @@
+/**
+ * Run-lane sidebar and tool cards.
+ *
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+@layer perf-base {
+  .layout {
+    display: grid;
+    grid-template-columns: var(--perf-layout-grid);
+    gap: var(--perf-card-gap);
+  }
+  .sidebar {
+    padding: var(--perf-sidebar-padding);
+    align-self: start;
+    position: sticky;
+    top: var(--perf-sidebar-offset);
+  }
+  .tool-list {
+    display: grid;
+    gap: var(--perf-toollist-gap);
+  }
+  .tool-card {
+    display: grid;
+    grid-template-columns: var(--perf-card-grid);
+    gap: var(--perf-row-gap);
+    align-items: center;
+    text-align: var(--perf-align-start);
+    border: var(--perf-card-edge);
+    background: var(--perf-clear);
+    color: var(--text);
+    padding: var(--perf-card-pad);
+    border-radius: var(--perf-radius-card);
+    cursor: var(--perf-pointer);
+    width: var(--perf-flow-width);
+  }
+  .tool-card:hover {
+    background: var(--surface2);
+  }
+  .tool-card.active {
+    background: var(--surface2);
+    border-color: var(--line);
+  }
+  .tool-marker {
+    height: var(--perf-marker-height);
+    border-radius: var(--perf-radius-marker);
+    background: var(--accent);
+  }
+  .tool-copy strong,
+  .tool-copy small {
+    display: block;
+  }
+  .tool-copy strong {
+    font-size: var(--perf-size-body);
+    text-transform: var(--perf-case-title);
+  }
+  .tool-copy small {
+    font-size: var(--perf-size-compact);
+    color: var(--muted);
+    margin-top: var(--perf-note-gap);
+  }
+  .tool-duration {
+    font: var(--perf-type-metric);
+    color: var(--accent);
+  }
+}

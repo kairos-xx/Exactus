@@ -1,0 +1,29 @@
+<!doctype html>
+<meta charset="utf-8" />
+<title>Extended Selector Editor</title>
+<link rel="stylesheet" href="../../editor/extended-selector-editor.css" />
+<link rel="stylesheet" href="./editor.css" />
+<h1>Extended Selector Editor</h1>
+<textarea id="expression">
+children(
+  .card,
+  .title[textContent="Order *"],
+  button[innerText="Save *"]
+)</textarea>
+<div class="toolbar">
+  <button id="run" type="button">Query + register “card”</button
+  ><button id="clear" type="button">Clear registration</button>
+</div>
+<pre id="status"></pre>
+<section id="fixture">
+  <article class="card">
+    <h2 class="title">Order 1042</h2>
+    <button>Save order</button>
+  </article>
+  <article class="card">
+    <h2 class="title">Profile</h2>
+    <button>Save profile</button>
+  </article>
+</section>
+<pre id="css-result"></pre>
+<script type="module" src="./editor.js"></script>

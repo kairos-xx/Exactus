@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Browser lifecycle example</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="code.js" defer></script>
+  </head>
+  <body>
+    <main>
+      <h1>Browser lifecycle example</h1>
+      <p>
+        Use these controls to create browser-side activity while Python monitors
+        lifecycle events.
+      </p>
+      <div class="actions">
+        <button id="open" type="button">Open tab</button>
+        <button id="log" type="button">Add event</button>
+        <button id="clear" type="button">Clear</button>
+        <button id="close" type="button">Close this tab</button>
+      </div>
+      <output id="events" aria-live="polite"></output>
+    </main>
+  </body>
+</html>

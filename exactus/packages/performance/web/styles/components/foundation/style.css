@@ -1,0 +1,49 @@
+/**
+ * Document reset, page and typographic foundation.
+ *
+ * Declarations consume this component's aliases (semantic.css); structure stays literal.
+ */
+@layer perf-base {
+  :where(
+    html,
+    body,
+    article,
+    button,
+    canvas,
+    code,
+    div,
+    h1,
+    h2,
+    h3,
+    header,
+    i,
+    input,
+    main,
+    p,
+    section,
+    small,
+    span,
+    strong,
+    time
+  ) {
+    box-sizing: border-box;
+  }
+  body {
+    margin: var(--perf-flush);
+    background: var(--bg);
+    color: var(--text);
+    min-width: var(--perf-page-min);
+  }
+  .eyebrow {
+    font-size: var(--perf-size-compact);
+    letter-spacing: var(--perf-track-wide);
+    color: var(--muted);
+    margin: var(--perf-eyebrow-gap);
+    font-weight: var(--perf-weight-bold);
+  }
+  main {
+    max-width: var(--perf-main-width);
+    margin: var(--perf-flow-margin);
+    padding: var(--perf-main-padding);
+  }
+}

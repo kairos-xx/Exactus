@@ -1,0 +1,51 @@
+/**
+ * Shared semantic roles used across component boundaries. Each role is exactly one plain CATALOG reference.
+ */
+:root {
+  --bg: var(--catalog-field-color-canvas);
+  --surface: var(--catalog-field-color-panel);
+  --surface2: var(--catalog-field-color-raised);
+  --line: var(--catalog-field-color-edge);
+  --text: var(--catalog-text-color-ink);
+  --muted: var(--catalog-text-color-faint);
+  --accent: var(--catalog-field-color-signal);
+  --danger: var(--catalog-field-color-ember);
+  --shadow: var(--catalog-layout-effect-card-shadow);
+  --perf-sans: var(--catalog-text-typography-sans);
+  --perf-edge-faint: var(--catalog-field-color-edge-faint);
+  --perf-shell-fill: var(--catalog-field-color-well-fill);
+  --perf-select-tint: var(--catalog-field-color-select-tint);
+  --perf-halo-tint: var(--catalog-field-color-halo-tint);
+  --perf-clear: var(--catalog-field-color-clear);
+  --perf-flush: var(--catalog-layout-measure-flush);
+  --perf-flow-width: var(--catalog-layout-measure-full);
+  --perf-flow-margin: var(--catalog-layout-measure-auto);
+  --perf-block-gap: var(--catalog-layout-measure-block-gap);
+  --perf-status-gap: var(--catalog-layout-measure-notice-gap);
+  --perf-card-gap: var(--catalog-layout-measure-card-gap);
+  --perf-panel-padding: var(--catalog-layout-measure-panel-padding);
+  --perf-note-gap: var(--catalog-layout-measure-note-gap);
+  --perf-row-gap: var(--catalog-layout-measure-row-gap);
+  --perf-bar-gap: var(--catalog-layout-measure-bar-gap);
+  --perf-drill-gap: var(--catalog-layout-measure-drill-gap);
+  --perf-crumb-gap: var(--catalog-layout-measure-crumb-gap);
+  --perf-chart-width: var(--catalog-layout-measure-full);
+  --perf-kpi-grid-narrow: var(--catalog-layout-measure-kpi-grid-narrow);
+  --perf-panel-edge: var(--catalog-field-border-panel-edge);
+  --perf-row-rule: var(--catalog-field-border-row-rule);
+  --perf-no-edge: var(--catalog-field-border-no-edge);
+  --perf-radius-card: var(--catalog-field-border-radius-card);
+  --perf-radius-shell: var(--catalog-field-border-radius-well);
+  --perf-radius-action: var(--catalog-field-border-radius-action);
+  --perf-row-motion: var(--catalog-layout-motion-row-motion);
+  --perf-pointer: var(--catalog-layout-cursor-pointer);
+  --perf-crosshair: var(--catalog-layout-cursor-crosshair);
+  --perf-size-body: var(--catalog-text-typography-size-body);
+  --perf-size-note: var(--catalog-text-typography-size-note);
+  --perf-size-compact: var(--catalog-text-typography-size-compact);
+  --perf-size-micro: var(--catalog-text-typography-size-micro);
+  --perf-wrap-pre: var(--catalog-text-typography-wrap-pre);
+  --perf-type-metric: var(--catalog-text-typography-metric);
+  --perf-type-badge: var(--catalog-text-typography-badge);
+  --perf-type-tip: var(--catalog-text-typography-tip);
+}
