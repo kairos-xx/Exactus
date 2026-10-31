@@ -194,7 +194,7 @@ Neither diff mode mutates the destination.
 | `cli.py` | Command-line and programmatic orchestration for the patcher package. |
 | `core.py` | Build deterministic and transactional executable filesystem deltas. |
 | `diff.py` | Render read-only ANSI unified diffs for project snapshots. |
-| `examples/` | Package marker. |
+| `examples/` | Runnable demonstration for `exactus/packages/patcher/`. |
 | `runtime.py` | Provide the transactional runtime embedded in project-delta PYZ files. |
 
 Run it as a module: `python -m exactus.packages.patcher`.
@@ -203,47 +203,71 @@ Run it as a module: `python -m exactus.packages.patcher`.
 
 | Option | Description | Settings |
 |---|---|---|
-| `--a` | A/before source: directory, ZIP, or generated patch PYZ. |  |
-| `--b` | B/after source: directory, ZIP, or generated patch PYZ. |  |
-| `--project-root` | Project root embedded into an update or used as the base for relative --bin-dir. Relative paths use invocation CWD. Default: . | default=Defaults.project_root |
-| `-o, --output` | Generated delta PYZ path. Default: update.pyz | default=Defaults.output |
-| `--include` | Include glob. Repeat for multiple patterns. | default=[], action='append' |
-| `--exclude` | Exclude glob. Repeat for multiple patterns. | default=[], action='append' |
-| `--detect-moves` | Detect identical moved entries (default). | default=True, action='store_true' |
-| `--no-detect-moves` | Represent moves as independent removal/addition operations. | action='store_false' |
-| `--reversible` | Store before-state blobs so the patch can be inverted (default). | default=True, action='store_true' |
-| `--forward-only` | Omit before-state blobs to reduce generated patch size. | action='store_false' |
-| `--compression-threshold` | Store payload blobs smaller than this many bytes without DEFLATE. Default: 64. | default=Defaults.compression_threshold, type=int |
+| `--a` | A/before source: directory, ZIP, or generated patch PYZ. | metavar='PATH' |
+| `--b` | B/after source: directory, ZIP, or generated patch PYZ. | metavar='PATH' |
+| `--project-root` | Project root embedded into an update or used as the base for relative --bin-dir. Relative paths use invocation CWD. Default: . | default=Defaults.project_root, metavar='PATH' |
+| `-o, --output` | Generated delta PYZ path. Default: update.pyz | default=Defaults.output, metavar='PATH' |
+| `--include` | Include glob. Repeat for multiple patterns. | action='append', default=[], metavar='GLOB' |
+| `--exclude` | Exclude glob. Repeat for multiple patterns. | action='append', default=[], metavar='GLOB' |
+| `--detect-moves` | Detect identical moved entries (default). | action='store_true', default=True |
+| `--no-detect-moves` | Represent moves as independent removal/addition operations. | action='store_false', dest='detect_moves' |
+| `--reversible` | Store before-state blobs so the patch can be inverted (default). | action='store_true', default=True |
+| `--forward-only` | Omit before-state blobs to reduce generated patch size. | action='store_false', dest='reversible' |
+| `--compression-threshold` | Store payload blobs smaller than this many bytes without DEFLATE. Default: 64. | type=int, default=Defaults.compression_threshold, metavar='BYTES' |
 | `--diff` | Print a read-only unified diff from A to B and exit without creating or applying a patch. | action='store_true' |
 | `--no-color` | Disable ANSI colors and syntax highlighting in --diff output. | action='store_true' |
-| `--diff-context` | Number of unchanged context lines in --diff output. Default: 3. | default=Defaults.diff_context, type=int |
-| `--bin` | Build a self-contained patcher.pyz CLI instead of an A-to-B delta. With no PATH, use bin (or --bin-dir when supplied). With PATH, write under that project-root-relative or absolute directory, e.g. --bin tools. | default=None, nargs='?' |
-| `--bin-dir` | Directory for --bin output. Relative paths are resolved under --project-root; absolute paths are preserved. Used with bare --bin. Default when omitted: bin. | default=None |
+| `--diff-context` | Number of unchanged context lines in --diff output. Default: 3. | type=int, default=Defaults.diff_context, metavar='LINES' |
+| `--bin` | Build a self-contained patcher.pyz CLI instead of an A-to-B delta. With no PATH, use bin (or --bin-dir when supplied). With PATH, write under that project-root-relative or absolute directory, e.g. --bin tools. | nargs='?', const=Defaults.bin_directory, default=None, metavar='PATH' |
+| `--bin-dir` | Directory for --bin output. Relative paths are resolved under --project-root; absolute paths are preserved. Used with bare --bin. Default when omitted: bin. | default=None, metavar='PATH' |
 | `--root` |  | type=Path |
 | `--dry-run` |  | action='store_true' |
 | `--force` |  | action='store_true' |
-| `--conflict` |  | default='abort', choices=('abort', 'overwrite', 'skip', 'backup') |
+| `--conflict` |  | choices=('abort', 'overwrite', 'skip', 'backup'), default='abort' |
 | `--list` |  | action='store_true' |
 | `--info` |  | action='store_true' |
 | `--json` |  | action='store_true' |
 | `--verify` |  | action='store_true' |
+| `--diff` |  | action='store_true' |
+| `--no-color` |  | action='store_true' |
+| `--diff-context` |  | type=int, default=3 |
 
 ## Python API reference
 
 Public classes, functions and constants, read from the source. Private names (leading underscore) are omitted.
+
+### `__init__.py`
+
+Build and apply deterministic executable filesystem patches.
+
+
+### `__main__.py`
+
+Run ``exactus.packages.patcher`` through the project's virtualenv.
+
 
 ### `cli.py`
 
 Command-line and programmatic orchestration for the patcher package.
 
 - `class DeltaBuildOptions` — Configure executable delta generation.
-  - Fields: `includes: tuple[str, ...]`, `excludes: tuple[str, ...]`, `detect_moves: bool`, `reversible: bool`, `compression_threshold: int`
+  - `includes` = `()`
+  - `excludes` = `()`
+  - `detect_moves` = `True`
+  - `reversible` = `True`
+  - `compression_threshold` = `64`
 - `class CliArguments` — Represent fully typed parsed CLI arguments.
   - Fields: `a: str | None`, `b: str | None`, `project_root: str`, `output: str`, `includes: tuple[str, ...]`, `excludes: tuple[str, ...]`, `detect_moves: bool`, `reversible: bool`, `compression_threshold: int`, `diff: bool`, `no_color: bool`, `diff_context: int`, `bin: str | None`, `bin_dir: str | None`
 - `class Defaults` — Provide immutable-by-convention patcher defaults.
+  - `delta_build_options` = `DeltaBuildOptions()`
+  - `project_root` = `'.'`
+  - `output` = `'update.pyz'`
+  - `compression_threshold` = `64`
+  - `diff_context` = `3`
+  - `bin_directory` = `'bin'`
+  - `bin_filename` = `'patcher.pyz'`
 - `class PatcherCli` — Expose the complete patch-builder CLI as an equivalent Python API.
-  - `run(*, arguments: Sequence[str] | None=None) -> int` — Parse CLI arguments and execute the requested builder operation.
-  - `build_binary(*, project_root: Path | str, bin_dir: Path | str=Defaults.bin_directory, filename: str=Defaults.bin_filename) -> Path` — Build a self-contained CLI PYZ containing the patcher package.
+  - `run(cls, *, arguments: Sequence[str] | None=None) -> int` — Parse CLI arguments and execute the requested builder operation.
+  - `build_binary(cls, *, project_root: Path | str, bin_dir: Path | str=Defaults.bin_directory, filename: str=Defaults.bin_filename) -> Path` — Build a self-contained CLI PYZ containing the patcher package.
   - `build_delta(*, a: Path | str, b: Path | str, project_root: Path | str, output: Path | str, options: DeltaBuildOptions=Defaults.delta_build_options) -> Path` — Build an executable A-to-B project delta.
   - `parser() -> ArgumentParser` — Return the exhaustive CLI parser.
 - `main(*, arguments: Sequence[str] | None=None) -> int` — Run the patcher builder CLI.
@@ -252,37 +276,67 @@ Command-line and programmatic orchestration for the patcher package.
 
 Build deterministic and transactional executable filesystem deltas.
 
-- `class DeltaOptions(TypedDict)` — Describe optional controls accepted while calculating a delta.
+- `class DeltaOptions` — Describe optional controls accepted while calculating a delta.
+  - Fields: `includes: Iterable[str]`, `excludes: Iterable[str]`, `detect_moves: bool`
 - `class Defaults` — Provide immutable constants used by snapshot and archive processing.
+  - `format_version` = `2`
+  - `zip_timestamp` = `(1980, 1, 1, 0, 0, 0)`
+  - `symlink_kind_bits` = `S_IFLNK`
+  - `archive_mode_mask` = `4095`
+  - `archive_kind_mask` = `61440`
+  - `default_file_mode` = `420`
+  - `default_directory_mode` = `493`
+  - `executable_archive_mode` = `493`
+  - `executable_output_mode` = `448`
 - `resolve_invocation_root(*, root: str | Path, cwd: Path | None=None) -> Path` — Resolve an application root against the invocation directory.
-- `class EntryKind(StrEnum)` — Identify filesystem entry kinds representable by a snapshot.
-- `class ConflictPolicy(StrEnum)` — Identify supported destination-precondition conflict policies.
+- `class EntryKind` — Identify filesystem entry kinds representable by a snapshot.
+  - `FILE` = `'file'`
+  - `DIRECTORY` = `'directory'`
+  - `SYMLINK` = `'symlink'`
+- `class ConflictPolicy` — Identify supported destination-precondition conflict policies.
+  - `ABORT` = `'abort'`
+  - `OVERWRITE` = `'overwrite'`
+  - `SKIP` = `'skip'`
+  - `BACKUP` = `'backup'`
 - `class SnapshotEntry` — Describe one normalized filesystem entry.
-  - Fields: `path: PurePosixPath`, `kind: EntryKind`, `mode: int`, `digest: str`, `link_target: str`, `content: bytes`
-  - `identity() -> tuple[EntryKind, int, str, str]` — Return metadata used to determine semantic entry equality.
+  - `digest` = `''`
+  - `link_target` = `''`
+  - `content` = `b''`
+  - Fields: `path: PurePosixPath`, `kind: EntryKind`, `mode: int`
+  - `identity(self) -> tuple[EntryKind, int, str, str]` — Return metadata used to determine semantic entry equality.
 - `class ProjectSnapshot` — Represent a complete normalized virtual project tree.
   - Fields: `entries: tuple[SnapshotEntry, ...]`
-  - `by_path() -> dict[PurePosixPath, SnapshotEntry]` — Return snapshot entries indexed by project-relative path.
-  - `fingerprint() -> str` — Return a deterministic metadata and content fingerprint.
+  - `by_path(self) -> dict[PurePosixPath, SnapshotEntry]` — Return snapshot entries indexed by project-relative path.
+  - `fingerprint(self) -> str` — Return a deterministic metadata and content fingerprint.
 - `class DeltaOperation` — Represent one path transition between two project snapshots.
-  - Fields: `path: PurePosixPath`, `before: SnapshotEntry | None`, `after: SnapshotEntry | None`, `move_from: PurePosixPath | None`
+  - `move_from` = `None`
+  - Fields: `path: PurePosixPath`, `before: SnapshotEntry | None`, `after: SnapshotEntry | None`
 - `class PatchResult` — Describe the observable outcome of applying a project patch.
-  - Fields: `added: tuple[str, ...]`, `changed: tuple[str, ...]`, `removed: tuple[str, ...]`, `moved: tuple[str, ...]`, `skipped: tuple[str, ...]`, `conflicts: tuple[str, ...]`, `bytes_written: int`, `verified: bool`, `rolled_back: bool`
+  - `added` = `()`
+  - `changed` = `()`
+  - `removed` = `()`
+  - `moved` = `()`
+  - `skipped` = `()`
+  - `conflicts` = `()`
+  - `bytes_written` = `0`
+  - `verified` = `False`
+  - `rolled_back` = `False`
 - `class ProjectDelta` — Represent a deterministic transition between two project snapshots.
   - Fields: `before_fingerprint: str`, `after_fingerprint: str`, `operations: tuple[DeltaOperation, ...]`
-  - `between(*, before: ProjectSnapshot, after: ProjectSnapshot, detect_moves: bool=True) -> 'ProjectDelta'` — Calculate the minimal transition between two snapshots.
-  - `inverse() -> 'ProjectDelta'` — Return the exact inverse transition.
-  - `compose(*, next_delta: 'ProjectDelta') -> 'ProjectDelta'` — Compose this A-to-B delta with a compatible B-to-C delta.
+  - `between(cls, *, before: ProjectSnapshot, after: ProjectSnapshot, detect_moves: bool=True) -> 'ProjectDelta'` — Calculate the minimal transition between two snapshots.
+  - `inverse(self) -> 'ProjectDelta'` — Return the exact inverse transition.
+  - `compose(self, *, next_delta: 'ProjectDelta') -> 'ProjectDelta'` — Compose this A-to-B delta with a compatible B-to-C delta.
 - `class ProjectSource` — Load snapshots from directories, ZIP archives, or patch PYZ files.
-  - `from_path(*, path: Path | str, includes: Iterable[str]=(), excludes: Iterable[str]=()) -> ProjectSnapshot` — Load a normalized snapshot from a supported source path.
+  - `from_path(cls, *, path: Path | str, includes: Iterable[str]=(), excludes: Iterable[str]=()) -> ProjectSnapshot` — Load a normalized snapshot from a supported source path.
 - `safe_relative(*, value: str) -> PurePosixPath` — Validate and normalize a project-relative POSIX path.
 - `class PyzProjectPatch` — Build deterministic executable project-delta archives.
-  - `delta(*, a: Path | str, b: Path | str, project_root: Path | str, **options: Unpack[DeltaOptions]) -> 'PyzProjectPatch'` — Create a delta from independently supported A and B sources.
-  - `from_delta(*, delta: ProjectDelta, project_root: Path | str, before_snapshot: ProjectSnapshot, after_snapshot: ProjectSnapshot) -> 'PyzProjectPatch'` — Create a patch builder around an existing delta model.
+  - `__init__(self, *, project_root: Path | str, files: Iterable[Path | str]=(), remove: Iterable[Path | str]=()) -> None` — Create a direct patch from selected project paths and removals.
+  - `delta(cls, *, a: Path | str, b: Path | str, project_root: Path | str, **options: Unpack[DeltaOptions]) -> 'PyzProjectPatch'` — Create a delta from independently supported A and B sources.
+  - `from_delta(cls, *, delta: ProjectDelta, project_root: Path | str, before_snapshot: ProjectSnapshot, after_snapshot: ProjectSnapshot) -> 'PyzProjectPatch'` — Create a patch builder around an existing delta model.
   - `relative(*, root: Path, path: Path | str) -> PurePosixPath` — Resolve a path and return its normalized project-relative form.
-  - `build(*, output: Path | str, reversible: bool=True, compression_threshold: int=64) -> Path` — Write a deterministic executable PYZ containing this delta.
-  - `inverse() -> 'PyzProjectPatch'` — Return a builder representing the exact reverse patch.
-  - `compose(*, next_patch: 'PyzProjectPatch') -> 'PyzProjectPatch'` — Compose this patch with a compatible subsequent patch.
+  - `build(self, *, output: Path | str, reversible: bool=True, compression_threshold: int=64) -> Path` — Write a deterministic executable PYZ containing this delta.
+  - `inverse(self) -> 'PyzProjectPatch'` — Return a builder representing the exact reverse patch.
+  - `compose(self, *, next_patch: 'PyzProjectPatch') -> 'PyzProjectPatch'` — Compose this patch with a compatible subsequent patch.
 
 ### `diff.py`
 
@@ -297,18 +351,37 @@ Render read-only ANSI unified diffs for project snapshots.
   - `magenta` = `'\x1b[35m'`
   - `blue` = `'\x1b[34m'`
   - `dim` = `'\x1b[2m'`
-  - `token` = `compile_pattern(pattern='(\\"(?:\\\\.|[^\\"\\\\])*\\"|\'(?:\\\\.|[^...`
-  - `highlight_suffixes` = `frozenset({'.js', '.mjs', '.cjs', '.css', '.html', '.htm', '.py', '...`
+  - `token` = `compile_pattern(pattern='(\\"(?:\\\\.|[^\\"\\\\])*\\"|\'(?:\\\\.|[^\'\\\\...`
+  - `highlight_suffixes` = `frozenset({'.js', '.mjs', '.cjs', '.css', '.html', '.htm', '.py', '.json'...`
 - `class DiffRenderer` — Render deterministic unified diffs without mutating either snapshot.
-  - `render(*, before: ProjectSnapshot, after: ProjectSnapshot, color: bool=True, context: int=3) -> str` — Return a human-readable delta between two snapshots.
-  - `write(*, before: ProjectSnapshot, after: ProjectSnapshot, color: bool | None=None, context: int=3) -> None` — Write a rendered project diff to standard output.
+  - `render(cls, *, before: ProjectSnapshot, after: ProjectSnapshot, color: bool=True, context: int=3) -> str` — Return a human-readable delta between two snapshots.
+  - `write(cls, *, before: ProjectSnapshot, after: ProjectSnapshot, color: bool | None=None, context: int=3) -> None` — Write a rendered project diff to standard output.
+
+### `examples/__init__.py`
+
+Package marker.
+
+
+### `examples/__main__.py`
+
+Run the patcher package example through the project virtualenv.
+
+
+### `examples/run.py`
+
+Exercise folders, ZIPs, PYZs, reversal, and inspection.
+
+- `require(*, condition: bool, message: str) -> None` — Require an example postcondition.
+- `main() -> int` — Build and execute a representative reversible project patch.
 
 ### `runtime.py`
 
 Provide the transactional runtime embedded in project-delta PYZ files.
 
-- `class Arguments(Namespace)` — Store fully typed command-line arguments for the patch runtime.
-- `class ResultData(TypedDict)` — Describe the JSON result emitted after successful application.
+- `class Arguments` — Store fully typed command-line arguments for the patch runtime.
+  - Fields: `root: Path | None`, `dry_run: bool`, `force: bool`, `conflict: str`, `list: bool`, `info: bool`, `json: bool`, `verify: bool`, `diff: bool`, `no_color: bool`, `diff_context: int`
+- `class ResultData` — Describe the JSON result emitted after successful application.
+  - Fields: `added: list[str]`, `changed: list[str]`, `removed: list[str]`, `moved: list[str]`, `skipped: list[str]`, `conflicts: list[str]`, `bytes_written: int`, `verified: bool`, `rolled_back: bool`
 - `safe(*, root: Path, relative: str) -> Path` — Resolve a manifest path while preventing project-root traversal.
 - `digest(*, path: Path) -> str` — Calculate the SHA-256 digest of a filesystem file.
 - `state(*, path: Path) -> EntryState` — Capture the comparable state of a destination filesystem entry.
@@ -324,73 +397,79 @@ Provide the transactional runtime embedded in project-delta PYZ files.
 
 ## Examples
 
-Package marker.
+Runnable demonstration for `exactus/packages/patcher/`.
 
-Files: `__init__.py`, `__main__.py`, `run.py`
+Exercise folders, ZIPs, PYZs, reversal, and inspection.
+
+```bash
+python -m exactus.packages.patcher.examples
+```
+
+Files: `examples/README.md`, `examples/__init__.py`, `examples/__main__.py`, `examples/run.py`
 
 ## Dependencies and consumers
 
-- No dependencies outside the standard library.
-- Used by: no other module imports it; it is run directly or through the bundle.
+- Other packages: [`argument_parser`](../argument_parser/DOCS.md)
+- Used by: `tests/packages/patcher/test_diff.py`, `tests/packages/patcher/test_patcher.py`, `tests/packages/patcher/test_runtime.py`
 
 ## Tests
 
 Tests live in `exactus/tests/packages/patcher/`.
 
 - `test_diff.py` — Test read-only unified diff rendering and patcher diff CLI modes. (4 tests)
-  - `test_highlighted_text_diff`
+  - `test_binary_diff_summary`
   - `test_builder_diff_is_read_only`
   - `test_generated_update_diff_is_read_only`
-  - `test_binary_diff_summary`
+  - `test_highlighted_text_diff`
 - `test_example_run.py` — Cover the bundled ``patcher`` example entry point. (1 tests)
   - `test_example_module_runs_as_a_script`
 - `test_patcher.py` — Test the deterministic executable project patcher. (28 tests)
-  - `test_resolve_relative_root_from_invocation_directory`
-  - `test_folder_delta_and_relative_runtime_root`
-  - `test_zip_as_b_source`
-  - `test_inverse_restores_before_state`
-  - `test_deterministic_build`
-  - `test_relative_root_variants`
-  - `test_source_filter_symlink_empty_directory_and_unsupported`
-  - `test_ordinary_zip_directory_file_and_symlink`
-  - `test_pyz_is_semantic_after_snapshot_and_nonreversible_build`
-  - `test_move_detection_disable_and_composition`
-  - `test_direct_constructor_removal_relative_and_outside_rejection`
-  - `test_safe_relative_rejects_unsafe_values`
-  - `test_manifest_validation_errors_and_corrupt_blob`
-  - `test_generated_pyz_inspection_commands`
-  - `test_builder_help_is_exhaustive`
+  - `test_bin_accepts_inline_directory`
   - `test_bin_default_and_generated_cli`
-  - `test_generated_patch_backs_up_overlapping_removals`
-  - `test_generated_binary_builds_delta`
   - `test_bin_dir_is_relative_to_project_root`
+  - `test_builder_help_is_exhaustive`
   - `test_cli_api_run_builds_binary`
   - `test_cli_api_run_builds_delta`
-  - `test_parser_defaults_and_switches`
-  - `test_bin_accepts_inline_directory`
-  - `test_module_without_arguments_prints_help`
-  - `test_generated_binary_without_arguments_prints_help`
-  - `test_inline_bin_and_bin_dir_conflict`
-  - `test_main_module_switches_to_project_python`
+  - `test_deterministic_build`
+  - `test_direct_constructor_removal_relative_and_outside_rejection`
   - `test_examples_module_switches_to_project_python`
+  - `test_folder_delta_and_relative_runtime_root`
+  - `test_generated_binary_builds_delta`
+  - `test_generated_binary_without_arguments_prints_help`
+  - `test_generated_patch_backs_up_overlapping_removals`
+  - `test_generated_pyz_inspection_commands`
+  - `test_inline_bin_and_bin_dir_conflict`
+  - `test_inverse_restores_before_state`
+  - `test_main_module_switches_to_project_python`
+  - `test_manifest_validation_errors_and_corrupt_blob`
+  - `test_module_without_arguments_prints_help`
+  - `test_move_detection_disable_and_composition`
+  - `test_ordinary_zip_directory_file_and_symlink`
+  - `test_parser_defaults_and_switches`
+  - `test_pyz_is_semantic_after_snapshot_and_nonreversible_build`
+  - `test_relative_root_variants`
+  - `test_resolve_relative_root_from_invocation_directory`
+  - `test_safe_relative_rejects_unsafe_values`
+  - `test_source_filter_symlink_empty_directory_and_unsupported`
+  - `test_zip_as_b_source`
 - `test_runtime.py` — Test the standalone transactional patch runtime directly. (18 tests)
-  - `test_safe_accepts_nested_path_and_rejects_unsafe_paths`
-  - `test_digest_state_and_expected_cover_file_directory_and_absence`
-  - `test_state_and_restore_cover_symbolic_links`
-  - `test_restore_copies_directory_tree`
   - `test_diff_blob_handles_absent_nonfile_and_file_payloads`
+  - `test_digest_state_and_expected_cover_file_directory_and_absence`
+  - `test_main_apply_commits_full_delta`
+  - `test_main_diff_modes_render_and_validate`
+  - `test_main_lists_and_describes_operations`
+  - `test_main_rejects_corrupt_payload`
+  - `test_main_rejects_malformed_manifest_members`
+  - `test_main_rolls_back_failed_postcondition`
+  - `test_main_root_resolution_variants`
+  - `test_main_verify_and_conflict_policies`
+  - `test_module_guard_invokes_main`
   - `test_paint_and_syntax_respect_color_controls`
   - `test_render_diff_covers_text_move_metadata_and_binary`
+  - `test_restore_copies_directory_tree`
   - `test_runtime_manifest_accessors_reject_invalid_data`
-  - `test_main_lists_and_describes_operations`
-  - `test_main_diff_modes_render_and_validate`
-  - `test_main_verify_and_conflict_policies`
-  - `test_main_apply_commits_full_delta`
-  - `test_main_rolls_back_failed_postcondition`
-  - `test_main_rejects_corrupt_payload`
-  - `test_main_root_resolution_variants`
-  - `test_main_rejects_malformed_manifest_members`
-  - `test_module_guard_invokes_main`
+  - `test_safe_accepts_nested_path_and_rejects_unsafe_paths`
   - `test_safe_rejects_symlink_parent_escape`
+  - `test_state_and_restore_cover_symbolic_links`
 
 <!-- exactus:reference:end -->

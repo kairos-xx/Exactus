@@ -69,95 +69,106 @@ python exactus/packages/widgets/widget_console/examples/run.py
 |---|---|
 | `README.md` | Package readme. |
 | `__init__.py` | Package the reusable JavaScript console widget and its browser demo. |
-| `console_view.js` | The console widget: a filterable, searchable message list with inspectable values. |
-| `describe.js` | Describe any JavaScript value as a structured-clone-safe tree. |
-| `examples/` | Runnable browser demonstration of the console widget. |
-| `format.js` | Text rendering of value descriptors: previews, plain text and printf-style substitution. |
-| `icons.js` | Inline SVG icons (one 24-unit grid, stroked), shared by the console and runner widgets. |
-| `index.js` | Public entry of the console widget. |
-| `inspect.js` | DOM rendering of value descriptors as inline, expandable inspector trees. |
-| `recorder.js` | Console method semantics (groups, counters, timers, tables) feeding any entry sink. |
-| `style.css` | widget_console: PRIMARY literals -> BASE derivations -> CATALOG specifications -> SEMANTIC aliases (single reference each), then components. |
+| `console_view.js` | JavaScript module. |
+| `describe.js` | JavaScript module. |
+| `examples/` | Runnable demonstration for `exactus/widgets/widget_console/`. |
+| `format.js` | JavaScript module. |
+| `icons.js` | JavaScript module. |
+| `index.js` | JavaScript module. |
+| `inspect.js` | JavaScript module. |
+| `recorder.js` | JavaScript module. |
+| `style.css` | — |
 
-## JavaScript API reference
+## Python API reference
 
-Exports of the package's ES modules, read from the source.
+Public classes, functions and constants, read from the source. Private names (leading underscore) are omitted.
 
-### `console_view.js`
+### `__init__.py`
 
-The console widget: a filterable, searchable message list with inspectable values.
+Package the reusable JavaScript console widget and its browser demo.
 
-- `const mountConsole` — Mount a console widget in a host element.
 
-### `describe.js`
-
-Describe any JavaScript value as a structured-clone-safe tree.
-
-- `class Describer` — Describe JavaScript values as structured-clone-safe descriptor trees.
-  - `static describe(value, limits = {})`
-  - `static walk(value, depth, path, limits)`
-  - `static summary(value, kind, cls, size)`
-  - `static object(value, depth, path, limits)`
-  - `static members(value, kind, depth, path, limits)`
-- `const describe`
-
-### `format.js`
-
-Text rendering of value descriptors: previews, plain text and printf-style substitution.
-
-- `const formatNumber` — Format a number with its sign of zero preserved.
-- `const formatFunction` — Format a function descriptor.
-- `const formatValue` — Format any descriptor as one line of text.
-- `const partsText` — Format descriptors the way a console line reads in plain text.
-- `const applyFormat` — Apply printf-style substitutions to the first message part.
-
-### `icons.js`
-
-Inline SVG icons (one 24-unit grid, stroked), shared by the console and runner widgets.
-
-- `const icon` — Build an inline SVG icon.
-
-### `index.js`
-
-Public entry of the console widget.
-
-### `inspect.js`
-
-DOM rendering of value descriptors as inline, expandable inspector trees.
-
-- `class Inspector` — Render value descriptors as inline, expandable inspector trees.
-  - `static leaf(type, text)`
-  - `static wire(box, head, button, build)`
-  - `static member(entry, kind)`
-  - `static object(descriptor, nested)`
-  - `static value(descriptor, nested = false)`
-- `const renderValue` — Render any descriptor as an inspector node.
-- `const renderTable` — Render `console.table` output, or fall back to the plain value.
-
-### `recorder.js`
-
-Console method semantics (groups, counters, timers, tables) feeding any entry sink.
-
-- `class ConsoleRecorder` — Record console calls as console entries for a sink.
-  - `emit(level, kind, args)`
-  - `methods()`
-  - `open(labels)`
-  - `stamp(label, finish, extra)`
-
-## Stylesheets
-
-- `style.css` — widget_console: PRIMARY literals -> BASE derivations -> CATALOG specifications -> SEMANTIC aliases (single reference each), then components. (276 custom properties)
-
-## Examples
+### `examples/__init__.py`
 
 Runnable browser demonstration of the console widget.
 
-Files: `__init__.py`, `__main__.py`, `run.py`, `web/code.js`, `web/demo.css`, `web/index.html`
+
+### `examples/__main__.py`
+
+Run the console widget example with the project virtual environment.
+
+
+### `examples/run.py`
+
+Start the loopback console widget demo and open the managed browser.
+
+- `start_demo(*, log: Path) -> str` — Serve ``packages/`` so the demo can reach sibling widget packages.
+- `main() -> int` — Launch the demo; leave its reusable background server running.
+
+## JavaScript API reference
+
+Top-level exports, read from the source.
+
+### `console_view.js`
+
+- `mountConsole`
+
+### `describe.js`
+
+- `Describer`
+- `describe`
+
+### `format.js`
+
+- `formatNumber`
+- `formatFunction`
+- `formatValue`
+- `partsText`
+- `applyFormat`
+
+### `icons.js`
+
+- `icon`
+
+### `index.js`
+
+- `Describer`
+- `describe`
+- `applyFormat`
+- `formatValue`
+- `partsText`
+- `icon`
+- `renderTable`
+- `renderValue`
+- `ConsoleRecorder`
+- `mountConsole`
+
+### `inspect.js`
+
+- `Inspector`
+- `renderValue`
+- `renderTable`
+
+### `recorder.js`
+
+- `ConsoleRecorder`
+
+## Examples
+
+Runnable demonstration for `exactus/widgets/widget_console/`.
+
+Start the loopback console widget demo and open the managed browser.
+
+```bash
+python -m exactus.widgets.widget_console.examples
+```
+
+Files: `examples/README.md`, `examples/__init__.py`, `examples/__main__.py`, `examples/run.py`, `examples/web/README.md`, `examples/web/code.js`, `examples/web/demo.css`, `examples/web/index.html`
 
 ## Dependencies and consumers
 
-- No dependencies outside the standard library.
-- Used by: `packages/actions/action_javascript/executor.js`, `packages/actions/action_javascript/runner_view.js`, `packages/actions/action_javascript/style.css`, `packages/actions/action_javascript/variables_menu.js`, `packages/actions/action_javascript/worker_source.js`, `tests/packages/actions/action_javascript/action_javascript.test.mjs`
+- Other packages: [`browser`](../../browser/DOCS.md), [`server`](../../server/DOCS.md)
+- Used by: `tests/packages/widgets/widget_console/test_examples.py`
 
 ## Tests
 
@@ -165,18 +176,10 @@ Tests live in `exactus/tests/packages/widgets/widget_console/`.
 
 - `test_examples.py` — Coverage for the console widget demo server launcher. (6 tests)
   - `test_demo_assets_exist`
-  - `test_start_demo_reuses_a_recorded_server`
-  - `test_start_demo_spawns_and_waits`
-  - `test_start_demo_replaces_unready_server`
   - `test_main_prints_url_and_opens_browser`
   - `test_module_entrypoint_invokes_main`
-- `widget_console.test.mjs` — (7 tests)
-  - describer, formatter and recorder keep their contracts
-  - console widget filters, folds repeats, trims and exposes its text
-  - inspector trees expand lazily with accessible toggles
-  - capture mirrors the page console and uncaught errors, then restores it
-  - demo actions render tables, groups, repeats and keyboard-reachable controls
-  - themes and compact widths keep the widget inside its container
-  - the theme option recolours one widget without touching the page
+  - `test_start_demo_replaces_unready_server`
+  - `test_start_demo_reuses_a_recorded_server`
+  - `test_start_demo_spawns_and_waits`
 
 <!-- exactus:reference:end -->

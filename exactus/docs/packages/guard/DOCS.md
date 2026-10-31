@@ -117,7 +117,7 @@ The implementation requires Python 3.13+ and `psutil`.
 | `__main__.py` | Execute process_guard as a Python module. |
 | `cleanup.py` | Terminate processes previously observed by a process tracker. |
 | `cli.py` | Command-line entry point for external process supervision. |
-| `examples/` | Executable examples for exactus.packages.guard. |
+| `examples/` | Runnable demonstration for `exactus/packages/guard/`. |
 | `guard.py` | In-process descendant cleanup context manager. |
 | `model.py` | Typed value models for process supervision. |
 | `supervisor.py` | External process supervisor that owns and cleans a target process tree. |
@@ -129,43 +129,83 @@ Run it as a module: `python -m exactus.packages.guard`.
 
 | Option | Description | Settings |
 |---|---|---|
-| `--poll-interval` | descendant discovery interval in seconds | default=0.02, type=float |
-| `--grace-seconds` | grace period before force-killing descendants | default=1.5, type=float |
+| `--poll-interval` | descendant discovery interval in seconds | type=float, default=0.02 |
+| `--grace-seconds` | grace period before force-killing descendants | type=float, default=1.5 |
 | `command` | command and arguments to supervise | nargs=REMAINDER |
 
 ## Python API reference
 
 Public classes, functions and constants, read from the source. Private names (leading underscore) are omitted.
 
+### `__init__.py`
+
+Public API for process_guard.
+
+
+### `__main__.py`
+
+Execute process_guard as a Python module.
+
+
 ### `cleanup.py`
 
 Terminate processes previously observed by a process tracker.
 
 - `class ProcessCleaner` — Perform identity-safe, deepest-first descendant cleanup.
-  - `cleanup() -> CleanupResult` — Terminate all observed descendants and force-kill survivors.
+  - `__init__(self, *, tracker: ProcessTracker, grace_seconds: float=1.5, settle_seconds: float=0.15) -> None` — Initialize cleanup policy.
+  - `cleanup(self) -> CleanupResult` — Terminate all observed descendants and force-kill survivors.
 
 ### `cli.py`
 
 Command-line entry point for external process supervision.
 
-- `class CliArguments(Namespace)` — Strongly typed command-line namespace.
+- `class CliArguments` — Strongly typed command-line namespace.
+  - `poll_interval` = `0.02`
+  - `grace_seconds` = `1.5`
+  - `__init__(self) -> None` — Initialize typed parser destinations.
 - `class Cli` — Parse command-line arguments and execute the process supervisor.
-  - `run(*, arguments: Sequence[str]) -> int` — Execute one supervised command and return its exit status.
+  - `run(cls, *, arguments: Sequence[str]) -> int` — Execute one supervised command and return its exit status.
   - `parser() -> ArgumentParser` — Build the command-line parser.
 - `main() -> int` — Run the command-line application.
+
+### `examples/__init__.py`
+
+Executable examples for exactus.packages.guard.
+
+
+### `examples/__main__.py`
+
+Run the guard example with the project virtual environment.
+
+
+### `examples/run.py`
+
+Comprehensive executable examples for the process guard API.
+
+- `class GuardExamples` — Demonstrate in-process and external process-tree supervision.
+  - `external_tree(cls) -> None` — Supervise a target that creates a child and grandchild.
+  - `exit_code(cls) -> None` — Demonstrate preservation of the target process exit status.
+  - `run(cls) -> None` — Run every safe, self-cleaning example.
+  - `in_process() -> None` — Guard subprocesses created directly by the current process.
+- `main() -> int` — Run the complete example suite.
 
 ### `guard.py`
 
 In-process descendant cleanup context manager.
 
 - `class ProcessGuard` — Track and clean descendants created inside a context manager.
-  - `result() -> CleanupResult | None` — Return cleanup metadata after the guard exits.
+  - `__init__(self, *, poll_interval: float=0.02, grace_seconds: float=1.5) -> None` — Initialize an in-process guard.
+  - `result(self) -> CleanupResult | None` — Return cleanup metadata after the guard exits.
 
 ### `model.py`
 
 Typed value models for process supervision.
 
-- `class StopReason(Enum)` — Reason a supervised process stopped.
+- `class StopReason` — Reason a supervised process stopped.
+  - `NATURAL` = `'natural'`
+  - `TERMINATED` = `'terminated'`
+  - `KILLED` = `'killed'`
+  - `VANISHED` = `'vanished'`
 - `class ProcessIdentity` — Uniquely identify one operating-system process incarnation.
   - Fields: `pid: int`, `create_time: float`
 - `class ProcessRecord` — Describe a process observed during one supervision session.
@@ -180,32 +220,41 @@ External process supervisor that owns and cleans a target process tree.
 - `class SupervisionResult` — Result returned after the target and descendants have been cleaned.
   - Fields: `exit_code: int`, `cleanup: CleanupResult`
 - `class TargetProcess` — Typed adapter around psutil's subprocess-compatible process.
-  - `pid() -> int` — Return the process identifier.
-  - `is_running() -> bool` — Return whether the process is still running.
-  - `terminate() -> None` — Request termination.
-  - `wait() -> int` — Wait for completion and return the exit status.
+  - `__init__(self, *, command: tuple[str, ...]) -> None` — Launch a supervised command.
+  - `pid(self) -> int` — Return the process identifier.
+  - `is_running(self) -> bool` — Return whether the process is still running.
+  - `terminate(self) -> None` — Request termination.
+  - `wait(self) -> int` — Wait for completion and return the exit status.
 - `class ProcessSupervisor` — Run an arbitrary command and clean its surviving process tree.
-  - `run() -> SupervisionResult` — Run the target, then clean every surviving descendant.
+  - `__init__(self, *, command: Sequence[str], poll_interval: float=0.02, grace_seconds: float=1.5) -> None` — Initialize an external command supervisor.
+  - `run(self) -> SupervisionResult` — Run the target, then clean every surviving descendant.
 
 ### `tracker.py`
 
 Continuously discover and retain descendant process identities.
 
 - `class ProcessTracker` — Track the historical descendant tree of one root process.
-  - `snapshot() -> tuple[ProcessRecord, ...]` — Discover current descendants and return the historical registry.
-  - `start() -> None` — Start background descendant discovery once.
-  - `stop() -> tuple[ProcessRecord, ...]` — Stop discovery after one final snapshot and return all records.
+  - `__init__(self, *, root_pid: int, poll_interval: float=0.02, clock: Clock | None=None) -> None` — Initialize descendant tracking.
+  - `snapshot(self) -> tuple[ProcessRecord, ...]` — Discover current descendants and return the historical registry.
+  - `start(self) -> None` — Start background descendant discovery once.
+  - `stop(self) -> tuple[ProcessRecord, ...]` — Stop discovery after one final snapshot and return all records.
 
 ## Examples
 
-Executable examples for exactus.packages.guard.
+Runnable demonstration for `exactus/packages/guard/`.
 
-Files: `__init__.py`, `__main__.py`, `run.py`
+Comprehensive executable examples for the process guard API.
+
+```bash
+python -m exactus.packages.guard.examples
+```
+
+Files: `examples/README.md`, `examples/__init__.py`, `examples/__main__.py`, `examples/run.py`
 
 ## Dependencies and consumers
 
-- Third-party: `psutil`
-- Used by: `packages/__main__.py`, `tests/packages/meaningful/test_meaningful_sources.py`, `tools/__main__.py`
+- Other packages: [`argument_parser`](../argument_parser/DOCS.md)
+- Used by: `packages/__main__.py`, `tests/packages/guard/test_guard.py`, `tools/__main__.py`
 
 ## Tests
 
@@ -213,5 +262,13 @@ Tests live in `exactus/tests/packages/guard/`.
 
 - `test_example_run.py` — Cover the bundled ``guard`` example entry point. (1 tests)
   - `test_example_module_runs_as_a_script`
+- `test_guard.py` — Behavioral tests for exactus.packages.guard. (7 tests)
+  - `test_context_cleans_child`
+  - `test_context_preserves_exception`
+  - `test_kills_nested_tree`
+  - `test_module_example`
+  - `test_package_path_example`
+  - `test_returns_target_exit_code`
+  - `test_script_example`
 
 <!-- exactus:reference:end -->

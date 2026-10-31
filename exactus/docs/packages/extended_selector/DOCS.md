@@ -23,6 +23,7 @@ The engine is synchronous and designed for current-document DOM querying. The ed
 | `extended-selector-editor.js` | Formula-style nested-pill expression editor. |
 | `extended-selector-editor.css` | Editor presentation and nesting styles. |
 | `demo.html` | Browser demonstration and integration example. |
+| `verify.mjs` | Node verification harness: cross-checks `ExtendedSelector`/`bestLocalSelector` output against `css-selector-generator`, `optimal-select` and `@medv/finder` for selector parity. |
 | `DOC.md` | This complete reference. |
 
 ---
@@ -3494,186 +3495,78 @@ call and a following CSS atom.
 |---|---|
 | `README.md` | Package readme. |
 | `__init__.py` | Package the ExtendedSelector engine and editor for the Studio web server. |
-| `editor/` | Provide extended selector editor css content. |
-| `examples/` | Demo harness for the ExtendedSelector structured editor. |
-| `package.json` | — |
-| `verify.mjs` | — |
+| `editor/` | Subdirectory. |
+| `examples/` | Runnable demonstration for `exactus/packages/extended_selector/`. |
+| `package.json` | Configuration file. |
+| `verify.mjs` | JavaScript module. |
+
+## Python API reference
+
+Public classes, functions and constants, read from the source. Private names (leading underscore) are omitted.
+
+### `__init__.py`
+
+Package the ExtendedSelector engine and editor for the Studio web server.
+
+
+### `examples/__init__.py`
+
+Runnable demonstration for the ExtendedSelector structured editor.
+
+
+### `examples/__main__.py`
+
+Run the extended-selector example with the project virtual environment.
+
+
+### `examples/run.py`
+
+Serve the ExtendedSelector structured-editor demo and open the browser.
+
+- `start_demo(*, log: Path) -> str` — Serve ``packages/`` so the demo page can import sibling packages.
+- `main() -> int` — Launch the demo; leave its reusable background server running.
 
 ## JavaScript API reference
 
-Exports of the package's ES modules, read from the source.
+Top-level exports, read from the source.
 
 ### `editor/extended-selector-editor.js`
 
-Formula-style structured editor for ExtendedSelector.
-
-- `class ExtendedSelectorEditor` — Structured expression editor bound to a hidden textarea.
-  - `get value()`
-  - `set value(value)`
-  - `setEngine(engine)`
-  - `static el(tag, className, text = "")`
-  - `static caret()`
-  - `static renderNode(node, depth = 0)`
-  - `render()`
-  - `serialize(node = this.surface)`
-  - `sync()`
-  - `validate()`
-  - `onClick(event)`
-  - `onInput(event)`
-  - `offer(event)`
-  - `offerAt(editable)`
-  - `onKeydown(event)`
-  - `showOperators(anchor)`
-  - `showExpressionOptions(anchor)`
-  - `showAtomOptions(anchor)`
-  - `showOptions(anchor, values, action)`
-  - `static focusAt(node, offset)`
-  - `wrapSelection(operator = "and")`
-  - `wrapNode(node, operator = "and")`
+- `ExtendedSelectorEditor`
 
 ### `editor/extended-selector.js`
 
-ExtendedSelector — portable DOM/visual query engine.
-
-- `class ExtendedSelector` — Portable DOM/visual query engine combining CSS atoms with extended predicates, structural relations, and spatial operators.
-  - `static SIGNATURES(()`
-  - `configure(options = {})`
-  - `setRoot(root)`
-  - `registerPredicate(name, resolver)`
-  - `unregisterPredicate(name)`
-  - `registerOperator(name, handler)`
-  - `unregisterOperator(name)`
-  - `static documentOrder(left, right)`
-  - `universe(root, deep = this.options.deep)`
-  - `queryChain(chain)`
-  - `query(expression, options = {})`
-  - `static deepQueryAll(selector, root)`
-  - `deepQueryAll(selector, root)`
-  - `static register(element, name, { replace = false } = {})`
-  - `static claim(element, name, replace = false)`
-  - `define(name, expression)`
-  - `undefine(name)`
-  - `expandDefinitions(atom)`
-  - `queryOne(expression, options = {})`
-  - `count(expression, options = {})`
-  - `exists(expression, options = {})`
-  - `matches(element, expression)`
-  - `filter(elements, expression)`
-  - `static position(expression, offset)`
-  - `static diagnostic(expression,
-    message,
-    offset = 0,
-    length = 1,
-    code = "syntax",
-    extra = {},)`
-  - `static nearestName(name, names)`
-  - `static syntaxError(expression,
-    message,
-    offset = 0,
-    length = 1,
-    code = "syntax",)`
-  - `static substitute(expression, values)`
-  - `static resolveVariables(expression, variables = {})`
-  - `lint(expression, options = {})`
-  - `parse(expression)`
-  - `compile(expression)`
-  - `validate(expression)`
-  - `stats(expression, options = {})`
-  - `explain(expression, options = {})`
-  - `static splitTopLevel(value, delimiter = ",")`
-  - `static colorSimilarity(actual, expected, similarity)`
-  - `static stacking(element, reference)`
-  - `static compareValue(actual, operator, expected)`
-  - `static stringSimilarity(left, right)`
-  - `static unitValue(value, reference = 1)`
-  - `static geometry(element, reference)`
-  - `resolveReference(element, expression)`
-  - `referencePredicate(element, key, referenceExpression, operator, expected)`
-  - `predicateValue(element, key)`
-  - `sortElements(elements, keys, reference)`
-  - `static parenDepth(text, offset)`
-  - `static isCssBracket(text, offset)`
-  - `extendedAtom(expression, universe = [...this.root.querySelectorAll("*")`
-  - `parseExtended(expression)`
-  - `evaluateAst(node, universe)`
-  - `evaluateExtended(expression,
-    universe = [...this.root.querySelectorAll("*")`
-  - `bestSelector(target, options = {})`
-  - `generateSelector(target, options = {})`
+- `ExtendedSelector`
 
 ### `editor/selector-adapters.js`
 
-- `const bestLocalSelector` — Inject locally installed selector generators into ExtendedSelector.
-
-## Stylesheets
-
-- `editor/extended-selector-editor.css` — (223 custom properties)
+- `bestLocalSelector`
 
 ## Examples
 
-Demo harness for the ExtendedSelector structured editor.
+Runnable demonstration for `exactus/packages/extended_selector/`.
 
-Run `python exactus/packages/extended_selector/examples` (or `python -m
-exactus.packages.extended_selector.examples`) to serve the package over the shared
-loopback server and open the demo in the system browser.
+Serve the ExtendedSelector structured-editor demo and open the browser.
 
-- `__init__.py` — package marker so the example can be imported as a module.
-- `__main__.py` — run the demo via ``python -m exactus.packages.extended_selector.examples``.
-- `run.py` — serve the demo via `exactus.packages.server` and open a browser.
-- `web/` — the demo page and its harness script/styles: `editor.html` exercises
-  the structured editor and the element-registration API. The expression-widget
-  demo is in `widget_selector/examples/`.
+```bash
+python -m exactus.packages.extended_selector.examples
+```
 
-Files: `__init__.py`, `__main__.py`, `run.py`, `web/editor.css`, `web/editor.html`, `web/editor.js`
+Files: `examples/README.md`, `examples/__init__.py`, `examples/__main__.py`, `examples/run.py`, `examples/web/README.md`, `examples/web/editor.css`, `examples/web/editor.html`, `examples/web/editor.js`
 
 ## Dependencies and consumers
 
-- No dependencies outside the standard library.
-- Used by: `../pyproject.toml`, `packages/visual_cause/analyzer.py`, `tests/tools/record/js/selector-scripts.test.mjs`, `tests/tools/record/test_studio_http_contract.py`, `tools/record/selector_engine.py`, `tools/record/studio/web/editor.js`, `tools/visual_cause/queries.py`
+- Other packages: [`browser`](../browser/DOCS.md), [`server`](../server/DOCS.md)
+- Used by: `tests/packages/extended_selector/test_examples.py`
 
 ## Tests
 
 Tests live in `exactus/tests/packages/extended_selector/`.
 
-- `diagnostics.test.mjs` — Exercise diagnostic severity, narrow ranges, suggestions and roles. (4 tests)
-  - an unknown pseudo-class is narrowed to its token with a suggestion
-  - pseudo-elements and :visited are warnings, not errors
-  - arity problems name the first missing role
-  - valid expressions have no diagnostics and old errors keep severity
-- `engine.test.mjs` — Exercise the ExtendedSelector engine in a real Chromium page. (17 tests)
-  - existing behavior is unchanged
-  - attribute selectors behave like CSS
-  - documented tolerance arguments lint and apply
-  - register keeps names unique
-  - sort orders results by keys
-  - sort can rank by geometry relative to a reference
-  - sort rejects malformed keys at lint time
-  - queryOne returns the first element in sort order
-  - nearest ranks by distance and direction
-  - media evaluates a media query
-  - an invalid media query fails at lint time
-  - define resolves a name without touching the page
-  - deep mode reaches open shadow roots
-  - the engine reports its capabilities
-  - traversal, spatial, and relational operators
-  - predicate operators cover every comparison form
-  - engine extension points and diagnostics
-- `signatures.test.mjs` — Exercise the public operator signatures and predicate types of the engine. (2 tests)
-  - signatures describe each operator by role
-  - lint arity messages are unchanged after the table became public
-- `stats.test.mjs` — Exercise per-node match statistics. (2 tests)
-  - stats returns totals and one count per tree node
-  - stats caps the scanned universe
 - `test_examples.py` — Exercise the bundled ExtendedSelector demo launcher with stubs. (4 tests)
+  - `test_main_serves_then_opens_and_closes_the_browser`
   - `test_start_demo_reuses_an_existing_server`
   - `test_start_demo_spawns_and_waits`
   - `test_start_demo_terminates_a_server_that_never_readies`
-  - `test_main_serves_then_opens_and_closes_the_browser`
-- `variables.test.mjs` — Exercise {{variables}}, frozen values, escapes and widened saved names. (5 tests)
-  - substitute renders typed values by position
-  - variables lists live and frozen occurrences and skips escapes
-  - lint treats variables as placeholders and keeps offsets
-  - query resolves variables and fails loudly when one is missing
-  - saved selector names may contain slash and dot
 
 <!-- exactus:reference:end -->

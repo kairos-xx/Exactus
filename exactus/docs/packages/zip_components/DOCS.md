@@ -192,7 +192,7 @@ dependencies — no repository files are written.
 | `__init__.py` | Public API for reproducible source-bundle archives. |
 | `__main__.py` | Create source-bundle archives of exactus tools and packages packages. |
 | `core.py` | Create source-bundle archives of exactus tools and packages packages. |
-| `examples/` | Demonstrate source-bundle creation. |
+| `examples/` | Runnable demonstration for `exactus/packages/zip_components/`. |
 
 Run it as a module: `python -m exactus.packages.zip_components`.
 
@@ -200,38 +200,48 @@ Run it as a module: `python -m exactus.packages.zip_components`.
 
 | Option | Description | Settings |
 |---|---|---|
-| `names` | exactus/packages/<PACKAGE> components (shorthand for --packages). | nargs='*' |
-| `--tools` | exactus/tools/<TOOL> components to bundle (``all``/``*`` selects every tool). | default=(), nargs='+' |
-| `--packages` | exactus/packages/<PACKAGE> components to bundle (``all``/``*`` selects every package). | default=(), nargs='+' |
-| `--output, -o` | Destination archive (writes a bare zip, no bundle layout). | default=None, type=Path |
-| `--output-folder` | Directory holding the bundle folder (defaults to <root>/zip-components). | default=None, type=Path |
-| `--list, -l` | Print the resolved selection as JSON instead of bundling; without components lists every available package. | action='store_true' |
-| `--project` | Archive the whole project as a release ZIP: the regular exactus/bundle directory is replaced by the contents of build/exactus/bundle inside the archive. | action='store_true' |
-| `--root` | Project root to bundle from (defaults to auto-detection). | default=None, type=Path |
+| `names` | exactus/packages/<PACKAGE> components (shorthand for --packages). | nargs='*', metavar='PACKAGE' |
+| `--tools` | exactus/tools/<TOOL> components to bundle (``all``/``*`` selects every tool). | dest='exactus', nargs='+', default=(), metavar='TOOL' |
+| `--packages` | exactus/packages/<PACKAGE> components to bundle (``all``/``*`` selects every package). | dest='packages', nargs='+', default=(), metavar='PACKAGE' |
+| `--output, -o` | Destination archive (writes a bare zip, no bundle layout). | dest='output', type=Path, default=None, metavar='ZIP' |
+| `--output-folder` | Directory holding the bundle folder (defaults to <root>/zip-components). | dest='output_folder', type=Path, default=None, metavar='DIR' |
+| `--list, -l` | Print the resolved selection as JSON instead of bundling; without components lists every available package. | dest='listing', action='store_true' |
+| `--project` | Archive the whole project as a release ZIP: the regular exactus/bundle directory is replaced by the contents of build/exactus/bundle inside the archive. | dest='project', action='store_true' |
+| `--root` | Project root to bundle from (defaults to auto-detection). | dest='root', type=Path, default=None, metavar='DIR' |
 
 ## Python API reference
 
 Public classes, functions and constants, read from the source. Private names (leading underscore) are omitted.
+
+### `__init__.py`
+
+Public API for reproducible source-bundle archives.
+
+
+### `__main__.py`
+
+Create source-bundle archives of exactus tools and packages packages.
+
 
 ### `core.py`
 
 Create source-bundle archives of exactus tools and packages packages.
 
 - `class Constants` — Group module-level constants.
-  - `component_import` = `compile_regex(pattern='^\\s*(?:from|import)\\s+exactus\\.(packages|...`
-  - `quoted_module` = `compile_regex(pattern='["\\\']exactus\\.(packages|tools)\\.([a-z_][...`
+  - `component_import` = `compile_regex(pattern='^\\s*(?:from|import)\\s+exactus\\.(packages|tools)...`
+  - `quoted_module` = `compile_regex(pattern='["\\\']exactus\\.(packages|tools)\\.([a-z_][a-z0-9...`
   - `skipped_directories` = `frozenset({'__pycache__'})`
   - `skipped_suffixes` = `frozenset({'.pyc', '.pyo'})`
   - `skipped_names` = `frozenset({'.DS_Store'})`
-  - `shared_paths` = `('pyproject.toml', 'exactus/tests/__init__.py', 'exactus/tests/conf...`
-  - `exactus_paths` = `('exactus/__init__.py', 'exactus/__main__.py', 'exactus/tools/__ini...`
-  - `package_paths` = `('exactus/packages/__init__.py', 'exactus/packages/__main__.py', 'e...`
+  - `shared_paths` = `('pyproject.toml', 'exactus/tests/__init__.py', 'exactus/tests/conftest.p...`
+  - `exactus_paths` = `('exactus/__init__.py', 'exactus/__main__.py', 'exactus/tools/__init__.py...`
+  - `package_paths` = `('exactus/packages/__init__.py', 'exactus/packages/__main__.py', 'exactus...`
   - `bundles_folder` = `'zip-components'`
-  - `project_excluded_directories` = `frozenset({'__pycache__', 'build', 'dist', 'bin', 'EXACTUS_RESULTS_...`
+  - `project_excluded_directories` = `frozenset({'__pycache__', 'build', 'dist', 'bin', 'EXACTUS_RESULTS_RELEAS...`
   - `project_bundle` = `Path('exactus', 'bundle')`
   - `project_build_bundle` = `Path('build', 'exactus', 'bundle')`
   - `project_archive` = `'exactus-release.zip'`
-  - `folder_readme` = `'# `zip-components/`\n\nArchives produced by `exactus.packages.zip_...`
+  - `folder_readme` = `'# `zip-components/`\n\nArchives produced by `exactus.packages.zip_compon...`
 - `class Selection` — Component names bundled by kind.
   - Fields: `exactus: tuple[str, ...]`, `packages: tuple[str, ...]`
 - `class BundleResult` — Outcome of one bundle write.
@@ -245,48 +255,69 @@ Create source-bundle archives of exactus tools and packages packages.
 - `create_project_archive(*, root: Path, output: Path | None=None) -> BundleResult` — Write the project release ZIP with the current built bundle.
 - `main(*, arguments: Sequence[str] | None=None) -> int` — Bundle the requested exactus tools and/or packages packages.
 
+### `examples/__init__.py`
+
+Examples for the zip_components package.
+
+
+### `examples/__main__.py`
+
+Run the zip_components example with the project virtual environment.
+
+
+### `examples/run.py`
+
+Demonstrate source-bundle creation on a temporary archive.
+
+- `main() -> int` — Bundle ``exactus.packages.steps`` into scratch space and report it.
+
 ## Examples
 
-Demonstrate source-bundle creation.
+Runnable demonstration for `exactus/packages/zip_components/`.
 
-Files: `__init__.py`, `__main__.py`, `run.py`
+Demonstrate source-bundle creation on a temporary archive.
+
+```bash
+python -m exactus.packages.zip_components.examples
+```
+
+Files: `examples/README.md`, `examples/__init__.py`, `examples/__main__.py`, `examples/run.py`
 
 ## Dependencies and consumers
 
-- Other packages: [`steps`](../steps/DOCS.md), [`tree`](../tree/DOCS.md)
-- Tools: `exactus.tools.common`
-- Used by: no other module imports it; it is run directly or through the bundle.
+- Other packages: [`argument_parser`](../argument_parser/DOCS.md), [`steps`](../steps/DOCS.md), [`tree`](../tree/DOCS.md), [`common`](../../tools/common/DOCS.md)
+- Used by: `tests/packages/zip_components/test_zip_components.py`
 
 ## Tests
 
 Tests live in `exactus/tests/packages/zip_components/`.
 
 - `test_zip_components.py` — Tests for source-bundle archives of exactus tools and packages packages. (26 tests)
-  - `test_bundle_name_joins_kinds_in_request_order`
-  - `test_discover_components_is_transitive`
-  - `test_discover_components_skips_missing_directories`
-  - `test_collect_files_adds_skeleton_skips_caches`
-  - `test_collect_files_includes_results_directories`
-  - `test_collect_files_ignores_missing_results`
-  - `test_create_bundle_writes_a_real_archive`
-  - `test_create_bundle_scaffolds_readme_and_tree`
-  - `test_lints_selection_discovers_pipeline_components`
-  - `test_main_writes_the_scaffolded_bundle`
-  - `test_main_output_folder_overrides_the_default_directory`
-  - `test_main_root_flag_bundles_from_the_given_directory`
   - `test_available_components_lists_every_package`
-  - `test_main_list_outputs_every_component`
-  - `test_main_list_resolves_a_named_selection`
-  - `test_main_prints_usage_without_components`
-  - `test_main_rejects_an_unknown_component`
-  - `test_main_positional_names_are_packages_shorthand`
-  - `test_main_wildcard_expands_to_every_package`
-  - `test_main_bare_star_selects_everything`
+  - `test_bundle_name_joins_kinds_in_request_order`
   - `test_bundle_name_renders_wildcards_as_all`
-  - `test_main_accepts_both_component_kinds`
+  - `test_collect_files_adds_skeleton_skips_caches`
+  - `test_collect_files_ignores_missing_results`
+  - `test_collect_files_includes_results_directories`
+  - `test_create_bundle_scaffolds_readme_and_tree`
+  - `test_create_bundle_writes_a_real_archive`
   - `test_create_project_archive_replaces_the_bundle`
   - `test_create_project_archive_requires_the_built_bundle`
-  - `test_main_project_writes_the_release_archive`
+  - `test_discover_components_is_transitive`
+  - `test_discover_components_skips_missing_directories`
+  - `test_lints_selection_discovers_pipeline_components`
+  - `test_main_accepts_both_component_kinds`
+  - `test_main_bare_star_selects_everything`
+  - `test_main_list_outputs_every_component`
+  - `test_main_list_resolves_a_named_selection`
+  - `test_main_output_folder_overrides_the_default_directory`
+  - `test_main_positional_names_are_packages_shorthand`
+  - `test_main_prints_usage_without_components`
   - `test_main_project_rejects_component_selections`
+  - `test_main_project_writes_the_release_archive`
+  - `test_main_rejects_an_unknown_component`
+  - `test_main_root_flag_bundles_from_the_given_directory`
+  - `test_main_wildcard_expands_to_every_package`
+  - `test_main_writes_the_scaffolded_bundle`
 
 <!-- exactus:reference:end -->

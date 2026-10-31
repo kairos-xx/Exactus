@@ -29,14 +29,13 @@ verify HTTP endpoints, and resolve local listener ownership.
 
 | Path | Description |
 |---|---|
-| `.ruff_cache/` | Subdirectory. |
 | `README.md` | Package readme. |
 | `__init__.py` | Public API for HTTP process discovery and inspection. |
 | `__main__.py` | Command-line interface for HTTP process inspection. |
 | `cli.py` | Command-line interface for HTTP process inspection. |
-| `examples/` | Examples for the http_process package. |
+| `examples/` | Runnable demonstration for `exactus/packages/http_process/`. |
 | `process.py` | Run processes and inspect HTTP servers and their owning processes. |
-| `pyproject.toml` | — |
+| `pyproject.toml` | Standalone package metadata. |
 
 Run it as a module: `python -m exactus.packages.http_process`.
 
@@ -46,22 +45,54 @@ Run it as a module: `python -m exactus.packages.http_process`.
 |---|---|---|
 | `--host` |  | default='127.0.0.1' |
 | `--port` |  | type=int |
-| `--timeout` |  | default=30.0, type=float |
-| `--http-timeout` |  | default=0.5, type=float |
+| `--timeout` |  | type=float, default=30.0 |
+| `--http-timeout` |  | type=float, default=0.5 |
 | `command` | Optional command to run and inspect. | nargs='*' |
 
 ## Python API reference
 
 Public classes, functions and constants, read from the source. Private names (leading underscore) are omitted.
 
+### `__init__.py`
+
+Public API for HTTP process discovery and inspection.
+
+
+### `__main__.py`
+
+Command-line interface for HTTP process inspection.
+
+
 ### `cli.py`
 
 Command-line interface for HTTP process inspection.
 
 - `class Cli` — Expose HTTP process inspection through a command-line interface.
-  - `run() -> int` — Run the command-line interface.
+  - `run(cls) -> int` — Run the command-line interface.
   - `parser() -> ArgumentParser` — Build the command-line parser.
 - `main() -> int` — Run the package CLI.
+
+### `examples/__init__.py`
+
+Examples for the http_process package.
+
+
+### `examples/__main__.py`
+
+Run the http-process example with the project virtual environment.
+
+
+### `examples/inspect_existing.py`
+
+Inspect an already-running local HTTP endpoint.
+
+- `main() -> None` — Inspect a local endpoint and write the result.
+
+### `examples/run.py`
+
+Run a Python HTTP server and discover its dynamically assigned port.
+
+- `main() -> None` — Start a server, discover it, and terminate it.
 
 ### `process.py`
 
@@ -69,52 +100,64 @@ Run processes and inspect HTTP servers and their owning processes.
 
 - `class Constants` — Group module-level constants.
   - `port_max` = `65535`
-- `class BindScope(StrEnum)` — Network scope represented by a socket bind address.
-- `class IpFamily(StrEnum)` — IP address family used by a listener.
+- `class BindScope` — Network scope represented by a socket bind address.
+  - `LOOPBACK` = `'loopback'`
+  - `WILDCARD` = `'wildcard'`
+  - `SPECIFIC` = `'specific'`
+- `class IpFamily` — IP address family used by a listener.
+  - `IPV4` = `'ipv4'`
+  - `IPV6` = `'ipv6'`
 - `class ProcessInfo` — Describe a process owning a network listener.
   - Fields: `pid: int`, `ppid: int`, `name: str`, `executable: Path | None`, `command: tuple[str, ...]`, `username: str | None`, `create_time: float | None`
 - `class Listener` — Describe a TCP listener owned by a process.
   - Fields: `pid: int`, `bind_host: str`, `port: int`, `scope: BindScope`, `family: IpFamily`
 - `class HttpServer` — Describe a verified HTTP server.
   - Fields: `bind_host: str`, `probe_host: str`, `port: int`, `scope: BindScope`, `family: IpFamily`, `url: str`, `status: int`, `reason: str`, `process: ProcessInfo | None`
-  - `pid() -> int | None` — Return the owning process identifier when available.
-  - `localhost_only() -> bool` — Return whether the server is restricted to loopback.
-  - `all_interfaces() -> bool` — Return whether the server listens on wildcard interfaces.
-  - `specific_ip() -> bool` — Return whether the server is bound to one non-loopback IP.
+  - `pid(self) -> int | None` — Return the owning process identifier when available.
+  - `localhost_only(self) -> bool` — Return whether the server is restricted to loopback.
+  - `all_interfaces(self) -> bool` — Return whether the server listens on wildcard interfaces.
+  - `specific_ip(self) -> bool` — Return whether the server is bound to one non-loopback IP.
 - `class HttpInspection` — Describe the result of inspecting an IP address and TCP port.
   - Fields: `host: str`, `port: int`, `tcp_open: bool`, `http: bool`, `url: str`, `status: int | None`, `reason: str | None`, `process: ProcessInfo | None`
-  - `pid() -> int | None` — Return the owning process identifier when available.
+  - `pid(self) -> int | None` — Return the owning process identifier when available.
 - `class HttpProcess` — Run processes and inspect HTTP network listeners.
-  - `pid() -> int | None` — Return the managed root process identifier.
-  - `running() -> bool` — Return whether the managed root process is running.
-  - `listeners() -> tuple[Listener, ...]` — Return TCP listeners owned by the managed process tree.
-  - `http_servers() -> tuple[HttpServer, ...]` — Return verified HTTP servers owned by the process tree.
-  - `ports() -> tuple[int, ...]` — Return unique TCP listening ports owned by the process tree.
-  - `http_ports() -> tuple[int, ...]` — Return unique verified HTTP ports.
-  - `bound_addresses() -> tuple[str, ...]` — Return unique addresses used by owned TCP listeners.
-  - `urls() -> tuple[str, ...]` — Return URLs belonging to verified HTTP servers.
-  - `localhost_servers() -> tuple[HttpServer, ...]` — Return HTTP servers restricted to loopback.
-  - `wildcard_servers() -> tuple[HttpServer, ...]` — Return HTTP servers bound to wildcard addresses.
-  - `specific_ip_servers() -> tuple[HttpServer, ...]` — Return servers bound to specific non-loopback addresses.
-  - `start() -> Popen[bytes]` — Start the configured process.
-  - `inspect(*, host: str, port: int) -> HttpInspection` — Inspect an address for an HTTP server and local process owner.
-  - `is_http(*, host: str, port: int) -> bool` — Return whether an address is serving HTTP.
-  - `process_at(*, host: str, port: int) -> ProcessInfo | None` — Return the local process owning an address and port.
-  - `wait_for_http() -> tuple[HttpServer, ...]` — Wait until at least one owned HTTP server is detected.
-  - `wait_for_listener() -> tuple[Listener, ...]` — Wait until at least one owned TCP listener is detected.
-  - `wait_for(*, host: str, port: int) -> HttpInspection` — Wait until an address starts serving HTTP.
-  - `stop(*, timeout: float=5.0) -> None` — Terminate the managed process tree.
+  - `__init__(self, command: list[str] | None=None, *, timeout: float=30.0, poll_interval: float=0.1, http_timeout: float=0.5, cwd: Path | str | None=None) -> None` — Configure process execution and HTTP discovery.
+  - `pid(self) -> int | None` — Return the managed root process identifier.
+  - `running(self) -> bool` — Return whether the managed root process is running.
+  - `listeners(self) -> tuple[Listener, ...]` — Return TCP listeners owned by the managed process tree.
+  - `http_servers(self) -> tuple[HttpServer, ...]` — Return verified HTTP servers owned by the process tree.
+  - `ports(self) -> tuple[int, ...]` — Return unique TCP listening ports owned by the process tree.
+  - `http_ports(self) -> tuple[int, ...]` — Return unique verified HTTP ports.
+  - `bound_addresses(self) -> tuple[str, ...]` — Return unique addresses used by owned TCP listeners.
+  - `urls(self) -> tuple[str, ...]` — Return URLs belonging to verified HTTP servers.
+  - `localhost_servers(self) -> tuple[HttpServer, ...]` — Return HTTP servers restricted to loopback.
+  - `wildcard_servers(self) -> tuple[HttpServer, ...]` — Return HTTP servers bound to wildcard addresses.
+  - `specific_ip_servers(self) -> tuple[HttpServer, ...]` — Return servers bound to specific non-loopback addresses.
+  - `start(self) -> Popen[bytes]` — Start the configured process.
+  - `inspect(self, *, host: str, port: int) -> HttpInspection` — Inspect an address for an HTTP server and local process owner.
+  - `is_http(self, *, host: str, port: int) -> bool` — Return whether an address is serving HTTP.
+  - `process_at(self, *, host: str, port: int) -> ProcessInfo | None` — Return the local process owning an address and port.
+  - `wait_for_http(self) -> tuple[HttpServer, ...]` — Wait until at least one owned HTTP server is detected.
+  - `wait_for_listener(self) -> tuple[Listener, ...]` — Wait until at least one owned TCP listener is detected.
+  - `wait_for(self, *, host: str, port: int) -> HttpInspection` — Wait until an address starts serving HTTP.
+  - `stop(self, *, timeout: float=5.0) -> None` — Terminate the managed process tree.
 
 ## Examples
 
-Examples for the http_process package.
+Runnable demonstration for `exactus/packages/http_process/`.
 
-Files: `__init__.py`, `__main__.py`, `inspect_existing.py`, `run.py`
+Run a Python HTTP server and discover its dynamically assigned port.
+
+```bash
+python -m exactus.packages.http_process.examples
+```
+
+Files: `examples/README.md`, `examples/__init__.py`, `examples/__main__.py`, `examples/inspect_existing.py`, `examples/run.py`
 
 ## Dependencies and consumers
 
-- Third-party: `psutil`
-- Used by: `tests/packages/meaningful/test_meaningful_sources.py`, `tests/tools/record/test_target.py`, `tools/record/studio/target_service.py`
+- Other packages: [`argument_parser`](../argument_parser/DOCS.md)
+- Used by: `tests/packages/http_process/test_examples.py`, `tests/packages/http_process/test_http_process.py`, `tests/packages/http_process/test_main.py`, `tests/tools/record/test_target.py`, `tools/record/studio/target_service.py`
 
 ## Tests
 
@@ -132,18 +175,18 @@ Tests live in `exactus/tests/packages/http_process/`.
   - `test_cli_inspect_reports_closed_port`
   - `test_cli_inspect_reports_live_server`
   - `test_cli_run_discovers_spawned_http_server`
+  - `test_constructor_rejects_empty_command`
+  - `test_inspect_rejects_an_invalid_port`
+  - `test_inspect_reports_process_ownership`
   - `test_main_delegates_to_cli_run`
+  - `test_start_requires_a_command_and_single_use`
+  - `test_stop_is_safe_without_a_process`
+  - `test_stop_terminates_a_managed_process`
+  - `test_wait_for_http_discovers_and_describes_a_spawned_server`
+  - `test_wait_for_http_reports_early_process_exit`
   - `test_wait_for_http_requires_a_started_process`
   - `test_wait_for_listener_requires_a_started_process`
-  - `test_wait_for_http_reports_early_process_exit`
   - `test_wait_for_listener_times_out_without_a_socket`
   - `test_wait_for_times_out_on_a_closed_port`
-  - `test_stop_terminates_a_managed_process`
-  - `test_stop_is_safe_without_a_process`
-  - `test_inspect_reports_process_ownership`
-  - `test_wait_for_http_discovers_and_describes_a_spawned_server`
-  - `test_constructor_rejects_empty_command`
-  - `test_start_requires_a_command_and_single_use`
-  - `test_inspect_rejects_an_invalid_port`
 
 <!-- exactus:reference:end -->

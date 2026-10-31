@@ -235,3 +235,170 @@ a finding blocks when `rank(finding) >= rank(fail_on)`), `0` when below
 threshold or `never`. With the default `warning`, any contract violation
 fails the run; only DOC009 is `error`, so `--fail-on error` tolerates
 documentation gaps and fails only on unreadable/unparseable sources.
+
+<!-- exactus:reference:start -->
+
+## Package layout
+
+| Path | Description |
+|---|---|
+| `README.md` | Package readme. |
+| `__init__.py` | Docs exactus tool. |
+| `arguments.py` | Declare the docs grammar without importing its execution engine. |
+| `core.py` | Exactus Python docstrings and JavaScript JSDoc from one Python program. |
+| `main.py` | Exactus Python docstrings and JavaScript JSDoc. |
+| `templates/` | Subdirectory. |
+
+## Command-line options
+
+| Option | Description | Settings |
+|---|---|---|
+| `--language` |  | choices=('both', 'python', 'javascript'), default='both' |
+| `--public-only` |  | action='store_true' |
+| `--no-js-check` |  | action='store_true' |
+| `--fail-on` |  | choices=('error', 'warning', 'info', 'never'), default='warning' |
+| `root` |  | nargs='?', default='.' |
+| `--markdown` |  | default='DOCUMENTATION_EXACTUS.md' |
+| `--json` |  | dest='json_output', default='DOCUMENTATION_EXACTUS.json' |
+| `--language` |  | choices=('both', 'python', 'javascript'), default='both' |
+| `--exclude` |  | action='append' |
+| `--public-only` |  | action='store_true' |
+| `--no-js-check` |  | action='store_true' |
+| `--fail-on` |  | choices=('error', 'warning', 'info', 'never'), default='never' |
+
+## Python API reference
+
+Public classes, functions and constants, read from the source. Private names (leading underscore) are omitted.
+
+### `__init__.py`
+
+Docs exactus tool.
+
+
+### `arguments.py`
+
+Declare the docs grammar without importing its execution engine.
+
+- `create_parser() -> ArgumentParser` — Create parser.
+
+### `core.py`
+
+Exactus Python docstrings and JavaScript JSDoc from one Python program.
+
+- `class Constants` — Represent constants.
+  - `exclude_dirs` = `ExactusCommonTables.DEFAULT_EXCLUDED_DIRS`
+  - `python_sections` = `('Args', 'Returns', 'Raises', 'Yields', 'Attributes')`
+  - `js_exempt_names` = `frozenset({'adoptedCallback', 'afterMount', 'afterUnmount', 'attributeCha...`
+  - `python_exempt_dunders` = `frozenset({'__aenter__', '__aexit__', '__call__', '__enter__', '__exit__'...`
+  - `severity_rank` = `{'info': 1, 'warning': 2, 'error': 3}`
+  - `code_titles` = `{'DOC001': 'Missing documentation', 'DOC002': 'Missing parameter document...`
+  - `id_prefix` = `'DOCS'`
+  - `excluded_reason` = `'excluded by include/exclude rules'`
+  - `default_includes` = `{'python': ('**/*.py',), 'javascript': ('**/*.js', '**/*.mjs', '**/*.cjs')}`
+  - `builtin_excludes` = `('**/*.min.js',)`
+- `class Code` — Represent code.
+  - `MISSING_DOCUMENTATION` = `'DOC001'`
+  - `MISSING_PARAMETER` = `'DOC002'`
+  - `STALE_PARAMETER` = `'DOC003'`
+  - `MISSING_RETURN` = `'DOC004'`
+  - `RETURN_YIELD_MISMATCH` = `'DOC005'`
+  - `MISSING_EXCEPTION` = `'DOC006'`
+  - `MISSING_ATTRIBUTE` = `'DOC007'`
+  - `MALFORMED_DOCUMENTATION` = `'DOC008'`
+  - `ANALYSIS_FAILURE` = `'DOC009'`
+  - `MISSING_DESCRIPTION` = `'DOC010'`
+  - `STALE_EXCEPTION` = `'DOC011'`
+  - `STALE_ATTRIBUTE` = `'DOC012'`
+- `class Config` — Represent config.
+  - `includes` = `()`
+  - `excludes` = `()`
+  - `include_files` = `()`
+  - `context_lines` = `SnippetLimits.default_context`
+  - Fields: `root: Path`, `markdown: Path`, `json_output: Path`, `languages: frozenset[Language]`, `exclude_dirs: frozenset[str]`, `exclude_hidden_dirs: bool`, `public_only: bool`, `validate_javascript: bool`, `fail_on: Severity | None`
+- `class Skip` — One discovered source file that was not exactused.
+  - Fields: `target: str`, `reason: str`
+- `class Finding` — Represent finding.
+  - `subject` = `''`
+  - Fields: `code: Code`, `language: Language`, `severity: Severity`, `confidence: Confidence`, `file: Path`, `line: int`, `column: int`, `kind: SymbolKind`, `qualname: str`, `signature: str`, `message: str`, `reason: str`, `suggestion: str`
+  - `relative_dict(self: Self, root: Path) -> dict[str, str | int]` — Return a JSON-safe finding relative to the repository root.
+- `class Statistics` — Represent statistics.
+  - `discovered` = `0`
+  - `parsed` = `0`
+  - `failed` = `0`
+  - `symbols` = `0`
+  - `documented` = `0`
+  - `findings` = `0`
+- `empty_statistics() -> dict[Language, Statistics]` — Return zeroed counters for every exactused language.
+- `empty_lines() -> dict[Language, int]` — Return a zeroed line counter for every exactused language.
+- `class Report` — Represent report.
+  - `findings` = `field(default_factory=list)`
+  - `statistics` = `field(default_factory=empty_statistics)`
+  - `lines` = `field(default_factory=empty_lines)`
+  - `add(self: Self, finding: Finding) -> None` — Append one finding and update counters.
+- `class ParsedGoogleDoc` — Represent parsed google doc.
+  - Fields: `summary: str`, `sections: dict[str, tuple[str, ...]]`, `malformed: tuple[str, ...]`
+- `class JsDoc` — Represent js doc.
+  - Fields: `summary: str`, `params: tuple[str, ...]`, `returns: bool`, `yields: bool`, `throws: tuple[str, ...]`, `properties: tuple[str, ...]`, `malformed: tuple[str, ...]`
+- `class JsDocBlock` — Represent js doc block.
+  - Fields: `start: int`, `end: int`, `content: str`
+- `class JsSymbol` — Represent js symbol.
+  - Fields: `name: str`, `qualname: str`, `kind: SymbolKind`, `start: int`, `body_start: int | None`, `body_end: int | None`, `params_text: str`, `signature: str`, `is_async: bool`, `is_generator: bool`
+- `class Text` — Pure text utilities shared by both analyzers.
+  - `description(cls: type[Self], name: str, kind: SymbolKind, *, returns: bool=False) -> str` — Infer a concise documentation summary from a symbol name.
+  - `parameter_description(cls: type[Self], name: str) -> str` — Infer a short parameter description.
+  - `balanced_split(cls: type[Self], value: str) -> tuple[str, ...]` — Split a comma list without splitting nested expressions.
+  - `words(name: str) -> list[str]` — Split snake/camel/pascal identifiers into lowercase words.
+  - `line_column(source: str, offset: int) -> tuple[int, int]` — Convert a character offset to one-based line and zero-based column.
+- `class PythonFindingArgs` — Represent python finding args.
+  - Fields: `code: Code`, `file: Path`, `node: AST`, `kind: SymbolKind`, `qualname: str`, `signature: str`, `confidence: NotRequired[Confidence]`, `message: str`, `reason: str`, `suggestion: str`, `subject: NotRequired[str]`
+- `class PythonAnalyzer` — Analyze Google-style Python documentation contracts.
+  - `__init__(self: Self, config: Config, report: Report) -> None` — Initialize the analyzer.
+  - `analyze(self: Self, file: Path) -> None` — Analyze one Python file.
+- `class JavaScriptAnalyzer` — Analyze JSDoc using Python-only structural lexical recognition.
+  - `__init__(self: Self, config: Config, report: Report) -> None` — Initialize the analyzer.
+  - `prepare(self: Self, *, files: tuple[Path, ...]) -> None` — Read and prevalidate JavaScript files in one concurrent batch.
+  - `prepare_background(self: Self, *, files: tuple[Path, ...]) -> None` — Start JavaScript preparation while Python analysis proceeds.
+  - `finish_prepare(self: Self) -> None` — Wait for background JavaScript preparation to finish.
+  - `analyze(self: Self, file: Path) -> None` — Analyze one JavaScript file.
+- `report_data(*, config: Config, report: Report, eligible: int, skipped: tuple[Skip, ...]) -> dict[str, JsonValue]` — Return the normalized JSON payload of one documentation exactus.
+- `class DocumentationExactus` — Coordinate discovery, analysis, reporting, and exit status.
+  - `__init__(self: Self, config: Config, *, file_filter: Callable[[Path], bool] | None=None) -> None` — Initialize the exactus.
+  - `files(self: Self) -> tuple[Path, ...]` — Discover source files deterministically.
+  - `run(self: Self) -> int` — Execute the exactus and write reports.
+- `parse_args() -> Config` — Parse command-line arguments.
+- `main() -> int` — Run the documentation exactus.
+
+### `main.py`
+
+Exactus Python docstrings and JavaScript JSDoc.
+
+- `create_parser() -> ArgumentParser` — Return the shared CLI grammar used by execution and completion.
+- `parse_args(*, arguments: tuple[str, ...] | None=None) -> Namespace` — Parse args.
+- `main(*, arguments: tuple[str, ...] | None=None) -> int` — Return main.
+
+## Dependencies and consumers
+
+- Other packages: [`argument_parser`](../../packages/argument_parser/DOCS.md), [`project_python`](../../packages/project_python/DOCS.md), [`steps`](../../packages/steps/DOCS.md), [`common`](../common/DOCS.md), [`reports`](../reports/DOCS.md)
+- Used by: `__main__.py`, `tests/tools/common/test_context_lines.py`, `tests/tools/docs/test_docs_metrics.py`, `tests/tools/docs/test_docs_report.py`, `tests/tools/reports/test_report_snippets.py`
+
+## Tests
+
+Tests live in `exactus/tests/tools/docs/`.
+
+- `test_docs_metrics.py` — DOCS reports docstring and JSDoc analysis volume. (7 tests)
+  - `test_code_lines_count_line_feeds`
+  - `test_empty_metrics_say_why_nothing_is_listed`
+  - `test_empty_sources_report_zero_code_volume`
+  - `test_failed_and_excluded_sources_are_not_counted`
+  - `test_languages_report_files_and_lines`
+  - `test_legacy_language_table_is_unchanged`
+  - `test_missing_metrics_render_na`
+- `test_docs_report.py` — DOCS renders result.md from its normalized result.json and template. (6 tests)
+  - `test_clean_docs_run_states_no_findings`
+  - `test_crash_render_shows_error_and_na_blocks`
+  - `test_execute_exactus_renders_docs_from_template`
+  - `test_golden_result_renders_expected_markdown`
+  - `test_overload_signatures_need_no_docstring`
+  - `test_report_data_is_normalized`
+
+<!-- exactus:reference:end -->

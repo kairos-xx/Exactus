@@ -70,7 +70,7 @@ exactus/packages/tree/
 | `__init__.py` | Public API for ``TREE.txt``-style listings. |
 | `__main__.py` | Run ``exactus.packages.tree`` through the project's virtualenv. |
 | `core.py` | Render directories, zip archives and path lists as ``TREE.txt`` text. |
-| `examples/` | Runnable demos for `exactus.packages.tree`. |
+| `examples/` | Runnable demonstration for `exactus/packages/tree/`. |
 
 Run it as a module: `python -m exactus.packages.tree`.
 
@@ -78,14 +78,24 @@ Run it as a module: `python -m exactus.packages.tree`.
 
 | Option | Description | Settings |
 |---|---|---|
-| `sources` | Directories, .zip archives or glob patterns. | nargs='*' |
-| `--include, -i` | Keep only member paths matching this glob (repeatable). | action='append' |
-| `--exclude, -e` | Drop member paths matching this glob (repeatable). | action='append' |
-| `--output, -o` | Write the listing to FILE instead of stdout. | default=None, type=Path |
+| `sources` | Directories, .zip archives or glob patterns. | nargs='*', metavar='PATH' |
+| `--include, -i` | Keep only member paths matching this glob (repeatable). | dest='include', action='append', metavar='GLOB' |
+| `--exclude, -e` | Drop member paths matching this glob (repeatable). | dest='exclude', action='append', metavar='GLOB' |
+| `--output, -o` | Write the listing to FILE instead of stdout. | dest='output', type=Path, default=None, metavar='FILE' |
 
 ## Python API reference
 
 Public classes, functions and constants, read from the source. Private names (leading underscore) are omitted.
+
+### `__init__.py`
+
+Public API for ``TREE.txt``-style listings.
+
+
+### `__main__.py`
+
+Run ``exactus.packages.tree`` through the project's virtualenv.
+
 
 ### `core.py`
 
@@ -94,32 +104,44 @@ Render directories, zip archives and path lists as ``TREE.txt`` text.
 - `class Constants` — Group module-level constants.
   - `skipped_names` = `frozenset({'.DS_Store'})`
   - `skipped_directories` = `frozenset({'__pycache__'})`
-- `human_size(*, size: int) -> str` — Format a byte count compactly, e.g.
+  - `magic` = `frozenset('*?[')`
+- `human_size(*, size: int) -> str` — Format a byte count compactly, e.g. ``512B``/``23KB``/``4.6MB``.
 - `members_for(*, source: Path | Sequence[str | Path] | Members, root: Path | None=None) -> dict[str, tuple[int, float] | None]` — Resolve any supported source into member entries.
 - `render_tree(*, source: Path | Sequence[str | Path] | Members, include: Sequence[str]=(), exclude: Sequence[str]=(), name: str | None=None, root: Path | None=None) -> str` — Render ``source`` as a ``TREE.txt``-style listing.
 - `main(*, arguments: Sequence[str] | None=None) -> int` — Render trees for directories, zips and glob expansions.
 
+### `examples/__init__.py`
+
+Runnable examples for ``exactus.packages.tree``.
+
+
+### `examples/__main__.py`
+
+Run the tree package example through the project virtualenv.
+
+
+### `examples/run.py`
+
+Render a small temporary tree and a zip member listing.
+
+- `main() -> int` — Render one directory tree and one zip member listing.
+
 ## Examples
 
-Runnable demos for `exactus.packages.tree`.
+Runnable demonstration for `exactus/packages/tree/`.
 
-### Running
+Render a small temporary tree and a zip member listing.
 
 ```bash
 python -m exactus.packages.tree.examples
-python exactus/packages/tree/examples
-python exactus/packages/tree/examples/run.py
 ```
 
-The demo builds a tiny scratch directory, renders it, zips it, renders
-the archive's members, and prints both listings.
-
-Files: `__init__.py`, `__main__.py`, `run.py`
+Files: `examples/README.md`, `examples/__init__.py`, `examples/__main__.py`, `examples/run.py`
 
 ## Dependencies and consumers
 
-- Other packages: [`steps`](../steps/DOCS.md)
-- Used by: `packages/all_lints/core.py`, `packages/package/inventory.py`, `packages/zip_components/core.py`, `tests/common/package/test_package_independence.py`, `tests/tools/common/test_common_package.py`, `tools/common/collect_files.py`
+- Other packages: [`argument_parser`](../argument_parser/DOCS.md), [`steps`](../steps/DOCS.md)
+- Used by: `packages/all_lints/core.py`, `packages/package/inventory.py`, `packages/zip_components/core.py`, `tests/packages/tree/test_tree.py`, `tools/common/collect_files.py`
 
 ## Tests
 
@@ -129,13 +151,13 @@ Tests live in `exactus/tests/packages/tree/`.
   - `test_example_module_runs_as_a_script`
 - `test_tree.py` — Tests for TREE.txt-style directory and archive listings. (9 tests)
   - `test_human_size_scales_units`
-  - `test_render_tree_lists_directory_recursively`
-  - `test_render_tree_lists_zip_members`
-  - `test_render_tree_accepts_member_lists`
-  - `test_render_tree_include_exclude_globs`
-  - `test_render_tree_marks_missing_members`
-  - `test_members_for_single_file`
   - `test_main_renders_sources_and_writes_output`
   - `test_main_usage_without_sources`
+  - `test_members_for_single_file`
+  - `test_render_tree_accepts_member_lists`
+  - `test_render_tree_include_exclude_globs`
+  - `test_render_tree_lists_directory_recursively`
+  - `test_render_tree_lists_zip_members`
+  - `test_render_tree_marks_missing_members`
 
 <!-- exactus:reference:end -->

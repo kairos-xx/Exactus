@@ -76,97 +76,108 @@ python exactus/packages/actions/action_javascript/examples/run.py
 |---|---|
 | `README.md` | Package readme. |
 | `__init__.py` | Package the reusable JavaScript snippet runner and its browser demo. |
-| `editor.js` | The code editor: a textarea over a highlighted mirror, with a line-number gutter. |
-| `examples/` | Runnable browser demonstration of the JavaScript runner widget. |
-| `executor.js` | Host side of snippet execution: one disposable Worker per run. |
-| `highlight.js` | A small JavaScript tokenizer for colouring the editor overlay. |
-| `index.js` | Public entry of the JavaScript runner widget. |
-| `runner_view.js` | The runner widget: edit a snippet, run it in a sandbox, read the result and console. |
-| `style.css` | action_javascript: imports the console tokens and adds only the tokens the runner needs (PRIMARY -> BASE -> CATALOG -> SEMANTIC), then components. |
-| `variables_menu.js` | A searchable popover that inserts earlier action values into the snippet. |
-| `worker_source.js` | Source text of the sandbox worker that runs one snippet. |
+| `editor.js` | JavaScript module. |
+| `examples/` | Runnable demonstration for `exactus/actions/action_javascript/`. |
+| `executor.js` | JavaScript module. |
+| `highlight.js` | JavaScript module. |
+| `index.js` | JavaScript module. |
+| `runner_view.js` | JavaScript module. |
+| `style.css` | — |
+| `variables_menu.js` | JavaScript module. |
+| `worker_source.js` | JavaScript module. |
 
-## JavaScript API reference
+## Python API reference
 
-Exports of the package's ES modules, read from the source.
+Public classes, functions and constants, read from the source. Private names (leading underscore) are omitted.
 
-### `editor.js`
+### `__init__.py`
 
-The code editor: a textarea over a highlighted mirror, with a line-number gutter.
+Package the reusable JavaScript snippet runner and its browser demo.
 
-- `const createEditor` — Create the editor.
 
-### `executor.js`
-
-Host side of snippet execution: one disposable Worker per run.
-
-- `class WorkerExecutor` — Execute JavaScript snippets inside a disposable Worker.
-  - `static run(request, handlers)`
-
-### `highlight.js`
-
-A small JavaScript tokenizer for colouring the editor overlay.
-
-- `const tokenize` — Split source text into coloured tokens.
-- `const tokenizeLines` — Group tokens into lines, splitting multi-line tokens at each newline.
-
-### `index.js`
-
-Public entry of the JavaScript runner widget.
-
-### `runner_view.js`
-
-The runner widget: edit a snippet, run it in a sandbox, read the result and console.
-
-- `const mountRunner` — Mount a runner on a carrier element that keeps the stored snippet.
-
-### `variables_menu.js`
-
-A searchable popover that inserts earlier action values into the snippet.
-
-- `const createVariablesMenu` — Create the menu element and wire it to its anchor.
-
-### `worker_source.js`
-
-Source text of the sandbox worker that runs one snippet.
-
-- `buildWorkerSource()` — Build the complete worker script.
-
-## Stylesheets
-
-- `style.css` — action_javascript: imports the console tokens and adds only the tokens the runner needs (PRIMARY -> BASE -> CATALOG -> SEMANTIC), then components. (130 custom properties)
-
-## Examples
+### `examples/__init__.py`
 
 Runnable browser demonstration of the JavaScript runner widget.
 
-Files: `__init__.py`, `__main__.py`, `run.py`, `web/code.js`, `web/demo.css`, `web/index.html`
+
+### `examples/__main__.py`
+
+Run the runner example with the project virtual environment.
+
+
+### `examples/run.py`
+
+Start the loopback runner demo and open the managed browser.
+
+- `start_demo(*, log: Path) -> str` — Serve ``packages/`` so the demo can reach sibling widget packages.
+- `main() -> int` — Launch the demo; leave its reusable background server running.
+
+## JavaScript API reference
+
+Top-level exports, read from the source.
+
+### `editor.js`
+
+- `createEditor`
+
+### `executor.js`
+
+- `WorkerExecutor`
+
+### `highlight.js`
+
+- `tokenize`
+- `tokenizeLines`
+
+### `index.js`
+
+- `createEditor`
+- `WorkerExecutor`
+- `tokenize`
+- `tokenizeLines`
+- `buildWorkerSource`
+- `mountRunner`
+
+### `runner_view.js`
+
+- `mountRunner`
+
+### `variables_menu.js`
+
+- `createVariablesMenu`
+
+### `worker_source.js`
+
+- `buildWorkerSource`
+- `workerMain`
+
+## Examples
+
+Runnable demonstration for `exactus/actions/action_javascript/`.
+
+Start the loopback runner demo and open the managed browser.
+
+```bash
+python -m exactus.actions.action_javascript.examples
+```
+
+Files: `examples/README.md`, `examples/__init__.py`, `examples/__main__.py`, `examples/run.py`, `examples/web/README.md`, `examples/web/code.js`, `examples/web/demo.css`, `examples/web/index.html`
 
 ## Dependencies and consumers
 
-- No dependencies outside the standard library.
-- Used by: `tools/record/studio/web/index.html`, `tools/record/studio/web/javascript-action-widget.js`
+- Other packages: [`browser`](../../browser/DOCS.md), [`server`](../../server/DOCS.md)
+- Used by: `tests/packages/actions/action_javascript/test_examples.py`
 
 ## Tests
 
 Tests live in `exactus/tests/packages/actions/action_javascript/`.
 
-- `action_javascript.test.mjs` — (9 tests)
-  - tokenizer round-trips source and classifies the pieces
-  - worker executor returns values, maps errors to lines and ends runaway code
-  - runner demo runs samples and reports value, console and failure
-  - endless loops are stopped by the time limit and by the Stop button
-  - editor keys indent, split braces, comment and run
-  - values menu searches, masks secrets, inserts and closes
-  - runner accepts an injected executor and keeps the carrier in sync
-  - runner honours read-only mode and stays inside narrow containers in both themes
-  - the runner theme reaches its editor, result and embedded console
 - `test_examples.py` — Coverage for the JavaScript runner widget demo server launcher. (6 tests)
   - `test_demo_assets_exist`
-  - `test_start_demo_reuses_a_recorded_server`
-  - `test_start_demo_spawns_and_waits`
-  - `test_start_demo_replaces_unready_server`
   - `test_main_prints_url_and_opens_browser`
   - `test_module_entrypoint_invokes_main`
+  - `test_start_demo_replaces_unready_server`
+  - `test_start_demo_reuses_a_recorded_server`
+  - `test_start_demo_spawns_and_waits`
 
 <!-- exactus:reference:end -->

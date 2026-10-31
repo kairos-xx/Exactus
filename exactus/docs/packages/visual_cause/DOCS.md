@@ -243,8 +243,8 @@ exactus/packages/visual_cause/
 | `causal.py` | CSS expression trees, causal set minimization, and layout evidence. |
 | `cli.py` | Command-line entry point for visual_cause. |
 | `dom_diff.py` | Compare two web pages visually and map pixel differences to DOM elements. |
-| `examples/` | Runnable demo for the CSS visual cause analyzer. |
-| `js/` | Browser-side JavaScript assets injected by the analyzer during rendering and intervention runs. |
+| `examples/` | Runnable demonstration for `exactus/packages/visual_cause/`. |
+| `js/` | Subdirectory. |
 
 Run it as a module: `python -m exactus.packages.visual_cause`.
 
@@ -255,27 +255,42 @@ Run it as a module: `python -m exactus.packages.visual_cause`.
 | `url` |  |  |
 | `css_a` |  | type=Path |
 | `css_b` |  | type=Path |
-| `-o, --output` |  | default=Path('css-cause'), type=Path |
-| `--width` |  | default=Constants.default_width, type=int |
-| `--height` |  | default=Constants.default_height, type=int |
-| `--threshold` |  | default=Constants.default_threshold, type=int |
-| `--max-candidates` |  | default=Constants.default_max_candidates, type=int |
-| `--timeout-ms` |  | default=30000, type=int |
+| `-o, --output` |  | type=Path, default=Path('css-cause') |
+| `--width` |  | type=int, default=Constants.default_width |
+| `--height` |  | type=int, default=Constants.default_height |
+| `--threshold` |  | type=int, default=Constants.default_threshold |
+| `--max-candidates` |  | type=int, default=Constants.default_max_candidates |
+| `--timeout-ms` |  | type=int, default=30000 |
 | `--url-b` | Optional B URL. Omit to compare both CSS targets on the same URL. | default=None |
 | `--native-styles-a` | Keep URL A's native author styles before applying target A. | action='store_true' |
 | `--native-styles-b` | Keep URL B's native author styles before applying target B. | action='store_true' |
-| `--parallel-workers` |  | default=4, type=int |
-| `--recycle-after` |  | default=24, type=int |
-| `--screenshot-scale` |  | default=2.0, type=float |
-| `--no-extended-selectors` | Do not install the packaged extended-selector engine; use only native querySelectorAll for selector queries. | action='store_false' |
+| `--parallel-workers` |  | type=int, default=4 |
+| `--recycle-after` |  | type=int, default=24 |
+| `--screenshot-scale` |  | type=float, default=2.0 |
+| `--no-extended-selectors` | Do not install the packaged extended-selector engine; use only native querySelectorAll for selector queries. | action='store_false', dest='extended_selectors' |
 | `url_a` |  |  |
 | `url_b` |  |  |
-| `--merge-gap` |  | default=Constants.default_merge_gap, type=int |
-| `--min-area` |  | default=Constants.default_min_area, type=int |
+| `-o, --output` |  | type=Path, default=Path('visual-diff') |
+| `--width` |  | type=int, default=Constants.default_width |
+| `--height` |  | type=int, default=Constants.default_height |
+| `--threshold` |  | type=int, default=Constants.default_threshold |
+| `--merge-gap` |  | type=int, default=Constants.default_merge_gap |
+| `--min-area` |  | type=int, default=Constants.default_min_area |
+| `--timeout-ms` |  | type=int, default=Constants.default_timeout_ms |
 
 ## Python API reference
 
 Public classes, functions and constants, read from the source. Private names (leading underscore) are omitted.
+
+### `__init__.py`
+
+Causal CSS visual-difference analysis.
+
+
+### `__main__.py`
+
+Command-line entry point for visual_cause.
+
 
 ### `analyzer.py`
 
@@ -291,18 +306,27 @@ Find CSS rules that causally change a page's rendered pixels.
   - `min_region_pixels` = `2`
   - `geometry_delta_epsilon` = `0.005`
 - `class Settings` — Runtime configuration.
-  - Fields: `url: str`, `css_a: Path | str | None`, `css_b: Path | str | None`, `output: Path`, `width: int`, `height: int`, `threshold: int`, `max_candidates: int`, `timeout_ms: int`, `url_b: str | None`, `use_native_styles_a: bool`, `use_native_styles_b: bool`, `parallel_workers: int`, `recycle_after: int`, `analysis_budget_seconds: float`, `screenshot_scale: float`, `advanced_analysis: bool`, `extended_selectors: bool`
+  - `url_b` = `None`
+  - `use_native_styles_a` = `False`
+  - `use_native_styles_b` = `False`
+  - `parallel_workers` = `4`
+  - `recycle_after` = `24`
+  - `analysis_budget_seconds` = `45.0`
+  - `screenshot_scale` = `2.0`
+  - `advanced_analysis` = `True`
+  - `extended_selectors` = `True`
+  - Fields: `url: str`, `css_a: Path | str | None`, `css_b: Path | str | None`, `output: Path`, `width: int`, `height: int`, `threshold: int`, `max_candidates: int`, `timeout_ms: int`
 - `class CssTarget` — Normalized CSS comparison target.
   - Fields: `source: Path | None`, `files: tuple[Path, ...]`, `css: str`
-  - `load(source: Path | str | None) -> CssTarget` — Load one CSS file or recursively combine a directory of CSS files.
-  - `manifest() -> dict[str, JsonValue]` — Return report metadata for this target.
+  - `load(cls, source: Path | str | None) -> CssTarget` — Load one CSS file or recursively combine a directory of CSS files.
+  - `manifest(self) -> dict[str, JsonValue]` — Return report metadata for this target.
 - `class Rect` — Document-space rectangle.
   - Fields: `x: float`, `y: float`, `width: float`, `height: float`
-  - `right() -> float` — Return the right edge.
-  - `bottom() -> float` — Return the bottom edge.
-  - `area() -> float` — Return the rectangle area.
-  - `intersection_area(other: Rect) -> float` — Return the area shared with another rectangle.
-  - `intersects(other: Rect) -> bool` — Return whether two rectangles overlap.
+  - `right(self) -> float` — Return the right edge.
+  - `bottom(self) -> float` — Return the bottom edge.
+  - `area(self) -> float` — Return the rectangle area.
+  - `intersection_area(self, other: Rect) -> float` — Return the area shared with another rectangle.
+  - `intersects(self, other: Rect) -> bool` — Return whether two rectangles overlap.
 - `class ElementInfo` — DOM element relevant to a visual change.
   - Fields: `selector: str`, `dom_path: str`, `parent_path: str`, `tag: str`, `text: str`, `own_text: str`, `rect: Rect`, `position: str`, `z_index: str`, `computed: dict[str, str]`, `typed_computed: dict[str, JsonValue]`, `before_content: str`, `after_content: str`, `child_count: int`, `scroll_width: float`, `scroll_height: float`, `client_width: float`, `client_height: float`, `overflow_x: str`, `overflow_y: str`
 - `class StyleChange` — One computed-style before/after change.
@@ -313,13 +337,15 @@ Find CSS rules that causally change a page's rendered pixels.
   - Fields: `index: int`, `selector: str`, `css_text: str`, `declarations: tuple[str, ...]`, `matched: tuple[str, ...]`
 - `class Cause` — Counterfactual evidence for one CSS rule.
   - Fields: `index: int`, `selector: str`, `css_text: str`, `declarations: tuple[str, ...]`, `matched: tuple[str, ...]`, `relations: tuple[str, ...]`, `changed_pixels_without_rule: int`, `pixels_explained: int`, `explanation_ratio: float`
-- `class InvalidBrowserPayloadError(TypeError)` — Raised when browser JSON does not match the expected schema.
+- `class InvalidBrowserPayloadError` — Raised when browser JSON does not match the expected schema.
 - `class JsonPage(Protocol)` — Typed boundary for JavaScript evaluation.
-  - `evaluate(expression: str, arg: str | None=None) -> str` — Evaluate JavaScript and return serialized JSON.
+  - `evaluate(self, expression: str, arg: str | None=None) -> str` — Evaluate JavaScript and return serialized JSON.
 - `class CdpSender(Protocol)` — Typed boundary for Chrome DevTools Protocol commands.
 - `class ProgressObserver(Protocol)` — Receive bounded analyzer progress updates.
 - `class Intervention` — Counterfactual render interventions applied to one page.
-  - Fields: `disabled_rule: int | None`, `element_override: tuple[str, dict[str, str]] | None`, `disabled_declarations: tuple[tuple[int, str], ...]`
+  - `disabled_rule` = `None`
+  - `element_override` = `None`
+  - `disabled_declarations` = `()`
 - `class ProvenanceMaps` — Per-selector causal provenance produced by the analysis phases.
   - Fields: `causal_edges: dict[str, list[dict[str, JsonValue]]]`, `declaration_provenance: dict[str, list[dict[str, JsonValue]]]`, `function_provenance: dict[str, list[dict[str, JsonValue]]]`, `cascade_provenance: dict[str, JsonValue]`, `interaction_provenance: dict[str, list[dict[str, JsonValue]]]`, `minimal_sets: dict[str, list[dict[str, JsonValue]]]`
 - `class AnalysisResults` — Complete analyzer output bundle used for report generation.
@@ -332,7 +358,8 @@ Find CSS rules that causally change a page's rendered pixels.
   - Fields: `selectors: tuple[str, ...]`, `a_by_selector: dict[str, ElementInfo]`, `b_by_selector: dict[str, ElementInfo]`, `causes_by_index: dict[int, Cause]`
 - `browser_script(*, name: str) -> str` — Return one packaged browser script's source text.
 - `class CssVisualCause` — Compare two stylesheets and experimentally identify visual causes.
-  - `run() -> AnalysisResults` — Run analysis and return the result used to write the artifacts.
+  - `__init__(self, settings: Settings, progress: ProgressObserver | None=None) -> None` — Initialize the analyzer.
+  - `run(self) -> AnalysisResults` — Run analysis and return the result used to write the artifacts.
 - `analyze(*, settings: Settings, progress: ProgressObserver | None=None) -> AnalysisResults` — Run one visual-cause analysis and return its structured result.
 - `main() -> None` — Run the command-line analyzer.
 
@@ -341,24 +368,27 @@ Find CSS rules that causally change a page's rendered pixels.
 CSS expression trees, causal set minimization, and layout evidence.
 
 - `class ValueNode` — One source-preserving CSS expression node.
-  - Fields: `kind: str`, `text: str`, `start: int`, `end: int`, `children: tuple[ValueNode, ...]`
-  - `to_json() -> dict[str, str | int | list[dict[str, str | int]]]` — Return a shallow JSON-safe node representation.
+  - `children` = `()`
+  - Fields: `kind: str`, `text: str`, `start: int`, `end: int`
+  - `to_json(self) -> dict[str, str | int | list[dict[str, str | int]]]` — Return a shallow JSON-safe node representation.
 - `class CssValueParser` — Parse nested CSS functions, arguments, operators, and literal spans.
-  - `parse(value: str) -> ValueNode` — Return the expression tree preserving exact source offsets.
-  - `walk(node: ValueNode) -> tuple[ValueNode, ...]` — Return all descendants in depth-first order.
+  - `parse(cls, value: str) -> ValueNode` — Return the expression tree preserving exact source offsets.
+  - `walk(cls, node: ValueNode) -> tuple[ValueNode, ...]` — Return all descendants in depth-first order.
   - `replace(value: str, node: ValueNode, replacement: str) -> str` — Replace exactly one source span.
 - `class CauseSet` — One experimentally supported minimal sufficient intervention set.
   - Fields: `members: tuple[tuple[int, str], ...]`, `improvement: float`, `confidence: float`, `evaluations: int`, `minimal_within_budget: bool`
 - `class CausalMinimizer` — Find bounded minimal sufficient cause sets using group testing.
-  - `score(members: tuple[tuple[int, str], ...]) -> float | None` — Evaluate a canonical cause set, or None if budget exhausted.
-  - `minimize(candidates: tuple[tuple[int, str], ...]) -> CauseSet | None` — Reduce a sufficient set via partitions then one-by-one removal.
+  - `__init__(self, evaluate: Callable[[tuple[tuple[int, str], ...]], float], budget: int=64, threshold: float=0.8) -> None` — Initialize a memoized counterfactual evaluator.
+  - `score(self, members: tuple[tuple[int, str], ...]) -> float | None` — Evaluate a canonical cause set, or None if budget exhausted.
+  - `minimize(self, candidates: tuple[tuple[int, str], ...]) -> CauseSet | None` — Reduce a sufficient set via partitions then one-by-one removal.
 - `class LayoutEvidence` — Infer grid/flex/container layout explanations from snapshots.
   - `compare(a: dict[str, str], b: dict[str, str]) -> dict[str, dict[str, str]]` — Return changed layout properties and resolved track details.
 - `class CssTokenNode` — Lossless token/expression node inside a CSS value.
-  - Fields: `kind: str`, `text: str`, `start: int`, `end: int`, `children: tuple[CssTokenNode, ...]`
+  - `children` = `()`
+  - Fields: `kind: str`, `text: str`, `start: int`, `end: int`
 - `class CssValueTokenizer` — Lossless tokenizer for counterfactual CSS value interventions.
-  - `parse(value: str) -> tuple[CssTokenNode, ...]` — Tokenize literals, operators, functions, strings, and separators.
-  - `flatten(nodes: tuple[CssTokenNode, ...]) -> tuple[CssTokenNode, ...]` — Flatten a value tree while retaining exact source spans.
+  - `parse(cls, value: str) -> tuple[CssTokenNode, ...]` — Tokenize literals, operators, functions, strings, and separators.
+  - `flatten(cls, nodes: tuple[CssTokenNode, ...]) -> tuple[CssTokenNode, ...]` — Flatten a value tree while retaining exact source spans.
 
 ### `cli.py`
 
@@ -390,139 +420,135 @@ Compare two web pages visually and map pixel differences to DOM elements.
 - `class Settings` — Hold immutable command-line settings.
   - Fields: `url_a: str`, `url_b: str`, `output: Path`, `width: int`, `height: int`, `threshold: int`, `merge_gap: int`, `min_area: int`, `timeout_ms: int`
 - `class LocatorEvaluator(Protocol)` — Narrow the dynamically typed Playwright evaluation boundary.
-  - `evaluate_all(expression: str) -> str` — Evaluate JavaScript against all located elements.
+  - `evaluate_all(self, expression: str) -> str` — Evaluate JavaScript against all located elements.
 - `class VisualDomDiff` — Capture two URLs, compare pixels, and map changes to DOM elements.
-  - `run() -> ComparisonReport` — Execute capture, image comparison, DOM mapping, and reporting.
+  - `__init__(self, settings: Settings) -> None` — Run the comparison and write all artifacts.
+  - `run(self) -> ComparisonReport` — Execute capture, image comparison, DOM mapping, and reporting.
 - `main(*, arguments: Sequence[str] | None=None) -> int` — Run the command-line visual DOM comparison.
 
-## JavaScript API reference
+### `examples/__init__.py`
 
-Exports of the package's ES modules, read from the source.
+Runnable examples for visual_cause.
 
-### `js/container_rules.js`
 
-Execute the browser-side CSS analysis operation.
+### `examples/__main__.py`
 
-### `js/css_variables.js`
+Run the visual-cause example with the project virtual environment.
 
-Execute the browser-side CSS analysis operation.
 
-### `js/disable_declaration.js`
+### `examples/run.py`
 
-Execute the browser-side CSS analysis operation.
+Run the CSS visual-cause analyzer against its bundled demo.
 
-### `js/disable_declarations.js`
+- `start_demo(*, demo: Path, log: Path) -> tuple[int, str, bool]` — Serve the bundled demo page through the shared loopback server.
+- `main() -> None` — Analyze the bundled demo served over loopback HTTP.
 
-Execute the browser-side CSS analysis operation.
+### `examples/validate_results.py`
 
-### `js/disable_rule.js`
+Validate that the demo produced navigable human evidence.
 
-Execute the browser-side CSS analysis operation.
-
-### `js/dom_elements.js`
-
-@param {Element[]} elements Candidate DOM elements.
-
-### `js/override_element.js`
-
-Execute the browser-side CSS analysis operation.
-
-### `js/rules.js`
-
-Execute the browser-side CSS analysis operation.
+- `class Constants` — Group module-level constants.
+  - `evidence_triplet_size` = `3`
+- `main() -> None` — Require a non-empty Markdown causal report and resolvable evidence.
 
 ## Examples
 
-Runnable demo for the CSS visual cause analyzer.
+Runnable demonstration for `exactus/packages/visual_cause/`.
 
-- `__init__.py` — package marker so tests can import the example modules.
-- `__main__.py` — run the demo via ``python -m exactus.packages.visual_cause.examples``.
-- `run.py` — serve the bundled demo via `exactus.packages.server` and analyze it end to end.
-- `validate_results.py` — check demo evidence and report completeness.
-- `web/` — static demo page and its two candidate stylesheets.
+Run the CSS visual-cause analyzer against its bundled demo.
 
-Files: `__init__.py`, `__main__.py`, `results/a.png`, `results/b.png`, `results/diff.png`, `results/evidence/r0-element-html___body___main_demo-a.png`, `results/evidence/r0-element-html___body___main_demo-b.png`, `results/evidence/r0-element-html___body___main_demo-diff.png`, `results/evidence/r0-element-html___body___main_demo___button_action-a.png`, `results/evidence/r0-element-html___body___main_demo___button_action-b.png`, `results/evidence/r0-element-html___body___main_demo___button_action-diff.png`, `results/evidence/r0-element-html___body___main_demo___section_cards-a.png`, `results/evidence/r0-element-html___body___main_demo___section_cards-b.png`, `results/evidence/r0-element-html___body___main_demo___section_cards-diff.png`, `results/evidence/r0-element-html___body___main_demo___section_cards___article_card_primary_nth-of-type_1_-a.png`, `results/evidence/r0-element-html___body___main_demo___section_cards___article_card_primary_nth-of-type_1_-b.png`, `results/evidence/r0-element-html___body___main_demo___section_cards___article_card_primary_nth-of-type_1_-diff.png`, `results/evidence/r0-element-html___body___main_demo___section_cards___article_card_primary_nth-of-type_1____h2-a.png`, `results/evidence/r0-element-html___body___main_demo___section_cards___article_card_primary_nth-of-type_1____h2-b.png`, `results/evidence/r0-element-html___body___main_demo___section_cards___article_card_primary_nth-of-type_1____h2-diff.png`, `results/evidence/r0-element-html___body___main_demo___section_cards___article_card_primary_nth-of-type_1____p-a.png`, `results/evidence/r0-element-html___body___main_demo___section_cards___article_card_primary_nth-of-type_1____p-b.png`, `results/evidence/r0-element-html___body___main_demo___section_cards___article_card_primary_nth-of-type_1____p-diff.png`, `results/evidence/r0-element-html___body___main_demo___section_cards___article_card_secondary_nth-of-type_2_-a.png`, `results/evidence/r0-element-html___body___main_demo___section_cards___article_card_secondary_nth-of-type_2_-b.png`, `results/evidence/r0-element-html___body___main_demo___section_cards___article_card_secondary_nth-of-type_2_-diff.png`, `results/progress.json`, `results/report.json`, `results/report.md`, `run.py`, `validate_results.py`, `web/a.css`, `web/b.css`, `web/index.html`
+```bash
+python -m exactus.packages.visual_cause.examples
+```
+
+Files: `examples/README.md`, `examples/__init__.py`, `examples/__main__.py`, `examples/results/README.md`, `examples/results/a.png`, `examples/results/b.png`, `examples/results/diff.png`, `examples/results/evidence/README.md`, `examples/results/evidence/r0-element-html___body___main_demo-a.png`, `examples/results/evidence/r0-element-html___body___main_demo-b.png`, `examples/results/evidence/r0-element-html___body___main_demo-diff.png`, `examples/results/evidence/r0-element-html___body___main_demo___button_action-a.png`, `examples/results/evidence/r0-element-html___body___main_demo___button_action-b.png`, `examples/results/evidence/r0-element-html___body___main_demo___button_action-diff.png`, `examples/results/evidence/r0-element-html___body___main_demo___section_cards-a.png`, `examples/results/evidence/r0-element-html___body___main_demo___section_cards-b.png`, `examples/results/evidence/r0-element-html___body___main_demo___section_cards-diff.png`, `examples/results/evidence/r0-element-html___body___main_demo___section_cards___article_card_primary_nth-of-type_1_-a.png`, `examples/results/evidence/r0-element-html___body___main_demo___section_cards___article_card_primary_nth-of-type_1_-b.png`, `examples/results/evidence/r0-element-html___body___main_demo___section_cards___article_card_primary_nth-of-type_1_-diff.png`, `examples/results/evidence/r0-element-html___body___main_demo___section_cards___article_card_primary_nth-of-type_1____h2-a.png`, `examples/results/evidence/r0-element-html___body___main_demo___section_cards___article_card_primary_nth-of-type_1____h2-b.png`, `examples/results/evidence/r0-element-html___body___main_demo___section_cards___article_card_primary_nth-of-type_1____h2-diff.png`, `examples/results/evidence/r0-element-html___body___main_demo___section_cards___article_card_primary_nth-of-type_1____p-a.png`, `examples/results/evidence/r0-element-html___body___main_demo___section_cards___article_card_primary_nth-of-type_1____p-b.png`, `examples/results/evidence/r0-element-html___body___main_demo___section_cards___article_card_primary_nth-of-type_1____p-diff.png`, `examples/results/evidence/r0-element-html___body___main_demo___section_cards___article_card_secondary_nth-of-type_2_-a.png`, `examples/results/evidence/r0-element-html___body___main_demo___section_cards___article_card_secondary_nth-of-type_2_-b.png`, `examples/results/evidence/r0-element-html___body___main_demo___section_cards___article_card_secondary_nth-of-type_2_-diff.png`, `examples/results/progress.json`, `examples/results/report.json`, `examples/results/report.md`, `examples/run.py`, `examples/validate_results.py`, `examples/web/README.md`, `examples/web/a.css`, `examples/web/b.css`, `examples/web/index.html`
 
 ## Dependencies and consumers
 
-- Third-party: `PIL`, `playwright`
-- Used by: `../pyproject.toml`, `tests/packages/meaningful/test_meaningful_sources.py`, `tools/visual_cause/core.py`
+- Other packages: [`argument_parser`](../argument_parser/DOCS.md), [`server`](../server/DOCS.md)
+- Used by: `tests/packages/visual_cause/test_advanced.py`, `tests/packages/visual_cause/test_analyzer_helpers.py`, `tests/packages/visual_cause/test_cli_coverage.py`, `tests/packages/visual_cause/test_css_targets.py`, `tests/packages/visual_cause/test_dom_diff.py`, `tests/packages/visual_cause/test_dual_url_tokens.py`, `tests/packages/visual_cause/test_examples.py`, `tests/packages/visual_cause/test_full_pipeline.py`, `tests/packages/visual_cause/test_runtime_lifecycle.py`, `tests/packages/visual_cause/test_token_cascade.py`, `tests/packages/visual_cause/test_typed_parallel.py`, `tools/visual_cause/core.py`
 
 ## Tests
 
 Tests live in `exactus/tests/packages/visual_cause/`.
 
 - `test_advanced.py` — Tests for advanced CSS causal analysis primitives. (8 tests)
-  - `test_nested_function_ast`
-  - `test_quoted_function_content`
-  - `test_minimize_joint_only`
   - `test_budget_and_unsatisfied`
   - `test_layout_evidence`
-  - `test_parser_comments_escapes_and_unclosed_constructs`
-  - `test_minimizer_empty_reduction_and_cache`
   - `test_lossless_tokenizer_nested_strings_and_flatten`
+  - `test_minimize_joint_only`
+  - `test_minimizer_empty_reduction_and_cache`
+  - `test_nested_function_ast`
+  - `test_parser_comments_escapes_and_unclosed_constructs`
+  - `test_quoted_function_content`
 - `test_analyzer_helpers.py` — Focused behavioral coverage for analyzer helper logic. (20 tests)
-  - `test_rect_url_and_declaration_helpers`
-  - `test_structural_relationships_and_ranking`
-  - `test_root_cause_paint_and_contributors`
-  - `test_human_summary_and_crops`
-  - `test_change_forest_serializes_relations`
-  - `test_rule_and_element_payload_validation`
-  - `test_variable_chains_cycles_and_content_delta`
-  - `test_candidate_order_provenance_and_numeric_helpers`
   - `test_budget_navigation_and_side_url`
+  - `test_candidate_order_provenance_and_numeric_helpers`
+  - `test_cascade_provenance_cdp_success_and_error`
+  - `test_change_forest_serializes_relations`
+  - `test_human_summary_and_crops`
+  - `test_interactions_minimal_sets_and_causal_edges`
+  - `test_missing_target_and_trial_budget_break`
   - `test_pixel_regions_and_change_classification`
+  - `test_rect_url_and_declaration_helpers`
+  - `test_render_context_wrapper_and_browser_fallback`
+  - `test_render_page_high_density_and_interventions`
+  - `test_root_cause_paint_and_contributors`
+  - `test_rule_and_element_payload_validation`
+  - `test_run_analysis_orchestration_and_failure`
   - `test_run_failure_path_and_provenance_skips`
   - `test_serial_rule_trials_with_recyclable_page`
-  - `test_missing_target_and_trial_budget_break`
-  - `test_structural_image_analysis_and_rich_report`
-  - `test_run_analysis_orchestration_and_failure`
-  - `test_cascade_provenance_cdp_success_and_error`
-  - `test_render_page_high_density_and_interventions`
-  - `test_interactions_minimal_sets_and_causal_edges`
-  - `test_render_context_wrapper_and_browser_fallback`
   - `test_structural_empty_and_content_delta_branches`
+  - `test_structural_image_analysis_and_rich_report`
+  - `test_structural_relationships_and_ranking`
+  - `test_variable_chains_cycles_and_content_delta`
 - `test_browser_js.py` — Validate every browser-side JavaScript source asset. (2 tests)
   - `test_all_browser_js_assets_are_discovered`
   - `test_browser_js_parses`
 - `test_cli_coverage.py` — Coverage for command entry points. (4 tests)
-  - `test_settings_parses_valid_cli`
-  - `test_settings_rejects_invalid_dimensions`
   - `test_module_entrypoint_calls_analyzer_main`
   - `test_module_entrypoint_dispatches_dom_diff`
+  - `test_settings_parses_valid_cli`
+  - `test_settings_rejects_invalid_dimensions`
 - `test_css_targets.py` — Tests for CSS file/directory comparison targets. (4 tests)
-  - `test_file_target`
   - `test_directory_target_is_recursive_and_deterministic`
   - `test_directory_without_css_fails`
+  - `test_file_target`
   - `test_non_css_file_fails`
 - `test_dom_diff.py` — Coverage for generic two-URL visual DOM comparison. (6 tests)
-  - `test_dom_diff_helpers_normalize_threshold_and_merge_regions`
-  - `test_dom_diff_parses_and_ranks_elements`
   - `test_dom_diff_cli_settings_and_validation`
-  - `test_dom_diff_run_writes_original_report_contract`
+  - `test_dom_diff_helpers_normalize_threshold_and_merge_regions`
   - `test_dom_diff_main_writes_summary`
+  - `test_dom_diff_parses_and_ranks_elements`
+  - `test_dom_diff_run_writes_original_report_contract`
   - `test_dom_diff_settings_are_publicly_exported`
 - `test_dual_url_tokens.py` — Tests for dual URL and token CSS analysis. (2 tests)
   - `test_dual_url`
   - `test_nested_tokens`
 - `test_examples.py` — Coverage and behavior tests for bundled runnable examples. (9 tests)
   - `test_example_run_builds_demo_settings`
-  - `test_validate_results_success_and_failures`
-  - `test_validate_results_rejects_incomplete_markdown`
-  - `test_validate_results_rejects_incomplete_evidence_triplet`
-  - `test_validate_results_rejects_zero_missing_and_empty_evidence`
-  - `test_example_run_reports_a_server_that_never_ready`
   - `test_example_run_module_executes_as_a_script`
+  - `test_example_run_reports_a_server_that_never_ready`
   - `test_examples_run_module_executes_as_a_script`
   - `test_examples_run_module_reuses_the_recorded_server`
+  - `test_validate_results_rejects_incomplete_evidence_triplet`
+  - `test_validate_results_rejects_incomplete_markdown`
+  - `test_validate_results_rejects_zero_missing_and_empty_evidence`
+  - `test_validate_results_success_and_failures`
 - `test_full_pipeline.py` — End-to-end coverage for the bounded causal-analysis pipeline. (1 tests)
   - `test_tiny_full_pipeline`
 - `test_runtime_lifecycle.py` — Regression tests for bounded runtime and report lifecycle. (2 tests)
   - `test_failure_report_is_always_persisted`
   - `test_zero_candidates_is_explicit_quick_mode`
+- `test_support.py` — Validate the shared visual_cause test helpers. (5 tests)
+  - `test_constant_and_dig_helpers`
+  - `test_expectation_helpers_accept_good_values`
+  - `test_fail_and_expectation_failures`
+  - `test_private_helpers_read_write_and_call`
+  - `test_require_helpers_narrow_and_reject`
 - `test_token_cascade.py` — Tests for exact CSS value nodes. (2 tests)
-  - `test_nested_value_nodes`
   - `test_exact_span_replacement`
+  - `test_nested_value_nodes`
 - `test_typed_parallel.py` — Tests for Typed OM and parallel settings surfaces. (1 tests)
   - `test_parallel_defaults`
 

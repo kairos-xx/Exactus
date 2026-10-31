@@ -84,57 +84,69 @@ The demo page is:
 |---|---|
 | `README.md` | Package readme. |
 | `__init__.py` | Package the reusable JavaScript request studio and its browser demo. |
-| `examples/` | Runnable browser demonstration of the reusable request studio. |
-| `index.js` | — |
-| `request_studio.js` | @typedef {"params" \| "headers" \| "cookies"} RowKind |
+| `examples/` | Runnable demonstration for `exactus/actions/action_rest/`. |
+| `index.js` | JavaScript module. |
+| `request_studio.js` | JavaScript module. |
 
-## JavaScript API reference
+## Python API reference
 
-Exports of the package's ES modules, read from the source.
+Public classes, functions and constants, read from the source. Private names (leading underscore) are omitted.
 
-### `request_studio.js`
+### `__init__.py`
 
-@typedef {"params" | "headers" | "cookies"} RowKind
+Package the reusable JavaScript request studio and its browser demo.
 
-- `class RequestStudio` — Interactive request studio: token editors, variables and HTTP/WebSocket transports.
 
-## Examples
+### `examples/__init__.py`
 
 Runnable browser demonstration of the reusable request studio.
 
-### Directory contents
 
-### Files
+### `examples/__main__.py`
 
-- `__init__.py` — example package marker.
-- `__main__.py` — run the example through the project virtual environment.
-- `run.py` — start the loopback demo server and open the managed browser.
+Run the request-studio example with the project virtual environment.
 
-### Subdirectories
 
-- `web/` — standalone request-studio host page, styles, and demo wiring.
+### `examples/run.py`
 
-Files: `__init__.py`, `__main__.py`, `run.py`, `web/code.js`, `web/index.html`, `web/style.css`
+Start the loopback request-studio demo and open the managed browser.
+
+- `start_demo(*, log: Path) -> str` — Serve this package only, including the demo's library import.
+- `main() -> int` — Launch the demo; leave its reusable background server running.
+
+## JavaScript API reference
+
+Top-level exports, read from the source.
+
+### `request_studio.js`
+
+- `RequestStudio`
+
+## Examples
+
+Runnable demonstration for `exactus/actions/action_rest/`.
+
+Start the loopback request-studio demo and open the managed browser.
+
+```bash
+python -m exactus.actions.action_rest.examples
+```
+
+Files: `examples/README.md`, `examples/__init__.py`, `examples/__main__.py`, `examples/run.py`, `examples/web/README.md`, `examples/web/code.js`, `examples/web/index.html`, `examples/web/style.css`
 
 ## Dependencies and consumers
 
-- No dependencies outside the standard library.
-- Used by: no other module imports it; it is run directly or through the bundle.
+- Other packages: [`browser`](../../browser/DOCS.md), [`server`](../../server/DOCS.md)
+- Used by: `tests/packages/actions/action_rest/test_examples.py`
 
 ## Tests
 
 Tests live in `exactus/tests/packages/actions/action_rest/`.
 
-- `action_rest.test.mjs` — (5 tests)
-  - request API resolves variables, params, headers and package exports
-  - request rows, variables, tabs and body modes remain interactive
-  - HTTP send builds the request and renders success, error and network responses
-  - WebSocket mode maps protocols, logs frames and restores HTTP controls
-  - JSON capture saves response values as variables and demo is responsive
 - `test_examples.py` — Coverage for the mini postman demo server launcher. (4 tests)
-  - `test_start_demo_serves_assets_and_reuses`
-  - `test_start_demo_replaces_unready_server`
   - `test_main_prints_url_and_opens_browser`
   - `test_module_entrypoint_invokes_main`
+  - `test_start_demo_replaces_unready_server`
+  - `test_start_demo_serves_assets_and_reuses`
 
 <!-- exactus:reference:end -->

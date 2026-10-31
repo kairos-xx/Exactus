@@ -270,9 +270,9 @@ The normal CLI discovers both Python and JavaScript sources recursively.
 | `__init__.py` | Public API for Python and JavaScript class method organization. |
 | `__main__.py` | Run Python and JavaScript class method organization. |
 | `core.py` | Reorder Python class methods while preserving original source text. |
-| `examples/` | Examples for the organize package. |
+| `examples/` | Runnable demonstration for `exactus/packages/organize/`. |
 | `javascript.py` | Source-preserving JavaScript class-method organization. |
-| `js/` | Parse the source as a module, falling back to script mode. |
+| `js/` | Subdirectory. |
 
 Run it as a module: `python -m exactus.packages.organize`.
 
@@ -280,15 +280,25 @@ Run it as a module: `python -m exactus.packages.organize`.
 
 | Option | Description | Settings |
 |---|---|---|
-| `paths` | Python/JavaScript files, directories, or glob patterns to organize. | nargs='*' |
-| `--include` | Only organize sources matching GLOB; repeatable. | default=[], action='append' |
-| `--exclude` | Skip sources matching GLOB; repeatable. | default=[], action='append' |
-| `--dry, --dry-run` | Report the changes organize would make without writing. | action='store_true' |
-| `--order` | Comma-separated category order overriding [tool.organize] order in pyproject.toml. |  |
+| `paths` | Python/JavaScript files, directories, or glob patterns to organize. | metavar='PATH', nargs='*' |
+| `--include` | Only organize sources matching GLOB; repeatable. | action='append', default=[], metavar='GLOB' |
+| `--exclude` | Skip sources matching GLOB; repeatable. | action='append', default=[], metavar='GLOB' |
+| `--dry, --dry-run` | Report the changes organize would make without writing. | action='store_true', dest='dry' |
+| `--order` | Comma-separated category order overriding [tool.organize] order in pyproject.toml. | metavar='CATEGORIES' |
 
 ## Python API reference
 
 Public classes, functions and constants, read from the source. Private names (leading underscore) are omitted.
+
+### `__init__.py`
+
+Public API for Python and JavaScript class method organization.
+
+
+### `__main__.py`
+
+Run Python and JavaScript class method organization.
+
 
 ### `core.py`
 
@@ -298,82 +308,116 @@ Reorder Python class methods while preserving original source text.
   - `min_reorder_methods` = `2`
   - `min_dunder_name_length` = `5`
   - `supported_suffixes` = `frozenset({'.py', '.js', '.jsx', '.mjs', '.cjs'})`
-  - `default_order` = `('new', 'init', 'classmethod', 'property', 'staticmethod', 'method'...`
+  - `default_order` = `('new', 'init', 'classmethod', 'property', 'staticmethod', 'method', 'mag...`
 - `class ReorderMetrics` — Metrics describing one reorder operation.
-  - Fields: `classes_reordered: int`, `classes_seen: int`, `lines_moved: int`, `methods_moved: int`, `methods_seen: int`
+  - `classes_reordered` = `0`
+  - `classes_seen` = `0`
+  - `lines_moved` = `0`
+  - `methods_moved` = `0`
+  - `methods_seen` = `0`
 - `class ReorderResult` — Outcome of reordering one Python source.
   - Fields: `metrics: ReorderMetrics`, `source: str`
-  - `changed() -> bool` — Whether the reorder moved at least one method.
+  - `changed(self) -> bool` — Whether the reorder moved at least one method.
 - `validate_order(*, order: Sequence[str]) -> tuple[str, ...]` — Validate and normalize a method-category order.
 - `configured_order(*, start: Path | None=None) -> tuple[str, ...]` — Resolve ``[tool.organize] order`` from the nearest ``pyproject.toml``.
 - `class PythonClassMethodReorderer` — Reorder direct class methods using a stable, source-preserving policy.
-  - `reorder_source(*, source: str, order: Sequence[str]=Constants.default_order) -> str` — Reorder all classes in Python source.
-  - `reorder_source_detailed(*, source: str, order: Sequence[str]=Constants.default_order) -> ReorderResult` — Reorder all classes in Python source and collect metrics.
-  - `reorder() -> str` — Return reordered file content without writing it.
-  - `measure() -> ReorderResult` — Return the reorder outcome with metrics, without writing.
-  - `write() -> bool` — Reorder the file in place when a change is required.
+  - `__init__(self, *, path: Path, order: Sequence[str]=Constants.default_order) -> None` — Initialize a file-backed reorderer.
+  - `reorder_source(cls, *, source: str, order: Sequence[str]=Constants.default_order) -> str` — Reorder all classes in Python source.
+  - `reorder_source_detailed(cls, *, source: str, order: Sequence[str]=Constants.default_order) -> ReorderResult` — Reorder all classes in Python source and collect metrics.
+  - `reorder(self) -> str` — Return reordered file content without writing it.
+  - `measure(self) -> ReorderResult` — Return the reorder outcome with metrics, without writing.
+  - `write(self) -> bool` — Reorder the file in place when a change is required.
 - `main(*, arguments: Sequence[str] | None=None) -> int` — Organize class methods in Python and JavaScript files.
+
+### `examples/__init__.py`
+
+Examples for the organize package.
+
+
+### `examples/__main__.py`
+
+Run the organize example with the project virtual environment.
+
+
+### `examples/run.py`
+
+Demonstrate source-preserving class method organization.
+
+- `class Constants` — Group module-level constants.
+  - `source` = `dedent(text='\n        class Example:\n            """Example demonstrati...`
+- `main() -> int` — Print source before and after organization, then its metrics.
 
 ### `javascript.py`
 
 Source-preserving JavaScript class-method organization.
 
 - `class Constants` — Group module-level constants.
-  - `resolve_local` = `"const{createRequire}=require('node:module');const r=createRequire(...`
-  - `resolve_eslint` = `"const{createRequire}=require('node:module');const{realpathSync}=re...`
+  - `resolve_local` = `"const{createRequire}=require('node:module');const r=createRequire(proces...`
+  - `resolve_eslint` = `"const{createRequire}=require('node:module');const{realpathSync}=require(...`
 - `class JavaScriptReorderMetrics` — Metrics produced by JavaScript class-method organization.
-  - Fields: `classes_reordered: int`, `classes_seen: int`, `lines_moved: int`, `methods_moved: int`, `methods_seen: int`
+  - `classes_reordered` = `0`
+  - `classes_seen` = `0`
+  - `lines_moved` = `0`
+  - `methods_moved` = `0`
+  - `methods_seen` = `0`
 - `class JavaScriptReorderResult` — Outcome of reordering one JavaScript source file.
   - Fields: `metrics: JavaScriptReorderMetrics`, `source: str`
-  - `changed() -> bool` — Return whether at least one method moved.
+  - `changed(self) -> bool` — Return whether at least one method moved.
 - `class JavaScriptClassMethodReorderer` — Reorder safe JavaScript class-method runs without regenerating code.
-  - `measure() -> JavaScriptReorderResult` — Return reordered source and metrics without writing the file.
-  - `reorder() -> str` — Return reordered source without writing the file.
-  - `write() -> bool` — Reorder the file in place and return whether it changed.
+  - `__init__(self, *, path: Path) -> None` — Initialize a file-backed JavaScript reorderer.
+  - `measure(self) -> JavaScriptReorderResult` — Return reordered source and metrics without writing the file.
+  - `reorder(self) -> str` — Return reordered source without writing the file.
+  - `write(self) -> bool` — Reorder the file in place and return whether it changed.
 
 ## Examples
 
-Examples for the organize package.
+Runnable demonstration for `exactus/packages/organize/`.
 
-Files: `__init__.py`, `__main__.py`, `run.py`
+Demonstrate source-preserving class method organization.
+
+```bash
+python -m exactus.packages.organize.examples
+```
+
+Files: `examples/README.md`, `examples/__init__.py`, `examples/__main__.py`, `examples/run.py`
 
 ## Dependencies and consumers
 
-- Third-party: `psutil`
-- Used by: `../pyproject.toml`, `tests/tools/lints/js/function_blocks.test.mjs`, `tests/tools/lints/js/function_blocks_torture.test.mjs`, `tests/tools/lints/test_lints.py`, `tools/lints/core.py`, `tools/lints/packages_pipeline.py`
+- Other packages: [`argument_parser`](../argument_parser/DOCS.md)
+- Used by: `tests/packages/organize/test_javascript.py`, `tests/packages/organize/test_organize.py`, `tests/tools/lints/test_lints.py`, `tools/lints/core.py`, `tools/lints/packages_pipeline.py`
 
 ## Tests
 
 Tests live in `exactus/tests/packages/organize/`.
 
 - `test_javascript.py` — Tests for standalone JavaScript class-method organization. (4 tests)
+  - `test_javascript_rejects_malformed_payloads`
   - `test_javascript_reorders_and_is_idempotent`
   - `test_javascript_reports_organizer_failures`
   - `test_javascript_resolves_global_espree_or_fails`
-  - `test_javascript_rejects_malformed_payloads`
 - `test_organize.py` — Tests for source-preserving Python class method organization. (23 tests)
-  - `test_reorders_every_category_stably`
-  - `test_preserves_decorators_annotations_docstrings_and_comments`
-  - `test_property_family_is_adjacent_and_accessor_order_is_normalized`
-  - `test_qualified_binding_decorators_are_recognized`
   - `test_blank_line_separated_comment_remains_anchored`
-  - `test_direct_comment_moves_with_method`
-  - `test_nested_class_is_reordered_but_function_local_class_is_not`
-  - `test_idempotent_and_already_ordered_source_is_byte_identical`
-  - `test_single_method_and_empty_class_are_unchanged`
-  - `test_file_api_reorders_and_reports_change`
-  - `test_invalid_python_propagates_syntax_error`
-  - `test_metrics_report_moved_methods_classes_and_lines`
-  - `test_metrics_report_zero_moves_for_ordered_source`
-  - `test_custom_order_reorders_by_given_categories`
-  - `test_validate_order_rejects_incomplete_and_unknown`
-  - `test_configured_order_reads_pyproject`
   - `test_configured_order_defaults_without_section`
+  - `test_configured_order_reads_pyproject`
   - `test_configured_order_rejects_invalid_pyproject`
+  - `test_custom_order_reorders_by_given_categories`
+  - `test_direct_comment_moves_with_method`
+  - `test_file_api_reorders_and_reports_change`
+  - `test_idempotent_and_already_ordered_source_is_byte_identical`
+  - `test_invalid_python_propagates_syntax_error`
   - `test_main_dry_run_reports_metrics_without_writing`
   - `test_main_expands_globs_and_applies_exclude`
   - `test_main_order_flag_overrides_pyproject`
   - `test_main_rejects_an_invalid_order_flag`
   - `test_main_without_paths_returns_one`
+  - `test_metrics_report_moved_methods_classes_and_lines`
+  - `test_metrics_report_zero_moves_for_ordered_source`
+  - `test_nested_class_is_reordered_but_function_local_class_is_not`
+  - `test_preserves_decorators_annotations_docstrings_and_comments`
+  - `test_property_family_is_adjacent_and_accessor_order_is_normalized`
+  - `test_qualified_binding_decorators_are_recognized`
+  - `test_reorders_every_category_stably`
+  - `test_single_method_and_empty_class_are_unchanged`
+  - `test_validate_order_rejects_incomplete_and_unknown`
 
 <!-- exactus:reference:end -->

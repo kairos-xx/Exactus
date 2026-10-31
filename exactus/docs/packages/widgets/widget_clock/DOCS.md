@@ -191,42 +191,69 @@ exactus/packages/widgets/widget_clock/
 |---|---|
 | `README.md` | Package readme. |
 | `__init__.py` | Package the reusable JavaScript timeline clock and its browser demo. |
-| `examples/` | Runnable browser demonstration of the reusable timeline clock. |
-| `index.js` | — |
-| `widget_clock.js` | @typedef {{value:any,groupValues:any,live:any,fps:any,mode:any,template:any,structure:any,matrixLayout:any,matrixRows:any,matrixColumns:any,matrixDotSize:any,matrixDotGap:any,matrixOnColor:any,matrixOffColor:any,matrixGlowSize:any,digitWidth:any,digitHeight:any,digitInset?:number,segmentLength:any,segmentThickness:any,segmentGap:any,digitGap:any,groupGap:any,separatorWidth:any,dotSize:any,blinkSeparatorsOnSecond:any,dotBlinkDuration:any,segmentOnColor:any,segmentOffColor:any,segmentGlowColor:any,segmentGlowSize:any,segmentOnDuration:any,segmentOffDuration:any,transitionEasing:any,recVisible:any,recEnabled:any,recording:any,recPulse:any,recLedSize:any,recLedOnColor:any,recLedOffColor:any,recLedGlowColor:any,recLedGlowSize:any,recPulseDuration:any,recLabel:any,recFontFamily:any,recFontSize:any,recFontWeight:any,recLetterSpacing:any,recTextColor:any,recGap:any,recWidgetGap:any,background:any,align:any,padding:any, [key:string]:any}} ClockSettings |
+| `examples/` | Runnable demonstration for `exactus/widgets/widget_clock/`. |
+| `index.js` | JavaScript module. |
+| `widget_clock.js` | JavaScript module. |
 
-## JavaScript API reference
+## Python API reference
 
-Exports of the package's ES modules, read from the source.
+Public classes, functions and constants, read from the source. Private names (leading underscore) are omitted.
 
-### `widget_clock.js`
+### `__init__.py`
 
-@typedef {{value:any,groupValues:any,live:any,fps:any,mode:any,template:any,structure:any,matrixLayout:any,matrixRows:any,matrixColumns:any,matrixDotSize:any,matrixDotGap:any,matrixOnColor:any,matrixOffColor:any,matrixGlowSize:any,digitWidth:any,digitHeight:any,digitInset?:number,segmentLength:any,segmentThickness:any,segmentGap:any,digitGap:any,groupGap:any,separatorWidth:any,dotSize:any,blinkSeparatorsOnSecond:any,dotBlinkDuration:any,segmentOnColor:any,segmentOffColor:any,segmentGlowColor:any,segmentGlowSize:any,segmentOnDuration:any,segmentOffDuration:any,transitionEasing:any,recVisible:any,recEnabled:any,recording:any,recPulse:any,recLedSize:any,recLedOnColor:any,recLedOffColor:any,recLedGlowColor:any,recLedGlowSize:any,recPulseDuration:any,recLabel:any,recFontFamily:any,recFontSize:any,recFontWeight:any,recLetterSpacing:any,recTextColor:any,recGap:any,recWidgetGap:any,background:any,align:any,padding:any, [key:string]:any}} ClockSettings
+Package the reusable JavaScript timeline clock and its browser demo.
 
-## Examples
+
+### `examples/__init__.py`
 
 Runnable browser demonstration of the reusable timeline clock.
 
-Files: `__init__.py`, `__main__.py`, `run.py`, `web/code.js`, `web/index.html`, `web/style.css`
+
+### `examples/__main__.py`
+
+Run the analog-clock example with the project virtual environment.
+
+
+### `examples/run.py`
+
+Start the loopback demo server and open the managed browser.
+
+- `start_demo(*, log: Path) -> str` — Serve this package only, including the demo's relative library import.
+- `main() -> int` — Launch the demo; leave its reusable background server running.
+
+## JavaScript API reference
+
+Top-level exports, read from the source.
+
+### `index.js`
+
+- `AnalogClock`
+
+## Examples
+
+Runnable demonstration for `exactus/widgets/widget_clock/`.
+
+Start the loopback demo server and open the managed browser.
+
+```bash
+python -m exactus.widgets.widget_clock.examples
+```
+
+Files: `examples/README.md`, `examples/__init__.py`, `examples/__main__.py`, `examples/run.py`, `examples/web/README.md`, `examples/web/code.js`, `examples/web/index.html`, `examples/web/style.css`
 
 ## Dependencies and consumers
 
-- No dependencies outside the standard library.
-- Used by: `../pyproject.toml`, `tests/tools/record/test_studio_http_contract.py`, `tools/record/studio/web/editor.js`
+- Other packages: [`browser`](../../browser/DOCS.md), [`server`](../../server/DOCS.md)
+- Used by: `tests/packages/widgets/widget_clock/test_examples.py`
 
 ## Tests
 
 Tests live in `exactus/tests/packages/widgets/widget_clock/`.
 
 - `test_examples.py` — Coverage for the widget_clock demo server launcher. (4 tests)
-  - `test_start_demo_serves_assets_and_reuses`
-  - `test_start_demo_replaces_unready_server`
   - `test_main_prints_url_and_opens_browser`
   - `test_module_entrypoint_invokes_main`
-- `widget_clock.test.mjs` — (4 tests)
-  - clock API supports timeline time, arrow callbacks and safe disposal
-  - target resizes by pointer and keyboard and controls remain functional
-  - CSS bindings update native styles and runtime rows; ESM import needs no external CSS
-  - demo sidebar controls drive clock settings
+  - `test_start_demo_replaces_unready_server`
+  - `test_start_demo_serves_assets_and_reuses`
 
 <!-- exactus:reference:end -->

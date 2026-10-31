@@ -38,21 +38,19 @@ A consuming widget adds a fourth, **alias** tier of its own: custom properties t
 | Path | Description |
 |---|---|
 | `README.md` | Package readme. |
-| `base.css` | BASE — reusable derived values: theme role colors, measures, typography units and keyword bridges. |
-| `catalog.css` | CATALOG — generic design specifications shared by widget consumers. |
-| `primary.css` | PRIMARY — literal inputs: units, keywords, named colors and the widget palette. |
-| `style.css` | Entry stylesheet that imports `./primary.css`, `./base.css`, `./catalog.css`. |
+| `__init__.py` | Package the shared ``--ws-*`` stylesheet kit for browser widgets. |
+| `base.css` | — |
+| `catalog.css` | — |
+| `primary.css` | — |
+| `style.css` | — |
 
-## Stylesheets
+## Python API reference
 
-- `base.css` — BASE — reusable derived values: theme role colors, measures, typography units and keyword bridges. (81 custom properties)
-- `catalog.css` — CATALOG — generic design specifications shared by widget consumers. (95 custom properties)
-- `primary.css` — PRIMARY — literal inputs: units, keywords, named colors and the widget palette. (61 custom properties)
-- `style.css` — Entry stylesheet: imports `./primary.css`, `./base.css`, `./catalog.css`. (rules only)
+Public classes, functions and constants, read from the source. Private names (leading underscore) are omitted.
 
-## Dependencies and consumers
+### `__init__.py`
 
-- No dependencies outside the standard library.
-- Used by: `packages/widgets/widget_selector/examples/web/index.html`, `packages/widgets/widget_selector/style.css`
+Package the shared ``--ws-*`` stylesheet kit for browser widgets.
+
 
 <!-- exactus:reference:end -->
