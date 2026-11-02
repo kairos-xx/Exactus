@@ -688,6 +688,7 @@ def create_bundle(
         bundle_dir = folder / name.removesuffix(".zip")
         bundle_dir.mkdir(parents=True, exist_ok=True)
         destination = bundle_dir / name
+    written: list[str] = []
     with ZipFile(
         file=destination,
         mode="w",
@@ -695,7 +696,12 @@ def create_bundle(
     ) as archive:
         member: str
         for member in files:
-            archive.write(filename=root / member, arcname=member)
+            try:
+                archive.write(filename=root / member, arcname=member)
+            except FileNotFoundError:
+                continue
+            written.append(member)
+    files = tuple(written)
     if bundle_dir is not None:
         _ = (bundle_dir / "README.md").write_text(
             data=_bundle_readme(
@@ -812,6 +818,7 @@ def create_project_archive(
             members.append(
                 (path, (Constants.project_bundle / relative).as_posix()),
             )
+    arcnames: list[str] = []
     with ZipFile(
         file=destination,
         mode="w",
@@ -821,10 +828,14 @@ def create_project_archive(
         source: Path
         arcname: str
         for source, arcname in members:
-            archive.write(filename=source, arcname=arcname)
+            try:
+                archive.write(filename=source, arcname=arcname)
+            except FileNotFoundError:
+                continue
+            arcnames.append(arcname)
     return BundleResult(
         path=destination,
-        files=tuple(arcname for _, arcname in members),
+        files=tuple(arcnames),
         selection=Selection(tools=(), packages=()),
     )
 

@@ -280,10 +280,13 @@ def package(*, config: PackageConfig, root: Path) -> StageResult:
     )
     with ZipFile(file=output, mode="w", compression=ZIP_DEFLATED) as archive:
         for path in files:
-            archive.write(
-                filename=path,
-                arcname=path.relative_to(root).as_posix(),
-            )
+            try:
+                archive.write(
+                    filename=path,
+                    arcname=path.relative_to(root).as_posix(),
+                )
+            except FileNotFoundError:
+                continue
     if config.output is None:
         tree: str = render_tree(
             root=root,
