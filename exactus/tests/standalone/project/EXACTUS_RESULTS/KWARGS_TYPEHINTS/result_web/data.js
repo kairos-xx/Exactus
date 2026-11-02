@@ -61,17 +61,17 @@ window.__REPORT_DATA__ = JSON.parse(`{
     {
       "name": "steps.txt",
       "path": "ARTIFACTS/steps.txt",
-      "bytes": 4263
+      "bytes": 4257
     }
   ],
   "auto_fixes": [],
   "bare_imports": [],
   "comparison": {
     "available": true,
-    "previous_generated_at": "2026-11-02T04:27:03.857795+00:00",
-    "previous_run_id": "4eb674a4eaf74587b6b16feda9b3d901:kwargs_typehints",
+    "previous_generated_at": "2026-11-02T06:18:44.621551+00:00",
+    "previous_run_id": "ca892f99f2a643d3be26908062de1af7:kwargs_typehints",
     "previous_status": "PASS",
-    "previous_duration_seconds": 2.438,
+    "previous_duration_seconds": 2.869,
     "current_total": 0,
     "previous_total": 0,
     "delta": 0,
@@ -127,7 +127,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
       }
     ]
   },
-  "duration_seconds": 2.671,
+  "duration_seconds": 2.615,
   "environment": {
     "os": "Darwin 25.3.0",
     "python": "3.13.9",
@@ -140,7 +140,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
       },
       {
         "name": "EXACTUS_PIPELINE_RUN_ID",
-        "value": "a02e863bdc214c449643475edb79e655"
+        "value": "7906d1edd1a543c7894fd4387463792d"
       },
       {
         "name": "EXACTUS_REGISTRY",
@@ -152,7 +152,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
       },
       {
         "name": "EXACTUS_RUN_ID",
-        "value": "a02e863bdc214c449643475edb79e655:kwargs_typehints"
+        "value": "7906d1edd1a543c7894fd4387463792d:kwargs_typehints"
       },
       {
         "name": "EXACTUS_TOOL",
@@ -160,11 +160,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
       },
       {
         "name": "LANG",
-        "value": "en_US.UTF-8"
-      },
-      {
-        "name": "TERM",
-        "value": "xterm-256color"
+        "value": "C.UTF-8"
       }
     ]
   },
@@ -289,8 +285,8 @@ window.__REPORT_DATA__ = JSON.parse(`{
   },
   "findings": [],
   "fingerprint": {
-    "commit": "3d9eec7e17a011978573b7cf5d68d0351fd43856",
-    "tree": "d3c0507dcfef765aae70ed83e9536ad2d912e986",
+    "commit": "8acd5332d8bb9132a3f9464fe58d265059b6ef39",
+    "tree": "894ba3dd961790939accb258297593340dbeb862",
     "dirty": true,
     "python": "3.13.9",
     "ruff": "ruff 0.12.0",
@@ -300,19 +296,19 @@ window.__REPORT_DATA__ = JSON.parse(`{
     "status": "PASS",
     "reason": "No blocking findings"
   },
-  "generated_at": "2026-11-02T05:29:32.498775+00:00",
-  "generated_at_human": "02 November 2026, 05:29:32 UTC",
+  "generated_at": "2026-11-02T06:48:37.986482+00:00",
+  "generated_at_human": "02 November 2026, 06:48:37 UTC",
   "invocation": {
-    "command": "/Users/joaolopes/Exactus/bin/release/exactus_macos_arm64/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=59414 --orchestrator-control-token=[redacted] --orchestrator-worker-port=59398 --orchestrator-worker-token=[redacted] '--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"kwargs_typehints\\",\\"module\\":\\"exactus.tools.kwargs_typehints.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/KWARGS_TYPEHINTS\\",\\"arguments\\":[],\\"run_id\\":\\"a02e863bdc214c449643475edb79e655:kwargs_typehints\\",\\"pipeline_run_id\\":\\"a02e863bdc214c449643475edb79e655\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}'",
+    "command": "/Users/joaolopes/Exactus/bin/release/exactus_macos_arm64/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=56241 --orchestrator-control-token=[redacted] --orchestrator-worker-port=56223 --orchestrator-worker-token=[redacted] '--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"kwargs_typehints\\",\\"module\\":\\"exactus.tools.kwargs_typehints.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/KWARGS_TYPEHINTS\\",\\"arguments\\":[],\\"run_id\\":\\"7906d1edd1a543c7894fd4387463792d:kwargs_typehints\\",\\"pipeline_run_id\\":\\"7906d1edd1a543c7894fd4387463792d\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}'",
     "cwd": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
     "arguments": [
       "exactus.tools.common.tool_worker",
       "ExactusTool",
-      "--orchestrator-control-port=59414",
+      "--orchestrator-control-port=56241",
       "--orchestrator-control-token=[redacted]",
-      "--orchestrator-worker-port=59398",
+      "--orchestrator-worker-port=56223",
       "--orchestrator-worker-token=[redacted]",
-      "--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"kwargs_typehints\\",\\"module\\":\\"exactus.tools.kwargs_typehints.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/KWARGS_TYPEHINTS\\",\\"arguments\\":[],\\"run_id\\":\\"a02e863bdc214c449643475edb79e655:kwargs_typehints\\",\\"pipeline_run_id\\":\\"a02e863bdc214c449643475edb79e655\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}"
+      "--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"kwargs_typehints\\",\\"module\\":\\"exactus.tools.kwargs_typehints.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/KWARGS_TYPEHINTS\\",\\"arguments\\":[],\\"run_id\\":\\"7906d1edd1a543c7894fd4387463792d:kwargs_typehints\\",\\"pipeline_run_id\\":\\"7906d1edd1a543c7894fd4387463792d\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}"
     ]
   },
   "local_links": {
@@ -329,11 +325,11 @@ window.__REPORT_DATA__ = JSON.parse(`{
     "ARTIFACTS/stdout.log": "ARTIFACTS/stdout.log",
     "ARTIFACTS/steps.txt": "ARTIFACTS/steps.txt"
   },
-  "markdown": "# Python Call, Import, and Typing Exactus\\n\\n**Run time:** 02 November 2026, 05:29:32 UTC\\n\\n## Identity\\n\\n| Field | Value |\\n|---|---|\\n| Tool | kwargs_typehints 0.6.1 |\\n| Run ID | a02e863bdc214c449643475edb79e655:kwargs_typehints |\\n| Pipeline run | a02e863bdc214c449643475edb79e655 |\\n| Status | PASS |\\n| Exit code | 0 |\\n| Started | 02 November 2026, 05:29:32 UTC |\\n| Finished | 02 November 2026, 05:29:34 UTC |\\n| Duration | 2.7 s |\\n| Previous duration | 2.438s |\\n\\n## What was checked\\n\\n**Result: PASS** — 0 findings across 6 of 6 eligible targets.\\n\\n| Severity | Count |\\n|---|---:|\\n| ERROR | 0 |\\n| WARNING | 0 |\\n| INFO | 0 |\\n\\n### Metrics\\n\\n| Metric | Value |\\n| --- | --- |\\n| Python files analyzed | 6 |\\n| Files that failed to parse | 0 |\\n| Call sites with positional arguments | 3 |\\n| Call sites resolved to a signature | 3 |\\n| Resolved (%) | 100.0 |\\n| Exempt call sites (positional-only or dynamic APIs) | 0 |\\n| Unresolved call sites | 0 |\\n| Other unchecked call sites | 0 |\\n| Functions checked | 5 |\\n| Parameters checked | 5 |\\n| Signature hint coverage (%) | 100.0 |\\n| Missing variable and attribute hints | 0 |\\n| Blocking findings | 0 |\\n\\n#### Findings by category\\n\\n| Category | Severity | Blocking | Findings |\\n|---|---|---|---:|\\n| Missing keyword arguments | error | Yes | 0 |\\n| Bare imports | error | Yes | 0 |\\n| Missing type hints | error | Yes | 0 |\\n| Parse failures | error | Yes | 0 |\\n| Ambiguous calls | warning | No | 0 |\\n| Unresolved callees | info | No | 0 |\\n\\n### Change since previous report\\n\\n| Metric | Current | Previous | Delta |\\n|---|---:|---:|---:|\\n| Findings | 0 | 0 | 0 |\\n| Previous duration | 2.438s | | |\\n\\n| Finding change | Count |\\n|---|---:|\\n| Added | 0 |\\n| Resolved | 0 |\\n| Unchanged | 0 |\\n\\n#### Category findings\\n\\n| Category | Title | Findings | Previous | Delta |\\n| --- | --- | --- | --- | --- |\\n| ambiguous-call | Ambiguous calls | 0 | 0 | 0 |\\n| bare-import | Bare imports | 0 | 0 | 0 |\\n| missing-hint | Missing type hints | 0 | 0 | 0 |\\n| missing-kwargs | Missing keyword arguments | 0 | 0 | 0 |\\n| parse-failure | Parse failures | 0 | 0 | 0 |\\n| unresolved-callee | Unresolved callees | 0 | 0 | 0 |\\n\\n### Scope\\n\\n**Included**\\n\\n- \`**/*.py\`\\n\\n**Excluded**\\n\\n- \`.*/**\`\\n- \`**/.*/**\`\\n- \`EXACTUS_RESULTS/**\`\\n- \`**/EXACTUS_RESULTS/**\`\\n- \`node_modules/**\`\\n- \`build/**\`\\n- \`dist/**\`\\n- \`*.egg-info/**\`\\n- \`**/__pycache__/**\`\\n- \`**/.agents/**\`\\n- \`**/.build-cache/**\`\\n- \`**/.cache/**\`\\n- \`**/.claude/**\`\\n- \`**/.cursor/**\`\\n- \`**/.devin/**\`\\n- \`**/.eggs/**\`\\n- \`**/.git/**\`\\n- \`**/.history/**\`\\n- \`**/.mypy_cache/**\`\\n- \`**/.pytest_cache/**\`\\n- \`**/.ruff_cache/**\`\\n- \`**/.tox/**\`\\n- \`**/.venv/**\`\\n- \`**/build/**\`\\n- \`**/coverage_report/**\`\\n- \`**/dist/**\`\\n- \`**/env/**\`\\n- \`**/htmlcov/**\`\\n- \`**/mutants/**\`\\n- \`**/node_modules/**\`\\n- \`**/site-packages/**\`\\n- \`**/venv/**\`\\n\\n**Skipped targets**\\n\\nNo skipped targets.\\n\\n## Setup\\n\\n### Invocation\\n\\n~~~~shell\\n/Users/joaolopes/Exactus/bin/release/exactus_macos_arm64/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=59414 --orchestrator-control-token=[redacted] --orchestrator-worker-port=59398 --orchestrator-worker-token=[redacted] '--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"kwargs_typehints\\",\\"module\\":\\"exactus.tools.kwargs_typehints.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/KWARGS_TYPEHINTS\\",\\"arguments\\":[],\\"run_id\\":\\"a02e863bdc214c449643475edb79e655:kwargs_typehints\\",\\"pipeline_run_id\\":\\"a02e863bdc214c449643475edb79e655\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}'\\n~~~~\\n\\n| Property | Value |\\n|---|---|\\n| Working directory | [/Users/joaolopes/Exactus/exactus/tests/standalone/project](../..) |\\n| Arguments | \`exactus.tools.common.tool_worker\` \`ExactusTool\` \`--orchestrator-control-port=59414\` \`--orchestrator-control-token=[redacted]\` \`--orchestrator-worker-port=59398\` \`--orchestrator-worker-token=[redacted]\` \`--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"kwargs_typehints\\",\\"module\\":\\"exactus.tools.kwargs_typehints.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/KWARGS_TYPEHINTS\\",\\"arguments\\":[],\\"run_id\\":\\"a02e863bdc214c449643475edb79e655:kwargs_typehints\\",\\"pipeline_run_id\\":\\"a02e863bdc214c449643475edb79e655\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}\` |\\n\\n### Environment\\n\\n| Property | Value |\\n|---|---|\\n| OS | Darwin 25.3.0 |\\n| Python | 3.13.9 |\\n| Node | v22.21.1 |\\n| CPU count | 18 |\\n\\n| Variable | Value |\\n| --- | --- |\\n| EXACTUS_ORCHESTRATED | 1 |\\n| EXACTUS_PIPELINE_RUN_ID | a02e863bdc214c449643475edb79e655 |\\n| EXACTUS_REGISTRY | [/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/.runtime/runs.db](../.runtime/runs.db) |\\n| EXACTUS_ROOT | [/Users/joaolopes/Exactus/exactus/tests/standalone/project](../..) |\\n| EXACTUS_RUN_ID | a02e863bdc214c449643475edb79e655:kwargs_typehints |\\n| EXACTUS_TOOL | kwargs_typehints |\\n| LANG | en_US.UTF-8 |\\n| TERM | xterm-256color |\\n\\n## Gate\\n\\n> **Gate: PASS** — No blocking findings\\n\\nNo blocking findings.\\n\\n## Findings\\n\\nNo findings.\\n\\n## Artifacts\\n\\n| Artifact | Path | Bytes |\\n| --- | --- | --- |\\n| @activity.json | [ARTIFACTS/@activity.json](ARTIFACTS/%40activity.json) | 2081 |\\n| README.md | [ARTIFACTS/README.md](ARTIFACTS/README.md) | 461 |\\n| heuristics.json | [ARTIFACTS/heuristics.json](ARTIFACTS/heuristics.json) | 3915721 |\\n| stderr.log | [ARTIFACTS/stderr.log](ARTIFACTS/stderr.log) | 0 |\\n| stdout.log | [ARTIFACTS/stdout.log](ARTIFACTS/stdout.log) | 0 |\\n| steps.txt | [ARTIFACTS/steps.txt](ARTIFACTS/steps.txt) | 4263 |\\n\\n## Unresolved callees\\n\\nCallees with no known signature, so positional use at these call sites was not checked. Most call sites first; the Finding column names the finding with the source excerpt.\\n\\nNo unresolved callees: every checked call site resolved to a signature or is exempt.\\n\\n## Ambiguous call sites\\n\\nNo ambiguous call sites.\\n\\n## Bare imports\\n\\nNo bare imports.\\n\\n## Automatic fixes\\n\\nNo automatic source edits were applicable.\\n\\n## Methodology and caveats\\n\\n- Signatures come from a repository-wide AST index (functions, methods, dataclass and \`NamedTuple\` fields, imports, \`self.attr\` assignments, annotations), \`inspect.signature\` for external callables and the typeshed stubs bundled with basedpyright.\\n- Confidence of a missing-keyword finding: \`resolved\` (project index), \`constructor\` (project class constructor), \`external\` (\`inspect.signature\`), \`stub\` (typeshed), \`stub-rt\` (typeshed checked by a runtime probe), \`unique-name\` (one class defines the method), \`ambiguous-all-flag\` (every candidate flags it).\\n- Arguments after a \`*unpack\`, beyond the named parameters of a \`*args\` signature, or already passed by keyword are not reported.\\n- Calls to \`pytest.mark.*\`, standard-library positional-only methods and Qt-style \`lowerCamelCase\` methods are counted as exempt, not as unresolved.\\n- A variable needs one annotation per lexical scope; parameters own their type, walrus bindings, TypeVar declarations and Enum members are exempt, \`self\`/\`cls\` need none, and lambdas cannot be annotated.\\n- Hint coverage counts the parameters (receivers excluded) and return annotations of every function; variables are not part of the ratio.\\n- Unresolved callees (dynamic objects, \`*args\` wrappers, mocks, higher-order results) are listed so they can be checked by hand; they never fail the run.\\n- [\`ARTIFACTS/heuristics.json\`](ARTIFACTS/heuristics.json) holds the argument types observed by fuzzing builtin callables.\\n\\n---\\n\\nExactus · kwargs_typehints 0.6.1 · Run a02e863bdc214c449643475edb79e655:kwargs_typehints · Result PASS · Duration 2.7 s\\n",
+  "markdown": "# Python Call, Import, and Typing Exactus\\n\\n**Run time:** 02 November 2026, 06:48:37 UTC\\n\\n## Identity\\n\\n| Field | Value |\\n|---|---|\\n| Tool | kwargs_typehints 0.6.1 |\\n| Run ID | 7906d1edd1a543c7894fd4387463792d:kwargs_typehints |\\n| Pipeline run | 7906d1edd1a543c7894fd4387463792d |\\n| Status | PASS |\\n| Exit code | 0 |\\n| Started | 02 November 2026, 06:48:37 UTC |\\n| Finished | 02 November 2026, 06:48:40 UTC |\\n| Duration | 2.6 s |\\n| Previous duration | 2.869s |\\n\\n## What was checked\\n\\n**Result: PASS** — 0 findings across 6 of 6 eligible targets.\\n\\n| Severity | Count |\\n|---|---:|\\n| ERROR | 0 |\\n| WARNING | 0 |\\n| INFO | 0 |\\n\\n### Metrics\\n\\n| Metric | Value |\\n| --- | --- |\\n| Python files analyzed | 6 |\\n| Files that failed to parse | 0 |\\n| Call sites with positional arguments | 3 |\\n| Call sites resolved to a signature | 3 |\\n| Resolved (%) | 100.0 |\\n| Exempt call sites (positional-only or dynamic APIs) | 0 |\\n| Unresolved call sites | 0 |\\n| Other unchecked call sites | 0 |\\n| Functions checked | 5 |\\n| Parameters checked | 5 |\\n| Signature hint coverage (%) | 100.0 |\\n| Missing variable and attribute hints | 0 |\\n| Blocking findings | 0 |\\n\\n#### Findings by category\\n\\n| Category | Severity | Blocking | Findings |\\n|---|---|---|---:|\\n| Missing keyword arguments | error | Yes | 0 |\\n| Bare imports | error | Yes | 0 |\\n| Missing type hints | error | Yes | 0 |\\n| Parse failures | error | Yes | 0 |\\n| Ambiguous calls | warning | No | 0 |\\n| Unresolved callees | info | No | 0 |\\n\\n### Change since previous report\\n\\n| Metric | Current | Previous | Delta |\\n|---|---:|---:|---:|\\n| Findings | 0 | 0 | 0 |\\n| Previous duration | 2.869s | | |\\n\\n| Finding change | Count |\\n|---|---:|\\n| Added | 0 |\\n| Resolved | 0 |\\n| Unchanged | 0 |\\n\\n#### Category findings\\n\\n| Category | Title | Findings | Previous | Delta |\\n| --- | --- | --- | --- | --- |\\n| ambiguous-call | Ambiguous calls | 0 | 0 | 0 |\\n| bare-import | Bare imports | 0 | 0 | 0 |\\n| missing-hint | Missing type hints | 0 | 0 | 0 |\\n| missing-kwargs | Missing keyword arguments | 0 | 0 | 0 |\\n| parse-failure | Parse failures | 0 | 0 | 0 |\\n| unresolved-callee | Unresolved callees | 0 | 0 | 0 |\\n\\n### Scope\\n\\n**Included**\\n\\n- \`**/*.py\`\\n\\n**Excluded**\\n\\n- \`.*/**\`\\n- \`**/.*/**\`\\n- \`EXACTUS_RESULTS/**\`\\n- \`**/EXACTUS_RESULTS/**\`\\n- \`node_modules/**\`\\n- \`build/**\`\\n- \`dist/**\`\\n- \`*.egg-info/**\`\\n- \`**/__pycache__/**\`\\n- \`**/.agents/**\`\\n- \`**/.build-cache/**\`\\n- \`**/.cache/**\`\\n- \`**/.claude/**\`\\n- \`**/.cursor/**\`\\n- \`**/.devin/**\`\\n- \`**/.eggs/**\`\\n- \`**/.git/**\`\\n- \`**/.history/**\`\\n- \`**/.mypy_cache/**\`\\n- \`**/.pytest_cache/**\`\\n- \`**/.ruff_cache/**\`\\n- \`**/.tox/**\`\\n- \`**/.venv/**\`\\n- \`**/build/**\`\\n- \`**/coverage_report/**\`\\n- \`**/dist/**\`\\n- \`**/env/**\`\\n- \`**/htmlcov/**\`\\n- \`**/mutants/**\`\\n- \`**/node_modules/**\`\\n- \`**/site-packages/**\`\\n- \`**/venv/**\`\\n\\n**Skipped targets**\\n\\nNo skipped targets.\\n\\n## Setup\\n\\n### Invocation\\n\\n~~~~shell\\n/Users/joaolopes/Exactus/bin/release/exactus_macos_arm64/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=56241 --orchestrator-control-token=[redacted] --orchestrator-worker-port=56223 --orchestrator-worker-token=[redacted] '--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"kwargs_typehints\\",\\"module\\":\\"exactus.tools.kwargs_typehints.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/KWARGS_TYPEHINTS\\",\\"arguments\\":[],\\"run_id\\":\\"7906d1edd1a543c7894fd4387463792d:kwargs_typehints\\",\\"pipeline_run_id\\":\\"7906d1edd1a543c7894fd4387463792d\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}'\\n~~~~\\n\\n| Property | Value |\\n|---|---|\\n| Working directory | [/Users/joaolopes/Exactus/exactus/tests/standalone/project](../..) |\\n| Arguments | \`exactus.tools.common.tool_worker\` \`ExactusTool\` \`--orchestrator-control-port=56241\` \`--orchestrator-control-token=[redacted]\` \`--orchestrator-worker-port=56223\` \`--orchestrator-worker-token=[redacted]\` \`--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"kwargs_typehints\\",\\"module\\":\\"exactus.tools.kwargs_typehints.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/KWARGS_TYPEHINTS\\",\\"arguments\\":[],\\"run_id\\":\\"7906d1edd1a543c7894fd4387463792d:kwargs_typehints\\",\\"pipeline_run_id\\":\\"7906d1edd1a543c7894fd4387463792d\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}\` |\\n\\n### Environment\\n\\n| Property | Value |\\n|---|---|\\n| OS | Darwin 25.3.0 |\\n| Python | 3.13.9 |\\n| Node | v22.21.1 |\\n| CPU count | 18 |\\n\\n| Variable | Value |\\n| --- | --- |\\n| EXACTUS_ORCHESTRATED | 1 |\\n| EXACTUS_PIPELINE_RUN_ID | 7906d1edd1a543c7894fd4387463792d |\\n| EXACTUS_REGISTRY | [/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/.runtime/runs.db](../.runtime/runs.db) |\\n| EXACTUS_ROOT | [/Users/joaolopes/Exactus/exactus/tests/standalone/project](../..) |\\n| EXACTUS_RUN_ID | 7906d1edd1a543c7894fd4387463792d:kwargs_typehints |\\n| EXACTUS_TOOL | kwargs_typehints |\\n| LANG | C.UTF-8 |\\n\\n## Gate\\n\\n> **Gate: PASS** — No blocking findings\\n\\nNo blocking findings.\\n\\n## Findings\\n\\nNo findings.\\n\\n## Artifacts\\n\\n| Artifact | Path | Bytes |\\n| --- | --- | --- |\\n| @activity.json | [ARTIFACTS/@activity.json](ARTIFACTS/%40activity.json) | 2081 |\\n| README.md | [ARTIFACTS/README.md](ARTIFACTS/README.md) | 461 |\\n| heuristics.json | [ARTIFACTS/heuristics.json](ARTIFACTS/heuristics.json) | 3915721 |\\n| stderr.log | [ARTIFACTS/stderr.log](ARTIFACTS/stderr.log) | 0 |\\n| stdout.log | [ARTIFACTS/stdout.log](ARTIFACTS/stdout.log) | 0 |\\n| steps.txt | [ARTIFACTS/steps.txt](ARTIFACTS/steps.txt) | 4257 |\\n\\n## Unresolved callees\\n\\nCallees with no known signature, so positional use at these call sites was not checked. Most call sites first; the Finding column names the finding with the source excerpt.\\n\\nNo unresolved callees: every checked call site resolved to a signature or is exempt.\\n\\n## Ambiguous call sites\\n\\nNo ambiguous call sites.\\n\\n## Bare imports\\n\\nNo bare imports.\\n\\n## Automatic fixes\\n\\nNo automatic source edits were applicable.\\n\\n## Methodology and caveats\\n\\n- Signatures come from a repository-wide AST index (functions, methods, dataclass and \`NamedTuple\` fields, imports, \`self.attr\` assignments, annotations), \`inspect.signature\` for external callables and the typeshed stubs bundled with basedpyright.\\n- Confidence of a missing-keyword finding: \`resolved\` (project index), \`constructor\` (project class constructor), \`external\` (\`inspect.signature\`), \`stub\` (typeshed), \`stub-rt\` (typeshed checked by a runtime probe), \`unique-name\` (one class defines the method), \`ambiguous-all-flag\` (every candidate flags it).\\n- Arguments after a \`*unpack\`, beyond the named parameters of a \`*args\` signature, or already passed by keyword are not reported.\\n- Calls to \`pytest.mark.*\`, standard-library positional-only methods and Qt-style \`lowerCamelCase\` methods are counted as exempt, not as unresolved.\\n- A variable needs one annotation per lexical scope; parameters own their type, walrus bindings, TypeVar declarations and Enum members are exempt, \`self\`/\`cls\` need none, and lambdas cannot be annotated.\\n- Hint coverage counts the parameters (receivers excluded) and return annotations of every function; variables are not part of the ratio.\\n- Unresolved callees (dynamic objects, \`*args\` wrappers, mocks, higher-order results) are listed so they can be checked by hand; they never fail the run.\\n- [\`ARTIFACTS/heuristics.json\`](ARTIFACTS/heuristics.json) holds the argument types observed by fuzzing builtin callables.\\n\\n---\\n\\nExactus · kwargs_typehints 0.6.1 · Run 7906d1edd1a543c7894fd4387463792d:kwargs_typehints · Result PASS · Duration 2.6 s\\n",
   "parse_failure_files": [],
   "passed": true,
-  "pipeline_run_id": "a02e863bdc214c449643475edb79e655",
-  "previous_duration_seconds": 2.438,
+  "pipeline_run_id": "7906d1edd1a543c7894fd4387463792d",
+  "previous_duration_seconds": 2.869,
   "project_href": "../../..",
   "project_root": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
   "report_bundle": {
@@ -344,22 +340,22 @@ window.__REPORT_DATA__ = JSON.parse(`{
   "resume": "PASS: analyzer completed with exit status 0.",
   "root": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
   "run": {
-    "id": "a02e863bdc214c449643475edb79e655:kwargs_typehints",
-    "pipeline_id": "a02e863bdc214c449643475edb79e655",
+    "id": "7906d1edd1a543c7894fd4387463792d:kwargs_typehints",
+    "pipeline_id": "7906d1edd1a543c7894fd4387463792d",
     "status": "PASS",
     "exit_code": 0,
-    "started_at": "2026-11-02T05:29:32.258999+00:00",
-    "finished_at": "2026-11-02T05:29:34.931218+00:00",
-    "at_human": "02 November 2026, 05:29:32 UTC",
-    "started_at_human": "02 November 2026, 05:29:32 UTC",
-    "finished_at_human": "02 November 2026, 05:29:34 UTC",
-    "duration_seconds": 2.671,
-    "duration_human": "2.7 s",
+    "started_at": "2026-11-02T06:48:37.726596+00:00",
+    "finished_at": "2026-11-02T06:48:40.369173+00:00",
+    "at_human": "02 November 2026, 06:48:37 UTC",
+    "started_at_human": "02 November 2026, 06:48:37 UTC",
+    "finished_at_human": "02 November 2026, 06:48:40 UTC",
+    "duration_seconds": 2.615,
+    "duration_human": "2.6 s",
     "error": null
   },
-  "run_at": "2026-11-02T05:29:32.258999+00:00",
-  "run_at_human": "02 November 2026, 05:29:32 UTC",
-  "run_id": "a02e863bdc214c449643475edb79e655:kwargs_typehints",
+  "run_at": "2026-11-02T06:48:37.726596+00:00",
+  "run_at_human": "02 November 2026, 06:48:37 UTC",
+  "run_id": "7906d1edd1a543c7894fd4387463792d:kwargs_typehints",
   "schema": "project-exactus-report/v1",
   "scope": {
     "include": [
@@ -489,20 +485,20 @@ window.__REPORT_DATA__ = JSON.parse(`{
       "version": "0.6.1"
     },
     "run": {
-      "id": "a02e863bdc214c449643475edb79e655:kwargs_typehints",
-      "pipeline_id": "a02e863bdc214c449643475edb79e655",
+      "id": "7906d1edd1a543c7894fd4387463792d:kwargs_typehints",
+      "pipeline_id": "7906d1edd1a543c7894fd4387463792d",
       "status": "PASS",
       "exit_code": 0,
-      "started_at": "2026-11-02T05:29:32.258999+00:00",
-      "finished_at": "2026-11-02T05:29:34.931218+00:00",
-      "at_human": "02 November 2026, 05:29:32 UTC",
-      "started_at_human": "02 November 2026, 05:29:32 UTC",
-      "finished_at_human": "02 November 2026, 05:29:34 UTC",
-      "duration_seconds": 2.671,
-      "duration_human": "2.7 s",
+      "started_at": "2026-11-02T06:48:37.726596+00:00",
+      "finished_at": "2026-11-02T06:48:40.369173+00:00",
+      "at_human": "02 November 2026, 06:48:37 UTC",
+      "started_at_human": "02 November 2026, 06:48:37 UTC",
+      "finished_at_human": "02 November 2026, 06:48:40 UTC",
+      "duration_seconds": 2.615,
+      "duration_human": "2.6 s",
       "error": null
     },
-    "previous_duration_seconds": 2.438,
+    "previous_duration_seconds": 2.869,
     "summary": {
       "python_files": 6,
       "parse_failures": 0,
@@ -529,10 +525,10 @@ window.__REPORT_DATA__ = JSON.parse(`{
     },
     "comparison": {
       "available": true,
-      "previous_generated_at": "2026-11-02T04:27:03.857795+00:00",
-      "previous_run_id": "4eb674a4eaf74587b6b16feda9b3d901:kwargs_typehints",
+      "previous_generated_at": "2026-11-02T06:18:44.621551+00:00",
+      "previous_run_id": "ca892f99f2a643d3be26908062de1af7:kwargs_typehints",
       "previous_status": "PASS",
-      "previous_duration_seconds": 2.438,
+      "previous_duration_seconds": 2.869,
       "current_total": 0,
       "previous_total": 0,
       "delta": 0,
@@ -633,16 +629,16 @@ window.__REPORT_DATA__ = JSON.parse(`{
       "skipped": []
     },
     "invocation": {
-      "command": "/Users/joaolopes/Exactus/bin/release/exactus_macos_arm64/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=59414 --orchestrator-control-token=[redacted] --orchestrator-worker-port=59398 --orchestrator-worker-token=[redacted] '--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"kwargs_typehints\\",\\"module\\":\\"exactus.tools.kwargs_typehints.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/KWARGS_TYPEHINTS\\",\\"arguments\\":[],\\"run_id\\":\\"a02e863bdc214c449643475edb79e655:kwargs_typehints\\",\\"pipeline_run_id\\":\\"a02e863bdc214c449643475edb79e655\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}'",
+      "command": "/Users/joaolopes/Exactus/bin/release/exactus_macos_arm64/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=56241 --orchestrator-control-token=[redacted] --orchestrator-worker-port=56223 --orchestrator-worker-token=[redacted] '--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"kwargs_typehints\\",\\"module\\":\\"exactus.tools.kwargs_typehints.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/KWARGS_TYPEHINTS\\",\\"arguments\\":[],\\"run_id\\":\\"7906d1edd1a543c7894fd4387463792d:kwargs_typehints\\",\\"pipeline_run_id\\":\\"7906d1edd1a543c7894fd4387463792d\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}'",
       "cwd": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
       "arguments": [
         "exactus.tools.common.tool_worker",
         "ExactusTool",
-        "--orchestrator-control-port=59414",
+        "--orchestrator-control-port=56241",
         "--orchestrator-control-token=[redacted]",
-        "--orchestrator-worker-port=59398",
+        "--orchestrator-worker-port=56223",
         "--orchestrator-worker-token=[redacted]",
-        "--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"kwargs_typehints\\",\\"module\\":\\"exactus.tools.kwargs_typehints.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/KWARGS_TYPEHINTS\\",\\"arguments\\":[],\\"run_id\\":\\"a02e863bdc214c449643475edb79e655:kwargs_typehints\\",\\"pipeline_run_id\\":\\"a02e863bdc214c449643475edb79e655\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}"
+        "--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"kwargs_typehints\\",\\"module\\":\\"exactus.tools.kwargs_typehints.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/KWARGS_TYPEHINTS\\",\\"arguments\\":[],\\"run_id\\":\\"7906d1edd1a543c7894fd4387463792d:kwargs_typehints\\",\\"pipeline_run_id\\":\\"7906d1edd1a543c7894fd4387463792d\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}"
       ]
     },
     "environment": {
@@ -657,7 +653,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
         },
         {
           "name": "EXACTUS_PIPELINE_RUN_ID",
-          "value": "a02e863bdc214c449643475edb79e655"
+          "value": "7906d1edd1a543c7894fd4387463792d"
         },
         {
           "name": "EXACTUS_REGISTRY",
@@ -669,7 +665,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
         },
         {
           "name": "EXACTUS_RUN_ID",
-          "value": "a02e863bdc214c449643475edb79e655:kwargs_typehints"
+          "value": "7906d1edd1a543c7894fd4387463792d:kwargs_typehints"
         },
         {
           "name": "EXACTUS_TOOL",
@@ -677,11 +673,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
         },
         {
           "name": "LANG",
-          "value": "en_US.UTF-8"
-        },
-        {
-          "name": "TERM",
-          "value": "xterm-256color"
+          "value": "C.UTF-8"
         }
       ]
     },
@@ -716,7 +708,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
       {
         "name": "steps.txt",
         "path": "ARTIFACTS/steps.txt",
-        "bytes": 4263
+        "bytes": 4257
       }
     ],
     "extension": {

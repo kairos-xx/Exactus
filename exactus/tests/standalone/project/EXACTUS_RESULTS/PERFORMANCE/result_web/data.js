@@ -14,10 +14,10 @@ window.__REPORT_DATA__ = JSON.parse(`{
   "analyzer": "performance",
   "comparison": {
     "available": true,
-    "previous_generated_at": "2026-11-02T04:27:21.917877+00:00",
-    "previous_run_id": "4eb674a4eaf74587b6b16feda9b3d901:performance",
+    "previous_generated_at": "2026-11-02T06:19:19.574909+00:00",
+    "previous_run_id": "ca892f99f2a643d3be26908062de1af7:performance",
     "previous_status": "PASS",
-    "previous_duration_seconds": 0.9,
+    "previous_duration_seconds": 1.407,
     "current_total": 0,
     "previous_total": 0,
     "delta": 0,
@@ -30,7 +30,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
     "subsections": [],
     "categories": []
   },
-  "duration_seconds": 1.12,
+  "duration_seconds": 1.539,
   "extension": {
     "output": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/PERFORMANCE",
     "serve": false,
@@ -39,49 +39,49 @@ window.__REPORT_DATA__ = JSON.parse(`{
     "runs": [
       {
         "tool": "coverage_tests",
-        "duration": 12.717,
+        "duration": 23.004,
         "events": 66,
-        "events_per_second": 5.189903279075254,
-        "largest_gap": 5.206,
-        "silent": 11.931000000000001,
+        "events_per_second": 2.8690662493479393,
+        "largest_gap": 13.186999999999998,
+        "silent": 22.241999999999997,
         "actors": 24,
         "threads": 3
       },
       {
         "tool": "docs",
-        "duration": 0.824,
+        "duration": 1.223,
         "events": 18,
-        "events_per_second": 21.844660194174757,
-        "largest_gap": 0.7679999999999999,
-        "silent": 0.7679999999999999,
+        "events_per_second": 14.717906786590351,
+        "largest_gap": 1.123,
+        "silent": 1.123,
         "actors": 4,
         "threads": 1
       },
       {
         "tool": "kwargs_typehints",
-        "duration": 2.615,
+        "duration": 2.605,
         "events": 31,
-        "events_per_second": 11.854684512428298,
-        "largest_gap": 1.4000000000000001,
-        "silent": 2.43,
+        "events_per_second": 11.900191938579654,
+        "largest_gap": 1.548,
+        "silent": 2.355,
         "actors": 7,
-        "threads": 5
+        "threads": 4
       },
       {
         "tool": "lints",
-        "duration": 7.655,
-        "events": 328,
-        "events_per_second": 42.847811887655126,
-        "largest_gap": 1.0780000000000003,
-        "silent": 4.3660000000000005,
+        "duration": 21.209,
+        "events": 340,
+        "events_per_second": 16.030930265453346,
+        "largest_gap": 2.8150000000000013,
+        "silent": 18.696,
         "actors": 28,
-        "threads": 19
+        "threads": 20
       },
       {
         "tool": "performance",
-        "duration": 0.001,
+        "duration": 0.002,
         "events": 2,
-        "events_per_second": 2000.0,
+        "events_per_second": 1000.0,
         "largest_gap": 0.0,
         "silent": 0,
         "actors": 1,
@@ -89,11 +89,11 @@ window.__REPORT_DATA__ = JSON.parse(`{
       },
       {
         "tool": "readme",
-        "duration": 0.637,
+        "duration": 1.771,
         "events": 19,
-        "events_per_second": 29.827315541601255,
-        "largest_gap": 0.626,
-        "silent": 0.626,
+        "events_per_second": 10.728402032749859,
+        "largest_gap": 1.753,
+        "silent": 1.753,
         "actors": 6,
         "threads": 1
       },
@@ -111,15 +111,15 @@ window.__REPORT_DATA__ = JSON.parse(`{
   },
   "findings": [],
   "fingerprint": {
-    "commit": "3d9eec7e17a011978573b7cf5d68d0351fd43856",
-    "tree": "d3c0507dcfef765aae70ed83e9536ad2d912e986",
+    "commit": "8acd5332d8bb9132a3f9464fe58d265059b6ef39",
+    "tree": "894ba3dd961790939accb258297593340dbeb862",
     "dirty": true,
     "python": "3.13.9",
     "ruff": "ruff 0.12.0",
     "basedpyright": "basedpyright 1.40.2"
   },
-  "generated_at": "2026-11-02T05:29:58.467410+00:00",
-  "generated_at_human": "02 November 2026, 05:29:58 UTC",
+  "generated_at": "2026-11-02T06:49:19.588198+00:00",
+  "generated_at_human": "02 November 2026, 06:49:19 UTC",
   "local_links": {
     "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/PERFORMANCE": ".",
     "../..": "../..",
@@ -128,9 +128,9 @@ window.__REPORT_DATA__ = JSON.parse(`{
     "result.json": "result.json",
     "/Users/joaolopes/Exactus/exactus/tests/standalone/project": "../.."
   },
-  "markdown": "# Performance Exactus\\n\\n**Run time:** 02 November 2026, 05:29:58 UTC\\n\\n## Change since previous report\\n\\nPrevious run completed in **0.900s**.\\n\\n| Findings | Current | Previous | Delta | Added | Resolved | Unchanged |\\n|---|---:|---:|---:|---:|---:|---:|\\n| Overall | 0 | 0 | 0 | 0 | 0 | 0 |\\n",
+  "markdown": "# Performance Exactus\\n\\n**Run time:** 02 November 2026, 06:49:19 UTC\\n\\n## Change since previous report\\n\\nPrevious run completed in **1.407s**.\\n\\n| Findings | Current | Previous | Delta | Added | Resolved | Unchanged |\\n|---|---:|---:|---:|---:|---:|---:|\\n| Overall | 0 | 0 | 0 | 0 | 0 | 0 |\\n",
   "passed": true,
-  "previous_duration_seconds": 0.9,
+  "previous_duration_seconds": 1.407,
   "project_href": "../../..",
   "project_root": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
   "report_bundle": {
@@ -139,8 +139,8 @@ window.__REPORT_DATA__ = JSON.parse(`{
     "web": "result_web"
   },
   "resume": "7 runs profiled — slowest self_test 603.2s",
-  "run_at": "2026-11-02T05:29:58.467410+00:00",
-  "run_at_human": "02 November 2026, 05:29:58 UTC",
+  "run_at": "2026-11-02T06:49:19.588198+00:00",
+  "run_at_human": "02 November 2026, 06:49:19 UTC",
   "schema": "project-exactus-report/v1",
   "scope": {
     "include": [

@@ -1,20 +1,20 @@
 # Coverage
 
-**Run time:** 02 November 2026, 05:29:29 UTC
+**Run time:** 02 November 2026, 06:48:32 UTC
 
 ## Identity
 
 | Field | Value |
 |---|---|
 | Tool | coverage_tests 0.6.1 |
-| Run ID | a02e863bdc214c449643475edb79e655:coverage_tests |
-| Pipeline run | a02e863bdc214c449643475edb79e655 |
+| Run ID | 7906d1edd1a543c7894fd4387463792d:coverage_tests |
+| Pipeline run | 7906d1edd1a543c7894fd4387463792d |
 | Status | PASS |
 | Exit code | 0 |
-| Started | 02 November 2026, 05:29:29 UTC |
-| Finished | 02 November 2026, 05:29:41 UTC |
-| Duration | 12.7 s |
-| Previous duration | 9.536s |
+| Started | 02 November 2026, 06:48:32 UTC |
+| Finished | 02 November 2026, 06:48:55 UTC |
+| Duration | 23.0 s |
+| Previous duration | 13.166s |
 
 ## What was checked
 
@@ -37,7 +37,7 @@
 | Skipped | 0 |
 | Expected failures (xfail) | 0 |
 | Unexpected passes (xpass) | 0 |
-| Duration (s) | 2.37 |
+| Duration (s) | 3.008 |
 | Python test files | 1 |
 | JavaScript test files | 1 |
 | JavaScript failed tests | 0 |
@@ -56,7 +56,7 @@ The Python gate includes branches when branch measurement is enabled. JavaScript
 | Metric | Current | Previous | Delta |
 |---|---:|---:|---:|
 | Findings | 0 | 0 | 0 |
-| Previous duration | 9.536s | | |
+| Previous duration | 13.166s | | |
 
 | Finding change | Count |
 |---|---:|
@@ -85,13 +85,13 @@ The Python gate includes branches when branch measurement is enabled. JavaScript
 ### Invocation
 
 ~~~~shell
-/Users/joaolopes/Exactus/bin/release/exactus_macos_arm64/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=59301 --orchestrator-control-token=[redacted] --orchestrator-worker-port=59268 --orchestrator-worker-token=[redacted] '--orchestrator-call={"args":[],"kwargs":{"request":{"identifier":"coverage_tests","module":"exactus.tools.coverage_tests.main","output":"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS","arguments":[],"run_id":"a02e863bdc214c449643475edb79e655:coverage_tests","pipeline_run_id":"a02e863bdc214c449643475edb79e655","project_root":"/Users/joaolopes/Exactus/exactus/tests/standalone/project"}}}'
+/Users/joaolopes/Exactus/bin/release/exactus_macos_arm64/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=55960 --orchestrator-control-token=[redacted] --orchestrator-worker-port=55938 --orchestrator-worker-token=[redacted] '--orchestrator-call={"args":[],"kwargs":{"request":{"identifier":"coverage_tests","module":"exactus.tools.coverage_tests.main","output":"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS","arguments":[],"run_id":"7906d1edd1a543c7894fd4387463792d:coverage_tests","pipeline_run_id":"7906d1edd1a543c7894fd4387463792d","project_root":"/Users/joaolopes/Exactus/exactus/tests/standalone/project"}}}'
 ~~~~
 
 | Property | Value |
 |---|---|
 | Working directory | [/Users/joaolopes/Exactus/exactus/tests/standalone/project](../..) |
-| Arguments | `exactus.tools.common.tool_worker` `ExactusTool` `--orchestrator-control-port=59301` `--orchestrator-control-token=[redacted]` `--orchestrator-worker-port=59268` `--orchestrator-worker-token=[redacted]` `--orchestrator-call={"args":[],"kwargs":{"request":{"identifier":"coverage_tests","module":"exactus.tools.coverage_tests.main","output":"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS","arguments":[],"run_id":"a02e863bdc214c449643475edb79e655:coverage_tests","pipeline_run_id":"a02e863bdc214c449643475edb79e655","project_root":"/Users/joaolopes/Exactus/exactus/tests/standalone/project"}}}` |
+| Arguments | `exactus.tools.common.tool_worker` `ExactusTool` `--orchestrator-control-port=55960` `--orchestrator-control-token=[redacted]` `--orchestrator-worker-port=55938` `--orchestrator-worker-token=[redacted]` `--orchestrator-call={"args":[],"kwargs":{"request":{"identifier":"coverage_tests","module":"exactus.tools.coverage_tests.main","output":"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS","arguments":[],"run_id":"7906d1edd1a543c7894fd4387463792d:coverage_tests","pipeline_run_id":"7906d1edd1a543c7894fd4387463792d","project_root":"/Users/joaolopes/Exactus/exactus/tests/standalone/project"}}}` |
 
 ### Environment
 
@@ -105,13 +105,12 @@ The Python gate includes branches when branch measurement is enabled. JavaScript
 | Variable | Value |
 | --- | --- |
 | EXACTUS_ORCHESTRATED | 1 |
-| EXACTUS_PIPELINE_RUN_ID | a02e863bdc214c449643475edb79e655 |
+| EXACTUS_PIPELINE_RUN_ID | 7906d1edd1a543c7894fd4387463792d |
 | EXACTUS_REGISTRY | [/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/.runtime/runs.db](../.runtime/runs.db) |
 | EXACTUS_ROOT | [/Users/joaolopes/Exactus/exactus/tests/standalone/project](../..) |
-| EXACTUS_RUN_ID | a02e863bdc214c449643475edb79e655:coverage_tests |
+| EXACTUS_RUN_ID | 7906d1edd1a543c7894fd4387463792d:coverage_tests |
 | EXACTUS_TOOL | coverage_tests |
-| LANG | en_US.UTF-8 |
-| TERM | xterm-256color |
+| LANG | C.UTF-8 |
 
 ## Gate
 
@@ -146,13 +145,13 @@ Every coverage gate is met.
 
 | Artifact | Path | Bytes |
 |---|---|---:|
-| @activity.json | [ARTIFACTS/@activity.json](ARTIFACTS/%40activity.json) | 2286 |
-| completion.json | [ARTIFACTS/COVERAGE/completion.json](ARTIFACTS/COVERAGE/completion.json) | 1504 |
+| @activity.json | [ARTIFACTS/@activity.json](ARTIFACTS/%40activity.json) | 2288 |
+| completion.json | [ARTIFACTS/COVERAGE/completion.json](ARTIFACTS/COVERAGE/completion.json) | 1505 |
 | coverage_raw_js.json | [ARTIFACTS/COVERAGE/coverage_raw_js.json](ARTIFACTS/COVERAGE/coverage_raw_js.json) | 688 |
 | coverage_raw_py.json | [ARTIFACTS/COVERAGE/coverage_raw_py.json](ARTIFACTS/COVERAGE/coverage_raw_py.json) | 8328 |
 | import_graph.json | [ARTIFACTS/COVERAGE/import_graph.json](ARTIFACTS/COVERAGE/import_graph.json) | 2789 |
-| meaningful.json | [ARTIFACTS/COVERAGE/meaningful.json](ARTIFACTS/COVERAGE/meaningful.json) | 7275 |
-| test-costs.json | [ARTIFACTS/COVERAGE/test-costs.json](ARTIFACTS/COVERAGE/test-costs.json) | 118 |
+| meaningful.json | [ARTIFACTS/COVERAGE/meaningful.json](ARTIFACTS/COVERAGE/meaningful.json) | 7277 |
+| test-costs.json | [ARTIFACTS/COVERAGE/test-costs.json](ARTIFACTS/COVERAGE/test-costs.json) | 117 |
 | validation.json | [ARTIFACTS/COVERAGE/validation.json](ARTIFACTS/COVERAGE/validation.json) | 234 |
 | stderr.log | [ARTIFACTS/stderr.log](ARTIFACTS/stderr.log) | 0 |
 | stdout.log | [ARTIFACTS/stdout.log](ARTIFACTS/stdout.log) | 0 |
@@ -175,4 +174,4 @@ One report per group of Python test files.
 
 ---
 
-Exactus · coverage_tests 0.6.1 · Run a02e863bdc214c449643475edb79e655:coverage_tests · Result PASS · Duration 12.7 s
+Exactus · coverage_tests 0.6.1 · Run 7906d1edd1a543c7894fd4387463792d:coverage_tests · Result PASS · Duration 23.0 s

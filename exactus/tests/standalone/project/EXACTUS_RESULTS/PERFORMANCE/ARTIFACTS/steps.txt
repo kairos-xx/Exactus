@@ -1,6 +1,6 @@
-2026-11-02T05:29:58.168+00:00 +    0.001s performance: arguments — root /Users/joaolopes/Exactus/exactus/tests/standalone/project, output /Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/PERFORMANCE
-2026-11-02T05:29:58.168+00:00 +    0.001s performance: run start
-2026-11-02T05:29:58.183+00:00 +    0.017s   performance: analyzed 7 runs
-2026-11-02T05:29:58.465+00:00 +    0.299s   stage: report
-2026-11-02T05:29:59.250+00:00 +    1.083s     report: bundle written — /Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/PERFORMANCE/result.md
-2026-11-02T05:29:59.250+00:00 +    1.083s performance: run finished — status 0
+2026-11-02T06:49:19.283+00:00 +    0.002s performance: arguments — root /Users/joaolopes/Exactus/exactus/tests/standalone/project, output /Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/PERFORMANCE
+2026-11-02T06:49:19.284+00:00 +    0.002s performance: run start
+2026-11-02T06:49:19.301+00:00 +    0.019s   performance: analyzed 7 runs
+2026-11-02T06:49:19.587+00:00 +    0.305s   stage: report
+2026-11-02T06:49:20.798+00:00 +    1.517s     report: bundle written — /Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/PERFORMANCE/result.md
+2026-11-02T06:49:20.798+00:00 +    1.517s performance: run finished — status 0

@@ -10,10 +10,10 @@ window.__REPORT_DATA__ = JSON.parse(`{
   "analyzer": "unified",
   "comparison": {
     "available": true,
-    "previous_generated_at": "2026-11-02T04:27:23.610017+00:00",
-    "previous_run_id": "4eb674a4eaf74587b6b16feda9b3d901",
+    "previous_generated_at": "2026-11-02T06:19:22.410930+00:00",
+    "previous_run_id": "ca892f99f2a643d3be26908062de1af7",
     "previous_status": "PASS",
-    "previous_duration_seconds": 45.676,
+    "previous_duration_seconds": 82.925,
     "current_total": 0,
     "previous_total": 0,
     "delta": 0,
@@ -438,19 +438,19 @@ window.__REPORT_DATA__ = JSON.parse(`{
       "failed_tests": []
     }
   ],
-  "duration_seconds": 54.541,
+  "duration_seconds": 93.725,
   "failures": [],
   "findings": [],
   "fingerprint": {
-    "commit": "3d9eec7e17a011978573b7cf5d68d0351fd43856",
-    "tree": "d3c0507dcfef765aae70ed83e9536ad2d912e986",
+    "commit": "8acd5332d8bb9132a3f9464fe58d265059b6ef39",
+    "tree": "894ba3dd961790939accb258297593340dbeb862",
     "dirty": true,
     "python": "3.13.9",
     "ruff": "ruff 0.12.0",
     "basedpyright": "basedpyright 1.40.2"
   },
-  "generated_at": "2026-11-02T05:30:00.669819+00:00",
-  "generated_at_human": "02 November 2026, 05:30:00 UTC",
+  "generated_at": "2026-11-02T06:49:22.104360+00:00",
+  "generated_at_human": "02 November 2026, 06:49:22 UTC",
   "kind": "pipeline",
   "local_links": {
     "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/LINTS/result.md": "../../LINTS/result.md",
@@ -479,9 +479,9 @@ window.__REPORT_DATA__ = JSON.parse(`{
     "result.md": "result.md",
     "result.json": "result.json"
   },
-  "markdown": "# Unified Pipeline\\n\\n**Run time:** 02 November 2026, 05:30:00 UTC\\n\\n## Change since previous report\\n\\nPrevious run completed in **45.676s**.\\n\\n| Findings | Current | Previous | Delta | Added | Resolved | Unchanged |\\n|---|---:|---:|---:|---:|---:|---:|\\n| Overall | 0 | 0 | 0 | 0 | 0 | 0 |\\n\\n### Category findings\\n\\n| Category | Title | Current | Previous | Delta |\\n| --- | --- | --- | --- | --- |\\n| coverage_tests / coverage-average | Average file coverage | 0 | 0 | 0 |\\n| coverage_tests / coverage-evidence | Coverage evidence validation | 0 | 0 | 0 |\\n| coverage_tests / coverage-javascript-total | Overall JavaScript coverage | 0 | 0 | 0 |\\n| coverage_tests / coverage-meaningful | Untested meaningful sources | 0 | 0 | 0 |\\n| coverage_tests / coverage-meaningful-analysis | Meaningful analysis failures | 0 | 0 | 0 |\\n| coverage_tests / coverage-per-file | Per-file coverage minimum | 0 | 0 | 0 |\\n| coverage_tests / coverage-shortfall-excused | Excused sub-gate sources | 0 | 0 | 0 |\\n| coverage_tests / coverage-total | Overall Python coverage | 0 | 0 | 0 |\\n| coverage_tests / test-error | Errored tests | 0 | 0 | 0 |\\n| coverage_tests / test-failure | Failed tests | 0 | 0 | 0 |\\n| docs / DOC001 | Missing documentation | 0 | 0 | 0 |\\n| docs / DOC002 | Missing parameter documentation | 0 | 0 | 0 |\\n| docs / DOC003 | Stale parameter documentation | 0 | 0 | 0 |\\n| docs / DOC004 | Missing return documentation | 0 | 0 | 0 |\\n| docs / DOC005 | Return and yield mismatch | 0 | 0 | 0 |\\n| docs / DOC006 | Missing exception documentation | 0 | 0 | 0 |\\n| docs / DOC007 | Missing attribute documentation | 0 | 0 | 0 |\\n| docs / DOC008 | Malformed documentation | 0 | 0 | 0 |\\n| docs / DOC009 | Analysis failure | 0 | 0 | 0 |\\n| docs / DOC010 | Missing description | 0 | 0 | 0 |\\n| docs / DOC011 | Stale exception documentation | 0 | 0 | 0 |\\n| docs / DOC012 | Stale attribute documentation | 0 | 0 | 0 |\\n| kwargs_typehints / ambiguous-call | Ambiguous calls | 0 | 0 | 0 |\\n| kwargs_typehints / bare-import | Bare imports | 0 | 0 | 0 |\\n| kwargs_typehints / missing-hint | Missing type hints | 0 | 0 | 0 |\\n| kwargs_typehints / missing-kwargs | Missing keyword arguments | 0 | 0 | 0 |\\n| kwargs_typehints / parse-failure | Parse failures | 0 | 0 | 0 |\\n| kwargs_typehints / unresolved-callee | Unresolved callees | 0 | 0 | 0 |\\n| lints / CMP000 | Module does not parse | 0 | 0 | 0 |\\n| lints / CMP001 | Suppression marker | 0 | 0 | 0 |\\n| lints / CMP002 | typing.Any usage | 0 | 0 | 0 |\\n| lints / CMP003 | object annotation | 0 | 0 | 0 |\\n| lints / CMP004 | Lint ignore configuration | 0 | 0 | 0 |\\n| lints / CMP005 | Type-check suppression | 0 | 0 | 0 |\\n| lints / CMP006 | pyproject.toml missing | 0 | 0 | 0 |\\n| readme / RDM001 | Missing README.md | 0 | 0 | 0 |\\n| readme / RDM002 | Undocumented subdirectory | 0 | 0 | 0 |\\n| readme / RDM003 | Undocumented file | 0 | 0 | 0 |\\n\\n\\n\\n- Status: **PASS**\\n- Run UUID: \`a02e863bdc214c449643475edb79e655\`\\n- Duration: 54.541s\\n- Tools: 6\\n- Passed: 6\\n- Failed: 0\\n\\n## Summary\\n\\n| Tool | Status | Time | Findings | Headline |\\n| --- | --- | ---: | ---: | --- |\\n| \`lints\` | **PASS** | 7.7s | 0 | PASS: analyzer completed with exit status 0. |\\n| \`coverage_tests\` | **PASS** | 12.7s | 0 | Total coverage 100%; Total gate 90.0%; Per-file gate 80.0%: 0 file(s) below |\\n| \`docs\` | **PASS** | 0.8s | 0 | PASS: analyzer completed with exit status 0. |\\n| \`kwargs_typehints\` | **PASS** | 2.7s | 0 | PASS: analyzer completed with exit status 0. |\\n| \`readme\` | **PASS** | 0.7s | 0 | PASS: analyzer completed with exit status 0. |\\n| \`performance\` | **PASS** | 1.1s | 0 | 7 runs profiled — slowest self_test 603.2s |\\n## Passing tools\\n\\n- \`lints\`\\n- \`coverage_tests\`\\n- \`docs\`\\n- \`kwargs_typehints\`\\n- \`readme\`\\n- \`performance\`\\n\\n## Tool resumes\\n\\n- \`lints\`: **PASS** (7.692s) — PASS: analyzer completed with exit status 0. [markdown](../../LINTS/result.md) · [json](../../LINTS/result.json) · [web](../../LINTS/result_web/index.html)\\n- \`coverage_tests\`: **PASS** (12.728s) — PASS: 2 of 2 tests passed; 1 JavaScript test file passed; Total 100.0% meets the 90.0% minimum; every file meets 80.0% [markdown](../../COVERAGE_TESTS/result.md) · [json](../../COVERAGE_TESTS/result.json) · [web](../../COVERAGE_TESTS/result_web/index.html)\\n- \`docs\`: **PASS** (0.842s) — PASS: analyzer completed with exit status 0. [markdown](../../DOCS/result.md) · [json](../../DOCS/result.json) · [web](../../DOCS/result_web/index.html)\\n- \`kwargs_typehints\`: **PASS** (2.671s) — PASS: analyzer completed with exit status 0. [markdown](../../KWARGS_TYPEHINTS/result.md) · [json](../../KWARGS_TYPEHINTS/result.json) · [web](../../KWARGS_TYPEHINTS/result_web/index.html)\\n- \`readme\`: **PASS** (0.665s) — PASS: analyzer completed with exit status 0. [markdown](../../README/result.md) · [json](../../README/result.json) · [web](../../README/result_web/index.html)\\n- \`performance\`: **PASS** (1.120s) — 7 runs profiled — slowest self_test 603.2s [markdown](../../PERFORMANCE/result.md) · [json](../../PERFORMANCE/result.json) · [web](../../PERFORMANCE/result_web/index.html)\\n",
+  "markdown": "# Unified Pipeline\\n\\n**Run time:** 02 November 2026, 06:49:22 UTC\\n\\n## Change since previous report\\n\\nPrevious run completed in **82.925s**.\\n\\n| Findings | Current | Previous | Delta | Added | Resolved | Unchanged |\\n|---|---:|---:|---:|---:|---:|---:|\\n| Overall | 0 | 0 | 0 | 0 | 0 | 0 |\\n\\n### Category findings\\n\\n| Category | Title | Current | Previous | Delta |\\n| --- | --- | --- | --- | --- |\\n| coverage_tests / coverage-average | Average file coverage | 0 | 0 | 0 |\\n| coverage_tests / coverage-evidence | Coverage evidence validation | 0 | 0 | 0 |\\n| coverage_tests / coverage-javascript-total | Overall JavaScript coverage | 0 | 0 | 0 |\\n| coverage_tests / coverage-meaningful | Untested meaningful sources | 0 | 0 | 0 |\\n| coverage_tests / coverage-meaningful-analysis | Meaningful analysis failures | 0 | 0 | 0 |\\n| coverage_tests / coverage-per-file | Per-file coverage minimum | 0 | 0 | 0 |\\n| coverage_tests / coverage-shortfall-excused | Excused sub-gate sources | 0 | 0 | 0 |\\n| coverage_tests / coverage-total | Overall Python coverage | 0 | 0 | 0 |\\n| coverage_tests / test-error | Errored tests | 0 | 0 | 0 |\\n| coverage_tests / test-failure | Failed tests | 0 | 0 | 0 |\\n| docs / DOC001 | Missing documentation | 0 | 0 | 0 |\\n| docs / DOC002 | Missing parameter documentation | 0 | 0 | 0 |\\n| docs / DOC003 | Stale parameter documentation | 0 | 0 | 0 |\\n| docs / DOC004 | Missing return documentation | 0 | 0 | 0 |\\n| docs / DOC005 | Return and yield mismatch | 0 | 0 | 0 |\\n| docs / DOC006 | Missing exception documentation | 0 | 0 | 0 |\\n| docs / DOC007 | Missing attribute documentation | 0 | 0 | 0 |\\n| docs / DOC008 | Malformed documentation | 0 | 0 | 0 |\\n| docs / DOC009 | Analysis failure | 0 | 0 | 0 |\\n| docs / DOC010 | Missing description | 0 | 0 | 0 |\\n| docs / DOC011 | Stale exception documentation | 0 | 0 | 0 |\\n| docs / DOC012 | Stale attribute documentation | 0 | 0 | 0 |\\n| kwargs_typehints / ambiguous-call | Ambiguous calls | 0 | 0 | 0 |\\n| kwargs_typehints / bare-import | Bare imports | 0 | 0 | 0 |\\n| kwargs_typehints / missing-hint | Missing type hints | 0 | 0 | 0 |\\n| kwargs_typehints / missing-kwargs | Missing keyword arguments | 0 | 0 | 0 |\\n| kwargs_typehints / parse-failure | Parse failures | 0 | 0 | 0 |\\n| kwargs_typehints / unresolved-callee | Unresolved callees | 0 | 0 | 0 |\\n| lints / CMP000 | Module does not parse | 0 | 0 | 0 |\\n| lints / CMP001 | Suppression marker | 0 | 0 | 0 |\\n| lints / CMP002 | typing.Any usage | 0 | 0 | 0 |\\n| lints / CMP003 | object annotation | 0 | 0 | 0 |\\n| lints / CMP004 | Lint ignore configuration | 0 | 0 | 0 |\\n| lints / CMP005 | Type-check suppression | 0 | 0 | 0 |\\n| lints / CMP006 | pyproject.toml missing | 0 | 0 | 0 |\\n| readme / RDM001 | Missing README.md | 0 | 0 | 0 |\\n| readme / RDM002 | Undocumented subdirectory | 0 | 0 | 0 |\\n| readme / RDM003 | Undocumented file | 0 | 0 | 0 |\\n\\n\\n\\n- Status: **PASS**\\n- Run UUID: \`7906d1edd1a543c7894fd4387463792d\`\\n- Duration: 93.725s\\n- Tools: 6\\n- Passed: 6\\n- Failed: 0\\n\\n## Summary\\n\\n| Tool | Status | Time | Findings | Headline |\\n| --- | --- | ---: | ---: | --- |\\n| \`lints\` | **PASS** | 21.2s | 0 | PASS: analyzer completed with exit status 0. |\\n| \`coverage_tests\` | **PASS** | 23.0s | 0 | Total coverage 100%; Total gate 90.0%; Per-file gate 80.0%: 0 file(s) below |\\n| \`docs\` | **PASS** | 1.2s | 0 | PASS: analyzer completed with exit status 0. |\\n| \`kwargs_typehints\` | **PASS** | 2.6s | 0 | PASS: analyzer completed with exit status 0. |\\n| \`readme\` | **PASS** | 1.9s | 0 | PASS: analyzer completed with exit status 0. |\\n| \`performance\` | **PASS** | 1.5s | 0 | 7 runs profiled — slowest self_test 603.2s |\\n## Passing tools\\n\\n- \`lints\`\\n- \`coverage_tests\`\\n- \`docs\`\\n- \`kwargs_typehints\`\\n- \`readme\`\\n- \`performance\`\\n\\n## Tool resumes\\n\\n- \`lints\`: **PASS** (21.234s) — PASS: analyzer completed with exit status 0. [markdown](../../LINTS/result.md) · [json](../../LINTS/result.json) · [web](../../LINTS/result_web/index.html)\\n- \`coverage_tests\`: **PASS** (23.016s) — PASS: 2 of 2 tests passed; 1 JavaScript test file passed; Total 100.0% meets the 90.0% minimum; every file meets 80.0% [markdown](../../COVERAGE_TESTS/result.md) · [json](../../COVERAGE_TESTS/result.json) · [web](../../COVERAGE_TESTS/result_web/index.html)\\n- \`docs\`: **PASS** (1.249s) — PASS: analyzer completed with exit status 0. [markdown](../../DOCS/result.md) · [json](../../DOCS/result.json) · [web](../../DOCS/result_web/index.html)\\n- \`kwargs_typehints\`: **PASS** (2.615s) — PASS: analyzer completed with exit status 0. [markdown](../../KWARGS_TYPEHINTS/result.md) · [json](../../KWARGS_TYPEHINTS/result.json) · [web](../../KWARGS_TYPEHINTS/result_web/index.html)\\n- \`readme\`: **PASS** (1.859s) — PASS: analyzer completed with exit status 0. [markdown](../../README/result.md) · [json](../../README/result.json) · [web](../../README/result_web/index.html)\\n- \`performance\`: **PASS** (1.539s) — 7 runs profiled — slowest self_test 603.2s [markdown](../../PERFORMANCE/result.md) · [json](../../PERFORMANCE/result.json) · [web](../../PERFORMANCE/result_web/index.html)\\n",
   "pipeline": "unified",
-  "previous_duration_seconds": 45.676,
+  "previous_duration_seconds": 82.925,
   "project_href": "../../../..",
   "project_root": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
   "report_bundle": {
@@ -494,11 +494,11 @@ window.__REPORT_DATA__ = JSON.parse(`{
       "status": "PASS",
       "summary": {
         "timing": {
-          "date_time": "02/11/2026 05:29:11",
-          "finished_date_time": "02/11/2026 05:29:18",
+          "date_time": "02/11/2026 06:48:00",
+          "finished_date_time": "02/11/2026 06:48:20",
           "timezone": "WET",
-          "duration_seconds": 6.841371,
-          "duration_human": "00:00:06.841371"
+          "duration_seconds": 19.735807,
+          "duration_human": "00:00:19.735807"
         },
         "host": {
           "hostname": "Mac",
@@ -594,7 +594,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
               "warnings": 0,
               "information": 0,
               "exit_code": 0,
-              "duration_seconds": 0.0017717910232022405
+              "duration_seconds": 0.00444291700841859
             },
             {
               "linter": "custom_shebang",
@@ -606,7 +606,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
               "warnings": 0,
               "information": 0,
               "exit_code": 0,
-              "duration_seconds": 0.002251582976896316
+              "duration_seconds": 0.00567395897815004
             },
             {
               "linter": "custom_python",
@@ -618,7 +618,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
               "warnings": 0,
               "information": 0,
               "exit_code": 0,
-              "duration_seconds": 0.036
+              "duration_seconds": 0.144
             },
             {
               "linter": "custom_python_long_lines",
@@ -630,7 +630,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
               "warnings": 0,
               "information": 0,
               "exit_code": 0,
-              "duration_seconds": 7.774995174258947e-05
+              "duration_seconds": 0.00010141701204702258
             },
             {
               "linter": "custom_javascript",
@@ -654,7 +654,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
               "warnings": 0,
               "information": 0,
               "exit_code": 0,
-              "duration_seconds": 0.045731999969575554
+              "duration_seconds": 0.03589370800182223
             },
             {
               "linter": "custom_javascript_notation",
@@ -666,7 +666,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
               "warnings": 0,
               "information": 0,
               "exit_code": 0,
-              "duration_seconds": 0.19839616701938212
+              "duration_seconds": 0.23515995795605704
             },
             {
               "linter": "custom_css",
@@ -702,7 +702,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
               "warnings": 0,
               "information": 0,
               "exit_code": 0,
-              "duration_seconds": 0.233572
+              "duration_seconds": 1.098206
             },
             {
               "linter": "ruff_docs",
@@ -714,7 +714,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
               "warnings": 0,
               "information": 0,
               "exit_code": 0,
-              "duration_seconds": 0.233572
+              "duration_seconds": 1.098206
             },
             {
               "linter": "basedpyright",
@@ -726,7 +726,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
               "warnings": 0,
               "information": 0,
               "exit_code": 0,
-              "duration_seconds": 1.290921
+              "duration_seconds": 3.577051
             },
             {
               "linter": "pyrefly",
@@ -738,7 +738,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
               "warnings": 0,
               "information": 0,
               "exit_code": 0,
-              "duration_seconds": 0.299
+              "duration_seconds": 0.459
             },
             {
               "linter": "eslint",
@@ -750,7 +750,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
               "warnings": 0,
               "information": 0,
               "exit_code": 0,
-              "duration_seconds": 0.667758
+              "duration_seconds": 1.732924
             },
             {
               "linter": "typescript",
@@ -762,7 +762,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
               "warnings": 0,
               "information": 0,
               "exit_code": 0,
-              "duration_seconds": 2.986645
+              "duration_seconds": 8.842184
             },
             {
               "linter": "stylelint",
@@ -774,7 +774,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
               "warnings": 0,
               "information": 0,
               "exit_code": 0,
-              "duration_seconds": 0.735674
+              "duration_seconds": 1.965407
             },
             {
               "linter": "htmlhint",
@@ -786,7 +786,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
               "warnings": 0,
               "information": 0,
               "exit_code": 0,
-              "duration_seconds": 0.165826
+              "duration_seconds": 0.377548
             }
           ],
           "top_rules": [],
@@ -868,7 +868,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
         "meta": {
           "format": 3,
           "version": "7.17.0",
-          "timestamp": "2026-11-02T05:29:39.027652",
+          "timestamp": "2026-11-02T06:48:51.388862",
           "branch_coverage": true,
           "show_contexts": false
         },
@@ -1270,7 +1270,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
           "xfailed": 0,
           "xpassed": 0,
           "total": 2,
-          "duration_seconds": 2.37,
+          "duration_seconds": 3.008,
           "test_files": 1,
           "shards": 1,
           "javascript_test_files": 1,
@@ -1742,49 +1742,49 @@ window.__REPORT_DATA__ = JSON.parse(`{
         "runs": [
           {
             "tool": "coverage_tests",
-            "duration": 12.717,
+            "duration": 23.004,
             "events": 66,
-            "events_per_second": 5.189903279075254,
-            "largest_gap": 5.206,
-            "silent": 11.931000000000001,
+            "events_per_second": 2.8690662493479393,
+            "largest_gap": 13.186999999999998,
+            "silent": 22.241999999999997,
             "actors": 24,
             "threads": 3
           },
           {
             "tool": "docs",
-            "duration": 0.824,
+            "duration": 1.223,
             "events": 18,
-            "events_per_second": 21.844660194174757,
-            "largest_gap": 0.7679999999999999,
-            "silent": 0.7679999999999999,
+            "events_per_second": 14.717906786590351,
+            "largest_gap": 1.123,
+            "silent": 1.123,
             "actors": 4,
             "threads": 1
           },
           {
             "tool": "kwargs_typehints",
-            "duration": 2.615,
+            "duration": 2.605,
             "events": 31,
-            "events_per_second": 11.854684512428298,
-            "largest_gap": 1.4000000000000001,
-            "silent": 2.43,
+            "events_per_second": 11.900191938579654,
+            "largest_gap": 1.548,
+            "silent": 2.355,
             "actors": 7,
-            "threads": 5
+            "threads": 4
           },
           {
             "tool": "lints",
-            "duration": 7.655,
-            "events": 328,
-            "events_per_second": 42.847811887655126,
-            "largest_gap": 1.0780000000000003,
-            "silent": 4.3660000000000005,
+            "duration": 21.209,
+            "events": 340,
+            "events_per_second": 16.030930265453346,
+            "largest_gap": 2.8150000000000013,
+            "silent": 18.696,
             "actors": 28,
-            "threads": 19
+            "threads": 20
           },
           {
             "tool": "performance",
-            "duration": 0.001,
+            "duration": 0.002,
             "events": 2,
-            "events_per_second": 2000.0,
+            "events_per_second": 1000.0,
             "largest_gap": 0.0,
             "silent": 0,
             "actors": 1,
@@ -1792,11 +1792,11 @@ window.__REPORT_DATA__ = JSON.parse(`{
           },
           {
             "tool": "readme",
-            "duration": 0.637,
+            "duration": 1.771,
             "events": 19,
-            "events_per_second": 29.827315541601255,
-            "largest_gap": 0.626,
-            "silent": 0.626,
+            "events_per_second": 10.728402032749859,
+            "largest_gap": 1.753,
+            "silent": 1.753,
             "actors": 6,
             "threads": 1
           },
@@ -1815,9 +1815,9 @@ window.__REPORT_DATA__ = JSON.parse(`{
       "findings": []
     }
   },
-  "run_at": "2026-11-02T05:30:00.669819+00:00",
-  "run_at_human": "02 November 2026, 05:30:00 UTC",
-  "run_id": "a02e863bdc214c449643475edb79e655",
+  "run_at": "2026-11-02T06:49:22.104360+00:00",
+  "run_at_human": "02 November 2026, 06:49:22 UTC",
+  "run_id": "7906d1edd1a543c7894fd4387463792d",
   "schema": "project-exactus-report/v1",
   "sections": [
     {
@@ -1848,12 +1848,12 @@ window.__REPORT_DATA__ = JSON.parse(`{
   "tools": {
     "lints": {
       "tool": "lints",
-      "run_id": "a02e863bdc214c449643475edb79e655:lints",
-      "pipeline_run_id": "a02e863bdc214c449643475edb79e655",
+      "run_id": "7906d1edd1a543c7894fd4387463792d:lints",
+      "pipeline_run_id": "7906d1edd1a543c7894fd4387463792d",
       "report_replaced_after_execution": true,
       "status": "PASS",
       "passed": true,
-      "duration_seconds": 7.692,
+      "duration_seconds": 21.234,
       "resume": "PASS: analyzer completed with exit status 0.",
       "report": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/LINTS/result.md",
       "report_json": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/LINTS/result.json",
@@ -1862,12 +1862,12 @@ window.__REPORT_DATA__ = JSON.parse(`{
     },
     "coverage_tests": {
       "tool": "coverage_tests",
-      "run_id": "a02e863bdc214c449643475edb79e655:coverage_tests",
-      "pipeline_run_id": "a02e863bdc214c449643475edb79e655",
+      "run_id": "7906d1edd1a543c7894fd4387463792d:coverage_tests",
+      "pipeline_run_id": "7906d1edd1a543c7894fd4387463792d",
       "report_replaced_after_execution": true,
       "status": "PASS",
       "passed": true,
-      "duration_seconds": 12.728,
+      "duration_seconds": 23.016,
       "resume": "PASS: 2 of 2 tests passed; 1 JavaScript test file passed; Total 100.0% meets the 90.0% minimum; every file meets 80.0%",
       "report": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS/result.md",
       "report_json": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS/result.json",
@@ -1876,12 +1876,12 @@ window.__REPORT_DATA__ = JSON.parse(`{
     },
     "docs": {
       "tool": "docs",
-      "run_id": "a02e863bdc214c449643475edb79e655:docs",
-      "pipeline_run_id": "a02e863bdc214c449643475edb79e655",
+      "run_id": "7906d1edd1a543c7894fd4387463792d:docs",
+      "pipeline_run_id": "7906d1edd1a543c7894fd4387463792d",
       "report_replaced_after_execution": true,
       "status": "PASS",
       "passed": true,
-      "duration_seconds": 0.842,
+      "duration_seconds": 1.249,
       "resume": "PASS: analyzer completed with exit status 0.",
       "report": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/DOCS/result.md",
       "report_json": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/DOCS/result.json",
@@ -1890,12 +1890,12 @@ window.__REPORT_DATA__ = JSON.parse(`{
     },
     "kwargs_typehints": {
       "tool": "kwargs_typehints",
-      "run_id": "a02e863bdc214c449643475edb79e655:kwargs_typehints",
-      "pipeline_run_id": "a02e863bdc214c449643475edb79e655",
+      "run_id": "7906d1edd1a543c7894fd4387463792d:kwargs_typehints",
+      "pipeline_run_id": "7906d1edd1a543c7894fd4387463792d",
       "report_replaced_after_execution": true,
       "status": "PASS",
       "passed": true,
-      "duration_seconds": 2.671,
+      "duration_seconds": 2.615,
       "resume": "PASS: analyzer completed with exit status 0.",
       "report": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/KWARGS_TYPEHINTS/result.md",
       "report_json": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/KWARGS_TYPEHINTS/result.json",
@@ -1904,12 +1904,12 @@ window.__REPORT_DATA__ = JSON.parse(`{
     },
     "readme": {
       "tool": "readme",
-      "run_id": "a02e863bdc214c449643475edb79e655:readme",
-      "pipeline_run_id": "a02e863bdc214c449643475edb79e655",
+      "run_id": "7906d1edd1a543c7894fd4387463792d:readme",
+      "pipeline_run_id": "7906d1edd1a543c7894fd4387463792d",
       "report_replaced_after_execution": true,
       "status": "PASS",
       "passed": true,
-      "duration_seconds": 0.665,
+      "duration_seconds": 1.859,
       "resume": "PASS: analyzer completed with exit status 0.",
       "report": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/README/result.md",
       "report_json": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/README/result.json",
@@ -1918,12 +1918,12 @@ window.__REPORT_DATA__ = JSON.parse(`{
     },
     "performance": {
       "tool": "performance",
-      "run_id": "a02e863bdc214c449643475edb79e655:performance",
-      "pipeline_run_id": "a02e863bdc214c449643475edb79e655",
+      "run_id": "7906d1edd1a543c7894fd4387463792d:performance",
+      "pipeline_run_id": "7906d1edd1a543c7894fd4387463792d",
       "report_replaced_after_execution": true,
       "status": "PASS",
       "passed": true,
-      "duration_seconds": 1.12,
+      "duration_seconds": 1.539,
       "resume": "7 runs profiled — slowest self_test 603.2s",
       "report": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/PERFORMANCE/result.md",
       "report_json": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/PERFORMANCE/result.json",

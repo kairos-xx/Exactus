@@ -33,7 +33,7 @@
     {
       "name": "@activity.json",
       "path": "ARTIFACTS/@activity.json",
-      "bytes": 2286
+      "bytes": 2288
     },
     {
       "name": "README.md",
@@ -43,7 +43,7 @@
     {
       "name": "completion.json",
       "path": "ARTIFACTS/COVERAGE/completion.json",
-      "bytes": 1504
+      "bytes": 1505
     },
     {
       "name": "coverage_raw_js.json",
@@ -63,12 +63,12 @@
     {
       "name": "meaningful.json",
       "path": "ARTIFACTS/COVERAGE/meaningful.json",
-      "bytes": 7275
+      "bytes": 7277
     },
     {
       "name": "test-costs.json",
       "path": "ARTIFACTS/COVERAGE/test-costs.json",
-      "bytes": 118
+      "bytes": 117
     },
     {
       "name": "validation.json",
@@ -118,10 +118,10 @@
   ],
   "comparison": {
     "available": true,
-    "previous_generated_at": "2026-11-02T04:27:09.580018+00:00",
-    "previous_run_id": "4eb674a4eaf74587b6b16feda9b3d901:coverage_tests",
+    "previous_generated_at": "2026-11-02T06:18:58.652600+00:00",
+    "previous_run_id": "ca892f99f2a643d3be26908062de1af7:coverage_tests",
     "previous_status": "PASS",
-    "previous_duration_seconds": 9.536,
+    "previous_duration_seconds": 13.166,
     "current_total": 0,
     "previous_total": 0,
     "delta": 0,
@@ -209,7 +209,7 @@
     "meta": {
       "format": 3,
       "version": "7.17.0",
-      "timestamp": "2026-11-02T05:29:39.027652",
+      "timestamp": "2026-11-02T06:48:51.388862",
       "branch_coverage": true,
       "show_contexts": false
     },
@@ -600,7 +600,7 @@
       "percent_branches_covered_display": "100"
     }
   },
-  "duration_seconds": 12.728,
+  "duration_seconds": 23.016,
   "environment": {
     "os": "Darwin 25.3.0",
     "python": "3.13.9",
@@ -613,7 +613,7 @@
       },
       {
         "name": "EXACTUS_PIPELINE_RUN_ID",
-        "value": "a02e863bdc214c449643475edb79e655"
+        "value": "7906d1edd1a543c7894fd4387463792d"
       },
       {
         "name": "EXACTUS_REGISTRY",
@@ -625,7 +625,7 @@
       },
       {
         "name": "EXACTUS_RUN_ID",
-        "value": "a02e863bdc214c449643475edb79e655:coverage_tests"
+        "value": "7906d1edd1a543c7894fd4387463792d:coverage_tests"
       },
       {
         "name": "EXACTUS_TOOL",
@@ -633,11 +633,7 @@
       },
       {
         "name": "LANG",
-        "value": "en_US.UTF-8"
-      },
-      {
-        "name": "TERM",
-        "value": "xterm-256color"
+        "value": "C.UTF-8"
       }
     ]
   },
@@ -652,7 +648,7 @@
       "xfailed": 0,
       "xpassed": 0,
       "total": 2,
-      "duration_seconds": 2.37,
+      "duration_seconds": 3.008,
       "test_files": 1,
       "shards": 1,
       "javascript_test_files": 1,
@@ -801,8 +797,8 @@
   },
   "findings": [],
   "fingerprint": {
-    "commit": "3d9eec7e17a011978573b7cf5d68d0351fd43856",
-    "tree": "d3c0507dcfef765aae70ed83e9536ad2d912e986",
+    "commit": "8acd5332d8bb9132a3f9464fe58d265059b6ef39",
+    "tree": "894ba3dd961790939accb258297593340dbeb862",
     "dirty": true,
     "python": "3.13.9",
     "ruff": "ruff 0.12.0",
@@ -831,8 +827,8 @@
     "per_file_minimum": 80.0,
     "files_below": []
   },
-  "generated_at": "2026-11-02T05:29:41.280107+00:00",
-  "generated_at_human": "02 November 2026, 05:29:41 UTC",
+  "generated_at": "2026-11-02T06:48:54.335205+00:00",
+  "generated_at_human": "02 November 2026, 06:48:54 UTC",
   "import_graph": {
     "excused_sources": [],
     "ignored_non_local_imports": [
@@ -873,11 +869,11 @@
           "evidence": [],
           "level": "TEST-0",
           "metadata": {
-            "duration_seconds": 0.0013981250231154263,
-            "finished_at": "2026-11-02T05:29:38.847432+00:00",
+            "duration_seconds": 0.0014306670054793358,
+            "finished_at": "2026-11-02T06:48:51.019002+00:00",
             "size_bytes": 295,
             "source_lines": 10,
-            "started_at": "2026-11-02T05:29:38.846044+00:00",
+            "started_at": "2026-11-02T06:48:51.017577+00:00",
             "worker_name": "meaningful_0"
           },
           "metrics": {
@@ -939,16 +935,16 @@
     ]
   },
   "invocation": {
-    "command": "/Users/joaolopes/Exactus/bin/release/exactus_macos_arm64/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=59301 --orchestrator-control-token=[redacted] --orchestrator-worker-port=59268 --orchestrator-worker-token=[redacted] '--orchestrator-call={\"args\":[],\"kwargs\":{\"request\":{\"identifier\":\"coverage_tests\",\"module\":\"exactus.tools.coverage_tests.main\",\"output\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS\",\"arguments\":[],\"run_id\":\"a02e863bdc214c449643475edb79e655:coverage_tests\",\"pipeline_run_id\":\"a02e863bdc214c449643475edb79e655\",\"project_root\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\"}}}'",
+    "command": "/Users/joaolopes/Exactus/bin/release/exactus_macos_arm64/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=55960 --orchestrator-control-token=[redacted] --orchestrator-worker-port=55938 --orchestrator-worker-token=[redacted] '--orchestrator-call={\"args\":[],\"kwargs\":{\"request\":{\"identifier\":\"coverage_tests\",\"module\":\"exactus.tools.coverage_tests.main\",\"output\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS\",\"arguments\":[],\"run_id\":\"7906d1edd1a543c7894fd4387463792d:coverage_tests\",\"pipeline_run_id\":\"7906d1edd1a543c7894fd4387463792d\",\"project_root\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\"}}}'",
     "cwd": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
     "arguments": [
       "exactus.tools.common.tool_worker",
       "ExactusTool",
-      "--orchestrator-control-port=59301",
+      "--orchestrator-control-port=55960",
       "--orchestrator-control-token=[redacted]",
-      "--orchestrator-worker-port=59268",
+      "--orchestrator-worker-port=55938",
       "--orchestrator-worker-token=[redacted]",
-      "--orchestrator-call={\"args\":[],\"kwargs\":{\"request\":{\"identifier\":\"coverage_tests\",\"module\":\"exactus.tools.coverage_tests.main\",\"output\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS\",\"arguments\":[],\"run_id\":\"a02e863bdc214c449643475edb79e655:coverage_tests\",\"pipeline_run_id\":\"a02e863bdc214c449643475edb79e655\",\"project_root\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\"}}}"
+      "--orchestrator-call={\"args\":[],\"kwargs\":{\"request\":{\"identifier\":\"coverage_tests\",\"module\":\"exactus.tools.coverage_tests.main\",\"output\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS\",\"arguments\":[],\"run_id\":\"7906d1edd1a543c7894fd4387463792d:coverage_tests\",\"pipeline_run_id\":\"7906d1edd1a543c7894fd4387463792d\",\"project_root\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\"}}}"
     ]
   },
   "javascript": {
@@ -972,8 +968,8 @@
     "raw_report": "coverage_raw_js.json"
   },
   "passed": true,
-  "pipeline_run_id": "a02e863bdc214c449643475edb79e655",
-  "previous_duration_seconds": 9.536,
+  "pipeline_run_id": "7906d1edd1a543c7894fd4387463792d",
+  "previous_duration_seconds": 13.166,
   "project_href": "../../..",
   "project_root": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
   "report_bundle": {
@@ -984,22 +980,22 @@
   "resume": "PASS: 2 of 2 tests passed; 1 JavaScript test file passed; Total 100.0% meets the 90.0% minimum; every file meets 80.0%",
   "root": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
   "run": {
-    "id": "a02e863bdc214c449643475edb79e655:coverage_tests",
-    "pipeline_id": "a02e863bdc214c449643475edb79e655",
+    "id": "7906d1edd1a543c7894fd4387463792d:coverage_tests",
+    "pipeline_id": "7906d1edd1a543c7894fd4387463792d",
     "status": "PASS",
     "exit_code": 0,
-    "started_at": "2026-11-02T05:29:29.242388+00:00",
-    "finished_at": "2026-11-02T05:29:41.972967+00:00",
-    "at_human": "02 November 2026, 05:29:29 UTC",
-    "started_at_human": "02 November 2026, 05:29:29 UTC",
-    "finished_at_human": "02 November 2026, 05:29:41 UTC",
-    "duration_seconds": 12.728,
-    "duration_human": "12.7 s",
+    "started_at": "2026-11-02T06:48:32.105252+00:00",
+    "finished_at": "2026-11-02T06:48:55.125137+00:00",
+    "at_human": "02 November 2026, 06:48:32 UTC",
+    "started_at_human": "02 November 2026, 06:48:32 UTC",
+    "finished_at_human": "02 November 2026, 06:48:55 UTC",
+    "duration_seconds": 23.016,
+    "duration_human": "23.0 s",
     "error": null
   },
-  "run_at": "2026-11-02T05:29:29.242388+00:00",
-  "run_at_human": "02 November 2026, 05:29:29 UTC",
-  "run_id": "a02e863bdc214c449643475edb79e655:coverage_tests",
+  "run_at": "2026-11-02T06:48:32.105252+00:00",
+  "run_at_human": "02 November 2026, 06:48:32 UTC",
+  "run_id": "7906d1edd1a543c7894fd4387463792d:coverage_tests",
   "schema": "project-exactus-report/v1",
   "scope": {
     "include": [],
@@ -1024,11 +1020,11 @@
         "evidence": [],
         "level": "TEST-0",
         "metadata": {
-          "duration_seconds": 0.0013981250231154263,
-          "finished_at": "2026-11-02T05:29:38.847432+00:00",
+          "duration_seconds": 0.0014306670054793358,
+          "finished_at": "2026-11-02T06:48:51.019002+00:00",
           "size_bytes": 295,
           "source_lines": 10,
-          "started_at": "2026-11-02T05:29:38.846044+00:00",
+          "started_at": "2026-11-02T06:48:51.017577+00:00",
           "worker_name": "meaningful_0"
         },
         "metrics": {

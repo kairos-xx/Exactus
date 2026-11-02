@@ -1,21 +1,21 @@
-2026-11-02T04:42:12.334+00:00 +    0.285s demo: run start
-2026-11-02T04:42:12.343+00:00 +    0.285s   stage: collect
-2026-11-02T04:42:12.343+00:00 +    0.285s     collect: 2 files queued
-2026-11-02T04:42:12.347+00:00 +    0.289s       collect: scanning src/app.py @thread=ThreadPoolExecutor-0_0
-2026-11-02T04:42:12.347+00:00 +    0.289s         collect: src/app.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-0_0
-2026-11-02T04:42:12.354+00:00 +    0.296s       collect: scanning src/lib.py @thread=ThreadPoolExecutor-0_0
-2026-11-02T04:42:12.355+00:00 +    0.297s         collect: src/lib.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-0_0
-2026-11-02T04:42:12.358+00:00 +    0.300s   stage: check
-2026-11-02T04:42:12.358+00:00 +    0.300s     check: 3 files queued
-2026-11-02T04:42:12.360+00:00 +    0.302s       check: scanning src/app.py @thread=ThreadPoolExecutor-1_0
-2026-11-02T04:42:12.360+00:00 +    0.314s         check: src/app.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-1_0
-2026-11-02T04:42:12.373+00:00 +    0.315s       check: scanning src/lib.py @thread=ThreadPoolExecutor-1_0
-2026-11-02T04:42:12.375+00:00 +    0.317s         check: src/lib.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-1_0
-2026-11-02T04:42:12.375+00:00 +    0.317s       check: scanning src/extra.py @thread=ThreadPoolExecutor-1_1
-2026-11-02T04:42:12.387+00:00 +    0.329s         check: src/extra.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-1_1
-2026-11-02T04:42:12.393+00:00 +    0.335s   stage: report
-2026-11-02T04:42:12.393+00:00 +    0.335s     report: 1 files queued
-2026-11-02T04:42:12.394+00:00 +    0.336s       report: scanning ARTIFACTS/report.md @thread=ThreadPoolExecutor-2_0
-2026-11-02T04:42:12.394+00:00 +    0.336s         report: ARTIFACTS/report.md — passed, 0 diagnostics @thread=ThreadPoolExecutor-2_0
-2026-11-02T04:42:12.398+00:00 +    0.340s     demo: nested step_log reused the active log
-2026-11-02T04:42:12.398+00:00 +    0.340s demo: run finished
+2026-11-02T07:05:46.425+00:00 +    0.179s demo: run start
+2026-11-02T07:05:46.427+00:00 +    0.179s   stage: collect
+2026-11-02T07:05:46.428+00:00 +    0.179s     collect: 2 files queued
+2026-11-02T07:05:46.429+00:00 +    0.181s       collect: scanning src/app.py @thread=ThreadPoolExecutor-0_0
+2026-11-02T07:05:46.430+00:00 +    0.181s         collect: src/app.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-0_0
+2026-11-02T07:05:46.432+00:00 +    0.183s       collect: scanning src/lib.py @thread=ThreadPoolExecutor-0_0
+2026-11-02T07:05:46.432+00:00 +    0.183s         collect: src/lib.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-0_0
+2026-11-02T07:05:46.436+00:00 +    0.188s   stage: check
+2026-11-02T07:05:46.437+00:00 +    0.188s     check: 3 files queued
+2026-11-02T07:05:46.437+00:00 +    0.189s       check: scanning src/app.py @thread=ThreadPoolExecutor-1_0
+2026-11-02T07:05:46.437+00:00 +    0.189s         check: src/app.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-1_0
+2026-11-02T07:05:46.438+00:00 +    0.189s       check: scanning src/lib.py @thread=ThreadPoolExecutor-1_1
+2026-11-02T07:05:46.438+00:00 +    0.189s         check: src/lib.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-1_1
+2026-11-02T07:05:46.438+00:00 +    0.189s       check: scanning src/extra.py @thread=ThreadPoolExecutor-1_0
+2026-11-02T07:05:46.438+00:00 +    0.189s         check: src/extra.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-1_0
+2026-11-02T07:05:46.440+00:00 +    0.192s   stage: report
+2026-11-02T07:05:46.440+00:00 +    0.192s     report: 1 files queued
+2026-11-02T07:05:46.441+00:00 +    0.193s       report: scanning ARTIFACTS/report.md @thread=ThreadPoolExecutor-2_0
+2026-11-02T07:05:46.442+00:00 +    0.193s         report: ARTIFACTS/report.md — passed, 0 diagnostics @thread=ThreadPoolExecutor-2_0
+2026-11-02T07:05:46.444+00:00 +    0.195s     demo: nested step_log reused the active log
+2026-11-02T07:05:46.457+00:00 +    0.209s demo: run finished

@@ -648,7 +648,7 @@ class PublicationSupervisor:
 
         """
         if server.returncode is not None:
-            msg = "Exactus MCP exited during startup"
+            msg:str = "Exactus MCP exited during startup"
             raise RuntimeError(msg)
         deadline: float = monotonic() + self._config.startup_timeout_seconds
         health_url: str = f"http://127.0.0.1:{self._port}/health"
