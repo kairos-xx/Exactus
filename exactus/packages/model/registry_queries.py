@@ -132,6 +132,7 @@ class Queries:
         delete_resource: Delete resource.
         delete_run_resources: Delete run resources.
         select_live: Select live.
+        select_run: Select run.
         count_runs: Count runs.
         count_finished: Count finished.
         insert_run: Insert run.
@@ -252,6 +253,9 @@ class Queries:
     )
     select_live: Final[Select] = runs.select().where(
         predicate=runs.col(name="status").eq(value=Param()),
+    )
+    select_run: Final[Select] = runs.select().where(
+        predicate=runs.col(name="run_id").eq(value=Param()),
     )
     count_runs: Final[Select] = runs.select(
         columns=(

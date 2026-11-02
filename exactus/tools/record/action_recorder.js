@@ -57,7 +57,7 @@
       "pointerover",
       "pointerenter",
       "mousemove",
-      "pointermove",
+      "pointermove"
     ]);
     /** Inline handler properties checked on the hovered chain. */
     static HOVER_PROPS = [
@@ -66,7 +66,7 @@
       "onpointerover",
       "onpointerenter",
       "onmousemove",
-      "onpointermove",
+      "onpointermove"
     ];
     /** @type {WeakSet<EventTarget>} Elements with a hover listener. */
     static hoverListeners = new WeakSet();
@@ -106,8 +106,8 @@
           timestamp: Date.now(),
           url: location.href,
           frameUrl: location.href,
-          ...event,
-        })}`,
+          ...event
+        })}`
       );
     };
     /**
@@ -125,7 +125,7 @@
         target: ActionRecorder.metadata(el),
         value: el.isContentEditable
           ? el.innerText
-          : /** @type {HTMLInputElement | HTMLTextAreaElement} */ (el).value,
+          : /** @type {HTMLInputElement | HTMLTextAreaElement} */ (el).value
       });
     };
     /**
@@ -136,7 +136,7 @@
     static target = value =>
       value instanceof Element
         ? value.closest(
-            "button,a,input,select,textarea,[role],[tabindex],[draggable='true'],[contenteditable='true']",
+            "button,a,input,select,textarea,[role],[tabindex],[draggable='true'],[contenteditable='true']"
           ) || value
         : null;
     /**
@@ -156,7 +156,7 @@
       if (aria) return aria;
       if (el.id) {
         const label = document.querySelector(
-          `label[for="${CSS.escape(el.id)}"]`,
+          `label[for="${CSS.escape(el.id)}"]`
         );
         if (label) return ActionRecorder.text(label);
       }
@@ -188,7 +188,7 @@
           "search",
           "tel",
           "url",
-          "number",
+          "number"
         ].includes(type)
       )
         return "textbox";
@@ -219,7 +219,7 @@
       if (testId)
         result.push({
           kind: "test_id",
-          value: testId,
+          value: testId
         });
       const role = ActionRecorder.role(el);
       const name = ActionRecorder.name(el);
@@ -227,30 +227,30 @@
         result.push({
           kind: "role",
           role,
-          name,
+          name
         });
       const label = ActionRecorder.label(el);
       if (label && el.matches("input,textarea,select,[contenteditable='true']"))
         result.push({
           kind: "label",
-          value: label,
+          value: label
         });
       const placeholder = el.getAttribute("placeholder");
       if (placeholder)
         result.push({
           kind: "placeholder",
-          value: placeholder,
+          value: placeholder
         });
       if (el.id)
         result.push({
           kind: "css",
-          value: `#${CSS.escape(el.id)}`,
+          value: `#${CSS.escape(el.id)}`
         });
       const attrName = el.getAttribute("name");
       if (attrName)
         result.push({
           kind: "css",
-          value: `${el.tagName.toLowerCase()}[name=${ActionRecorder.quote(attrName)}]`,
+          value: `${el.tagName.toLowerCase()}[name=${ActionRecorder.quote(attrName)}]`
         });
       /** @type {string[]} */
       const path = [];
@@ -267,19 +267,19 @@
         }
         const tagName = current.tagName;
         const siblings = [...parent.children].filter(
-          child => child.tagName === tagName,
+          child => child.tagName === tagName
         );
         path.unshift(
           siblings.length === 1
             ? tag
-            : `${tag}:nth-of-type(${siblings.indexOf(current) + 1})`,
+            : `${tag}:nth-of-type(${siblings.indexOf(current) + 1})`
         );
         current = parent;
       }
       if (path.length)
         result.push({
           kind: "css",
-          value: path.join(" > "),
+          value: path.join(" > ")
         });
       return result.filter(candidate => {
         if (candidate.kind !== "css") return true;
@@ -302,9 +302,9 @@
           x: rect.x,
           y: rect.y,
           width: rect.width,
-          height: rect.height,
+          height: rect.height
         },
-        locators: ActionRecorder.candidates(el),
+        locators: ActionRecorder.candidates(el)
       };
     };
     /**
@@ -324,8 +324,8 @@
           alt: event.altKey,
           control: event.ctrlKey,
           meta: event.metaKey,
-          shift: event.shiftKey,
-        },
+          shift: event.shiftKey
+        }
       });
     };
     /**
@@ -344,7 +344,7 @@
       if (
         el instanceof HTMLInputElement &&
         ["checkbox", "radio", "button", "submit", "reset", "file"].includes(
-          el.type,
+          el.type
         )
       )
         return;
@@ -353,7 +353,7 @@
       if (prior) clearTimeout(prior);
       ActionRecorder.inputTimers.set(
         el,
-        setTimeout(() => ActionRecorder.flushInput(el), 300),
+        setTimeout(() => ActionRecorder.flushInput(el), 300)
       );
     };
     /**
@@ -367,7 +367,7 @@
         ActionRecorder.emit({
           type: "select",
           target: ActionRecorder.metadata(el),
-          values: [...el.selectedOptions].map(o => o.value),
+          values: [...el.selectedOptions].map(o => o.value)
         });
       else if (
         el instanceof HTMLInputElement &&
@@ -376,7 +376,7 @@
         ActionRecorder.emit({
           type: el.checked ? "check" : "uncheck",
           target: ActionRecorder.metadata(el),
-          checked: el.checked,
+          checked: el.checked
         });
     };
     /**
@@ -389,7 +389,7 @@
       const el = event.target instanceof HTMLElement ? event.target : null;
       const textInput =
         el?.matches(
-          "input:not([type='checkbox']):not([type='radio']),textarea,[contenteditable='true']",
+          "input:not([type='checkbox']):not([type='radio']),textarea,[contenteditable='true']"
         ) ?? false;
       const modified = event.ctrlKey || event.altKey || event.metaKey;
       if (textInput && event.key.length === 1 && !modified) return;
@@ -403,8 +403,8 @@
           alt: event.altKey,
           control: event.ctrlKey,
           meta: event.metaKey,
-          shift: event.shiftKey,
-        },
+          shift: event.shiftKey
+        }
       });
     };
     /**
@@ -427,9 +427,9 @@
               type: "scroll",
               target: null,
               x: scrollX,
-              y: scrollY,
+              y: scrollY
             }),
-          250,
+          250
         );
         return;
       }
@@ -443,10 +443,10 @@
             type: "scroll",
             target: ActionRecorder.metadata(el),
             x: el.scrollLeft,
-            y: el.scrollTop,
+            y: el.scrollTop
           });
           ActionRecorder.scrollTimers.delete(el);
-        }, 250),
+        }, 250)
       );
     };
     /**
@@ -463,7 +463,7 @@
             : null,
         deltaX: event.deltaX,
         deltaY: event.deltaY,
-        deltaMode: event.deltaMode,
+        deltaMode: event.deltaMode
       });
     /**
      * Remember where a potential pointer drag started.
@@ -475,7 +475,7 @@
         ActionRecorder.pointer = {
           el: event.target,
           x: event.clientX,
-          y: event.clientY,
+          y: event.clientY
         };
     };
     /**
@@ -498,12 +498,12 @@
         target: ActionRecorder.metadata(event.target),
         start: {
           x: start.x,
-          y: start.y,
+          y: start.y
         },
         end: {
           x: event.clientX,
-          y: event.clientY,
-        },
+          y: event.clientY
+        }
       });
     };
     /**
@@ -531,7 +531,7 @@
         ActionRecorder.emit({
           type: "drag",
           source: ActionRecorder.metadata(source),
-          target: ActionRecorder.metadata(event.target),
+          target: ActionRecorder.metadata(event.target)
         });
     };
     /**
@@ -543,7 +543,7 @@
       if (event.target instanceof HTMLElement)
         ActionRecorder.emit({
           type: "focus",
-          target: ActionRecorder.metadata(event.target),
+          target: ActionRecorder.metadata(event.target)
         });
     };
     /**
@@ -596,18 +596,18 @@
         ActionRecorder.cancelHover();
         ActionRecorder.emit({
           type: "hover",
-          target: pending.target,
+          target: pending.target
         });
       });
       ActionRecorder.pendingHover = {
         target,
-        timer: setTimeout(ActionRecorder.cancelHover, 250),
+        timer: setTimeout(ActionRecorder.cancelHover, 250)
       };
       ActionRecorder.hoverObserver.observe(document, {
         subtree: true,
         childList: true,
         attributes: true,
-        characterData: true,
+        characterData: true
       });
     };
     /**
@@ -623,7 +623,7 @@
       if (ActionRecorder.handlesHover(event, el)) {
         ActionRecorder.emit({
           type: "hover",
-          target,
+          target
         });
         return;
       }
@@ -647,7 +647,7 @@
       EventTarget.prototype.addEventListener = function (
         type,
         listener,
-        options,
+        options
       ) {
         if (ActionRecorder.HOVER_EVENTS.has(String(type)))
           ActionRecorder.hoverListeners.add(this);
@@ -664,14 +664,14 @@
         event =>
           ActionRecorder.mouse(
             event,
-            event.detail === 2 ? "double_click" : "click",
+            event.detail === 2 ? "double_click" : "click"
           ),
-        true,
+        true
       );
       document.addEventListener(
         "contextmenu",
         event => ActionRecorder.mouse(event, "right_click"),
-        true,
+        true
       );
       document.addEventListener("input", ActionRecorder.input, true);
       document.addEventListener("__EXACTUS_RECORDER_FLUSH__", () => {
@@ -685,12 +685,12 @@
       document.addEventListener("scroll", ActionRecorder.scroll, true);
       document.addEventListener("wheel", ActionRecorder.wheel, {
         capture: true,
-        passive: true,
+        passive: true
       });
       document.addEventListener(
         "pointerdown",
         ActionRecorder.pointerDown,
-        true,
+        true
       );
       document.addEventListener("pointerup", ActionRecorder.pointerUp, true);
       document.addEventListener("dragstart", ActionRecorder.dragStart, true);

@@ -195,7 +195,7 @@ class Observatory {
 		this.dom = /** @type {ObservatoryDom} */ (
 			/** @type {unknown} */
 			(Object.fromEntries(
-				[...document.querySelectorAll("[id]")].map(node => [node.id, node]), )));
+				[...document.querySelectorAll("[id]")].map(node => [node.id, node]) )));
 	}
 	/**
 	 * Load every trace and render the dashboard.
@@ -2115,9 +2115,8 @@ class Observatory {
 		const tool = this.data.get(this.selected);
 		if (!tool) return;
 		let index = this.cursorIndex;
-		for (let i = 0; i < Math.abs(delta); i++) {
+		for (let i = 0; i < Math.abs(delta); i++)
 			do index = Math.max(0, Math.min(tool.events.length - 1, index + Math.sign(delta))); while (index > 0 && index < tool.events.length - 1 && !this.eventInDrill( /** @type {TraceEvent} */ (tool.events[index])));
-		}
 		this.cursorIndex = index;
 		const event = tool.events[index];
 		if (!event) return;
@@ -2212,9 +2211,9 @@ class Observatory {
 	 * @param {string} name - ``data-field`` attribute value.
 	 * @returns {HTMLElement} Matching element.
 	 */
-	static fieldNode = (root, name) => {
-		return /** @type {HTMLElement} */ (root.querySelector(`[data-field="${name}"]`));
-	};
+	static fieldNode = (root, name) =>
+		 /** @type {HTMLElement} */ (root.querySelector(`[data-field="${name}"]`))
+	;
 	/**
 	 * Check whether a value satisfies the active search query.
 	 *

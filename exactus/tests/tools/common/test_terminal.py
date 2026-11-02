@@ -186,7 +186,6 @@ def _progress(*, fraction: float, stage: str) -> int:
         global_fraction=fraction,
         stage=stage,
         tools=Constants.tools,
-        previous_lines=0,
     )
 
 
@@ -283,13 +282,12 @@ def test_helpers() -> None:
 
 
 def test_bar_is_contiguous_and_marks_issues_red() -> None:
-    """Aggregate bars fill continuously and propagate issue color."""
+    """Bars fill continuously and mark only failure cells red."""
     bar: str = private_result(
         owner=ExactusTerminal,
         name="_bar",
         kind=str,
         fraction=0.3,
-        issue=False,
         bar_width=10,
     )
     expect_equal(
@@ -302,10 +300,54 @@ def test_bar_is_contiguous_and_marks_issues_red() -> None:
             name="_bar",
             kind=str,
             fraction=0.5,
-            issue=True,
             bar_width=4,
+            markers=frozenset({1}),
         ),
-        expected=(f"{Constants.red}██{Constants.dim}░░{Constants.reset}"),
+        expected=(
+            f"█{tm.Constants.red}█{tm.Constants.reset}"
+            f"{tm.Constants.dim}░{tm.Constants.dim}░{tm.Constants.reset}"
+        ),
+    )
+
+
+def test_segmented_bar_splits_weighted_segments() -> None:
+    """The GLOBAL bar fills each segment to its own fraction."""
+    bar: str = private_result(
+        owner=ExactusTerminal,
+        name="_segmented_bar",
+        kind=str,
+        fractions=(1.0, 0.5, 0.0),
+        weights=(0.5, 0.25, 0.25),
+        markers=frozenset({6}),
+        bar_width=8,
+    )
+    expect_equal(
+        actual=bar,
+        expected=(
+            "█████"
+            f"{tm.Constants.dim}░"
+            f"{tm.Constants.red}█{tm.Constants.reset}"
+            f"{tm.Constants.dim}░{tm.Constants.reset}"
+        ),
+    )
+    equal: str = private_result(
+        owner=ExactusTerminal,
+        name="_segmented_bar",
+        kind=str,
+        fractions=(0.5, 0.5),
+        weights=(0.5, 0.5),
+        markers=frozenset[float](),
+        bar_width=10,
+    )
+    expect_equal(
+        actual=equal,
+        expected=(
+            "██"
+            + f"{tm.Constants.dim}░" * 3
+            + "██"
+            + f"{tm.Constants.dim}░" * 3
+            + tm.Constants.reset
+        ),
     )
 
 
@@ -356,7 +398,6 @@ def test_progress_requires_tty(plain: StringIO) -> None:
             global_fraction=0.5,
             stage="s",
             tools=Constants.tools,
-            previous_lines=0,
         ),
         expected=0,
     )
@@ -391,7 +432,7 @@ def test_progress_paints_and_repaints(tty: Tty) -> None:
 
 
 def test_progress_marks_failure_cells(tty: Tty) -> None:
-    """A failed tool paints a red x at its failure fraction.
+    """A failed tool paints a red block at its failure fraction.
 
     Args:
         tty: Captured terminal-like stream.
@@ -406,15 +447,15 @@ def test_progress_marks_failure_cells(tty: Tty) -> None:
             ("docs", "FAIL", 1.0, "bad", 0.5),
             ("readme", "RUNNING", 0.3, "audit", None),
         ),
-        previous_lines=0,
     )
     text: str = tty.getvalue()
-    marked: str = "\x1b[31m\x1b[1mx"
+    marked: str = "\x1b[31m█"
     expect_in(member=marked, container=text)
     global_row: str = next(
         line for line in text.splitlines() if "GLOBAL" in line
     )
-    expect_in(member="x", container=global_row)
+    expect_in(member="\x1b[31m█", container=global_row)
+    expect_not_in(member="x", container=global_row)
     ExactusTerminal.clear_progress(lines=0)
 
 
@@ -706,7 +747,6 @@ def test_refreshed_report_status_and_legend(
             ("lints", "PASS*", 1.0, "complete", None),
             ("docs", "FAIL*", 1.0, "complete", 0.5),
         ),
-        previous_lines=0,
     )
     text: str = tty.getvalue().lower()
     expect_in(member="pass*", container=text)
@@ -850,7 +890,6 @@ def test_mirror_tty_attaches_and_detaches(plain: StringIO) -> None:
             global_fraction=0.5,
             stage="s",
             tools=Constants.tools,
-            previous_lines=0,
         )
         text: str = _pty_text(chunks=chunks)
         expect_in(member="GLOBAL", container=text)
@@ -861,7 +900,6 @@ def test_mirror_tty_attaches_and_detaches(plain: StringIO) -> None:
             global_fraction=0.75,
             stage="s",
             tools=Constants.tools,
-            previous_lines=0,
         )
         text = _pty_text(chunks=chunks)
         expect_in(member="note", container=text)

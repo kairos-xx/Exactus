@@ -10,8 +10,8 @@
  */
 /** Room kept for the project name before the actions give up their labels. */
 const NAME_ROOM = 150;
-import { h, icon } from "./project-dialogs.js";
-import { ago, recentProjects } from "./project-model.js";
+import {h, icon} from "./project-dialogs.js";
+import {ago, recentProjects} from "./project-model.js";
 /**
  * @typedef {object} MenuItem One line of a menu.
  * @property {string} label
@@ -69,12 +69,12 @@ export class ProjectBar {
       bar.setAttribute("data-tier", tier);
       const gap = Number.parseFloat(getComputedStyle(actions).columnGap) || 0;
       const shown = [...actions.children].filter(
-        item => item instanceof HTMLElement && item.offsetParent !== null,
+        item => item instanceof HTMLElement && item.offsetParent !== null
       );
       const width =
         shown.reduce(
           (sum, item) => sum + item.getBoundingClientRect().width,
-          0,
+          0
         ) +
         gap * Math.max(0, shown.length - 1) +
         16;
@@ -88,7 +88,7 @@ export class ProjectBar {
    * @returns {void}
    */
   run(name, anchor) {
-    const { actions } = this;
+    const {actions} = this;
     switch (name) {
       case "new":
         actions.create();
@@ -132,32 +132,32 @@ export class ProjectBar {
               ? "Open now"
               : ago(project.modified_at),
           disabled: project.slug === this.actions.project()?.slug,
-          run: () => this.actions.open(project.slug),
+          run: () => this.actions.open(project.slug)
         }))
-      : [{ label: "No recent projects", disabled: true }];
+      : [{label: "No recent projects", disabled: true}];
   }
   /** What the Open project arrow offers.
    * @returns {MenuItem[]}
    */
   openItems() {
     return [
-      { label: "Recent projects", heading: true },
+      {label: "Recent projects", heading: true},
       ...this.recentItems(),
       {
         label: "Open project gallery…",
         icon: "folder-open",
-        run: () => this.actions.gallery(),
+        run: () => this.actions.gallery()
       },
       {
         label: "Import from file…",
         icon: "upload",
-        run: () => this.actions.importFile(true),
+        run: () => this.actions.importFile(true)
       },
       {
         label: "Open demo flow",
         icon: "world",
-        run: () => this.actions.openDemo(),
-      },
+        run: () => this.actions.openDemo()
+      }
     ];
   }
   /** Everything, for the narrowest window.
@@ -165,40 +165,40 @@ export class ProjectBar {
    */
   overflowItems() {
     return [
-      { label: "New project", icon: "plus", run: () => this.actions.create() },
+      {label: "New project", icon: "plus", run: () => this.actions.create()},
       {
         label: "Save project",
         icon: "device-floppy",
-        run: () => this.actions.save(),
+        run: () => this.actions.save()
       },
       {
         label: "Open project gallery…",
         icon: "folder-open",
-        run: () => this.actions.gallery(),
+        run: () => this.actions.gallery()
       },
-      { label: "Recent projects", heading: true },
+      {label: "Recent projects", heading: true},
       ...this.recentItems(),
       {
         label: "Import from file…",
         icon: "upload",
-        run: () => this.actions.importFile(true),
+        run: () => this.actions.importFile(true)
       },
       {
         label: "Open demo flow",
         icon: "world",
-        run: () => this.actions.openDemo(),
+        run: () => this.actions.openDemo()
       },
       {
         label: "Export project",
         icon: "download",
-        run: () => this.actions.exportOpen(),
+        run: () => this.actions.exportOpen()
       },
       {
         label: "Commands",
         icon: "keyboard",
         hint: "⌘K",
-        run: () => this.host.commands(),
-      },
+        run: () => this.host.commands()
+      }
     ];
   }
   /** Open a menu under a control, or close it when it is already open there.
@@ -210,29 +210,29 @@ export class ProjectBar {
     const same = this.anchor === anchor && this.menu !== null;
     this.close(false);
     if (same) return;
-    const menu = h("div", { class: "bar-menu", role: "menu" });
+    const menu = h("div", {class: "bar-menu", role: "menu"});
     for (const item of items) {
       if (item.heading) {
         menu.append(
           h("p", {
             class: "bar-menu-heading",
             role: "presentation",
-            text: item.label,
-          }),
+            text: item.label
+          })
         );
         continue;
       }
       const line = /** @type {HTMLButtonElement} */ (
         h(
           "button",
-          { type: "button", role: "menuitem", class: "bar-menu-item" },
+          {type: "button", role: "menuitem", class: "bar-menu-item"},
           [
             ...(item.icon
               ? [icon(item.icon)]
-              : [h("span", { class: "bar-menu-gap", "aria-hidden": "true" })]),
-            h("span", { class: "bar-menu-label", text: item.label }),
-            ...(item.hint ? [h("small", { text: item.hint })] : []),
-          ],
+              : [h("span", {class: "bar-menu-gap", "aria-hidden": "true"})]),
+            h("span", {class: "bar-menu-label", text: item.label}),
+            ...(item.hint ? [h("small", {text: item.hint})] : [])
+          ]
         )
       );
       line.disabled = Boolean(item.disabled);
@@ -244,10 +244,10 @@ export class ProjectBar {
     }
     menu.addEventListener("keydown", event => {
       const lines = /** @type {HTMLElement[]} */ ([
-        ...menu.querySelectorAll("button:not(:disabled)"),
+        ...menu.querySelectorAll("button:not(:disabled)")
       ]);
       const at = lines.indexOf(
-        /** @type {HTMLElement} */ (document.activeElement),
+        /** @type {HTMLElement} */ (document.activeElement)
       );
       if (event.key === "ArrowDown") lines[(at + 1) % lines.length]?.focus();
       else if (event.key === "ArrowUp")

@@ -49,8 +49,7 @@ def runtime_dir(*, output: Path | None = None) -> Path:
         Shared runtime directory holding ``runs.db`` and ``authkey``.
 
     """
-    reports: str | None = environ.get(Constants.reports)
-    if reports:
+    if reports := environ.get(Constants.reports):
         return Path(reports) / Constants.directory
     base: Path = (
         output.parent
@@ -77,8 +76,7 @@ def authkey(*, runtime: Path) -> bytes:
         ValueError: If the environment override is too short.
 
     """
-    override: str | None = environ.get(Constants.environment)
-    if override:
+    if override := environ.get(Constants.environment):
         key: bytes = override.encode(encoding="utf-8")
         if len(key) < Constants.secret_bytes:
             msg: str = (

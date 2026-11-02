@@ -12,11 +12,20 @@ from __future__ import annotations
 
 from asyncio import create_task, sleep
 from asyncio import run as run_async
+from contextlib import suppress
+from importlib import import_module
 from pathlib import Path
 from secrets import token_urlsafe
+from sys import path as sys_path
 from sys import stdout
 from typing import TYPE_CHECKING, Final, final
 
+if __package__ in {None, ""}:
+    sys_path.append(str(object=Path(__file__).resolve().parents[4]))
+    with suppress(ImportError):
+        import_module(
+            name="exactus.packages.project_python",
+        ).switch_to_project_venv()
 from mcp.server.transport_security import TransportSecuritySettings
 from uvicorn import Config, Server
 

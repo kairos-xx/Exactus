@@ -1,7 +1,7 @@
 /// <reference types="node" />
 import assert from "node:assert/strict";
 import test from "node:test";
-import { add, isEven, sumText } from "../web/code.js";
+import {add, isEven, sumText} from "../web/code.js";
 test("add sums operands", () => {
   assert.equal(add(2, 3), 5);
 });

@@ -1,5 +1,5 @@
 /** The small editor that opens when a card token is clicked. */
-import { variableMentionField } from "./variable-mention-field.js";
+import {variableMentionField} from "./variable-mention-field.js";
 /**
  * @typedef {object} TokenEditorOptions
  * @property {HTMLElement} anchor The token the editor opens under.
@@ -24,7 +24,7 @@ const make = (tag, className = "") => {
  * @returns {void}
  */
 export const openTokenEditor = options => {
-  const { anchor, value, code, variables, onCommit } = options;
+  const {anchor, value, code, variables, onCommit} = options;
   document.querySelector(".token-editor")?.remove();
   const panel = make("div", "token-editor");
   panel.setAttribute("role", "dialog");
@@ -78,7 +78,7 @@ export const openTokenEditor = options => {
       if (event.target instanceof Node && !panel.contains(event.target))
         finish(true);
     },
-    { capture: true, signal: lifetime.signal },
+    {capture: true, signal: lifetime.signal}
   );
   const target = code ? input : panel.querySelector(".variable-editor");
   if (target instanceof HTMLElement) target.focus();
@@ -113,7 +113,7 @@ export const openFloatingPanel = (anchor, content) => {
     event => {
       if (event.target instanceof Node && !panel.contains(event.target)) close();
     },
-    { capture: true, signal: lifetime.signal },
+    {capture: true, signal: lifetime.signal}
   );
   panel.addEventListener("keydown", event => {
     if (event.key === "Escape") close();

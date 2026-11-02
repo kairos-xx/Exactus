@@ -489,6 +489,7 @@ class ToolResult:
         completed_files: Number of file tasks that finished.
         diagnostics: Merged diagnostics of every file task.
         files: Per-file results sorted by file path.
+        optional: Whether absence is nonfatal and explicitly reported.
 
     """
 
@@ -499,6 +500,7 @@ class ToolResult:
     completed_files: int
     diagnostics: list[Diagnostic]
     files: list[FileResult]
+    optional: bool = False
 
 
 @dataclass(frozen=True, slots=True)
@@ -529,6 +531,7 @@ class ToolSpec:
         derived_prefix: Diagnostic code prefix kept by ``derived_from``.
         derived_exclude: Code prefixes removed after ``derived_prefix``
             matches, for sibling families sharing the prefix.
+        optional: Whether absence must be reported without failing the run.
 
     """
 
@@ -545,6 +548,7 @@ class ToolSpec:
     derived_from: str | None = None
     derived_prefix: str = ""
     derived_exclude: tuple[str, ...] = ()
+    optional: bool = False
 
     def command(self, *, file: Path) -> list[str]:
         """Build the command for exactly one source file.
@@ -1925,6 +1929,7 @@ class AuditRunner:
                     completed_files=len(files_by_tool[spec.name]),
                     diagnostics=diagnostics,
                     files=files,
+                    optional=spec.optional,
                 ),
             )
         trace(
@@ -2234,6 +2239,41 @@ class AuditRunner:
                 replace(original, diagnostics=diagnostics, status=status),
             )
         return results
+
+    def _refurb(self, *, file: Path, text: str) -> list[Diagnostic]:
+        """Parse Refurb's documented ``file:line:column [FURBnnn]`` output.
+
+        Args:
+            file: Fallback location for diagnostics.
+            text: Captured Refurb CLI output.
+
+        Returns:
+            Structured Refurb findings.
+
+        """
+        diagnostics: list[Diagnostic] = []
+        pattern: Pattern[str] = compile_regex(
+            pattern=r"^(?P<path>.+):(?P<line>\d+):(?P<column>\d+) "
+            r"\[(?P<code>FURB\d+)\]: (?P<message>.+)$",
+        )
+        for line in text.splitlines():
+            match: Match[str] | None = pattern.fullmatch(string=line.strip())
+            if match is None:
+                continue
+            diagnostics.append(
+                Diagnostic(
+                    tool="refurb",
+                    file=self._relative(value=match["path"], fallback=file),
+                    line=int(match["line"]),
+                    column=int(match["column"]),
+                    end_line=None,
+                    end_column=None,
+                    severity="warning",
+                    code=match["code"],
+                    message=match["message"],
+                ),
+            )
+        return diagnostics
 
     def _targeted(self, *, path: Path) -> bool:
         """Return whether a relative path is inside the requested scope.
@@ -2684,6 +2724,7 @@ class AuditRunner:
         """
         handlers: dict[str, Callable[[], list[Diagnostic]]] = {
             "ruff": lambda: self._ruff(tool=spec.name, file=file, text=output),
+            "refurb": lambda: self._refurb(file=file, text=output),
             "basedpyright": lambda: self._basedpyright(file=file, text=output),
             "pyrefly": lambda: self._pyrefly(file=file, text=output),
             "eslint": lambda: self._eslint(file=file, text=output),
@@ -3206,6 +3247,10 @@ class ReportBuilder:
         unavailable: int = sum(
             result.status == "unavailable" for result in results
         )
+        optional_unavailable: int = sum(
+            result.status == "unavailable" and result.optional
+            for result in results
+        )
         affected: set[str] = {
             item.file
             for result in results
@@ -3217,6 +3262,7 @@ class ReportBuilder:
             "passed": sum(result.status == "passed" for result in results),
             "failed": failed,
             "unavailable": unavailable,
+            "optional_unavailable": optional_unavailable,
             "files": sum(result.total_files for result in results),
             "files_with_issues": len(affected),
             "errors": sum(value.severity == "error" for value in diagnostics),
@@ -3237,7 +3283,7 @@ class ReportBuilder:
             "started_at": started_at.isoformat(),
             "duration_seconds": round(number=duration_seconds, ndigits=6),
             "root": str(object=root.resolve()),
-            "ok": failed == 0 and unavailable == 0,
+            "ok": failed == 0 and unavailable == optional_unavailable,
             "summary": summary,
             "tools": {},
             "diagnostics": [
@@ -3925,6 +3971,16 @@ class Cli:
                     "--output-format",
                     "json",
                 ),
+                batch=True,
+            ),
+            ToolSpec(
+                name="refurb",
+                executable="refurb",
+                optional=True,
+                parser="refurb",
+                suffixes=Constants.python_suffixes,
+                arguments=("--no-color", "--python-version", "3.13"),
+                file_before_arguments=True,
                 batch=True,
             ),
             ToolSpec(

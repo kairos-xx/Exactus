@@ -14,7 +14,7 @@ const PATHS = Object.freeze({
   play: "M7 5l12 7l-12 7z",
   search: "M11 4a7 7 0 1 0 0 14a7 7 0 0 0 0-14M20 20l-4-4",
   stop: "M7 7h10v10H7z",
-  warn: "M12 4l9 16H3zM12 10v4M12 17h.01",
+  warn: "M12 4l9 16H3zM12 10v4M12 17h.01"
 });
 /** @typedef {keyof typeof PATHS} IconName */
 /**

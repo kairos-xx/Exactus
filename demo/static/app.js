@@ -53,7 +53,7 @@ class DemoController {
 		const selectedPanel = selected.getAttribute("aria-controls") ?? "";
 		for (const tab of this.root.querySelectorAll("[role=tab]")) {
 			const panelId = tab.getAttribute("aria-controls") ?? "";
-			tab.setAttribute("aria-selected", String(!panelHidden(panelId, selectedPanel)), );
+			tab.setAttribute("aria-selected", String(!panelHidden(panelId, selectedPanel)) );
 			const panel = this.root.getElementById(panelId);
 			if (panel instanceof HTMLElement) panel.hidden = panelHidden(panelId, selectedPanel);
 		}
@@ -67,7 +67,7 @@ class DemoController {
 		if (!(button instanceof HTMLElement)) return;
 		const expanded = flipFlag(button.getAttribute("aria-expanded"));
 		button.setAttribute("aria-expanded", expanded);
-		const region = this.root.getElementById(button.getAttribute("aria-controls") ?? "", );
+		const region = this.root.getElementById(button.getAttribute("aria-controls") ?? "" );
 		if (region instanceof HTMLElement) region.hidden = expanded === "false";
 	}
 	/**

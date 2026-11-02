@@ -20,7 +20,7 @@ const cssResult = /** @type {HTMLElement | null} */ (
 );
 if (!area || !status || !cssResult) throw new Error("demo fixture incomplete");
 const editor = new ExtendedSelectorEditor(area, {
-  engine,
+  engine
 });
 /**
  * Render the editor's current diagnostics into the status area.
@@ -54,11 +54,11 @@ document.querySelector("#run")?.addEventListener("click", () => {
     if (!card.querySelector(":scope > svg"))
       card.insertAdjacentHTML(
         "beforeend",
-        '<svg viewBox="0 0 16 16" aria-label="registered"><circle cx="8" cy="8" r="6" fill="currentColor"/></svg>',
+        '<svg viewBox="0 0 16 16" aria-label="registered"><circle cx="8" cy="8" r="6" fill="currentColor"/></svg>'
       );
     const icons = document.querySelectorAll('[extended-selector="card"] > svg');
     cssResult.textContent = `card.register = ${JSON.stringify(
-      ExtendedSelector.decorate(card).register,
+      ExtendedSelector.decorate(card).register
     )}\n[extended-selector="card"] > svg → ${icons.length} match(es)`;
   } catch (error) {
     cssResult.textContent =

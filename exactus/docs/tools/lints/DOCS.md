@@ -42,6 +42,16 @@ The `lints` tool: clean, lint and type-check sources with rollback.
   `exactus/packages/all_lints`; `--no-long-lines` (or `no-long-lines = true`) disables
   only that repair and `LintExactusConfig.long_lines` is the Python form.
   Details: [Long-line repair](#long-line-repair).
+- Formats JavaScript with `eslint --fix` during `clean`, applying the
+  project eslint config — or the materialized fallback
+  `eslint.config.mjs` — before the delimiter scan removes
+  expression-level delimiters. The fallback config enables
+  `arrow-body-style` and `curly` unconditionally, plus `@stylistic/*`
+  rules (arrow parens, trailing commas, property quotes, bracket
+  spacing, semicolons) when `@stylistic/eslint-plugin` resolves through
+  `NODE_PATH` — the bundled toolchain exports `js/node_modules` and
+  `npm root -g` is prepended for global installs. An eslint exit status
+  of one reports unfixable findings rather than failing the formatter.
 - Scans JavaScript for removable delimiters and rewrites them under
   `--fix`; `--no-delimiters` (or `no-delimiters = true`) disables the
   scan and `LintExactusConfig.delimiters` is the Python form.
@@ -264,9 +274,9 @@ delimiters, guarded by Node syntax validation.
 
 - `exactus/tools/lints/js_delimiters.py` — production library and scan
   API.
-- `exactus/tests/exactus/tools/lints/test_js_delimiters.py` — pytest
+- `exactus/tests/tools/lints/test_js_delimiters.py` — pytest
   behavioral/regression suite.
-- `exactus/docs/exactus/tools/lints/DOCS.md` — this document.
+- `exactus/docs/tools/lints/DOCS.md` — this document.
 
 ### Design goals
 
@@ -1218,13 +1228,13 @@ shared Espree resolution:
   data model.
 - `exactus/packages/organize/js/class_organizer.js` — Espree AST analyzer,
   transformer, and class-method organizer used through `exactus.packages.organize.javascript`.
-- `exactus/tests/exactus/tools/lints/test_js_function_blocks.py` — Python API,
+- `exactus/tests/tools/lints/test_js_function_blocks.py` — Python API,
   validation, resolution, process, malformed-output, and scan tests.
-- `exactus/tests/exactus/tools/lints/js/function_blocks.test.mjs` — direct
+- `exactus/tests/tools/lints/js/function_blocks.test.mjs` — direct
   JavaScript analyzer/transformation tests.
-- `exactus/tests/exactus/tools/lints/js/function_blocks_torture.test.mjs` —
+- `exactus/tests/tools/lints/js/function_blocks_torture.test.mjs` —
   differential runtime torture suite.
-- `exactus/tests/exactus/tools/lints/js/fake_espree.cjs` — deterministic ESTree
+- `exactus/tests/tools/lints/js/fake_espree.cjs` — deterministic ESTree
   fixture parser used only by the JavaScript unit tests; production never
   imports it.
 
@@ -1546,7 +1556,7 @@ The Python suite uses `pytest` and `coverage.py`:
 
 ```bash
 coverage erase
-coverage run --branch -m pytest -q exactus/tests/exactus/tools/lints/test_js_function_blocks.py
+coverage run --branch -m pytest -q exactus/tests/tools/lints/test_js_function_blocks.py
 coverage report -m --include='*/js_function_blocks.py'
 ```
 
@@ -1564,7 +1574,7 @@ node \
   --experimental-test-coverage \
   --test-coverage-lines=90 \
   --test-coverage-include='*class_organizer.js' \
-  --test exactus/tests/exactus/tools/lints/js/function_blocks.test.mjs
+  --test exactus/tests/tools/lints/js/function_blocks.test.mjs
 ```
 
 Current measured result:
@@ -1573,7 +1583,7 @@ Current measured result:
 - **100% function coverage**.
 - 26 tests passing.
 
-`exactus/tests/exactus/tools/lints/js/fake_espree.cjs` supplies deterministic
+`exactus/tests/tools/lints/js/fake_espree.cjs` supplies deterministic
 ESTree fixtures to the JS unit
 suite. This keeps unit tests independent of an npm/network installation while
 still exercising the actual production analyzer and transformer code. It is
@@ -1582,7 +1592,7 @@ not part of production parser resolution.
 ### Syntax validation
 
 ```bash
-python -m py_compile exactus/tools/lints/js_function_blocks.py exactus/tests/exactus/tools/lints/test_js_function_blocks.py
+python -m py_compile exactus/tools/lints/js_function_blocks.py exactus/tests/tools/lints/test_js_function_blocks.py
 node --check exactus/packages/organize/js/class_organizer.js
 ```
 
@@ -1594,13 +1604,13 @@ From the repository root:
 
 ```bash
 coverage erase && \
-coverage run --branch -m pytest -q exactus/tests/exactus/tools/lints/test_js_function_blocks.py && \
+coverage run --branch -m pytest -q exactus/tests/tools/lints/test_js_function_blocks.py && \
 coverage report --fail-under=90 --include='*/js_function_blocks.py' && \
 node --experimental-test-coverage \
     --test-coverage-lines=90 \
     --test-coverage-include='*class_organizer.js' \
-    --test exactus/tests/exactus/tools/lints/js/function_blocks.test.mjs && \
-python -m py_compile exactus/tools/lints/js_function_blocks.py exactus/tests/exactus/tools/lints/test_js_function_blocks.py && \
+    --test exactus/tests/tools/lints/js/function_blocks.test.mjs && \
+python -m py_compile exactus/tools/lints/js_function_blocks.py exactus/tests/tools/lints/test_js_function_blocks.py && \
 node --check exactus/packages/organize/js/class_organizer.js
 ```
 
@@ -1624,7 +1634,7 @@ conversion likewise preserves arrows that lexically capture `this`,
 
 ### Differential torture suite
 
-`exactus/tests/exactus/tools/lints/js/function_blocks_torture.test.mjs` uses real
+`exactus/tests/tools/lints/js/function_blocks_torture.test.mjs` uses real
 Espree rather than the deterministic fake
 parser used by the focused unit tests. It generates families of executable
 programs, normalizes them, executes both original and transformed programs in
@@ -1661,6 +1671,7 @@ the language with `organize[python]` and `organize[javascript]` prefixes.
 | `arguments.py` | Declare the lints grammar without importing its execution engine. |
 | `compliance.py` | Exactus suppression markers, escape-hatch annotations, and lint config. |
 | `core.py` | Lint exactus engine: clean, lint, and type-check sources with rollback. |
+| `css_naming.py` | Audit numbered CSS custom-property families without guessing their meaning. |
 | `css_tokens.py` | Audit the CSS custom-property architecture and terminal-layer policy. |
 | `js_delimiters.py` | Conservatively remove unnecessary JavaScript parentheses and braces. |
 | `js_function_blocks.py` | Report JavaScript function and method blocks and modernization eligibility. |
@@ -1668,6 +1679,7 @@ the language with `organize[python]` and `organize[javascript]` prefixes.
 | `long_lines_engine.py` | Repair Python lines that remain too long after Ruff formatting. |
 | `main.py` | Run the combined lint exactus and emit the LINTS report bundle. |
 | `packages_pipeline.py` | Bridge Exactus lints to packaged source-refactor and lint tools. |
+| `python_simplify.py` | Perform conservative, scope-aware Python 3.13 AST rewrites. |
 | `report.py` | Normalize the LINTS report: summary, scope, findings and metrics. |
 | `shebang.py` | Exactus Python executable permissions against shebang presence. |
 | `string_transform.py` | Source-preserving string dedenting, splitting and f-string formatting. |
@@ -1695,6 +1707,10 @@ the language with `organize[python]` and `organize[javascript]` prefixes.
 | `--runtime-max-runs` | Finished runs kept in the shared EXACTUS_RESULTS/.runtime registry; the oldest are pruned after each run (default: 500). | type=_positive, default=None, metavar='N' |
 | `--runtime-max-size` | Byte cap on the shared EXACTUS_RESULTS/.runtime registry database as raw bytes or a size (for example 33554432 or 64MB); the oldest finished runs are deleted when it is exceeded. 0 disables the cap (default: 64MB). | type=_byte_size, default=None, metavar='SIZE' |
 | `--bare-import-exception` | Allow a Python bare import. Repeat for multiple modules; defaults to pytest. | action='append', default=list(Constants.default_bare_import_exceptions), metavar='MODULE' |
+| `--no-python-simplify` | Disable safe adjacent-statement Python AST rewrites. | action='store_true' |
+| `--no-css-naming` | Disable the component-aware CSS numeric naming audit. | action='store_true' |
+| `--css-naming-scale` | Registered numeric CSS design scale (repeatable). | action='append', default=[], metavar='STEM' |
+| `--css-naming-extended` | Include weak-evidence advisory CSS naming findings. | action='store_true' |
 | `--css-context-word` | Application or component word that CSS CATALOG token names must not contain (CSS118). Repeat for multiple words; components/<name>/ directories are added automatically. | action='append', default=[], metavar='WORD' |
 | `--toolchain` | Explicit exactus toolchain executable path. | type=Path, default=None |
 
@@ -1863,6 +1879,8 @@ Lint exactus engine: clean, lint, and type-check sources with rollback.
   - `workers` = `None`
   - `shebang` = `field(default_factory=ShebangSettings)`
   - `simple` = `False`
+  - `css_naming` = `field(default_factory=CssNamingSettings)`
+  - `python_simplify` = `True`
 - `class LintExactusRequest` — Carry the inputs of one guarded lint-exactus run.
   - `css_context_words` = `()`
   - Fields: `cwd: Path`, `targets: Sequence[str]`, `report_path: Path | None`, `ignores: Sequence[str]`, `bare_import_exceptions: Sequence[str]`, `config: LintExactusConfig`, `writer: Writer`, `toolchain: Path | None`, `tool_args: ToolArguments`
@@ -1871,6 +1889,7 @@ Lint exactus engine: clean, lint, and type-check sources with rollback.
   - Fields: `tools: dict[str, JsonValue]`, `cwd: Path`, `python_args: Sequence[str]`, `commands: ToolCommands`, `arguments: ToolArguments`, `fix: bool`
 - `class CustomToolsInput` — Carry inputs for the built-in convention scans.
   - `css_context_words` = `()`
+  - `css_naming` = `field(default_factory=CssNamingSettings)`
   - `shebang` = `field(default_factory=ShebangSettings)`
   - `progress` = `field(default_factory=LintProgress)`
   - `fix` = `True`
@@ -1910,6 +1929,35 @@ Lint exactus engine: clean, lint, and type-check sources with rollback.
   - `run(cls: type[Self], request: LintExactusRequest) -> tuple[dict[str, JsonValue], int]` — Run the complete guarded lint workflow.
   - `run_command(command: Sequence[str], cwd: Path) -> CommandResult` — Run one command without raising for diagnostics.
   - `parse_json_output(result: CommandResult) -> JsonValue` — Parse JSON output from a command.
+
+### `css_naming.py`
+
+Audit numbered CSS custom-property families without guessing their meaning.
+
+- `class CssNamingSettings` — Configure contextual CSS custom-property naming audits.
+  - `enabled` = `True`
+  - `min_members` = `2`
+  - `parallel_groups` = `2`
+  - `parallel_members` = `2`
+  - `registered_scales` = `frozenset()`
+  - `ignored_names` = `frozenset()`
+  - `check_values` = `True`
+  - `check_extended` = `False`
+  - `max_alias_depth` = `3`
+- `class CssNamingFinding` — A suspicious custom-property declaration or family.
+  - `severity` = `'warning'`
+  - Fields: `rule: str`, `file: Path`, `line: int`, `message: str`
+- `class Constants` — Regex patterns and policy for numeric token names.
+  - `numbered` = `compile_pattern(pattern='^(--[\\w-]*?)(\\d+)([A-Za-z_-]*)$')`
+  - `subgroup` = `compile_pattern(pattern='^(--[\\w-]*?)(?:[-_]?([A-Z])|[-_]([a-z]))$')`
+  - `measured` = `compile_pattern(pattern='(?x)\n            ^--(?:duration|delay|breakpoin...`
+  - `structural` = `compile_pattern(pattern='(?x)\n            ^--(?:grid-columns|grid-rows|c...`
+  - `reference` = `compile_pattern(pattern='\\bvar\\(\\s*(--[\\w-]+)')`
+  - `suspicious_roots` = `frozenset({'--plan', '--placeholder', '--item', '--variant', '--color', '...`
+  - `minimum_family` = `2`
+  - `arbitrary_digits` = `3`
+  - `rules` = `{'CSSN001': 'numbered-family', 'CSSN002': 'suspicious-numeric-identifier'...`
+- `scan_css_naming(*, root: Path, files: Sequence[Path], settings: CssNamingSettings | None=None) -> tuple[CssNamingFinding, ...]` — Classify numeric CSS custom-property families without modifying code.
 
 ### `css_tokens.py`
 
@@ -2017,7 +2065,12 @@ Conservatively remove unnecessary JavaScript parentheses and braces.
   - `CONTROL_HEADER` = `compile_pattern(pattern='\\b(if|for|while|with)\\s*\\(')`
   - `DO_BLOCK` = `compile_pattern(pattern='\\bdo\\s*\\{')`
   - `ELSE_BLOCK` = `compile_pattern(pattern='\\belse\\s*\\{')`
-  - `UNSAFE_SINGLE_STATEMENT` = `compile_pattern(pattern='^\\s*(?:(?:const|let|class|function)\\b|if\\b|(?...`
+  - `UNSAFE_SINGLE_STATEMENT` = `compile_pattern(pattern='^\\s*(?:(?:const|let|var|class|function|import|e...`
+  - `DANGLING_ELSE_WORDS` = `frozenset({'if', 'for', 'while', 'do', 'with'})`
+  - `CONTINUATION_WORDS` = `frozenset({'instanceof', 'in', 'of', 'as'})`
+  - `CONTINUATION_CHARS` = `frozenset('+-*/%&|^~!<>=?:,.')`
+  - `BLOCK_KEYWORDS` = `frozenset({'if', 'for', 'while', 'with', 'switch'})`
+  - `WORD` = `compile_pattern(pattern='[A-Za-z_$][\\w$]*')`
   - `__init__(self, *, validate: bool=True, remove_control_braces: bool=True) -> None` — Init  .
   - `protected_spans(cls, *, source: str) -> tuple[Span, ...]` — Return string, comment, template, and regular-expression spans.
   - `inside_protected(cls, *, index: int, protected: tuple[Span, ...]) -> bool` — Return whether an offset belongs to protected lexical content.
@@ -2176,6 +2229,19 @@ Bridge Exactus lints to packaged source-refactor and lint tools.
 - `legacy_tools(*, results: Sequence[ToolResult]) -> dict[str, JsonValue]` — Adapt all-lints results to the established Exactus report schema.
 - `issue_baselines(*, results: Sequence[ToolResult]) -> tuple[frozenset[tuple[str, int, int, str, str]], frozenset[tuple[str, int, int, str, str]]]` — Return Ruff and BasedPyright issue identities for guarded inference.
 
+### `python_simplify.py`
+
+Perform conservative, scope-aware Python 3.13 AST rewrites.
+
+- `class PythonSimplifyProposal` — One source-preserving edit proposal.
+  - Fields: `rule: str`, `line: int`, `before: str`, `after: str`
+- `class PythonSimplifyResult` — One source analysis or guarded transformation.
+  - Fields: `source: str`, `proposals: tuple[PythonSimplifyProposal, ...]`, `changed: bool`
+- `class PairContext` — Immutable input for candidate statement replacements.
+  - Fields: `source: str`, `lines: Sequence[str]`, `walrus: bool`, `function: FunctionDef | AsyncFunctionDef`
+- `simplify_python_source(*, source: str, fix: bool=False, walrus: bool=True) -> PythonSimplifyResult` — Find and optionally commit validated adjacent-statement rewrites.
+- `simplify_python_files(*, files: Sequence[Path], fix: bool=False, walrus: bool=True) -> dict[str, int]` — Analyze or rewrite Python files, recording proposed and applied edits.
+
 ### `report.py`
 
 Normalize the LINTS report: summary, scope, findings and metrics.
@@ -2318,7 +2384,7 @@ Source-preserving string dedenting, splitting and f-string formatting.
 - `class SplitResult` — Source and diagnostics after attempting safe literal splits.
   - `skipped` = `()`
   - Fields: `source: str`, `count: int`, `changed: bool`
-- `literal_parts(value: str | bytes, width: int) -> list[str] | None` — Split at code-point boundaries, retaining exact escape semantics.
+- `literal_parts(value: str | bytes, width: int) -> list[str] | None` — Split at word boundaries, retaining exact escape semantics.
 - `offset(lines: list[str], starts: list[int], line: int, column: int) -> int` — Convert UTF-8 AST byte column to a source character offset.
 - `atomic_write(path: Path, content: str | bytes) -> None` — Replace a source file atomically, retaining its permission bits.
 - `resolve_line_length(*, file: str | Path, line_length: int | None=None, ruff_executable: str | None=None, ruff_args: tuple[str, ...]=()) -> int` — Read Ruff's effective formatter width for the target file.
@@ -2330,7 +2396,7 @@ Source-preserving string dedenting, splitting and f-string formatting.
 ## Dependencies and consumers
 
 - Other packages: [`all_lints`](../../packages/all_lints/DOCS.md), [`argument_parser`](../../packages/argument_parser/DOCS.md), [`group_final`](../../packages/group_final/DOCS.md), [`organize`](../../packages/organize/DOCS.md), [`project_python`](../../packages/project_python/DOCS.md), [`steps`](../../packages/steps/DOCS.md), [`common`](../common/DOCS.md), [`reports`](../reports/DOCS.md)
-- Used by: `__main__.py`, `tests/tools/common/test_context_lines.py`, `tests/tools/lints/test_compliance.py`, `tests/tools/lints/test_css_tokens.py`, `tests/tools/lints/test_js_delimiters.py`, `tests/tools/lints/test_js_function_blocks.py`, `tests/tools/lints/test_lints.py`, `tests/tools/lints/test_lints_install.py`, `tests/tools/lints/test_lints_normalizers.py`, `tests/tools/lints/test_lints_report.py`, `tests/tools/lints/test_long_lines.py`, `tests/tools/lints/test_method_contracts.py`, `tests/tools/lints/test_shebang.py`, `tests/tools/lints/test_shebang_metrics.py`, `tests/tools/lints/test_source_cleaner.py`, `tests/tools/lints/test_string_transform.py`, `tests/tools/reports/test_report_snippets.py`
+- Used by: `__main__.py`, `tests/tools/common/test_context_lines.py`, `tests/tools/lints/test_compliance.py`, `tests/tools/lints/test_css_naming.py`, `tests/tools/lints/test_css_tokens.py`, `tests/tools/lints/test_js_delimiters.py`, `tests/tools/lints/test_js_function_blocks.py`, `tests/tools/lints/test_lints.py`, `tests/tools/lints/test_lints_install.py`, `tests/tools/lints/test_lints_normalizers.py`, `tests/tools/lints/test_lints_report.py`, `tests/tools/lints/test_long_lines.py`, `tests/tools/lints/test_method_contracts.py`, `tests/tools/lints/test_python_simplify.py`, `tests/tools/lints/test_shebang.py`, `tests/tools/lints/test_shebang_metrics.py`, `tests/tools/lints/test_source_cleaner.py`, `tests/tools/lints/test_string_transform.py`, `tests/tools/reports/test_report_snippets.py`
 
 ## Tests
 
@@ -2340,6 +2406,20 @@ Tests live in `exactus/tests/tools/lints/`.
   - `test_configuration_rules_preserve_findings`
   - `test_engineering_findings_are_part_of_lints`
   - `test_source_rules_preserve_findings`
+- `test_css_naming.py` — Regression tests for numeric CSS custom-property naming. (13 tests)
+  - `test_arbitrary_identifier`
+  - `test_configuration_can_disable_scan`
+  - `test_cross_file_component_and_isolation`
+  - `test_css_alias_depth_and_cycle`
+  - `test_extended_alias_warning`
+  - `test_inconsistent_separators_are_one_family`
+  - `test_invalid_thresholds_are_rejected`
+  - `test_mask_comments_and_strings`
+  - `test_namespaced_parallel_hyphenated_families`
+  - `test_numeric_policies_and_unit_consistency`
+  - `test_parallel_groups_have_error_severity`
+  - `test_parallel_numeric_families`
+  - `test_two_groups_one_index_is_not_parallel`
 - `test_css_tokens.py` — The lints CSS token audit resolves one token graph across stylesheets. (25 tests)
   - `test_byte_order_mark_and_crlf`
   - `test_comments_and_strings_hide_nothing`
@@ -2396,9 +2476,13 @@ Tests live in `exactus/tests/tools/lints/`.
   - `test_public_node_unavailable_for_analyzer`
   - `test_scan_heals_files_with_fix`
   - `test_scan_reports_findings_without_writing`
-- `test_lints.py` — In-process runs of the lints analyzer over generated projects. (24 tests)
+- `test_lints.py` — In-process runs of the lints analyzer over generated projects. (28 tests)
   - `test_conventions_progress_is_uniform_and_monotonic`
   - `test_defect_project_lints`
+  - `test_eslint_fix_compacts_javascript`
+  - `test_eslint_fix_preserves_mandatory_syntax`
+  - `test_eslint_template_declares_stylistic_rules`
+  - `test_eslint_template_degrades_without_plugin`
   - `test_fixing_pass_runs_on_copy`
   - `test_inline_style_scan_lints_generated_code_not_embedded_source`
   - `test_javascript_organizer_orders_safe_method_runs`
@@ -2477,6 +2561,21 @@ Tests live in `exactus/tests/tools/lints/`.
   - `test_unbreakable_line_is_reported`
 - `test_method_contracts.py` — Protect externally inherited instance methods from binding changes. (1 tests)
   - `test_external_override_keeps_instance_binding`
+- `test_python_simplify.py` — Regression tests for conservative Python simplifications. (14 tests)
+  - `test_audit_does_not_modify_source`
+  - `test_comment_prevents_rewrite`
+  - `test_file_runner_audit_only`
+  - `test_file_runner_fixes_once`
+  - `test_file_runner_preserves_symlink_target`
+  - `test_file_runner_preserves_utf8_bom_and_crlf`
+  - `test_file_runner_skips_unreadable_python`
+  - `test_file_runner_supports_source_encoding_cookie`
+  - `test_inline_annotated_immediate_return`
+  - `test_multiline_assignment_is_not_moved`
+  - `test_nested_read_prevents_inline`
+  - `test_nonadjacent_statements_are_preserved`
+  - `test_walrus_can_be_disabled`
+  - `test_walrus_in_if_and_preserve_body`
 - `test_shebang.py` — The lints shebang check reports and heals permission mismatches. (8 tests)
   - `test_check_file_permission_mismatches`
   - `test_embedded_shebang_progress_stays_in_its_phase`

@@ -474,6 +474,7 @@ class Constants:
             name="eslint_htmlhint_jslint_prettier_stylelint_tsc",
             optional=False,
             node_packages=(
+                "@stylistic/eslint-plugin",
                 "eslint",
                 "eslint-plugin-jsdoc",
                 "htmlhint",
@@ -564,6 +565,14 @@ class Constants:
                     kind="js-entry",
                     target="which/bin/node-which",
                 ),
+            ),
+        ),
+        "refurb": ComponentSpec(
+            name="refurb",
+            optional=True,
+            python_packages=("refurb==2.3.1",),
+            tools=(
+                ToolSpec(name="refurb", kind="python-module", target="refurb"),
             ),
         ),
         "basedpyright_coverage_pyrefly_pytest_ruff": ComponentSpec(
@@ -2073,10 +2082,20 @@ class BundleBuilder:
         packages: Path = stage / "js" / "node_modules"
         if not packages.is_dir():
             return versions
-        for package in sorted(
-            entry.name for entry in packages.iterdir() if entry.is_dir()
-        ):
-            manifest: Path = packages / package / "package.json"
+        manifest_dirs: list[Path] = []
+        for entry in sorted(packages.iterdir()):
+            if not entry.is_dir():
+                continue
+            if entry.name.startswith("@"):
+                manifest_dirs.extend(
+                    sorted(
+                        child for child in entry.iterdir() if child.is_dir()
+                    ),
+                )
+            else:
+                manifest_dirs.append(entry)
+        for manifest_dir in manifest_dirs:
+            manifest: Path = manifest_dir / "package.json"
             if not manifest.is_file():
                 continue
             metadata: Json = cast(
@@ -2087,7 +2106,12 @@ class BundleBuilder:
                 metadata.get("version"),
                 str,
             ):
-                versions[package] = cast(
+                name: str = (
+                    f"{manifest_dir.parent.name}/{manifest_dir.name}"
+                    if manifest_dir.parent.name.startswith("@")
+                    else manifest_dir.name
+                )
+                versions[name] = cast(
                     typ="str",
                     val=metadata.get("version", ""),
                 )

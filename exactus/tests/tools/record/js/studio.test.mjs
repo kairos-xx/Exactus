@@ -1,10 +1,10 @@
 /** Exercise Flow Studio editing, recording, Actions recipes and keyboard dialogs. */
-import { Buffer } from "node:buffer";
-import { readFile, writeFile } from "node:fs/promises";
+import {Buffer} from "node:buffer";
+import {readFile, writeFile} from "node:fs/promises";
 import assert from "node:assert/strict";
 import process from "node:process";
 import test from "node:test";
-import { setTimeout as delay } from "node:timers/promises";
+import {setTimeout as delay} from "node:timers/promises";
 /** Shared panel identifiers used to access the dynamic dock model. */
 const panelKeys = Object.freeze({
   workspace: "workspace",
@@ -13,7 +13,7 @@ const panelKeys = Object.freeze({
   target: "target",
   properties: "properties",
   timeline: "timeline",
-  runs: "runs",
+  runs: "runs"
 });
 /** Require geometry to exist before using it in an assertion.
  * @template T
@@ -24,11 +24,11 @@ const requiredValue = value => {
   assert.ok(value !== undefined && value !== null);
   return value;
 };
-import { browserTest } from "../../../common/browser.mjs";
+import {browserTest} from "../../../common/browser.mjs";
 /** @typedef {{request:()=>{postDataJSON:()=>{id:string}},fulfill:(options:{contentType:string,body:string})=>Promise<void>}} RejectedCommandRoute */
 /** @typedef {Window & {studioEvents?:{onmessage:(message:{data:string})=>void}}} StudioTestWindow */
-import { actionHandlers, flow, studio } from "./studio-mock.mjs";
-export { studio };
+import {actionHandlers, flow, studio} from "./studio-mock.mjs";
+export {studio};
 /** Resolve once a host-side condition holds, or after two seconds.
  * @param {() => boolean} check
  * @param {number} [deadline] Absolute time in milliseconds to give up.
@@ -41,7 +41,7 @@ const until = async (check, deadline = Date.now() + 2000) => {
 };
 test("An added action is selected and configured in its row or Properties, never in the library", async t => {
   await browserTest(t, async (page, url) => {
-    const { commands } = await studio(page, url, actionHandlers);
+    const {commands} = await studio(page, url, actionHandlers);
     // An action that expands is configured in its own flow row; a single-line
     // action keeps its target tools in Properties.
     const inRow = ".edit-step-detail-form";
@@ -54,7 +54,7 @@ test("An added action is selected and configured in its row or Properties, never
         () =>
           new Promise(resolve => {
             requestAnimationFrame(() => requestAnimationFrame(() => resolve(null)));
-          }),
+          })
       );
     /** Add an action from the library; it is selected and its settings open.
      * @param {string} name Visible action name.
@@ -63,8 +63,8 @@ test("An added action is selected and configured in its row or Properties, never
      * @returns {Promise<void>}
      */
     const add = async (name, exact = false, where = inRow) => {
-      await page.getByRole("button", { name: "Add action" }).click();
-      await page.getByRole("button", { name, exact }).click();
+      await page.getByRole("button", {name: "Add action"}).click();
+      await page.getByRole("button", {name, exact}).click();
       await page.locator(where).waitFor();
       await settle();
     };
@@ -75,11 +75,11 @@ test("An added action is selected and configured in its row or Properties, never
     const save = async (where = inRow) => {
       const before = commands.filter(item => item.command === "event.configure").length;
       await (where === inRow
-        ? page.locator(inRow).getByRole("button", { name: "Apply" })
-        : page.getByRole("button", { name: "Save step" })
+        ? page.locator(inRow).getByRole("button", {name: "Apply"})
+        : page.getByRole("button", {name: "Save step"})
       ).click();
       await until(
-        () => commands.filter(item => item.command === "event.configure").length > before,
+        () => commands.filter(item => item.command === "event.configure").length > before
       );
     };
     /** The newest command of one kind.
@@ -87,30 +87,30 @@ test("An added action is selected and configured in its row or Properties, never
      * @returns {any} Its payload.
      */
     const last = name => commands.filter(item => item.command === name).at(-1)?.payload;
-    await page.getByRole("button", { name: "Add action" }).click();
+    await page.getByRole("button", {name: "Add action"}).click();
     await page
-      .getByRole("button", { name: "Get input value", exact: false })
+      .getByRole("button", {name: "Get input value", exact: false})
       .focus();
     await page.locator(".action-library-body").evaluate((/** @type {HTMLElement} */ element) => {
       element.scrollTop = 0;
     });
-    const { EXACTUS_ACTION_CATALOG_AUDIT_SCREENSHOT: catalogScreenshot } =
+    const {EXACTUS_ACTION_CATALOG_AUDIT_SCREENSHOT: catalogScreenshot} =
       process.env;
     if (catalogScreenshot)
       await page.locator('[data-panel-id="actions"]').screenshot({
-        path: catalogScreenshot,
+        path: catalogScreenshot
       });
-    const { EXACTUS_ACTION_CATALOG_COMPACT_AUDIT_SCREENSHOT: compactScreenshot } =
+    const {EXACTUS_ACTION_CATALOG_COMPACT_AUDIT_SCREENSHOT: compactScreenshot} =
       process.env;
     if (compactScreenshot) {
       const viewport = page.viewportSize();
-      await page.setViewportSize({ width: 390, height: 844 });
-      await page.getByRole("button", { name: "Add action" }).click();
+      await page.setViewportSize({width: 390, height: 844});
+      await page.getByRole("button", {name: "Add action"}).click();
       await page.locator(".action-library-body").evaluate((/** @type {HTMLElement} */ element) => {
         element.scrollTop = 0;
       });
       await page.locator('[data-panel-id="actions"]').screenshot({
-        path: compactScreenshot,
+        path: compactScreenshot
       });
       if (viewport) await page.setViewportSize(viewport);
     }
@@ -128,21 +128,21 @@ test("An added action is selected and configured in its row or Properties, never
       const transfer = new window.DataTransfer();
       source.dispatchEvent(new DragEvent("dragstart", {
         bubbles: true,
-        dataTransfer: transfer,
+        dataTransfer: transfer
       }));
       target.dispatchEvent(new DragEvent("dragover", {
         bubbles: true,
         cancelable: true,
-        dataTransfer: transfer,
+        dataTransfer: transfer
       }));
       target.dispatchEvent(new DragEvent("drop", {
         bubbles: true,
         cancelable: true,
-        dataTransfer: transfer,
+        dataTransfer: transfer
       }));
       source.dispatchEvent(new DragEvent("dragend", {
         bubbles: true,
-        dataTransfer: transfer,
+        dataTransfer: transfer
       }));
     });
     await page.locator(inRow).waitFor();
@@ -152,11 +152,11 @@ test("An added action is selected and configured in its row or Properties, never
     assert.ok(last("event.add").output_variable);
     assert.equal(
       await page.locator('.edit-step-row[data-step="added-3"]').getAttribute("aria-pressed"),
-      "true",
+      "true"
     );
     assert.equal(
-      await page.locator(properties).getByRole("heading", { name: "set_variable" }).count(),
-      1,
+      await page.locator(properties).getByRole("heading", {name: "set_variable"}).count(),
+      1
     );
     await page.locator('.edit-step-detail-form [name="output_variable"]').fill("customerId");
     await page
@@ -169,51 +169,51 @@ test("An added action is selected and configured in its row or Properties, never
     assert.equal(last("event.configure").output_variable, "customerId");
     assert.deepEqual(JSON.parse(last("event.configure").payload), {
       value: "42",
-      value_type: "integer",
+      value_type: "integer"
     });
     await add("REST request");
     const requestUrl = page.locator(
-      '.edit-step-detail-form .variable-field:has([name="url"]) .variable-editor',
+      '.edit-step-detail-form .variable-field:has([name="url"]) .variable-editor'
     );
     await requestUrl.fill("/api/customer/@cust");
     const mentionOption = page
       .locator('.edit-step-detail-form .variable-field:has([name="url"]) .variable-menu')
-      .getByRole("option", { name: "customerId" });
-    await mentionOption.waitFor({ state: "visible" });
-    const { EXACTUS_VARIABLE_MENTION_AUDIT_SCREENSHOT: mentionScreenshot } =
+      .getByRole("option", {name: "customerId"});
+    await mentionOption.waitFor({state: "visible"});
+    const {EXACTUS_VARIABLE_MENTION_AUDIT_SCREENSHOT: mentionScreenshot} =
       process.env;
     if (mentionScreenshot)
       await page.waitForTimeout(100);
     if (mentionScreenshot)
       await page.locator(".edit-step-detail").screenshot({
-        path: mentionScreenshot,
+        path: mentionScreenshot
       });
     await mentionOption.dispatchEvent("pointerdown");
     assert.equal(
       await page.locator('.edit-step-detail-form [name="url"]').inputValue(),
-      "/api/customer/{{customerId}}",
+      "/api/customer/{{customerId}}"
     );
-    await page.getByRole("tab", { name: "Params" }).click();
-    await page.getByRole("button", { name: "Add parameter" }).click();
+    await page.getByRole("tab", {name: "Params"}).click();
+    await page.getByRole("button", {name: "Add parameter"}).click();
     await page.locator('.edit-step-detail-form [name="query_0_key"]').fill("include");
     await page
       .locator('.edit-step-detail-form .variable-field:has([name="query_0_value"]) .variable-editor')
       .fill("orders");
-    await page.getByRole("tab", { name: "Headers" }).click();
-    await page.getByRole("button", { name: "Add header" }).click();
+    await page.getByRole("tab", {name: "Headers"}).click();
+    await page.getByRole("button", {name: "Add header"}).click();
     await page.locator('.edit-step-detail-form [name="header_0_key"]').fill("Authorization");
     await page
       .locator('.edit-step-detail-form .variable-field:has([name="header_0_value"]) .variable-editor')
       .fill("Bearer @customer");
-    await page.getByRole("tab", { name: "Variables" }).click();
-    await page.getByRole("button", { name: "Add response variable" }).click();
+    await page.getByRole("tab", {name: "Variables"}).click();
+    await page.getByRole("button", {name: "Add response variable"}).click();
     await page.locator('.edit-step-detail-form [name="capture_0_path"]').fill("data.customer.id");
     await page.locator('.edit-step-detail-form [name="capture_0_name"]').fill("Customer ID");
     await page.locator('.edit-step-detail-form [name="capture_0_value_type"]').selectOption("integer");
-    const { EXACTUS_REST_ACTION_AUDIT_SCREENSHOT: restScreenshot } = process.env;
+    const {EXACTUS_REST_ACTION_AUDIT_SCREENSHOT: restScreenshot} = process.env;
     if (restScreenshot)
       await page.locator(".edit-step-detail").screenshot({
-        path: restScreenshot,
+        path: restScreenshot
       });
     await page.locator('.edit-step-detail-form [name="output_variable"]').fill("customer");
     await save();
@@ -222,7 +222,7 @@ test("An added action is selected and configured in its row or Properties, never
     assert.equal(request.url, "/api/customer/{{customerId}}");
     assert.equal(request.output_variable, "customer");
     assert.equal(JSON.parse(request.request_config).query[0].key, "include");
-    const { EXACTUS_WEBSOCKET_ACTION_AUDIT_SCREENSHOT: socketScreenshot } =
+    const {EXACTUS_WEBSOCKET_ACTION_AUDIT_SCREENSHOT: socketScreenshot} =
       process.env;
     if (socketScreenshot) {
       await add("WebSocket session");
@@ -231,7 +231,7 @@ test("An added action is selected and configured in its row or Properties, never
         .fill("wss://stream.example.test/@customer");
       await page
         .locator('.edit-step-detail-form .variable-field:has([name="url"]) .variable-menu')
-        .getByRole("option", { name: "customer", exact: true })
+        .getByRole("option", {name: "customer", exact: true})
         .dispatchEvent("pointerdown");
       await page
         .locator('.edit-step-detail-form .variable-field:has([name="protocols"]) .variable-editor')
@@ -242,32 +242,32 @@ test("An added action is selected and configured in its row or Properties, never
       await page
         .locator('.edit-step-detail-form .variable-field:has([name="message"]) .variable-editor')
         .press("Escape");
-      await page.getByRole("tab", { name: "Variables" }).click();
-      await page.getByRole("button", { name: "Add response variable" }).click();
+      await page.getByRole("tab", {name: "Variables"}).click();
+      await page.getByRole("button", {name: "Add response variable"}).click();
       await page.locator('.edit-step-detail-form [name="capture_0_path"]').fill("payload.total");
       await page.locator('.edit-step-detail-form [name="capture_0_name"]').fill("Live Total");
       await page.locator('.edit-step-detail-form [name="capture_0_value_type"]').selectOption("float");
       await page.locator(".edit-step-detail").screenshot({
-        path: socketScreenshot,
+        path: socketScreenshot
       });
       const {
         EXACTUS_SPACING_CAPTURE_SCRIPT: spacingScript,
-        EXACTUS_SPACING_CAPTURE_OUTPUT: spacingOutput,
+        EXACTUS_SPACING_CAPTURE_OUTPUT: spacingOutput
       } = process.env;
       if (spacingScript && spacingOutput) {
-        const script = await readFile(spacingScript, { encoding: "utf8" });
+        const script = await readFile(spacingScript, {encoding: "utf8"});
         const viewport = page.viewportSize();
         const states = await [390, 1440, 1728].reduce(
           async (previous, width) => {
             const collected = await previous;
-            await page.setViewportSize({ width, height: 900 });
+            await page.setViewportSize({width, height: 900});
             const state = await page.evaluate(script);
             collected.push(
               await page.evaluate(
                 (
-                  /** @type {{captured: {name: string, elements: Array<{rect: {x: number, y: number, width: number, height: number}}>}, selector: string}} */ payload,
+                  /** @type {{captured: {name: string, elements: Array<{rect: {x: number, y: number, width: number, height: number}}>}, selector: string}} */ payload
                 ) => {
-                  const { captured, selector } = payload;
+                  const {captured, selector} = payload;
                   const panel = document.querySelector(selector);
                   if (!(panel instanceof HTMLElement)) return captured;
                   const bounds = panel.getBoundingClientRect();
@@ -276,21 +276,21 @@ test("An added action is selected and configured in its row or Properties, never
                     element.rect.x >= bounds.x &&
                     element.rect.y >= bounds.y &&
                     element.rect.x + element.rect.width <= bounds.right &&
-                    element.rect.y + element.rect.height <= bounds.bottom,
+                    element.rect.y + element.rect.height <= bounds.bottom
                   );
                   return captured;
                 },
                 {
                   captured: state,
-                  selector: ".edit-step-detail",
-                },
-              ),
+                  selector: ".edit-step-detail"
+                }
+              )
             );
             return collected;
           },
-          Promise.resolve(/** @type {object[]} */ ([])),
+          Promise.resolve(/** @type {object[]} */ ([]))
         );
-        await writeFile(spacingOutput, JSON.stringify(states), { encoding: "utf8" });
+        await writeFile(spacingOutput, JSON.stringify(states), {encoding: "utf8"});
         if (viewport) await page.setViewportSize(viewport);
       }
     }
@@ -299,28 +299,28 @@ test("An added action is selected and configured in its row or Properties, never
       .locator('.edit-step-detail-form [name="payload"]')
       .fill("return __EXACTUS_FLOW__.vars.customer.status === 200;");
     const javascriptOutput = page.locator(
-      '.edit-step-detail-form [name="output_variable"]',
+      '.edit-step-detail-form [name="output_variable"]'
     );
     await javascriptOutput.fill("allowed");
     await javascriptOutput.press("Tab");
     assert.equal(
       await javascriptOutput.inputValue(),
-      "allowed",
+      "allowed"
     );
     const {
       EXACTUS_JAVASCRIPT_ACTION_AUDIT_SCREENSHOT: javascriptScreenshot,
-      EXACTUS_JAVASCRIPT_VALUES_AUDIT_SCREENSHOT: javascriptValuesScreenshot,
+      EXACTUS_JAVASCRIPT_VALUES_AUDIT_SCREENSHOT: javascriptValuesScreenshot
     } = process.env;
     if (javascriptScreenshot) {
-      await page.getByRole("tab", { name: "Code" }).click();
+      await page.getByRole("tab", {name: "Code"}).click();
       await page.locator(".edit-step-detail").screenshot({
-        path: javascriptScreenshot,
+        path: javascriptScreenshot
       });
     }
     if (javascriptValuesScreenshot) {
-      await page.getByRole("tab", { name: /^Values/ }).click();
+      await page.getByRole("tab", {name: /^Values/}).click();
       await page.locator(".edit-step-detail").screenshot({
-        path: javascriptValuesScreenshot,
+        path: javascriptValuesScreenshot
       });
     }
     await save();
@@ -329,30 +329,30 @@ test("An added action is selected and configured in its row or Properties, never
     // If puts a condition on the selected action instead of adding a step.
     const selectedScript = last("event.configure").event_id;
     const beforeIf = commands.filter(item => item.command === "event.add").length;
-    await page.getByRole("button", { name: "Add action" }).click();
-    await page.getByRole("button", { name: "If", exact: true }).click();
+    await page.getByRole("button", {name: "Add action"}).click();
+    await page.getByRole("button", {name: "If", exact: true}).click();
     await until(() => commands.some(item => item.command === "event.update"));
     assert.equal(last("event.update").event_id, selectedScript);
     assert.equal(
       last("event.update").when_expression,
-      "__EXACTUS_FLOW__.vars.allowed === true",
+      "__EXACTUS_FLOW__.vars.allowed === true"
     );
     assert.equal(
       commands.filter(item => item.command === "event.add").length,
-      beforeIf,
+      beforeIf
     );
     await add("Pointer & touch", true);
     assert.equal(
-      await page.getByText("Selector bookmark", { exact: true }).isVisible(),
-      true,
+      await page.getByText("Selector bookmark", {exact: true}).isVisible(),
+      true
     );
     assert.equal(
-      await page.getByRole("button", { name: "Pick on page" }).isVisible(),
-      true,
+      await page.getByRole("button", {name: "Pick on page"}).isVisible(),
+      true
     );
     assert.equal(
-      await page.getByRole("button", { name: "Highlight on page" }).isVisible(),
-      true,
+      await page.getByRole("button", {name: "Highlight on page"}).isVisible(),
+      true
     );
     // A Click has no target yet, so it is added as unfinished until one is set.
     assert.ok(!last("event.add").selector);
@@ -363,13 +363,13 @@ test("An added action is selected and configured in its row or Properties, never
     assert.equal(last("event.configure").kind, "click");
     assert.equal(
       last("event.configure").selector,
-      'ext=[data-customer-id="{{customerId}}"]',
+      'ext=[data-customer-id="{{customerId}}"]'
     );
   });
 });
 test("Recording parents contain live steps and timed clips and retain collapse state", async t => {
   await browserTest(t, async (page, url) => {
-    const { snapshot } = await studio(page, url);
+    const {snapshot} = await studio(page, url);
     snapshot.revision += 1;
     snapshot.recording_state = "recording";
     snapshot.recording_session_id = "take-one";
@@ -377,16 +377,16 @@ test("Recording parents contain live steps and timed clips and retain collapse s
       ...snapshot.workspace.flows[0],
       events: snapshot.workspace.flows[0].events.map(
         (/** @type {(typeof flow.events)[number]} */ event) => ({
-          ...event,
-        }),
+          ...event
+        })
       ),
       recordings: [
         {
           id: "take-one",
           label: "Recording 1",
-          start_ms: 2100,
-        },
-      ],
+          start_ms: 2100
+        }
+      ]
     };
     /** Emit a real-time workspace notification through the editor transport.
      * @returns {Promise<void>} Resolves when the state is emitted.
@@ -398,8 +398,8 @@ test("Recording parents contain live steps and timed clips and retain collapse s
           data: JSON.stringify({
             protocol: 1,
             event: "workspace.changed",
-            payload: state,
-          }),
+            payload: state
+          })
         });
       }, snapshot);
     await update();
@@ -411,7 +411,7 @@ test("Recording parents contain live steps and timed clips and retain collapse s
       await page
         .locator(".edit-step-list > :last-child")
         .getAttribute("data-recording-group"),
-      "take-one",
+      "take-one"
     );
     snapshot.workspace.flows[0].events.push({
       id: "recorded-click",
@@ -420,7 +420,7 @@ test("Recording parents contain live steps and timed clips and retain collapse s
       selector: "#continue",
       layer: "interaction",
       elapsed_ms: 2350,
-      recording_group_id: "take-one",
+      recording_group_id: "take-one"
     });
     snapshot.revision += 1;
     await update();
@@ -429,11 +429,11 @@ test("Recording parents contain live steps and timed clips and retain collapse s
       await page
         .locator('.recording-band [data-step="recorded-click"]')
         .count(),
-      1,
+      1
     );
     assert.equal(
       await page.locator('#timeline [data-step="recorded-click"]').count(),
-      1,
+      1
     );
     assert.match(await group.innerText(), /#continue/);
     await group.locator("summary").click();
@@ -445,7 +445,7 @@ test("Recording parents contain live steps and timed clips and retain collapse s
     await group.locator('[data-step="recorded-click"]').click();
     assert.equal(
       await page.locator('.edit-step-detail-form [name="selector"]').inputValue(),
-      "#continue",
+      "#continue"
     );
   });
 });
@@ -464,7 +464,7 @@ const selectWorkspace = async (page, view) => {
     debug: "play",
     profiles: "settings",
     recovery: "settings",
-    controls: "settings",
+    controls: "settings"
   };
   // Crawl is part of the Flow editor and opens from its transport bar.
   if (view === "crawl") {
@@ -479,7 +479,7 @@ const selectWorkspace = async (page, view) => {
     () =>
       new Promise(resolve => {
         requestAnimationFrame(() => requestAnimationFrame(resolve));
-      }),
+      })
   );
 };
 test("Studio sections occupy an independent row between the identity row and the workspace", async t => {
@@ -492,7 +492,7 @@ test("Studio sections occupy an independent row between the identity row and the
     const checkRows = async width => {
       await page.setViewportSize({
         width,
-        height: 900,
+        height: 900
       });
       const identity = await page.locator(".topbar").boundingBox();
       const sections = await page.locator("#app > .section-nav").boundingBox();
@@ -507,7 +507,7 @@ test("Studio sections occupy an independent row between the identity row and the
       await selectWorkspace(page, "settings");
       assert.equal(
         await page.locator("#app").getAttribute("data-workspace-mode"),
-        "settings",
+        "settings"
       );
       await selectWorkspace(page, "edit");
     };
@@ -528,8 +528,8 @@ test("Header icons keep their visibility and geometry across hover", async t => 
       tools.evaluateAll((/** @type {Element[]} */ nodes) =>
         nodes.map(node => ({
           opacity: getComputedStyle(node).opacity,
-          rect: node.getBoundingClientRect().toJSON(),
-        })),
+          rect: node.getBoundingClientRect().toJSON()
+        }))
       );
     await page.mouse.move(700, 600);
     const before = await read();
@@ -539,8 +539,8 @@ test("Header icons keep their visibility and geometry across hover", async t => 
     assert.deepEqual(await read(), before);
     assert.ok(
       before.every(
-        (/** @type {{opacity:string}} */ tool) => tool.opacity === "1",
-      ),
+        (/** @type {{opacity:string}} */ tool) => tool.opacity === "1"
+      )
     );
     await page.mouse.move(700, 600);
     assert.deepEqual(await read(), before);
@@ -566,7 +566,7 @@ const posted = async (commands, name, accept = () => true) => {
     if (found) return found;
     if (Date.now() >= deadline)
       throw new Error(
-        `${name} was never posted: ${commands.map((item) => item.command)}`,
+        `${name} was never posted: ${commands.map(item => item.command)}`
       );
     await new Promise(resolve => {
       setTimeout(resolve, 50);
@@ -597,7 +597,7 @@ const settledBox = async (locator, previous = null, attempts = 40) => {
 /** One-pixel PNG used as a stand-in preview frame. */
 const pixel = Buffer.from(
   "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
-  "base64",
+  "base64"
 );
 /** Serve scripted preview responses and count the requests made.
  * @param {any} page Studio page.
@@ -608,15 +608,15 @@ const scriptedPreview = async (page, reply) => {
   let count = 0;
   await page.route("**/api/target-preview", (/** @type {any} */ route) => {
     count += 1;
-    const { status, body, headers } = reply(count);
+    const {status, body, headers} = reply(count);
     return route.fulfill({
       status,
       body: body ?? "",
-      headers: headers ?? {},
+      headers: headers ?? {}
     });
   });
   return {
-    count: () => count,
+    count: () => count
   };
 };
 /** Serve a blank page of the given size as the live preview frame.
@@ -627,20 +627,20 @@ const scriptedPreview = async (page, reply) => {
  */
 const serveFrame = async (page, width, height) => {
   const body = Buffer.from(
-    `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}"><rect width="${width}" height="${height}" fill="white"/></svg>`,
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}"><rect width="${width}" height="${height}" fill="white"/></svg>`
   );
   await scriptedPreview(page, () => ({
     status: 200,
     body,
     headers: {
       "Content-Type": "image/svg+xml",
-      "X-Frame-Age-Ms": "5",
-    },
+      "X-Frame-Age-Ms": "5"
+    }
   }));
 };
 test("Clicks in the letterbox around a preview never reach the target page", async t => {
   await browserTest(t, async (page, url) => {
-    const { commands } = await studio(page, url);
+    const {commands} = await studio(page, url);
     await serveFrame(page, 100, 300);
     await page.waitForSelector('.live-target-frame[data-preview="live"]');
     await page.evaluate(() => {
@@ -661,26 +661,26 @@ test("Clicks in the letterbox around a preview never reach the target page", asy
       commands.filter(
         item =>
           item.command === "browser.input" &&
-          item.payload.action === "pointer_down",
+          item.payload.action === "pointer_down"
       ).length;
     const image = page.locator("#live-target-image");
     await image.click({
       position: {
         x: 3,
-        y: box.height / 2,
-      },
+        y: box.height / 2
+      }
     });
     assert.equal(presses(), 0);
     await image.click({
       position: {
         x: box.width / 2,
-        y: box.height / 2,
-      },
+        y: box.height / 2
+      }
     });
     await posted(
       commands,
       "browser.input",
-      item => item.payload.action === "pointer_down",
+      item => item.payload.action === "pointer_down"
     );
     assert.equal(presses(), 1);
   });
@@ -696,7 +696,7 @@ const panelBoxes = page =>
         .filter(
           panel =>
             panel.getBoundingClientRect().width > 0 &&
-            !panel.classList.contains("is-floating"),
+            !panel.classList.contains("is-floating")
         )
         .map(panel => {
           const box = panel.getBoundingClientRect();
@@ -707,11 +707,11 @@ const panelBoxes = page =>
               y: box.y,
               width: box.width,
               height: box.height,
-              grid: panel.getAttribute("data-grid"),
-            },
+              grid: panel.getAttribute("data-grid")
+            }
           ];
-        }),
-    ),
+        })
+    )
   );
 test("Maximized live browser restores on Escape, workspace change and keeps focus reachable", async t => {
   await browserTest(t, async (page, url) => {
@@ -726,7 +726,7 @@ test("Maximized live browser restores on Escape, workspace change and keeps focu
     assert.equal(await panel.getAttribute("data-live-maximized"), null);
     assert.equal(
       await page.locator("#live-target-pick").getAttribute("aria-pressed"),
-      "false",
+      "false"
     );
     assert.deepEqual(await panelBoxes(page), before);
     await page.locator("#live-target-maximize").click();
@@ -738,13 +738,13 @@ test("Maximized live browser restores on Escape, workspace change and keeps focu
     assert.equal(await panel.getAttribute("data-live-maximized"), null);
     assert.equal(
       await page.locator("#live-target-maximize").getAttribute("aria-pressed"),
-      "false",
+      "false"
     );
   });
 });
 test("Picker hover is throttled and Escape exits picking first", async t => {
   await browserTest(t, async (page, url) => {
-    const { commands } = await studio(page, url);
+    const {commands} = await studio(page, url);
     await serveFrame(page, 200, 100);
     await page.waitForFunction(() => {
       const image = document.getElementById("live-target-image");
@@ -766,8 +766,8 @@ test("Picker hover is throttled and Escape exits picking first", async t => {
             bubbles: true,
             pointerId: 1,
             clientX: box.left + box.width / 2,
-            clientY: box.top + box.height / 2,
-          }),
+            clientY: box.top + box.height / 2
+          })
         );
       move();
       move();
@@ -781,15 +781,15 @@ test("Picker hover is throttled and Escape exits picking first", async t => {
         item =>
           item.command === "browser.input" &&
           item.payload.action === "inspect" &&
-          item.payload.picked === false,
+          item.payload.picked === false
       );
     assert.equal(hoverInspections().length, 1);
     await page.waitForTimeout(170);
     await page.locator("#live-target-image").hover({
       position: {
         x: 10,
-        y: 10,
-      },
+        y: 10
+      }
     });
     await page.waitForTimeout(100);
     assert.equal(hoverInspections().length, 2);
@@ -797,19 +797,19 @@ test("Picker hover is throttled and Escape exits picking first", async t => {
     assert.equal(await panel.getAttribute("data-live-maximized"), null);
     assert.equal(
       await page.locator("#live-target-pick").getAttribute("aria-pressed"),
-      "false",
+      "false"
     );
     assert.equal(
       await page.locator("#live-target-maximize").evaluate(
-        (/** @type {HTMLElement} */ button) => button === document.activeElement,
+        (/** @type {HTMLElement} */ button) => button === document.activeElement
       ),
-      true,
+      true
     );
   });
 });
 test("Live browser forwards hover, drag and held keyboard modifiers", async t => {
   await browserTest(t, async (page, url) => {
-    const { commands } = await studio(page, url);
+    const {commands} = await studio(page, url);
     await serveFrame(page, 200, 100);
     await page.waitForFunction(() => {
       const image = document.getElementById("live-target-image");
@@ -846,8 +846,8 @@ test("Live browser forwards hover, drag and held keyboard modifiers", async t =>
         ["key_down", "KeyA"],
         ["key_up", "KeyA"],
         ["key_up", "ControlLeft"],
-        ["key_up", "ShiftLeft"],
-      ],
+        ["key_up", "ShiftLeft"]
+      ]
     );
   });
 });
@@ -857,7 +857,7 @@ test("Browser panel exposes its tools, target state and preview to assistive tec
     await selectWorkspace(page, "record");
     await serveFrame(page, 200, 100);
     const panel = page.getByRole("region", {
-      name: "Browser panel",
+      name: "Browser panel"
     });
     await panel.waitFor();
     await page.waitForFunction(() => {
@@ -874,30 +874,30 @@ test("Browser panel exposes its tools, target state and preview to assistive tec
     assert.match(await targetStatus.textContent() || "", /Target (ready|closed)/);
     assert.equal(
       await panel.getByRole("toolbar", {
-        name: "Browser tools",
+        name: "Browser tools"
       }).count(),
-      1,
+      1
     );
     const pick = panel.getByRole("button", {
-      name: "Pick element",
+      name: "Pick element"
     });
     const maximize = panel.getByRole("button", {
-      name: "Maximize browser",
+      name: "Maximize browser"
     });
     assert.equal(await pick.getAttribute("aria-pressed"), "false");
     assert.equal(await maximize.getAttribute("aria-pressed"), "false");
-    const { EXACTUS_AUDIT_SCREENSHOT: auditScreenshot } = process.env;
+    const {EXACTUS_AUDIT_SCREENSHOT: auditScreenshot} = process.env;
     if (auditScreenshot)
       await page.screenshot({
         path: auditScreenshot,
-        fullPage: false,
+        fullPage: false
       });
     await pick.click();
     assert.equal(await pick.getAttribute("aria-pressed"), "true");
     assert.equal(await maximize.getAttribute("aria-pressed"), "true");
     await page
       .getByAltText(
-        "Live view of the test browser. Hover, click, drag, touch, type or scroll to interact.",
+        "Live view of the test browser. Hover, click, drag, touch, type or scroll to interact."
       )
       .press("Escape");
     assert.equal(await pick.getAttribute("aria-pressed"), "false");
@@ -914,13 +914,13 @@ test("Every Browser tool keeps an accessible name, even when its label is hidden
       "Stop",
       "Crawl",
       "Pick element",
-      "Maximize browser",
+      "Maximize browser"
     ];
     await [1440, 760].reduce(async (pending, width) => {
       await pending;
       await page.setViewportSize({
         width,
-        height: 900,
+        height: 900
       });
       // Pause and Stop are hidden until a recording runs, so read the
       // attribute rather than the role tree, which skips hidden controls.
@@ -928,21 +928,21 @@ test("Every Browser tool keeps an accessible name, even when its label is hidden
         names.map(name =>
           page
             .locator(`.live-target-tools button[aria-label="${name}"]`)
-            .count(),
-        ),
+            .count()
+        )
       );
       names.forEach((name, index) => {
         assert.equal(
           counts[index],
           1,
-          `${name} should be one named button at ${width}px`,
+          `${name} should be one named button at ${width}px`
         );
       });
       // Hiding the text must never remove it from the accessibility tree.
       const removed = await page
         .locator(".live-target-tools .tool-label")
         .evaluateAll((/** @type {Element[]} */ labels) =>
-          labels.filter(label => getComputedStyle(label).display === "none"),
+          labels.filter(label => getComputedStyle(label).display === "none")
         );
       assert.equal(removed.length, 0);
     }, Promise.resolve());
@@ -953,7 +953,7 @@ test("On a phone the task tabs own the screen and the editor panels stay hidden"
     await studio(page, url);
     await page.setViewportSize({
       width: 390,
-      height: 844,
+      height: 844
     });
     await ["play", "compare", "settings"].reduce(async (pending, view) => {
       await pending;
@@ -978,14 +978,14 @@ test("On a phone the task tabs own the screen and the editor panels stay hidden"
           panelTabs: visible(".mobile-panel-tabs"),
           surface: box("#workspace-surface"),
           footer: box(".studio > footer"),
-          scrollWidth: document.documentElement.scrollWidth,
+          scrollWidth: document.documentElement.scrollWidth
         };
       });
       assert.equal(layout.workbench, false, `${view}: workbench hidden`);
       assert.equal(layout.panelTabs, false, `${view}: panel tabs hidden`);
       assert.ok(
         layout.surface.height > 500,
-        `${view}: surface fills the screen (${layout.surface.height}px)`,
+        `${view}: surface fills the screen (${layout.surface.height}px)`
       );
       assert.ok(layout.footer.top >= layout.surface.bottom - 1);
       assert.ok(layout.scrollWidth <= 390, `${view}: no sideways scroll`);
@@ -997,54 +997,54 @@ test("The compact Runs timeline keeps playback separate from the clock", async t
     await studio(page, url);
     await page.setViewportSize({
       width: 390,
-      height: 844,
+      height: 844
     });
     await page.locator('[data-mobile-panel="runs"]').click();
     const play = requiredValue(
-      await page.locator("#timeline-play").boundingBox(),
+      await page.locator("#timeline-play").boundingBox()
     );
     const toolbar = requiredValue(
-      await page.locator(".timeline-toolbar").boundingBox(),
+      await page.locator(".timeline-toolbar").boundingBox()
     );
     assert.ok(play.x >= toolbar.x);
     assert.ok(play.x + play.width <= toolbar.x + toolbar.width);
     await page.locator("#timecode").waitFor({
-      state: "hidden",
+      state: "hidden"
     });
     assert.equal(
       await page.locator(".timeline-toolbar").evaluate(
-        (/** @type {HTMLElement} */ element) => element.scrollWidth,
+        (/** @type {HTMLElement} */ element) => element.scrollWidth
       ),
-      Math.round(toolbar.width),
+      Math.round(toolbar.width)
     );
-    const { EXACTUS_TIMELINE_AUDIT_SCREENSHOT: auditScreenshot } = process.env;
+    const {EXACTUS_TIMELINE_AUDIT_SCREENSHOT: auditScreenshot} = process.env;
     if (auditScreenshot)
       await page.screenshot({
-        path: auditScreenshot,
+        path: auditScreenshot
       });
   });
 });
 test("Choosing a capture in Compare asks the server by artifact id and opens its preview", async t => {
   await browserTest(t, async (page, url) => {
-    const { commands } = await studio(page, url);
+    const {commands} = await studio(page, url);
     await selectWorkspace(page, "compare");
     await page.locator('[data-surface-shot="screen"]').first().click();
     assert.deepEqual((await posted(commands, "screenshot.open")).payload, {
-      artifact_id: "screen",
+      artifact_id: "screen"
     });
     const dialog = page.locator("#screenshot-dialog");
     await dialog.waitFor({
-      state: "visible",
+      state: "visible"
     });
     assert.match(
       await page.locator("#screenshot-preview").getAttribute("src") ?? "",
-      /screenshots\/test\.png$/,
+      /screenshots\/test\.png$/
     );
   });
 });
 test("Each step has an actions menu that moves it and closes on Escape", async t => {
   await browserTest(t, async (page, url) => {
-    const { commands } = await studio(page, url);
+    const {commands} = await studio(page, url);
     const rows = page.locator(".edit-step-row");
     await rows.first().waitFor();
     await rows.nth(1).locator(".edit-step-more").click();
@@ -1054,7 +1054,7 @@ test("Each step has an actions menu that moves it and closes on Escape", async t
     await rows.nth(1).locator(".edit-step-more").click();
     await page
       .getByRole("menuitem", {
-        name: "Move up",
+        name: "Move up"
       })
       .click();
     const move = await posted(commands, "event.move");
@@ -1063,16 +1063,16 @@ test("Each step has an actions menu that moves it and closes on Escape", async t
     assert.equal(
       await page
         .getByRole("menuitem", {
-          name: "Move up",
+          name: "Move up"
         })
         .isDisabled(),
-      true,
+      true
     );
   });
 });
 test("The Flow toolbar duplicates and removes selected steps, and Add action matches Open browser", async t => {
   await browserTest(t, async (page, url) => {
-    const { commands } = await studio(page, url);
+    const {commands} = await studio(page, url);
     const rows = page.locator(".edit-step-row");
     await rows.first().waitFor();
     const duplicate = page.locator("#step-duplicate");
@@ -1083,7 +1083,7 @@ test("The Flow toolbar duplicates and removes selected steps, and Add action mat
     assert.equal(await duplicate.isDisabled(), false);
     assert.equal(
       await duplicate.getAttribute("aria-label"),
-      "Duplicate 1 step",
+      "Duplicate 1 step"
     );
     await duplicate.click();
     const copy = await posted(commands, "event.duplicate");
@@ -1092,7 +1092,7 @@ test("The Flow toolbar duplicates and removes selected steps, and Add action mat
     await page
       .locator("dialog.delete-dialog")
       .getByRole("button", {
-        name: "Delete step",
+        name: "Delete step"
       })
       .click();
     const removed = await posted(commands, "event.delete");
@@ -1105,13 +1105,13 @@ test("The Flow toolbar duplicates and removes selected steps, and Add action mat
     assert.ok(small && small.height < add.height);
     await page.locator("#add-action").click();
     await page.locator('[data-panel-id="actions"]').waitFor({
-      state: "visible",
+      state: "visible"
     });
   });
 });
 test("A step points at a stored selector, sets its targeting and shows why it last warned", async t => {
   await browserTest(t, async (page, url) => {
-    const { commands, snapshot } = await studio(page, url);
+    const {commands, snapshot} = await studio(page, url);
     snapshot.revision += 1;
     snapshot.target_url = "http://localhost/other";
     snapshot.selectors = [
@@ -1125,27 +1125,27 @@ test("A step points at a stored selector, sets its targeting and shows why it la
           {
             url: "http://localhost/",
             at: "2026-10-09T10:00:00",
-            matches: 3,
-          },
-        ],
-      },
+            matches: 3
+          }
+        ]
+      }
     ];
     // The fixture flow is shared between tests, so edit a copy of it.
     const events = snapshot.workspace.flows[0].events.map(
       (/** @type {any} */ event) => ({
-        ...event,
-      }),
+        ...event
+      })
     );
     events[1] = {
       ...events[1],
       selector: undefined,
       selector_id: "sel-card",
       targets: "all",
-      run_mode: "sequential",
+      run_mode: "sequential"
     };
     snapshot.workspace.flows[0] = {
       ...snapshot.workspace.flows[0],
-      events,
+      events
     };
     snapshot.workspace.runs[0].action_records = [
       {
@@ -1154,16 +1154,16 @@ test("A step points at a stored selector, sets its targeting and shows why it la
         error: "Match count: expected 3, found 2",
         unit: {
           index: 1,
-          count: 3,
+          count: 3
         },
         cause: {
           phase: "count",
           message: "Expected 3 matches, found 2",
           expected_count: 3,
           found_count: 2,
-          target_index: 1,
-        },
-      },
+          target_index: 1
+        }
+      }
     ];
     await page.evaluate((/** @type {any} */ state) => {
       const targetWindow = /** @type {StudioTestWindow} */ (window);
@@ -1171,34 +1171,34 @@ test("A step points at a stored selector, sets its targeting and shows why it la
         data: JSON.stringify({
           protocol: 1,
           event: "workspace.changed",
-          payload: state,
-        }),
+          payload: state
+        })
       });
     }, snapshot);
     await page.locator('[data-selector="sel-card"]').click();
     await page.locator("#inspector #selector-form").waitFor();
     assert.equal(
       await page.locator('[data-panel-id="selector-editor"]').count(),
-      0,
+      0
     );
     assert.equal(
-      await page.getByRole("button", { name: "Pick on page" }).isVisible(),
-      true,
+      await page.getByRole("button", {name: "Pick on page"}).isVisible(),
+      true
     );
     assert.equal(
-      await page.getByRole("button", { name: "Highlight on page" }).isVisible(),
-      true,
+      await page.getByRole("button", {name: "Highlight on page"}).isVisible(),
+      true
     );
-    const { EXACTUS_SELECTOR_WIDGET_AUDIT_SCREENSHOT: selectorScreenshot } =
+    const {EXACTUS_SELECTOR_WIDGET_AUDIT_SCREENSHOT: selectorScreenshot} =
       process.env;
     if (selectorScreenshot) {
       await page.locator("#inspector .selector-live-tools").scrollIntoViewIfNeeded();
       await page.locator('[data-panel-id="properties"]').screenshot({
-        path: selectorScreenshot,
+        path: selectorScreenshot
       });
     }
     const badge = page.locator(
-      '.edit-step-row[data-step="save"] .edit-step-checks',
+      '.edit-step-row[data-step="save"] .edit-step-checks'
     );
     await badge.waitFor();
     assert.equal(await badge.textContent(), "Warning");
@@ -1209,21 +1209,21 @@ test("A step points at a stored selector, sets its targeting and shows why it la
     await detail.waitFor();
     assert.equal(
       await detail.locator('[name="selector_id"]').inputValue(),
-      "sel-card",
+      "sel-card"
     );
     assert.deepEqual(
       await detail.locator('[name="selector_id"] option').allTextContents(),
-      ["New expression", "card"],
+      ["New expression", "card"]
     );
     assert.equal(await detail.locator('[name="selector"]').isVisible(), false);
     assert.match(
       await form.locator("[data-field=scope-warning]").textContent() ?? "",
-      /not tested on the page/,
+      /not tested on the page/
     );
     const lastRun = form.locator(".last-run");
     assert.match(
       await lastRun.textContent() ?? "",
-      /Expected 3 matches, found 2/,
+      /Expected 3 matches, found 2/
     );
     assert.match(await lastRun.textContent() ?? "", /match 2 of 3/);
     assert.equal(await form.locator('[name="run_mode"]').isVisible(), true);
@@ -1231,9 +1231,9 @@ test("A step points at a stored selector, sets its targeting and shows why it la
       await form.locator('[name="run_mode"] option[value="parallel"]').evaluate(
         (/** @type {Element} */ option) =>
           /** @type {HTMLOptionElement} */
-          (option).disabled,
+          (option).disabled
       ),
-      true,
+      true
     );
     await form.locator('[name="pace_delay"]').fill("250");
     await form.locator('[name="continue_on_failure"]').check();
@@ -1257,19 +1257,19 @@ test("A collapsed floating window stays a title bar instead of shrinking to a li
     await studio(page, url);
     const panel = page.locator('[data-panel-id="steps"]');
     await panel.locator('[data-panel-action="float"]').first().click({
-      force: true,
+      force: true
     });
     await page.waitForFunction(() =>
       document
         .querySelector('[data-panel-id="steps"]')
-        ?.classList.contains("is-floating"),
+        ?.classList.contains("is-floating")
     );
     const open = await panel.boundingBox();
     await panel.locator('[data-panel-action="collapse"]').click();
     await page.waitForFunction(() =>
       document
         .querySelector('[data-panel-id="steps"]')
-        ?.classList.contains("is-collapsed"),
+        ?.classList.contains("is-collapsed")
     );
     const bar = await panel.boundingBox();
     const header = await panel.locator(":scope > header").boundingBox();
@@ -1280,44 +1280,44 @@ test("A collapsed floating window stays a title bar instead of shrinking to a li
     assert.equal(Math.round(bar.y), Math.round(open.y));
     assert.equal(
       await panel.locator(".panel-title-text").first().isVisible(),
-      true,
+      true
     );
     await panel.locator('[data-panel-action="collapse"]').click();
     await page.waitForFunction(
       () =>
         !document
           .querySelector('[data-panel-id="steps"]')
-          ?.classList.contains("is-collapsed"),
+          ?.classList.contains("is-collapsed")
     );
     const restored = await panel.boundingBox();
     assert.ok(
-      restored && Math.round(restored.height) === Math.round(open.height),
+      restored && Math.round(restored.height) === Math.round(open.height)
     );
   });
 });
 test("The condition builder offers searchable spreadsheet-style tokens", async t => {
   await browserTest(t, async (page, url) => {
-    const { snapshot } = await studio(page, url);
+    const {snapshot} = await studio(page, url);
     snapshot.revision += 1;
     snapshot.condition_vocabulary = [
       {
         name: "flow_succeeded",
         kind: "system",
         value_type: "boolean",
-        detail: "Flow succeeded",
+        detail: "Flow succeeded"
       },
       {
         name: "sel_card_text",
         kind: "probe",
         value_type: "string",
-        detail: "Text",
+        detail: "Text"
       },
       {
         name: "draft_saved",
         kind: "output",
         value_type: "boolean",
-        detail: "Draft saved",
-      },
+        detail: "Draft saved"
+      }
     ];
     snapshot.selectors = [
       {
@@ -1326,22 +1326,22 @@ test("The condition builder offers searchable spreadsheet-style tokens", async t
         expression: ".card",
         expected_count: null,
         checks: [],
-        validated_on: [],
-      },
+        validated_on: []
+      }
     ];
     const events = snapshot.workspace.flows[0].events.map(
       (/** @type {any} */ event) => ({
-        ...event,
-      }),
+        ...event
+      })
     );
     events[1] = {
       ...events[1],
       selector: undefined,
-      selector_id: "sel-card",
+      selector_id: "sel-card"
     };
     snapshot.workspace.flows[0] = {
       ...snapshot.workspace.flows[0],
-      events,
+      events
     };
     await page.evaluate((/** @type {any} */ state) => {
       const targetWindow = /** @type {StudioTestWindow} */ (window);
@@ -1349,35 +1349,35 @@ test("The condition builder offers searchable spreadsheet-style tokens", async t
         data: JSON.stringify({
           protocol: 1,
           event: "workspace.changed",
-          payload: state,
-        }),
+          payload: state
+        })
       });
     }, snapshot);
     await page.locator('.edit-step-row[data-step="save"]').click();
     const input = page.locator('#step-form [name="after_until"]');
     await input.waitFor({
-      state: "attached",
+      state: "attached"
     });
     await input.evaluate((/** @type {HTMLInputElement} */ field) => {
       field.value =
         'contains(sel_card_text, "search-string") and (draft_saved or flow_succeeded)';
       field.dispatchEvent(
         new Event("input", {
-          bubbles: true,
-        }),
+          bubbles: true
+        })
       );
     });
     const field = page.locator(".condition-field").last();
     assert.equal(
       await field.locator(".pill-call .pill-name").textContent(),
-      "contains",
+      "contains"
     );
     assert.equal(
       await field.locator(".pill-name").first().evaluate(
         (/** @type {HTMLElement} */ item) =>
-          getComputedStyle(item).textTransform,
+          getComputedStyle(item).textTransform
       ),
-      "uppercase",
+      "uppercase"
     );
     assert.equal(await field.locator(".pill-slot").count(), 0);
     assert.equal(await field.locator(".pill-add").count(), 0);
@@ -1385,34 +1385,34 @@ test("The condition builder offers searchable spreadsheet-style tokens", async t
     assert.ok(await field.locator("svg.st00").count());
     const colors = await field.locator(".pill-ref").evaluateAll(
       (/** @type {HTMLElement[]} */ items) =>
-        items.map(item => getComputedStyle(item).backgroundColor),
+        items.map(item => getComputedStyle(item).backgroundColor)
     );
     assert.equal(new Set(colors).size, 3);
     await field.locator(".pill-name").first().click();
     await field.locator(".condition-menu-search").fill("mat");
     assert.deepEqual(
       await field.locator(".condition-menu-item strong").allTextContents(),
-      ["matches"],
+      ["matches"]
     );
     await field.locator(".condition-menu-search").press("Escape");
-    const { EXACTUS_EXPRESSION_AUDIT_SCREENSHOT: auditScreenshot } =
+    const {EXACTUS_EXPRESSION_AUDIT_SCREENSHOT: auditScreenshot} =
       process.env;
     if (auditScreenshot) {
       await page.mouse.move(0, 0);
       await field.screenshot({
-        path: auditScreenshot,
+        path: auditScreenshot
       });
     }
     await field.locator(".condition-mode").click();
     assert.equal(
       await field.locator(".condition-editor").getAttribute("data-collapsed"),
-      null,
+      null
     );
   });
 });
 test("The top bar creates projects with unique names and opens the gallery", async t => {
   await browserTest(t, async (page, url) => {
-    const { commands, snapshot } = await studio(page, url);
+    const {commands, snapshot} = await studio(page, url);
     snapshot.revision += 1;
     snapshot.project = {
       slug: "checkout",
@@ -1423,7 +1423,7 @@ test("The top bar creates projects with unique names and opens the gallery", asy
       version: "",
       created_at: "2026-10-01T00:00:00",
       base_url: "",
-      saved: true,
+      saved: true
     };
     snapshot.library = {
       projects: [
@@ -1440,7 +1440,7 @@ test("The top bar creates projects with unique names and opens the gallery", asy
           flows: 3,
           runs: 0,
           base_url: "",
-          legacy: false,
+          legacy: false
         },
         {
           slug: "admin",
@@ -1455,11 +1455,11 @@ test("The top bar creates projects with unique names and opens the gallery", asy
           flows: 1,
           runs: 0,
           base_url: "",
-          legacy: false,
-        },
+          legacy: false
+        }
       ],
       recents: ["checkout", "admin"],
-      tags: ["internal", "web"],
+      tags: ["internal", "web"]
     };
     await page.evaluate((/** @type {any} */ state) => {
       const targetWindow = /** @type {StudioTestWindow} */ (window);
@@ -1467,21 +1467,21 @@ test("The top bar creates projects with unique names and opens the gallery", asy
         data: JSON.stringify({
           protocol: 1,
           event: "workspace.changed",
-          payload: state,
-        }),
+          payload: state
+        })
       });
     }, snapshot);
     assert.equal(await page.locator("#project-name").textContent(), "Checkout");
     await page.locator('[data-bar="new"]').click();
     const dialog = page.locator("dialog.new-project");
     const create = dialog.getByRole("button", {
-      name: "Create project",
+      name: "Create project"
     });
     assert.equal(await create.isDisabled(), true);
     await dialog.locator('input[name="name"]').fill(" checkout ");
     assert.match(
       await dialog.locator(".pd-issue").first().textContent() ?? "",
-      /already exists/,
+      /already exists/
     );
     assert.equal(await create.isDisabled(), true);
     await dialog.locator('input[name="name"]').fill("Billing");
@@ -1492,7 +1492,7 @@ test("The top bar creates projects with unique names and opens the gallery", asy
     assert.equal(made.payload.name, "Billing");
     assert.deepEqual(made.payload.tags, ["web", "Smoke"]);
     await dialog.waitFor({
-      state: "detached",
+      state: "detached"
     });
     await page.locator('[data-bar="open"]').click();
     const gallery = page.locator("dialog.project-gallery");
@@ -1503,7 +1503,7 @@ test("The top bar creates projects with unique names and opens the gallery", asy
     await gallery
       .getByRole("button", {
         name: "Open",
-        exact: true,
+        exact: true
       })
       .click();
     const opened = await posted(commands, "project.open");
@@ -1520,16 +1520,16 @@ test("Icons are inline SVG on one grid, and icon-only buttons have no box in any
         count: icons.length,
         empty: icons.filter(icon => !icon.firstElementChild).length,
         wrongBox: icons.filter(
-          icon => icon.getAttribute("viewBox") !== "0 0 24 24",
+          icon => icon.getAttribute("viewBox") !== "0 0 24 24"
         ).length,
         sized: icons.filter(
-          icon => icon.hasAttribute("width") || icon.hasAttribute("height"),
+          icon => icon.hasAttribute("width") || icon.hasAttribute("height")
         ).length,
         spans: document.querySelectorAll("span.studio-icon").length,
         masks: [...document.querySelectorAll("*")].filter(node => {
           const style = getComputedStyle(node);
           return style.maskImage !== "none" || style.webkitMaskImage !== "none";
-        }).length,
+        }).length
       };
     });
     assert.ok(report.count > 20);
@@ -1539,15 +1539,15 @@ test("Icons are inline SVG on one grid, and icon-only buttons have no box in any
         wrongBox: report.wrongBox,
         sized: report.sized,
         spans: report.spans,
-        masks: report.masks,
+        masks: report.masks
       },
       {
         empty: 0,
         wrongBox: 0,
         sized: 0,
         spans: 0,
-        masks: 0,
-      },
+        masks: 0
+      }
     );
     /** Read the computed style of one element.
      * @param {string} selector Element to inspect.
@@ -1561,35 +1561,35 @@ test("Icons are inline SVG on one grid, and icon-only buttons have no box in any
       page.evaluate((/** @type {string} */ query) => {
         const style = getComputedStyle(
           /** @type {Element} */
-          (document.querySelector(query)),
+          (document.querySelector(query))
         );
         return {
           background: style.backgroundColor,
           border: style.borderTopWidth,
-          color: style.color,
+          color: style.color
         };
       }, selector);
     // Colours animate when the page settles; read them once they have.
     await page.evaluate(() =>
       Promise.all(
-        document.getAnimations().map(animation => animation.finished),
-      ),
+        document.getAnimations().map(animation => animation.finished)
+      )
     );
     const selectors = [
       "#command-palette-open",
       "#timeline-play",
-      ".edit-step-row .edit-step-grip",
+      ".edit-step-row .edit-step-grip"
     ];
     const rests = await Promise.all(selectors.map(look));
     assert.deepEqual(
       rests.map(rest => rest.background),
-      selectors.map(() => "rgba(0, 0, 0, 0)"),
+      selectors.map(() => "rgba(0, 0, 0, 0)")
     );
     await page.locator("#timeline-play").hover();
     await page.evaluate(() =>
       Promise.all(
-        document.getAnimations().map(animation => animation.finished),
-      ),
+        document.getAnimations().map(animation => animation.finished)
+      )
     );
     const hover = await look("#timeline-play");
     assert.equal(hover.background, "rgba(0, 0, 0, 0)");
@@ -1620,48 +1620,48 @@ test("The picker offers selector strategies and warns when a selector is ambiguo
                   {
                     strategy: "css",
                     selector: "button",
-                    matches: 3,
+                    matches: 3
                   },
                   {
                     strategy: "role and name",
                     selector: 'role=button[name="Save"]',
-                    matches: 1,
-                  },
+                    matches: 1
+                  }
                 ],
                 rect: {
                   x: 10,
                   y: 10,
                   width: 50,
-                  height: 20,
-                },
-              },
-            },
-          },
-        }),
+                  height: 20
+                }
+              }
+            }
+          }
+        })
       });
     });
     const strategy = page.locator("#live-target-strategy");
     // The unique strategy is preferred over the first one.
     assert.equal(
       await page.locator("#live-target-selector").inputValue(),
-      'role=button[name="Save"]',
+      'role=button[name="Save"]'
     );
     assert.match(
       await page.locator("#live-target-identity").textContent() || "",
-      /button “Save” · 1 match · main page/,
+      /button “Save” · 1 match · main page/
     );
     await strategy.selectOption({
-      label: "css (3)",
+      label: "css (3)"
     });
     assert.match(
       await page.locator("#live-target-identity").textContent() || "",
-      /3 matches — choose a more specific strategy/,
+      /3 matches — choose a more specific strategy/
     );
     assert.equal(
       await page
         .locator("#live-target-identity")
         .getAttribute("data-ambiguous"),
-      "",
+      ""
     );
   });
 });
@@ -1671,11 +1671,11 @@ for (const mode of [
   "maximized",
   "zoomed",
   "dense",
-  "tall",
-]) {
+  "tall"
+])
   test(`Preview pointer mapping reaches the page centre when ${mode}`, async t => {
     await browserTest(t, async (page, url) => {
-      const { commands } = await studio(page, url);
+      const {commands} = await studio(page, url);
       // A wide frame in the panel exercises the letterbox on one axis.
       const frameWidth = mode === "tall" ? 100 : 200;
       const frameHeight = mode === "tall" ? 200 : 100;
@@ -1693,7 +1693,7 @@ for (const mode of [
         await page.waitForFunction(() =>
           document
             .querySelector('[data-panel-id="target"]')
-            ?.classList.contains("is-floating"),
+            ?.classList.contains("is-floating")
         );
       }
       if (mode === "zoomed" || mode === "dense") {
@@ -1704,7 +1704,7 @@ for (const mode of [
           width: mode === "zoomed" ? 960 : 1440,
           height: mode === "zoomed" ? 600 : 900,
           deviceScaleFactor: mode === "zoomed" ? 1.5 : 2,
-          mobile: false,
+          mobile: false
         });
         await page.waitForTimeout(200);
       }
@@ -1715,13 +1715,13 @@ for (const mode of [
       await image.click({
         position: {
           x: box.width / 2,
-          y: box.height / 2,
-        },
+          y: box.height / 2
+        }
       });
       await posted(
         commands,
         "browser.input",
-        item => item.payload.action === "pointer_down",
+        item => item.payload.action === "pointer_down"
       );
       const click = commands
         .slice(before)
@@ -1733,21 +1733,20 @@ for (const mode of [
       // Keep the tolerance at that rendered precision after letterboxing.
       const scale = Math.min(
         box.width / frameWidth,
-        box.height / frameHeight,
+        box.height / frameHeight
       );
       const xTolerance = Math.max(1.5, 1440 / (frameWidth * scale));
       const yTolerance = Math.max(1.5, 900 / (frameHeight * scale));
       assert.ok(
         Math.abs(click.payload.x - 720) <= xTolerance,
-        `x ${click.payload.x} (tolerance ${xTolerance})`,
+        `x ${click.payload.x} (tolerance ${xTolerance})`
       );
       assert.ok(
         Math.abs(click.payload.y - 450) <= yTolerance,
-        `y ${click.payload.y} (tolerance ${yTolerance})`,
+        `y ${click.payload.y} (tolerance ${yTolerance})`
       );
     });
   });
-}
 test("A floating letterboxed preview aligns the inspected element overlay", async t => {
   await browserTest(t, async (page, url) => {
     await studio(page, url);
@@ -1761,7 +1760,7 @@ test("A floating letterboxed preview aligns the inspected element overlay", asyn
     await page.waitForFunction(() =>
       document
         .querySelector('[data-panel-id="target"]')
-        ?.classList.contains("is-floating"),
+        ?.classList.contains("is-floating")
     );
     await page.evaluate(() => {
       const targetWindow = /** @type {StudioTestWindow} */ (window);
@@ -1778,12 +1777,12 @@ test("A floating letterboxed preview aligns the inspected element overlay", asyn
                   x: 360,
                   y: 225,
                   width: 720,
-                  height: 450,
-                },
-              },
-            },
-          },
-        }),
+                  height: 450
+                }
+              }
+            }
+          }
+        })
       });
     });
     const image = await page.locator("#live-target-image").boundingBox();
@@ -1794,17 +1793,17 @@ test("A floating letterboxed preview aligns the inspected element overlay", asyn
       x: image.x + (image.width - 200 * scale) / 2,
       y: image.y + (image.height - 100 * scale) / 2,
       width: 200 * scale,
-      height: 100 * scale,
+      height: 100 * scale
     };
     for (const [actual, expected] of [
       [overlay.x, pageBox.x + pageBox.width / 4],
       [overlay.y, pageBox.y + pageBox.height / 4],
       [overlay.width, pageBox.width / 2],
-      [overlay.height, pageBox.height / 2],
+      [overlay.height, pageBox.height / 2]
     ])
       assert.ok(
         Math.abs(actual - expected) <= 1,
-        `${actual} differs from ${expected}`,
+        `${actual} differs from ${expected}`
       );
   });
 });
@@ -1816,12 +1815,12 @@ test("The live preview names its state and stops fetching while hidden", async t
     await page.waitForFunction(() =>
       document
         .querySelector(".live-target-frame")
-        ?.hasAttribute("data-preview"),
+        ?.hasAttribute("data-preview")
     );
     assert.ok(
       ["loading", "live", "stale", "closed", "error"].includes(
-        await frame.getAttribute("data-preview") || "",
-      ),
+        await frame.getAttribute("data-preview") || ""
+      )
     );
     // Graph has no Browser panel, so the preview is hidden there.
     await selectWorkspace(page, "graph");
@@ -1835,7 +1834,7 @@ test("The live preview names its state and stops fetching while hidden", async t
 });
 test("A finished recording can be renamed, moved and deleted from its menu, but not while capturing", async t => {
   await browserTest(t, async (page, url) => {
-    const { commands, snapshot } = await studio(page, url);
+    const {commands, snapshot} = await studio(page, url);
     snapshot.revision += 1;
     snapshot.workspace.flows[0] = {
       ...snapshot.workspace.flows[0],
@@ -1847,16 +1846,16 @@ test("A finished recording can be renamed, moved and deleted from its menu, but 
           selector: "#continue",
           layer: "interaction",
           elapsed_ms: 2350,
-          recording_group_id: "take-one",
-        },
+          recording_group_id: "take-one"
+        }
       ],
       recordings: [
         {
           id: "take-one",
           label: "Recording 1",
-          start_ms: 2100,
-        },
-      ],
+          start_ms: 2100
+        }
+      ]
     };
     /** Emit the current snapshot as a real-time notification.
      * @returns {Promise<void>}
@@ -1868,8 +1867,8 @@ test("A finished recording can be renamed, moved and deleted from its menu, but 
           data: JSON.stringify({
             protocol: 1,
             event: "workspace.changed",
-            payload: state,
-          }),
+            payload: state
+          })
         });
       }, snapshot);
     await update();
@@ -1880,23 +1879,23 @@ test("A finished recording can be renamed, moved and deleted from its menu, but 
     await page.keyboard.press("Enter");
     await page
       .getByRole("menuitem", {
-        name: "Start 1 s later",
+        name: "Start 1 s later"
       })
       .click();
     const moved = await posted(commands, "recording.retime");
     assert.deepEqual(moved.payload, {
       recording_id: "take-one",
-      delta_ms: "1000",
+      delta_ms: "1000"
     });
     assert.equal(
       await page.locator(".recording-group").getAttribute("open"),
-      "",
+      ""
     );
     // Rename saves on Enter, keeps the old name when empty, and cancels on Escape.
     await more.click();
     await page
       .getByRole("menuitem", {
-        name: "Rename",
+        name: "Rename"
       })
       .click();
     const name = page.locator(".recording-rename");
@@ -1907,52 +1906,52 @@ test("A finished recording can be renamed, moved and deleted from its menu, but 
     await more.click();
     await page
       .getByRole("menuitem", {
-        name: "Rename",
+        name: "Rename"
       })
       .click();
     await page.locator(".recording-rename").fill("");
     await page.locator(".recording-rename").press("Enter");
     assert.match(
       await page.locator("#status").textContent() || "",
-      /needs a name/,
+      /needs a name/
     );
     assert.equal(
       commands.filter(item => item.command === "recording.rename").length,
-      1,
+      1
     );
     // Deleting asks once and states what goes with it.
     await more.click();
     await page
       .getByRole("menuitem", {
-        name: "Delete recording",
+        name: "Delete recording"
       })
       .click();
     assert.match(
       await page.locator(".delete-dialog").textContent() || "",
-      /1 action/,
+      /1 action/
     );
     await page
       .getByRole("button", {
-        name: "Keep recording",
+        name: "Keep recording"
       })
       .click();
     assert.equal(
       commands.filter(item => item.command === "recording.delete").length,
-      0,
+      0
     );
     await more.click();
     await page
       .getByRole("menuitem", {
-        name: "Delete recording",
+        name: "Delete recording"
       })
       .click();
     await page
       .getByRole("button", {
-        name: "Delete recording",
+        name: "Delete recording"
       })
       .click();
     assert.deepEqual((await posted(commands, "recording.delete")).payload, {
-      recording_id: "take-one",
+      recording_id: "take-one"
     });
     // While the same recording is capturing, its menu stays closed.
     snapshot.revision += 1;
@@ -1965,13 +1964,13 @@ test("A finished recording can be renamed, moved and deleted from its menu, but 
 });
 test("Arrow conditions are edited atomically in the dockable Graph inspector", async t => {
   await browserTest(t, async (page, url) => {
-    const { commands } = await studio(page, url);
+    const {commands} = await studio(page, url);
     await selectWorkspace(page, "graph");
     assert.equal(
       await page
         .locator(".edge-table, #connection-form, .graph-node-action")
         .count(),
-      0,
+      0
     );
     await page.locator(".composition-link").first().press("Enter");
     const form = page.locator(".graph-connection-form");
@@ -1989,13 +1988,13 @@ test("Arrow conditions are edited atomically in the dockable Graph inspector", a
     assert.equal(update.payload.max_traversals, 4);
     assert.equal(
       commands.some(item => item.command === "edge.remove"),
-      false,
+      false
     );
   });
 });
 test("Creating a flow updates the shared Flows panel and graph from one snapshot", async t => {
   await browserTest(t, async (page, url) => {
-    const { snapshot } = await studio(page, url);
+    const {snapshot} = await studio(page, url);
     const shared = await page
       .locator('[data-panel-id="workspace"]')
       .elementHandle();
@@ -2012,7 +2011,7 @@ test("Creating a flow updates the shared Flows panel and graph from one snapshot
         ...flow,
         id: `new-${created}`,
         name: `New flow ${created}`,
-        events: [],
+        events: []
       });
       snapshot.revision++;
       await route.fulfill({
@@ -2020,8 +2019,8 @@ test("Creating a flow updates the shared Flows panel and graph from one snapshot
           protocol: 1,
           id: request.id,
           ok: true,
-          result: snapshot,
-        },
+          result: snapshot
+        }
       });
     });
     await page.locator('[data-cmd="flow.create"]').first().click();
@@ -2032,9 +2031,9 @@ test("Creating a flow updates the shared Flows panel and graph from one snapshot
       await shared.evaluate(
         /** @param {HTMLElement} node */
         node =>
-          node === document.querySelector('[data-panel-id="workspace"]'),
+          node === document.querySelector('[data-panel-id="workspace"]')
       ),
-      true,
+      true
     );
     await page.locator('[data-cmd="flow.create"]').click();
     await page.locator('[data-node-flow="new-2"]').waitFor();
@@ -2043,7 +2042,7 @@ test("Creating a flow updates the shared Flows panel and graph from one snapshot
     await selectWorkspace(page, "edit");
     assert.equal(
       await page.locator('#flows [data-flow="new-2"]').isVisible(),
-      true,
+      true
     );
   });
 });
@@ -2063,8 +2062,8 @@ test("A rejected arrow property save retains the condition draft", async t => {
           protocol: 1,
           id: request.id,
           ok: false,
-          error: "Revision conflict",
-        },
+          error: "Revision conflict"
+        }
       });
     });
     const form = page.locator(".graph-connection-form");
@@ -2074,19 +2073,19 @@ test("A rejected arrow property save retains the condition draft", async t => {
     await form
       .getByRole("status")
       .filter({
-        hasText: "Revision conflict",
+        hasText: "Revision conflict"
       })
       .waitFor();
     assert.equal(
       await form.locator('[name="condition_expression"]').inputValue(),
-      "result == true",
+      "result == true"
     );
     assert.equal(await form.locator('[type="submit"]').isDisabled(), false);
   });
 });
 test("Graph connections are keyboard-selectable, removable and fit inside a compact viewport", async t => {
   await browserTest(t, async (page, url) => {
-    const { commands } = await studio(page, url);
+    const {commands} = await studio(page, url);
     await selectWorkspace(page, "graph");
     assert.ok(await page.locator('[data-panel-id="properties"]').isVisible());
     const connection = page.locator(".composition-link").first();
@@ -2094,16 +2093,16 @@ test("Graph connections are keyboard-selectable, removable and fit inside a comp
     assert.equal(await connection.getAttribute("aria-pressed"), "true");
     assert.equal(
       await page.locator(".graph-connection-inspector h2").textContent(),
-      "Connection",
+      "Connection"
     );
     assert.match(
       await page.locator(".graph-connection-details").textContent(),
-      /Checkout.*Cleanup/,
+      /Checkout.*Cleanup/
     );
     await page
       .getByRole("button", {
         name: "Remove connection",
-        exact: true,
+        exact: true
       })
       .click();
     const remove = await posted(commands, "edge.remove");
@@ -2111,19 +2110,19 @@ test("Graph connections are keyboard-selectable, removable and fit inside a comp
     assert.equal(remove.payload.priority, 1);
     await page.setViewportSize({
       width: 390,
-      height: 844,
+      height: 844
     });
     assert.equal(
       await page
         .locator('.mobile-panel-tabs [data-mobile-panel="steps"]')
         .textContent(),
-      "Graph",
+      "Graph"
     );
     assert.equal(
       await page
         .locator('.mobile-panel-tabs [data-mobile-panel="runs"]')
         .isVisible(),
-      false,
+      false
     );
     await page
       .locator('.mobile-panel-tabs [data-mobile-panel="steps"]')
@@ -2149,15 +2148,15 @@ test("Graph connections are keyboard-selectable, removable and fit inside a comp
         .locator(".flow-node")
         .first()
         .evaluate(
-          (/** @type {HTMLElement} */ node) => getComputedStyle(node).position,
+          (/** @type {HTMLElement} */ node) => getComputedStyle(node).position
         ),
-      "absolute",
+      "absolute"
     );
     await page.locator('[data-graph-output="second"]').press("Enter");
     await page.locator("#graph").press("Escape");
     assert.equal(
       await page.locator("#graph").getAttribute("data-connecting"),
-      null,
+      null
     );
   });
 });
@@ -2167,7 +2166,7 @@ test("Graph connections are keyboard-selectable, removable and fit inside a comp
  */
 const savedLayout = page =>
   page.evaluate(() =>
-    JSON.parse(localStorage.getItem("studio.dock-grid.v1") ?? "null"),
+    JSON.parse(localStorage.getItem("studio.dock-grid.v1") ?? "null")
   );
 /** Assert panels neither overlap nor leave the workbench and fill all of it.
  * @param {Record<string,{x:number,y:number,width:number,height:number}>} boxes
@@ -2180,12 +2179,12 @@ const assertTiled = (boxes, area) => {
   for (const [id, box] of list) {
     assert.ok(
       box.x >= area.x - 1 && box.y >= area.y - 1,
-      `${id} starts outside`,
+      `${id} starts outside`
     );
     assert.ok(
       box.x + box.width <= area.x + area.width + 1 &&
         box.y + box.height <= area.y + area.height + 1,
-      `${id} ends outside`,
+      `${id} ends outside`
     );
     covered += box.width * box.height;
   }
@@ -2202,7 +2201,7 @@ const assertTiled = (boxes, area) => {
         Math.min(a.y + a.height, b.y + b.height) - Math.max(a.y, b.y);
       assert.ok(
         across < 2 || down < 2,
-        `${firstEntry[0]} overlaps ${secondEntry[0]}`,
+        `${firstEntry[0]} overlaps ${secondEntry[0]}`
       );
     }
   assert.ok(covered / (area.width * area.height) > 0.97, `gaps: ${covered}`);
@@ -2222,10 +2221,10 @@ const dragPanel = async (page, id, to, release = true) => {
   await page.mouse.move(header.x + 6, header.y + header.height / 2);
   await page.mouse.down();
   await page.mouse.move(header.x + 40, header.y + 40, {
-    steps: 3,
+    steps: 3
   });
   await page.mouse.move(to.x, to.y, {
-    steps: 10,
+    steps: 10
   });
   const preview = await page.evaluate(() => {
     const drop = document.querySelector(".dock-drop:not([hidden])");
@@ -2233,7 +2232,7 @@ const dragPanel = async (page, id, to, release = true) => {
       kind: drop?.getAttribute("data-kind") ?? null,
       blocked: drop?.hasAttribute("data-blocked") ?? false,
       selected: window.getSelection()?.toString() ?? "",
-      dragging: document.body.classList.contains("panel-dock-dragging"),
+      dragging: document.body.classList.contains("panel-dock-dragging")
     };
   });
   assert.equal(preview.selected, "", "dragging must not select text");
@@ -2245,7 +2244,7 @@ test("Dock grid panels tile the workspace and share one set of track lines", asy
   await browserTest(t, async (page, url) => {
     await page.setViewportSize({
       width: 1440,
-      height: 900,
+      height: 900
     });
     await studio(page, url);
     const boxes = await panelBoxes(page);
@@ -2254,7 +2253,7 @@ test("Dock grid panels tile the workspace and share one set of track lines", asy
       "steps",
       "target",
       "timeline",
-      "workspace",
+      "workspace"
     ]);
     const area = await page.locator(".workbench").boundingBox();
     assertTiled(boxes, area);
@@ -2262,30 +2261,30 @@ test("Dock grid panels tile the workspace and share one set of track lines", asy
     assert.ok(
       Math.abs(
         requiredValue(boxes[panelKeys.target]).x -
-          requiredValue(boxes[panelKeys.properties]).x,
-      ) <= 1,
+          requiredValue(boxes[panelKeys.properties]).x
+      ) <= 1
     );
     assert.ok(
       Math.abs(
         requiredValue(boxes[panelKeys.target]).width -
-          requiredValue(boxes[panelKeys.properties]).width,
-      ) <= 1,
+          requiredValue(boxes[panelKeys.properties]).width
+      ) <= 1
     );
     assert.ok(
       Math.abs(
         requiredValue(boxes[panelKeys.workspace]).x +
           requiredValue(boxes[panelKeys.workspace]).width +
           1 -
-          requiredValue(boxes[panelKeys.steps]).x,
-      ) <= 1,
+          requiredValue(boxes[panelKeys.steps]).x
+      ) <= 1
     );
     // The timeline fills the area beside the full-height Flows panel.
     assert.ok(
       Math.abs(
         requiredValue(boxes[panelKeys.timeline]).x +
           requiredValue(boxes[panelKeys.timeline]).width -
-          (area.x + area.width),
-      ) <= 1,
+          (area.x + area.width)
+      ) <= 1
     );
     // Every handle sits on an edge shared by panels.
     const edges = new Set(
@@ -2293,8 +2292,8 @@ test("Dock grid panels tile the workspace and share one set of track lines", asy
         Math.round(box.x),
         Math.round(box.x + box.width),
         Math.round(box.y),
-        Math.round(box.y + box.height),
-      ]),
+        Math.round(box.y + box.height)
+      ])
     );
     const handles = await page
       .locator(".dock-handle")
@@ -2306,10 +2305,10 @@ test("Dock grid panels tile the workspace and share one set of track lines", asy
             line: Math.round(
               node.getAttribute("data-axis") === "c"
                 ? box.x + box.width / 2
-                : box.y + box.height / 2,
-            ),
+                : box.y + box.height / 2
+            )
           };
-        }),
+        })
       );
     assert.ok(handles.length >= 3);
     for (const handle of handles)
@@ -2317,8 +2316,8 @@ test("Dock grid panels tile the workspace and share one set of track lines", asy
         [...edges].some(edge => Math.abs(edge - handle.line) <= 2),
         JSON.stringify({
           handle,
-          edges: [...edges],
-        }),
+          edges: [...edges]
+        })
       );
   });
 });
@@ -2326,7 +2325,7 @@ test("Resizing a shared track line moves it for every panel and is remembered", 
   await browserTest(t, async (page, url) => {
     await page.setViewportSize({
       width: 1440,
-      height: 900,
+      height: 900
     });
     await studio(page, url);
     const handle = page.locator('.dock-handle[data-axis="c"]').first();
@@ -2335,15 +2334,15 @@ test("Resizing a shared track line moves it for every panel and is remembered", 
     await page.mouse.move(line.x + line.width / 2, line.y + 120);
     await page.mouse.down();
     await page.mouse.move(line.x + line.width / 2 + 40, line.y + 120, {
-      steps: 4,
+      steps: 4
     });
     const moving = await handle.boundingBox();
     assert.ok(
       Math.abs(moving.x - line.x - 40) <= 2,
-      "the marker follows the pointer",
+      "the marker follows the pointer"
     );
     await page.mouse.move(line.x + line.width / 2 + 60, line.y + 120, {
-      steps: 4,
+      steps: 4
     });
     await page.mouse.up();
     const after = await panelBoxes(page);
@@ -2351,15 +2350,15 @@ test("Resizing a shared track line moves it for every panel and is remembered", 
       Math.abs(
         requiredValue(after[panelKeys.workspace]).width -
           requiredValue(before[panelKeys.workspace]).width -
-          60,
-      ) <= 2,
+          60
+      ) <= 2
     );
     assert.ok(
       Math.abs(
         requiredValue(before[panelKeys.steps]).width -
           requiredValue(after[panelKeys.steps]).width -
-          60,
-      ) <= 2,
+          60
+      ) <= 2
     );
     await handle.press("ArrowRight");
     const nudged = await panelBoxes(page);
@@ -2367,20 +2366,20 @@ test("Resizing a shared track line moves it for every panel and is remembered", 
       Math.abs(
         requiredValue(nudged[panelKeys.workspace]).width -
           requiredValue(after[panelKeys.workspace]).width -
-          16,
-      ) <= 2,
+          16
+      ) <= 2
     );
     // A panel never shrinks below its minimum.
     await page.mouse.move(line.x + line.width / 2 + 76, line.y + 120);
     await page.mouse.down();
     await page.mouse.move(2, line.y + 120, {
-      steps: 8,
+      steps: 8
     });
     await page.mouse.up();
     const floor = await panelBoxes(page);
     assert.ok(
       requiredValue(floor[panelKeys.workspace]).width >= 120,
-      JSON.stringify(floor[panelKeys.workspace]),
+      JSON.stringify(floor[panelKeys.workspace])
     );
     await page.reload();
     await page.waitForSelector(".dock-handle");
@@ -2388,8 +2387,8 @@ test("Resizing a shared track line moves it for every panel and is remembered", 
     assert.ok(
       Math.abs(
         requiredValue(restored[panelKeys.workspace]).width -
-          requiredValue(floor[panelKeys.workspace]).width,
-      ) <= 1,
+          requiredValue(floor[panelKeys.workspace]).width
+      ) <= 1
     );
   });
 });
@@ -2397,7 +2396,7 @@ test("Collapsing frees space for neighbours by position and restoring returns th
   await browserTest(t, async (page, url) => {
     await page.setViewportSize({
       width: 1440,
-      height: 900,
+      height: 900
     });
     await studio(page, url);
     /** Toggle a panel's collapsed state through its visible header control.
@@ -2416,28 +2415,28 @@ test("Collapsing frees space for neighbours by position and restoring returns th
       await page
         .locator('[data-panel-id="timeline"]')
         .getAttribute("data-collapse"),
-      "v",
+      "v"
     );
     assert.ok(
-      Math.abs(requiredValue(bar[panelKeys.timeline]).height - 36) <= 1,
+      Math.abs(requiredValue(bar[panelKeys.timeline]).height - 36) <= 1
     );
     assert.ok(
       requiredValue(bar[panelKeys.steps]).height >
-        requiredValue(start[panelKeys.steps]).height + 150,
+        requiredValue(start[panelKeys.steps]).height + 150
     );
     await toggle("timeline");
     const back = await panelBoxes(page);
     assert.ok(
       Math.abs(
         requiredValue(back[panelKeys.timeline]).height -
-          requiredValue(start[panelKeys.timeline]).height,
-      ) <= 1,
+          requiredValue(start[panelKeys.timeline]).height
+      ) <= 1
     );
     assert.ok(
       Math.abs(
         requiredValue(back[panelKeys.steps]).height -
-          requiredValue(start[panelKeys.steps]).height,
-      ) <= 1,
+          requiredValue(start[panelKeys.steps]).height
+      ) <= 1
     );
     // The left panel collapses sideways into a vertical bar.
     await toggle("workspace");
@@ -2446,52 +2445,52 @@ test("Collapsing frees space for neighbours by position and restoring returns th
       await page
         .locator('[data-panel-id="workspace"]')
         .getAttribute("data-collapse"),
-      "h",
+      "h"
     );
     assert.ok(
-      Math.abs(requiredValue(side[panelKeys.workspace]).width - 36) <= 1,
+      Math.abs(requiredValue(side[panelKeys.workspace]).width - 36) <= 1
     );
     assert.ok(
       requiredValue(side[panelKeys.steps]).width >
-        requiredValue(start[panelKeys.steps]).width + 150,
+        requiredValue(start[panelKeys.steps]).width + 150
     );
     await toggle("workspace");
     const sideBack = await panelBoxes(page);
     assert.ok(
       Math.abs(
         requiredValue(sideBack[panelKeys.workspace]).width -
-          requiredValue(start[panelKeys.workspace]).width,
-      ) <= 1,
+          requiredValue(start[panelKeys.workspace]).width
+      ) <= 1
     );
     assert.ok(
       Math.abs(
         requiredValue(sideBack[panelKeys.steps]).width -
-          requiredValue(start[panelKeys.steps]).width,
-      ) <= 1,
+          requiredValue(start[panelKeys.steps]).width
+      ) <= 1
     );
     // Stacked panels collapse vertically and the neighbour fills the column.
     await toggle("properties");
     const stacked = await panelBoxes(page);
     assert.ok(
-      Math.abs(requiredValue(stacked[panelKeys.properties]).height - 36) <= 1,
+      Math.abs(requiredValue(stacked[panelKeys.properties]).height - 36) <= 1
     );
     assert.ok(
       requiredValue(stacked[panelKeys.target]).height >
-        requiredValue(start[panelKeys.target]).height + 150,
+        requiredValue(start[panelKeys.target]).height + 150
     );
     await toggle("properties");
     const restored = await panelBoxes(page);
     assert.ok(
       Math.abs(
         requiredValue(restored[panelKeys.target]).height -
-          requiredValue(start[panelKeys.target]).height,
-      ) <= 1,
+          requiredValue(start[panelKeys.target]).height
+      ) <= 1
     );
     assert.ok(
       Math.abs(
         requiredValue(restored[panelKeys.properties]).height -
-          requiredValue(start[panelKeys.properties]).height,
-      ) <= 1,
+          requiredValue(start[panelKeys.properties]).height
+      ) <= 1
     );
     // A collapsed panel keeps only the chevron and its icon.
     await toggle("target");
@@ -2499,7 +2498,7 @@ test("Collapsing frees space for neighbours by position and restoring returns th
       [...document.querySelectorAll('[data-panel-id="target"] > header *')]
         .filter(node => node.getBoundingClientRect().width > 0)
         .map(node => node.className)
-        .filter(name => /panel-title-text|status|address/.test(name)),
+        .filter(name => /panel-title-text|status|address/.test(name))
     );
     assert.deepEqual(visible, []);
   });
@@ -2508,7 +2507,7 @@ test("Dragging a panel docks it beside another, swaps places, or docks along the
   await browserTest(t, async (page, url) => {
     await page.setViewportSize({
       width: 1440,
-      height: 900,
+      height: 900
     });
     await studio(page, url);
     const area = await page.locator(".workbench").boundingBox();
@@ -2522,39 +2521,39 @@ test("Dragging a panel docks it beside another, swaps places, or docks along the
       "properties",
       {
         x: requiredValue(steps).x + 12,
-        y: requiredValue(steps).y + requiredValue(steps).height / 2,
+        y: requiredValue(steps).y + requiredValue(steps).height / 2
       },
-      false,
+      false
     );
     assert.equal(near.kind, "edge");
     await page.keyboard.press("Escape");
     await page.mouse.up();
     assert.equal(
       requiredValue((await panelBoxes(page))[panelKeys.properties]).grid,
-      requiredValue(start[panelKeys.properties]).grid,
+      requiredValue(start[panelKeys.properties]).grid
     );
     // Dropping on a panel's edge places it beside that panel.
     await dragPanel(page, "properties", {
       x: requiredValue(steps).x + 12,
-      y: requiredValue(steps).y + requiredValue(steps).height / 2,
+      y: requiredValue(steps).y + requiredValue(steps).height / 2
     });
     const beside = await panelBoxes(page);
     assertTiled(beside, area);
     assert.ok(
       requiredValue(beside[panelKeys.properties]).x <
-        requiredValue(beside[panelKeys.steps]).x,
+        requiredValue(beside[panelKeys.steps]).x
     );
     assert.ok(
       requiredValue(beside[panelKeys.properties]).x >=
         requiredValue(beside[panelKeys.workspace]).x +
           requiredValue(beside[panelKeys.workspace]).width -
-          1,
+          1
     );
     assert.ok(
       Math.abs(
         requiredValue(beside[panelKeys.properties]).height -
-          requiredValue(beside[panelKeys.steps]).height,
-      ) <= 2,
+          requiredValue(beside[panelKeys.steps]).height
+      ) <= 2
     );
     assert.ok((await savedLayout(page)).cells.properties);
     // Dropping on the middle of a panel swaps the two.
@@ -2564,9 +2563,9 @@ test("Dragging a panel docks it beside another, swaps places, or docks along the
       "workspace",
       {
         x: requiredValue(middle).x + requiredValue(middle).width / 2,
-        y: requiredValue(middle).y + requiredValue(middle).height / 2,
+        y: requiredValue(middle).y + requiredValue(middle).height / 2
       },
-      false,
+      false
     );
     assert.equal(swapPreview.kind, "swap");
     await page.mouse.up();
@@ -2574,24 +2573,24 @@ test("Dragging a panel docks it beside another, swaps places, or docks along the
     assertTiled(swapped, area);
     assert.ok(
       requiredValue(swapped[panelKeys.workspace]).x >
-        requiredValue(swapped[panelKeys.steps]).x,
+        requiredValue(swapped[panelKeys.steps]).x
     );
     // Dropping at the window edge docks along the whole edge.
     await dragPanel(page, "target", {
       x: area.x + 6,
-      y: area.y + area.height / 2,
+      y: area.y + area.height / 2
     });
     const outer = await panelBoxes(page);
     assertTiled(outer, area);
     assert.ok(Math.abs(requiredValue(outer[panelKeys.target]).x - area.x) <= 1);
     assert.ok(
       Math.abs(requiredValue(outer[panelKeys.target]).height - area.height) <=
-        1,
+        1
     );
     // A drop that would leave a panel too small is refused.
     await page.setViewportSize({
       width: 1000,
-      height: 700,
+      height: 700
     });
     const tiny = (await panelBoxes(page))[panelKeys.timeline];
     const refused = await dragPanel(
@@ -2599,9 +2598,9 @@ test("Dragging a panel docks it beside another, swaps places, or docks along the
       "steps",
       {
         x: requiredValue(tiny).x + requiredValue(tiny).width - 8,
-        y: requiredValue(tiny).y + requiredValue(tiny).height / 2,
+        y: requiredValue(tiny).y + requiredValue(tiny).height / 2
       },
-      false,
+      false
     );
     assert.ok(refused.kind);
     await page.keyboard.press("Escape");
@@ -2612,7 +2611,7 @@ test("The panel menu docks, places beside, floats and resets", async t => {
   await browserTest(t, async (page, url) => {
     await page.setViewportSize({
       width: 1440,
-      height: 900,
+      height: 900
     });
     await studio(page, url);
     const area = await page.locator(".workbench").boundingBox();
@@ -2628,12 +2627,12 @@ test("The panel menu docks, places beside, floats and resets", async t => {
     const left = await panelBoxes(page);
     assertTiled(left, area);
     assert.ok(
-      Math.abs(requiredValue(left[panelKeys.properties]).x - area.x) <= 1,
+      Math.abs(requiredValue(left[panelKeys.properties]).x - area.x) <= 1
     );
     assert.ok(
       Math.abs(
-        requiredValue(left[panelKeys.properties]).height - area.height,
-      ) <= 2,
+        requiredValue(left[panelKeys.properties]).height - area.height
+      ) <= 2
     );
     await menu();
     await properties
@@ -2644,20 +2643,20 @@ test("The panel menu docks, places beside, floats and resets", async t => {
     assertTiled(below, area);
     assert.ok(
       requiredValue(below[panelKeys.properties]).y >
-        requiredValue(below[panelKeys.steps]).y,
+        requiredValue(below[panelKeys.steps]).y
     );
     // Floating removes the panel from the grid and docking returns it.
     await properties.locator('[data-panel-action="float"]').click();
     assert.ok(
       await properties.evaluate((/** @type {HTMLElement} */ node) =>
-        node.classList.contains("is-floating"),
-      ),
+        node.classList.contains("is-floating")
+      )
     );
     assert.equal(
       await properties.evaluate(
-        (/** @type {HTMLElement} */ node) => getComputedStyle(node).position,
+        (/** @type {HTMLElement} */ node) => getComputedStyle(node).position
       ),
-      "fixed",
+      "fixed"
     );
     assert.equal((await panelBoxes(page))[panelKeys.properties], undefined);
     await properties.locator('[data-panel-action="float"]').click();
@@ -2676,20 +2675,20 @@ test("Steps reorder by dragging and clips retime by dragging along the timeline"
   await browserTest(t, async (page, url) => {
     await page.setViewportSize({
       width: 1440,
-      height: 900,
+      height: 900
     });
-    const { commands } = await studio(page, url);
+    const {commands} = await studio(page, url);
     const rows = page.locator(".edit-step-row");
     const first = await rows.nth(0).boundingBox();
     const third = await rows.nth(2).boundingBox();
     await page.mouse.move(first.x + 120, first.y + first.height / 2);
     await page.mouse.down();
     await page.mouse.move(first.x + 120, third.y + third.height - 4, {
-      steps: 8,
+      steps: 8
     });
     assert.equal(
       await page.evaluate(() => window.getSelection()?.toString()),
-      "",
+      ""
     );
     assert.ok(await page.locator(".edit-step-row[data-drop]").count());
     await page.mouse.up();
@@ -2708,7 +2707,7 @@ test("Steps reorder by dragging and clips retime by dragging along the timeline"
     await page.mouse.move(box.x + 20, box.y + box.height / 2);
     await page.mouse.down();
     await page.mouse.move(box.x + 20 + 96, box.y + box.height / 2, {
-      steps: 6,
+      steps: 6
     });
     assert.ok(await page.locator(".timeline-drop-line").count());
     await page.mouse.up();
@@ -2721,7 +2720,7 @@ test("Text is never selectable outside inputs, even while pressing and dragging"
   await browserTest(t, async (page, url) => {
     await page.setViewportSize({
       width: 1440,
-      height: 900,
+      height: 900
     });
     await studio(page, url);
     await page.locator(".edit-step-row").first().dblclick();
@@ -2729,20 +2728,20 @@ test("Text is never selectable outside inputs, even while pressing and dragging"
     await page.locator("body").press("Control+a");
     assert.equal(
       await page.evaluate(() => window.getSelection()?.toString()),
-      "",
+      ""
     );
     assert.equal(
       await page.evaluate(() => getComputedStyle(document.body).userSelect),
-      "none",
+      "none"
     );
     assert.equal(
       await page
         .locator(".inspector-content input")
         .first()
         .evaluate(
-          (/** @type {Element} */ node) => getComputedStyle(node).userSelect,
+          (/** @type {Element} */ node) => getComputedStyle(node).userSelect
         ),
-      "text",
+      "text"
     );
   });
 });
@@ -2750,7 +2749,7 @@ test("Panel content adapts to the width of its panel", async t => {
   await browserTest(t, async (page, url) => {
     await page.setViewportSize({
       width: 1440,
-      height: 900,
+      height: 900
     });
     await studio(page, url);
     const label = page
@@ -2758,55 +2757,55 @@ test("Panel content adapts to the width of its panel", async t => {
       .first();
     const tools = page.locator(".timeline-tools");
     await label.waitFor({
-      state: "visible",
+      state: "visible"
     });
     // The timeline sits beside the 232 px Flows panel, so the panel is
     // narrower than the window by that much.
     await page.setViewportSize({
       width: 1300,
-      height: 900,
+      height: 900
     });
     await label.waitFor({
-      state: "hidden",
+      state: "hidden"
     });
     await tools.waitFor({
-      state: "visible",
+      state: "visible"
     });
     await page.setViewportSize({
       width: 1100,
-      height: 900,
+      height: 900
     });
     await tools.waitFor({
-      state: "hidden",
+      state: "hidden"
     });
     assert.ok(await page.locator(".timeline-timecode").isVisible());
     // Narrowing the panel itself, not the window, triggers the same change.
     await page.setViewportSize({
       width: 1440,
-      height: 900,
+      height: 900
     });
     await tools.waitFor({
-      state: "visible",
+      state: "visible"
     });
     const flows = page.locator('[data-panel-id="workspace"]');
     const title = flows.locator(".panel-title-text");
     await title.waitFor({
-      state: "visible",
+      state: "visible"
     });
     const handle = page.locator('.dock-handle[data-axis="c"]').first();
     await handle.waitFor({
-      state: "visible",
+      state: "visible"
     });
     const line = await handle.boundingBox();
     assert.ok(line);
     await page.mouse.move(line.x + line.width / 2, line.y + 100);
     await page.mouse.down();
     await page.mouse.move(line.x - 400, line.y + 100, {
-      steps: 8,
+      steps: 8
     });
     await page.mouse.up();
     await title.waitFor({
-      state: "hidden",
+      state: "hidden"
     });
     assert.ok(await flows.locator(".panel-title .studio-icon").isVisible());
   });
@@ -2820,22 +2819,22 @@ test("Graph has its own panels, and the Flows panel is one component shared with
     assert.deepEqual(Object.keys(graph).sort(), [
       "composition",
       "properties",
-      "workspace",
+      "workspace"
     ]);
     assert.equal(
       await page.locator('[data-panel-id="timeline"]').isVisible(),
-      false,
+      false
     );
     assert.equal(
       await page.locator('[data-panel-id="target"]').isVisible(),
-      false,
+      false
     );
     // Flows sits in the same place and has the same size in both workspaces.
     for (const key of /** @type {const} */ (["x", "y", "width", "height"]))
       assert.equal(
         requiredValue(graph[panelKeys.workspace])[key],
         requiredValue(edit[panelKeys.workspace])[key],
-        key,
+        key
       );
     // Collapsing it in Graph collapses the same panel in Edit.
     const library = page.locator('[data-panel-id="workspace"]');
@@ -2845,7 +2844,7 @@ test("Graph has its own panels, and the Flows panel is one component shared with
       await library
         .locator('[data-panel-action="collapse"]')
         .getAttribute("aria-expanded"),
-      "false",
+      "false"
     );
     // Expanding it again restores Edit's layout exactly.
     await library.locator('[data-panel-action="collapse"]').click();
@@ -2855,7 +2854,7 @@ test("Graph has its own panels, and the Flows panel is one component shared with
       await library
         .locator('[data-panel-action="collapse"]')
         .getAttribute("aria-expanded"),
-      "true",
+      "true"
     );
   });
 });
@@ -2863,7 +2862,7 @@ test("Resizing the Flows panel in Graph resizes it in the Flow editor too", asyn
   await browserTest(t, async (page, url) => {
     await page.setViewportSize({
       width: 1440,
-      height: 900,
+      height: 900
     });
     await studio(page, url);
     await selectWorkspace(page, "graph");
@@ -2872,7 +2871,7 @@ test("Resizing the Flows panel in Graph resizes it in the Flow editor too", asyn
     await page.mouse.move(line.x + line.width / 2, line.y + 80);
     await page.mouse.down();
     await page.mouse.move(line.x + 60, line.y + 80, {
-      steps: 8,
+      steps: 8
     });
     await page.mouse.up();
     /** Measure the workspace panel width while a view is selected.
@@ -2895,7 +2894,7 @@ test("Graph docks resize collapse float and reload independently of Edit", async
   await browserTest(t, async (page, url) => {
     await page.setViewportSize({
       width: 1440,
-      height: 900,
+      height: 900
     });
     await studio(page, url);
     const edit = await panelBoxes(page);
@@ -2909,7 +2908,7 @@ test("Graph docks resize collapse float and reload independently of Edit", async
     await page.mouse.move(line.x + line.width / 2, line.y + 80);
     await page.mouse.down();
     await page.mouse.move(line.x + 40, line.y + 80, {
-      steps: 8,
+      steps: 8
     });
     await page.mouse.up();
     const properties = page.locator('[data-panel-id="properties"]');
@@ -2927,19 +2926,19 @@ test("Graph docks resize collapse float and reload independently of Edit", async
       for (const key of /** @type {const} */ (["x", "y", "width", "height"]))
         assert.ok(
           Math.abs(
-            requiredValue(restored[id])[key] - requiredValue(graph[id])[key],
-          ) <= 1,
+            requiredValue(restored[id])[key] - requiredValue(graph[id])[key]
+          ) <= 1
         );
     assert.ok(
       await page.evaluate(() =>
-        localStorage.getItem("studio.dock-grid.v1.graph"),
-      ),
+        localStorage.getItem("studio.dock-grid.v1.graph")
+      )
     );
   });
 });
 test("Live browser maximizes without rearranging docks and picks without clicking the target", async t => {
   await browserTest(t, async (page, url) => {
-    const { commands } = await studio(page, url);
+    const {commands} = await studio(page, url);
     await selectWorkspace(page, "record");
     const before = await panelBoxes(page);
     await page.locator("#live-target-maximize").click();
@@ -2953,20 +2952,20 @@ test("Live browser maximizes without rearranging docks and picks without clickin
     const pickedResponse = page.waitForResponse(
       (
         /** @type {{url:()=>string,request:()=>{postDataJSON:()=>{command?:string,payload?:{picked?:boolean}}}}} */
-        response,
+        response
       ) => {
         if (!response.url().endsWith("/api/command")) return false;
         const body = response.request().postDataJSON();
         return (
           body?.command === "browser.input" && body.payload?.picked === true
         );
-      },
+      }
     );
     await page.locator("#live-target-image").click({
       position: {
         x: 100,
-        y: 5,
-      },
+        y: 5
+      }
     });
     await pickedResponse;
     const input = [...commands]
@@ -2974,7 +2973,7 @@ test("Live browser maximizes without rearranging docks and picks without clickin
       .find(
         command =>
           command.command === "browser.input" &&
-          command.payload.picked === true,
+          command.payload.picked === true
       );
     assert.ok(input);
     assert.equal(input.payload.action, "inspect");
@@ -2994,17 +2993,17 @@ test("Live browser maximizes without rearranging docks and picks without clickin
                   x: 200,
                   y: 100,
                   width: 100,
-                  height: 30,
-                },
-              },
-            },
-          },
-        }),
+                  height: 30
+                }
+              }
+            }
+          }
+        })
       });
     });
     assert.equal(
       await page.locator("#live-target-selector").inputValue(),
-      "[data-toggle-status]",
+      "[data-toggle-status]"
     );
     await page.locator("#live-target-use").click();
     // With nothing selected, using the pick adds a Click that already targets it.
@@ -3014,7 +3013,7 @@ test("Live browser maximizes without rearranging docks and picks without clickin
     assert.ok(
       !await page
         .locator('[data-panel-id="target"]')
-        .getAttribute("data-live-maximized"),
+        .getAttribute("data-live-maximized")
     );
     const after = await panelBoxes(page);
     assert.deepEqual(after[panelKeys.target], before[panelKeys.target]);
@@ -3022,7 +3021,7 @@ test("Live browser maximizes without rearranging docks and picks without clickin
 });
 test("A picked selector goes into the selected step without touching its other draft fields", async t => {
   await browserTest(t, async (page, url) => {
-    const { commands } = await studio(page, url);
+    const {commands} = await studio(page, url);
     await page.locator(".edit-step-row").nth(1).click();
     await page.locator('#step-form [name="label"]').fill("Unsaved order label");
     await page.evaluate(() => {
@@ -3040,12 +3039,12 @@ test("A picked selector goes into the selected step without touching its other d
                   x: 1,
                   y: 1,
                   width: 10,
-                  height: 10,
-                },
-              },
-            },
-          },
-        }),
+                  height: 10
+                }
+              }
+            }
+          }
+        })
       });
     });
     /** Count the event.add commands issued so far.
@@ -3058,24 +3057,24 @@ test("A picked selector goes into the selected step without touching its other d
       await page
         .locator('.edit-step-detail-form [name="selector"]')
         .inputValue(),
-      "[data-picked]",
+      "[data-picked]"
     );
     assert.equal(
       await page.locator('#step-form [name="label"]').inputValue(),
-      "Unsaved order label",
+      "Unsaved order label"
     );
     assert.equal(adds(), 0);
     assert.equal(
       commands.filter(item => item.command === "event.update").length,
-      0,
+      0
     );
     assert.ok(
       await page
         .getByRole("button", {
           name: "Discard edits",
-          exact: true,
+          exact: true
         })
-        .isVisible(),
+        .isVisible()
     );
   });
 });
@@ -3104,12 +3103,12 @@ test("A pick inside a frame is reported as unsupported instead of a false match"
                   x: 10,
                   y: 120,
                   width: 80,
-                  height: 30,
-                },
-              },
-            },
-          },
-        }),
+                  height: 30
+                }
+              }
+            }
+          }
+        })
       });
     });
     assert.equal(await page.locator("#live-target-use").isDisabled(), true);
@@ -3130,13 +3129,13 @@ const publish = (page, state) =>
       data: JSON.stringify({
         protocol: 1,
         event: "workspace.changed",
-        payload: value,
-      }),
+        payload: value
+      })
     });
   }, state);
 test("The browser opens on its own once, and stays closed after the user closes it", async t => {
   await browserTest(t, async (page, url) => {
-    const { commands, snapshot } = await studio(page, url);
+    const {commands, snapshot} = await studio(page, url);
     /**
      * Count the recorded "browser.open" commands.
      * @returns {number} How many open commands the page issued.
@@ -3148,7 +3147,7 @@ test("The browser opens on its own once, and stays closed after the user closes 
       ...snapshot,
       revision: snapshot.revision + 1,
       target_state: "closed",
-      recorder_clients: 0,
+      recorder_clients: 0
     });
     await posted(commands, "browser.open");
     assert.equal(opens(), 1);
@@ -3157,7 +3156,7 @@ test("The browser opens on its own once, and stays closed after the user closes 
       ...snapshot,
       revision: snapshot.revision + 2,
       target_state: "closed",
-      recorder_clients: 0,
+      recorder_clients: 0
     });
     await page.waitForTimeout(200);
     assert.equal(opens(), 1);
@@ -3166,7 +3165,7 @@ test("The browser opens on its own once, and stays closed after the user closes 
       ...snapshot,
       revision: snapshot.revision + 3,
       target_state: "ready",
-      recorder_clients: 1,
+      recorder_clients: 1
     });
     await page.locator("#browser-toggle").click();
     await posted(commands, "browser.close");
@@ -3174,21 +3173,21 @@ test("The browser opens on its own once, and stays closed after the user closes 
       ...snapshot,
       revision: snapshot.revision + 4,
       target_state: "closed",
-      recorder_clients: 0,
+      recorder_clients: 0
     });
     await page.waitForTimeout(200);
     assert.equal(opens(), 1);
     assert.equal(
       await page.locator("#status").textContent(),
-      "Open the target browser to record or run tests.",
+      "Open the target browser to record or run tests."
     );
   });
 });
 test("An empty browser says what is missing instead of only 'closed'", async t => {
   await browserTest(t, async (page, url) => {
-    const { snapshot } = await studio(page, url);
+    const {snapshot} = await studio(page, url);
     await scriptedPreview(page, () => ({
-      status: 204,
+      status: 204
     }));
     /** Read the message the empty preview shows.
      * @returns {Promise<string>}
@@ -3203,19 +3202,19 @@ test("An empty browser says what is missing instead of only 'closed'", async t =
     const closed = {
       ...snapshot,
       target_state: "closed",
-      recorder_clients: 0,
+      recorder_clients: 0
     };
     // A service project whose service is not running yet.
     await publish(page, {
       ...closed,
       revision: 10,
-      target_address: null,
+      target_address: null
     });
     await page.waitForFunction(
       () =>
         document
           .querySelector(".live-target-frame")
-          ?.getAttribute("data-hint") === "service",
+          ?.getAttribute("data-hint") === "service"
     );
     await page.waitForSelector('.live-target-frame[data-preview="closed"]');
     assert.match(await message(), /Start the service in Settings/);
@@ -3223,13 +3222,13 @@ test("An empty browser says what is missing instead of only 'closed'", async t =
     await publish(page, {
       ...closed,
       revision: 11,
-      target_address: "about:blank",
+      target_address: "about:blank"
     });
     await page.waitForFunction(
       () =>
         document
           .querySelector(".live-target-frame")
-          ?.getAttribute("data-hint") === "address",
+          ?.getAttribute("data-hint") === "address"
     );
     assert.match(await message(), /Set the address in Settings/);
   });
@@ -3243,7 +3242,7 @@ const sentAs = (commands, name) =>
   commands.filter(item => item.command === name);
 test("Settings edits a profile with typed fields, a linked aspect ratio and clear errors", async t => {
   await browserTest(t, async (page, url) => {
-    const { commands } = await studio(page, url);
+    const {commands} = await studio(page, url);
     await selectWorkspace(page, "settings");
     await page.locator('[data-profile="mobile"]').click();
     const width = page.locator('#settings-profiles [name="width"]');
@@ -3265,7 +3264,7 @@ test("Settings edits a profile with typed fields, a linked aspect ratio and clea
     await width.blur();
     assert.match(
       await page.locator('[data-field="width"] .field-error').innerText(),
-      /160 to 8192 px/,
+      /160 to 8192 px/
     );
     assert.equal(await width.getAttribute("aria-invalid"), "true");
     await page.locator("[data-profile-save]").click();
@@ -3279,19 +3278,19 @@ test("Settings edits a profile with typed fields, a linked aspect ratio and clea
     assert.equal(saved.payload.profile.id, "mobile");
     assert.equal(saved.payload.profile.touch, true);
     assert.deepEqual(saved.payload.profile.media, {
-      "prefers-color-scheme": "dark",
+      "prefers-color-scheme": "dark"
     });
     assert.equal(typeof saved.payload.profile.width, "number");
     // What the test browser cannot emulate is listed, not offered.
     assert.match(
       await page.locator(".settings-unsupported").textContent() || "",
-      /monochrome/,
+      /monochrome/
     );
   });
 });
 test("Settings creates a profile from the name and refuses to delete the last one", async t => {
   await browserTest(t, async (page, url) => {
-    const { commands } = await studio(page, url);
+    const {commands} = await studio(page, url);
     await selectWorkspace(page, "settings");
     await page.locator("[data-profile-new]").click();
     await page.locator('#settings-profiles [name="name"]').fill("Dark Phone");
@@ -3304,24 +3303,24 @@ test("Settings creates a profile from the name and refuses to delete the last on
     await page.locator("[data-profile-delete]").click();
     assert.match(
       await page.locator(".delete-dialog").textContent() || "",
-      /Delete Mobile\?/,
+      /Delete Mobile\?/
     );
     await page
       .getByRole("button", {
-        name: "Keep profile",
+        name: "Keep profile"
       })
       .click();
     assert.equal(sentAs(commands, "profile.delete").length, 0);
     await page.locator("[data-profile-delete]").click();
     await page.locator('.delete-dialog button[value="delete"]').click();
     assert.deepEqual((await posted(commands, "profile.delete")).payload, {
-      profile_id: "mobile",
+      profile_id: "mobile"
     });
   });
 });
 test("Settings offers the demo server, and Start saves it, runs it and opens the browser", async t => {
   await browserTest(t, async (page, url) => {
-    const { commands, snapshot } = await studio(page, url);
+    const {commands, snapshot} = await studio(page, url);
     const demo = {
       mode: "service",
       url: "",
@@ -3329,7 +3328,7 @@ test("Settings offers the demo server, and Start saves it, runs it and opens the
       command: ["/venv/bin/python", "/repo/demo/server.py", "--port", "0"],
       cwd: "",
       service_port: null,
-      path: "/",
+      path: "/"
     };
     await publish(page, {
       ...snapshot,
@@ -3344,27 +3343,27 @@ test("Settings offers the demo server, and Start saves it, runs it and opens the
           command: [],
           cwd: "",
           service_port: null,
-          path: "/",
-        },
-      },
+          path: "/"
+        }
+      }
     });
     await selectWorkspace(page, "settings");
     // Pre-filled: "Start a service" chosen, with the demo's own command shown.
     assert.equal(
       await page.locator('input[name="mode"]:checked').getAttribute("value"),
-      "service",
+      "service"
     );
     assert.equal(
       await page.locator('#settings-target [name="command"]').inputValue(),
-      "/venv/bin/python /repo/demo/server.py --port 0",
+      "/venv/bin/python /repo/demo/server.py --port 0"
     );
     assert.match(
       await page.locator("[data-target-notice]").innerText(),
-      /only when you press Start service/,
+      /only when you press Start service/
     );
     assert.match(
       await page.locator("#settings-target").innerText(),
-      /Nothing is saved until you press Start or Save/,
+      /Nothing is saved until you press Start or Save/
     );
     // Nothing ran until the button is pressed.
     assert.equal(sentAs(commands, "target.start").length, 0);
@@ -3375,19 +3374,19 @@ test("Settings offers the demo server, and Start saves it, runs it and opens the
       "/venv/bin/python",
       "/repo/demo/server.py",
       "--port",
-      "0",
+      "0"
     ]);
     assert.equal(target.payload.target.mode, "service");
     assert.equal(target.payload.target.service_port, null);
     const started = await posted(commands, "target.start");
     assert.deepEqual(started.payload, {
-      open: true,
+      open: true
     });
   });
 });
 test("Settings reads an address and a port, and shows service progress while a button has focus", async t => {
   await browserTest(t, async (page, url) => {
-    const { commands, snapshot } = await studio(page, url);
+    const {commands, snapshot} = await studio(page, url);
     await selectWorkspace(page, "settings");
     await page.locator('input[name="mode"][value="service"]').check();
     await page.locator('input[name="mode"][value="url"]').check();
@@ -3397,7 +3396,7 @@ test("Settings reads an address and a port, and shows service progress while a b
     // A bad port is explained and nothing is sent.
     assert.match(
       await page.locator("[data-target-status]").innerText(),
-      /1 to 65535/,
+      /1 to 65535/
     );
     assert.equal(sentAs(commands, "target.save").length, 0);
     await page.locator('#settings-target [name="port"]').fill("");
@@ -3421,24 +3420,24 @@ test("Settings reads an address and a port, and shows service progress while a b
           {
             url: "http://127.0.0.1:5173",
             port: 5173,
-            status: 200,
+            status: 200
           },
           {
             url: "http://127.0.0.1:24678",
             port: 24678,
-            status: 200,
-          },
-        ],
-      },
+            status: 200
+          }
+        ]
+      }
     });
     await page.waitForFunction(() =>
       document
         .querySelector("[data-target-status]")
-        ?.textContent?.includes("Running at http://127.0.0.1:5173"),
+        ?.textContent?.includes("Running at http://127.0.0.1:5173")
     );
     assert.match(
       await page.locator("[data-target-status]").innerText(),
-      /Also listening on 24678/,
+      /Also listening on 24678/
     );
     assert.equal(await page.locator("[data-target-start]").isDisabled(), true);
     assert.equal(await page.locator("[data-target-stop]").isDisabled(), false);
@@ -3448,23 +3447,23 @@ test("A maximized browser restores when the target closes and its tools fit a na
   await browserTest(t, async (page, url) => {
     await page.setViewportSize({
       width: 360,
-      height: 700,
+      height: 700
     });
     await studio(page, url);
     let closed = false;
     await scriptedPreview(page, () =>
       closed
         ? {
-            status: 204,
+            status: 204
           }
         : {
             status: 200,
             body: pixel,
             headers: {
               "Content-Type": "image/png",
-              "X-Frame-Age-Ms": "5",
-            },
-          },
+              "X-Frame-Age-Ms": "5"
+            }
+          }
     );
     await page
       .locator('.mobile-panel-tabs [data-mobile-panel="browser"]')
@@ -3478,11 +3477,11 @@ test("A maximized browser restores when the target closes and its tools fit a na
       return bar
         ? {
             scroll: bar.scrollWidth,
-            client: bar.clientWidth,
+            client: bar.clientWidth
           }
         : {
             scroll: 0,
-            client: 0,
+            client: 0
           };
     });
     assert.ok(tools.scroll <= tools.client + 1, JSON.stringify(tools));
@@ -3490,13 +3489,13 @@ test("A maximized browser restores when the target closes and its tools fit a na
     closed = true;
     // The editor learns the browser closed from the snapshot's client count.
     await page.evaluate(() =>
-      document.getElementById("app")?.removeAttribute("data-target-ready"),
+      document.getElementById("app")?.removeAttribute("data-target-ready")
     );
     await page.waitForSelector('.live-target-frame[data-preview="closed"]');
     assert.equal(await panel.getAttribute("data-live-maximized"), null);
     assert.equal(
       await page.locator("#live-target-pick").getAttribute("aria-pressed"),
-      "false",
+      "false"
     );
   });
 });
@@ -3504,7 +3503,7 @@ test("Panels dock, collapse and float from the keyboard and announce the change"
   await browserTest(t, async (page, url) => {
     await page.setViewportSize({
       width: 1440,
-      height: 900,
+      height: 900
     });
     await studio(page, url);
     const area = await page.locator(".workbench").boundingBox();
@@ -3513,23 +3512,23 @@ test("Panels dock, collapse and float from the keyboard and announce the change"
     await page.keyboard.press("Alt+Shift+ArrowLeft");
     assert.match(
       await page.locator("#status").textContent() || "",
-      /docked along the left edge/,
+      /docked along the left edge/
     );
     const left = await panelBoxes(page);
     assertTiled(left, area);
     assert.ok(
-      Math.abs(requiredValue(left[panelKeys.properties]).x - area.x) <= 1,
+      Math.abs(requiredValue(left[panelKeys.properties]).x - area.x) <= 1
     );
     await properties.locator('[data-panel-action="collapse"]').focus();
     await page.keyboard.press("Alt+Shift+KeyC");
     assert.match(
       await page.locator("#status").textContent() || "",
-      /collapsed/,
+      /collapsed/
     );
     await page.keyboard.press("Alt+Shift+KeyC");
     assert.match(
       await page.locator("#status").textContent() || "",
-      /expanded/,
+      /expanded/
     );
   });
 });
@@ -3543,17 +3542,17 @@ test("Compact windows reach every panel through tabs without horizontal overflow
     const check = async width => {
       await page.setViewportSize({
         width,
-        height: 800,
+        height: 800
       });
       await page
         .locator('.mobile-panel-tabs [data-mobile-panel="flows"]')
         .click();
       assert.equal(
         await page.locator('[data-panel-id="workspace"]').isVisible(),
-        true,
+        true
       );
       const scroll = await page.evaluate(
-        () => document.documentElement.scrollWidth - window.innerWidth,
+        () => document.documentElement.scrollWidth - window.innerWidth
       );
       assert.ok(scroll <= 0, `${width}px overflows by ${scroll}`);
     };
@@ -3566,17 +3565,17 @@ test("An expired preview session says so and backs off instead of polling", asyn
   await browserTest(t, async (page, url) => {
     await studio(page, url);
     const requests = await scriptedPreview(page, () => ({
-      status: 401,
+      status: 401
     }));
     await selectWorkspace(page, "record");
     await page.waitForSelector(
-      '.live-target-frame[data-preview="unauthorized"]',
+      '.live-target-frame[data-preview="unauthorized"]'
     );
     const first = requests.count();
     await page.waitForTimeout(1500);
     assert.ok(
       requests.count() - first <= 1,
-      `unauthorized preview polled ${requests.count() - first} more times`,
+      `unauthorized preview polled ${requests.count() - first} more times`
     );
   });
 });
@@ -3591,12 +3590,12 @@ test("A failing preview endpoint backs off exponentially and recovers", async t 
             body: pixel,
             headers: {
               "Content-Type": "image/png",
-              "X-Frame-Age-Ms": "5",
-            },
+              "X-Frame-Age-Ms": "5"
+            }
           }
         : {
-            status: 500,
-          },
+            status: 500
+          }
     );
     await selectWorkspace(page, "record");
     await page.waitForSelector('.live-target-frame[data-preview="error"]');
@@ -3605,11 +3604,11 @@ test("A failing preview endpoint backs off exponentially and recovers", async t 
     // 250 ms polling would make ~8 requests; backoff makes at most 4.
     assert.ok(
       requests.count() - before <= 4,
-      `failing preview polled ${requests.count() - before} times in 2 s`,
+      `failing preview polled ${requests.count() - before} times in 2 s`
     );
     healthy = true;
     await page.waitForSelector('.live-target-frame[data-preview="live"]', {
-      timeout: 8000,
+      timeout: 8000
     });
   });
 });
@@ -3622,8 +3621,8 @@ test("Empty frames never replace the last frame and a closed browser releases it
         ? {
             status: 200,
             headers: {
-              "Content-Type": "image/jpeg",
-            },
+              "Content-Type": "image/jpeg"
+            }
           }
         : mode === "frame"
           ? {
@@ -3631,12 +3630,12 @@ test("Empty frames never replace the last frame and a closed browser releases it
               body: pixel,
               headers: {
                 "Content-Type": "image/png",
-                "X-Frame-Age-Ms": "9000",
-              },
+                "X-Frame-Age-Ms": "9000"
+              }
             }
           : {
-              status: 204,
-            },
+              status: 204
+            }
     );
     await selectWorkspace(page, "record");
     await page.waitForSelector('.live-target-frame[data-preview="stale"]');
@@ -3649,7 +3648,7 @@ test("Empty frames never replace the last frame and a closed browser releases it
     assert.equal(await image.getAttribute("src"), shown);
     mode = "closed";
     await page.evaluate(() =>
-      document.getElementById("app")?.removeAttribute("data-target-ready"),
+      document.getElementById("app")?.removeAttribute("data-target-ready")
     );
     await page.waitForSelector('.live-target-frame[data-preview="closed"]');
     assert.equal(await image.getAttribute("src"), null);
@@ -3660,28 +3659,28 @@ for (const [name, seeded] of /** @type {[string, Record<string,string>][]} */ ([
     "old unversioned keys",
     {
       "studio.panel-layout": '{"zone":"left"}',
-      "studio.dock-sizes": "{}",
-    },
+      "studio.dock-sizes": "{}"
+    }
   ],
   [
     "a partial grid layout",
     {
-      "studio.dock-grid.v1": '{"version":1,"cols":[]}',
-    },
+      "studio.dock-grid.v1": '{"version":1,"cols":[]}'
+    }
   ],
   [
     "corrupt storage",
     {
       "studio.dock-grid.v1": "{not json",
-      "studio.panel-groups": "][",
-    },
-  ],
-])) {
+      "studio.panel-groups": "]["
+    }
+  ]
+]))
   test(`Saved layout from ${name} falls back to the shipped layout and keeps other preferences`, async t => {
     await browserTest(t, async (page, url) => {
       await page.setViewportSize({
         width: 1440,
-        height: 900,
+        height: 900
       });
       await page.addInitScript(
         (/** @type {[Record<string,string>]} */ [entries]) => {
@@ -3691,7 +3690,7 @@ for (const [name, seeded] of /** @type {[string, Record<string,string>][]} */ ([
           for (const [key, value] of Object.entries(entries))
             localStorage.setItem(key, value);
         },
-        [seeded],
+        [seeded]
       );
       await studio(page, url);
       const boxes = await panelBoxes(page);
@@ -3699,23 +3698,22 @@ for (const [name, seeded] of /** @type {[string, Record<string,string>][]} */ ([
       assert.equal(requiredValue(boxes[panelKeys.workspace]).grid, "0,0,1,3");
       assert.equal(
         await page.evaluate(() => localStorage.getItem("studio.actions")),
-        "keep me",
+        "keep me"
       );
       const retired = Object.keys(seeded).filter(
-        (/** @type {string} */ item) => item !== "studio.dock-grid.v1",
+        (/** @type {string} */ item) => item !== "studio.dock-grid.v1"
       );
       const left = await page.evaluate(
         (/** @type {string[]} */ keys) =>
           keys.filter(item => localStorage.getItem(item) !== null),
-        retired,
+        retired
       );
       assert.deepEqual(left, []);
     });
   });
-}
 test("Dragging a graph node never selects the flow, but a later click still does", async t => {
   await browserTest(t, async (page, url) => {
-    const { commands } = await studio(page, url);
+    const {commands} = await studio(page, url);
     await selectWorkspace(page, "graph");
     /**
      * Count flow.select commands recorded so far.
@@ -3732,7 +3730,7 @@ test("Dragging a graph node never selects the flow, but a later click still does
     await page.mouse.move(x, y);
     await page.mouse.down();
     await page.mouse.move(x + 40, y + 30, {
-      steps: 5,
+      steps: 5
     });
     await page.mouse.up();
     assert.equal(selects(), 0);
@@ -3745,7 +3743,7 @@ test("Dragging a graph node never selects the flow, but a later click still does
 });
 test("A sub-threshold graph press and a cancelled drag still allow selection", async t => {
   await browserTest(t, async (page, url) => {
-    const { commands } = await studio(page, url);
+    const {commands} = await studio(page, url);
     await selectWorkspace(page, "graph");
     /**
      * Count flow.select commands recorded so far.
@@ -3772,28 +3770,28 @@ test("A sub-threshold graph press and a cancelled drag still allow selection", a
           pointerId: 7,
           pointerType: "pen",
           button: 0,
-          bubbles: true,
+          bubbles: true
         };
         node.dispatchEvent(
           new PointerEvent("pointerdown", {
             ...init,
             clientX: 10,
-            clientY: 10,
-          }),
+            clientY: 10
+          })
         );
         node.dispatchEvent(
           new PointerEvent("pointermove", {
             ...init,
             clientX: 80,
-            clientY: 60,
-          }),
+            clientY: 60
+          })
         );
         node.dispatchEvent(
           new PointerEvent("pointercancel", {
             ...init,
             clientX: 80,
-            clientY: 60,
-          }),
+            clientY: 60
+          })
         );
       })
       .catch(() => undefined);
@@ -3801,8 +3799,8 @@ test("A sub-threshold graph press and a cancelled drag still allow selection", a
     await page.waitForFunction(
       () =>
         document.querySelector(
-          '.flow-node-title[data-select-flow="second"]',
-        ) !== null,
+          '.flow-node-title[data-select-flow="second"]'
+        ) !== null
     );
     assert.ok(selects() >= 2);
   });
@@ -3814,31 +3812,31 @@ test("Timeline segment clock uses accent, subtle off segments and a stopped plac
     assert.equal(await clock.getAttribute("aria-label"), "--:--:--.--");
     assert.equal(
       await page.locator("#timecode .sst-segment.sst-on").count(),
-      8,
+      8
     );
     const colors = await page
       .locator("#timecode")
       .evaluate((/** @type {HTMLElement} */ element) => ({
         on: getComputedStyle(
           /** @type {Element} */
-          (element.querySelector(".sst-on")),
+          (element.querySelector(".sst-on"))
         ).fill,
         off: getComputedStyle(
           /** @type {Element} */
-          (element.querySelector(".sst-segment:not(.sst-on)")),
+          (element.querySelector(".sst-segment:not(.sst-on)"))
         ).fill,
         gap: getComputedStyle(
           /** @type {Element} */
-          (element.querySelector(".sst-group")),
-        ).columnGap,
+          (element.querySelector(".sst-group"))
+        ).columnGap
       }));
     assert.notEqual(colors.on, colors.off);
     assert.equal(colors.gap, "16px");
     const clockBox = requiredValue(
-      await page.locator("#timecode").boundingBox(),
+      await page.locator("#timecode").boundingBox()
     );
     const playBox = requiredValue(
-      await page.locator("#timeline-play").boundingBox(),
+      await page.locator("#timeline-play").boundingBox()
     );
     assert.equal(clockBox.height, playBox.height);
     const zoom = page.locator("#timeline-zoom");
@@ -3854,11 +3852,11 @@ test("Timeline segment clock uses accent, subtle off segments and a stopped plac
               /** @type {HTMLElement} */
               element,
               /** @type {number} */
-              size,
+              size
             ) => {
               element.style.height = `${size}px`;
             },
-            height,
+            height
           );
           await page.waitForFunction((/** @type {number} */ size) => {
             const digit = document.querySelector("#timecode .sst-digit");
@@ -3868,17 +3866,17 @@ test("Timeline segment clock uses accent, subtle off segments and a stopped plac
             );
           }, height);
         }),
-      Promise.resolve(),
+      Promise.resolve()
     );
     await page
       .locator("#timecode")
       .evaluate((/** @type {HTMLElement} */ element) =>
-        element.style.removeProperty("height"),
+        element.style.removeProperty("height")
       );
     await page.locator(".edit-step-row").first().click();
     assert.match(
       await clock.getAttribute("aria-label"),
-      /^\d{2}:\d{2}:\d{2}\.\d{3}$/,
+      /^\d{2}:\d{2}:\d{2}\.\d{3}$/
     );
     await page.locator("#timeline-stop").click();
     assert.equal(await clock.getAttribute("aria-label"), "--:--:--.--");
@@ -3888,16 +3886,16 @@ test("Timeline playhead scrubs, keeps time through zoom, and scrolls at the edge
   await browserTest(t, async (page, url) => {
     await studio(page, url);
     const ruler = requiredValue(
-      await page.locator(".ruler-ticks").boundingBox(),
+      await page.locator(".ruler-ticks").boundingBox()
     );
     await page.mouse.click(ruler.x + 144, ruler.y + 12);
     const cursor = page.getByRole("slider", {
-      name: "Timeline playhead",
+      name: "Timeline playhead"
     });
     assert.equal(await cursor.getAttribute("aria-valuenow"), "1500");
     assert.equal(
       await page.locator("#timecode .sst-clock").getAttribute("aria-label"),
-      "00:00:01.500",
+      "00:00:01.500"
     );
     const handle = requiredValue(await cursor.boundingBox());
     await page.mouse.move(handle.x + handle.width / 2, handle.y + 12);
@@ -3907,7 +3905,7 @@ test("Timeline playhead scrubs, keeps time through zoom, and scrolls at the edge
       () =>
         document
           .querySelector(".timeline-cursor")
-          ?.getAttribute("aria-valuenow") === "2500",
+          ?.getAttribute("aria-valuenow") === "2500"
     );
     await page.mouse.up();
     await cursor.press("ArrowRight");
@@ -3915,14 +3913,14 @@ test("Timeline playhead scrubs, keeps time through zoom, and scrolls at the edge
     await page.locator("#timeline-zoom").press("End");
     assert.equal(await cursor.getAttribute("aria-valuenow"), "2600");
     const timeline = requiredValue(
-      await page.locator("#timeline").boundingBox(),
+      await page.locator("#timeline").boundingBox()
     );
     const dragHead = requiredValue(await cursor.boundingBox());
     await page.mouse.move(dragHead.x + dragHead.width / 2, dragHead.y + 12);
     await page.mouse.down();
     await page.mouse.move(timeline.x + timeline.width - 5, timeline.y + 12);
     await page.waitForFunction(
-      () => (document.querySelector("#timeline")?.scrollLeft ?? 0) > 0,
+      () => (document.querySelector("#timeline")?.scrollLeft ?? 0) > 0
     );
     await page.keyboard.press("Escape");
     await page.mouse.up();
@@ -3943,7 +3941,7 @@ test("Timeline playhead scrubs, keeps time through zoom, and scrolls at the edge
         grip !== null &&
         Math.abs(
           container.getBoundingClientRect().top -
-            grip.getBoundingClientRect().top,
+            grip.getBoundingClientRect().top
         ) < 1
       );
     });
@@ -3979,7 +3977,7 @@ test("Timeline playhead scrubs, keeps time through zoom, and scrolls at the edge
           element.clientHeight,
           track instanceof HTMLElement
             ? track.offsetTop + track.offsetHeight
-            : 0,
+            : 0
         );
       });
     await page
@@ -3996,7 +3994,7 @@ test("Timeline playhead scrubs, keeps time through zoom, and scrolls at the edge
         grip !== null &&
         Math.abs(
           container.getBoundingClientRect().top -
-            grip.getBoundingClientRect().top,
+            grip.getBoundingClientRect().top
         ) < 1
       );
     });
@@ -4005,40 +4003,40 @@ test("Timeline playhead scrubs, keeps time through zoom, and scrolls at the edge
         await page
           .locator("#timeline")
           .evaluate(
-            (/** @type {HTMLElement} */ element) => element.scrollHeight,
-          ) - extent,
-      ) <= 1,
+            (/** @type {HTMLElement} */ element) => element.scrollHeight
+          ) - extent
+      ) <= 1
     );
   });
 });
 test("Running a flow with inputs asks for them and sends typed answers", async t => {
   await browserTest(t, async (page, url) => {
-    const { commands } = await studio(page, url);
-    await page.getByRole("button", { name: "Run this flow" }).click();
+    const {commands} = await studio(page, url);
+    await page.getByRole("button", {name: "Run this flow"}).click();
     const dialog = page.locator(".ask-dialog");
     await dialog.waitFor();
-    assert.equal(await dialog.getByText("user", { exact: true }).count(), 1);
+    assert.equal(await dialog.getByText("user", {exact: true}).count(), 1);
     await dialog.locator("input").fill("Ana");
-    await dialog.getByRole("button", { name: "Run flow" }).click();
+    await dialog.getByRole("button", {name: "Run flow"}).click();
     const run = await posted(commands, "run.play");
-    assert.deepEqual(run.payload.flow_inputs, { user: "Ana" });
+    assert.deepEqual(run.payload.flow_inputs, {user: "Ana"});
     assert.deepEqual(run.payload.inputs, {});
   });
 });
 test("Cancelling the input dialog does not start a run", async t => {
   await browserTest(t, async (page, url) => {
-    const { commands } = await studio(page, url);
-    await page.getByRole("button", { name: "Run this flow" }).click();
+    const {commands} = await studio(page, url);
+    await page.getByRole("button", {name: "Run this flow"}).click();
     await page.locator(".ask-dialog").waitFor();
-    await page.locator(".ask-dialog").getByRole("button", { name: "Cancel" }).click();
-    await page.locator(".ask-dialog").waitFor({ state: "detached" });
+    await page.locator(".ask-dialog").getByRole("button", {name: "Cancel"}).click();
+    await page.locator(".ask-dialog").waitFor({state: "detached"});
     await delay(100);
     assert.equal(commands.some(command => command.command === "run.play"), false);
   });
 });
 test("Pause, Continue and Step follow the run's state and mark the next action", async t => {
   await browserTest(t, async (page, url) => {
-    const { commands, snapshot } = await studio(page, url);
+    const {commands, snapshot} = await studio(page, url);
     /** Send the editor a new run state, as the host does.
      * @param {unknown} runControl
      * @param {string|null} runId
@@ -4050,16 +4048,16 @@ test("Pause, Continue and Step follow the run's state and mark the next action",
       snapshot.revision += 1;
       await page.evaluate((/** @type {unknown} */ state) => {
         /** @type {any} */ (window).studioEvents?.onmessage({
-          data: JSON.stringify({ protocol: 1, event: "workspace.changed", payload: state }),
+          data: JSON.stringify({protocol: 1, event: "workspace.changed", payload: state})
         });
       }, snapshot);
     };
     const pause = page.locator("#timeline-pause");
     const step = page.locator("#timeline-step");
-    await show({ state: "running", before_event_id: null }, null);
+    await show({state: "running", before_event_id: null}, null);
     await pause.waitFor();
     assert.equal(await pause.isDisabled(), true);
-    await show({ state: "running", before_event_id: null }, "run-1");
+    await show({state: "running", before_event_id: null}, "run-1");
     await page.waitForFunction(() => !document.querySelector("#timeline-pause")?.hasAttribute("disabled"));
     assert.equal(await step.isDisabled(), true);
     await pause.click();
@@ -4068,7 +4066,7 @@ test("Pause, Continue and Step follow the run's state and mark the next action",
     // runner report that it is held.
     await page.waitForFunction(() =>
       document.getElementById("status")?.textContent === "Pausing before the next action");
-    await show({ state: "paused", before_event_id: "save" }, "run-1");
+    await show({state: "paused", before_event_id: "save"}, "run-1");
     await page.waitForFunction(() =>
       document.querySelector("#timeline-pause")?.getAttribute("aria-label") === "Continue the run");
     assert.equal(await step.isDisabled(), false);
@@ -4079,12 +4077,12 @@ test("Pause, Continue and Step follow the run's state and mark the next action",
     await posted(commands, "run.step");
     await page.waitForFunction(() =>
       document.getElementById("status")?.textContent === "Running one action, then pausing");
-    await show({ state: "paused", before_event_id: "save" }, "run-1");
+    await show({state: "paused", before_event_id: "save"}, "run-1");
     await pause.click();
     await posted(commands, "run.resume");
     await page.waitForFunction(() =>
       document.getElementById("status")?.textContent === "Run continues");
-    await show({ state: "running", before_event_id: null }, null);
+    await show({state: "running", before_event_id: null}, null);
     await page.waitForFunction(() => !document.querySelector("[data-run-next]"));
   });
 });

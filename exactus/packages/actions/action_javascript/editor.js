@@ -1,6 +1,6 @@
 /** The code editor: a textarea over a highlighted mirror, with a line-number gutter.
  * Ctrl/Cmd+Enter dispatches an `editor-run` event on `element`. */
-import { tokenizeLines } from "./highlight.js";
+import {tokenizeLines} from "./highlight.js";
 /**
  * @typedef {object} EditorOptions
  * @property {HTMLElement} host Element that receives the editor.
@@ -31,7 +31,7 @@ const make = (tag, className = "") => {
  * @returns The editor API.
  */
 export const createEditor = options => {
-  const { host, label, minRows = 6, maxRows = 16 } = options;
+  const {host, label, minRows = 6, maxRows = 16} = options;
   const wrap = make("div", "jr-editor");
   const gutter = make("div", "jr-gutter");
   gutter.setAttribute("aria-hidden", "true");
@@ -58,7 +58,7 @@ export const createEditor = options => {
   const caret = () => {
     const before = input.value.slice(0, input.selectionStart);
     const line = before.split("\n").length;
-    return { line, column: before.length - before.lastIndexOf("\n"), lines: input.value.split("\n").length };
+    return {line, column: before.length - before.lastIndexOf("\n"), lines: input.value.split("\n").length};
   };
   /** Keep the mirror and gutter aligned with the textarea scroll. */
   const syncScroll = () => {
@@ -83,7 +83,7 @@ export const createEditor = options => {
           row.append(span);
         }
         return row;
-      }),
+      })
     );
     gutter.replaceChildren(
       ...lines.map((_tokens, index) => {
@@ -91,7 +91,7 @@ export const createEditor = options => {
         number.textContent = String(index + 1);
         if (errorLine === index + 1) number.setAttribute("data-error", "");
         return number;
-      }),
+      })
     );
     input.rows = Math.min(Math.max(lines.length, minRows), maxRows);
     syncScroll();
@@ -110,7 +110,7 @@ export const createEditor = options => {
     input.setSelectionRange(start, end);
     if (!document.execCommand("insertText", false, text)) {
       input.setRangeText(text, start, end, "end");
-      input.dispatchEvent(new Event("input", { bubbles: true }));
+      input.dispatchEvent(new Event("input", {bubbles: true}));
     }
     input.setSelectionRange(selectStart, selectEnd);
   };
@@ -135,7 +135,7 @@ export const createEditor = options => {
    * @returns {void}
    */
   const indent = outdent => {
-    const { selectionStart: start, selectionEnd: end, value } = input;
+    const {selectionStart: start, selectionEnd: end, value} = input;
     if (start === end && !outdent) {
       edit(start, end, INDENT);
       return;
@@ -153,7 +153,7 @@ export const createEditor = options => {
    * @returns {void}
    */
   const toggleComment = () => {
-    const { selectionStart: start, selectionEnd: end, value } = input;
+    const {selectionStart: start, selectionEnd: end, value} = input;
     const from = lineStart(start);
     const to = lineEnd(end);
     const block = value.slice(from, to).split("\n");
@@ -169,7 +169,7 @@ export const createEditor = options => {
   };
   /** Insert a newline that keeps indentation and opens a block after a bracket. */
   const newline = () => {
-    const { selectionStart: start, selectionEnd: end, value } = input;
+    const {selectionStart: start, selectionEnd: end, value} = input;
     const head = value.slice(lineStart(start), start);
     const base = /^\s*/.exec(head)?.[0] ?? "";
     const opens = /[{([]\s*$/.test(head);
@@ -265,6 +265,6 @@ export const createEditor = options => {
      */
     setReadOnly: value => {
       input.readOnly = value;
-    },
+    }
   };
 };

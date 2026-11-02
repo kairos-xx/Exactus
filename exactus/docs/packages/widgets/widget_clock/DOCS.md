@@ -195,6 +195,13 @@ exactus/packages/widgets/widget_clock/
 | `index.js` | JavaScript module. |
 | `widget_clock.js` | JavaScript module. |
 
+## Command-line options
+
+| Option | Description | Settings |
+|---|---|---|
+| `--headless` | Load the demo in a headless browser instead of a window. | action='store_true' |
+| `--timeout` | Seconds to keep the browser alive after it loads. | type=float, default=None |
+
 ## Python API reference
 
 Public classes, functions and constants, read from the source. Private names (leading underscore) are omitted.
@@ -219,7 +226,7 @@ Run the analog-clock example with the project virtual environment.
 Start the loopback demo server and open the managed browser.
 
 - `start_demo(*, log: Path) -> str` — Serve this package only, including the demo's relative library import.
-- `main() -> int` — Launch the demo; leave its reusable background server running.
+- `main(*, arguments: Sequence[str] | None=None) -> int` — Launch the demo; leave its reusable background server running.
 
 ## JavaScript API reference
 
@@ -243,14 +250,15 @@ Files: `examples/README.md`, `examples/__init__.py`, `examples/__main__.py`, `ex
 
 ## Dependencies and consumers
 
-- Other packages: [`browser`](../../browser/DOCS.md), [`server`](../../server/DOCS.md)
+- Other packages: [`argument_parser`](../../argument_parser/DOCS.md), [`browser`](../../browser/DOCS.md), [`server`](../../server/DOCS.md)
 - Used by: `tests/packages/widgets/widget_clock/test_examples.py`
 
 ## Tests
 
 Tests live in `exactus/tests/packages/widgets/widget_clock/`.
 
-- `test_examples.py` — Coverage for the widget_clock demo server launcher. (4 tests)
+- `test_examples.py` — Coverage for the widget_clock demo server launcher. (5 tests)
+  - `test_main_headless_loads_page_then_exits`
   - `test_main_prints_url_and_opens_browser`
   - `test_module_entrypoint_invokes_main`
   - `test_start_demo_replaces_unready_server`

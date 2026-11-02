@@ -772,8 +772,7 @@ class CoverageTestsReport:
             for key in ("skipped", "xfailed", "xpassed")
             if counts[key]
         ]
-        js_files: int = len(Values.items(value=javascript.get("tests")))
-        if js_files:
+        if js_files := len(Values.items(value=javascript.get("tests"))):
             extras.append(
                 f"{js_files} JavaScript test "
                 f"{'file' if js_files == 1 else 'files'} passed",

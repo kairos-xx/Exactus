@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
-	Router,
+	Router
 } from "../../../../packages/exactus_mcp/bridge/worker.js";
 /** Origin used by every request in this suite. */
 const ORIGIN = "https://worker.example";
@@ -36,14 +36,14 @@ const fakeKV = () => {
 		put: async (
 			/** @type {string} */ key,
 			/** @type {string} */ value,
-			/** @type {KVPutOptions | undefined} */ options,
+			/** @type {KVPutOptions | undefined} */ options
 		) => {
 			store.set(key, value);
 			puts.push({key, options});
 		},
 		delete: async (/** @type {string} */ key) => {
 			store.delete(key);
-		},
+		}
 	};
 };
 /**
@@ -55,7 +55,7 @@ const fakeKV = () => {
 const fakeEnv = () => ({
 	ROUTING: fakeKV(),
 	CONTROL_SECRET: "control-secret",
-	OAUTH_LOGIN_SECRET: "login-secret",
+	OAUTH_LOGIN_SECRET: "login-secret"
 });
 /**
  * Build a request against the suite origin.
@@ -94,7 +94,7 @@ test("metadata endpoints describe the OAuth surface", async () => {
 	const env = fakeEnv();
 	const resource = await Router.fetch(
 		req("/.well-known/oauth-protected-resource"),
-		env,
+		env
 	);
 	assert.equal(resource.status, 200);
 	const resourceBody = await resource.json();
@@ -102,12 +102,12 @@ test("metadata endpoints describe the OAuth surface", async () => {
 	assert.deepEqual(resourceBody.authorization_servers, [ORIGIN]);
 	const namespaced = await Router.fetch(
 		req("/.well-known/oauth-protected-resource/mcp"),
-		env,
+		env
 	);
 	assert.equal(namespaced.status, 200);
 	const server = await Router.fetch(
 		req("/.well-known/oauth-authorization-server"),
-		env,
+		env
 	);
 	const serverBody = await server.json();
 	assert.equal(serverBody.issuer, ORIGIN);
@@ -125,11 +125,11 @@ test("registerClient rejects wrong methods and metadata", async () => {
 		{redirect_uris: ["http://chatgpt.com/cb"]},
 		{redirect_uris: ["https://example.com/cb"]},
 		{redirect_uris: ["https://chatgpt.com/cb", 42]},
-		{redirect_uris: ["not a url"]},
+		{redirect_uris: ["not a url"]}
 	].map(async body => {
 		const response = await Router.registerClient(req("/oauth/register", {
 			method: "POST",
-			body: JSON.stringify(body),
+			body: JSON.stringify(body)
 		}), env);
 		assert.equal(response.status, 400);
 		assert.equal((await response.json()).error, "invalid_client_metadata");
@@ -142,9 +142,9 @@ test("registerClient stores a public client", async () => {
 		body: JSON.stringify({
 			redirect_uris: [
 				"https://chatgpt.com/cb",
-				"https://app.openai.com/cb",
-			],
-		}),
+				"https://app.openai.com/cb"
+			]
+		})
 	}), env);
 	assert.equal(response.status, 201);
 	assert.equal(response.headers.get("Cache-Control"), "no-store");
@@ -152,7 +152,7 @@ test("registerClient stores a public client", async () => {
 	assert.match(body.client_id, /^client_/);
 	assert.equal(body.token_endpoint_auth_method, "none");
 	const client = JSON.parse(
-		stored(env.ROUTING, `oauth:client:${body.client_id}`),
+		stored(env.ROUTING, `oauth:client:${body.client_id}`)
 	);
 	assert.deepEqual(client.redirect_uris, body.redirect_uris);
 	return body.client_id;
@@ -165,7 +165,7 @@ test("authorize validates every required parameter", async () => {
 		state: "s",
 		code_challenge: "c",
 		code_challenge_method: "S256",
-		resource: RESOURCE,
+		resource: RESOURCE
 	};
 	await Promise.all(Object.keys(base).map(async omit => {
 		const params = new URLSearchParams(base);
@@ -173,35 +173,35 @@ test("authorize validates every required parameter", async () => {
 		const response = await Router.authorize(
 			req(`/oauth/authorize?${params}`),
 			env,
-			new URL(`${ORIGIN}/oauth/authorize?${params}`),
+			new URL(`${ORIGIN}/oauth/authorize?${params}`)
 		);
 		assert.equal(response.status, 400, `missing ${omit}`);
 	}));
 	const wrongMethod = new URLSearchParams({
 		...base,
-		code_challenge_method: "plain",
+		code_challenge_method: "plain"
 	});
 	const rejected = await Router.authorize(
 		req(`/oauth/authorize?${wrongMethod}`),
 		env,
-		new URL(`${ORIGIN}/oauth/authorize?${wrongMethod}`),
+		new URL(`${ORIGIN}/oauth/authorize?${wrongMethod}`)
 	);
 	assert.equal(rejected.status, 400);
 	const foreign = new URLSearchParams({
 		...base,
-		resource: "https://other.example/mcp",
+		resource: "https://other.example/mcp"
 	});
 	const foreignResponse = await Router.authorize(
 		req(`/oauth/authorize?${foreign}`),
 		env,
-		new URL(`${ORIGIN}/oauth/authorize?${foreign}`),
+		new URL(`${ORIGIN}/oauth/authorize?${foreign}`)
 	);
 	assert.equal(foreignResponse.status, 400);
 });
 test("authorize rejects unknown and mismatched clients", async () => {
 	const env = fakeEnv();
 	env.ROUTING.store.set("oauth:client:client_known", JSON.stringify({
-		redirect_uris: ["https://chatgpt.com/cb"],
+		redirect_uris: ["https://chatgpt.com/cb"]
 	}));
 	/**
 	 * Run the authorize handler for a client/redirect pair.
@@ -217,12 +217,12 @@ test("authorize rejects unknown and mismatched clients", async () => {
 			state: "s",
 			code_challenge: "c",
 			code_challenge_method: "S256",
-			resource: RESOURCE,
+			resource: RESOURCE
 		});
 		return Router.authorize(
 			req(`/oauth/authorize?${params}`),
 			env,
-			new URL(`${ORIGIN}/oauth/authorize?${params}`),
+			new URL(`${ORIGIN}/oauth/authorize?${params}`)
 		);
 	};
 	assert.equal((await authorize("client_ghost", "https://chatgpt.com/cb")).status, 400);
@@ -238,7 +238,7 @@ test("authorize rejects unknown and mismatched clients", async () => {
 const register = async (env, redirectUri) => {
 	const response = await Router.registerClient(req("/oauth/register", {
 		method: "POST",
-		body: JSON.stringify({redirect_uris: [redirectUri]}),
+		body: JSON.stringify({redirect_uris: [redirectUri]})
 	}), env);
 	assert.equal(response.status, 201);
 	return (await response.json()).client_id;
@@ -252,12 +252,12 @@ test("GET authorize renders the escaped login form", async () => {
 		state: 'st"<>',
 		code_challenge: "ch",
 		code_challenge_method: "S256",
-		resource: RESOURCE,
+		resource: RESOURCE
 	});
 	const response = await Router.authorize(
 		req(`/oauth/authorize?${params}`),
 		env,
-		new URL(`${ORIGIN}/oauth/authorize?${params}`),
+		new URL(`${ORIGIN}/oauth/authorize?${params}`)
 	);
 	assert.equal(response.status, 200);
 	const contentType = response.headers.get("Content-Type");
@@ -277,12 +277,12 @@ test("POST authorize requires the login secret", async () => {
 		state: "s",
 		code_challenge: "c",
 		code_challenge_method: "S256",
-		resource: RESOURCE,
+		resource: RESOURCE
 	});
 	const response = await Router.authorize(
 		req("/oauth/authorize", {method: "POST", body}),
 		env,
-		new URL(`${ORIGIN}/oauth/authorize`),
+		new URL(`${ORIGIN}/oauth/authorize`)
 	);
 	assert.equal(response.status, 401);
 	const wrong = new URLSearchParams(body);
@@ -290,7 +290,7 @@ test("POST authorize requires the login secret", async () => {
 	const wrongResponse = await Router.authorize(
 		req("/oauth/authorize", {method: "POST", body: wrong}),
 		env,
-		new URL(`${ORIGIN}/oauth/authorize`),
+		new URL(`${ORIGIN}/oauth/authorize`)
 	);
 	assert.equal(wrongResponse.status, 401);
 });
@@ -310,12 +310,12 @@ const grantCode = async (env, clientId, challenge) => {
 		code_challenge: challenge,
 		code_challenge_method: "S256",
 		resource: RESOURCE,
-		login_secret: env.OAUTH_LOGIN_SECRET,
+		login_secret: env.OAUTH_LOGIN_SECRET
 	});
 	const response = await Router.authorize(
 		req("/oauth/authorize", {method: "POST", body}),
 		env,
-		new URL(`${ORIGIN}/oauth/authorize`),
+		new URL(`${ORIGIN}/oauth/authorize`)
 	);
 	assert.equal(response.status, 302);
 	const location = response.headers.get("Location");
@@ -334,13 +334,13 @@ test("authorize issues a code and redirects with iss", async () => {
 	const clientId = await register(env, "https://chatgpt.com/cb");
 	await grantCode(env, clientId, "challenge-1");
 	const entry = [...env.ROUTING.store.entries()].find(
-		([key]) => key.startsWith("oauth:code:"),
+		([key]) => key.startsWith("oauth:code:")
 	);
 	assert.ok(entry !== undefined, "no oauth code stored");
 	const record = JSON.parse(entry[1]);
 	assert.equal(record.scope, "mcp:tools");
 	const put = env.ROUTING.puts.find(
-		({key}) => key.startsWith("oauth:code:"),
+		({key}) => key.startsWith("oauth:code:")
 	);
 	assert.ok(put !== undefined, "oauth code put not recorded");
 	assert.equal(put.options?.expirationTtl, 300);
@@ -351,16 +351,16 @@ test("token enforces method, grant, and parameter shape", async () => {
 	assert.equal(get.status, 405);
 	const badGrant = await Router.token(req("/oauth/token", {
 		method: "POST",
-		body: new URLSearchParams({grant_type: "client_credentials"}),
+		body: new URLSearchParams({grant_type: "client_credentials"})
 	}), env);
 	assert.equal((await badGrant.json()).error, "unsupported_grant_type");
 	await Promise.all([
 		new URLSearchParams({grant_type: "authorization_code"}),
-		new URLSearchParams({grant_type: "authorization_code", code: "c"}),
+		new URLSearchParams({grant_type: "authorization_code", code: "c"})
 	].map(async body => {
 		const response = await Router.token(
 			req("/oauth/token", {method: "POST", body}),
-			env,
+			env
 		);
 		assert.equal((await response.json()).error, "invalid_grant");
 	}));
@@ -369,8 +369,8 @@ test("token enforces method, grant, and parameter shape", async () => {
 		body: new URLSearchParams({
 			grant_type: "authorization_code",
 			code: "ghost",
-			code_verifier: "v",
-		}),
+			code_verifier: "v"
+		})
 	}), env);
 	assert.equal((await unknown.json()).error, "invalid_grant");
 });
@@ -393,13 +393,13 @@ test("token rejects mismatched binding fields", async () => {
 			client_id: clientId,
 			redirect_uri: "https://chatgpt.com/cb",
 			resource: RESOURCE,
-			...overrides,
-		}),
+			...overrides
+		})
 	}), env);
 	await Promise.all([
 		{client_id: "client_other"},
 		{redirect_uri: "https://chatgpt.com/other"},
-		{resource: "https://other.example/mcp"},
+		{resource: "https://other.example/mcp"}
 	].map(async overrides => {
 		const response = await exchange(overrides);
 		assert.equal((await response.json()).error, "invalid_grant");
@@ -419,8 +419,8 @@ test("token issues a bearer token for a valid PKCE exchange", async () => {
 			code_verifier: verifier,
 			client_id: clientId,
 			redirect_uri: "https://chatgpt.com/cb",
-			resource: RESOURCE,
-		}),
+			resource: RESOURCE
+		})
 	}), env);
 	assert.equal(response.status, 200);
 	assert.equal(response.headers.get("Cache-Control"), "no-store");
@@ -440,8 +440,8 @@ test("token issues a bearer token for a valid PKCE exchange", async () => {
 			code_verifier: "wrong-verifier",
 			client_id: clientId,
 			redirect_uri: "https://chatgpt.com/cb",
-			resource: RESOURCE,
-		}),
+			resource: RESOURCE
+		})
 	}), env);
 	assert.equal((await rejected.json()).error, "invalid_grant");
 });
@@ -454,11 +454,11 @@ test("authorizedProxy challenges missing and unknown tokens", async () => {
 	assert.match(authenticate, /resource_metadata="https:\/\/worker\.example\/\.well-known\/oauth-protected-resource"/);
 	assert.match(authenticate, /scope="mcp:tools"/);
 	const basic = await Router.fetch(req("/mcp", {
-		headers: {Authorization: "Basic abc"},
+		headers: {Authorization: "Basic abc"}
 	}), env);
 	assert.equal(basic.status, 401);
 	const unknown = await Router.fetch(req("/mcp", {
-		headers: {Authorization: "Bearer ghost"},
+		headers: {Authorization: "Bearer ghost"}
 	}), env);
 	assert.equal(unknown.status, 401);
 });
@@ -469,11 +469,11 @@ test("authorizedProxy enforces the token resource binding", async () => {
 		`oauth:token:${await Router.sha256(token)}`,
 		JSON.stringify({
 			resource: "https://other.example/mcp",
-			scope: "mcp:tools",
-		}),
+			scope: "mcp:tools"
+		})
 	);
 	const response = await Router.fetch(req("/mcp", {
-		headers: {Authorization: `Bearer ${token}`},
+		headers: {Authorization: `Bearer ${token}`}
 	}), env);
 	assert.equal(response.status, 401);
 });
@@ -483,7 +483,7 @@ test("updateBackend enforces method, secret, and URL shape", async () => {
 	assert.equal(get.status, 405);
 	const anonymous = await Router.updateBackend(req("/_control/backend", {
 		method: "POST",
-		body: JSON.stringify({url: "https://a.trycloudflare.com"}),
+		body: JSON.stringify({url: "https://a.trycloudflare.com"})
 	}), env);
 	assert.equal(anonymous.status, 401);
 	/**
@@ -495,7 +495,7 @@ test("updateBackend enforces method, secret, and URL shape", async () => {
 	const post = body => Router.updateBackend(req("/_control/backend", {
 		method: "POST",
 		headers: {Authorization: "Bearer control-secret"},
-		body: JSON.stringify(body),
+		body: JSON.stringify(body)
 	}), env);
 	await Promise.all([
 		42,
@@ -504,7 +504,7 @@ test("updateBackend enforces method, secret, and URL shape", async () => {
 		"https://example.com",
 		"https://u:p@a.trycloudflare.com",
 		"https://a.trycloudflare.com/?q=1",
-		"https://a.trycloudflare.com/#frag",
+		"https://a.trycloudflare.com/#frag"
 	].map(async url => {
 		assert.equal((await post({url})).status, 400, String(url));
 	}));
@@ -526,9 +526,9 @@ test("proxy reports missing backend and forwards when set", async () => {
 			return new Response("backend-body", {
 				status: 418,
 				statusText: "Teapot",
-				headers: {"X-Backend": "yes"},
+				headers: {"X-Backend": "yes"}
 			});
-		},
+		}
 	);
 	try {
 		const response = await Router.fetch(req("/some/path?x=1", {
@@ -536,8 +536,8 @@ test("proxy reports missing backend and forwards when set", async () => {
 			headers: {
 				Host: "worker.example",
 				Authorization: "Bearer strip-me",
-				"X-Keep": "kept",
-			},
+				"X-Keep": "kept"
+			}
 		}), env);
 		assert.equal(response.status, 418);
 		assert.equal(response.statusText, "Teapot");
@@ -569,15 +569,15 @@ test("end-to-end OAuth flow authorizes an MCP request", async () => {
 			code_verifier: verifier,
 			client_id: clientId,
 			redirect_uri: "https://chatgpt.com/cb",
-			resource: RESOURCE,
-		}),
+			resource: RESOURCE
+		})
 	}), env);
 	const {access_token} = await tokenResponse.json();
 	env.ROUTING.store.set("current_backend_url", "https://c.trycloudflare.com");
 	const restore = captureFetch(async () => new Response("mcp-reply"));
 	try {
 		const response = await Router.fetch(req("/mcp", {
-			headers: {Authorization: `Bearer ${access_token}`},
+			headers: {Authorization: `Bearer ${access_token}`}
 		}), env);
 		assert.equal(response.status, 200);
 		assert.equal(await response.text(), "mcp-reply");

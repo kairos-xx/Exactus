@@ -83,25 +83,25 @@ export class SnapshotCapture {
         () =>
           new Promise(resolve => {
             requestAnimationFrame(() => requestAnimationFrame(resolve));
-          }),
+          })
       );
     try {
       await root.evaluate(captureRoot => {
         const host = /** @type {CaptureWindow} */ (window);
         const state = /** @type {CaptureState} */ ({
           styles: [],
-          scrolls: [],
+          scrolls: []
         });
         host.__snapshotCapture = state;
         for (const element of [
           captureRoot,
-          ...captureRoot.querySelectorAll("*"),
+          ...captureRoot.querySelectorAll("*")
         ]) {
           if (!(
             element instanceof HTMLElement || element instanceof SVGElement
           ))
             continue;
-          const { overflowY, maxHeight } = getComputedStyle(element);
+          const {overflowY, maxHeight} = getComputedStyle(element);
           if (
             !["auto", "scroll", "hidden", "clip"].includes(overflowY) &&
             maxHeight === "none" &&
@@ -113,7 +113,7 @@ export class SnapshotCapture {
             state.scrolls.push([
               element,
               element.scrollLeft,
-              element.scrollTop,
+              element.scrollTop
             ]);
           element.style.cssText +=
             ";height:auto!important;max-height:none!important;overflow-y:visible!important";
@@ -128,31 +128,31 @@ export class SnapshotCapture {
       const resizeUntilStable = async (iteration, previous) => {
         if (iteration >= 20) return;
         await settle();
-        const { height, signature, viewportHeight } =
+        const {height, signature, viewportHeight} =
           /** @type {MeasureResult} */
           (
             await root.evaluate(captureRoot => {
               const values = [
                 captureRoot,
-                ...captureRoot.querySelectorAll("*"),
+                ...captureRoot.querySelectorAll("*")
               ].map(element => {
-                const { top, height: captureHeight } =
+                const {top, height: captureHeight} =
                   element.getBoundingClientRect();
                 return `${Math.round(top)}:${Math.round(captureHeight)}:${element.scrollHeight ?? 0}:${element.clientHeight ?? 0}`;
               });
-              const { top, bottom } = captureRoot.getBoundingClientRect();
+              const {top, bottom} = captureRoot.getBoundingClientRect();
               return {
                 height: Math.ceil(
                   top +
                     captureRoot.scrollHeight +
                     Math.max(
                       document.documentElement.scrollHeight,
-                      document.body?.scrollHeight ?? 0,
+                      document.body?.scrollHeight ?? 0
                     ) -
-                    bottom,
+                    bottom
                 ),
                 signature: values.join("|"),
-                viewportHeight: innerHeight,
+                viewportHeight: innerHeight
               };
             })
           );
@@ -161,7 +161,7 @@ export class SnapshotCapture {
         if (height !== viewportHeight)
           await this.page.setViewportSize({
             width: viewport.width,
-            height,
+            height
           });
         await resizeUntilStable(iteration + 1, current);
       };
@@ -169,7 +169,7 @@ export class SnapshotCapture {
       await settle();
       return await this.page.screenshot({
         ...options,
-        fullPage: true,
+        fullPage: true
       });
     } finally {
       await root
@@ -184,7 +184,7 @@ export class SnapshotCapture {
           for (const [element, left, top] of state.scrolls)
             Object.assign(element, {
               scrollLeft: left,
-              scrollTop: top,
+              scrollTop: top
             });
           delete host.__snapshotCapture;
         })

@@ -110,5 +110,5 @@ export const ICONS = Object.freeze({
   x: '<path d="M18 6L6 18M6 6l12 12"/>',
   "zoom-in":
     '<path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0-14 0m4 0h6m-3-3v6m11 8l-6-6"/>',
-  "zoom-out": '<path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0-14 0m4 0h6m8 11l-6-6"/>',
+  "zoom-out": '<path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0-14 0m4 0h6m8 11l-6-6"/>'
 });

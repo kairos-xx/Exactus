@@ -72,9 +72,9 @@ elements => {
           x: rect.x + scrollX,
           y: rect.y + scrollY,
           width: rect.width,
-          height: rect.height,
-        },
+          height: rect.height
+        }
       ];
-    }),
+    })
   );
 };

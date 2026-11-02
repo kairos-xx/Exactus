@@ -3,5 +3,5 @@ import "./widget_clock.js";
 const Clock = /** @type {typeof AnalogClock} */ (
   Reflect.get(globalThis, "AnalogClock")
 );
-export { Clock as AnalogClock };
+export {Clock as AnalogClock};
 export default Clock;

@@ -1,6 +1,6 @@
 /** A searchable popover that inserts earlier action values into the snippet. */
-import { Describer } from "../../widgets/widget_console/describe.js";
-import { formatValue } from "../../widgets/widget_console/format.js";
+import {Describer} from "../../widgets/widget_console/describe.js";
+import {formatValue} from "../../widgets/widget_console/format.js";
 /**
  * @typedef {object} Variable
  * @property {string} name Value name, such as `user/id`.
@@ -36,7 +36,7 @@ const make = (tag, className = "", text = "") => {
 const preview = variable => {
   if (variable.secret) return "••••••••";
   if (variable.value === undefined && variable.type) return variable.type;
-  return formatValue(Describer.describe(variable.value), { nested: true, depth: 0 });
+  return formatValue(Describer.describe(variable.value), {nested: true, depth: 0});
 };
 /**
  * Create the menu element and wire it to its anchor.
@@ -44,7 +44,7 @@ const preview = variable => {
  * @returns The menu API.
  */
 export const createVariablesMenu = options => {
-  const { anchor } = options;
+  const {anchor} = options;
   const menu = make("div", "jr-menu");
   menu.hidden = true;
   menu.setAttribute("role", "dialog");
@@ -72,7 +72,7 @@ export const createVariablesMenu = options => {
     active = Math.min(Math.max(active, 0), Math.max(nodes.length - 1, 0));
     nodes.forEach((node, index) => {
       node.setAttribute("aria-selected", String(index === active));
-      if (index === active) node.scrollIntoView({ block: "nearest" });
+      if (index === active) node.scrollIntoView({block: "nearest"});
     });
   };
   /** Hide the menu and reset the anchor state. */
@@ -96,7 +96,7 @@ export const createVariablesMenu = options => {
           options.onPick(variable.name);
         });
         return item;
-      }),
+      })
     );
     if (shown.length === 0) list.append(make("p", "jr-menu-empty", "No matching values."));
     active = 0;
@@ -143,6 +143,6 @@ export const createVariablesMenu = options => {
     destroy: () => {
       document.removeEventListener("pointerdown", outside);
       menu.remove();
-    },
+    }
   };
 };

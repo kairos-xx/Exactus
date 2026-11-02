@@ -1,6 +1,6 @@
-import { getCssSelector } from "css-selector-generator";
+import {getCssSelector} from "css-selector-generator";
 import * as optimalModule from "optimal-select";
-import { finder } from "@medv/finder";
+import {finder} from "@medv/finder";
 const optimal = optimalModule.default ?? optimalModule;
 /** Inject locally installed selector generators into ExtendedSelector.
  * @param {import("./extended-selector.js").ExtendedSelector} engine
@@ -18,8 +18,8 @@ export const bestLocalSelector = (engine, targets, options = {}) =>
       optimize: selector =>
         optimal.optimize(
           selector,
-          Array.isArray(targets) ? targets : [targets],
-        ),
+          Array.isArray(targets) ? targets : [targets]
+        )
     },
     finder: (element, settings) => {
       const root = settings?.root ?? element.ownerDocument;
@@ -27,7 +27,7 @@ export const bestLocalSelector = (engine, targets, options = {}) =>
         root:
           root.nodeType === Node.DOCUMENT_NODE
             ? /** @type {Document} */ (root).body
-            : /** @type {Element} */ (root),
+            : /** @type {Element} */ (root)
       });
-    },
+    }
   });

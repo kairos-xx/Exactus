@@ -784,8 +784,7 @@ def resolve_devices(names: str) -> tuple[DeviceSpec, ...]:
     }
     if not wanted:
         return Constants.devices
-    unknown: set[str] = wanted - {device.name for device in Constants.devices}
-    if unknown:
+    if unknown := wanted - {device.name for device in Constants.devices}:
         msg: str = f"unknown device(s): {', '.join(sorted(unknown))}"
         raise ValueError(msg)
     return tuple(
@@ -811,8 +810,7 @@ def resolve_themes(names: str) -> tuple[ThemeName, ...]:
     }
     if not wanted:
         return Constants.themes
-    unknown: set[str] = wanted - set(Constants.themes)
-    if unknown:
+    if unknown := wanted - set(Constants.themes):
         msg: str = f"unknown theme(s): {', '.join(sorted(unknown))}"
         raise ValueError(msg)
     return tuple(theme for theme in Constants.themes if theme in wanted)

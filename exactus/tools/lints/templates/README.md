@@ -13,7 +13,10 @@ direct file and child directory.
 
 Generic strict ESLint flat configuration copied into a project under
 exactus when it lacks `eslint.config.js`/`eslint.config.mjs`/
-`eslint.config.cjs`; also used as the `--config` fallback path.
+`eslint.config.cjs`; also used as the `--config` fallback path. Core
+rules are self-contained; `@stylistic/*` rules activate only when
+`@stylistic/eslint-plugin` resolves via `createRequire` + `NODE_PATH`
+(bundled `js/node_modules`, global root, or project `node_modules`).
 
 #### `jsconfig.json`
 

@@ -185,8 +185,7 @@ def priority_for(
         One explicit or inherited priority, or Untriaged when ambiguous.
 
     """
-    explicit: set[str] = set(Patterns.PRIORITY.findall(string=label))
-    if explicit:
+    if explicit := set(Patterns.PRIORITY.findall(string=label)):
         return next(iter(explicit)) if len(explicit) == 1 else "Untriaged"
     if parent is not None:
         return parent

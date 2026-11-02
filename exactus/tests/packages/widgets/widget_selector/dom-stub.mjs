@@ -179,7 +179,7 @@ export class FakeElement {
        * @param {string} name Property name.
        * @returns {string} Stored value or the empty string.
        */
-      getPropertyValue: name => styleStore[name] ?? "",
+      getPropertyValue: name => styleStore[name] ?? ""
     };
   }
 
@@ -198,7 +198,7 @@ export class FakeElement {
    * @returns {{name: string, value: string}[]} Attribute pairs.
    */
   get attributes() {
-    return [...this.attributesMap].map(([name, value]) => ({ name, value }));
+    return [...this.attributesMap].map(([name, value]) => ({name, value}));
   }
 
   /**
@@ -434,7 +434,7 @@ export class FakeElement {
       width: 100,
       height: 20,
       x: 0,
-      y: 0,
+      y: 0
     };
   }
 
@@ -502,7 +502,7 @@ export class FakeElement {
     if (!event.target)
       Object.defineProperty(event, "target", {
         value: this,
-        configurable: true,
+        configurable: true
       });
     for (
       let node = /** @type {FakeElement | null} */ (this);
@@ -528,12 +528,12 @@ export const createDocument = () => {
     createTextNode: text => ({
       nodeType: 3,
       textContent: text,
-      parentElement: null,
+      parentElement: null
     }),
     querySelectorAll: () => [],
     activeElement: null,
     documentElement: new FakeElement("html"),
-    body: new FakeElement("body"),
+    body: new FakeElement("body")
   };
   document.documentElement.ownerDocument = document;
   document.body.ownerDocument = document;
@@ -566,10 +566,10 @@ export const installDom = () => {
 export const keyEvent = (key, options = {}) =>
   /** @type {KeyboardEvent} */ (
     /** @type {unknown} */ (
-      Object.assign(new Event("keydown", { bubbles: true }), {
+      Object.assign(new Event("keydown", {bubbles: true}), {
         key,
         preventDefault: () => {},
-        ...options,
+        ...options
       })
     )
   );
@@ -582,7 +582,7 @@ export const keyEvent = (key, options = {}) =>
  * @returns {Event} Synthetic input event.
  */
 export const inputEvent = (target, options = {}) => {
-  const event = Object.assign(new Event("input", { bubbles: true }), options);
-  Object.defineProperty(event, "target", { value: target });
+  const event = Object.assign(new Event("input", {bubbles: true}), options);
+  Object.defineProperty(event, "target", {value: target});
   return event;
 };

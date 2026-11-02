@@ -79,6 +79,37 @@ def _store_duration(
         _previous_duration[path.resolve()] = duration
 
 
+def _tool_durations_from(
+    *,
+    document: Mapping[str, JsonValue] | None,
+) -> dict[str, float] | None:
+    """Return per-tool durations recorded in an aggregate report.
+
+    Args:
+        document: Previous aggregate report document, when available.
+
+    Returns:
+        Tool identifiers mapped to seconds, or ``None`` when the report
+        recorded no per-tool durations.
+
+    """
+    if document is None:
+        return None
+    tools: JsonValue = document.get("tools")
+    if not isinstance(tools, dict):
+        return None
+    durations: dict[str, float] = {}
+    for name, entry in tools.items():
+        if isinstance(entry, dict):
+            value: JsonValue = entry.get("duration_seconds")
+            if isinstance(value, int | float) and not isinstance(
+                value,
+                bool,
+            ):
+                durations[name] = float(value)
+    return durations or None
+
+
 def _snapshot_path(*, path: Path) -> Path | None:
     """Locate an inherited run baseline for a canonical report path.
 
@@ -243,6 +274,36 @@ def previous_duration(*, path: Path) -> float | None:
         with _lock:
             _previous_duration[resolved] = duration
     return duration
+
+
+def previous_tool_durations(*, path: Path) -> dict[str, float] | None:
+    """Return per-tool durations from the report that preceded ``path``.
+
+    The lookup mirrors :func:`previous_duration`: the captured document is
+    consulted first, then the shared baseline snapshot directory inherited
+    through ``EXACTUS_COMPARISON_BASELINE``.
+
+    Args:
+        path: Canonical ``result.json`` path of the current run.
+
+    Returns:
+        Tool identifiers mapped to their previous durations in seconds, or
+        ``None`` when no previous aggregate report exists or it recorded
+        no per-tool durations.
+
+    """
+    resolved: Path = path.resolve()
+    with _lock:
+        document: dict[str, JsonValue] | None = _previous.get(resolved)
+    durations: dict[str, float] | None = _tool_durations_from(
+        document=document,
+    )
+    if durations is not None:
+        return durations
+    snapshot: Path | None = _snapshot_path(path=path)
+    return _tool_durations_from(
+        document=_read(path=snapshot) if snapshot is not None else None,
+    )
 
 
 def _findings(
@@ -593,8 +654,7 @@ def _section_changes(
         }
         for name in sorted(current_groups.keys() | previous_groups.keys())
     ]
-    historical: dict[str, int] = _historical_counts(document=previous or {})
-    if historical:
+    if historical := _historical_counts(document=previous or {}):
         for row in sections:
             if isinstance(row, dict):
                 name: str = str(object=row.get("section", ""))

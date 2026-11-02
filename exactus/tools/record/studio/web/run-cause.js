@@ -16,7 +16,7 @@ const PHASES = Object.freeze({
   execute: "Action",
   gate: "Wait",
   timeout: "Timed out",
-  drift: "Changed since the baseline",
+  drift: "Changed since the baseline"
 });
 /** The worst status first, so a step with several results shows the one to read.
  * @type {readonly string[]}
@@ -40,7 +40,7 @@ const make = (tag, className = "", text = "") => {
  */
 export const worstStatus = records =>
   SEVERITY.find(status =>
-    records.some(record => record.status === status),
+    records.some(record => record.status === status)
   ) ?? "";
 /** One-line text for a record: its message, or its phase when it has none.
  * @param {RunRecord} record
@@ -75,12 +75,12 @@ export const causeFacts = cause => {
   if (cause.expected_count !== undefined || cause.found_count !== undefined)
     add(
       "Expected and found",
-      `${cause.expected_count === null ? "one or more" : (cause.expected_count ?? "?")} expected, ${cause.found_count ?? "?"} found`,
+      `${cause.expected_count === null ? "one or more" : (cause.expected_count ?? "?")} expected, ${cause.found_count ?? "?"} found`
     );
   add("Resolved to", cause.resolved_css);
   add(
     "Match number",
-    typeof cause.target_index === "number" ? cause.target_index + 1 : "",
+    typeof cause.target_index === "number" ? cause.target_index + 1 : ""
   );
   add("Waited", cause.timeout_ms ? `${cause.timeout_ms} ms` : "");
   for (const failed of cause.failed ?? [])
@@ -88,7 +88,7 @@ export const causeFacts = cause => {
   for (const change of cause.changes ?? [])
     add(
       `${change.field} changed`,
-      `${JSON.stringify(change.baseline)} to ${JSON.stringify(change.current)}`,
+      `${JSON.stringify(change.baseline)} to ${JSON.stringify(change.current)}`
     );
   add("Browser said", cause.playwright_error);
   return facts;
@@ -113,8 +113,8 @@ export const renderLastRun = (target, records) => {
         make(
           "small",
           "",
-          `match ${record.unit.index + 1} of ${record.unit.count}`,
-        ),
+          `match ${record.unit.index + 1} of ${record.unit.count}`
+        )
       );
     item.append(head);
     const summary = causeSummary(record);
@@ -129,7 +129,7 @@ export const renderLastRun = (target, records) => {
       }
     }
     const lines = (record.streams ?? []).filter(
-      entry => entry.source === "snippet",
+      entry => entry.source === "snippet"
     );
     for (const entry of lines)
       item.append(make("p", `last-run-line ${entry.level}`, entry.message));

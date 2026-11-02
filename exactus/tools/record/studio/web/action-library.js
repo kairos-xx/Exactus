@@ -1,9 +1,9 @@
 /** Action catalog and schema-driven insertion form for Flow Studio. */
-import { iconElement } from "./icons.js";
-import { mountPointerStudio } from "../../../../packages/actions/action_pointer/index.js";
-import { javascriptActionWidget } from "./javascript-action-widget.js";
-import { requestActionConfig, requestActionWidget } from "./request-action-widget.js";
-import { variableMentionField, variableName } from "./variable-mention-field.js";
+import {iconElement} from "./icons.js";
+import {mountPointerStudio} from "../../../../packages/actions/action_pointer/index.js";
+import {javascriptActionWidget} from "./javascript-action-widget.js";
+import {requestActionConfig, requestActionWidget} from "./request-action-widget.js";
+import {variableMentionField, variableName} from "./variable-mention-field.js";
 export const ACTION_DRAG_TYPE = "application/x-exactus-action";
 /**
  * @typedef {object} ActionField
@@ -62,36 +62,36 @@ const field = (name, label, type = "text", options = {}) => ({
   name,
   label,
   type,
-  ...options,
+  ...options
 });
 /** @type {ReadonlyArray<ActionGroup>} */
 export const ACTION_GROUPS = Object.freeze([
   {
     name: "Pointer",
     actions: [
-      { id: "pointer", label: "Pointer & touch", icon: "pointer", fields: [field("pointer", "Interaction", "pointer")] },
-    ],
+      {id: "pointer", label: "Pointer & touch", icon: "pointer", fields: [field("pointer", "Interaction", "pointer")]}
+    ]
   },
   {
     name: "Forms & keyboard",
     actions: [
-      { id: "input_text", label: "Fill text", icon: "keyboard", fields: [field("selector", "Input", "selector"), field("payload", "Text", "textarea")] },
-      { id: "select_option", label: "Select option", icon: "list-check", fields: [field("selector", "Select", "selector"), field("options", "Values", "textarea", { placeholder: "One value per line" })] },
-      { id: "check", label: "Check", icon: "check", fields: [field("selector", "Checkbox", "selector")] },
-      { id: "uncheck", label: "Uncheck", icon: "minus", fields: [field("selector", "Checkbox", "selector")] },
-      { id: "keystroke", label: "Press key", icon: "keyboard", fields: [field("payload", "Key or chord", "text", { placeholder: "Control+Shift+K" })] },
-    ],
+      {id: "input_text", label: "Fill text", icon: "keyboard", fields: [field("selector", "Input", "selector"), field("payload", "Text", "textarea")]},
+      {id: "select_option", label: "Select option", icon: "list-check", fields: [field("selector", "Select", "selector"), field("options", "Values", "textarea", {placeholder: "One value per line"})]},
+      {id: "check", label: "Check", icon: "check", fields: [field("selector", "Checkbox", "selector")]},
+      {id: "uncheck", label: "Uncheck", icon: "minus", fields: [field("selector", "Checkbox", "selector")]},
+      {id: "keystroke", label: "Press key", icon: "keyboard", fields: [field("payload", "Key or chord", "text", {placeholder: "Control+Shift+K"})]}
+    ]
   },
   {
     name: "Browser",
     actions: [
-      { id: "url_change", label: "Navigate", icon: "world", fields: [field("url", "Page URL", "url", { placeholder: "https://example.test/path" })] },
-      { id: "viewport_rotate", command: "viewport", label: "Rotate viewport", icon: "device-mobile", fixed: { viewport_action: "rotate" }, fields: [] },
-      { id: "viewport_resize", command: "viewport", label: "Resize viewport", icon: "fit-all", fixed: { viewport_action: "resize" }, fields: [field("width", "Width", "number", { value: "1440" }), field("height", "Height", "number", { value: "900" })] },
-      { id: "javascript", label: "JavaScript", icon: "code", produces: "result", fields: [field("payload", "Sandbox code", "code", { value: "__EXACTUS_FLOW__.log('step');" }), field("output_variable", "Save result as", "text", { required: false, placeholder: "result" })] },
-      { id: "http_call", label: "REST request", icon: "world", produces: "response", fields: [field("request", "Request", "rest"), field("output_variable", "Save response as", "text", { required: false, placeholder: "response" })] },
-      { id: "websocket_call", label: "WebSocket session", icon: "arrows-join", produces: "session", fields: [field("request", "Session", "websocket"), field("output_variable", "Save session as", "text", { required: false, placeholder: "session" })] },
-    ],
+      {id: "url_change", label: "Navigate", icon: "world", fields: [field("url", "Page URL", "url", {placeholder: "https://example.test/path"})]},
+      {id: "viewport_rotate", command: "viewport", label: "Rotate viewport", icon: "device-mobile", fixed: {viewport_action: "rotate"}, fields: []},
+      {id: "viewport_resize", command: "viewport", label: "Resize viewport", icon: "fit-all", fixed: {viewport_action: "resize"}, fields: [field("width", "Width", "number", {value: "1440"}), field("height", "Height", "number", {value: "900"})]},
+      {id: "javascript", label: "JavaScript", icon: "code", produces: "result", fields: [field("payload", "Sandbox code", "code", {value: "__EXACTUS_FLOW__.log('step');"}), field("output_variable", "Save result as", "text", {required: false, placeholder: "result"})]},
+      {id: "http_call", label: "REST request", icon: "world", produces: "response", fields: [field("request", "Request", "rest"), field("output_variable", "Save response as", "text", {required: false, placeholder: "response"})]},
+      {id: "websocket_call", label: "WebSocket session", icon: "arrows-join", produces: "session", fields: [field("request", "Session", "websocket"), field("output_variable", "Save session as", "text", {required: false, placeholder: "session"})]}
+    ]
   },
   {
     name: "Variables & data",
@@ -102,10 +102,10 @@ export const ACTION_GROUPS = Object.freeze([
         icon: "tag",
         produces: "value",
         fields: [
-          field("output_variable", "Variable name", "text", { placeholder: "customerId" }),
-          field("value_type", "Type", "select", { choices: [["text", "Text"], ["integer", "Integer"], ["float", "Float"], ["boolean", "Boolean"], ["json", "JSON"]] }),
-          field("variable_value", "Value or {{variable}}", "textarea"),
-        ],
+          field("output_variable", "Variable name", "text", {placeholder: "customerId"}),
+          field("value_type", "Type", "select", {choices: [["text", "Text"], ["integer", "Integer"], ["float", "Float"], ["boolean", "Boolean"], ["json", "JSON"]]}),
+          field("variable_value", "Value or {{variable}}", "textarea")
+        ]
       },
       {
         id: "extract_text",
@@ -113,8 +113,8 @@ export const ACTION_GROUPS = Object.freeze([
         label: "Get element text",
         icon: "file",
         produces: "text",
-        fixed: { extract: "text" },
-        fields: [field("selector", "Element", "selector"), field("output_variable", "Save text as", "text", { placeholder: "labelText" })],
+        fixed: {extract: "text"},
+        fields: [field("selector", "Element", "selector"), field("output_variable", "Save text as", "text", {placeholder: "labelText"})]
       },
       {
         id: "extract_value",
@@ -122,8 +122,8 @@ export const ACTION_GROUPS = Object.freeze([
         label: "Get input value",
         icon: "keyboard",
         produces: "value",
-        fixed: { extract: "value" },
-        fields: [field("selector", "Input", "selector"), field("output_variable", "Save value as", "text", { placeholder: "inputValue" })],
+        fixed: {extract: "value"},
+        fields: [field("selector", "Input", "selector"), field("output_variable", "Save value as", "text", {placeholder: "inputValue"})]
       },
       {
         id: "extract_checked",
@@ -131,8 +131,8 @@ export const ACTION_GROUPS = Object.freeze([
         label: "Get checked state",
         icon: "check",
         produces: "boolean",
-        fixed: { extract: "checked" },
-        fields: [field("selector", "Checkbox", "selector"), field("output_variable", "Save state as", "text", { placeholder: "isChecked" })],
+        fixed: {extract: "checked"},
+        fields: [field("selector", "Checkbox", "selector"), field("output_variable", "Save state as", "text", {placeholder: "isChecked"})]
       },
       {
         id: "extract_number",
@@ -140,8 +140,8 @@ export const ACTION_GROUPS = Object.freeze([
         label: "Get input number",
         icon: "list-numbers",
         produces: "number",
-        fixed: { extract: "float" },
-        fields: [field("selector", "Number input", "selector"), field("output_variable", "Save number as", "text", { placeholder: "total" })],
+        fixed: {extract: "float"},
+        fields: [field("selector", "Number input", "selector"), field("output_variable", "Save number as", "text", {placeholder: "total"})]
       },
       {
         id: "count_matches",
@@ -149,8 +149,8 @@ export const ACTION_GROUPS = Object.freeze([
         label: "Count matches",
         icon: "list-check",
         produces: "integer",
-        fixed: { extract: "count" },
-        fields: [field("selector", "Elements", "selector"), field("output_variable", "Save count as", "text", { placeholder: "itemCount" })],
+        fixed: {extract: "count"},
+        fields: [field("selector", "Elements", "selector"), field("output_variable", "Save count as", "text", {placeholder: "itemCount"})]
       },
       {
         id: "extract_attribute",
@@ -158,42 +158,42 @@ export const ACTION_GROUPS = Object.freeze([
         label: "Get attribute",
         icon: "tag",
         produces: "text",
-        fixed: { extract: "attribute" },
-        fields: [field("selector", "Element", "selector"), field("attribute", "Attribute name", "text", { placeholder: "href" }), field("output_variable", "Save attribute as", "text", { placeholder: "targetUrl" })],
-      },
-    ],
+        fixed: {extract: "attribute"},
+        fields: [field("selector", "Element", "selector"), field("attribute", "Attribute name", "text", {placeholder: "href"}), field("output_variable", "Save attribute as", "text", {placeholder: "targetUrl"})]
+      }
+    ]
   },
   {
     name: "Wait for",
     actions: [
-      { id: "wait_element", command: "wait", label: "Element", icon: "eye", fixed: { wait_for: "element" }, fields: [field("payload", "Selector", "text", { placeholder: "#ready" }), field("timeout_ms", "Timeout (ms)", "number", { value: "5000" })] },
-      { id: "wait_text", command: "wait", label: "Text", icon: "file", fixed: { wait_for: "text" }, fields: [field("payload", "Text", "text", { placeholder: "Saved" }), field("timeout_ms", "Timeout (ms)", "number", { value: "5000" })] },
-      { id: "wait_url", command: "wait", label: "URL", icon: "world", fixed: { wait_for: "url" }, fields: [field("payload", "URL or pattern", "text", { placeholder: "**/complete" }), field("timeout_ms", "Timeout (ms)", "number", { value: "5000" })] },
-      { id: "wait_expression", command: "wait", label: "Expression", icon: "code", fixed: { wait_for: "expression" }, fields: [field("payload", "JavaScript expression", "code", { value: "() => document.readyState === 'complete'", runnable: false }), field("timeout_ms", "Timeout (ms)", "number", { value: "5000" })] },
-    ],
+      {id: "wait_element", command: "wait", label: "Element", icon: "eye", fixed: {wait_for: "element"}, fields: [field("payload", "Selector", "text", {placeholder: "#ready"}), field("timeout_ms", "Timeout (ms)", "number", {value: "5000"})]},
+      {id: "wait_text", command: "wait", label: "Text", icon: "file", fixed: {wait_for: "text"}, fields: [field("payload", "Text", "text", {placeholder: "Saved"}), field("timeout_ms", "Timeout (ms)", "number", {value: "5000"})]},
+      {id: "wait_url", command: "wait", label: "URL", icon: "world", fixed: {wait_for: "url"}, fields: [field("payload", "URL or pattern", "text", {placeholder: "**/complete"}), field("timeout_ms", "Timeout (ms)", "number", {value: "5000"})]},
+      {id: "wait_expression", command: "wait", label: "Expression", icon: "code", fixed: {wait_for: "expression"}, fields: [field("payload", "JavaScript expression", "code", {value: "() => document.readyState === 'complete'", runnable: false}), field("timeout_ms", "Timeout (ms)", "number", {value: "5000"})]}
+    ]
   },
   {
     name: "Logic",
     actions: [
-      { id: "if", label: "If", icon: "arrows-join", fields: [field("payload", "Condition", "code", { value: "__EXACTUS_FLOW__.vars.allowed === true" })] },
-    ],
+      {id: "if", label: "If", icon: "arrows-join", fields: [field("payload", "Condition", "code", {value: "__EXACTUS_FLOW__.vars.allowed === true"})]}
+    ]
   },
   {
     name: "Evidence",
     actions: [
-      { id: "snapshot", label: "Element snapshot", icon: "fit-selection", fields: [field("selector", "Target", "selector")] },
-      { id: "screenshot", label: "Page screenshot", icon: "camera", fields: [] },
-    ],
-  },
+      {id: "snapshot", label: "Element snapshot", icon: "fit-selection", fields: [field("selector", "Target", "selector")]},
+      {id: "screenshot", label: "Page screenshot", icon: "camera", fields: []}
+    ]
+  }
 ]);
 /** @type {Map<string, ActionDefinition>} */
 const definitions = new Map(
   ACTION_GROUPS.flatMap((group, family) =>
     group.actions.map(
       action =>
-        /** @type {[string, ActionDefinition]} */ ([action.id, { ...action, family }]),
-    ),
-  ),
+        /** @type {[string, ActionDefinition]} */ ([action.id, {...action, family}])
+    )
+  )
 );
 const ACTION_HELP = Object.freeze({
   pointer: "Configure any mouse, pointer-position, or touch interaction in one action.",
@@ -232,7 +232,7 @@ const ACTION_HELP = Object.freeze({
   wait_expression: "Continue when a JavaScript condition becomes true.",
   if: "Run the selected action only when this condition is true.",
   snapshot: "Capture structured evidence for one matched element.",
-  screenshot: "Capture the current browser page as visual evidence.",
+  screenshot: "Capture the current browser page as visual evidence."
 });
 /**
  * @typedef {object} PayloadDocument
@@ -267,7 +267,7 @@ const payloadDocument = payload => {
 };
 /** @type {ReadonlySet<string>} */
 const POINTER_KINDS = Object.freeze(new Set([
-  "click", "double_click", "right_click", "hover", "drag", "scroll", "position_pointer", "gesture",
+  "click", "double_click", "right_click", "hover", "drag", "scroll", "position_pointer", "gesture"
 ]));
 /** Palette ids behind the kinds that several actions share.
  * @type {Record<string, (document: PayloadDocument) => string>}
@@ -280,10 +280,10 @@ const SHARED_KINDS = Object.freeze({
     checked: "extract_checked",
     float: "extract_number",
     count: "count_matches",
-    attribute: "extract_attribute",
+    attribute: "extract_attribute"
   })[String(document.extract)] ?? "",
   wait: document => `wait_${document.condition}`,
-  viewport: document => `viewport_${document.action}`,
+  viewport: document => `viewport_${document.action}`
 });
 /** The palette action an action in the flow was made from.
  * @param {{kind: string, payload?: string|null}} event
@@ -306,7 +306,7 @@ const SENTENCE_FIELDS = Object.freeze(["selector", "url", "payload", "output_var
  */
 export const editsInRow = definition =>
   definition.fields.some(
-    item => ["code", "pointer", "rest", "websocket"].includes(item.type ?? "") || !SENTENCE_FIELDS.includes(item.name),
+    item => ["code", "pointer", "rest", "websocket"].includes(item.type ?? "") || !SENTENCE_FIELDS.includes(item.name)
   );
 /** Field values of an action already in the flow, the inverse of {@link actionCommand}.
  * @param {SavedAction} event
@@ -323,20 +323,20 @@ export const actionValues = (event, definition) => {
     selector_id: text(event.selector_id),
     url: text(event.url),
     output_variable: text(event.output_variable),
-    payload: text(event.payload),
+    payload: text(event.payload)
   };
   /** @type {Record<string, () => Record<string, string>>} */
   const byAction = {
-    scroll: () => ({ scroll_x: text(document.x, "0"), scroll_y: text(document.y, "0") }),
+    scroll: () => ({scroll_x: text(document.x, "0"), scroll_y: text(document.y, "0")}),
     select_option: () => {
       const list = JSON.parse(text(event.payload, "[]"));
-      return { options: Array.isArray(list) ? list.join("\n") : "" };
+      return {options: Array.isArray(list) ? list.join("\n") : ""};
     },
-    drag: () => ({ destination: text(event.payload) }),
-    set_variable: () => ({ variable_value: text(document.value), value_type: text(document.value_type, "text") }),
-    extract_attribute: () => ({ attribute: text(document.attribute) }),
-    viewport_resize: () => ({ width: text(document.width, "1440"), height: text(document.height, "900") }),
-    position_pointer: () => ({ position_action: text(event.position_action, "hover"), x: text(event.x, "0"), y: text(event.y, "0") }),
+    drag: () => ({destination: text(event.payload)}),
+    set_variable: () => ({variable_value: text(document.value), value_type: text(document.value_type, "text")}),
+    extract_attribute: () => ({attribute: text(document.attribute)}),
+    viewport_resize: () => ({width: text(document.width, "1440"), height: text(document.height, "900")}),
+    position_pointer: () => ({position_action: text(event.position_action, "hover"), x: text(event.x, "0"), y: text(event.y, "0")}),
     pointer: () => ({
       pointer_action: event.kind === "gesture" ? `touch_${text(document.gesture, "tap")}` : event.kind,
       destination: event.kind === "drag" ? text(event.payload) : "",
@@ -348,8 +348,8 @@ export const actionValues = (event, definition) => {
       direction: text(document.direction, "up"),
       distance: text(document.distance, "240"),
       duration_ms: text(document.duration_ms, event.kind === "gesture" && document.gesture === "long_press" ? "650" : "350"),
-      scale: text(document.scale, "1.5"),
-    }),
+      scale: text(document.scale, "1.5")
+    })
   };
   /** @type {Record<string, string>} */
   const gesture = definition.command === "gesture"
@@ -357,14 +357,14 @@ export const actionValues = (event, definition) => {
         direction: text(document.direction),
         distance: text(document.distance, "240"),
         duration_ms: text(document.duration_ms, "350"),
-        scale: text(document.scale, "1.5"),
+        scale: text(document.scale, "1.5")
       }
     : {};
   /** @type {Record<string, string>} */
   const wait = definition.command === "wait"
-    ? { payload: text(document.value), timeout_ms: text(document.timeout_ms, "5000") }
+    ? {payload: text(document.value), timeout_ms: text(document.timeout_ms, "5000")}
     : {};
-  return { ...values, ...gesture, ...wait, ...byAction[definition.id]?.() };
+  return {...values, ...gesture, ...wait, ...byAction[definition.id]?.()};
 };
 /** Pick a variable name that no earlier action already uses.
  * @param {string} label
@@ -441,7 +441,7 @@ const selectorControl = (spec, snapshot, variables, selectorTools, bookmark = ""
   saved.addEventListener("change", () => {
     const hidden = Boolean(saved.value);
     for (const part of group.querySelectorAll(
-      ".variable-field, .selector-expression-field, .selector-live-tools, .ese-widget",
+      ".variable-field, .selector-expression-field, .selector-live-tools, .ese-widget"
     ))
       if (part instanceof HTMLElement) part.hidden = hidden;
   });
@@ -469,7 +469,7 @@ const codeControl = (spec, variables, snapshot) =>
     variables,
     snapshot,
     outputName: null,
-    runnable: spec.runnable !== false,
+    runnable: spec.runnable !== false
   });
 /** Read one saved field value.
  * @param {ActionSource} source
@@ -502,20 +502,20 @@ const control = (spec, snapshot, variables = [], selectorTools = {}, source = {}
     return selectorControl(spec, snapshot, variables, selectorTools, savedValue(source, "selector_id") ?? "");
   if (spec.type === "code") return codeControl(spec, variables, snapshot);
   if (spec.type === "rest")
-    return requestActionWidget({ transport: "http", snapshot, variables, ...(source.event ? { event: source.event } : {}) });
+    return requestActionWidget({transport: "http", snapshot, variables, ...(source.event ? {event: source.event} : {})});
   if (spec.type === "websocket")
-    return requestActionWidget({ transport: "websocket", snapshot, variables, ...(source.event ? { event: source.event } : {}) });
+    return requestActionWidget({transport: "websocket", snapshot, variables, ...(source.event ? {event: source.event} : {})});
   if (spec.type === "pointer") {
     const host = document.createElement("div");
     mountPointerStudio(host, source.values ?? {}, {
       selectorField: (label, seed) =>
         selectorControl(
-          { name: "selector", label, type: "selector", value: seed.selector ?? "" },
+          {name: "selector", label, type: "selector", value: seed.selector ?? ""},
           snapshot,
           variables,
           selectorTools,
           savedValue(source, "selector_id") ?? ""
-        ),
+        )
     });
     return host;
   }
@@ -559,9 +559,9 @@ export const loadActionPrefs = () => {
       : [];
   try {
     const stored = JSON.parse(window.localStorage.getItem(PREFS_KEY) ?? "{}");
-    return { hidden: clean(stored?.hidden), pinned: clean(stored?.pinned) };
+    return {hidden: clean(stored?.hidden), pinned: clean(stored?.pinned)};
   } catch {
-    return { hidden: [], pinned: [] };
+    return {hidden: [], pinned: []};
   }
 };
 /** Persist palette preferences and tell open surfaces to redraw.
@@ -574,7 +574,7 @@ export const saveActionPrefs = prefs => {
   } catch {
     // Storage can be blocked; the change still applies for this session below.
   }
-  window.dispatchEvent(new CustomEvent(ACTION_PREFS_EVENT, { detail: prefs }));
+  window.dispatchEvent(new CustomEvent(ACTION_PREFS_EVENT, {detail: prefs}));
 };
 /** The groups the palette shows after applying preferences.
  * @param {{hidden:string[], pinned:string[]}} prefs
@@ -585,7 +585,7 @@ const visibleGroups = prefs => {
   const shown = ACTION_GROUPS.map((group, family) => ({
     name: group.name,
     family,
-    actions: group.actions.filter(action => !hidden.has(action.id)),
+    actions: group.actions.filter(action => !hidden.has(action.id))
   })).filter(group => group.actions.length > 0);
   const pinned = prefs.pinned
     .filter(id => !hidden.has(id))
@@ -593,9 +593,9 @@ const visibleGroups = prefs => {
     .filter(
       /** @param {ActionDefinition|undefined} action
        * @returns {action is ActionDefinition} */
-      action => action !== undefined,
+      action => action !== undefined
     );
-  return pinned.length > 0 ? [{ name: "Pinned", actions: pinned }, ...shown] : shown;
+  return pinned.length > 0 ? [{name: "Pinned", actions: pinned}, ...shown] : shown;
 };
 /** Draw the action palette.
  * @param {HTMLElement} container Element that receives the groups.
@@ -663,7 +663,7 @@ export const renderActionCatalog = (container, choose) => {
         button.closest(".action-library")?.classList.add("is-action-dragging");
       });
       button.addEventListener("dragend", () =>
-        button.closest(".action-library")?.classList.remove("is-action-dragging"),
+        button.closest(".action-library")?.classList.remove("is-action-dragging")
       );
       button.addEventListener("pointerenter", () => explain(action));
       button.addEventListener("focus", () => explain(action));
@@ -685,11 +685,11 @@ export const renderActionCatalog = (container, choose) => {
  * @throws {Error} When the action id is not in the palette.
  */
 export const configureActionForm = options => {
-  const { fields, kind, snapshot, variables = [], selectorTools = {}, event } = options;
+  const {fields, kind, snapshot, variables = [], selectorTools = {}, event} = options;
   const definition = definitions.get(kind);
   if (!definition) throw new Error(`Unknown action: ${kind}`);
   const editing = event !== undefined;
-  const source = /** @type {ActionSource} */ (editing ? { values: actionValues(event, definition), event } : {});
+  const source = /** @type {ActionSource} */ (editing ? {values: actionValues(event, definition), event} : {});
   const workbench = document.createElement("article");
   workbench.className = "action-workbench";
   workbench.setAttribute("data-action-kind", definition.id);
@@ -727,9 +727,9 @@ export const configureActionForm = options => {
       snapshot,
       outputName: editing
         ? savedValue(source, "output_variable") ?? ""
-        : uniqueVariable(definition.label, variables.map(variableName)),
+        : uniqueVariable(definition.label, variables.map(variableName))
     }));
-  } else {
+  } else
     for (const base of definition.fields) {
       // Every produced value is a named variable, defaulting to the action's
       // label and made unique among earlier outputs.
@@ -740,11 +740,11 @@ export const configureActionForm = options => {
           label: "Variable name",
           required: false,
           value: saved ?? (base.value || uniqueVariable(definition.label, variables.map(variableName))),
-          placeholder: definition.label,
+          placeholder: definition.label
         }
         : base;
       const spec = saved !== undefined && base.name !== "output_variable"
-        ? { ...named, value: saved }
+        ? {...named, value: saved}
         : named;
       const node = control(spec, snapshot, variables, selectorTools, source);
       if (["code", "pointer", "rest", "websocket"].includes(spec.type)) {
@@ -757,14 +757,13 @@ export const configureActionForm = options => {
       } else
         body.append(labelled(spec.label, node));
     }
-  }
   if (editing) {
     // The action is already in the flow: Properties names it and owns its timing.
     workbench.append(body);
     fields.replaceChildren(workbench);
     return definition;
   }
-  const gap = control(field("gap_ms", "Timeline gap before step (ms)", "number", { value: "500" }), snapshot, []);
+  const gap = control(field("gap_ms", "Timeline gap before step (ms)", "number", {value: "500"}), snapshot, []);
   const timing = document.createElement("details");
   timing.className = "action-workbench-timing";
   const timingTitle = document.createElement("summary");
@@ -808,7 +807,7 @@ const valueOf = (form, name) => {
  */
 export const actionCommand = (form, definition) => {
   /** @type {ActionCommand & Record<string, string|undefined>} */
-  const data = { kind: definition.command ?? definition.id, ...(definition.fixed ?? {}) };
+  const data = {kind: definition.command ?? definition.id, ...(definition.fixed ?? {})};
   for (const item of new FormData(form).entries()) data[item[0]] = String(item[1]);
   if (definition.id === "pointer") {
     const action = valueOf(form, "pointer_action");
@@ -821,10 +820,10 @@ export const actionCommand = (form, definition) => {
         direction: valueOf(form, "direction"),
         distance: Number(valueOf(form, "distance") || 0),
         duration_ms: Number(valueOf(form, "duration_ms") || 0),
-        scale: Number(valueOf(form, "scale") || 0),
+        scale: Number(valueOf(form, "scale") || 0)
       });
     else if (action === "scroll")
-      data.payload = JSON.stringify({ x: Number(valueOf(form, "scroll_x")), y: Number(valueOf(form, "scroll_y")) });
+      data.payload = JSON.stringify({x: Number(valueOf(form, "scroll_x")), y: Number(valueOf(form, "scroll_y"))});
     else if (action === "drag") data.payload = valueOf(form, "destination");
   }
   else if (definition.command === "gesture")
@@ -833,29 +832,29 @@ export const actionCommand = (form, definition) => {
       direction: valueOf(form, "direction"),
       distance: Number(valueOf(form, "distance") || 0),
       duration_ms: Number(valueOf(form, "duration_ms") || 0),
-      scale: Number(valueOf(form, "scale") || 0),
+      scale: Number(valueOf(form, "scale") || 0)
     });
    else if (definition.id === "scroll")
-    data.payload = JSON.stringify({ x: Number(valueOf(form, "scroll_x")), y: Number(valueOf(form, "scroll_y")) });
+    data.payload = JSON.stringify({x: Number(valueOf(form, "scroll_x")), y: Number(valueOf(form, "scroll_y"))});
    else if (definition.id === "select_option")
     data.payload = JSON.stringify(valueOf(form, "options").split("\n").map(item => item.trim()).filter(Boolean));
    else if (definition.id === "drag") data.payload = valueOf(form, "destination");
   else if (definition.id === "set_variable")
     data.payload = JSON.stringify({
       value: valueOf(form, "variable_value"),
-      value_type: valueOf(form, "value_type"),
+      value_type: valueOf(form, "value_type")
     });
    else if (definition.command === "extract_value")
     data.payload = JSON.stringify({
       extract: definition.fixed?.extract,
-      attribute: valueOf(form, "attribute"),
+      attribute: valueOf(form, "attribute")
     });
   else if (definition.id === "http_call") {
     const request = requestActionConfig(form, "http");
-    const { share_session_cookies: shareSessionCookies } = request;
+    const {share_session_cookies: shareSessionCookies} = request;
     data.request_config = JSON.stringify(request);
     data.payload = valueOf(form, "body");
-    Object.assign(data, { share_session_cookies: String(shareSessionCookies === true) });
+    Object.assign(data, {share_session_cookies: String(shareSessionCookies === true)});
   }
   else if (definition.id === "websocket_call") {
     data.request_config = JSON.stringify(requestActionConfig(form, "websocket"));
@@ -866,10 +865,10 @@ export const actionCommand = (form, definition) => {
 /** The command that adds an action with every setting at its default.
  * @returns {ActionCommand & Record<string, string|undefined>}
  */
-export const defaultActionCommand = (/** @type {{kind:string, snapshot:any, variables:import("./variable-mention-field.js").VariableSource[]}} */ { kind, snapshot, variables }) => {
+export const defaultActionCommand = (/** @type {{kind:string, snapshot:any, variables:import("./variable-mention-field.js").VariableSource[]}} */ {kind, snapshot, variables}) => {
   const form = document.createElement("form");
   const fields = document.createElement("div");
   form.append(fields);
-  const definition = configureActionForm({ fields, kind, snapshot, variables });
+  const definition = configureActionForm({fields, kind, snapshot, variables});
   return actionCommand(form, definition);
 };

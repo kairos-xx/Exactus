@@ -23,7 +23,9 @@ from exactus.tests.common.support import (
     expect_true,
     private_result,
 )
-from exactus.tools.common.catalog import Constants as _GroupFinalConstants
+from exactus.tools.common.catalog import (
+    GroupFinalConstants as _GroupFinalConstants,
+)
 from exactus.tools.common.catalog import ToolSpec
 from exactus.tools.kwargs_typehints import core as kwargs_core
 

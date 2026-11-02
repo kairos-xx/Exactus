@@ -98,8 +98,7 @@ def render(*, method: str, inputs: list[str]) -> list[str]:
         check=True,
         timeout=60,
     )
-    outputs: list[str] = loads(s=completed.stdout)
-    return outputs
+    return loads(s=completed.stdout)
 
 
 def test_tilde_fence_renders_escaped_code() -> None:

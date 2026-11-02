@@ -1,7 +1,7 @@
 /** The project gallery: search, advanced filters, selection, details and deletion. */
 import assert from "node:assert/strict";
 import test from "node:test";
-import { modulePage, WEB } from "./module-page.mjs";
+import {modulePage, WEB} from "./module-page.mjs";
 const HARNESS = "/exactus/tests/tools/record/js/project-harness.js";
 /** Open the gallery over a fake library and run a scenario against it.
  * @param {import("node:test").TestContext} t Test context.
@@ -13,9 +13,9 @@ const inGallery = async (t, body) => {
   let outcome;
   await modulePage(t, async page => {
     await page.evaluate(
-      async (/** @type {{web:string,harness:string}} */ { web, harness }) => {
-        const { ProjectDialogs } = await import(`${web}/project-dialogs.js`);
-        const { summary, settle, press, type } = await import(harness);
+      async (/** @type {{web:string,harness:string}} */ {web, harness}) => {
+        const {ProjectDialogs} = await import(`${web}/project-dialogs.js`);
+        const {summary, settle, press, type} = await import(harness);
         const library = {
           projects: [
             summary({}),
@@ -28,7 +28,7 @@ const inGallery = async (t, body) => {
               runs: 0,
               flows: 1,
               description: "",
-              base_url: "",
+              base_url: ""
             }),
             summary({
               slug: "@legacy",
@@ -36,13 +36,13 @@ const inGallery = async (t, body) => {
               legacy: true,
               tags: [],
               author: "",
-              version: "",
-            }),
+              version: ""
+            })
           ],
           recents: [],
-          tags: ["web", "smoke", "admin"],
+          tags: ["web", "smoke", "admin"]
         };
-        const state = { project: { slug: "alpha" } };
+        const state = {project: {slug: "alpha"}};
         const log = /** @type {unknown[]} */ ([]);
         const actions = {
           open: async (/** @type {string} */ slug) => log.push(["open", slug]),
@@ -53,14 +53,14 @@ const inGallery = async (t, body) => {
           remove: async (/** @type {string} */ s) => {
             log.push(["remove", s]);
             library.projects = library.projects.filter(p => p.slug !== s);
-            state.project = { slug: "alpha" };
+            state.project = {slug: "alpha"};
           },
           exportUrl: (/** @type {string} */ slug) =>
-            `/api/export?project=${slug}`,
+            `/api/export?project=${slug}`
         };
         const dialogs = new ProjectDialogs({
           library: () => library,
-          project: () => state.project,
+          project: () => state.project
         });
         const closed = dialogs.gallery(actions);
         await settle();
@@ -77,14 +77,14 @@ const inGallery = async (t, body) => {
           dialog: () => document.querySelector("dialog.project-gallery[open]"),
           names: () =>
             [...document.querySelectorAll(".pd-item strong")].map(
-              n => n.textContent,
-            ),
+              n => n.textContent
+            )
         };
       },
-      { web: WEB, harness: HARNESS },
+      {web: WEB, harness: HARNESS}
     );
     outcome = await page.evaluate(
-      `(async () => { const env = globalThis.env; ${body} })()`,
+      `(async () => { const env = globalThis.env; ${body} })()`
     );
   });
   return outcome;
@@ -104,7 +104,7 @@ test("the gallery lists projects, shows details and counts them", async t => {
        download: d.querySelector(".pd-detail-actions a").download };
      d.querySelector(".pd-icon-only").click();
      await env.closed;
-     return result;`,
+     return result;`
   );
   assert.deepEqual(out.names, ["Alpha", "Beta", "Legacy"]);
   assert.equal(out.count, "3 of 3 projects");
@@ -145,7 +145,7 @@ test("search, tag chips and advanced filters narrow the list and clear resets", 
      env.type(d.querySelector('input[type="search"]'), "zzz");
      seen.empty = d.querySelector(".pd-empty").textContent;
      d.querySelector(".pd-link").click();
-     return seen;`,
+     return seen;`
   );
   assert.deepEqual(out.search, ["Beta"]);
   assert.equal(out.cleared, 3);
@@ -174,11 +174,11 @@ test("selecting, keyboard moves, enter and double click open projects", async t 
      d.querySelector('[data-slug="beta"]').click();
      key("Enter");
      await env.closed;
-     return { afterClick, down, clamp, up, log: env.log };`,
+     return { afterClick, down, clamp, up, log: env.log };`
   );
   assert.deepEqual(
     [out.afterClick, out.down, out.clamp, out.up],
-    ["beta", "@legacy", "@legacy", "alpha"],
+    ["beta", "@legacy", "@legacy", "alpha"]
   );
   assert.deepEqual(out.log, [["open", "beta"]]);
 });
@@ -189,7 +189,7 @@ test("double click opens, and open, new and import call the actions", async t =>
      d.querySelector('[data-slug="beta"]').click();
      d.querySelector('[data-slug="beta"]').dispatchEvent(new MouseEvent("dblclick", { bubbles: true }));
      await env.closed;
-     return env.log;`,
+     return env.log;`
   );
   assert.deepEqual(out, [["open", "beta"]]);
   const more = await inGallery(
@@ -200,7 +200,7 @@ test("double click opens, and open, new and import call the actions", async t =>
      const open = [...d.querySelectorAll(".pd-detail-actions button")][0];
      open.click();
      await env.closed;
-     return env.log;`,
+     return env.log;`
   );
   assert.deepEqual(more, ["import", ["open", "beta"]]);
   const created = await inGallery(
@@ -208,7 +208,7 @@ test("double click opens, and open, new and import call the actions", async t =>
     `const d = env.dialog();
      env.press(d, "New project");
      await env.closed;
-     return env.log;`,
+     return env.log;`
   );
   assert.deepEqual(created, ["create"]);
 });
@@ -229,7 +229,7 @@ test("duplicate asks for a name and sends it; legacy cannot be deleted", async t
      d.querySelector('[data-slug="@legacy"]').click();
      const legacyBlocked = [...d.querySelectorAll(".pd-detail-actions button")].at(-1);
      const folder = d.querySelector(".pd-facts").textContent.includes("The Studio folder itself");
-     return { initial, issue, log: env.log, legacy: [legacyBlocked.disabled, legacyBlocked.title], folder };`,
+     return { initial, issue, log: env.log, legacy: [legacyBlocked.disabled, legacyBlocked.title], folder };`
   );
   assert.equal(out.initial, "Beta copy");
   assert.notEqual(out.issue, "");
@@ -259,7 +259,7 @@ test("deleting needs the typed name, can be kept, and refreshes the list", async
      ready.click();
      await env.settle();
      d.querySelector('[data-slug="beta"]') ?? null;
-     return { before, partial, backToActions, enabled, log: env.log, names: env.names() };`,
+     return { before, partial, backToActions, enabled, log: env.log, names: env.names() };`
   );
   assert.equal(out.before, true);
   assert.equal(out.partial, true);
@@ -282,7 +282,7 @@ test("an empty library says so and the gallery can refresh when it changes", asy
      await env.closed;
      seen.refresh = env.dialogs.refreshGallery;
      seen.recents = env.dialogs.recents().length;
-     return seen;`,
+     return seen;`
   );
   assert.match(out.empty, /There are no projects yet/);
   assert.equal(out.count, "");

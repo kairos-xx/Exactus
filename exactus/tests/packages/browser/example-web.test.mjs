@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
-	browserTest,
+	browserTest
 } from "../../common/browser.mjs";
 test("browser example binds every control", async t => {
 	await browserTest(t, async (page, url) => {
@@ -17,31 +17,31 @@ test("browser example binds every control", async t => {
 			};
 		});
 		await page.goto(
-			`${url}/exactus/tests/packages/browser/example-fixture.html`,
+			`${url}/exactus/tests/packages/browser/example-fixture.html`
 		);
 		assert.equal(
 			await page.evaluate(() => globalThis.browserExample.log.entries.length),
-			0,
+			0
 		);
 		await page.click("#log");
 		await page.click("#log");
 		assert.equal(
 			await page.evaluate(
-				() => document.getElementById("events")?.textContent,
+				() => document.getElementById("events")?.textContent
 			),
-			"event\nevent",
+			"event\nevent"
 		);
 		await page.click("#clear");
 		assert.equal(
 			await page.evaluate(
-				() => document.getElementById("events")?.textContent,
+				() => document.getElementById("events")?.textContent
 			),
-			"",
+			""
 		);
 		await page.click("#open");
 		assert.deepEqual(
 			await page.evaluate(() => globalThis.opened),
-			[["about:blank", "_blank"]],
+			[["about:blank", "_blank"]]
 		);
 		await page.click("#close");
 		assert.equal(await page.evaluate(() => globalThis.wasClosed), true);
@@ -52,28 +52,28 @@ test("browser example reports missing controls", async t => {
 		/** @type {Error[]} */
 		const errors = [];
 		page.on("pageerror", (/** @type {Error} */ error) =>
-			errors.push(error),
+			errors.push(error)
 		);
 		await page.goto(
-			`${url}/exactus/tests/packages/browser/example-broken.html`,
+			`${url}/exactus/tests/packages/browser/example-broken.html`
 		);
 		assert.ok(
 			errors.some(error =>
 				error.message.includes("Required element not found: #open")
-			),
+			)
 		);
 		assert.equal(
 			await page.evaluate(
-				() => /** @type {any} */ (globalThis).browserExample,
+				() => /** @type {any} */ (globalThis).browserExample
 			),
-			undefined,
+			undefined
 		);
 	});
 });
 test("browser example getElement rejects unknown selectors", async t => {
 	await browserTest(t, async (page, url) => {
 		await page.goto(
-			`${url}/exactus/tests/packages/browser/example-fixture.html`,
+			`${url}/exactus/tests/packages/browser/example-fixture.html`
 		);
 		const message = await page.evaluate(() => {
 			try {

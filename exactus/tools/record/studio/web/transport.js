@@ -9,7 +9,7 @@ export class StudioTransport {
     /** @param {(message:string)=>void} handler */
     connect: handler => {
       this.listener = handler;
-    },
+    }
   };
   /** Accept an optional legacy bootstrap token and open the event stream.
    * @returns {Promise<void>}
@@ -23,24 +23,24 @@ export class StudioTransport {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`
         },
-        body: "{}",
+        body: "{}"
       });
       if (!reply.ok)
         throw new Error(
-          "Studio authorization failed. Open the launch link again.",
+          "Studio authorization failed. Open the launch link again."
         );
     }
     const state = await fetch(
-      `/api/snapshot?client=${encodeURIComponent(this.client)}`,
+      `/api/snapshot?client=${encodeURIComponent(this.client)}`
     );
     if (!state.ok)
       throw new Error(
-        "Studio session unavailable. Refresh the local Studio page.",
+        "Studio session unavailable. Refresh the local Studio page."
       );
     this.events = new EventSource(
-      `/events?client=${encodeURIComponent(this.client)}`,
+      `/events?client=${encodeURIComponent(this.client)}`
     );
     this.events.onmessage = event => this.listener?.(event.data);
     this.events.onerror = () => {
@@ -66,9 +66,9 @@ export class StudioTransport {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "X-Studio-Client": this.client,
+          "X-Studio-Client": this.client
         },
-        body: message,
+        body: message
       });
       this.listener?.(JSON.stringify(await response.json()));
     } catch {
@@ -77,8 +77,8 @@ export class StudioTransport {
           protocol: 1,
           id: request.id,
           ok: false,
-          error: "Studio connection interrupted. Reconnect before retrying.",
-        }),
+          error: "Studio connection interrupted. Reconnect before retrying."
+        })
       );
     }
   }

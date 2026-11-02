@@ -247,13 +247,17 @@ def test_main_serves_then_opens_and_closes_the_browser(
         """
         events.append(f"open:{url}")
 
-    def wait_closed_stub() -> object:
+    def wait_closed_stub(*, timeout: float | None = None) -> object:
         """Record the wait for browser exit.
+
+        Args:
+            timeout: Optional wait limit, ignored by the stub.
 
         Returns:
             Synthetic wait result.
 
         """
+        _ = timeout
         events.append("wait")
         return None
 
@@ -261,13 +265,17 @@ def test_main_serves_then_opens_and_closes_the_browser(
         """Record the session teardown."""
         events.append("close")
 
-    def session_factory() -> object:
+    def session_factory(*, headless: bool = False) -> object:
         """Return a session stand-in exposing attribute callables.
+
+        Args:
+            headless: Whether a headless browser was requested.
 
         Returns:
             Stubbed browser session.
 
         """
+        _ = headless
         return SimpleNamespace(
             open=open_stub,
             wait_closed=wait_closed_stub,
@@ -281,7 +289,7 @@ def test_main_serves_then_opens_and_closes_the_browser(
         name="BrowserSession",
         value=session_factory,
     )
-    expect_equal(actual=run.main(), expected=0)
+    expect_equal(actual=run.main(arguments=()), expected=0)
     expect_in(member="index.html", container=buffer.getvalue())
     expect_equal(
         actual=events,
@@ -292,6 +300,106 @@ def test_main_serves_then_opens_and_closes_the_browser(
                 "eb/index.html"
             ),
             "wait",
+            "close",
+        ],
+    )
+
+
+def test_main_headless_loads_then_exits(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """``--headless`` waits for page readiness and returns zero.
+
+    Args:
+        monkeypatch: Replaces the demo launcher and browser session.
+
+    """
+    buffer: StringIO = StringIO()
+    events: list[str] = []
+    headless_modes: list[bool] = []
+
+    def start_stub(*, log: Path) -> str:
+        """Return a ready demo URL without spawning a server.
+
+        Args:
+            log: Access-log destination.
+
+        Returns:
+            Synthetic demo URL.
+
+        """
+        _ = log
+        events.append("start")
+        return (
+            "http://127.0.0.1:9000/widgets/widget_selector/examples/web/index."
+            "html"
+        )
+
+    def open_stub(*, url: str) -> None:
+        """Record the opened URL.
+
+        Args:
+            url: Demo URL.
+
+        """
+        events.append(f"open:{url}")
+
+    def wait_ready_stub(*, timeout: float | None = None) -> bool:
+        """Report the headless page as loaded.
+
+        Args:
+            timeout: Optional wait limit, ignored by the stub.
+
+        Returns:
+            Always true.
+
+        """
+        _ = timeout
+        events.append("ready")
+        return True
+
+    def close_stub() -> None:
+        """Record the session teardown."""
+        events.append("close")
+
+    def session_factory(*, headless: bool = False) -> object:
+        """Return a session stand-in recording the headless flag.
+
+        Args:
+            headless: Whether a headless browser was requested.
+
+        Returns:
+            Stubbed browser session.
+
+        """
+        headless_modes.append(headless)
+        return SimpleNamespace(
+            open=open_stub,
+            wait_ready=wait_ready_stub,
+            close=close_stub,
+        )
+
+    monkeypatch.setattr(target=run, name="start_demo", value=start_stub)
+    monkeypatch.setattr(target=run, name="stdout", value=buffer)
+    monkeypatch.setattr(
+        target=run,
+        name="BrowserSession",
+        value=session_factory,
+    )
+    expect_equal(
+        actual=run.main(arguments=("--headless",)),
+        expected=0,
+    )
+    expect_equal(actual=headless_modes, expected=[True])
+    expect_equal(
+        actual=events,
+        expected=[
+            "start",
+            (
+                "open:http://127.0.0.1:9000/widgets/widget_selector/examples/w"
+                "eb/index.html"
+            ),
+            "ready",
             "close",
         ],
     )

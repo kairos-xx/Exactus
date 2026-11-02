@@ -11,6 +11,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
+from exactus import __main__ as main_module
 from exactus.tests.common.support import expect_equal, expect_in, expect_true
 from exactus.tools.self_test import main as self_test
 
@@ -695,3 +696,76 @@ def test_demo_site_waits_for_readiness_and_kills_failed_start(
             self_test.serve_site(directory=tmp_path, port=6100)
         process.kill.assert_called_once_with()
     expect_true(condition=(tmp_path / "site" / "index.html").is_file())
+
+
+def test_self_test_stays_available_inside_the_exactus_repository(
+    *,
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    """Bundled executables enable ``self_test`` at the repo root only.
+
+    Args:
+        monkeypatch: Bundled-runtime flag replacement.
+        tmp_path: Synthetic project roots.
+
+    """
+
+    def tools_named() -> frozenset[str]:
+        """Tool names exposed by the bundled catalog.
+
+        Returns:
+            The resulting value.
+
+        """
+        return frozenset(tool.name for tool in main_module.bundled_tools())
+
+    checkout: Path = tmp_path / "checkout"
+    (checkout / "exactus").mkdir(parents=True)
+    _ = (checkout / "exactus" / "__main__.py").write_text(
+        data="",
+        encoding="utf-8",
+    )
+    _ = (checkout / "pyproject.toml").write_text(
+        data='[project]\nname = "exactus"\n',
+        encoding="utf-8",
+    )
+    foreign: Path = tmp_path / "foreign"
+    foreign.mkdir()
+    _ = (foreign / "pyproject.toml").write_text(
+        data='[project]\nname = "exactus"\n',
+        encoding="utf-8",
+    )
+    other: Path = tmp_path / "other"
+    other.mkdir()
+    _ = (other / "pyproject.toml").write_text(
+        data='[project]\nname = "other"\n',
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(
+        target=main_module,
+        name="_bundled_runtime",
+        value=MagicMock(return_value=True),
+    )
+    monkeypatch.setattr(
+        target=main_module,
+        name="_bundled_self_test",
+        value=MagicMock(return_value=False),
+    )
+    monkeypatch.setattr(target=main_module.Check, name="root", value=checkout)
+    expect_true(condition="self_test" in tools_named())
+    monkeypatch.setattr(target=main_module.Check, name="root", value=other)
+    expect_true(
+        condition="self_test" not in tools_named(),
+    )
+    monkeypatch.setattr(target=main_module.Check, name="root", value=foreign)
+    expect_true(
+        condition="self_test" not in tools_named(),
+        message="A foreign project named exactus must not enable self_test.",
+    )
+    monkeypatch.setattr(
+        target=main_module,
+        name="_bundled_runtime",
+        value=MagicMock(return_value=False),
+    )
+    expect_true(condition="self_test" in tools_named())

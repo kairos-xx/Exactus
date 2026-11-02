@@ -26,7 +26,7 @@ from exactus.tests.common.support import (
 )
 from exactus.tools.common import runtime as rt
 from exactus.tools.common.api import ExactusApi
-from exactus.tools.common.catalog import Constants, ToolSpec
+from exactus.tools.common.catalog import GroupFinalConstants, ToolSpec
 from exactus.tools.common.models import (
     PipelineActivity,
     ToolActivity,
@@ -415,7 +415,9 @@ def _spec() -> ToolSpec:
         The tool spec.
 
     """
-    return require(value=Constants.exactus_catalog.tool(identifier="readme"))
+    return require(
+        value=GroupFinalConstants.exactus_catalog.tool(identifier="readme"),
+    )
 
 
 def _thread_identity(_index: int, *, barrier: Barrier) -> tuple[int, int]:

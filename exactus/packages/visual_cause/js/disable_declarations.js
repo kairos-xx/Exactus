@@ -16,11 +16,10 @@ items => {
    * @returns {void}
    */
   const walk = rules => {
-    for (const rule of rules) {
+    for (const rule of rules)
       if (rule instanceof CSSStyleRule) flat.push(rule);
       else if ("cssRules" in rule)
         walk(/** @type {CSSRuleList} */ (rule.cssRules));
-    }
   };
   walk(sheet.cssRules);
   for (const [ruleIndex, property] of items) {

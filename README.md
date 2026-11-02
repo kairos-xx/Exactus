@@ -15,39 +15,42 @@ building, or launching the offline bundle, so the project can remain in iCloud.
 
 ## Layout
 
-- `bin/exactus` — executable zipapp (no extension) produced by
-  `exactus/scripts/build_make`; it packages the whole `exactus/` package and runs
-  the `exactus` package entry point. The `bin/exactus` file is
-  generated output and is excluded from packaging.
-- `exactus/scripts/build_make` — root build script; with no arguments it produces all
-  three artifacts: `bin/exactus`, the `build/` dist directory (the
-  zipapp unzipped, runnable directly), and `TREE.txt` (the packaged
-  project tree). `--exactus`
-  builds only the pyz, `--build` only `build/`, `--tree` only
-  `TREE.txt`; passing all three equals passing none.
-- `build/` — generated dist directory holding the `bin/exactus` zipapp
-  unzipped (`exactus/` package + `__main__.py` stub; `python build/` works
-  without bundling); created by `python exactus/scripts/build_make` or `python exactus/scripts/build_make --build`.
-- `scripts/` — root helper scripts: `build_make/` package (artifacts),
-  `package/` package (timestamped zip, ANSI `--help`), `collect/`
-  (shared tree filter), and `bundle_make/` (offline
-  bundle builder). See `scripts/README.md`.
-- `scripts/collect/` — shared project-tree filter used by
-  `exactus/scripts/package` and `exactus/scripts/build_make --tree`: prunes
-  dot-folders/dotfiles, all-uppercase
-  directory names, `build/`, `*.egg-info`, `__pycache__`, `exec/`,
-  `packages/`, and files that are readable zip archives.
-- `exactus/scripts/package` — root packaging script; each run creates a
-  timestamped `packages/<ddmmyyyyHHMMSS>/` folder holding
+- `bin/release/exactus_all/exactus` — executable zipapp (no extension)
+  produced by `python -m exactus.packages.package --build --exactus`; it
+  packages the whole `exactus/` package and runs the `exactus` package
+  entry point. It is generated output and is excluded from packaging.
+- `python -m exactus.packages.package --build` — root build command; with
+  no target flags it produces all three artifacts: the release zipapp,
+  the `build/` dist directory (the zipapp unzipped, runnable directly),
+  and `TREE.txt` (the packaged project tree). `--exactus` builds only
+  the pyz, `--build` only `build/`, `--tree` only `TREE.txt`; passing
+  all three equals passing none.
+- `build/` — generated dist directory holding the zipapp unzipped
+  (`exactus/` package + `__main__.py` stub; `python build/` works
+  without bundling); created by `python -m exactus.packages.package --build`
+  or `… --build --build`.
+- `exactus/packages/package/` — the packaging pipeline: `cli.py`
+  (`build`/`bundle`/`package` stages), `inventory.py` (shared tree
+  filter), `build.py` (zipapp, dist tree, `TREE.txt`) and `bundle.py`
+  (offline bundle builder).
+- `exactus/packages/package/inventory.py` — shared project-tree filter
+  used by the package and build stages: prunes dot-folders/dotfiles,
+  all-uppercase directory names, `build/`, `*.egg-info`, `__pycache__`,
+  `exec/`, `artifacts/`, and files that are readable zip archives.
+- `python -m exactus.packages.package --package` — root packaging
+  command; each run creates a timestamped
+  `artifacts/packages/<ddmmyyyyHHMMSS>/` folder holding
   `<root-name>.zip` plus a generated `README.md` (instructions and the
-  embedded project tree). `--output PATH` overrides the destination
-  (no README is generated for custom outputs).
-- `packages/` — generated archive directory holding the timestamped
-  package folders; created by `python exactus/scripts/package` and itself
-  excluded from packaging.
+  embedded project tree). `--package-output PATH` overrides the
+  destination (no README is generated for custom outputs).
+- `artifacts/packages/` — generated archive directory holding the
+  timestamped package folders; created by
+  `python -m exactus.packages.package --package` and itself excluded
+  from packaging.
 - `TREE.txt` — generated `tree`-style listing of exactly the folders
-  and files `exactus/scripts/package` would zip; written by
-  `python exactus/scripts/build_make --tree` (or a bare `python exactus/scripts/build_make`).
+  and files the package stage would zip; written by
+  `python -m exactus.packages.package --build --tree` (or a bare
+  `--build` run).
 - `exactus/` — the toolkit folder:
   - `__main__.py` — internal dispatcher: tool dispatch, frontend shortcuts,
     aggregated `-h/--help`, the orchestrator (tools + pipelines,
@@ -64,10 +67,11 @@ building, or launching the offline bundle, so the project can remain in iCloud.
     `_entrypoint.py`, and the `common/` leaf package), the nine tool
     entrypoints (per-tool `main.py`), their cores (`core.py`), and shared report assets
     (`common/templates/`).
-  - `record/` — browser recording, crawling, diagnostics, and flow replay.
-    `record/studio/` hosts Flow Studio and its local browser service.
-  - `screenshot/` — screenshot acquisition and similarity comparison,
-    including the `js/capture_screen.js` page-side script.
+  - `tools/record/` — browser recording, crawling, diagnostics, and flow
+    replay. `tools/record/studio/` hosts Flow Studio and its local browser
+    service.
+  - `packages/screenshot/` — screenshot acquisition and similarity
+    comparison, including the `js/capture_screen.js` page-side script.
   - `bundle/` — offline per-platform partitioned filesystem bundles under
     `bundle/<os>/<arch>/`
     (`data/parts/fs/catalog.json` plus immutable content-addressed packs),
@@ -94,17 +98,17 @@ building, or launching the offline bundle, so the project can remain in iCloud.
 Build the standalone executable once:
 
 ```bash
-python exactus/scripts/build_make            # creates bin/exactus AND build/ (unzipped pyz) AND TREE.txt
-python exactus/scripts/build_make --check    # only bin/exactus
-python exactus/scripts/build_make --build    # only build/
-python exactus/scripts/build_make --tree     # only TREE.txt
+python -m exactus.packages.package --build            # creates bin/release/exactus_all/exactus AND build/ (unzipped pyz) AND TREE.txt
+python -m exactus.packages.package --build --exactus  # only the release zipapp
+python -m exactus.packages.package --build --build    # only build/
+python -m exactus.packages.package --build --tree     # only TREE.txt
 ```
 
 Package the project into a timestamped, distributable zip:
 
 ```bash
-python exactus/scripts/package                    # -> packages/<ddmmyyyyHHMMSS>/exactus.zip + README.md
-python exactus/scripts/package --output dist.zip  # custom destination (no README)
+python -m exactus.packages.package --package                          # -> artifacts/packages/<ddmmyyyyHHMMSS>/exactus.zip + README.md
+python -m exactus.packages.package --package --package-output dist.zip  # custom destination (no README)
 ```
 
 Reports default to `<project>/EXACTUS_RESULTS/`; set `[tool.exactus] reports-dir`
@@ -164,6 +168,9 @@ cd /path/to/target-project
 /path/to/exactus/check --kill              # terminate live run records, keep reports
 /path/to/exactus/check --kill readme       # terminate only the readme tool's run
 /path/to/exactus/check --kill-all          # scan every process, kill all Exactus trees
+/path/to/exactus/check --status            # JSON list of this project's live runs
+/path/to/exactus/check --status readme     # JSON for one tool's live run
+/path/to/exactus/check --status-all        # JSON list of every Exactus run on this host
 
 # Global file filters forwarded to every exactus tool that accepts them
 /path/to/exactus/check --include 'src/**' --exclude '**/generated/**'
@@ -221,6 +228,8 @@ python3 /path/to/exactus/exactus --list-pipelines
 python3 /path/to/exactus/exactus --clear          # clear EXACTUS_RESULTS tree
 python3 /path/to/exactus/exactus --kill           # terminate live runs, keep reports
 python3 /path/to/exactus/exactus --kill_all       # kill every Exactus process found
+python3 /path/to/exactus/exactus --status         # JSON list of this project's live runs
+python3 /path/to/exactus/exactus --status_all     # JSON list of every Exactus run on this host
 python3 /path/to/exactus/exactus --readme .       # same as bin/exactus --readme .
 python3 /path/to/exactus/exactus --server ./public
 python3 -m exactus --lints .       # package entry point (package importable)
@@ -383,16 +392,14 @@ capture records — see `exactus/tools/common/sprint.py` for the directive synta
 
 ### Subdirectories
 
-- [`ALL_LINTS_RESULTS/`](ALL_LINTS_RESULTS/README.md) — No direct files besides this README.
 - [`EXACTUS_RESULTS_RELEASE/`](EXACTUS_RESULTS_RELEASE/README.md) — No direct files besides this README.
 - [`STUDIO_SCREENSHOTS/`](STUDIO_SCREENSHOTS/README.md) — Provide 01 welcome png content.
+- [`artifacts/`](artifacts/README.md) — No direct files besides this README.
 - [`bin/`](bin/README.md) — Project executables and native tool archives.
 - [`demo/`](demo/README.md) — This fixture exercises the relocatable `exec/exactus` artifact with Python, JavaScript, CSS, HTML, Python tests, JavaScript tests, browser diagnostics and server diagnostics.
 - [`dev/`](dev/README.md) — Provide README txt content.
 - [`docs/`](docs/README.md) — Provide 13 selector authoring detail png content.
 - [`exactus/`](exactus/README.md) — Self-contained exactus package. The inventory below documents every direct file and child directory.
-- [`packages/`](packages/README.md) — Generated archive directory.
 - [`wiki/`](wiki/README.md) — \\[Home\\](Home.md) › Guides › Architecture
-- [`zip-components/`](zip-components/README.md) — Archives produced by `exactus.packages.zip_components` (`python exactus/packages/zip_components …`).
 
 <!-- exactus:inventory:end -->

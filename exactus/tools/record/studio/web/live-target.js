@@ -52,8 +52,8 @@ export class LiveTarget {
         this.maximize(
           !image
             .closest("[data-panel-id]")
-            ?.hasAttribute("data-live-maximized"),
-        ),
+            ?.hasAttribute("data-live-maximized")
+        )
       );
     document
       .getElementById("live-target-pick")
@@ -65,11 +65,11 @@ export class LiveTarget {
     image.addEventListener("pointermove", event => this.pointerMove(event));
     image.addEventListener("pointerup", event => this.pointerUp(event));
     image.addEventListener("pointercancel", event =>
-      this.pointerUp(event, true),
+      this.pointerUp(event, true)
     );
     image.addEventListener("pointerleave", event => {
       if (this.picking || event.buttons || this.activePointers.size) return;
-      this.input({ action: "pointer_leave" });
+      this.input({action: "pointer_leave"});
     });
     image.addEventListener("contextmenu", event => event.preventDefault());
     image.addEventListener(
@@ -82,10 +82,10 @@ export class LiveTarget {
           action: "wheel",
           ...at,
           dx: Math.max(-2000, Math.min(2000, event.deltaX)),
-          dy: Math.max(-2000, Math.min(2000, event.deltaY)),
+          dy: Math.max(-2000, Math.min(2000, event.deltaY))
         });
       },
-      { passive: false },
+      {passive: false}
     );
     image.addEventListener("keydown", event => {
       if (
@@ -102,7 +102,7 @@ export class LiveTarget {
       this.input({
         action: "key_down",
         key: event.key === " " ? "Space" : event.key,
-        code: event.code,
+        code: event.code
       });
     });
     image.addEventListener("keyup", event => {
@@ -111,7 +111,7 @@ export class LiveTarget {
       this.input({
         action: "key_up",
         key: event.key === " " ? "Space" : event.key,
-        code: event.code,
+        code: event.code
       });
     });
     image.addEventListener("dragstart", event => event.preventDefault());
@@ -127,7 +127,7 @@ export class LiveTarget {
     if (app)
       new MutationObserver(() => this.maximize(false)).observe(app, {
         attributes: true,
-        attributeFilter: ["data-workspace-mode"],
+        attributeFilter: ["data-workspace-mode"]
       });
     this.refresh();
   }
@@ -159,7 +159,7 @@ export class LiveTarget {
     const at = this.point(event);
     if (!at) return;
     if (this.picking) {
-      this.input({ action: "inspect", picked: true, ...at });
+      this.input({action: "inspect", picked: true, ...at});
       return;
     }
     event.preventDefault();
@@ -170,7 +170,7 @@ export class LiveTarget {
       ...at,
       pointer_id: event.pointerId,
       button: event.button,
-      buttons: event.buttons,
+      buttons: event.buttons
     });
   }
   /** Forward hover and active drag movement without building a stale backlog.
@@ -183,7 +183,7 @@ export class LiveTarget {
     if (this.picking) {
       if (performance.now() - this.inspectedAt < 150) return;
       this.inspectedAt = performance.now();
-      this.input({ action: "inspect", picked: false, ...at });
+      this.input({action: "inspect", picked: false, ...at});
       return;
     }
     if (event.buttons || this.activePointers.has(event.pointerId))
@@ -192,7 +192,7 @@ export class LiveTarget {
       action: this.isTouch(event) ? "touch_move" : "pointer_move",
       ...at,
       pointer_id: event.pointerId,
-      buttons: event.buttons,
+      buttons: event.buttons
     });
   }
   /** Forward pointer release or cancellation after the final coalesced move.
@@ -203,7 +203,7 @@ export class LiveTarget {
   pointerUp(event, cancelled = false) {
     if (!this.activePointers.has(event.pointerId)) return;
     event.preventDefault();
-    const at = this.point(event) ?? { x: 0, y: 0 };
+    const at = this.point(event) ?? {x: 0, y: 0};
     const touch = this.isTouch(event);
     this.activePointers.delete(event.pointerId);
     if (this.image.hasPointerCapture(event.pointerId))
@@ -217,7 +217,7 @@ export class LiveTarget {
       ...at,
       pointer_id: event.pointerId,
       button: event.button,
-      buttons: event.buttons,
+      buttons: event.buttons
     });
   }
   /** Treat a physical touch or a touch device profile as touch input.
@@ -277,7 +277,7 @@ export class LiveTarget {
         left: offsetX + match.rect.x / viewport.width * page.width,
         top: offsetY + match.rect.y / viewport.height * page.height,
         width: match.rect.width / viewport.width * page.width,
-        height: match.rect.height / viewport.height * page.height,
+        height: match.rect.height / viewport.height * page.height
       }))
         box.style.setProperty(property, `${value}px`);
       layer.append(box);
@@ -311,7 +311,7 @@ export class LiveTarget {
       left: offsetX + element.rect.x / viewport.width * page.width,
       top: offsetY + element.rect.y / viewport.height * page.height,
       width: element.rect.width / viewport.width * page.width,
-      height: element.rect.height / viewport.height * page.height,
+      height: element.rect.height / viewport.height * page.height
     }))
       highlight.style.setProperty(property, `${value}px`);
     highlight.title = element.text || element.selector;
@@ -337,8 +337,8 @@ export class LiveTarget {
           {
             strategy: "css",
             selector: element.selector,
-            matches: element.matches ?? 1,
-          },
+            matches: element.matches ?? 1
+          }
         ];
     /** @param {{strategy:string,selector:string,matches:number}} choice */
     const apply = choice => {
@@ -363,7 +363,7 @@ export class LiveTarget {
       identity.hidden = false;
       identity.toggleAttribute(
         "data-ambiguous",
-        choice.matches !== 1 || Boolean(element.unsupported),
+        choice.matches !== 1 || Boolean(element.unsupported)
       );
     };
     if (strategy instanceof HTMLSelectElement) {
@@ -373,12 +373,12 @@ export class LiveTarget {
           option.value = String(index);
           option.textContent = `${choice.strategy} (${choice.matches})`;
           return option;
-        }),
+        })
       );
       // Prefer the first strategy that identifies exactly one element.
       const best = Math.max(
         0,
-        choices.findIndex(choice => choice.matches === 1),
+        choices.findIndex(choice => choice.matches === 1)
       );
       strategy.value = String(best);
       strategy.hidden = choices.length < 2;
@@ -397,14 +397,14 @@ export class LiveTarget {
    */
   content() {
     const box = this.image.getBoundingClientRect();
-    const { naturalWidth: width, naturalHeight: height } = this.image;
+    const {naturalWidth: width, naturalHeight: height} = this.image;
     if (!width || !height || !box.width || !box.height) return box;
     const scale = Math.min(box.width / width, box.height / height);
-    const shown = { width: width * scale, height: height * scale };
+    const shown = {width: width * scale, height: height * scale};
     return {
       left: box.left + (box.width - shown.width) / 2,
       top: box.top + (box.height - shown.height) / 2,
-      ...shown,
+      ...shown
     };
   }
   /** Map a pointer position in the displayed page to target CSS coordinates.
@@ -419,7 +419,7 @@ export class LiveTarget {
     if (x < 0 || y < 0 || x > rect.width || y > rect.height) return null;
     return {
       x: Math.min(viewport.width - 1, x * viewport.width / rect.width),
-      y: Math.min(viewport.height - 1, y * viewport.height / rect.height),
+      y: Math.min(viewport.height - 1, y * viewport.height / rect.height)
     };
   }
   /** Serialize forwarded input so target interactions preserve order.
@@ -470,7 +470,7 @@ export class LiveTarget {
       // A hidden panel or tab does no work; it resumes when shown again.
       if (visible && !document.hidden && !this.destroyed) {
         const response = await fetch("/api/target-preview", {
-          cache: "no-store",
+          cache: "no-store"
         });
         if (response.status === 401 || response.status === 403) {
           // The session cookie is gone or changed; a reload obtains a new one.
@@ -488,10 +488,10 @@ export class LiveTarget {
           this.failures = 0;
         } else if (response.ok) {
           const blob = await response.blob();
-          if (blob.size === 0) {
+          if (blob.size === 0)
             // An empty body is not a frame; keep what is shown and wait.
             this.show(this.frameUrl ? "stale" : "loading");
-          } else {
+           else {
             const age = Number(response.headers.get("X-Frame-Age-Ms"));
             // A frame older than three seconds means the page stopped painting.
             const stale = age > 3000;
@@ -499,7 +499,7 @@ export class LiveTarget {
             this.image.title = stale ? "Last frame is out of date" : "";
             this.image.setAttribute(
               "data-frame-age",
-              Number.isFinite(age) ? String(Math.round(age)) : "",
+              Number.isFinite(age) ? String(Math.round(age)) : ""
             );
             const frame = URL.createObjectURL(blob);
             const previous = this.frameUrl;

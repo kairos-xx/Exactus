@@ -128,6 +128,7 @@ class Constants:
         o_noctty: Grouped module constant.
         o_nonblock: Grouped module constant.
         failed: Grouped module constant.
+        canonical_status: Grouped module constant.
 
     """
 
@@ -154,7 +155,20 @@ class Constants:
     dsr_timeout: Final[float] = 0.4
     o_noctty: Final[int] = getattr(import_module(name="os"), "O_NOCTTY", 0)
     o_nonblock: Final[int] = getattr(import_module(name="os"), "O_NONBLOCK", 0)
-    failed: Final[frozenset[str]] = frozenset({"FAIL", "INTERRUPT", "TIMEOUT"})
+    failed: Final[frozenset[str]] = frozenset(
+        {"FAIL", "INTERRUPT", "TIMEOUT", "KILL", "ERROR"},
+    )
+    canonical_status: Final[dict[str, str]] = {
+        "RUNNING": "RUN",
+        "WAITING": "WAIT",
+        "PAUSED": "HELD",
+        "DONE": "PASS",
+        "INTERRUPT": "KILL",
+        "TIMEOUT": "KILL",
+        "KILLED": "KILL",
+        "CANCELLED": "KILL",
+        "CRASH": "ERROR",
+    }
 
 
 @dataclass(frozen=True, slots=True)
@@ -247,7 +261,7 @@ class ExactusTerminal:
         global_fraction: float,
         stage: str,
         tools: tuple[tuple[str, str, float, str, float | None], ...],
-        previous_lines: int,
+        weights: tuple[float, ...] = (),
     ) -> int:
         """Repaint the live pipeline block in place.
 
@@ -263,14 +277,13 @@ class ExactusTerminal:
                 waiting entries stay visible for the whole pipeline;
                 ``mark`` is the fraction where the tool failed, or
                 ``None`` when it has not failed.
-            previous_lines: Kept for API compatibility; the renderer
-                tracks what is on screen itself.
+            weights: Per-tool share of the GLOBAL bar aligned with the
+                ``tools`` row order; empty means equal shares.
 
         Returns:
             Number of lines in the live block.
 
         """
-        del previous_lines
         if not stdout.isatty() and (not cls._mirrors):
             return 0
         if stdout.isatty() and (not cls._supports_cursor()):
@@ -290,49 +303,55 @@ class ExactusTerminal:
         stage_text: str = cls._fit(value=stage, width=detail_width)
         last_cell: int = max(bar_width - 1, 0)
         total: int = len(tools)
+        row_weights: tuple[float, ...] = (
+            weights if len(weights) == total else ()
+        )
+        if total and (not row_weights):
+            row_weights = tuple(1.0 / total for _ in tools)
+        prefix: list[float] = []
+        cumulative: float = 0.0
+        for weight in row_weights:
+            prefix.append(cumulative)
+            cumulative += weight
         global_marks: frozenset[int] = frozenset(
-            round(number=((index + mark) / total) * last_cell)
-            for index, (_, _, _, _, mark) in enumerate(iterable=tools)
-            if mark is not None and total
+            (
+                round(
+                    number=(prefix[index] + row_weights[index] * mark)
+                    * last_cell,
+                )
+                for index, (_, _, _, _, mark) in enumerate(iterable=tools)
+                if mark is not None
+            ),
         )
         lines: list[str] = [
             f"{Constants.bold}{Constants.cyan}{title}{Constants.reset}",
-            (
-                f"  {Constants.bold}{'GLOBAL':<29}{Constants.reset}"
-                f" [{
-                    cls._bar(
-                        fraction=global_fraction,
-                        issue=any(
-                            cls._issue_status(status=status)
-                            for _, status, _, _, _ in tools
-                        ),
-                        bar_width=bar_width,
-                        markers=global_marks,
-                    )
-                }]"
-                f" {global_fraction * 100:6.2f}% "
-                f" {Constants.dim}{stage_text}{Constants.reset}"
-            ),
+            f"  {Constants.bold}{'GLOBAL':<29}{Constants.reset} [{
+                cls._bar(
+                    fraction=global_fraction,
+                    markers=global_marks,
+                    bar_width=bar_width,
+                )
+            }] {global_fraction * 100:6.2f}%  {Constants.dim}{stage_text}{
+                Constants.reset
+            }",
         ]
-        lines.extend(
-            (
-                f"  {cls._tag(value=status)} "
-                f" {cls._fit(value=tool, width=18):<18}"
-                f" [{
+        for tool, status, fraction, detail, mark in tools:
+            marks: frozenset[int] = (
+                frozenset({round(number=mark * last_cell)})
+                if mark is not None
+                else frozenset()
+            )
+            lines.append(
+                f"  {cls._tag(value=status)}  "
+                f"{cls._fit(value=tool, width=18):<18} "
+                f"[{
                     cls._bar(
-                        fraction=fraction,
-                        issue=cls._issue_status(status=status),
-                        bar_width=bar_width,
-                        markers=frozenset({round(number=mark * last_cell)})
-                        if mark is not None
-                        else frozenset(),
+                        fraction=fraction, bar_width=bar_width, markers=marks
                     )
-                }]"
-                f" {fraction * 100:6.2f}% "
-                f" {cls._fit(value=detail, width=detail_width)}"
-                for tool, status, fraction, detail, mark in tools
-            ),
-        )
+                }] "
+                f"{fraction * 100:6.2f}%  "
+                f"{cls._fit(value=detail, width=detail_width)}",
+            )
         if any((status.endswith("*") for _, status, _, _, _ in tools)):
             lines.append("  * Report updated while this pipeline was running.")
         frame: tuple[str, ...] = tuple(
@@ -490,25 +509,10 @@ class ExactusTerminal:
         overall: str = "PASS" if rows and failed == 0 else "FAIL"
         heading: str = cls._fit(value=title, width=width)
         sprint(
-            (
-                f"{Constants.bold}"
-                f"{Constants.cyan}"
-                f"{heading}"
-                f"{Constants.reset}"
-                f"\n"
-                f"{Constants.dim}"
-                f"{rule}"
-                f"{Constants.reset}"
-                f"\nResult  "
-                f"{cls._status(value=overall)}"
-                f"    Tools  "
-                f"{len(rows)}"
-                f"    Passed  "
-                f"{passed}"
-                f"    Failed  "
-                f"{failed}"
-                f"\n"
-            ),
+            f"{Constants.bold}{Constants.cyan}{heading}{Constants.reset}\n"
+            f"{Constants.dim}{rule}{Constants.reset}\n"
+            f"Result  {cls._status(value=overall)}    "
+            f"Tools  {len(rows)}    Passed  {passed}    Failed  {failed}\n",
             end="",
         )
         if rows:
@@ -520,9 +524,9 @@ class ExactusTerminal:
             for row in rows:
                 fitted: str = cls._fit(value=row.tool, width=name_width)
                 sprint(
-                    f"{fitted:<{name_width}} "
-                    f" {cls._status(value=row.status):<20} "
-                    f" {row.duration_seconds:>9.3f}s\n",
+                    f"{fitted:<{name_width}}  "
+                    f"{cls._status(value=row.status):<20}  "
+                    f"{row.duration_seconds:>9.3f}s\n",
                     end="",
                 )
             sprint(
@@ -545,9 +549,9 @@ class ExactusTerminal:
                 )
                 if row.stats.strip():
                     sprint(
-                        f"    {Constants.dim}"
-                        f"{cls._fit(value=row.stats.strip(), width=width)}"
-                        f"{Constants.reset}",
+                        f"    {Constants.dim}{
+                            cls._fit(value=row.stats.strip(), width=width)
+                        }{Constants.reset}",
                         end="",
                     )
                 sprint("\n", end="")
@@ -777,7 +781,10 @@ class ExactusTerminal:
             sprint(f"{title} · {stage}")
         updated: bool = False
         for tool, status, _fraction, detail, _mark in tools:
-            if status == "WAITING" or cls._plain_seen.get(tool) == status:
+            if (
+                status in {"WAIT", "WAITING"}
+                or cls._plain_seen.get(tool) == status
+            ):
                 continue
             cls._plain_seen[tool] = status
             sprint(f"  {status.lower():<9} {tool}  {detail}")
@@ -846,16 +853,19 @@ class ExactusTerminal:
             The resulting value.
 
         """
+        core: str = value.rstrip("*!")
+        label: str = Constants.canonical_status.get(core, core)
         color: str = (
             Constants.green
-            if value.rstrip("*") in {"PASS", "DONE"}
-            else (
-                Constants.red
-                if value.rstrip("*") == "FAIL"
-                else Constants.yellow
-            )
+            if label == "PASS"
+            else Constants.red
+            if label in Constants.failed
+            else Constants.yellow
         )
-        return f"{color}{Constants.bold}{value}{Constants.reset}"
+        return (
+            f"{color}{Constants.bold}"
+            f"{label + value[len(core) :]}{Constants.reset}"
+        )
 
     @staticmethod
     def _tag(*, value: str) -> str:
@@ -868,25 +878,23 @@ class ExactusTerminal:
             The resulting value.
 
         """
+        core: str = value.rstrip("*!")
+        label: str = Constants.canonical_status.get(core, core)
         color: str = (
             Constants.green
-            if value.rstrip("*") in {"PASS", "DONE"}
-            else (
-                Constants.red
-                if value.rstrip("*") in {"FAIL", "INTERRUPT", "TIMEOUT"}
-                else Constants.dim
-                if value == "WAITING"
-                else Constants.yellow
-            )
+            if label == "PASS"
+            else Constants.red
+            if label in Constants.failed
+            else Constants.dim
+            if label in {"WAIT", "HELD"}
+            else Constants.cyan
+            if label == "REDO"
+            else Constants.yellow
         )
-        label: str = (
-            "RUN"
-            if value == "RUNNING"
-            else "WAIT"
-            if value == "WAITING"
-            else value
+        return (
+            f"{color}{Constants.bold}"
+            f"{label + value[len(core) :]:<9}{Constants.reset}"
         )
-        return f"{color}{Constants.bold}{label:<9}{Constants.reset}"
 
     @staticmethod
     def _visible(*, value: str) -> int:
@@ -922,7 +930,6 @@ class ExactusTerminal:
     def _bar(
         *,
         fraction: float,
-        issue: bool,
         bar_width: int,
         markers: frozenset[int] = frozenset(),
     ) -> str:
@@ -930,11 +937,9 @@ class ExactusTerminal:
 
         Args:
             fraction: Completion in ``[0, 1]``.
-            issue: Whether the row ended in an issue; its filled cells
-                render red while the empty part stays dimmed.
             bar_width: Number of cells inside the bar.
-            markers: Cell indexes replaced by a red ``x`` marking where
-                a failure happened inside the bar.
+            markers: Cell indexes painted red to mark where a failure
+                happened inside the bar.
 
         Returns:
             Filled and empty cells with the empty part dimmed and
@@ -945,35 +950,65 @@ class ExactusTerminal:
         filled: int = round(number=clamped * bar_width)
         if not markers:
             empty: str = "░" * (bar_width - filled)
-            fill: str = (
-                f"{Constants.red}{'█' * filled}"
-                if issue and filled
-                else "█" * filled
-            )
-            return f"{fill}{Constants.dim}{empty}{Constants.reset}"
+            return f"{'█' * filled}{Constants.dim}{empty}{Constants.reset}"
         parts: list[str] = []
         for index in range(bar_width):
             if index in markers:
-                parts.append(f"{Constants.red}{Constants.bold}x")
+                parts.append(f"{Constants.red}█{Constants.reset}")
             elif index < filled:
-                parts.append(f"{Constants.red}█" if issue else "█")
+                parts.append("█")
             else:
                 parts.append(f"{Constants.dim}░")
         return f"{''.join(parts)}{Constants.reset}"
 
     @staticmethod
-    def _issue_status(*, status: str) -> bool:
-        """Return whether a progress status carries an error marker.
+    def _segmented_bar(
+        *,
+        fractions: tuple[float, ...],
+        weights: tuple[float, ...],
+        markers: frozenset[int],
+        bar_width: int,
+    ) -> str:
+        """Render one bar split into per-segment fills.
+
+        Each segment owns a contiguous share of the bar proportional to
+        its weight and fills independently with that segment's fraction.
 
         Args:
-            status: Progress-row status.
+            fractions: Per-segment completion in ``[0, 1]``.
+            weights: Per-segment share of the bar, summing to ~1.
+            markers: Cell indexes painted red to mark where a failure
+                happened inside the bar.
+            bar_width: Number of cells inside the bar.
 
         Returns:
-            Whether its completed cells should render red.
+            Segmented filled cells with the empty part dimmed and
+            failure cells marked.
 
         """
-        normalized: str = status.rstrip("*")
-        return normalized in Constants.failed or normalized.endswith("!")
+        count: int = len(fractions)
+        bounds: list[int] = [0]
+        cumulative: float = 0.0
+        index: int
+        for index in range(count):
+            cumulative += weights[index] if index < len(weights) else 0.0
+            bounds.append(round(number=cumulative * bar_width))
+        if count:
+            bounds[count] = bar_width
+        parts: list[str] = []
+        for index in range(count):
+            start: int = bounds[index]
+            span: int = max(bounds[index + 1] - start, 0)
+            clamped: float = min(max(fractions[index], 0.0), 1.0)
+            segment_filled: int = round(number=clamped * span)
+            for cell in range(start, start + span):
+                if cell in markers:
+                    parts.append(f"{Constants.red}█{Constants.reset}")
+                elif cell - start < segment_filled:
+                    parts.append("█")
+                else:
+                    parts.append(f"{Constants.dim}░")
+        return f"{''.join(parts)}{Constants.reset}"
 
 
 def dsr_reply() -> bool:

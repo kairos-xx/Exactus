@@ -1,11 +1,11 @@
 /** The runner widget: edit a snippet, run it in a sandbox, read the result and console. */
-import { Describer } from "../../widgets/widget_console/describe.js";
-import { mountConsole } from "../../widgets/widget_console/console_view.js";
-import { icon } from "../../widgets/widget_console/icons.js";
-import { renderValue } from "../../widgets/widget_console/inspect.js";
-import { createEditor } from "./editor.js";
-import { WorkerExecutor } from "./executor.js";
-import { createVariablesMenu } from "./variables_menu.js";
+import {Describer} from "../../widgets/widget_console/describe.js";
+import {mountConsole} from "../../widgets/widget_console/console_view.js";
+import {icon} from "../../widgets/widget_console/icons.js";
+import {renderValue} from "../../widgets/widget_console/inspect.js";
+import {createEditor} from "./editor.js";
+import {WorkerExecutor} from "./executor.js";
+import {createVariablesMenu} from "./variables_menu.js";
 /** @typedef {import("./executor.js").RunResult} RunResult */
 /** @typedef {import("./executor.js").Execute} Execute */
 /** @typedef {import("./variables_menu.js").Variable} Variable */
@@ -35,7 +35,7 @@ const STATE_TEXT = /** @type {Record<RunState, string>} */ ({
   ok: "Done",
   error: "Failed",
   timeout: "Timed out",
-  cancelled: "Stopped",
+  cancelled: "Stopped"
 });
 /**
  * Create an element with an optional class and text.
@@ -74,7 +74,7 @@ const typeLabel = value => {
  * @returns The widget API.
  */
 export const mountRunner = (carrier, options = {}) => {
-  const { label = "JavaScript", theme = null, mode = "auto", context = {}, execute = WorkerExecutor.run, readOnly = false, runnable = true } = options;
+  const {label = "JavaScript", theme = null, mode = "auto", context = {}, execute = WorkerExecutor.run, readOnly = false, runnable = true} = options;
   /** @type {Variable[]} */
   let variables = [...(options.variables ?? [])];
   /** @type {Record<string, Set<(detail:any)=>void>>} */
@@ -168,7 +168,7 @@ export const mountRunner = (carrier, options = {}) => {
   root.append(head, editorHost, foot, result, consoleHost);
   carrier.hidden = true;
   carrier.after(root);
-  const view = mountConsole(consoleHost, { label: "Console", theme, search: false });
+  const view = mountConsole(consoleHost, {label: "Console", theme, search: false});
   const editor = createEditor({
     host: editorHost,
     label,
@@ -176,12 +176,12 @@ export const mountRunner = (carrier, options = {}) => {
     readOnly,
     onChange: value => {
       carrier.value = value;
-      carrier.dispatchEvent(new Event("input", { bubbles: true }));
-      emit("change", { value });
+      carrier.dispatchEvent(new Event("input", {bubbles: true}));
+      emit("change", {value});
     },
-    onCaret: ({ line, column, lines }) => {
+    onCaret: ({line, column, lines}) => {
       caretText.textContent = `Ln ${line}, Col ${column} · ${lines} line${lines === 1 ? "" : "s"}`;
-    },
+    }
   });
   carrier.value = editor.getValue();
   if (options.name) editor.input.name = options.name;
@@ -192,13 +192,13 @@ export const mountRunner = (carrier, options = {}) => {
     onPick: name => {
       editor.insert(`exactus.vars.get(${JSON.stringify(name)})`);
       editor.focus();
-    },
+    }
   });
   menuHost.append(menu.element);
   view.on(
     "source",
     /** @param {{line:number, column:number}} position Snippet position of the message. */
-    position => editor.goTo(position.line, position.column),
+    position => editor.goTo(position.line, position.column)
   );
   /**
    * Show a run state in the header and on the run button.
@@ -251,7 +251,7 @@ export const mountRunner = (carrier, options = {}) => {
     }
     const seconds = Number(timeoutSelect.value) / 1000;
     resultBody.replaceChildren(
-      make("span", "jr-note", outcome.status === "timeout" ? `Stopped after ${seconds} s. The worker was terminated, so long or endless loops cannot freeze the page.` : "The run was stopped before it finished."),
+      make("span", "jr-note", outcome.status === "timeout" ? `Stopped after ${seconds} s. The worker was terminated, so long or endless loops cannot freeze the page.` : "The run was stopped before it finished.")
     );
   };
   /**
@@ -264,23 +264,23 @@ export const mountRunner = (carrier, options = {}) => {
     editor.setErrorLine(null);
     runs += 1;
     if (clearBox.checked) view.clear();
-    else if (view.entries().length > 0) view.append({ kind: "divider", parts: [Describer.describe(`Run ${runs}`)] });
+    else if (view.entries().length > 0) view.append({kind: "divider", parts: [Describer.describe(`Run ${runs}`)]});
     setState("running");
-    emit("run", { code });
+    emit("run", {code});
     const active = execute(
       {
         code,
         mode,
         variables: Object.fromEntries(variables.map(variable => [variable.name, variable.value])),
         context,
-        timeoutMs: Number(timeoutSelect.value),
+        timeoutMs: Number(timeoutSelect.value)
       },
       {
         onEntry: entry => {
           view.append(entry);
         },
-        onClear: () => view.clear(),
-      },
+        onClear: () => view.clear()
+      }
     );
     handle = active;
     const outcome = await active.promise;
@@ -288,7 +288,7 @@ export const mountRunner = (carrier, options = {}) => {
     lastResult = outcome;
     showResult(outcome);
     setState(outcome.status, outcome.status === "ok" || outcome.status === "error" ? duration(outcome.durationMs) : "");
-    emit("result", { ...outcome, saveAs: outputInput?.value.trim() || null });
+    emit("result", {...outcome, saveAs: outputInput?.value.trim() || null});
     return outcome;
   };
   /** Cancel the active run, if one is in flight. */
@@ -350,6 +350,6 @@ export const mountRunner = (carrier, options = {}) => {
       root.remove();
       carrier.hidden = false;
       for (const set of Object.values(listeners)) set.clear();
-    },
+    }
   };
 };

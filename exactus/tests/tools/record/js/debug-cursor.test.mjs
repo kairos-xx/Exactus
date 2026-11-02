@@ -1,7 +1,7 @@
 /* Temporary geometry probe for the timeline playhead scroll failure. */
 import test from "node:test";
-import { browserTest } from "../../../common/browser.mjs";
-import { studio } from "./studio.test.mjs";
+import {browserTest} from "../../../common/browser.mjs";
+import {studio} from "./studio.test.mjs";
 test("cursor debug probe", async t => {
   await browserTest(t, async (page, url) => {
     await studio(page, url);
@@ -19,7 +19,7 @@ test("cursor debug probe", async t => {
             const r = ti?.querySelector(".ruler-ticks");
             const l = ti?.querySelector(".track-label");
             if (!(ti instanceof HTMLElement) || !(c instanceof HTMLElement))
-              return { dead: true };
+              return {dead: true};
             return {
               ms: c.getAttribute("aria-valuenow"),
               scrollLeft: ti.scrollLeft,
@@ -41,10 +41,10 @@ test("cursor debug probe", async t => {
               labelPos: l ? getComputedStyle(l).position : null,
               vis: getComputedStyle(c).visibility,
               display: getComputedStyle(c).display,
-              w: c.getBoundingClientRect().width,
+              w: c.getBoundingClientRect().width
             };
-          }),
-        ),
+          })
+        )
       );
     const ruler = await page.locator(".ruler-ticks").boundingBox();
     await page.mouse.click(ruler.x + 144, ruler.y + 12);
@@ -58,7 +58,7 @@ test("cursor debug probe", async t => {
       () =>
         document
           .querySelector(".timeline-cursor")
-          ?.getAttribute("aria-valuenow") === "2500",
+          ?.getAttribute("aria-valuenow") === "2500"
     );
     await page.mouse.up();
     await cursor.press("ArrowRight");
@@ -71,7 +71,7 @@ test("cursor debug probe", async t => {
     await page.mouse.down();
     await page.mouse.move(timeline.x + timeline.width - 5, timeline.y + 12);
     await page.waitForFunction(
-      () => (document.querySelector("#timeline")?.scrollLeft ?? 0) > 0,
+      () => (document.querySelector("#timeline")?.scrollLeft ?? 0) > 0
     );
     await page.keyboard.press("Escape");
     await page.mouse.up();
@@ -92,7 +92,7 @@ test("cursor debug probe", async t => {
         element.scrollLeft = 100;
       });
     await page.waitForFunction(
-      () => document.querySelector("#timeline")?.scrollLeft === 100,
+      () => document.querySelector("#timeline")?.scrollLeft === 100
     );
     await dump("after scroll 100");
     const afterScroll = await cursor.boundingBox();

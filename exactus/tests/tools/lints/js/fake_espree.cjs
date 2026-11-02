@@ -17,12 +17,12 @@ const loc = (source, start, end) => {
     const before = source.slice(0, offset).split("\n");
     return {
       line: before.length,
-      column: before.at(-1).length,
+      column: before.at(-1).length
     };
   };
   return {
     start: position(start),
-    end: position(end),
+    end: position(end)
   };
 };
 /**
@@ -43,7 +43,7 @@ const node = (source, type, text, extra = {}, from = 0) => {
     type,
     range: [start, end],
     loc: loc(source, start, end),
-    ...extra,
+    ...extra
   };
 };
 /**
@@ -58,9 +58,9 @@ const identifier = (source, name, from = 0) =>
     "Identifier",
     name,
     {
-      name,
+      name
     },
-    from,
+    from
   );
 /**
  * Handle literal.
@@ -75,9 +75,9 @@ const literal = (source, text, value, from = 0) =>
     "Literal",
     text,
     {
-      value,
+      value
     },
-    from,
+    from
   );
 /**
  * Handle block.
@@ -92,9 +92,9 @@ const block = (source, text, body, from = 0) =>
     "BlockStatement",
     text,
     {
-      body,
+      body
     },
-    from,
+    from
   );
 /**
  * Handle return statement.
@@ -109,9 +109,9 @@ const returnStatement = (source, text, argument, from = 0) =>
     "ReturnStatement",
     text,
     {
-      argument,
+      argument
     },
-    from,
+    from
   );
 /**
  * Return scenario.
@@ -126,12 +126,12 @@ const scenario = source => {
       id: identifier(source, "free"),
       params: [identifier(source, "x", source.indexOf("free"))],
       async: false,
-      generator: false,
+      generator: false
     });
     const ret = returnStatement(
       source,
       "return x;",
-      identifier(source, "x", source.indexOf("return x")),
+      identifier(source, "x", source.indexOf("return x"))
     );
     fn.body = block(source, "{ return x; }", [ret]);
     const methodText = "method(y) { return y; }";
@@ -139,21 +139,21 @@ const scenario = source => {
       id: null,
       params: [identifier(source, "y", source.indexOf("method"))],
       async: false,
-      generator: false,
+      generator: false
     });
     value.body = block(source, "{ return y; }", [
       returnStatement(
         source,
         "return y;",
-        identifier(source, "y", source.indexOf("return y")),
-      ),
+        identifier(source, "y", source.indexOf("return y"))
+      )
     ]);
     const method = node(source, "MethodDefinition", methodText, {
       key: identifier(source, "method"),
       value,
       static: false,
       kind: "method",
-      computed: false,
+      computed: false
     });
     const cls = node(
       source,
@@ -163,9 +163,9 @@ const scenario = source => {
         id: identifier(source, "Demo"),
         body: {
           type: "ClassBody",
-          body: [method],
-        },
-      },
+          body: [method]
+        }
+      }
     );
     const arrowText = "z => z";
     const arrow = node(source, "ArrowFunctionExpression", arrowText, {
@@ -173,12 +173,12 @@ const scenario = source => {
       params: [identifier(source, "z", source.indexOf(arrowText))],
       body: identifier(source, "z", source.indexOf("=>") + 2),
       async: false,
-      generator: false,
+      generator: false
     });
     const decl = {
       type: "VariableDeclarator",
       id: identifier(source, "arrow"),
-      init: arrow,
+      init: arrow
     };
     const variable = node(
       source,
@@ -186,12 +186,12 @@ const scenario = source => {
       `const arrow = ${arrowText};`,
       {
         declarations: [decl],
-        kind: "const",
-      },
+        kind: "const"
+      }
     );
     return {
       type: "Program",
-      body: [fn, cls, variable],
+      body: [fn, cls, variable]
     };
   }
   if (source.includes("SCENARIO_TO_ARROW")) {
@@ -199,53 +199,53 @@ const scenario = source => {
     const arg = node(source, "BinaryExpression", "x * 2", {
       left: identifier(source, "x", source.indexOf("return")),
       right: literal(source, "2", 2),
-      operator: "*",
+      operator: "*"
     });
     const fn = node(source, "FunctionDeclaration", fnText, {
       id: identifier(source, "double"),
       params: [identifier(source, "x", source.indexOf("double"))],
       async: false,
-      generator: false,
+      generator: false
     });
     fn.body = block(source, "{ return x * 2; }", [
-      returnStatement(source, "return x * 2;", arg),
+      returnStatement(source, "return x * 2;", arg)
     ]);
     const objectText = "function make(x) { return { value: x }; }";
     const objectArg = node(source, "ObjectExpression", "{ value: x }", {
-      properties: [],
+      properties: []
     });
     const make = node(source, "FunctionDeclaration", objectText, {
       id: identifier(source, "make"),
       params: [identifier(source, "x", source.indexOf("make"))],
       async: false,
-      generator: false,
+      generator: false
     });
     make.body = block(source, "{ return { value: x }; }", [
-      returnStatement(source, "return { value: x };", objectArg),
+      returnStatement(source, "return { value: x };", objectArg)
     ]);
     const methodSource = "method(a, b) { return a + b; }";
     const mfn = node(source, "FunctionExpression", "(a, b) { return a + b; }", {
       id: null,
       params: [
         identifier(source, "a", source.indexOf(methodSource)),
-        identifier(source, "b", source.indexOf(methodSource) + 8),
+        identifier(source, "b", source.indexOf(methodSource) + 8)
       ],
       async: false,
-      generator: false,
+      generator: false
     });
     mfn.body = block(source, "{ return a + b; }", [
       returnStatement(
         source,
         "return a + b;",
-        node(source, "BinaryExpression", "a + b", {}),
-      ),
+        node(source, "BinaryExpression", "a + b", {})
+      )
     ]);
     const method = node(source, "MethodDefinition", methodSource, {
       key: identifier(source, "method"),
       value: mfn,
       static: false,
       kind: "method",
-      computed: false,
+      computed: false
     });
     const cls = node(
       source,
@@ -255,13 +255,13 @@ const scenario = source => {
         id: identifier(source, "Demo"),
         body: {
           type: "ClassBody",
-          body: [method],
-        },
-      },
+          body: [method]
+        }
+      }
     );
     return {
       type: "Program",
-      body: [fn, make, cls],
+      body: [fn, make, cls]
     };
   }
   if (source.includes("SCENARIO_BLOCKERS")) {
@@ -278,30 +278,30 @@ const scenario = source => {
         id: null,
         params: [],
         async: false,
-        generator: kind === "generator",
+        generator: kind === "generator"
       });
       fn.body = block(
         source,
         text.slice(text.indexOf("{")),
-        semantic ? [semantic] : [],
+        semantic ? [semantic] : []
       );
       return node(source, "MethodDefinition", text, {
         key: identifier(source, name),
         value: fn,
         static: false,
         kind: kind === "generator" ? "method" : kind,
-        computed: false,
+        computed: false
       });
     };
     const thisNode = node(source, "ThisExpression", "this");
     const argNode = identifier(source, "arguments");
     const newNode = node(source, "MetaProperty", "new.target", {
       meta: {
-        name: "new",
+        name: "new"
       },
       property: {
-        name: "target",
-      },
+        name: "target"
+      }
     });
     const yieldNode = node(source, "YieldExpression", "yield 1", {});
     const methods = [
@@ -309,11 +309,11 @@ const scenario = source => {
         "constructor() { this.x; }",
         "constructor",
         "constructor",
-        thisNode,
+        thisNode
       ),
       makeMethod("get value() { arguments; }", "value", "get", argNode),
       makeMethod("set value(v) { new.target; }", "value", "set", newNode),
-      makeMethod("gen() { yield 1; }", "gen", "generator", yieldNode),
+      makeMethod("gen() { yield 1; }", "gen", "generator", yieldNode)
     ];
     return {
       type: "Program",
@@ -322,14 +322,14 @@ const scenario = source => {
           type: "ClassDeclaration",
           id: {
             type: "Identifier",
-            name: "Demo",
+            name: "Demo"
           },
           body: {
             type: "ClassBody",
-            body: methods,
-          },
-        },
-      ],
+            body: methods
+          }
+        }
+      ]
     };
   }
   if (source.includes("SCENARIO_FROM_ARROW")) {
@@ -338,12 +338,12 @@ const scenario = source => {
       params: [identifier(source, "x", source.indexOf(arrowText))],
       body: node(source, "BinaryExpression", "x + 1", {}),
       async: false,
-      generator: false,
+      generator: false
     });
     const decl = {
       type: "VariableDeclarator",
       id: identifier(source, "inc"),
-      init: arrow,
+      init: arrow
     };
     const variable = node(
       source,
@@ -351,21 +351,21 @@ const scenario = source => {
       `const inc = ${arrowText};`,
       {
         declarations: [decl],
-        kind: "const",
-      },
+        kind: "const"
+      }
     );
     const fieldText = "static twice = x => x * 2;";
     const fieldArrow = node(source, "ArrowFunctionExpression", "x => x * 2", {
       params: [identifier(source, "x", source.indexOf(fieldText))],
       body: node(source, "BinaryExpression", "x * 2", {}),
       async: false,
-      generator: false,
+      generator: false
     });
     const field = node(source, "PropertyDefinition", fieldText, {
       key: identifier(source, "twice"),
       value: fieldArrow,
       static: true,
-      computed: false,
+      computed: false
     });
     const cls = node(
       source,
@@ -375,13 +375,13 @@ const scenario = source => {
         id: identifier(source, "Demo"),
         body: {
           type: "ClassBody",
-          body: [field],
-        },
-      },
+          body: [field]
+        }
+      }
     );
     return {
       type: "Program",
-      body: [variable, cls],
+      body: [variable, cls]
     };
   }
   if (source.includes("SCENARIO_MISC")) {
@@ -391,7 +391,7 @@ const scenario = source => {
       id: null,
       params: [identifier(source, "a", source.indexOf(fexprText))],
       async: true,
-      generator: false,
+      generator: false
     });
     fexpr.body = block(source, bodyText, []);
     const assign = {
@@ -401,10 +401,10 @@ const scenario = source => {
         computed: false,
         property: {
           type: "Identifier",
-          name: "work",
-        },
+          name: "work"
+        }
       },
-      right: fexpr,
+      right: fexpr
     };
     const fieldText = "field = function(v) { return v; };";
     const fieldFn = node(
@@ -415,63 +415,63 @@ const scenario = source => {
         id: null,
         params: [identifier(source, "v", source.indexOf(fieldText))],
         async: false,
-        generator: false,
-      },
+        generator: false
+      }
     );
     fieldFn.body = block(source, "{ return v; }", [
       returnStatement(
         source,
         "return v;",
-        identifier(source, "v", source.indexOf("return v")),
-      ),
+        identifier(source, "v", source.indexOf("return v"))
+      )
     ]);
     const field = node(source, "PropertyDefinition", fieldText, {
       key: identifier(source, "field"),
       value: fieldFn,
       static: false,
-      computed: false,
+      computed: false
     });
     const staticText = "static ready() { return 1; }";
     const staticFn = node(source, "FunctionExpression", "() { return 1; }", {
       id: null,
       params: [],
       async: false,
-      generator: false,
+      generator: false
     });
     staticFn.body = block(source, "{ return 1; }", [
       returnStatement(
         source,
         "return 1;",
-        literal(source, "1", 1, source.indexOf(staticText)),
-      ),
+        literal(source, "1", 1, source.indexOf(staticText))
+      )
     ]);
     const staticMethod = node(source, "MethodDefinition", staticText, {
       key: identifier(source, "ready"),
       value: staticFn,
       static: true,
       kind: "method",
-      computed: false,
+      computed: false
     });
     const objectText = "run(x) { return x; }";
     const objectFn = node(source, "FunctionExpression", "(x) { return x; }", {
       id: null,
       params: [identifier(source, "x", source.indexOf(objectText))],
       async: false,
-      generator: false,
+      generator: false
     });
     objectFn.body = block(source, "{ return x; }", [
       returnStatement(
         source,
         "return x;",
-        identifier(source, "x", source.indexOf("return x")),
-      ),
+        identifier(source, "x", source.indexOf("return x"))
+      )
     ]);
     const property = node(source, "Property", objectText, {
       key: identifier(source, "run"),
       value: objectFn,
       method: true,
       kind: "init",
-      computed: false,
+      computed: false
     });
     return {
       type: "Program",
@@ -481,15 +481,15 @@ const scenario = source => {
           type: "ClassDeclaration",
           id: {
             type: "Identifier",
-            name: "Misc",
+            name: "Misc"
           },
           body: {
             type: "ClassBody",
-            body: [field, staticMethod],
-          },
+            body: [field, staticMethod]
+          }
         },
-        property,
-      ],
+        property
+      ]
     };
   }
   if (source.includes("SCENARIO_DEEP_METHODS")) {
@@ -510,8 +510,8 @@ const scenario = source => {
           id: null,
           params: extra.params ?? [],
           async: extra.async ?? false,
-          generator: extra.generator ?? false,
-        },
+          generator: extra.generator ?? false
+        }
       );
       fn.body = block(source, text.slice(text.indexOf("{")), bodyNodes);
       return node(source, "MethodDefinition", text, {
@@ -519,7 +519,7 @@ const scenario = source => {
         value: fn,
         static: extra.static ?? false,
         kind: extra.kind ?? "method",
-        computed: false,
+        computed: false
       });
     };
     const nestedRegularText =
@@ -533,8 +533,8 @@ const scenario = source => {
         id: identifier(source, "inner", source.indexOf(nestedRegularFnText)),
         params: [],
         async: false,
-        generator: false,
-      },
+        generator: false
+      }
     );
     nestedRegularFn.body = block(source, "{ return this.x; }", [
       node(
@@ -542,8 +542,8 @@ const scenario = source => {
         "ThisExpression",
         "this",
         {},
-        source.indexOf(nestedRegularFnText),
-      ),
+        source.indexOf(nestedRegularFnText)
+      )
     ]);
     const nestedArrowText =
       "nestedArrow() { const inner = () => this.x; return inner(); }";
@@ -559,16 +559,16 @@ const scenario = source => {
           "ThisExpression",
           "this",
           {},
-          source.indexOf(nestedArrowExpr),
+          source.indexOf(nestedArrowExpr)
         ),
         async: false,
-        generator: false,
-      },
+        generator: false
+      }
     );
     const arrowDecl = {
       type: "VariableDeclarator",
       id: identifier(source, "inner", source.indexOf(nestedArrowText)),
-      init: nestedArrow,
+      init: nestedArrow
     };
     const receiverText = "receiver() { return this.x; }";
     const staticText = "static utility(x) { return x; }";
@@ -587,19 +587,19 @@ const scenario = source => {
           "ThisExpression",
           "this",
           {},
-          source.indexOf(receiverText),
-        ),
+          source.indexOf(receiverText)
+        )
       ]),
       method(staticText, "utility", [], {
         static: true,
-        params: [identifier(source, "x", source.indexOf(staticText))],
+        params: [identifier(source, "x", source.indexOf(staticText))]
       }),
       method(plainText, "plain", [], {
-        params: [identifier(source, "x", source.indexOf(plainText))],
+        params: [identifier(source, "x", source.indexOf(plainText))]
       }),
       method(asyncText, "load", [], {
         async: true,
-        params: [identifier(source, "x", source.indexOf(asyncText))],
+        params: [identifier(source, "x", source.indexOf(asyncText))]
       }),
       method(
         getterText,
@@ -610,12 +610,12 @@ const scenario = source => {
             "ThisExpression",
             "this",
             {},
-            source.indexOf(getterText),
-          ),
+            source.indexOf(getterText)
+          )
         ],
         {
-          kind: "get",
-        },
+          kind: "get"
+        }
       ),
       method(
         setterText,
@@ -626,13 +626,13 @@ const scenario = source => {
             "ThisExpression",
             "this",
             {},
-            source.indexOf(setterText),
-          ),
+            source.indexOf(setterText)
+          )
         ],
         {
           kind: "set",
-          params: [identifier(source, "v", source.indexOf(setterText))],
-        },
+          params: [identifier(source, "v", source.indexOf(setterText))]
+        }
       ),
       method(
         constructorText,
@@ -643,21 +643,21 @@ const scenario = source => {
             "ThisExpression",
             "this",
             {},
-            source.indexOf(constructorText),
-          ),
+            source.indexOf(constructorText)
+          )
         ],
         {
-          kind: "constructor",
-        },
+          kind: "constructor"
+        }
       ),
       method(
         generatorText,
         "items",
         [node(source, "YieldExpression", "yield 1", {})],
         {
-          generator: true,
-        },
-      ),
+          generator: true
+        }
+      )
     ];
     return {
       type: "Program",
@@ -666,14 +666,14 @@ const scenario = source => {
           type: "ClassDeclaration",
           id: {
             type: "Identifier",
-            name: "Deep",
+            name: "Deep"
           },
           body: {
             type: "ClassBody",
-            body: methods,
-          },
-        },
-      ],
+            body: methods
+          }
+        }
+      ]
     };
   }
   if (source.includes("SCENARIO_PARAMETERS")) {
@@ -682,17 +682,17 @@ const scenario = source => {
       [
         "one(x) { return x; }",
         "one",
-        [identifier(source, "x", source.indexOf("one(x)"))],
+        [identifier(source, "x", source.indexOf("one(x)"))]
       ],
       [
         "many(a, b) { return a; }",
         "many",
         [
           identifier(source, "a", source.indexOf("many(a")),
-          identifier(source, "b", source.indexOf("many(a") + 3),
-        ],
+          identifier(source, "b", source.indexOf("many(a") + 3)
+        ]
       ],
-      ["none() { return 1; }", "none", []],
+      ["none() { return 1; }", "none", []]
     ];
     const methods = texts.map(([text, name, params]) => {
       const fn = node(
@@ -703,8 +703,8 @@ const scenario = source => {
           id: null,
           params,
           async: false,
-          generator: false,
-        },
+          generator: false
+        }
       );
       fn.body = block(source, text.slice(text.indexOf("{")), []);
       return node(source, "MethodDefinition", text, {
@@ -712,7 +712,7 @@ const scenario = source => {
         value: fn,
         static: false,
         kind: "method",
-        computed: false,
+        computed: false
       });
     });
     return {
@@ -722,14 +722,14 @@ const scenario = source => {
           type: "ClassDeclaration",
           id: {
             type: "Identifier",
-            name: "Params",
+            name: "Params"
           },
           body: {
             type: "ClassBody",
-            body: methods,
-          },
-        },
-      ],
+            body: methods
+          }
+        }
+      ]
     };
   }
   if (source.includes("SCENARIO_ARROW_BLOCKED")) {
@@ -738,7 +738,7 @@ const scenario = source => {
       params: [identifier(source, "x", source.indexOf(arrowText))],
       body: node(source, "ThisExpression", "this"),
       async: false,
-      generator: false,
+      generator: false
     });
     return {
       type: "Program",
@@ -746,9 +746,9 @@ const scenario = source => {
         {
           type: "VariableDeclarator",
           id: identifier(source, "blocked"),
-          init: arrow,
-        },
-      ],
+          init: arrow
+        }
+      ]
     };
   }
   if (source.includes("SCENARIO_METHOD_FRINGE")) {
@@ -769,8 +769,8 @@ const scenario = source => {
           id: null,
           params: extra.params ?? [],
           async: false,
-          generator: extra.generator ?? false,
-        },
+          generator: extra.generator ?? false
+        }
       );
       fn.body = block(source, text.slice(text.indexOf("{")), semantic);
       return node(source, "MethodDefinition", text, {
@@ -778,7 +778,7 @@ const scenario = source => {
         value: fn,
         static: extra.static ?? false,
         kind: extra.kind ?? "method",
-        computed: false,
+        computed: false
       });
     };
     const argsText = "argsOnly() { return arguments.length; }";
@@ -790,7 +790,7 @@ const scenario = source => {
     const plainText = "plain() { return 1; }";
     const methods = [
       method(argsText, "argsOnly", [
-        identifier(source, "arguments", source.indexOf(argsText)),
+        identifier(source, "arguments", source.indexOf(argsText))
       ]),
       method(targetText, "targetOnly", [
         node(
@@ -799,14 +799,14 @@ const scenario = source => {
           "new.target",
           {
             meta: {
-              name: "new",
+              name: "new"
             },
             property: {
-              name: "target",
-            },
+              name: "target"
+            }
           },
-          source.indexOf(targetText),
-        ),
+          source.indexOf(targetText)
+        )
       ]),
       method(
         genText,
@@ -817,24 +817,24 @@ const scenario = source => {
             "YieldExpression",
             "yield 1",
             {},
-            source.indexOf(genText),
-          ),
+            source.indexOf(genText)
+          )
         ],
         {
-          generator: true,
-        },
+          generator: true
+        }
       ),
       method(ctorText, "constructor", [], {
-        kind: "constructor",
+        kind: "constructor"
       }),
       method(getText, "value", [], {
-        kind: "get",
+        kind: "get"
       }),
       method(setText, "value", [], {
         kind: "set",
-        params: [identifier(source, "v", source.indexOf(setText))],
+        params: [identifier(source, "v", source.indexOf(setText))]
       }),
-      method(plainText, "plain"),
+      method(plainText, "plain")
     ];
     return {
       type: "Program",
@@ -843,14 +843,14 @@ const scenario = source => {
           type: "ClassDeclaration",
           id: {
             type: "Identifier",
-            name: "Fringe",
+            name: "Fringe"
           },
           body: {
             type: "ClassBody",
-            body: methods,
-          },
-        },
-      ],
+            body: methods
+          }
+        }
+      ]
     };
   }
   if (source.includes("SCENARIO_IDENTITY_FRINGE")) {
@@ -866,7 +866,7 @@ const scenario = source => {
         id: identifier(source, name, source.indexOf(text)),
         params: [],
         async: false,
-        generator: name === "gen",
+        generator: name === "gen"
       });
       fn.body = block(source, text.slice(text.indexOf("{")), semantic);
       return fn;
@@ -886,11 +886,11 @@ const scenario = source => {
         source,
         "return 1;",
         literal(source, "1", 1, source.indexOf(safeText)),
-        source.indexOf(safeText),
-      ),
+        source.indexOf(safeText)
+      )
     ]);
     const argsOnly = makeDeclaration(argsText, "argsOnly", [
-      identifier(source, "arguments", source.indexOf(argsText)),
+      identifier(source, "arguments", source.indexOf(argsText))
     ]);
     const targetOnly = makeDeclaration(targetText, "targetOnly", [
       node(
@@ -899,47 +899,47 @@ const scenario = source => {
         "new.target",
         {
           meta: {
-            name: "new",
+            name: "new"
           },
           property: {
-            name: "target",
-          },
+            name: "target"
+          }
         },
-        source.indexOf(targetText),
-      ),
+        source.indexOf(targetText)
+      )
     ]);
     const gen = makeDeclaration(genText, "gen", [
-      node(source, "YieldExpression", "yield 1", {}, source.indexOf(genText)),
+      node(source, "YieldExpression", "yield 1", {}, source.indexOf(genText))
     ]);
     const before = node(source, "CallExpression", "hoisted()", {
       callee: identifier(source, "hoisted"),
-      arguments: [],
+      arguments: []
     });
     const construct = node(source, "NewExpression", "new Ctor()", {
       callee: identifier(source, "Ctor", source.indexOf("new Ctor")),
-      arguments: [],
+      arguments: []
     });
     const prototype = node(source, "MemberExpression", "Proto.prototype", {
       object: identifier(source, "Proto", source.indexOf("Proto.prototype")),
       property: identifier(
         source,
         "prototype",
-        source.indexOf("Proto.prototype"),
+        source.indexOf("Proto.prototype")
       ),
-      computed: false,
+      computed: false
     });
     const namedText = "function recur() { return 1; }";
     const named = node(source, "FunctionExpression", namedText, {
       id: identifier(source, "recur", source.indexOf(namedText)),
       params: [],
       async: false,
-      generator: false,
+      generator: false
     });
     named.body = block(source, "{ return 1; }", [], source.indexOf(namedText));
     const namedDecl = {
       type: "VariableDeclarator",
       id: identifier(source, "named"),
-      init: named,
+      init: named
     };
     return {
       type: "Program",
@@ -954,8 +954,8 @@ const scenario = source => {
         argsOnly,
         targetOnly,
         gen,
-        namedDecl,
-      ],
+        namedDecl
+      ]
     };
   }
   if (source.includes("SCENARIO_LEXICAL_ARROWS")) {
@@ -971,51 +971,51 @@ const scenario = source => {
         params: [],
         body: semantic,
         async: false,
-        generator: false,
+        generator: false
       });
       return {
         type: "VariableDeclarator",
         id: identifier(source, name),
-        init: arrow,
+        init: arrow
       };
     };
     const thisArrow = makeArrow(
       "() => this.x",
       "lexicalThis",
-      node(source, "ThisExpression", "this"),
+      node(source, "ThisExpression", "this")
     );
     const argsArrow = makeArrow(
       "() => arguments[0]",
       "lexicalArgs",
-      identifier(source, "arguments", source.indexOf("arguments")),
+      identifier(source, "arguments", source.indexOf("arguments"))
     );
     const targetArrow = makeArrow(
       "() => new.target",
       "lexicalTarget",
       node(source, "MetaProperty", "new.target", {
         meta: {
-          name: "new",
+          name: "new"
         },
         property: {
-          name: "target",
-        },
-      }),
+          name: "target"
+        }
+      })
     );
     const safeArrow = makeArrow(
       "() => 1",
       "safeArrow",
-      literal(source, "1", 1, source.lastIndexOf("1")),
+      literal(source, "1", 1, source.lastIndexOf("1"))
     );
     return {
       type: "Program",
-      body: [thisArrow, argsArrow, targetArrow, safeArrow],
+      body: [thisArrow, argsArrow, targetArrow, safeArrow]
     };
   }
   if (source.includes("SCENARIO_PARSE_FAIL")) throw new Error("script failure");
   if (source.includes("SCENARIO_SCRIPT_FALLBACK"))
     return {
       type: "Program",
-      body: [],
+      body: []
     };
   throw new Error("Unknown fixture scenario");
 };

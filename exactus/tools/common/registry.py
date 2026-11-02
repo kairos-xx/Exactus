@@ -245,8 +245,7 @@ def _max_runs() -> int:
         Finished rows the registry keeps, newest first.
 
     """
-    raw: str | None = environ.get(RegistryTables.max_runs_env)
-    if raw:
+    if raw := environ.get(RegistryTables.max_runs_env):
         with suppress(ValueError):
             parsed: int = int(raw)
             if parsed >= 1:
@@ -265,8 +264,7 @@ def _max_size() -> int:
         Byte cap enforced on ``runs.db`` and its journal files.
 
     """
-    raw: str | None = environ.get(RegistryTables.max_size_env)
-    if raw:
+    if raw := environ.get(RegistryTables.max_size_env):
         with suppress(ValueError):
             return max(0, int(raw))
     return RegistryTables.max_size_bytes
@@ -842,6 +840,32 @@ class RunRegistry:
             for record in (_record(row=row) for row in rows)
             if process_exists(pid=record.pid)
         )
+
+    def record(self, *, run_id: str) -> RunRecord | None:
+        """Return the stored row for one run, live or finished.
+
+        Unlike ``live``, a finished or interrupted row is still
+        returned — adopters use it to read a vanished run's final
+        status.
+
+        Args:
+            run_id: Run identifier to look up.
+
+        Returns:
+            The decoded record, or ``None`` when absent or the
+            registry is unavailable.
+
+        """
+        try:
+            with self._connection() as connection:
+                row: tuple[ColumnValue, ...] | None = _execute(
+                    connection=connection,
+                    statement=Constants.select_run,
+                    parameters=(run_id,),
+                ).fetchone()
+        except (OSError, SqliteError, SQLiteLayerError):
+            return None
+        return None if row is None else _record(row=row)
 
     @staticmethod
     def _compact(*, connection: Connection) -> None:

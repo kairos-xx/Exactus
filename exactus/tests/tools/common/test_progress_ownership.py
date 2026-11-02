@@ -10,7 +10,7 @@ import pytest
 
 from exactus.__main__ import Check
 from exactus.tests.common.support import expect_equal, private_call, require
-from exactus.tools.common.catalog import Constants, ToolSpec
+from exactus.tools.common.catalog import GroupFinalConstants, ToolSpec
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -39,7 +39,9 @@ def test_progress_ignores_previous_run_until_current_heartbeat(
         value=tmp_path / "EXACTUS_RESULTS",
     )
     tool: ToolSpec = require(
-        value=Constants.exactus_catalog.tool(identifier="coverage_tests"),
+        value=GroupFinalConstants.exactus_catalog.tool(
+            identifier="coverage_tests",
+        ),
     )
     activity: Path = (
         Check.exactus_root / tool.output / "ARTIFACTS" / "@activity.json"

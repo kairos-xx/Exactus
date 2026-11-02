@@ -1865,8 +1865,7 @@ class StudioController:
         if not isinstance(document, dict):
             msg: str = "Choose an exported project to import."
             raise ProjectError(msg)
-        opening: bool = data.get("open") is True
-        if opening:
+        if opening := data.get("open") is True:
             self._require_idle(action="opening a project")
             self._require_saved_or_confirmed(data=data)
         summary: ProjectSummary = self._library.import_document(

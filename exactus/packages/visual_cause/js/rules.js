@@ -12,7 +12,7 @@
    * @returns {void}
    */
   const walk = rules => {
-    for (const rule of rules) {
+    for (const rule of rules)
       if (rule instanceof CSSStyleRule) {
         /** @type {string[]} */
         const matched = [];
@@ -28,14 +28,12 @@
             name =>
               `${name}: ${rule.style.getPropertyValue(name).trim()}${
                 rule.style.getPropertyPriority(name) ? " !important" : ""
-              }`,
+              }`
           ),
-          matched,
+          matched
         });
-      } else if ("cssRules" in rule) {
+      } else if ("cssRules" in rule)
         walk(/** @type {CSSRuleList} */ (rule.cssRules));
-      }
-    }
   };
   walk(sheet.cssRules);
   return JSON.stringify(output);

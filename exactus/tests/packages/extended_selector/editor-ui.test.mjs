@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
-	browserTest,
+	browserTest
 } from "../../common/browser.mjs";
 /** Fixture page exposing a mounted structured editor. */
 const PAGE = "/exactus/tests/packages/extended_selector/editor-fixture.html";
@@ -37,8 +37,8 @@ test("editor renders values and folds them back to text", async t => {
 				try {
 					return String(
 						new globalThis.Editor(
-							/** @type {any} */ (document.createElement("div")),
-						).value,
+							/** @type {any} */ (document.createElement("div"))
+						).value
 					) && "";
 				} catch (error) {
 					return error instanceof Error ? error.message : String(error);
@@ -90,12 +90,12 @@ test("editor opens operator menus and swaps operators", async t => {
 			operator.dispatchEvent(new MouseEvent("click", {bubbles: true}));
 			const opened = !editor.popup.hidden;
 			const options = [...editor.popup.querySelectorAll("button")].map(
-				(/** @type {Element} */ button) => button.textContent ?? "",
+				(/** @type {Element} */ button) => button.textContent ?? ""
 			);
 			const choice = globalThis.must(
 				[...editor.popup.querySelectorAll("button")].find(
-					(/** @type {Element} */ button) => button.textContent === "xor",
-				),
+					(/** @type {Element} */ button) => button.textContent === "xor"
+				)
 			);
 			choice.dispatchEvent(new MouseEvent("mousedown", {bubbles: true}));
 			return {
@@ -103,7 +103,7 @@ test("editor opens operator menus and swaps operators", async t => {
 				closed: editor.popup.hidden,
 				count: options.length,
 				text: editor.value,
-				label: operator.textContent,
+				label: operator.textContent
 			};
 		});
 		assert.equal(swapped.opened, true);
@@ -124,12 +124,12 @@ test("editor wraps a caret selection into a call from the menu", async t => {
 			caret.textContent = "has";
 			caret.dispatchEvent(new Event("input", {bubbles: true}));
 			const options = [...editor.popup.querySelectorAll("button")].map(
-				(/** @type {Element} */ button) => button.textContent ?? "",
+				(/** @type {Element} */ button) => button.textContent ?? ""
 			);
 			const choice = globalThis.must(
 				[...editor.popup.querySelectorAll("button")].find(
-					(/** @type {Element} */ button) => button.textContent === "has",
-				),
+					(/** @type {Element} */ button) => button.textContent === "has"
+				)
 			);
 			choice.dispatchEvent(new MouseEvent("mousedown", {bubbles: true}));
 			await new Promise(done => {
@@ -138,7 +138,7 @@ test("editor wraps a caret selection into a call from the menu", async t => {
 			return {
 				options,
 				value: editor.value,
-				slotFocused: document.activeElement?.getAttribute("data-role") === "caret",
+				slotFocused: document.activeElement?.getAttribute("data-role") === "caret"
 			};
 		});
 		assert.deepEqual(result.options, ["has"]);
@@ -163,7 +163,7 @@ test("editor offers atom completions for pseudo, predicate, and references", asy
 				globalThis.Editor.focusAt(atom, text.length);
 				editor.showAtomOptions(atom);
 				return [...editor.popup.querySelectorAll("button")].map(
-					(/** @type {Element} */ button) => button.textContent ?? "",
+					(/** @type {Element} */ button) => button.textContent ?? ""
 				);
 			};
 			return {
@@ -171,7 +171,7 @@ test("editor offers atom completions for pseudo, predicate, and references", asy
 				predicate: offer("[wid"),
 				reference: offer('[extended-selector="saved-o'),
 				starters: offer(""),
-				none: offer(".card[x=1]"),
+				none: offer(".card[x=1]")
 			};
 		});
 		assert.ok(offered.pseudo.includes(":hover"));
@@ -195,8 +195,8 @@ test("editor applies an atom completion at the caret offset", async t => {
 			editor.showAtomOptions(atom);
 			const choice = globalThis.must(
 				[...editor.popup.querySelectorAll("button")].find(
-					(/** @type {Element} */ button) => button.textContent === ":hover",
-				),
+					(/** @type {Element} */ button) => button.textContent === ":hover"
+				)
 			);
 			choice.dispatchEvent(new MouseEvent("mousedown", {bubbles: true}));
 			await new Promise(done => {
@@ -255,11 +255,11 @@ test("editor handles Enter, Escape, and paired-key insertion", async t => {
 				target.dispatchEvent(new KeyboardEvent("keydown", {
 					key: keyName,
 					bubbles: true,
-					cancelable: true,
+					cancelable: true
 				}));
 			const skipped = key("x");
 			editor.showExpressionOptions(
-				globalThis.must(editor.surface.querySelector(".ese-caret")),
+				globalThis.must(editor.surface.querySelector(".ese-caret"))
 			);
 			key("Enter", atom);
 			const wrapped = editor.value;
@@ -327,7 +327,7 @@ test("editor measures caret offsets with and without a selection", async t => {
 			const selection = globalThis.must(window.getSelection());
 			const range = document.createRange();
 			const text = globalThis.must(
-				globalThis.must(atom.querySelector(".ese-selector")).firstChild,
+				globalThis.must(atom.querySelector(".ese-selector")).firstChild
 			);
 			range.setStart(text, 2);
 			range.collapse(true);
@@ -378,11 +378,11 @@ test("focusAt returns quietly when the offset exceeds the text", async t => {
 test("demo harness runs registration and clearing", async t => {
 	await browserTest(t, async (page, url) => {
 		await page.goto(
-			`${url}/exactus/tests/packages/extended_selector/demo-fixture.html`,
+			`${url}/exactus/tests/packages/extended_selector/demo-fixture.html`
 		);
 		await page.waitForFunction(
 			() =>
-				(document.getElementById("status")?.textContent?.length ?? 0) > 0,
+				(document.getElementById("status")?.textContent?.length ?? 0) > 0
 		);
 		const run = await page.evaluate(() => {
 			const expression = /** @type {HTMLTextAreaElement} */ (
@@ -394,7 +394,7 @@ test("demo harness runs registration and clearing", async t => {
 			return {
 				result: document.getElementById("css-result")?.textContent ?? "",
 				icons: document.querySelectorAll('[extended-selector="card"] > svg')
-					.length,
+					.length
 			};
 		});
 		assert.match(run.result, /card\.register = /);
@@ -427,7 +427,7 @@ test("demo harness runs registration and clearing", async t => {
 			globalThis.must(document.getElementById("clear")).click();
 			return {
 				result: document.getElementById("css-result")?.textContent ?? "",
-				registered: document.querySelectorAll("[extended-selector]").length,
+				registered: document.querySelectorAll("[extended-selector]").length
 			};
 		});
 		assert.equal(cleared.result, "Registration cleared.");
@@ -439,16 +439,16 @@ test("demo harness rejects an incomplete fixture", async t => {
 		/** @type {Error[]} */
 		const errors = [];
 		page.on("pageerror", (/** @type {Error} */ error) =>
-			errors.push(error),
+			errors.push(error)
 		);
 		await page.goto(
-			`${url}/exactus/tests/packages/extended_selector/demo-broken.html`,
+			`${url}/exactus/tests/packages/extended_selector/demo-broken.html`
 		);
 		await page.waitForTimeout(200);
 		assert.ok(
 			errors.some(error =>
 				error.message.includes("demo fixture incomplete")
-			),
+			)
 		);
 	});
 });

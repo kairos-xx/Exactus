@@ -1,6 +1,7 @@
 # Copyright (c) 2026
 """Authenticated loopback identity discovery behavior."""
 
+from dataclasses import dataclass
 from importlib import import_module
 from os import getpid
 from pathlib import Path
@@ -8,6 +9,7 @@ from socket import socket, socketpair
 from typing import TYPE_CHECKING, Final, cast, final
 
 import pytest
+from psutil import AccessDenied, NoSuchProcess
 
 if TYPE_CHECKING:
     from types import ModuleType
@@ -300,3 +302,129 @@ def test_exactus_candidates_filters_by_process_identity() -> None:
         ),
     )
     expect_equal(actual=filtered, expected={getpid(): {1}})
+
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class _FakeProcess:
+    """Stand in for a process whose identity reads can fail separately.
+
+    Attributes:
+        process_name: Reported name, or ``None`` when the process vanished.
+        command: Reported command line, or ``None`` when access is denied.
+
+    """
+
+    process_name: str | None
+    command: tuple[str, ...] | None
+
+    def name(self) -> str:
+        """Return the process name.
+
+        Returns:
+            The configured name.
+
+        Raises:
+            NoSuchProcess: If the process is configured as vanished.
+
+        """
+        if self.process_name is None:
+            raise NoSuchProcess(pid=1)
+        return self.process_name
+
+    def cmdline(self) -> list[str]:
+        """Return the process command line.
+
+        Returns:
+            The configured command line.
+
+        Raises:
+            AccessDenied: If the command line is configured as unreadable.
+
+        """
+        if self.command is None:
+            raise AccessDenied(pid=1)
+        return list(self.command)
+
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class _FakeProcesses:
+    """Construct the fake process registered for a pid.
+
+    Attributes:
+        table: Fake process per process identifier.
+
+    """
+
+    table: dict[int, _FakeProcess]
+
+    def __call__(self, *, pid: int) -> _FakeProcess:
+        """Return the fake process registered for ``pid``.
+
+        Args:
+            pid: Process identifier being constructed.
+
+        Returns:
+            The registered fake process.
+
+        """
+        return self.table[pid]
+
+
+@pytest.mark.parametrize(
+    ("process_name", "command", "kept"),
+    [
+        ("Python", None, True),
+        ("python3.13", ("tool",), True),
+        ("exactus", None, True),
+        ("zsh", ("/bin/zsh", "/work/Exactus/run"), True),
+        ("zsh", None, False),
+        ("zsh", ("/bin/zsh",), False),
+        (None, ("python",), False),
+    ],
+    ids=[
+        "interpreter-with-unreadable-command",
+        "interpreter-with-command",
+        "application-with-unreadable-command",
+        "command-names-application",
+        "unreadable-command-never-vouches",
+        "unrelated-process",
+        "vanished-process",
+    ],
+)
+def test_exactus_candidates_survive_unreadable_command_lines(
+    *,
+    process_name: str | None,
+    command: tuple[str, ...] | None,
+    kept: bool,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """A failing command-line read never vetoes a matching process name.
+
+    Args:
+        process_name: Name the fake process reports, or ``None``.
+        command: Command line the fake reports, or ``None`` if denied.
+        kept: Whether the process must survive the filter.
+        monkeypatch: Replace ``Process`` with the deterministic fake.
+
+    """
+    module: ModuleType = import_module(
+        name="exactus.tools.common.process_layer.process_control",
+    )
+    monkeypatch.setattr(
+        target=module,
+        name="Process",
+        value=_FakeProcesses(
+            table={
+                7: _FakeProcess(process_name=process_name, command=command),
+            },
+        ),
+    )
+    expect_equal(
+        actual=private_call(
+            owner=module,
+            name="_exactus_candidates",
+            candidates={7: {1}},
+            constants=ProcessConstants,
+        ),
+        expected={7: {1}} if kept else {},
+    )

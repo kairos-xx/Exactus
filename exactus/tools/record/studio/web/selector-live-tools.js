@@ -1,5 +1,5 @@
 /** Page-aware controls shared by every ExtendedSelector editing surface. */
-import { iconElement } from "./icons.js";
+import {iconElement} from "./icons.js";
 /** Describe a match count in words.
  * @param {number|null|undefined} count
  * @returns {string}
@@ -63,7 +63,7 @@ export const selectorLiveTools = options => {
       : [{
           strategy: "css",
           selector: picked.selector,
-          matches: picked.matches ?? 1,
+          matches: picked.matches ?? 1
         }];
     const preferred = Math.max(0, choices.findIndex(item => item.matches === 1));
     strategy.replaceChildren(...choices.map((item, index) => {
@@ -99,5 +99,5 @@ export const selectorLiveTools = options => {
   });
   actions.append(pick, highlight, count);
   element.append(actions, strategy);
-  return { element, setCount };
+  return {element, setCount};
 };

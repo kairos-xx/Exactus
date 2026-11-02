@@ -14,12 +14,12 @@ const open = async (page, url) => {
 	await page.goto(`${url}/exactus/tests/packages/extended_selector/fixture.html`);
 	await page.waitForFunction(() => globalThis.engineReady === true);
 	await page.evaluate(() => {
-		document.body.insertAdjacentHTML("beforeend", '<section id="sx"><div class="card"><button>Save</button></div><div class="card"><button disabled>Off</button></div><div class="card" hidden><button>Hid</button></div></section>', );
+		document.body.insertAdjacentHTML("beforeend", '<section id="sx"><div class="card"><button>Save</button></div><div class="card"><button disabled>Off</button></div><div class="card" hidden><button>Hid</button></div></section>' );
 	});
 };
 test("stats returns totals and one count per tree node", t => browserTest(t, async (page, url) => {
 	await open(page, url);
-	const s = await page.evaluate(() => globalThis.engine.stats("and(.card, has(.card, button))"), );
+	const s = await page.evaluate(() => globalThis.engine.stats("and(.card, has(.card, button))") );
 	assert.equal(s.count, 3);
 	assert.deepEqual(s.nodes.map(( /** @type {any} */ n) => [n.path, n.label, n.kind, n.count]),
 		[
@@ -37,8 +37,8 @@ test("stats returns totals and one count per tree node", t => browserTest(t, asy
 			],
 			[
 				[1, 1], "button", "tag", 3
-			],
-		], );
+			]
+		] );
 	assert.equal(s.visible, 2);
 	assert.equal(s.enabled, 3);
 	assert.equal(s.first.tag, "div");

@@ -60,7 +60,7 @@ export class ExtendedSelectorEditor extends EventTarget {
     "nearest_below",
     "nearest_left",
     "nearest_right",
-    "media",
+    "media"
   ]);
   static PREDICATES = Object.freeze([
     "textContent",
@@ -113,7 +113,7 @@ export class ExtendedSelectorEditor extends EventTarget {
     "scroll_x_max",
     "scroll_y_max",
     "scroll_x_percent",
-    "scroll_y_percent",
+    "scroll_y_percent"
   ]);
   static PSEUDOS = Object.freeze([
     ":hover",
@@ -132,7 +132,7 @@ export class ExtendedSelectorEditor extends EventTarget {
     ":not()",
     ":has()",
     ":is()",
-    ":where()",
+    ":where()"
   ]);
   static STARTERS = Object.freeze([
     "#id",
@@ -143,7 +143,7 @@ export class ExtendedSelectorEditor extends EventTarget {
     "[aria-label=\"…\"]",
     "[data-testid=\"…\"]",
     "[normalizedText*=\"…\"]",
-    "[visible=true]",
+    "[visible=true]"
   ]);
   /**
    * Create an editor bound to `target`, replacing it with an editable
@@ -160,7 +160,7 @@ export class ExtendedSelectorEditor extends EventTarget {
     this.target = target;
     this.options = {
       engine: null,
-      ...options,
+      ...options
     };
     this.surface = document.createElement("div");
     this.surface.className = "ese-editor";
@@ -179,7 +179,7 @@ export class ExtendedSelectorEditor extends EventTarget {
     this.surface.addEventListener("keydown", event => this.onKeydown(event));
     this.surface.addEventListener("click", event => this.onClick(event));
     this.surface.addEventListener("focusin", event =>
-      this.offer(/** @type {FocusEvent} */ (event)),
+      this.offer(/** @type {FocusEvent} */ (event))
     );
     this.render();
   }
@@ -253,12 +253,12 @@ export class ExtendedSelectorEditor extends EventTarget {
           name: /** @type {string} */ (call[1]).toLowerCase(),
           children: ExtendedSelectorEditor.split(
             /** @type {string} */
-            (call[2]),
-          ).map(ExtendedSelectorEditor.parse),
+            (call[2])
+          ).map(ExtendedSelectorEditor.parse)
         }
       : {
           kind: "atom",
-          value,
+          value
         };
   };
   /**
@@ -318,7 +318,7 @@ export class ExtendedSelectorEditor extends EventTarget {
     node.setAttribute("data-role", "atom");
     const match = /^([^[]*)(.*)$/.exec(value);
     node.append(
-      ExtendedSelectorEditor.el("span", "ese-selector", match?.[1] || value),
+      ExtendedSelectorEditor.el("span", "ese-selector", match?.[1] || value)
     );
     if (match?.[2])
       node.append(ExtendedSelectorEditor.el("span", "ese-predicate", match[2]));
@@ -366,13 +366,13 @@ export class ExtendedSelectorEditor extends EventTarget {
     } catch {
       ast = {
         kind: "atom",
-        value: this.value,
+        value: this.value
       };
     }
     this.surface.replaceChildren(
       ExtendedSelectorEditor.caret(),
       ExtendedSelectorEditor.renderNode(ast),
-      ExtendedSelectorEditor.caret(),
+      ExtendedSelectorEditor.caret()
     );
     this.validate();
     return this;
@@ -408,7 +408,7 @@ export class ExtendedSelectorEditor extends EventTarget {
     if (node.classList.contains("ese-call")) {
       const name = node.getAttribute("data-operator") ?? "";
       const args = [
-        ...(node.querySelector(":scope > .ese-args")?.children ?? []),
+        ...(node.querySelector(":scope > .ese-args")?.children ?? [])
       ]
         .map(child => /** @type {HTMLElement} */ (child))
         .filter(kept)
@@ -434,17 +434,17 @@ export class ExtendedSelectorEditor extends EventTarget {
     this.target.value = this.serialize();
     this.target.dispatchEvent(
       new Event("input", {
-        bubbles: true,
-      }),
+        bubbles: true
+      })
     );
     this.validate();
     this.dispatchEvent(
       new CustomEvent("change", {
         detail: {
           value: this.value,
-          diagnostics: this.options.engine?.lint?.(this.value) ?? [],
-        },
-      }),
+          diagnostics: this.options.engine?.lint?.(this.value) ?? []
+        }
+      })
     );
   }
   /**
@@ -530,7 +530,7 @@ export class ExtendedSelectorEditor extends EventTarget {
       this.popup
         .querySelector("button")
         ?.dispatchEvent(
-          new MouseEvent("mousedown", { bubbles: true, cancelable: true }),
+          new MouseEvent("mousedown", {bubbles: true, cancelable: true})
         );
       return;
     }
@@ -543,7 +543,7 @@ export class ExtendedSelectorEditor extends EventTarget {
       "[": "]",
       "(": ")",
       '"': '"',
-      "'": "'",
+      "'": "'"
     });
     const close = pairs[event.key];
     if (!close) return;
@@ -553,12 +553,12 @@ export class ExtendedSelectorEditor extends EventTarget {
     document.execCommand(
       "insertText",
       false,
-      `${event.key}${selected}${close}`,
+      `${event.key}${selected}${close}`
     );
     if (!selected && selection?.focusNode) {
       selection.modify("move", "backward", "character");
       queueMicrotask(() =>
-        this.offerAt(/** @type {HTMLElement} */ (target.closest(".ese-atom,.ese-caret"))),
+        this.offerAt(/** @type {HTMLElement} */ (target.closest(".ese-atom,.ese-caret")))
       );
     }
   }
@@ -588,7 +588,7 @@ export class ExtendedSelectorEditor extends EventTarget {
     this.showOptions(
       anchor,
       ExtendedSelectorEditor.OPERATORS.filter(operator =>
-        operator.startsWith(needle),
+        operator.startsWith(needle)
       ),
       operator => {
         anchor.textContent = "";
@@ -597,13 +597,13 @@ export class ExtendedSelectorEditor extends EventTarget {
         const open = ExtendedSelectorEditor.el(
           "span",
           "ese-paren ese-open",
-          "(",
+          "("
         );
         open.setAttribute("data-role", "paren");
         const close = ExtendedSelectorEditor.el(
           "span",
           "ese-paren ese-close",
-          ")",
+          ")"
         );
         close.setAttribute("data-role", "paren");
         const args = ExtendedSelectorEditor.el("span", "ese-args");
@@ -613,12 +613,12 @@ export class ExtendedSelectorEditor extends EventTarget {
           ExtendedSelectorEditor.operator(operator),
           open,
           args,
-          close,
+          close
         );
         anchor.replaceWith(call);
         this.sync();
         ExtendedSelectorEditor.focus(slot);
-      },
+      }
     );
   }
   /** Offer CSS, pseudo-class, extended predicate and saved-selector syntax.
@@ -639,25 +639,25 @@ export class ExtendedSelectorEditor extends EventTarget {
       const [, quote = '"', typed = ""] = reference;
       start = caret - typed.length;
       values = (this.options.selectors ?? []).map(
-        name => `${name}${quote}]`,
+        name => `${name}${quote}]`
       );
     } else if (pseudo) {
       start = caret - pseudo[0].length;
       values = ExtendedSelectorEditor.PSEUDOS.filter(option =>
-        option.startsWith(pseudo[0] ?? ""),
+        option.startsWith(pseudo[0] ?? "")
       );
     } else if (predicate) {
       start = caret - predicate[0].length;
       const needle = (predicate[1] ?? "").toLowerCase();
       values = ExtendedSelectorEditor.PREDICATES.filter(name =>
-        name.toLowerCase().startsWith(needle),
+        name.toLowerCase().startsWith(needle)
       ).map(name => ExtendedSelectorEditor.predicateTemplate(name));
     } else if (!value.trim()) {
       values = [
         ...ExtendedSelectorEditor.STARTERS,
         ...(this.options.selectors ?? []).map(
-          name => `[extended-selector="${name}"]`,
-        ),
+          name => `[extended-selector="${name}"]`
+        )
       ];
       start = 0;
     }
@@ -690,7 +690,7 @@ export class ExtendedSelectorEditor extends EventTarget {
         "scrollable",
         "in_viewport",
         "above_viewport",
-        "below_viewport",
+        "below_viewport"
       ].includes(name)
     )
       return `[${name}=true]`;
@@ -705,7 +705,7 @@ export class ExtendedSelectorEditor extends EventTarget {
         "descendants",
         "siblings",
         "index",
-        "depth",
+        "depth"
       ].includes(name)
     )
       return `[${name}>=0]`;
@@ -731,12 +731,12 @@ export class ExtendedSelectorEditor extends EventTarget {
           this.popup.hidden = true;
         });
         return button;
-      }),
+      })
     );
     const rect = anchor.getBoundingClientRect();
     Object.assign(this.popup.style, {
       left: `${Math.min(rect.left, innerWidth - 320)}px`,
-      top: `${Math.min(rect.bottom + 6, innerHeight - 220)}px`,
+      top: `${Math.min(rect.bottom + 6, innerHeight - 220)}px`
     });
     this.popup.hidden = !values.length;
   }
@@ -832,7 +832,7 @@ export class ExtendedSelectorEditor extends EventTarget {
       ExtendedSelectorEditor.operator(operator),
       open,
       args,
-      close,
+      close
     );
     this.sync();
     ExtendedSelectorEditor.focus(slot);

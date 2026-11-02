@@ -57,7 +57,7 @@ export const tokenize = text => {
       label: text.slice(start, end),
       start,
       end,
-      ...extra,
+      ...extra
     });
   let i = 0;
   while (i < text.length) {
@@ -78,7 +78,7 @@ export const tokenize = text => {
         push("leaf", variableKind(path), i, i + found[0].length, {
           label: inner.includes("=") ? `${path} = ${inner.slice(inner.indexOf("=") + 1).trim()}` : path,
           name: path,
-          editable: true,
+          editable: true
         });
         i += found[0].length;
         continue;
@@ -95,21 +95,21 @@ export const tokenize = text => {
       const saved = /^\[extended-selector\s*=\s*(["'])(.*)\1\]$/.exec(raw);
       const variable = /\{\{[^{}]*\}\}/.exec(raw);
       const quoted = /["'][^"']*\{\{/.test(raw);
-      if (saved) push("leaf", "saved", i, close + 1, { label: `@${saved[2]}`, name: saved[2] ?? "", editable: true });
+      if (saved) push("leaf", "saved", i, close + 1, {label: `@${saved[2]}`, name: saved[2] ?? "", editable: true});
       else if (variable && !quoted) {
         const head = i + (variable.index ?? 0);
-        push("open", "attribute", i, head, { label: raw.slice(0, variable.index).trim() });
+        push("open", "attribute", i, head, {label: raw.slice(0, variable.index).trim()});
         const variableEnd = head + variable[0].length;
         const inner = variable[0].slice(2, -2).trim();
         const path = (inner.includes("=") ? inner.slice(0, inner.indexOf("=")) : inner).trim();
-        push("leaf", variableKind(path), head, variableEnd, { label: path, name: path, editable: true });
-        push("close", "attribute", variableEnd, close + 1, { label: "]" });
-      } else push("leaf", "attribute", i, close + 1, { editable: false });
+        push("leaf", variableKind(path), head, variableEnd, {label: path, name: path, editable: true});
+        push("close", "attribute", variableEnd, close + 1, {label: "]"});
+      } else push("leaf", "attribute", i, close + 1, {editable: false});
       i = close + 1;
       continue;
     }
     if (c === "(") {
-      push("open", "operator", i, i + 1, { label: "", name: "" });
+      push("open", "operator", i, i + 1, {label: "", name: ""});
       i += 1;
       continue;
     }
@@ -136,10 +136,10 @@ export const tokenize = text => {
         const end = IDENT.lastIndex;
         const kind = pe ? "pseudo-element" : "pseudo-class";
         if (text.charAt(end) === "(") {
-          push("open", kind, i, end + 1, { name: text.slice(i, end), label: text.slice(i, end + 1) });
+          push("open", kind, i, end + 1, {name: text.slice(i, end), label: text.slice(i, end + 1)});
           i = end + 1;
         } else {
-          push("leaf", kind, i, end, { editable: false });
+          push("leaf", kind, i, end, {editable: false});
           i = end;
         }
         continue;
@@ -149,7 +149,7 @@ export const tokenize = text => {
       IDENT.lastIndex = i + 1;
       const name = IDENT.exec(text);
       if (name) {
-        push("leaf", c === "#" ? "id" : "class", i, IDENT.lastIndex, { editable: true });
+        push("leaf", c === "#" ? "id" : "class", i, IDENT.lastIndex, {editable: true});
         i = IDENT.lastIndex;
         continue;
       }
@@ -164,10 +164,10 @@ export const tokenize = text => {
     if (word) {
       const end = IDENT.lastIndex;
       if (text.charAt(end) === "(") {
-        push("open", "operator", i, end + 1, { name: word[0], label: `${word[0]}(` });
+        push("open", "operator", i, end + 1, {name: word[0], label: `${word[0]}(`});
         i = end + 1;
       } else {
-        push("leaf", "tag", i, end, { editable: true });
+        push("leaf", "tag", i, end, {editable: true});
         i = end;
       }
       continue;
@@ -213,7 +213,7 @@ export const enclosing = (tokens, caret) => {
   for (let i = 0; i < tokens.length; i += 1) {
     const token = /** @type {Token} */ (tokens[i]);
     if (token.start >= caret) break;
-    if (token.type === "open") stack.push({ open: token, openIndex: i, arg: 0 });
+    if (token.type === "open") stack.push({open: token, openIndex: i, arg: 0});
     else if (token.type === "close") stack.pop();
     else if (token.type === "glyph" && token.text === ",") {
       const top = stack.at(-1);
@@ -221,7 +221,7 @@ export const enclosing = (tokens, caret) => {
     }
   }
   const top = stack.at(-1);
-  return top ? { ...top, closeIndex: matchingClose(tokens, top.openIndex) } : null;
+  return top ? {...top, closeIndex: matchingClose(tokens, top.openIndex)} : null;
 };
 /** Required arguments still missing, to draw as dashed slots before the close.
  * @param {Token[]} tokens
@@ -248,7 +248,7 @@ export const slotsOf = (tokens, signatures) => {
           before,
           role: signature.roles[k] ?? signature.variadicRole ?? "argument",
           index: k,
-          start,
+          start
         });
   };
   tokens.forEach((token, i) => {
@@ -265,7 +265,7 @@ export const slotsOf = (tokens, signatures) => {
     }
     if (top) top.args[top.args.length - 1] = true;
     if (token.type === "open")
-      stack.push({ index: i, name: token.name ?? "", args: [false] });
+      stack.push({index: i, name: token.name ?? "", args: [false]});
   });
   while (stack.length) {
     const frame = /** @type {{index:number, name:string, args:boolean[]}} */ (stack.pop());

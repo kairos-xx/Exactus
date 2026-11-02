@@ -3,7 +3,7 @@ export default [
     files: ["**/*.js"],
     languageOptions: {
       ecmaVersion: "latest",
-      sourceType: "script",
+      sourceType: "script"
     },
     rules: {
       "constructor-super": "error",
@@ -25,7 +25,7 @@ export default [
       "no-unsafe-finally": "error",
       "no-unsafe-negation": "error",
       "no-unsafe-optional-chaining": "error",
-      "valid-typeof": "error",
-    },
-  },
+      "valid-typeof": "error"
+    }
+  }
 ];

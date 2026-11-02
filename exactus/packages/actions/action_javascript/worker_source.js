@@ -1,6 +1,6 @@
 /** Source text of the sandbox worker that runs one snippet. */
-import { Describer } from "../../widgets/widget_console/describe.js";
-import { ConsoleRecorder } from "../../widgets/widget_console/recorder.js";
+import {Describer} from "../../widgets/widget_console/describe.js";
+import {ConsoleRecorder} from "../../widgets/widget_console/recorder.js";
 /**
  * @typedef {object} WorkerScope
  * @property {(message:unknown)=>void} postMessage Send a message to the host.
@@ -51,15 +51,14 @@ const workerMain = () => {
      * @param {string} body Function body.
      */
     const build = body => new AsyncFunction("exactus", "console", "__EXACTUS_FLOW__", body);
-    if (mode === "expression") return { run: build(`return (\n${code}\n);`), from: 2, shift: 1, tailLine: 1, prefix: 0 };
-    if (mode === "playback") {
+    if (mode === "expression") return {run: build(`return (\n${code}\n);`), from: 2, shift: 1, tailLine: 1, prefix: 0};
+    if (mode === "playback")
       try {
-        return { run: build(`return (\n${code}\n);`), from: 2, shift: 1, tailLine: 1, prefix: 0 };
+        return {run: build(`return (\n${code}\n);`), from: 2, shift: 1, tailLine: 1, prefix: 0};
       } catch {
         // Not a single expression: playback compiles the snippet as a function body.
-        return { run: build(code), from: Number.POSITIVE_INFINITY, shift: 0, tailLine: 0, prefix: 0 };
+        return {run: build(code), from: Number.POSITIVE_INFINITY, shift: 0, tailLine: 0, prefix: 0};
       }
-    }
     if (mode === "auto") {
       const lines = code.replace(/[;\s]+$/, "").split("\n");
       const last = lines.length - 1;
@@ -68,7 +67,7 @@ const workerMain = () => {
         if (tail.trim() === "") continue;
         const head = lines.slice(0, split).join("\n");
         try {
-          return { run: build(`${head ? `${head}\n` : ""}return (\n${tail}\n);`), from: split + 2, shift: 1, tailLine: split + 1, prefix: 0 };
+          return {run: build(`${head ? `${head}\n` : ""}return (\n${tail}\n);`), from: split + 2, shift: 1, tailLine: split + 1, prefix: 0};
         } catch {
           continue;
         }
@@ -79,26 +78,25 @@ const workerMain = () => {
       for (let tries = 0; semicolon >= 0 && tries < 20; tries += 1) {
         const tail = line.slice(semicolon + 1);
         const kept = line.slice(0, semicolon + 1);
-        if (tail.trim() !== "") {
+        if (tail.trim() !== "")
           try {
-            return { run: build(`${before ? `${before}\n` : ""}${kept}\nreturn (\n${tail}\n);`), from: lines.length + 2, shift: 2, tailLine: lines.length, prefix: kept.length };
+            return {run: build(`${before ? `${before}\n` : ""}${kept}\nreturn (\n${tail}\n);`), from: lines.length + 2, shift: 2, tailLine: lines.length, prefix: kept.length};
           } catch {
             // This split is not a complete expression; try the previous semicolon.
           }
-        }
         semicolon = line.lastIndexOf(";", semicolon - 1);
       }
     }
-    return { run: build(code), from: Number.POSITIVE_INFINITY, shift: 0, tailLine: 0, prefix: 0 };
+    return {run: build(code), from: Number.POSITIVE_INFINITY, shift: 0, tailLine: 0, prefix: 0};
   };
   scope.onmessage = async event => {
-    const { code, mode, variables, context } = event.data;
+    const {code, mode, variables, context} = event.data;
     const started = performance.now();
     /**
      * Compiled function and line mapping, filled once the snippet compiles.
      * @type {Compiled}
      */
-    let mapping = { run: () => undefined, from: Number.POSITIVE_INFINITY, shift: 0, tailLine: 0, prefix: 0 };
+    let mapping = {run: () => undefined, from: Number.POSITIVE_INFINITY, shift: 0, tailLine: 0, prefix: 0};
     let sent = 0;
     /**
      * Map a stack to a snippet line and column.
@@ -111,30 +109,30 @@ const workerMain = () => {
       const body = Number(found[1]) - 2;
       const line = body < mapping.from ? body : body - mapping.shift;
       const column = Number(found[2]) + (line === mapping.tailLine ? mapping.prefix : 0);
-      return line >= 1 ? { line, column } : undefined;
+      return line >= 1 ? {line, column} : undefined;
     };
     const recorder = new ConsoleRecorder(
       {
         append: entry => {
           sent += 1;
-          if (sent <= MAX_ENTRIES) post({ type: "entry", entry });
-          else if (sent === MAX_ENTRIES + 1) post({ type: "entry", entry: { level: "warn", kind: "message", parts: [Describer.describe(`Output truncated after ${MAX_ENTRIES} messages.`)], time: Date.now(), depth: 0 } });
+          if (sent <= MAX_ENTRIES) post({type: "entry", entry});
+          else if (sent === MAX_ENTRIES + 1) post({type: "entry", entry: {level: "warn", kind: "message", parts: [Describer.describe(`Output truncated after ${MAX_ENTRIES} messages.`)], time: Date.now(), depth: 0}});
         },
-        clear: () => post({ type: "clear" }),
+        clear: () => post({type: "clear"})
       },
-      { locate },
+      {locate}
     );
     const methods = recorder.methods();
     const known = Object.hasOwn.bind(Object);
     /** @type {Record<string, unknown>} */
-    const bag = { ...(variables ?? {}) };
+    const bag = {...(variables ?? {})};
     const given = /** @type {{flow?:{id?:string}, action?:{id?:string}, run?:{id?:string}, [section:string]: any}} */ (context ?? {});
     /**
      * Freeze a copy of one context section.
      * @param {string} name Section name.
      * @returns {object} Frozen copy.
      */
-    const section = name => Object.freeze({ ...(given[name] ?? {}) });
+    const section = name => Object.freeze({...(given[name] ?? {})});
     /**
      * Throw when an assertion condition is falsy.
      * @throws {AssertionError} When the condition is falsy.
@@ -155,7 +153,7 @@ const workerMain = () => {
       log: methods.log,
       warn: methods.warn,
       error: methods.error,
-      assert: assertion,
+      assert: assertion
     };
     const exactus = {
       project: section("project"),
@@ -174,21 +172,21 @@ const workerMain = () => {
           bag[name] = value;
           return value;
         },
-        metadata: (/** @type {string} */ name) => Object.freeze({ name, available: known(bag, name), type: typeof bag[name] }),
+        metadata: (/** @type {string} */ name) => Object.freeze({name, available: known(bag, name), type: typeof bag[name]})
       }),
       index: 0,
       count: 1,
       log: methods.log,
       warn: methods.warn,
       error: methods.error,
-      assert: assertion,
+      assert: assertion
     };
     for (const name of ["page", "frame", "device", "selectors", "target", "targets", "graph"])
       Object.defineProperty(exactus, name, {
         enumerable: true,
         get: () => {
           throw new Error(`exactus.${name} is only available during playback; the preview worker has no page.`);
-        },
+        }
       });
     Object.freeze(exactus);
     scope.addEventListener("unhandledrejection", rejection => methods.error("Unhandled promise rejection:", rejection.reason));
@@ -198,8 +196,8 @@ const workerMain = () => {
      * @returns {object} Error payload.
      */
     const failure = thrown => {
-      const info = thrown !== null && typeof thrown === "object" ? Describer.errorInfo(thrown) : { name: "Uncaught", message: String(thrown), stack: "" };
-      return { error: { ...info, location: locate(info.stack) ?? null }, value: Describer.describe(thrown) };
+      const info = thrown !== null && typeof thrown === "object" ? Describer.errorInfo(thrown) : {name: "Uncaught", message: String(thrown), stack: ""};
+      return {error: {...info, location: locate(info.stack) ?? null}, value: Describer.describe(thrown)};
     };
     try {
       mapping = compile(String(code), String(mode));
@@ -218,11 +216,11 @@ const workerMain = () => {
           durationMs: performance.now() - started,
           value: Describer.describe(returned),
           jsonSafe: json !== undefined,
-          json: json !== undefined && json.length <= 1000000 ? json : null,
-        },
+          json: json !== undefined && json.length <= 1000000 ? json : null
+        }
       });
     } catch (thrown) {
-      post({ type: "done", result: { status: "error", durationMs: performance.now() - started, ...failure(thrown) } });
+      post({type: "done", result: {status: "error", durationMs: performance.now() - started, ...failure(thrown)}});
     }
   };
 };
@@ -232,4 +230,4 @@ const workerMain = () => {
  */
 export const buildWorkerSource = () =>
   `"use strict";\n${Describer.toString()}\n${ConsoleRecorder.toString()}\n(${workerMain.toString()})();\n`;
-export { workerMain };
+export {workerMain};

@@ -7,8 +7,8 @@
  * `>`, numbers; inside `contains(`, text. Plain DOM, like the other editor
  * modules.
  */
-import { analyse, insertionFor, suggestNext } from "./condition-language.js";
-import { renderPills } from "./condition-pills.js";
+import {analyse, insertionFor, suggestNext} from "./condition-language.js";
+import {renderPills} from "./condition-pills.js";
 /**
  * @typedef {object} ConditionSource What the field reads when it needs data.
  * @property {() => ConditionTerm[]} terms Names the project offers.
@@ -24,8 +24,8 @@ const LIMIT = 8;
 export const tokenAt = (text, caret) => {
   const match = /[A-Za-z_][A-Za-z0-9_]*$/.exec(text.slice(0, caret));
   return match
-    ? { start: caret - match[0].length, fragment: match[0] }
-    : { start: caret, fragment: "" };
+    ? {start: caret - match[0].length, fragment: match[0]}
+    : {start: caret, fragment: ""};
 };
 /** Build an element.
  * @param {string} tag
@@ -116,7 +116,7 @@ export const attachConditionField = (input, source) => {
   /** The pill view is built further down, once the menu and mode exist.
    * @type {{pills:(result:ReturnType<typeof analyse>)=>void}}
    */
-  const view = { pills: () => undefined };
+  const view = {pills: () => undefined};
   /** Draw the tokens under the transparent input text, in step with its scroll.
    * @returns {void}
    */
@@ -134,13 +134,13 @@ export const attachConditionField = (input, source) => {
       const span = make(
         "span",
         `condition-token condition-${token.kind}`,
-        token.text,
+        token.text
       );
       const problem = result.issues.find(
         issue =>
           issue.start <= token.start &&
           issue.end >= token.end &&
-          issue.end > issue.start,
+          issue.end > issue.start
       );
       if (problem) span.setAttribute("data-issue", problem.level);
       parts.push(span);
@@ -155,7 +155,7 @@ export const attachConditionField = (input, source) => {
         const item = make("li", "condition-issue", issue.message);
         item.setAttribute("data-level", issue.level);
         return item;
-      }),
+      })
     );
     // An empty field is not yet wrong; the issue list waits for some text.
     issues.hidden = !input.value.trim() || !result.issues.length;
@@ -164,8 +164,8 @@ export const attachConditionField = (input, source) => {
       "aria-invalid",
       String(
         result.issues.some(issue => issue.level === "error") &&
-          Boolean(input.value.trim()),
-      ),
+          Boolean(input.value.trim())
+      )
     );
   };
   /** Insert a suggestion at the caret.
@@ -174,14 +174,14 @@ export const attachConditionField = (input, source) => {
    */
   const choose = item => {
     const caret = input.selectionStart ?? input.value.length;
-    const { start } = tokenAt(input.value, caret);
+    const {start} = tokenAt(input.value, caret);
     const before = input.value.slice(0, start);
     const text = insertionFor(before, item);
     input.value = `${before}${text}${input.value.slice(caret)}`;
     const end = before.length + text.length;
     input.setSelectionRange(end, end);
     setOpen(false);
-    input.dispatchEvent(new Event("input", { bubbles: true }));
+    input.dispatchEvent(new Event("input", {bubbles: true}));
     input.focus();
   };
   /** Recompute suggestions for the caret position.
@@ -189,7 +189,7 @@ export const attachConditionField = (input, source) => {
    */
   const suggest = () => {
     const caret = input.selectionStart ?? input.value.length;
-    const { start, fragment } = tokenAt(input.value, caret);
+    const {start, fragment} = tokenAt(input.value, caret);
     const before = input.value.slice(0, start);
     shown = suggestNext(before, fragment, source.terms()).slice(0, LIMIT);
     active = shown.length ? 0 : -1;
@@ -203,15 +203,15 @@ export const attachConditionField = (input, source) => {
           make(
             "small",
             "",
-            item.type ? `${item.detail} · ${item.type}` : item.detail,
-          ),
+            item.type ? `${item.detail} · ${item.type}` : item.detail
+          )
         );
         option.addEventListener("pointerdown", event => {
           event.preventDefault();
           choose(item);
         });
         return option;
-      }),
+      })
     );
     setOpen(shown.length > 0);
     highlight();
@@ -236,7 +236,7 @@ export const attachConditionField = (input, source) => {
     const filter = () => {
       const query = search.value.trim().toLowerCase();
       const matches = entries.filter(entry =>
-        `${entry.text} ${entry.detail}`.toLowerCase().includes(query),
+        `${entry.text} ${entry.detail}`.toLowerCase().includes(query)
       );
       choices.replaceChildren(
         ...matches.map(entry => {
@@ -246,14 +246,14 @@ export const attachConditionField = (input, source) => {
         item.type = "button";
         item.append(
           make("strong", `condition-token condition-${entry.kind}`, entry.text),
-          make("small", "", entry.detail),
+          make("small", "", entry.detail)
         );
         item.addEventListener("click", () => {
           menu.hidden = true;
           pick(entry);
         });
         return item;
-        }),
+        })
       );
     };
     search.addEventListener("input", filter);
@@ -264,7 +264,7 @@ export const attachConditionField = (input, source) => {
     const at = anchor.getBoundingClientRect();
     const left = Math.max(
       0,
-      Math.min(at.left - box.left, box.width - menu.offsetWidth),
+      Math.min(at.left - box.left, box.width - menu.offsetWidth)
     );
     menu.style.left = `${left}px`;
     const room =
@@ -278,10 +278,10 @@ export const attachConditionField = (input, source) => {
   };
   menu.addEventListener("keydown", event => {
     const items = /** @type {HTMLElement[]} */ ([
-      ...menu.querySelectorAll("button"),
+      ...menu.querySelectorAll("button")
     ]);
     const at = items.indexOf(
-      /** @type {HTMLElement} */ (document.activeElement),
+      /** @type {HTMLElement} */ (document.activeElement)
     );
     if (event.key === "ArrowDown") items[(at + 1) % items.length]?.focus();
     else if (event.key === "ArrowUp")
@@ -328,7 +328,7 @@ export const attachConditionField = (input, source) => {
       .replace(/\s+\)/g, ")")
       .replace(/,\s*\)/g, ")")
       .trim();
-    input.dispatchEvent(new Event("input", { bubbles: true }));
+    input.dispatchEvent(new Event("input", {bubbles: true}));
   };
   /** Open context-aware suggestions at the end of the condition.
    * @param {HTMLElement} anchor Where to place the chooser.
@@ -339,7 +339,7 @@ export const attachConditionField = (input, source) => {
     const options = suggestNext(value, "", source.terms()).map(item => ({
       text: item.text,
       kind: item.kind,
-      detail: item.detail,
+      detail: item.detail
     }));
     openMenu(anchor, options, entry => {
       const insert =
@@ -350,10 +350,10 @@ export const attachConditionField = (input, source) => {
               kind: /** @type {import("./condition-language.js").TokenKind} */ (
                 entry.kind
               ),
-              detail: entry.detail,
+              detail: entry.detail
             });
       input.value = `${value}${insert}`.trimEnd();
-      input.dispatchEvent(new Event("input", { bubbles: true }));
+      input.dispatchEvent(new Event("input", {bubbles: true}));
     });
   };
   pills.tabIndex = 0;
@@ -381,7 +381,7 @@ export const attachConditionField = (input, source) => {
         input.focus();
         input.setSelectionRange(start, end);
       },
-      menu: openMenu,
+      menu: openMenu
     };
     const add = /** @type {HTMLButtonElement} */ (
       make("button", "pill pill-add", "+")
@@ -398,14 +398,14 @@ export const attachConditionField = (input, source) => {
         make(
           "span",
           "pill-hint",
-          disabled ? "Not used for this kind of connection" : "Add a condition",
-        ),
+          disabled ? "Not used for this kind of connection" : "Add a condition"
+        )
       );
     pills.replaceChildren(...parts, ...(result.tree ? [] : [add]));
   };
   new MutationObserver(() => draw()).observe(input, {
     attributes: true,
-    attributeFilter: ["disabled"],
+    attributeFilter: ["disabled"]
   });
   /** Repaint tokens and refresh suggestions.
    * @returns {void}

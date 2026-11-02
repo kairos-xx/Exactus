@@ -1,4 +1,4 @@
-import { iconMarkup } from "./icons.js";
+import {iconMarkup} from "./icons.js";
 /** Dock grid view: renders the layout from `dock-model.js` and handles the interactions around it (drag to dock, resize, collapse, float).  All panels are children of one CSS grid. Rows and columns are shared tracks, so splits line up across the whole workspace by construction.
  */
 import * as Model from "./dock-model.js";
@@ -15,7 +15,7 @@ const EDGE_SHARE = 0.28;
 const DRAG_THRESHOLD = 5;
 const DEFAULT_MINIMUM = Object.freeze({
   width: 160,
-  height: 96,
+  height: 96
 });
 /** @typedef {import("./dock-model.js").Layout} Layout */
 /** @typedef {import("./dock-model.js").Edge} Edge */
@@ -94,7 +94,7 @@ export class DockGrid {
     this.minimums = options.minimums;
     this.onStatus = options.onStatus;
     for (const node of this.root.querySelectorAll(
-      ":scope > .panel[data-panel-id]",
+      ":scope > .panel[data-panel-id]"
     ))
       if (node instanceof HTMLElement)
         this.panels.set(node.getAttribute("data-panel-id") || "", node);
@@ -137,7 +137,7 @@ export class DockGrid {
       const saved = Model.validate(
         JSON.parse(
           localStorage.getItem(graph ? `${STORAGE_KEY}.graph` : STORAGE_KEY) ||
-            "null",
+            "null"
         ),
         new Set(
           [...this.panels.keys()].filter(id =>
@@ -146,9 +146,9 @@ export class DockGrid {
                 id === "composition" ||
                 id === "properties" ||
                 id.startsWith("graph-")
-              : id !== "composition" && !id.startsWith("graph-"),
-          ),
-        ),
+              : id !== "composition" && !id.startsWith("graph-")
+          )
+        )
       );
       if (saved) return saved;
     } catch {
@@ -164,7 +164,7 @@ export class DockGrid {
     try {
       localStorage.setItem(
         this.mode === "graph" ? `${STORAGE_KEY}.graph` : STORAGE_KEY,
-        JSON.stringify(this.layout),
+        JSON.stringify(this.layout)
       );
     } catch {
       /* Storage can be unavailable; the layout then lasts for this tab. */
@@ -185,7 +185,7 @@ export class DockGrid {
     try {
       localStorage.setItem(
         graph ? STORAGE_KEY : `${STORAGE_KEY}.graph`,
-        JSON.stringify(adopted),
+        JSON.stringify(adopted)
       );
     } catch {
       /* Storage can be unavailable; the layout then lasts for this tab. */
@@ -222,7 +222,7 @@ export class DockGrid {
         .filter(item => Number.isFinite(item));
     return {
       cols: parse(style.gridTemplateColumns),
-      rows: parse(style.gridTemplateRows),
+      rows: parse(style.gridTemplateRows)
     };
   }
   /** Switch the visible set of panels and redraw.
@@ -254,11 +254,11 @@ export class DockGrid {
         left: 90,
         right: -90,
         up: 180,
-        down: 0,
+        down: 0
       }[direction ?? "down"];
       panel.style.setProperty(
         "--dynamic-chevron-turn",
-        `${turn + (collapsed ? 180 : 0)}deg`,
+        `${turn + (collapsed ? 180 : 0)}deg`
       );
       panel
         .querySelector(".panel-title")
@@ -267,7 +267,7 @@ export class DockGrid {
         id,
         panel,
         Boolean(collapsed),
-        Boolean(view && axis && Model.canCollapse(view, id)),
+        Boolean(view && axis && Model.canCollapse(view, id))
       );
       if (floating && !compact) {
         panel.style.removeProperty("grid-column");
@@ -294,7 +294,7 @@ export class DockGrid {
       if (cell)
         panel.setAttribute(
           "data-grid",
-          `${cell.c},${cell.r},${cell.cs},${cell.rs}`,
+          `${cell.c},${cell.r},${cell.cs},${cell.rs}`
         );
       else panel.removeAttribute("data-grid");
     }
@@ -341,7 +341,7 @@ export class DockGrid {
       if (count === 1 && first === index)
         need = Math.max(
           need,
-          axis === "c" ? this.minimumOf(id).width : this.minimumOf(id).height,
+          axis === "c" ? this.minimumOf(id).width : this.minimumOf(id).height
         );
     }
     return need;
@@ -351,14 +351,14 @@ export class DockGrid {
    */
   syncSizes() {
     if (!this.editable || this.mobile) return;
-    const { cols, rows } = this.metrics();
+    const {cols, rows} = this.metrics();
     for (const [
       axis,
       tracks,
-      sizes,
+      sizes
     ] of /** @type {["c"|"r",Model.Track[],number[]][]} */ ([
       ["c", this.layout.cols, cols],
-      ["r", this.layout.rows, rows],
+      ["r", this.layout.rows, rows]
     ])) {
       const effective = Model.effectiveTracks(this.layout, axis);
       tracks.forEach((item, index) => {
@@ -386,19 +386,19 @@ export class DockGrid {
         handle.setAttribute("role", "separator");
         handle.setAttribute(
           "aria-orientation",
-          axis === "c" ? "vertical" : "horizontal",
+          axis === "c" ? "vertical" : "horizontal"
         );
         handle.tabIndex = 0;
         handle.setAttribute(
           "aria-label",
-          `Resize ${this.nameOf(line.before[0] ?? "")} and ${this.nameOf(line.after[0] ?? "")}`,
+          `Resize ${this.nameOf(line.before[0] ?? "")} and ${this.nameOf(line.after[0] ?? "")}`
         );
         this.bindHandle(handle, axis, line.index);
         this.handles.append(handle);
         this.handleList.push({
           handle,
           axis,
-          line,
+          line
         });
       }
     this.layoutHandles();
@@ -409,7 +409,7 @@ export class DockGrid {
   layoutHandles() {
     const view = this.view;
     if (!view || this.handleList.length === 0) return;
-    const { cols, rows } = this.metrics();
+    const {cols, rows} = this.metrics();
     const gap = Number.parseFloat(getComputedStyle(this.root).columnGap) || 0;
     /** @param {number[]} sizes
      * @param {number} count
@@ -417,7 +417,7 @@ export class DockGrid {
      */
     const offset = (sizes, count) =>
       sizes.slice(0, count).reduce((sum, item) => sum + item, 0) + gap * count;
-    for (const { handle, axis, line } of this.handleList) {
+    for (const {handle, axis, line} of this.handleList) {
       const column = axis === "c";
       const sizes = column ? cols : rows;
       const effective = Model.effectiveTracks(view, axis);
@@ -431,16 +431,16 @@ export class DockGrid {
       const from = offset(column ? rows : cols, line.from);
       handle.setAttribute(
         "aria-valuenow",
-        String(Math.round(sizes[controlled] ?? 0)),
+        String(Math.round(sizes[controlled] ?? 0))
       );
       handle.style.setProperty(
         "--dynamic-along",
-        `${offset(sizes, line.index + 1) - gap / 2}px`,
+        `${offset(sizes, line.index + 1) - gap / 2}px`
       );
       handle.style.setProperty("--dynamic-from", `${from}px`);
       handle.style.setProperty(
         "--dynamic-length",
-        `${offset(column ? rows : cols, line.to) - from - gap}px`,
+        `${offset(column ? rows : cols, line.to) - from - gap}px`
       );
     }
   }
@@ -462,7 +462,7 @@ export class DockGrid {
         index,
         delta,
         id => this.minimumOf(id),
-        sizes,
+        sizes
       );
       const view = this.view;
       this.applyTracks(view, false);
@@ -477,13 +477,13 @@ export class DockGrid {
       handle.setPointerCapture(down.pointerId);
       handle.classList.add("is-active");
       document.body.classList.add(
-        axis === "c" ? "dock-resizing-x" : "dock-resizing-y",
+        axis === "c" ? "dock-resizing-x" : "dock-resizing-y"
       );
       const move = (/** @type {PointerEvent} */ event) =>
         apply(
           (axis === "c" ? event.clientX : event.clientY) - startAt,
           origin,
-          sizes,
+          sizes
         );
       const finish = () => {
         handle.removeEventListener("pointermove", move);
@@ -513,10 +513,10 @@ export class DockGrid {
       this.onStatus(
         axis === "c"
           ? `Column ${grew ? "widened" : "narrowed"}`
-          : `Row ${grew ? "taller" : "shorter"}`,
+          : `Row ${grew ? "taller" : "shorter"}`
       );
       const next = this.handles.querySelector(
-        `[data-axis="${axis}"][aria-label="${CSS.escape(handle.getAttribute("aria-label") || "")}"]`,
+        `[data-axis="${axis}"][aria-label="${CSS.escape(handle.getAttribute("aria-label") || "")}"]`
       );
       if (next instanceof HTMLElement) next.focus();
     });
@@ -543,7 +543,7 @@ export class DockGrid {
       /** @type {string} */
       glyph,
       /** @type {string} */
-      label,
+      label
     ) =>
       `<button type="button" class="panel-menu-item" role="menuitem" ${attribute}="${value}">${icon(glyph)}<span>${label}</span></button>`;
     const tools = document.createElement("div");
@@ -574,7 +574,7 @@ export class DockGrid {
       /** @type {string} */
       selector,
       /** @type {(button:HTMLElement)=>void} */
-      handler,
+      handler
     ) =>
       tools.querySelectorAll(selector).forEach(node => {
         if (node instanceof HTMLElement)
@@ -605,11 +605,11 @@ export class DockGrid {
         id,
         select.value,
         /** @type {Edge} */
-        (button.getAttribute("data-panel-edge")),
+        (button.getAttribute("data-panel-edge"))
       );
     });
     header.addEventListener("pointerdown", event =>
-      this.beginDrag(id, panel, event),
+      this.beginDrag(id, panel, event)
     );
     header.addEventListener(
       "click",
@@ -618,7 +618,7 @@ export class DockGrid {
         event.preventDefault();
         event.stopImmediatePropagation();
       },
-      true,
+      true
     );
     header.addEventListener("dblclick", event => {
       if (
@@ -636,7 +636,7 @@ export class DockGrid {
         ArrowLeft: "left",
         ArrowRight: "right",
         ArrowUp: "top",
-        ArrowDown: "bottom",
+        ArrowDown: "bottom"
       });
       const edge = edges[event.key];
       if (edge) this.dockOuter(id, edge);
@@ -723,7 +723,7 @@ export class DockGrid {
       select.value =
         [...select.options].find(option => !option.disabled)?.value ?? "";
     const float = tools.querySelector(
-      '[data-panel-dock="float"] span:not(.studio-icon)',
+      '[data-panel-dock="float"] span:not(.studio-icon)'
     );
     if (float)
       float.textContent =
@@ -737,7 +737,7 @@ export class DockGrid {
       menu.setAttribute("aria-hidden", "true");
     }
     for (const button of document.querySelectorAll(
-      '[data-panel-action="dock-menu"]',
+      '[data-panel-action="dock-menu"]'
     ))
       button.setAttribute("aria-expanded", "false");
   };
@@ -798,7 +798,7 @@ export class DockGrid {
       x: Math.round(box.left + 24),
       y: Math.round(box.top + 24),
       w: Math.round(Math.max(box.width, minimum.width)),
-      h: Math.round(Math.max(box.height, minimum.height)),
+      h: Math.round(Math.max(box.height, minimum.height))
     });
   }
   /** Detach a panel at the requested viewport coordinates.
@@ -835,7 +835,7 @@ export class DockGrid {
       bestArea = near.cs * near.rs;
       best = {
         target: other,
-        edge,
+        edge
       };
     }
     if (best) this.home[key] = best;
@@ -865,13 +865,13 @@ export class DockGrid {
       this.owner(id),
       this.owner(target),
       edge,
-      this.metrics(),
+      this.metrics()
     );
     const side = {
       left: "left of",
       right: "right of",
       top: "above",
-      bottom: "below",
+      bottom: "below"
     }[edge];
     this.commit(`${this.nameOf(id)} docked ${side} ${this.nameOf(target)}`);
   }
@@ -887,7 +887,7 @@ export class DockGrid {
     this.shareFlows();
     try {
       localStorage.removeItem(
-        this.mode === "graph" ? `${STORAGE_KEY}.graph` : STORAGE_KEY,
+        this.mode === "graph" ? `${STORAGE_KEY}.graph` : STORAGE_KEY
       );
     } catch {
       /* Nothing stored to remove. */
@@ -1011,7 +1011,7 @@ export class DockGrid {
             this.save();
           }
         } else this.render();
-      },
+      }
     };
     window.addEventListener("pointermove", drag.move);
     window.addEventListener("pointerup", drag.up);
@@ -1034,7 +1034,7 @@ export class DockGrid {
       left: x - area.left,
       right: area.right - x,
       top: y - area.top,
-      bottom: area.bottom - y,
+      bottom: area.bottom - y
     };
     const [nearest, gap] = /** @type {[Edge,number]} */ (
       Object.entries(outer).sort((a, b) => a[1] - b[1])[0]
@@ -1052,7 +1052,7 @@ export class DockGrid {
       return {
         kind: "outer",
         edge: nearest,
-        area: rect,
+        area: rect
       };
     }
     for (const other of Object.keys(this.view?.cells ?? {})) {
@@ -1069,7 +1069,7 @@ export class DockGrid {
         left: fx,
         right: 1 - fx,
         top: fy,
-        bottom: 1 - fy,
+        bottom: 1 - fy
       };
       const [edge, value] = /** @type {[Edge,number]} */ (
         Object.entries(share).sort((a, b) => a[1] - b[1])[0]
@@ -1085,27 +1085,27 @@ export class DockGrid {
               edge === "left" ? box.left : box.left + box.width / 2,
               box.top,
               box.width / 2,
-              box.height,
+              box.height
             )
           : new DOMRect(
               box.left,
               edge === "top" ? box.top : box.top + box.height / 2,
               box.width,
-              box.height / 2,
+              box.height / 2
             );
         return {
           kind: "edge",
           edge,
           target: other,
           blocked: room < need,
-          area: half,
+          area: half
         };
       }
       if (this.owner(id) in this.layout.cells && !this.view?.collapsed[other])
         return {
           kind: "swap",
           target: other,
-          area: box,
+          area: box
         };
       return null;
     }
@@ -1147,10 +1147,10 @@ export class DockGrid {
       this.layout = Model.swap(
         this.layout,
         this.owner(id),
-        this.owner(target.target),
+        this.owner(target.target)
       );
       this.commit(
-        `${this.nameOf(id)} swapped with ${this.nameOf(target.target)}`,
+        `${this.nameOf(id)} swapped with ${this.nameOf(target.target)}`
       );
     }
   }

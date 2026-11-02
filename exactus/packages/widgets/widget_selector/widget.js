@@ -1,10 +1,10 @@
 /** The widget shell: header, semaphore, mode toggle, field, message row, footer slot. */
-import { createExpressionView } from "./expression-view.js";
-import { createFooter } from "./footer.js";
-import { icon } from "./icons.js";
-import { suggest, createSampler, ENVIRONMENT_VARIABLES } from "./suggest.js";
-import { createTextView } from "./text-view.js";
-import { createValidator } from "./validator.js";
+import {createExpressionView} from "./expression-view.js";
+import {createFooter} from "./footer.js";
+import {icon} from "./icons.js";
+import {suggest, createSampler, ENVIRONMENT_VARIABLES} from "./suggest.js";
+import {createTextView} from "./text-view.js";
+import {createValidator} from "./validator.js";
 /**
  * Create an element with an optional class and text.
  * @param {string} tag Tag name.
@@ -23,11 +23,11 @@ const make = (tag, className = "", text = "") => {
  * Create a widget around a carrier element.
  * @returns {{element:HTMLElement, surface:HTMLElement, value:string, mode:()=>string, setMode:Function, validation:()=>ValidationResult, on:Function, setTheme:Function, focus:()=>void, destroy:()=>void, environment:readonly import("./suggest.js").VariableDef[]}} The widget API.
  */
-export const createWidget = (/** @type {{carrier:HTMLTextAreaElement|HTMLInputElement, engine:any, label:string, multiple?:boolean, startAsText?:boolean, theme?:string|null, providers?:{variables?:()=>import("./suggest.js").VariableDef[], saved?:()=>{name:string,count?:number|null}[], expected?:()=>number|null}, host?:{pick?:Function, highlight?:Function, stats?:Function, profiles?:Function}, root?:Document|Element}} */ { carrier, engine, label, multiple = false, startAsText, theme = null, providers = {}, host = {}, root = document }) => {
+export const createWidget = (/** @type {{carrier:HTMLTextAreaElement|HTMLInputElement, engine:any, label:string, multiple?:boolean, startAsText?:boolean, theme?:string|null, providers?:{variables?:()=>import("./suggest.js").VariableDef[], saved?:()=>{name:string,count?:number|null}[], expected?:()=>number|null}, host?:{pick?:Function, highlight?:Function, stats?:Function, profiles?:Function}, root?:Document|Element}} */ {carrier, engine, label, multiple = false, startAsText, theme = null, providers = {}, host = {}, root = document}) => {
   const Engine = engine?.constructor ?? {};
   const signatures = Engine.SIGNATURES ?? {};
   const predicateTypes = Engine.CAPABILITIES?.predicateTypes ?? {};
-  const sampler = createSampler({ root });
+  const sampler = createSampler({root});
   const widget = make("div", "ese-widget");
   if (theme) widget.setAttribute("data-theme", theme);
   const head = make("div", "ese-head");
@@ -86,7 +86,7 @@ export const createWidget = (/** @type {{carrier:HTMLTextAreaElement|HTMLInputEl
   let mode = "expression";
   let text = carrier.value;
   /** @type {ValidationResult} */
-  let last = { state: "idle", diagnostics: [], errors: 0, warnings: 0, index: 0 };
+  let last = {state: "idle", diagnostics: [], errors: 0, warnings: 0, index: 0};
   /** @type {ReturnType<typeof createFooter>|null} */
   let footer = null;
   /**
@@ -104,8 +104,8 @@ export const createWidget = (/** @type {{carrier:HTMLTextAreaElement|HTMLInputEl
     signatures,
     label,
     onChange: value =>
-      emit("sync", { incoming: value, source: "expression" }),
-    suggestions: ({ draft, role, scope }) =>
+      emit("sync", {incoming: value, source: "expression"}),
+    suggestions: ({draft, role, scope}) =>
       suggest({
         draft,
         role,
@@ -121,13 +121,13 @@ export const createWidget = (/** @type {{carrier:HTMLTextAreaElement|HTMLInputEl
           } catch {
             return true;
           }
-        },
-      }),
+        }
+      })
   });
   const textView = createTextView({
     host: field,
     label,
-    onChange: value => emit("sync", { incoming: value, source: "text" }),
+    onChange: value => emit("sync", {incoming: value, source: "text"})
   });
   /** Repaint the semaphore dot and diagnostic message row. */
   const paintStatus = () => {
@@ -160,8 +160,8 @@ export const createWidget = (/** @type {{carrier:HTMLTextAreaElement|HTMLInputEl
       expression.setDiagnostics(result.diagnostics);
       textView.setDiagnostics(result.diagnostics);
       footer?.onValidation(result);
-      emit("validate", { ...result, paused: result.state === "error" });
-    },
+      emit("validate", {...result, paused: result.state === "error"});
+    }
   });
   /**
    * Sync the expression text across views, carrier and validators.
@@ -179,15 +179,15 @@ export const createWidget = (/** @type {{carrier:HTMLTextAreaElement|HTMLInputEl
     validator.schedule(incoming);
     footer?.onText();
     if (source !== "api") {
-      carrier.dispatchEvent(new Event("input", { bubbles: true }));
-      carrier.dispatchEvent(new Event("change", { bubbles: true }));
+      carrier.dispatchEvent(new Event("input", {bubbles: true}));
+      carrier.dispatchEvent(new Event("change", {bubbles: true}));
     }
     emit("change", incoming);
   };
   const channel = "sync";
   listeners[channel] = [
     (/** @type {{incoming:string, source:"expression"|"text"|"api"}} */ payload) =>
-      sync(payload.incoming, payload.source),
+      sync(payload.incoming, payload.source)
   ];
   fix.addEventListener("click", () => {
     const suggestion = last.diagnostics[last.index]?.suggestion;
@@ -229,7 +229,7 @@ export const createWidget = (/** @type {{carrier:HTMLTextAreaElement|HTMLInputEl
       getValue: () => text,
       setValue: value => sync(value, "api"),
       usesLiveVariables: () => /\{\{[^{}=]*\}\}/.test(text),
-      ...(providers.expected ? { expected: providers.expected } : {}),
+      ...(providers.expected ? {expected: providers.expected} : {})
     });
     main.append(footer.element);
     grid.append(footer.panel);
@@ -266,6 +266,6 @@ export const createWidget = (/** @type {{carrier:HTMLTextAreaElement|HTMLInputEl
       widget.remove();
       carrier.hidden = false;
     },
-    environment: ENVIRONMENT_VARIABLES,
+    environment: ENVIRONMENT_VARIABLES
   };
 };

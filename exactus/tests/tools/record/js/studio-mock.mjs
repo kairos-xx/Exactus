@@ -14,15 +14,15 @@ export const flow = {
     {
       name: "user",
       value_type: "string",
-      default_expression: "guest",
-    },
+      default_expression: "guest"
+    }
   ],
   outputs: [
     {
       name: "order",
       value_type: "string",
-      source: "url",
-    },
+      source: "url"
+    }
   ],
   events: [
     {
@@ -31,7 +31,7 @@ export const flow = {
       url: "http://localhost/",
       label: "Open app",
       layer: "navigation",
-      elapsed_ms: 0,
+      elapsed_ms: 0
     },
     {
       id: "save",
@@ -46,10 +46,10 @@ export const flow = {
             id: "check",
             kind: "dom_text",
             target: "#result",
-            expected: "Saved",
-          },
-        ],
-      },
+            expected: "Saved"
+          }
+        ]
+      }
     },
     {
       id: "shot",
@@ -57,9 +57,9 @@ export const flow = {
       payload: "__screenshot__",
       label: "Screenshot",
       layer: "capture",
-      elapsed_ms: 2000,
-    },
-  ],
+      elapsed_ms: 2000
+    }
+  ]
 };
 /** Authorize a real editor against a deterministic command service.
  * @param {any} page Playwright page driving the editor window.
@@ -74,7 +74,7 @@ export const studio = async (page, url, handlers = {}) => {
   /** @type {string[]} */
   const startupErrors = [];
   page.on("pageerror", (/** @type {any} */ error) =>
-    startupErrors.push(error.message),
+    startupErrors.push(error.message)
   );
   const snapshot = {
     revision: 1,
@@ -83,12 +83,12 @@ export const studio = async (page, url, handlers = {}) => {
     recorder_clients: 1,
     viewport: {
       width: 1440,
-      height: 900,
+      height: 900
     },
     device_mode: "desktop",
     target_state: "ready",
     target_address: "http://localhost/",
-    target_service: { state: "idle" },
+    target_service: {state: "idle"},
     target_check: null,
     target_suggestion: null,
     profile_schema: {
@@ -99,7 +99,7 @@ export const studio = async (page, url, handlers = {}) => {
           kind: "length",
           unit: "px",
           min: 160,
-          max: 8192,
+          max: 8192
         },
         {
           id: "height",
@@ -107,7 +107,7 @@ export const studio = async (page, url, handlers = {}) => {
           kind: "length",
           unit: "px",
           min: 160,
-          max: 8192,
+          max: 8192
         },
         {
           id: "scale",
@@ -115,7 +115,7 @@ export const studio = async (page, url, handlers = {}) => {
           kind: "number",
           unit: "dppx",
           min: 0.5,
-          max: 4,
+          max: 4
         },
         {
           id: "screen_width",
@@ -124,7 +124,7 @@ export const studio = async (page, url, handlers = {}) => {
           unit: "px",
           min: 160,
           max: 8192,
-          optional: true,
+          optional: true
         },
         {
           id: "screen_height",
@@ -133,24 +133,24 @@ export const studio = async (page, url, handlers = {}) => {
           unit: "px",
           min: 160,
           max: 8192,
-          optional: true,
+          optional: true
         },
         {
           id: "touch",
           label: "Primary input",
           kind: "choice",
-          options: ["mouse", "touch"],
+          options: ["mouse", "touch"]
         },
-        { id: "mobile", label: "Mobile browser", kind: "toggle" },
+        {id: "mobile", label: "Mobile browser", kind: "toggle"},
         {
           id: "prefers-color-scheme",
           label: "Color scheme",
           kind: "choice",
           options: ["light", "dark"],
-          group: "media",
-        },
+          group: "media"
+        }
       ],
-      unsupported: ["monochrome"],
+      unsupported: ["monochrome"]
     },
     workspace: {
       profiles: [
@@ -164,7 +164,7 @@ export const studio = async (page, url, handlers = {}) => {
           screen_height: null,
           touch: false,
           mobile: false,
-          media: {},
+          media: {}
         },
         {
           id: "mobile",
@@ -176,8 +176,8 @@ export const studio = async (page, url, handlers = {}) => {
           screen_height: null,
           touch: false,
           mobile: false,
-          media: {},
-        },
+          media: {}
+        }
       ],
       target: {
         mode: "url",
@@ -186,7 +186,7 @@ export const studio = async (page, url, handlers = {}) => {
         command: [],
         cwd: "",
         service_port: null,
-        path: "/",
+        path: "/"
       },
       flows: [
         flow,
@@ -194,8 +194,8 @@ export const studio = async (page, url, handlers = {}) => {
           ...flow,
           id: "second",
           name: "Cleanup",
-          events: [],
-        },
+          events: []
+        }
       ],
       edges: [
         {
@@ -204,8 +204,8 @@ export const studio = async (page, url, handlers = {}) => {
           mode: "always",
           condition_expression: "",
           priority: 1,
-          max_traversals: 1,
-        },
+          max_traversals: 1
+        }
       ],
       runs: [
         {
@@ -219,10 +219,10 @@ export const studio = async (page, url, handlers = {}) => {
             {
               event_id: "save",
               status: "failed",
-              error: "Not saved",
-            },
-          ],
-        },
+              error: "Not saved"
+            }
+          ]
+        }
       ],
       screenshots: [
         {
@@ -232,10 +232,10 @@ export const studio = async (page, url, handlers = {}) => {
           path: "screenshots/test.png",
           phase: "play",
           width: 1440,
-          height: 900,
-        },
-      ],
-    },
+          height: 900
+        }
+      ]
+    }
   };
   await page.addInitScript(() => {
     /** @type {any} */
@@ -255,39 +255,39 @@ export const studio = async (page, url, handlers = {}) => {
       handlers[request.command]?.(request.payload, snapshot);
       const result =
         request.command === "recorder.record"
-          ? { ...snapshot, recording_state: "recording" }
+          ? {...snapshot, recording_state: "recording"}
           : request.command === "recorder.pause"
-            ? { ...snapshot, recording_state: "paused" }
+            ? {...snapshot, recording_state: "paused"}
             : snapshot;
       await route.fulfill({
         json: {
           protocol: 1,
           id: request.id,
           ok: true,
-          result,
-        },
+          result
+        }
       });
     } else
       await route.fulfill({
-        json: snapshot,
+        json: snapshot
       });
   });
   await page.goto(
-    `${url}/exactus/tools/record/studio/web/index.html#token=test`,
+    `${url}/exactus/tools/record/studio/web/index.html#token=test`
   );
   try {
     await page.waitForFunction(() =>
       /** @type {HTMLElement} */
-      (document.getElementById("flows")).textContent.includes("Checkout"),
+      (document.getElementById("flows")).textContent.includes("Checkout")
     );
   } catch (error) {
     throw new Error(`Studio startup failed: ${startupErrors.join(" | ")}`, {
-      cause: error,
+      cause: error
     });
   }
   return {
     commands,
-    snapshot,
+    snapshot
   };
 };
 /** Kinds that need a target before they can run, as the real service enforces. */
@@ -304,7 +304,7 @@ const NEEDS_TARGET = Object.freeze([
   "select_option",
   "input_text",
   "snapshot",
-  "extract_value",
+  "extract_value"
 ]);
 /** Settings the real service copies from a command onto an action.
  * @type {readonly string[]}
@@ -316,7 +316,7 @@ const ACTION_SETTINGS = Object.freeze([
   "payload",
   "method",
   "output_variable",
-  "when_expression",
+  "when_expression"
 ]);
 /** Command handlers that make the mock add and change actions like the real service.
  * Pass them as the third argument of {@link studio}.
@@ -337,10 +337,10 @@ export const actionHandlers = Object.freeze({
         !payload.selector &&
         !payload.selector_id,
       ...Object.fromEntries(
-        ACTION_SETTINGS.filter(key => payload[key]).map(key => [key, payload[key]]),
-      ),
+        ACTION_SETTINGS.filter(key => payload[key]).map(key => [key, payload[key]])
+      )
     };
-    flows[0] = { ...current, events: [...current.events, added] };
+    flows[0] = {...current, events: [...current.events, added]};
     snapshot.revision += 1;
   },
   "event.configure": (payload, snapshot) => {
@@ -352,12 +352,12 @@ export const actionHandlers = Object.freeze({
           ? {
               ...item,
               ...Object.fromEntries(
-                ACTION_SETTINGS.map(key => [key, payload[key] || undefined]),
+                ACTION_SETTINGS.map(key => [key, payload[key] || undefined])
               ),
-              incomplete: false,
+              incomplete: false
             }
-          : item,
-      ),
+          : item
+      )
     };
     snapshot.revision += 1;
   },
@@ -367,10 +367,10 @@ export const actionHandlers = Object.freeze({
       ...flows[0],
       events: flows[0].events.map((/** @type {any} */ item) =>
         item.id === payload.event_id
-          ? { ...item, when_expression: payload.when_expression || item.when_expression }
-          : item,
-      ),
+          ? {...item, when_expression: payload.when_expression || item.when_expression}
+          : item
+      )
     };
     snapshot.revision += 1;
-  },
+  }
 });

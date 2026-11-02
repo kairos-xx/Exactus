@@ -4,7 +4,7 @@
  * these same actions, so leaving unsaved changes is guarded in one place and
  * errors are reported in one voice.
  */
-import { ProjectDialogs } from "./project-dialogs.js";
+import {ProjectDialogs} from "./project-dialogs.js";
 /**
  * @typedef {object} ActionsHost What the actions need from the editor.
  * @property {(name:string,payload:Record<string,unknown>|null) => Promise<unknown>} call Send a command to the Studio service.
@@ -14,7 +14,7 @@ import { ProjectDialogs } from "./project-dialogs.js";
  * @property {(view:string) => void} showView Switch the workspace tab.
  */
 /** @type {LibraryData} */
-const NO_LIBRARY = { projects: [], recents: [], tags: [] };
+const NO_LIBRARY = {projects: [], recents: [], tags: []};
 /** Project-level actions shared by the bar and dialogs. */
 export class ProjectActions {
   /** @type {HTMLInputElement|null} */
@@ -24,7 +24,7 @@ export class ProjectActions {
     this.host = host;
     this.dialogs = new ProjectDialogs({
       library: () => this.library(),
-      project: () => this.project(),
+      project: () => this.project()
     });
   }
   /** The projects the Studio knows.
@@ -76,7 +76,7 @@ export class ProjectActions {
    * @returns {Promise<{replace:boolean}|null>} Whether edits are being discarded, or null when the person cancelled.
    */
   async leave() {
-    if (!this.dirty()) return { replace: false };
+    if (!this.dirty()) return {replace: false};
     const choice = await ProjectDialogs.unsaved(this.name());
     if (choice === "cancel") return null;
     if (choice === "save") {
@@ -84,9 +84,9 @@ export class ProjectActions {
         await this.send("workspace.save", {});
         return true;
       });
-      return this.dirty() || saved !== true ? null : { replace: false };
+      return this.dirty() || saved !== true ? null : {replace: false};
     }
-    return { replace: true };
+    return {replace: true};
   }
   /** Save the open project.
    * @returns {Promise<void>}
@@ -104,8 +104,8 @@ export class ProjectActions {
     await this.dialogs.newProject(async details => {
       const left = await this.leave();
       if (!left) return false;
-      await this.send("project.create", { ...details, replace: left.replace });
-      const { name } = details;
+      await this.send("project.create", {...details, replace: left.replace});
+      const {name} = details;
       this.host.say(`Created “${String(name)}”.`);
       this.host.showView("edit");
       return true;
@@ -120,7 +120,7 @@ export class ProjectActions {
     const left = await this.leave();
     if (!left) return;
     await this.attempt(async () => {
-      await this.send("project.open", { slug, replace: left.replace });
+      await this.send("project.open", {slug, replace: left.replace});
       this.host.say(`Opened “${this.name()}”.`);
     });
   }
@@ -131,7 +131,7 @@ export class ProjectActions {
    */
   async duplicate(slug, name) {
     await this.attempt(async () => {
-      await this.send("project.duplicate", { slug, name });
+      await this.send("project.duplicate", {slug, name});
       this.host.say(`Duplicated as “${name}”.`);
     });
   }
@@ -141,7 +141,7 @@ export class ProjectActions {
    */
   async remove(slug) {
     await this.attempt(async () => {
-      await this.send("project.delete", { slug });
+      await this.send("project.delete", {slug});
       this.host.say("Project deleted.");
     });
   }
@@ -152,7 +152,7 @@ export class ProjectActions {
     const left = await this.leave();
     if (!left) return;
     await this.attempt(async () => {
-      await this.send("demo.open", { replace: left.replace, project: true });
+      await this.send("demo.open", {replace: left.replace, project: true});
       this.host.say("Demo flow ready. Run it from Play.");
     });
   }
@@ -166,7 +166,7 @@ export class ProjectActions {
       remove: slug => this.remove(slug),
       importFile: () => this.importFile(false),
       create: () => this.create(),
-      exportUrl: slug => ProjectActions.exportUrl(slug),
+      exportUrl: slug => ProjectActions.exportUrl(slug)
     });
   }
   /** Where a project downloads from.
@@ -203,12 +203,12 @@ export class ProjectActions {
       } catch {
         throw new Error("That file is not a project export.");
       }
-      const left = openIt ? await this.leave() : { replace: false };
+      const left = openIt ? await this.leave() : {replace: false};
       if (!left) return;
       await this.send("project.import", {
         workspace: document,
         open: openIt,
-        replace: left.replace,
+        replace: left.replace
       });
       this.host.say(`Imported “${file.name}”.`);
     });
@@ -220,7 +220,7 @@ export class ProjectActions {
     this.picker ??= Object.assign(document.createElement("input"), {
       type: "file",
       accept: ".json,application/json",
-      hidden: true,
+      hidden: true
     });
     const input = this.picker;
     if (!input.isConnected) document.body.append(input);
@@ -229,9 +229,9 @@ export class ProjectActions {
       input.addEventListener(
         "change",
         () => resolve(input.files?.[0] ?? null),
-        { once: true },
+        {once: true}
       );
-      input.addEventListener("cancel", () => resolve(null), { once: true });
+      input.addEventListener("cancel", () => resolve(null), {once: true});
       input.click();
     });
   }

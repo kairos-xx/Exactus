@@ -18,7 +18,7 @@ const target = /** @type {HTMLTextAreaElement} */ (
 globalThis.engine = new ExtendedSelector(document);
 globalThis.editor = new ExtendedSelectorEditor(target, {
 	engine: globalThis.engine,
-	selectors: ["saved-one", "saved-two"],
+	selectors: ["saved-one", "saved-two"]
 });
 globalThis.Editor = ExtendedSelectorEditor;
 globalThis.editorReady = true;

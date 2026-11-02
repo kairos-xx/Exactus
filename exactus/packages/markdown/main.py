@@ -57,8 +57,7 @@ class Streams:
             ``sys.stdout`` as it is right now.
 
         """
-        stream: TextIO = modules["sys"].stdout
-        return stream
+        return modules["sys"].stdout
 
     @staticmethod
     def stderr() -> TextIO:
@@ -68,8 +67,7 @@ class Streams:
             ``sys.stderr`` as it is right now.
 
         """
-        stream: TextIO = modules["sys"].stderr
-        return stream
+        return modules["sys"].stderr
 
 
 class Cli:

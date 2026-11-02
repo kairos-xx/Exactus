@@ -22,15 +22,63 @@ directory. Regenerate with `python exactus/scripts/bundle_make`
 
 | Tool | Version | Targets |
 | --- | --- | --- |
+| `@babel/code-frame` | `7.29.7` | macos-arm64 |
+| `@babel/helper-validator-identifier` | `7.29.7` | macos-arm64 |
+| `@cacheable/memory` | `2.2.0` | macos-arm64 |
+| `@cacheable/utils` | `2.5.0` | macos-arm64 |
+| `@csstools/css-calc` | `3.4.3` | macos-arm64 |
+| `@csstools/css-parser-algorithms` | `4.0.2` | macos-arm64 |
+| `@csstools/css-syntax-patches-for-csstree` | `1.1.16` | macos-arm64 |
+| `@csstools/css-tokenizer` | `4.0.2` | macos-arm64 |
+| `@csstools/media-query-list-parser` | `5.0.2` | macos-arm64 |
+| `@csstools/selector-resolve-nested` | `4.0.2` | macos-arm64 |
+| `@csstools/selector-specificity` | `6.0.1` | macos-arm64 |
+| `@es-joy/escodegen` | `4.2.0` | macos-arm64 |
+| `@es-joy/estraverse` | `7.1.1` | macos-arm64 |
+| `@es-joy/jsdoccomment` | `1.0.0` | macos-arm64 |
+| `@es-joy/resolve.exports` | `1.2.0` | macos-arm64 |
+| `@eslint-community/eslint-utils` | `4.10.1` | macos-arm64 |
+| `@eslint-community/regexpp` | `4.12.2` | macos-arm64 |
+| `@eslint/config-array` | `0.23.5` | macos-arm64 |
+| `@eslint/config-helpers` | `0.7.0` | macos-arm64 |
+| `@eslint/core` | `1.2.1` | macos-arm64 |
+| `@eslint/object-schema` | `3.0.5` | macos-arm64 |
+| `@eslint/plugin-kit` | `0.7.3` | macos-arm64 |
+| `@humanfs/core` | `0.19.2` | macos-arm64 |
+| `@humanfs/node` | `0.16.8` | macos-arm64 |
+| `@humanfs/types` | `0.15.0` | macos-arm64 |
+| `@humanwhocodes/module-importer` | `1.0.1` | macos-arm64 |
+| `@humanwhocodes/retry` | `0.4.3` | macos-arm64 |
+| `@keyv/bigmap` | `1.3.1` | macos-arm64 |
+| `@keyv/serialize` | `1.1.1` | macos-arm64 |
+| `@nodelib/fs.scandir` | `2.1.5` | macos-arm64 |
+| `@nodelib/fs.stat` | `2.0.5` | macos-arm64 |
+| `@nodelib/fs.walk` | `1.2.8` | macos-arm64 |
+| `@sindresorhus/base62` | `1.0.0` | macos-arm64 |
+| `@sindresorhus/merge-streams` | `4.0.0` | macos-arm64 |
+| `@stylistic/eslint-plugin` | `5.10.0` | macos-arm64 |
+| `@types/esrecurse` | `4.3.1` | macos-arm64 |
+| `@types/estree` | `1.0.10` | macos-arm64 |
+| `@types/json-schema` | `7.0.15` | macos-arm64 |
+| `@types/sarif` | `2.1.7` | macos-arm64 |
+| `@typescript-eslint/project-service` | `8.72.1` | macos-arm64 |
+| `@typescript-eslint/scope-manager` | `8.72.1` | macos-arm64 |
+| `@typescript-eslint/tsconfig-utils` | `8.72.1` | macos-arm64 |
+| `@typescript-eslint/types` | `8.72.1` | macos-arm64 |
+| `@typescript-eslint/typescript-estree` | `8.72.1` | macos-arm64 |
+| `@typescript-eslint/utils` | `8.72.1` | macos-arm64 |
+| `@typescript-eslint/visitor-keys` | `8.72.1` | macos-arm64 |
 | `abbrev` | `1.1.1` | all |
 | `acorn` | `8.19.0` | all |
 | `acorn-jsx` | `5.3.2` | all |
 | `ajv` | `6.15.0` | all |
 | `annotated_doc` | `0.0.5` | all |
 | `annotated_types` | `0.8.0` | all |
-| `ansi-regex` | `6.4.0` | all |
+| `ansi-regex` | `6.4.0` | linux-glibc-amd64, linux-glibc-arm64, linux-musl-amd64, linux-musl-arm64, macos-amd64, windows-amd64, windows-arm64 |
+| `ansi-regex` | `6.5.0` | macos-arm64 |
 | `ansi-styles` | `4.3.0` | all |
-| `anyio` | `4.15.1` | all |
+| `anyio` | `4.15.1` | linux-glibc-amd64, linux-glibc-arm64, linux-musl-amd64, linux-musl-arm64, macos-amd64, windows-amd64, windows-arm64 |
+| `anyio` | `4.16.0` | macos-arm64 |
 | `are-docs-informative` | `0.1.1` | all |
 | `argparse` | `2.0.1` | all |
 | `astral-regex` | `2.0.0` | all |
@@ -73,11 +121,14 @@ directory. Regenerate with `python exactus/scripts/bundle_make`
 | `env-paths` | `2.2.1` | all |
 | `error-ex` | `1.3.4` | all |
 | `escape-string-regexp` | `4.0.0` | all |
-| `eslint` | `10.13.0` | all |
+| `eslint` | `10.13.0` | linux-glibc-amd64, linux-glibc-arm64, linux-musl-amd64, linux-musl-arm64, macos-amd64, windows-amd64, windows-arm64 |
+| `eslint` | `10.14.0` | macos-arm64 |
 | `eslint-plugin-jsdoc` | `65.4.2` | all |
 | `eslint-scope` | `9.1.2` | all |
-| `eslint-visitor-keys` | `5.0.1` | all |
-| `espree` | `11.2.0` | all |
+| `eslint-visitor-keys` | `4.2.1` | macos-arm64 |
+| `eslint-visitor-keys` | `5.0.1` | linux-glibc-amd64, linux-glibc-arm64, linux-musl-amd64, linux-musl-arm64, macos-amd64, windows-amd64, windows-arm64 |
+| `espree` | `10.4.0` | macos-arm64 |
+| `espree` | `11.2.0` | linux-glibc-amd64, linux-glibc-arm64, linux-musl-amd64, linux-musl-arm64, macos-amd64, windows-amd64, windows-arm64 |
 | `esprima` | `4.0.1` | all |
 | `esquery` | `1.7.0` | all |
 | `esrecurse` | `4.3.0` | all |
@@ -92,6 +143,7 @@ directory. Regenerate with `python exactus/scripts/bundle_make`
 | `fastapi` | `0.162.0` | all |
 | `fastest-levenshtein` | `1.0.16` | all |
 | `fastq` | `1.20.3` | all |
+| `fdir` | `6.5.0` | macos-arm64 |
 | `file-entry-cache` | `11.1.5` | all |
 | `fill-range` | `7.1.1` | all |
 | `find-up` | `5.0.0` | all |
@@ -120,7 +172,8 @@ directory. Regenerate with `python exactus/scripts/bundle_make`
 | `httpcore2` | `2.16.0` | all |
 | `httpx` | `0.28.1` | all |
 | `httpx2` | `2.16.0` | all |
-| `hypothesis` | `6.170.13` | linux-glibc-amd64, linux-glibc-arm64, linux-musl-amd64, linux-musl-arm64, macos-amd64, macos-arm64, windows-amd64 |
+| `hypothesis` | `6.170.13` | linux-glibc-amd64, linux-glibc-arm64, linux-musl-amd64, linux-musl-arm64, macos-amd64, windows-amd64 |
+| `hypothesis` | `6.170.14` | macos-arm64 |
 | `id` | `1.6.1` | all |
 | `idna` | `3.20` | all |
 | `ignore` | `5.3.2` | all |
@@ -195,7 +248,8 @@ directory. Regenerate with `python exactus/scripts/bundle_make`
 | `normalize-path` | `3.0.0` | all |
 | `object-deep-merge` | `2.0.1` | all |
 | `once` | `1.4.0` | all |
-| `opentelemetry_api` | `1.45.1` | all |
+| `opentelemetry_api` | `1.45.1` | linux-glibc-amd64, linux-glibc-arm64, linux-musl-amd64, linux-musl-arm64, macos-amd64, windows-amd64, windows-arm64 |
+| `opentelemetry_api` | `1.45.2` | macos-arm64 |
 | `optionator` | `0.9.4` | all |
 | `os-homedir` | `1.0.2` | all |
 | `os-tmpdir` | `1.0.2` | all |
@@ -212,10 +266,12 @@ directory. Regenerate with `python exactus/scripts/bundle_make`
 | `path-key` | `3.1.1` | all |
 | `path-scurry` | `2.0.2` | all |
 | `picocolors` | `1.1.1` | all |
-| `picomatch` | `2.3.2` | all |
+| `picomatch` | `2.3.2` | linux-glibc-amd64, linux-glibc-arm64, linux-musl-amd64, linux-musl-arm64, macos-amd64, windows-amd64, windows-arm64 |
+| `picomatch` | `4.0.7` | macos-arm64 |
 | `pillow` | `12.2.0` | linux-glibc-amd64, linux-glibc-arm64 |
 | `pillow` | `13.0.0` | linux-musl-amd64, linux-musl-arm64, macos-amd64, macos-arm64, windows-amd64, windows-arm64 |
-| `platformdirs` | `4.14.0` | linux-glibc-amd64, linux-glibc-arm64, linux-musl-amd64, linux-musl-arm64, macos-amd64, macos-arm64, windows-amd64 |
+| `platformdirs` | `4.14.0` | linux-glibc-amd64, linux-glibc-arm64, linux-musl-amd64, linux-musl-arm64, macos-amd64, windows-amd64 |
+| `platformdirs` | `4.14.2` | macos-arm64 |
 | `playwright` | `1.64.1` | linux-glibc-amd64, linux-glibc-arm64, macos-amd64, macos-arm64, windows-amd64, windows-arm64 |
 | `playwright-core` | `1.64.1` | linux-glibc-amd64, linux-glibc-arm64, macos-amd64, macos-arm64, windows-amd64, windows-arm64 |
 | `pluggy` | `1.7.0` | all |
@@ -229,8 +285,10 @@ directory. Regenerate with `python exactus/scripts/bundle_make`
 | `psutil` | `7.2.2` | all |
 | `punycode` | `2.3.1` | all |
 | `pycparser` | `3.12` | all |
-| `pydantic` | `2.14.1` | all |
-| `pydantic_core` | `2.50.1` | all |
+| `pydantic` | `2.14.1` | linux-glibc-amd64, linux-glibc-arm64, linux-musl-amd64, linux-musl-arm64, macos-amd64, windows-amd64, windows-arm64 |
+| `pydantic` | `2.14.2` | macos-arm64 |
+| `pydantic_core` | `2.50.1` | linux-glibc-amd64, linux-glibc-arm64, linux-musl-amd64, linux-musl-arm64, macos-amd64, windows-amd64, windows-arm64 |
+| `pydantic_core` | `2.50.2` | macos-arm64 |
 | `pyee` | `14.0.0` | linux-glibc-amd64, linux-glibc-arm64, macos-amd64, macos-arm64, windows-amd64, windows-arm64 |
 | `pygments` | `2.21.0` | all |
 | `pyjwt` | `2.15.1` | all |
@@ -238,7 +296,8 @@ directory. Regenerate with `python exactus/scripts/bundle_make`
 | `pyrefly` | `1.4.0` | all |
 | `pytest` | `9.2.0` | all |
 | `python_dotenv` | `1.2.4` | all |
-| `python_multipart` | `0.0.32` | all |
+| `python_multipart` | `0.0.32` | linux-glibc-amd64, linux-glibc-arm64, linux-musl-amd64, linux-musl-arm64, macos-amd64, windows-amd64, windows-arm64 |
+| `python_multipart` | `0.0.33` | macos-arm64 |
 | `pyyaml` | `6.0.3` | linux-glibc-amd64, linux-glibc-arm64, linux-musl-amd64, linux-musl-arm64, macos-amd64, macos-arm64, windows-amd64 |
 | `pyyaml_ft` | `8.0.0` | linux-musl-amd64, linux-musl-arm64, macos-amd64, macos-arm64, windows-amd64 |
 | `qified` | `0.10.1` | all |

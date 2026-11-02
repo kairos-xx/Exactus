@@ -485,7 +485,11 @@ def test_package_archives_project_and_documents(tmp_path: Path) -> None:
     expect_equal(actual=archive.suffix, expected=".zip")
     expect_true(condition=archive.is_file())
     expect_true(condition=(archive.parent / "README.md").is_file())
-    expect_true(condition=(tmp_path / "packages" / "README.md").is_file())
+    expect_true(
+        condition=(
+            tmp_path / "artifacts" / "packages" / "README.md"
+        ).is_file(),
+    )
 
 
 def test_package_honours_explicit_output(tmp_path: Path) -> None:
@@ -503,4 +507,6 @@ def test_package_honours_explicit_output(tmp_path: Path) -> None:
     )
     expect_equal(actual=result.outputs, expected=(output,))
     expect_true(condition=output.is_file())
-    expect_true(condition=not (tmp_path / "packages").exists())
+    expect_true(
+        condition=not (tmp_path / "artifacts" / "packages").exists(),
+    )

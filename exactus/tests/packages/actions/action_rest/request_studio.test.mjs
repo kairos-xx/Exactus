@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { webcrypto } from "node:crypto";
-import { buildSandbox } from "../../scene_description/js/sandbox-dom.mjs";
-import { RequestStudio } from "../../../../packages/actions/action_rest/request_studio.js";
+import {webcrypto} from "node:crypto";
+import {buildSandbox} from "../../scene_description/js/sandbox-dom.mjs";
+import {RequestStudio} from "../../../../packages/actions/action_rest/request_studio.js";
 const IDS = [
   "studio",
   "transport",
@@ -44,7 +44,7 @@ const IDS = [
   "ws-log",
   "ws-message",
   "ws-send",
-  "ws-clear",
+  "ws-clear"
 ];
 /** @typedef {import("../../scene_description/js/sandbox-dom.mjs").SandboxGlobal} SandboxGlobal */
 /**
@@ -136,7 +136,7 @@ class FakeWebSocket extends EventTarget {
    */
   close(code = 1000, reason = "") {
     this.readyState = FakeWebSocket.CLOSED;
-    this.dispatchEvent(Object.assign(new Event("close"), { code, reason }));
+    this.dispatchEvent(Object.assign(new Event("close"), {code, reason}));
   }
   /** Mark the socket open and dispatch an open event. */
   open() {
@@ -149,7 +149,7 @@ class FakeWebSocket extends EventTarget {
    * @param {unknown} data Frame payload.
    */
   receive(data) {
-    this.dispatchEvent(Object.assign(new Event("message"), { data }));
+    this.dispatchEvent(Object.assign(new Event("message"), {data}));
   }
   /** Dispatch an error event. */
   fail() {
@@ -186,7 +186,7 @@ const makeSelection = document => ({
   extend: () => {},
   setBaseAndExtent: () => {},
   selectAllChildren: () => {},
-  empty: () => {},
+  empty: () => {}
 });
 /**
  * Install a fresh fake DOM, element fixture, and studio instance.
@@ -197,20 +197,20 @@ const makeSelection = document => ({
  *   clipboard: {written: string[]}}} Fixture handles.
  */
 const build = (seedOverrides = {}) => {
-  const sandbox = buildSandbox({ webcrypto });
+  const sandbox = buildSandbox({webcrypto});
   const document = /** @type {Document} */ (
     /** @type {unknown} */ (sandbox.document)
   );
   const selection = makeSelection(document);
   selection.addRange(document.createRange());
   /** @type {{written: string[]}} */
-  const clipboard = { written: [] };
+  const clipboard = {written: []};
   const navigatorStub = {
     ...sandbox.navigator,
     clipboard: {
       writeText: async (/** @type {string} */ text) =>
-        clipboard.written.push(text),
-    },
+        clipboard.written.push(text)
+    }
   };
   Object.assign(globalThis, {
     document,
@@ -228,12 +228,12 @@ const build = (seedOverrides = {}) => {
     MutationObserver: sandbox.MutationObserver,
     InputEvent,
     WebSocket: FakeWebSocket,
-    performance: sandbox.performance,
+    performance: sandbox.performance
   });
   Object.defineProperty(globalThis, "navigator", {
     value: navigatorStub,
     configurable: true,
-    writable: true,
+    writable: true
   });
   Object.defineProperty(globalThis, "window", {
     value: {
@@ -243,10 +243,10 @@ const build = (seedOverrides = {}) => {
       location: sandbox.location,
       document,
       addEventListener: () => {},
-      removeEventListener: () => {},
+      removeEventListener: () => {}
     },
     configurable: true,
-    writable: true,
+    writable: true
   });
   for (const id of IDS) {
     const element = document.createElement("div");
@@ -321,21 +321,21 @@ const build = (seedOverrides = {}) => {
   FakeWebSocket.instances = [];
   const studio = new RequestStudio({
     rows: {
-      params: [{ enabled: true, key: "id", value: "{{user/id}}" }],
-      headers: [{ enabled: true, key: "X-Trace", value: "1" }],
-      cookies: [{ enabled: false, key: "session", value: "abc" }],
+      params: [{enabled: true, key: "id", value: "{{user/id}}"}],
+      headers: [{enabled: true, key: "X-Trace", value: "1"}],
+      cookies: [{enabled: false, key: "session", value: "abc"}]
     },
     variables: [
-      { name: "alpha", value: "A", secret: false },
-      { name: "api/users/x", value: "ux", secret: false },
-      { name: "api/keys/y", value: "ky", secret: true },
-      { name: "user/id", value: "42", secret: false },
+      {name: "alpha", value: "A", secret: false},
+      {name: "api/users/x", value: "ux", secret: false},
+      {name: "api/keys/y", value: "ky", secret: true},
+      {name: "user/id", value: "42", secret: false}
     ],
     url: "https://api.test/users",
     body: '{"a":1}',
-    ...seedOverrides,
+    ...seedOverrides
   });
-  return { studio, document, selection, sandbox, clipboard };
+  return {studio, document, selection, sandbox, clipboard};
 };
 /**
  * Build a minimal keyboard-event stand-in.
@@ -351,14 +351,14 @@ const keydownEvent = (key, target) => {
     prevented: false,
     preventDefault: () => {
       event.prevented = true;
-    },
+    }
   };
   return /** @type {KeyboardEvent & {prevented: boolean}} */ (
     /** @type {unknown} */ (event)
   );
 };
 test("editor input updates the url preview and detects completion", () => {
-  const { studio, document, selection } = build();
+  const {studio, document, selection} = build();
   const editor = studio.el.url;
   editor.classList.add("token-editor");
   editor.replaceChildren(document.createTextNode("bad url"));
@@ -377,7 +377,7 @@ test("editor input updates the url preview and detects completion", () => {
   assert.equal(studio.el.autocomplete.hidden, false);
 });
 test("completion tree expands, navigates, and commits variables", () => {
-  const { studio, document, selection } = build();
+  const {studio, document, selection} = build();
   const editor = studio.el.url;
   editor.classList.add("token-editor");
   const node = document.createTextNode("call @a");
@@ -397,7 +397,7 @@ test("completion tree expands, navigates, and commits variables", () => {
    */
   const select = path => {
     studio.completion.selected = studio.completion.items.findIndex(
-      item => item.path === path,
+      item => item.path === path
     );
   };
   select("api");
@@ -415,7 +415,7 @@ test("completion tree expands, navigates, and commits variables", () => {
   assert.equal(studio.treeKey("ArrowLeft"), true);
   studio.move(1);
   const open = studio.completion.items.find(
-    item => item.branch && studio.completion.expanded.has(item.path),
+    item => item.branch && studio.completion.expanded.has(item.path)
   );
   assert.ok(open);
   studio.toggleBranch(open, false);
@@ -424,7 +424,7 @@ test("completion tree expands, navigates, and commits variables", () => {
   studio.keydown(event);
   assert.equal(event.prevented, true);
   const leaf = studio.completion.items.find(
-    item => !item.branch && item.path === "alpha",
+    item => !item.branch && item.path === "alpha"
   );
   assert.ok(leaf);
   studio.completion.selected = studio.completion.items.indexOf(leaf);
@@ -434,7 +434,7 @@ test("completion tree expands, navigates, and commits variables", () => {
   assert.equal(studio.el.autocomplete.hidden, true);
 });
 test("exact-name commit, escape, and empty detection paths", () => {
-  const { studio, document, selection } = build();
+  const {studio, document, selection} = build();
   const editor = studio.el.url;
   editor.classList.add("token-editor");
   const node = document.createTextNode("x @alpha");
@@ -457,7 +457,7 @@ test("exact-name commit, escape, and empty detection paths", () => {
   assert.equal(studio.completion.editor, null);
 });
 test("token selection, dissolution, and adjacent-token edits", () => {
-  const { studio, document, selection } = build();
+  const {studio, document, selection} = build();
   const editor = studio.el.url;
   editor.classList.add("token-editor");
   RequestStudio.setEditorText(editor, "call {{alpha}}");
@@ -468,10 +468,10 @@ test("token selection, dissolution, and adjacent-token edits", () => {
     prevented: false,
     preventDefault() {
       this.prevented = true;
-    },
+    }
   };
   studio.tokenPointerDown(
-    /** @type {PointerEvent} */ (/** @type {unknown} */ (down)),
+    /** @type {PointerEvent} */ (/** @type {unknown} */ (down))
   );
   assert.equal(studio.selectedToken, token);
   assert.equal(token.classList.contains("token-selected"), true);
@@ -491,9 +491,9 @@ test("token selection, dissolution, and adjacent-token edits", () => {
   assert.equal(
     RequestStudio.adjacentToken(
       /** @type {Selection} */ (/** @type {unknown} */ (selection)),
-      "Backspace",
+      "Backspace"
     ),
-    null,
+    null
   );
   const text = document.createTextNode("ab");
   selection.anchorNode = text;
@@ -501,29 +501,29 @@ test("token selection, dissolution, and adjacent-token edits", () => {
   assert.equal(
     RequestStudio.adjacentToken(
       /** @type {Selection} */ (/** @type {unknown} */ (selection)),
-      "Backspace",
+      "Backspace"
     ),
-    null,
+    null
   );
   studio.outside(
     /** @type {PointerEvent} */ (
-      /** @type {unknown} */ ({ target: document.body })
-    ),
+      /** @type {unknown} */ ({target: document.body})
+    )
   );
 });
 test("beforeInput, paste, and clipboard serialization", () => {
-  const { studio, document, selection } = build();
+  const {studio, document, selection} = build();
   const editor = studio.el.url;
   editor.classList.add("token-editor");
   RequestStudio.setEditorText(editor, "a{{alpha}}b");
   const paragraph = new InputEvent("beforeinput", {
-    inputType: "insertParagraph",
+    inputType: "insertParagraph"
   });
   let prevented = false;
   paragraph.preventDefault = () => {
     prevented = true;
   };
-  Object.defineProperty(paragraph, "target", { value: editor });
+  Object.defineProperty(paragraph, "target", {value: editor});
   studio.beforeInput(paragraph);
   assert.equal(prevented, true);
   const multiline = document.createElement("div");
@@ -536,9 +536,9 @@ test("beforeInput, paste, and clipboard serialization", () => {
   selection.anchorOffset = 0;
   const insert = new InputEvent("beforeinput", {
     inputType: "insertText",
-    data: "z",
+    data: "z"
   });
-  Object.defineProperty(insert, "target", { value: editor });
+  Object.defineProperty(insert, "target", {value: editor});
   studio.beforeInput(insert);
   assert.equal(editor.firstChild?.textContent, "z");
   /** @type {string[]} */
@@ -547,10 +547,10 @@ test("beforeInput, paste, and clipboard serialization", () => {
     /** @type {ClipboardEvent} */ (
       /** @type {unknown} */ ({
         target: editor,
-        clipboardData: { getData: () => "p\nq" },
-        preventDefault: () => pasteText.push("prevented"),
+        clipboardData: {getData: () => "p\nq"},
+        preventDefault: () => pasteText.push("prevented")
       })
-    ),
+    )
   );
   const pills = editor.querySelectorAll(".token-pill");
   assert.ok(pills.length >= 1);
@@ -582,9 +582,9 @@ test("beforeInput, paste, and clipboard serialization", () => {
           setData: (kind, text) => {
             assert.ok(kind);
             copied.push(text);
-          },
+          }
         },
-        preventDefault: () => {},
+        preventDefault: () => {}
       })
     );
   studio.clipboard(clipboardEvent(), false);
@@ -592,7 +592,7 @@ test("beforeInput, paste, and clipboard serialization", () => {
   studio.clipboard(clipboardEvent(), true);
 });
 test("rows add, edit, and delete through rendered controls", () => {
-  const { studio, document } = build();
+  const {studio, document} = build();
   const before = studio.rows.params.length;
   studio.addRow("params");
   assert.equal(studio.rows.params.length, before + 1);
@@ -614,20 +614,20 @@ test("rows add, edit, and delete through rendered controls", () => {
   studio.addVariable();
   assert.equal(studio.variables.length, variablesBefore + 1);
   const input = [
-    ...studio.el.variable_list.querySelectorAll(".v-name"),
+    ...studio.el.variable_list.querySelectorAll(".v-name")
   ].at(-1);
   assert.ok(input);
   /** @type {HTMLInputElement} */ (input).value = "renamed";
   input.dispatchEvent(new Event("input"));
   assert.equal(studio.variables.at(-1)?.name, "renamed");
   const secretButton = [
-    ...studio.el.variable_list.querySelectorAll(".secret"),
+    ...studio.el.variable_list.querySelectorAll(".secret")
   ].at(-1);
   assert.ok(secretButton);
   secretButton.dispatchEvent(new Event("click"));
   assert.equal(studio.variables.at(-1)?.secret, true);
   const vDelete = [
-    ...studio.el.variable_list.querySelectorAll(".v-delete"),
+    ...studio.el.variable_list.querySelectorAll(".v-delete")
   ].at(-1);
   assert.ok(vDelete);
   vDelete.dispatchEvent(new Event("click"));
@@ -637,28 +637,28 @@ test("rows add, edit, and delete through rendered controls", () => {
     [...document.querySelectorAll("[data-tab]")]
       .find(tab => tab.getAttribute("data-tab") === "headers")
       ?.classList.contains("active"),
-    true,
+    true
   );
   studio.toggleVariables();
   studio.toggleVariables(false);
 });
 test("http send resolves variables and renders json response", async () => {
-  const { studio } = build();
+  const {studio} = build();
   /** @type {{url: string, init: RequestInit | undefined} | undefined} */
   let request;
   globalThis.fetch = /** @type {typeof fetch} */ (
     /** @type {unknown} */ (
       async (
         /** @type {RequestInfo | URL} */ url,
-        /** @type {RequestInit | undefined} */ init,
+        /** @type {RequestInit | undefined} */ init
       ) => {
-        request = { url: String(url), init };
+        request = {url: String(url), init};
         return {
           ok: true,
           status: 200,
           statusText: "OK",
-          headers: new Headers({ "content-type": "application/json" }),
-          text: async () => '{"a":1,"b":[2,3],"c":"x"}',
+          headers: new Headers({"content-type": "application/json"}),
+          text: async () => '{"a":1,"b":[2,3],"c":"x"}'
         };
       }
     )
@@ -668,13 +668,13 @@ test("http send resolves variables and renders json response", async () => {
   assert.equal(request?.url.includes("id=42"), true);
   assert.equal(
     (/** @type {Headers | undefined} */ (request?.init?.headers))?.get(
-      "Content-Type",
+      "Content-Type"
     ),
-    "application/json",
+    "application/json"
   );
   assert.equal(
     studio.el.response_view.classList.contains("json-mode"),
-    true,
+    true
   );
   assert.ok(studio.el.response_text.querySelector(".json-node"));
   globalThis.fetch = /** @type {typeof fetch} */ (
@@ -690,11 +690,11 @@ test("http send resolves variables and renders json response", async () => {
   await studio.send();
   assert.equal(
     studio.el.response_text.textContent.includes("Invalid URL"),
-    true,
+    true
   );
 });
 test("websocket lifecycle sends, logs, and clears frames", () => {
-  const { studio } = build();
+  const {studio} = build();
   studio.el.transport.value = "websocket";
   RequestStudio.setEditorText(studio.el.url, "wss://api.test/socket");
   studio.setTransport();
@@ -723,14 +723,14 @@ test("websocket lifecycle sends, logs, and clears frames", () => {
   studio.toggleWebSocket();
   assert.equal(
     studio.el.ws_state.getAttribute("data-state"),
-    "error",
+    "error"
   );
 });
 test("json tree capture opens, places, and saves variables", () => {
-  const { studio } = build();
-  studio.showJson({ user: { id: 42 } });
+  const {studio} = build();
+  studio.showJson({user: {id: 42}});
   const pick = [
-    ...studio.el.response_text.querySelectorAll(".json-pick"),
+    ...studio.el.response_text.querySelectorAll(".json-pick")
   ].find(button => button.getAttribute("data-path") === "$.user.id");
   assert.ok(pick);
   studio.captureJson(/** @type {HTMLButtonElement} */ (pick));
@@ -739,8 +739,8 @@ test("json tree capture opens, places, and saves variables", () => {
   studio.el.capture_name.value = "user/id";
   studio.saveCaptured(
     /** @type {Event} */ (
-      /** @type {unknown} */ ({ preventDefault: () => {} })
-    ),
+      /** @type {unknown} */ ({preventDefault: () => {}})
+    )
   );
   const saved = studio.variables.find(variable => variable.name === "user/id");
   assert.equal(saved?.value, "42");
@@ -749,18 +749,18 @@ test("json tree capture opens, places, and saves variables", () => {
   studio.captureJson(/** @type {HTMLButtonElement} */ (pick));
   studio.saveCaptured(
     /** @type {Event} */ (
-      /** @type {unknown} */ ({ preventDefault: () => {} })
-    ),
+      /** @type {unknown} */ ({preventDefault: () => {}})
+    )
   );
   assert.equal(
     studio.el.toast.textContent.includes("letters"),
-    true,
+    true
   );
-  studio.closeCapture({ focusResponse: true });
+  studio.closeCapture({focusResponse: true});
   assert.equal(studio.el.capture.hidden, true);
 });
 test("body modes, formatting, and xml trees", () => {
-  const { studio, document } = build();
+  const {studio, document} = build();
   studio.el.body_format.value = "json";
   RequestStudio.setEditorText(studio.el.body, '{"z":2,"a":1}');
   studio.setBodyMode("tree");
@@ -769,7 +769,7 @@ test("body modes, formatting, and xml trees", () => {
   studio.formatBodySource();
   assert.equal(
     RequestStudio.editorText(studio.el.body).includes("\n"),
-    true,
+    true
   );
   RequestStudio.setEditorText(studio.el.body, "{bad");
   studio.refreshBodyTree();
@@ -777,7 +777,7 @@ test("body modes, formatting, and xml trees", () => {
   studio.formatBodySource();
   assert.equal(
     studio.el.toast.textContent.includes("Cannot format"),
-    true,
+    true
   );
   globalThis.DOMParser = /** @type {typeof DOMParser} */ (
     /** @type {unknown} */ (
@@ -800,7 +800,7 @@ test("body modes, formatting, and xml trees", () => {
             if (source[index] !== "<" || source[index + 1] === "/")
               return null;
             const open = /^<(\w+)((?:\s+\w+="[^"]*")*)\s*(\/?)>/.exec(
-              source.slice(index),
+              source.slice(index)
             );
             if (!open) return null;
             index += open[0].length;
@@ -824,7 +824,7 @@ test("body modes, formatting, and xml trees", () => {
                 const next = source.indexOf("<", index);
                 const text = source.slice(
                   index,
-                  next < 0 ? source.length : next,
+                  next < 0 ? source.length : next
                 );
                 index = next < 0 ? source.length : next;
                 if (text.trim())
@@ -837,7 +837,7 @@ test("body modes, formatting, and xml trees", () => {
           return {
             documentElement: root,
             querySelector: () =>
-              root ? null : document.createElement("parsererror"),
+              root ? null : document.createElement("parsererror")
           };
         }
       }
@@ -855,7 +855,7 @@ test("body modes, formatting, and xml trees", () => {
 });
 
 test("copy, toast, and helper paths", async () => {
-  const { studio, clipboard } = build();
+  const {studio, clipboard} = build();
   studio.el.response_text.textContent = "payload";
   await studio.copy();
   assert.deepEqual(clipboard.written, ["payload"]);
@@ -867,7 +867,7 @@ test("copy, toast, and helper paths", async () => {
   studio.updateUrl();
   assert.equal(
     studio.el.resolved_url.textContent.startsWith("wss://"),
-    true,
+    true
   );
   const headers = studio.headers();
   assert.equal(headers.get("X-Trace"), "1");

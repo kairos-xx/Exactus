@@ -286,6 +286,9 @@ def default_providers(
         ProviderId.DIRECTORY: PathCompletionProvider(directories_only=True),
         ProviderId.TOOL: StaticNameProvider(entries=tool_entries),
         ProviderId.PIPELINE: StaticNameProvider(entries=tuple(pipelines)),
+        ProviderId.TARGET: StaticNameProvider(
+            entries=tool_entries + tuple(pipelines),
+        ),
         ProviderId.TOOL_ARGUMENT: ScopedArgumentProvider(
             names=tuple((name for name, _description in tool_entries)),
         ),

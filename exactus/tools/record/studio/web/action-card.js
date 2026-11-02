@@ -6,7 +6,7 @@
  * of the action that produces it. Tokens that can be edited in place carry
  * `data-field`; the editor opens a small editor on click.
  */
-import { iconElement } from "./icons.js";
+import {iconElement} from "./icons.js";
 /**
  * @typedef {{id:string,kind:string,label?:string,selector?:string|null,url?:string|null,payload?:string|null,method?:string|null,output_variable?:string|null,when_expression?:string|null}} CardEvent
  * @typedef {{icon:string,tone:string}} Producer
@@ -20,7 +20,7 @@ import { iconElement } from "./icons.js";
  * @param {string} text
  * @returns {TextPart}
  */
-const say = text => ({ kind: "text", text });
+const say = text => ({kind: "text", text});
 /** A token of the sentence.
  * @param {string|null} field Event field an edit writes, or null when read-only.
  * @param {string|null|undefined} value Current value.
@@ -34,7 +34,7 @@ const token = (field, value, placeholder, options = {}) => ({
   value: value ?? "",
   placeholder,
   editor: field ? "text" : null,
-  ...options,
+  ...options
 });
 /** Read a JSON object payload, or an empty one.
  * @param {string|null|undefined} payload
@@ -93,7 +93,7 @@ const TONES = Object.freeze({
   http_call: "green",
   websocket_call: "green",
   extract_value: "orange",
-  set_variable: "orange",
+  set_variable: "orange"
 });
 /** The icon of each action kind. */
 const ICONS = Object.freeze({
@@ -118,14 +118,14 @@ const ICONS = Object.freeze({
   http_call: "download",
   websocket_call: "arrows-join",
   extract_value: "search",
-  set_variable: "tag",
+  set_variable: "tag"
 });
 /** What a wait condition is called in a sentence. */
 const WAIT_LABELS = Object.freeze({
   element: "element",
   text: "text",
   url: "address",
-  expression: "condition",
+  expression: "condition"
 });
 /** Verb and target of the actions that act on one element.
  * @type {Readonly<Record<string, string>>}
@@ -137,7 +137,7 @@ const ON_ELEMENT = Object.freeze({
   hover: "Hover over",
   check: "Check",
   uncheck: "Uncheck",
-  scroll: "Scroll",
+  scroll: "Scroll"
 });
 /** Describe an action as a sentence.
  * @param {CardEvent} event
@@ -164,7 +164,7 @@ export const cardSpec = event => {
       say("Type"),
       token("payload", event.payload, "Text"),
       say("in"),
-      token("selector", event.selector, "Field"),
+      token("selector", event.selector, "Field")
     ];
   else if (kind === "keystroke")
     parts = [say("Press"), token("payload", event.payload, "Key")];
@@ -173,33 +173,33 @@ export const cardSpec = event => {
       say("Select"),
       token(null, options(event.payload), "Option"),
       say("in"),
-      token("selector", event.selector, "Menu"),
+      token("selector", event.selector, "Menu")
     ];
   else if (kind === "drag")
     parts = [
       say("Drag"),
       token("selector", event.selector, "Element"),
       say("to"),
-      token("payload", event.payload, "Destination"),
+      token("payload", event.payload, "Destination")
     ];
   else if (kind === "set_variable")
     parts = [
       say("Set variable"),
       token("output_variable", event.output_variable, "Variable Name"),
       say("to"),
-      token("value", member(data, "value"), "Value", { json: "value" }),
+      token("value", member(data, "value"), "Value", {json: "value"})
     ];
   else if (kind === "extract_value")
     parts = [
       say("Get"),
       token(null, member(data, "extract") || "text", "Text"),
       say("of"),
-      token("selector", event.selector, "Element"),
+      token("selector", event.selector, "Element")
     ];
   else if (kind === "http_call")
     parts = [
       say(`${event.method || "GET"} request to`),
-      token("url", event.url, "URL"),
+      token("url", event.url, "URL")
     ];
   else if (kind === "websocket_call")
     parts = [say("Open WebSocket at"), token("url", event.url, "WebSocket URL")];
@@ -209,7 +209,7 @@ export const cardSpec = event => {
       ? [
         say("Wait for"),
         token(null, Reflect.get(WAIT_LABELS, condition) ?? condition, "Condition"),
-        token(null, member(data, "value"), "Value"),
+        token(null, member(data, "value"), "Value")
       ]
       : [say("Wait"), token(null, `${event.payload || "0"} ms`, "Time")];
   } else if (kind === "javascript") {
@@ -220,14 +220,14 @@ export const cardSpec = event => {
       say("Set viewport"),
       token(null, member(data, "action") === "rotate"
         ? "Rotate"
-        : `${member(data, "width")} × ${member(data, "height")}`, "Size"),
+        : `${member(data, "width")} × ${member(data, "height")}`, "Size")
     ];
   else
     parts = [
       say(event.label || kind),
-      token(null, event.selector || event.url || "", "Details"),
+      token(null, event.selector || event.url || "", "Details")
     ];
-  return { tone, icon, parts, code };
+  return {tone, icon, parts, code};
 };
 /** Split a value into text and `{{variable}}` pills.
  * @param {HTMLElement} target Token element to fill.
@@ -250,7 +250,7 @@ const fill = (target, value, context) => {
     pill.setAttribute("data-tone", asked ? "silver" : (producer?.tone ?? "silver"));
     pill.append(
       iconElement(asked ? "keyboard" : (producer?.icon ?? "tag")),
-      asked ? `Ask: ${name.slice(4)}` : name,
+      asked ? `Ask: ${name.slice(4)}` : name
     );
     target.append(pill);
     cursor = match.index + match[0].length;
@@ -298,7 +298,7 @@ const OPERATORS = Object.freeze({
   ">": "is greater than",
   "<": "is less than",
   contains: "contains",
-  matches: "matches",
+  matches: "matches"
 });
 /** Describe a guard as "If [value] [is greater than] [value]".
  * @param {string} expression Condition that must hold.
@@ -311,7 +311,7 @@ export const guardParts = expression => {
     say("If"),
     token(null, split[1], "Value"),
     token(null, Reflect.get(OPERATORS, split[2] ?? "") ?? split[2], "Comparison"),
-    token(null, split[3], "Value"),
+    token(null, split[3], "Value")
   ];
 };
 /** Build the visible parts of one card.
@@ -335,7 +335,7 @@ export const buildCard = (event, context) => {
     code.textContent = spec.code || "Write the script to run";
     if (!spec.code) code.setAttribute("data-empty", "true");
   }
-  return { tile, sentence: renderSentence(spec.parts, context), code, tone: spec.tone };
+  return {tile, sentence: renderSentence(spec.parts, context), code, tone: spec.tone};
 };
 /** Every variable an action publishes, including response mappings.
  * @param {CardEvent} event
@@ -345,7 +345,7 @@ export const producedVariables = event => {
   /** @type {Array<{name:string,type:string}>} */
   const result = [];
   if (typeof event.output_variable === "string" && event.output_variable.length > 0)
-    result.push({ name: event.output_variable, type: "Any" });
+    result.push({name: event.output_variable, type: "Any"});
   if (!["http_call", "websocket_call"].includes(event.kind)) return result;
   const captures = Reflect.get(structured(event.payload), "captures");
   if (!Array.isArray(captures)) return result;
@@ -358,9 +358,9 @@ export const producedVariables = event => {
       boolean: "Boolean",
       integer: "Number",
       float: "Number",
-      json: "Dictionary",
+      json: "Dictionary"
     }[valueType] ?? "Text";
-    result.push({ name, type });
+    result.push({name, type});
   }
   return result;
 };
@@ -374,7 +374,7 @@ export const producersOf = events => {
   for (const event of events) {
     const spec = cardSpec(event);
     for (const output of producedVariables(event))
-      producers.set(output.name, { icon: spec.icon, tone: spec.tone });
+      producers.set(output.name, {icon: spec.icon, tone: spec.tone});
   }
   return producers;
 };

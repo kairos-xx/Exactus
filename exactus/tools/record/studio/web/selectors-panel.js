@@ -1,5 +1,5 @@
-import { iconElement } from "./icons.js";
-import { selectorExpressionField } from "./selector-expression-field.js";
+import {iconElement} from "./icons.js";
+import {selectorExpressionField} from "./selector-expression-field.js";
 /** The Selectors list and the selector inspector.
  *
  * Both are plain DOM builders with no dependency on the editor, in the same way
@@ -42,15 +42,15 @@ export const usageSentence = use => {
   const parts = [];
   if (actions)
     parts.push(
-      `${actions} ${actions === 1 ? "action" : "actions"} in ${use?.flows} ${use?.flows === 1 ? "flow" : "flows"}`,
+      `${actions} ${actions === 1 ? "action" : "actions"} in ${use?.flows} ${use?.flows === 1 ? "flow" : "flows"}`
     );
   if (use?.selectors.length)
     parts.push(
-      `${use.selectors.length} ${use.selectors.length === 1 ? "selector" : "selectors"}`,
+      `${use.selectors.length} ${use.selectors.length === 1 ? "selector" : "selectors"}`
     );
   if (use?.conditions)
     parts.push(
-      `${use.conditions} ${use.conditions === 1 ? "condition" : "conditions"}`,
+      `${use.conditions} ${use.conditions === 1 ? "condition" : "conditions"}`
     );
   return `Used by ${parts.join(", ")}`;
 };
@@ -67,15 +67,15 @@ export const renderSelectorList = (
   selectors,
   usage,
   selectedId,
-  onSelect,
+  onSelect
 ) => {
   if (!selectors.length) {
     target.replaceChildren(
       make(
         "p",
         "side-empty",
-        "No selectors yet. A selector finds elements once and any action can reuse it.",
-      ),
+        "No selectors yet. A selector finds elements once and any action can reuse it."
+      )
     );
     return;
   }
@@ -90,7 +90,7 @@ export const renderSelectorList = (
       button.setAttribute("data-selector", item.selector_id);
       button.setAttribute(
         "aria-pressed",
-        String(item.selector_id === selectedId),
+        String(item.selector_id === selectedId)
       );
       const count = use?.actions.length ?? 0;
       button.append(icon("crosshair"), make("span", "", item.name));
@@ -105,7 +105,7 @@ export const renderSelectorList = (
       button.append(badge);
       button.addEventListener("click", () => onSelect(item.selector_id));
       return button;
-    }),
+    })
   );
 };
 /** Describe an expected count for the select control.
@@ -113,9 +113,9 @@ export const renderSelectorList = (
  * @returns {{mode:"one"|"any"|"exact",exact:number}}
  */
 const countMode = count => {
-  if (count === null) return { mode: "any", exact: 2 };
-  if (count === undefined || count === 1) return { mode: "one", exact: 2 };
-  return { mode: "exact", exact: count };
+  if (count === null) return {mode: "any", exact: 2};
+  if (count === undefined || count === 1) return {mode: "one", exact: 2};
+  return {mode: "exact", exact: count};
 };
 /** Turn the count controls into the value the server stores.
  * @param {string} mode
@@ -144,8 +144,8 @@ export const renderTestResult = (target, result, running = false) => {
       make(
         "p",
         "selector-note",
-        "Test the expression against the open page to see what it matches.",
-      ),
+        "Test the expression against the open page to see what it matches."
+      )
     );
     return;
   }
@@ -157,8 +157,8 @@ export const renderTestResult = (target, result, running = false) => {
     make(
       "strong",
       "",
-      result.error || (result.ok ? found : result.cause?.message || found),
-    ),
+      result.error || (result.ok ? found : result.cause?.message || found)
+    )
   );
   head.append(
     make(
@@ -166,8 +166,8 @@ export const renderTestResult = (target, result, running = false) => {
       "",
       result.ok
         ? `in ${result.elapsed_ms} ms`
-        : `Found ${result.count} in ${result.elapsed_ms} ms`,
-    ),
+        : `Found ${result.count} in ${result.elapsed_ms} ms`
+    )
   );
   target.append(head);
   for (const message of result.definition_errors)
@@ -183,8 +183,8 @@ export const renderTestResult = (target, result, running = false) => {
       make(
         "code",
         "selector-match-css",
-        match.css || match.css_error || "No selector found",
-      ),
+        match.css || match.css_error || "No selector found"
+      )
     );
     for (const failed of match.failed)
       body.append(make("span", "selector-match-failed", `Failed: ${failed}`));
@@ -196,8 +196,8 @@ export const renderTestResult = (target, result, running = false) => {
       make(
         "li",
         "selector-note",
-        `And ${result.matches.length - MAX_LISTED} more`,
-      ),
+        `And ${result.matches.length - MAX_LISTED} more`
+      )
     );
   target.append(list);
 };
@@ -213,7 +213,7 @@ export const renderSeen = (target, selector, pageUrl) => {
   const pages = selector?.validated_on ?? [];
   if (!pages.length) {
     target.append(
-      make("p", "selector-note warn", "Not tested on any page yet."),
+      make("p", "selector-note warn", "Not tested on any page yet.")
     );
     return;
   }
@@ -225,8 +225,8 @@ export const renderSeen = (target, selector, pageUrl) => {
       make(
         "small",
         "",
-        `${page.matches} ${page.matches === 1 ? "match" : "matches"}`,
-      ),
+        `${page.matches} ${page.matches === 1 ? "match" : "matches"}`
+      )
     );
     list.append(row);
   }
@@ -236,8 +236,8 @@ export const renderSeen = (target, selector, pageUrl) => {
       make(
         "p",
         "selector-note warn",
-        "Not tested on the page that is open now. It may not match there.",
-      ),
+        "Not tested on the page that is open now. It may not match there."
+      )
     );
 };
 /** Build the selector inspector.
@@ -262,7 +262,7 @@ export const renderSeen = (target, selector, pageUrl) => {
  * @returns {{fragment:DocumentFragment,form:HTMLFormElement,result:HTMLElement}}
  */
 export const selectorInspector = options => {
-  const { selector, usage } = options;
+  const {selector, usage} = options;
   const fragment = document.createDocumentFragment();
   const heading = make("div", "edit-inspector-heading");
   const mark = make("span", "edit-inspector-mark");
@@ -270,7 +270,7 @@ export const selectorInspector = options => {
   const titles = make("div");
   titles.append(
     make("h2", "", selector ? selector.name : "New selector"),
-    make("small", "", selector ? usageSentence(usage) : "Not saved yet"),
+    make("small", "", selector ? usageSentence(usage) : "Not saved yet")
   );
   heading.append(mark, titles);
   const form = /** @type {HTMLFormElement} */ (make("form", "selector-form"));
@@ -288,7 +288,7 @@ export const selectorInspector = options => {
   const nameHint = make(
     "small",
     "selector-hint",
-    "Letters, digits and underscores. Conditions read it as sel_<name>_count.",
+    "Letters, digits and underscores. Conditions read it as sel_<name>_count."
   );
   const expression = /** @type {HTMLTextAreaElement} */ (make("textarea"));
   expression.name = "expression";
@@ -304,7 +304,7 @@ export const selectorInspector = options => {
     name: "",
     expression: "",
     expected_count: null,
-    checks: [],
+    checks: []
   });
   const expressionField = selectorExpressionField({
     label: "Expression",
@@ -315,15 +315,15 @@ export const selectorInspector = options => {
     matchCount: options.test?.count,
     onPick: options.onPick,
     onHighlight: (value, done) =>
-      options.onTest({ ...readValues(), expression: value }, done),
+      options.onTest({...readValues(), expression: value}, done),
     onClear: options.onClear,
     onStats: options.onStats,
     variables: options.variables,
-    saved: () => options.selectors.map(savedName => ({ name: savedName })),
+    saved: () => options.selectors.map(savedName => ({name: savedName})),
     expected: () => {
       const values = readValues();
       return values.expected_count;
-    },
+    }
   });
   const initial = countMode(selector?.expected_count);
   const mode = /** @type {HTMLSelectElement} */ (make("select"));
@@ -331,7 +331,7 @@ export const selectorInspector = options => {
   for (const [value = "", label = ""] of [
     ["one", "Exactly one"],
     ["any", "One or more"],
-    ["exact", "Exactly…"],
+    ["exact", "Exactly…"]
   ]) {
     const option = /** @type {HTMLOptionElement} */ (make("option", "", label));
     option.value = value;
@@ -357,7 +357,7 @@ export const selectorInspector = options => {
   const countLabel = make("div", "selector-field");
   countLabel.append(
     make("span", "selector-field-label", "Should match"),
-    countRow,
+    countRow
   );
   const checks = /** @type {HTMLTextAreaElement} */ (make("textarea"));
   checks.name = "checks";
@@ -372,7 +372,7 @@ export const selectorInspector = options => {
     engine: options.engine,
     selectors: options.selectors,
     multiple: true,
-    startAsText: true,
+    startAsText: true
   });
   /** Read the form into the stored selector shape.
    * @returns {SelectorValues}
@@ -385,7 +385,7 @@ export const selectorInspector = options => {
     checks: checks.value
       .split("\n")
       .map(line => line.trim())
-      .filter(Boolean),
+      .filter(Boolean)
   });
   readValues = values;
   const actions = make("div", "selector-actions");
@@ -420,7 +420,7 @@ export const selectorInspector = options => {
     expressionField.field,
     countLabel,
     checksField.field,
-    actions,
+    actions
   );
   form.addEventListener("submit", event => {
     event.preventDefault();
@@ -444,7 +444,7 @@ export const selectorInspector = options => {
       open.type = "button";
       open.textContent = options.labelFor(ref.flow_id, ref.event_id);
       open.addEventListener("click", () =>
-        options.onOpenAction(ref.flow_id, ref.event_id),
+        options.onOpenAction(ref.flow_id, ref.event_id)
       );
       row.append(open);
       list.append(row);
@@ -452,5 +452,5 @@ export const selectorInspector = options => {
     used.append(list);
   }
   fragment.append(heading, form, result, seen, used);
-  return { fragment, form, result };
+  return {fragment, form, result};
 };

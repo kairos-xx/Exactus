@@ -24,7 +24,7 @@ export const summary = extra => ({
   runs: 3,
   base_url: "http://localhost:3000",
   legacy: false,
-  ...extra,
+  ...extra
 });
 /** A host that records every command, message and view change.
  * @param {{failing?:string[]}} [options] Command names that reject.
@@ -43,7 +43,7 @@ export const makeHost = (options = {}) => {
     flows: 1,
     description: "",
     base_url: "",
-    modified_at: "2026-09-01T00:00:00",
+    modified_at: "2026-09-01T00:00:00"
   });
   const legacy = summary({
     slug: "@legacy",
@@ -52,14 +52,14 @@ export const makeHost = (options = {}) => {
     tags: [],
     author: "",
     version: "",
-    description: "",
+    description: ""
   });
   const state = {
     dirty: false,
     library: {
       projects: [alpha, beta, legacy],
       recents: ["beta", "alpha"],
-      tags: ["web", "smoke", "admin"],
+      tags: ["web", "smoke", "admin"]
     },
     project: {
       slug: "alpha",
@@ -69,8 +69,8 @@ export const makeHost = (options = {}) => {
       author: "Ana",
       version: "1.0.0",
       created_at: "2026-10-01T00:00:00",
-      saved: true,
-    },
+      saved: true
+    }
   };
   /** @type {[string, unknown][]} */
   const calls = [];
@@ -88,18 +88,18 @@ export const makeHost = (options = {}) => {
     views,
     call: async (
       /** @type {string} */ name,
-      /** @type {unknown} */ payload,
+      /** @type {unknown} */ payload
     ) => {
       calls.push([name, payload]);
       if (options.failing?.includes(name)) throw new Error(`${name} failed`);
       if (name === "workspace.save") state.dirty = false;
-      return { command: name };
+      return {command: name};
     },
     apply: (/** @type {unknown} */ snapshot) => applied.push(snapshot),
     say: (/** @type {string} */ text) => said.push(text),
-    showView: (/** @type {string} */ view) => views.push(view),
+    showView: (/** @type {string} */ view) => views.push(view)
   };
-  return { ...host, host: { ...host, state: () => state } };
+  return {...host, host: {...host, state: () => state}};
 };
 /** The visible dialog, if any.
  * @returns {HTMLDialogElement|null}
@@ -112,7 +112,7 @@ export const openDialog = () => document.querySelector("dialog[open]");
  */
 export const press = (root, text) => {
   const target = [...root.querySelectorAll("button, a")].find(item =>
-    (item.textContent ?? "").trim().startsWith(text),
+    (item.textContent ?? "").trim().startsWith(text)
   );
   if (!(target instanceof HTMLElement)) return false;
   target.click();
@@ -125,5 +125,5 @@ export const press = (root, text) => {
  */
 export const type = (input, value) => {
   input.value = value;
-  input.dispatchEvent(new Event("input", { bubbles: true }));
+  input.dispatchEvent(new Event("input", {bubbles: true}));
 };

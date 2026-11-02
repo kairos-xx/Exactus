@@ -107,6 +107,7 @@ mapping (`markdown/`). See `templates/README.md`.
 - [`arguments.py`](arguments.py) — Declare the lints grammar without importing its execution engine.
 - [`compliance.py`](compliance.py) — Exactus suppression markers, escape-hatch annotations, and lint config.
 - [`core.py`](core.py) — Lint exactus engine: clean, lint, and type-check sources with rollback.
+- [`css_naming.py`](css_naming.py) — Audit numbered CSS custom-property families without guessing their meaning.
 - [`css_tokens.py`](css_tokens.py) — Audit the CSS custom-property architecture and terminal-layer policy.
 - [`js_delimiters.py`](js_delimiters.py) — Conservatively remove unnecessary JavaScript parentheses and braces.
 - [`js_function_blocks.py`](js_function_blocks.py) — Report JavaScript function and method blocks and modernization eligibility.
@@ -114,6 +115,7 @@ mapping (`markdown/`). See `templates/README.md`.
 - [`long_lines_engine.py`](long_lines_engine.py) — Repair Python lines that remain too long after Ruff formatting.
 - [`main.py`](main.py) — Run the combined lint exactus and emit the LINTS report bundle.
 - [`packages_pipeline.py`](packages_pipeline.py) — Bridge Exactus lints to packaged source-refactor and lint tools.
+- [`python_simplify.py`](python_simplify.py) — Perform conservative, scope-aware Python 3.13 AST rewrites.
 - [`report.py`](report.py) — Normalize the LINTS report: summary, scope, findings and metrics.
 - [`shebang.py`](shebang.py) — Exactus Python executable permissions against shebang presence.
 - [`string_transform.py`](string_transform.py) — Source-preserving string dedenting, splitting and f-string formatting.

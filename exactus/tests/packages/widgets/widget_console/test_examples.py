@@ -216,6 +216,15 @@ def test_main_prints_url_and_opens_browser(
     class _Session:
         """Record a browser launch and close immediately."""
 
+        def __init__(self, *, headless: bool = False) -> None:
+            """Accept the headless flag; the fake ignores it.
+
+            Args:
+                headless: Whether a headless browser was requested.
+
+            """
+            del headless
+
         @staticmethod
         def open(*, url: str) -> None:
             """Record the URL handed to the browser.
@@ -245,7 +254,7 @@ def test_main_prints_url_and_opens_browser(
     monkeypatch.setattr(target=run, name="start_demo", value=_fixed_demo)
     monkeypatch.setattr(target=run, name="BrowserSession", value=_Session)
     monkeypatch.setattr(target=run, name="stdout", value=sink)
-    expect_equal(actual=run.main(), expected=0)
+    expect_equal(actual=run.main(arguments=()), expected=0)
     expect_equal(
         actual=opened,
         expected=[
@@ -258,6 +267,91 @@ def test_main_prints_url_and_opens_browser(
     expect_in(
         member="http://127.0.0.1:9/widgets/widget_console/examples/web/index.html",
         container=sink.getvalue(),
+    )
+
+
+def test_main_headless_loads_page_then_exits(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """``--headless`` loads the page without a window and returns zero.
+
+    Args:
+        monkeypatch: Pytest patching helper.
+
+    """
+    opened: list[str] = []
+    headless_modes: list[bool] = []
+    sink: StringIO = StringIO()
+
+    def _fixed_demo(**_options: object) -> str:
+        """Simulate a ready demo server.
+
+        Args:
+            **_options: Launch arguments.
+
+        Returns:
+            The fixed demo URL.
+
+        """
+        return (
+            "http://127.0.0.1:9/widgets/widget_console/examples/web/index.html"
+        )
+
+    class _Session:
+        """Record a headless browser launch."""
+
+        def __init__(self, *, headless: bool = False) -> None:
+            """Record the requested headless flag.
+
+            Args:
+                headless: Whether a headless browser was requested.
+
+            """
+            headless_modes.append(headless)
+
+        @staticmethod
+        def open(*, url: str) -> None:
+            """Record the URL handed to the browser.
+
+            Args:
+                url: URL handed to the browser.
+
+            """
+            opened.append(url)
+
+        @staticmethod
+        def wait_ready(*, timeout: float | None = None) -> bool:
+            """Report the fake page as loaded.
+
+            Args:
+                timeout: Optional wait limit, ignored by the fake.
+
+            Returns:
+                True because the fake page is already loaded.
+
+            """
+            del timeout
+            return True
+
+        def close(self) -> None:
+            """Release nothing; the fake owns no browser."""
+
+    monkeypatch.setattr(target=run, name="start_demo", value=_fixed_demo)
+    monkeypatch.setattr(target=run, name="BrowserSession", value=_Session)
+    monkeypatch.setattr(target=run, name="stdout", value=sink)
+    expect_equal(
+        actual=run.main(arguments=("--headless",)),
+        expected=0,
+    )
+    expect_equal(actual=headless_modes, expected=[True])
+    expect_equal(
+        actual=opened,
+        expected=[
+            (
+                "http://127.0.0.1:9/widgets/widget_console/examples/web/index."
+                "html"
+            ),
+        ],
     )
 
 

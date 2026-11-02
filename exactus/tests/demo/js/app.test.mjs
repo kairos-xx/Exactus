@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { existsSync } from "node:fs";
+import {existsSync} from "node:fs";
 import test from "node:test";
 /**
  * @typedef {{currentTarget: FakeElement | null}} FakeEvent
@@ -61,7 +61,7 @@ class FakeElement {
   click() {
     for (const listener of this.listeners)
       listener({
-        currentTarget: this,
+        currentTarget: this
       });
   }
 }
@@ -126,7 +126,7 @@ class FakeDocument {
     /** @type {Record<string, FakeElement>} */
     this.ids = ids;
     this.body = {
-      classList: new FakeClassList(),
+      classList: new FakeClassList()
     };
   }
   /**
@@ -161,16 +161,16 @@ const panels = {
   "panel-overview": new FakeElement(),
   "panel-metrics": new FakeElement(),
   "panel-settings": new FakeElement(),
-  details: new FakeElement(),
+  details: new FakeElement()
 };
 const overviewTab = new FakeElement({
-  "aria-controls": "panel-overview",
+  "aria-controls": "panel-overview"
 });
 const metricsTab = new FakeElement({
-  "aria-controls": "panel-metrics",
+  "aria-controls": "panel-metrics"
 });
 const settingsTab = new FakeElement({
-  "aria-controls": "panel-settings",
+  "aria-controls": "panel-settings"
 });
 /** @type {FakeElement[]} */
 const tabs = [overviewTab, metricsTab, settingsTab];
@@ -180,10 +180,10 @@ const toggleStatus = new FakeElement();
 const saveDraft = new FakeElement();
 const disclosure = new FakeElement({
   "aria-controls": "details",
-  "aria-expanded": "false",
+  "aria-expanded": "false"
 });
 const density = new FakeElement({
-  "aria-checked": "false",
+  "aria-checked": "false"
 });
 const preview = new FakeDialog();
 const openPreview = new FakeElement();
@@ -196,13 +196,13 @@ const page = new FakeDocument(
     "[data-save-draft]": saveDraft,
     "[data-density]": density,
     "[data-open-preview]": openPreview,
-    "[data-close-preview]": closePreview,
+    "[data-close-preview]": closePreview
   },
   {
     "[role=tab]": tabs,
-    "[data-disclosure]": [disclosure],
+    "[data-disclosure]": [disclosure]
   },
-  panels,
+  panels
 );
 /** @type {string[]} */
 const fetched = [];
@@ -223,11 +223,11 @@ Object.assign(globalThis, {
     fetched.push(`${init.method ?? "GET"} ${url.toString()}`);
     return Promise.resolve({
       ok: false,
-      status: 500,
+      status: 500
     });
-  },
+  }
 });
-const { error, log, warn } = console;
+const {error, log, warn} = console;
 Object.assign(console, {
   /**
    * Capture an error message.
@@ -255,12 +255,12 @@ Object.assign(console, {
    */
   warn: message => {
     logged.push(String(message));
-  },
+  }
 });
 // The suite runs from the repository and from the coverage demo copy.
 const appUrl = [
   "../../../../demo/static/app.js",
-  "../../../demo/static/app.js",
+  "../../../demo/static/app.js"
 ]
   .map(relative => new URL(relative, import.meta.url))
   .find(candidate => existsSync(candidate));
@@ -272,7 +272,7 @@ await Promise.resolve();
 Object.assign(console, {
   error,
   log,
-  warn,
+  warn
 });
 const Controller = Reflect.get(globalThis, "demoController").constructor;
 test("nextStatus activates a ready state", () => {
@@ -344,7 +344,7 @@ test("handlers ignore events without an element target", () => {
   const controller = Reflect.get(globalThis, "demoController");
   /** @type {FakeEvent} */
   const event = {
-    currentTarget: null,
+    currentTarget: null
   };
   controller.selectTab(event);
   controller.toggleDisclosure(event);
@@ -353,17 +353,17 @@ test("handlers ignore events without an element target", () => {
 });
 test("controls without targets or a page lacking widgets are tolerated", async () => {
   const orphanTab = new FakeElement({
-    "aria-controls": "missing",
+    "aria-controls": "missing"
   });
   const orphanDisclosure = new FakeElement({
-    "aria-controls": "missing",
+    "aria-controls": "missing"
   });
   const bare = new FakeDocument(
     {},
     {
       "[role=tab]": [orphanTab],
-      "[data-disclosure]": [orphanDisclosure],
-    },
+      "[data-disclosure]": [orphanDisclosure]
+    }
   );
   const controller = new Controller(bare);
   orphanTab.click();

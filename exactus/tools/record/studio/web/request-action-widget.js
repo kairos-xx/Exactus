@@ -1,6 +1,6 @@
 /** Request-action editor shared by REST and WebSocket flow actions. */
-import { iconElement } from "./icons.js";
-import { variableMentionField } from "./variable-mention-field.js";
+import {iconElement} from "./icons.js";
+import {variableMentionField} from "./variable-mention-field.js";
 /** @typedef {import("./variable-mention-field.js").VariableSource} VariableSource */
 /** @typedef {"http"|"websocket"} RequestTransport */
 const VALUE_TYPES = Object.freeze([
@@ -8,7 +8,7 @@ const VALUE_TYPES = Object.freeze([
   ["integer", "Integer"],
   ["float", "Number"],
   ["boolean", "Boolean"],
-  ["json", "JSON"],
+  ["json", "JSON"]
 ]);
 /** Create an element and apply one class name.
  * @template {keyof HTMLElementTagNameMap} K
@@ -98,7 +98,7 @@ const pairRow = (kind, index, initial, variables) => {
     enabled: initialEnabled,
     key: initialKey,
     name: initialName,
-    value: initialValue,
+    value: initialValue
   } = initial;
   const row = make("div", "request-pair-row");
   row.setAttribute("data-request-row", kind);
@@ -121,7 +121,7 @@ const pairRow = (kind, index, initial, variables) => {
     enabled,
     key,
     variableMentionField(value, variables),
-    removeButton(`Remove ${kind}`, row),
+    removeButton(`Remove ${kind}`, row)
   );
   return row;
 };
@@ -137,7 +137,7 @@ const captureRow = (transport, index, initial) => {
     path: initialPath,
     required: initialRequired,
     source: initialSource,
-    value_type: initialValueType,
+    value_type: initialValueType
   } = initial;
   const row = make("div", "response-capture-row");
   row.setAttribute("data-request-row", "capture");
@@ -147,20 +147,20 @@ const captureRow = (transport, index, initial) => {
         ["body", "Response body"],
         ["header", "Response header"],
         ["status", "Status code"],
-        ["url", "Final URL"],
+        ["url", "Final URL"]
       ]
     : [
         ["message_json", "Last message JSON"],
         ["message_text", "Last message text"],
         ["protocol", "Negotiated protocol"],
         ["close_code", "Close code"],
-        ["messages", "All messages"],
+        ["messages", "All messages"]
       ];
   const source = selectControl(
     `capture_${index}_source`,
     "Response source",
     sources,
-    String(initialSource ?? sources[0]?.[0] ?? ""),
+    String(initialSource ?? sources[0]?.[0] ?? "")
   );
   const path = make("input");
   path.name = `capture_${index}_path`;
@@ -177,13 +177,13 @@ const captureRow = (transport, index, initial) => {
     `capture_${index}_value_type`,
     "Variable type",
     VALUE_TYPES,
-    String(initialValueType ?? "string"),
+    String(initialValueType ?? "string")
   );
   const required = selectControl(
     `capture_${index}_required`,
     "Missing response value",
     [["true", "Required"], ["false", "Optional"]],
-    String(initialRequired !== false),
+    String(initialRequired !== false)
   );
   row.append(
     source,
@@ -191,7 +191,7 @@ const captureRow = (transport, index, initial) => {
     name,
     type,
     required,
-    removeButton("Remove response variable", row),
+    removeButton("Remove response variable", row)
   );
   return row;
 };
@@ -206,7 +206,7 @@ const validationRow = (index, initial, variables) => {
     expected: initialExpected,
     kind: initialKind,
     operator: initialOperator,
-    path: initialPath,
+    path: initialPath
   } = initial;
   const row = make("div", "response-check-row");
   row.setAttribute("data-request-row", "validation");
@@ -214,7 +214,7 @@ const validationRow = (index, initial, variables) => {
     `validation_${index}_kind`,
     "Response value",
     [["status", "Status"], ["json", "JSON path"], ["header", "Header"], ["body", "Body"]],
-    String(initialKind ?? "status"),
+    String(initialKind ?? "status")
   );
   const path = make("input");
   path.name = `validation_${index}_path`;
@@ -225,7 +225,7 @@ const validationRow = (index, initial, variables) => {
     `validation_${index}_operator`,
     "Comparison",
     [["equals", "Equals"], ["contains", "Contains"], ["exists", "Exists"], ["matches", "Matches regex"]],
-    String(initialOperator ?? "equals"),
+    String(initialOperator ?? "equals")
   );
   const expected = make("input");
   expected.name = `validation_${index}_expected`;
@@ -237,7 +237,7 @@ const validationRow = (index, initial, variables) => {
     path,
     operator,
     variableMentionField(expected, variables),
-    removeButton("Remove response check", row),
+    removeButton("Remove response check", row)
   );
   return row;
 };
@@ -285,7 +285,7 @@ const addPairs = (panel, kind, initial, variables) => {
   add.type = "button";
   add.append(iconElement("plus"), kind === "query" ? "Add parameter" : "Add header");
   add.addEventListener("click", () =>
-    rows.append(pairRow(kind, rows.children.length, {}, variables)),
+    rows.append(pairRow(kind, rows.children.length, {}, variables))
   );
   for (const [index, item] of initial.entries())
     rows.append(pairRow(kind, index, objectValue(item), variables));
@@ -306,7 +306,7 @@ const addCaptures = (panel, transport, initial) => {
   add.type = "button";
   add.append(iconElement("plus"), "Add response variable");
   add.addEventListener("click", () =>
-    rows.append(captureRow(transport, rows.children.length, {})),
+    rows.append(captureRow(transport, rows.children.length, {}))
   );
   for (const [index, item] of initial.entries())
     rows.append(captureRow(transport, index, objectValue(item)));
@@ -321,7 +321,7 @@ const addCaptures = (panel, transport, initial) => {
  * @returns {HTMLElement}
  */
 export const requestActionWidget = options => {
-  const { transport, snapshot, variables, event: initial } = options;
+  const {transport, snapshot, variables, event: initial} = options;
   const root = make("div", "request-action-widget");
   root.setAttribute("data-request-transport", transport);
   const saved = selectControl("saved_request", "Saved request", [["", "New request"]], "");
@@ -343,7 +343,7 @@ export const requestActionWidget = options => {
       "method",
       "HTTP method",
       ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"].map(value => [value, value]),
-      "GET",
+      "GET"
     ));
   const url = make("input");
   url.name = "url";
@@ -365,7 +365,7 @@ export const requestActionWidget = options => {
       "body_format",
       "Body format",
       [["json", "JSON"], ["text", "Text"], ["xml", "XML"]],
-      "json",
+      "json"
     );
     const body = make("textarea");
     body.name = "body";
@@ -373,7 +373,7 @@ export const requestActionWidget = options => {
     body.setAttribute("aria-label", "Request body");
     bodyPanel.append(
       labelled("Format", bodyFormat, "request-compact-field"),
-      variableMentionField(body, variables),
+      variableMentionField(body, variables)
     );
     const checksPanel = tabPanel("checks", "Checks", tabs, panels);
     const validations = make("div", "rest-rows");
@@ -385,7 +385,7 @@ export const requestActionWidget = options => {
     addCheck.type = "button";
     addCheck.append(iconElement("plus"), "Add response check");
     addCheck.addEventListener("click", () =>
-      validations.append(validationRow(validations.children.length, {}, variables)),
+      validations.append(validationRow(validations.children.length, {}, variables))
     );
     checksPanel.append(addCheck);
     const capturePanel = tabPanel("captures", "Variables", tabs, panels);
@@ -409,7 +409,7 @@ export const requestActionWidget = options => {
     messagePanel.append(
       labelled("Protocols", variableMentionField(protocols, variables)),
       labelled("Send after connecting", variableMentionField(message, variables)),
-      labelled("Receive before closing", receiveCount, "request-compact-field"),
+      labelled("Receive before closing", receiveCount, "request-compact-field")
     );
     const capturePanel = tabPanel("captures", "Variables", tabs, panels);
     addCaptures(capturePanel, transport, []);
@@ -428,7 +428,7 @@ export const requestActionWidget = options => {
       "share_session_cookies",
       "Cookie source",
       [["true", "Browser session"], ["false", "Isolated request"]],
-      "true",
+      "true"
     );
     extra.append(labelled("Cookies", share, "request-compact-field"));
   }
@@ -442,7 +442,7 @@ export const requestActionWidget = options => {
    * @returns {void}
    */
   const load = event => {
-    const { method: eventMethod, payload: eventPayload, url: eventUrl } = event;
+    const {method: eventMethod, payload: eventPayload, url: eventUrl} = event;
     const config = parseConfig(String(eventPayload ?? "{}"));
     const {
       body: configBody,
@@ -455,21 +455,21 @@ export const requestActionWidget = options => {
       receive_count: configReceiveCount,
       share_session_cookies: configShareSessionCookies,
       timeout_ms: configTimeout,
-      validations: configValidations,
+      validations: configValidations
     } = config;
     url.value = String(eventUrl ?? "");
-    url.dispatchEvent(new Event("input", { bubbles: true }));
+    url.dispatchEvent(new Event("input", {bubbles: true}));
     const method = root.querySelector('[name="method"]');
     if (method instanceof HTMLSelectElement) method.value = String(eventMethod ?? "GET");
     const body = root.querySelector('[name="body"]');
     if (body instanceof HTMLTextAreaElement) {
       body.value = String(configBody?.content ?? configBody ?? "");
-      body.dispatchEvent(new Event("input", { bubbles: true }));
+      body.dispatchEvent(new Event("input", {bubbles: true}));
     }
     const message = root.querySelector('[name="message"]');
     if (message instanceof HTMLTextAreaElement) {
       message.value = String(configMessage ?? "");
-      message.dispatchEvent(new Event("input", { bubbles: true }));
+      message.dispatchEvent(new Event("input", {bubbles: true}));
     }
     for (const kind of ["query", "header"]) {
       const rows = root.querySelector(`[data-request-rows="${kind}"]`);
@@ -480,7 +480,7 @@ export const requestActionWidget = options => {
             return {
               enabled: true,
               key: key?.trim() || `Header ${index + 1}`,
-              value: parts.join(":").trim(),
+              value: parts.join(":").trim()
             };
           }).filter(item => item.value || !item.key.startsWith("Header "))
         : [];
@@ -502,7 +502,7 @@ export const requestActionWidget = options => {
       ["body_format", configBodyFormat ?? configBody?.format ?? "json"],
       ["protocols", Array.isArray(configProtocols) ? configProtocols.join(", ") : configProtocols ?? ""],
       ["receive_count", configReceiveCount ?? 1],
-      ["request_timeout_ms", configTimeout ?? 5000],
+      ["request_timeout_ms", configTimeout ?? 5000]
     ]) {
       const field = root.querySelector(`[name="${name}"]`);
       if (field instanceof HTMLInputElement || field instanceof HTMLSelectElement)
@@ -565,7 +565,7 @@ export const requestActionConfig = (form, transport) => transport === "http"
       timeout_ms: Number(valueOf(form, "request_timeout_ms") || 5000),
       share_session_cookies: valueOf(form, "share_session_cookies") === "true",
       validations: rowValues(form, "validation"),
-      captures: rowValues(form, "capture"),
+      captures: rowValues(form, "capture")
     }
   : {
       version: 2,
@@ -574,5 +574,5 @@ export const requestActionConfig = (form, transport) => transport === "http"
       message: valueOf(form, "message"),
       receive_count: Number(valueOf(form, "receive_count") || 0),
       timeout_ms: Number(valueOf(form, "request_timeout_ms") || 5000),
-      captures: rowValues(form, "capture"),
+      captures: rowValues(form, "capture")
     };

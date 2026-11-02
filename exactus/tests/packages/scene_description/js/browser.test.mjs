@@ -253,7 +253,7 @@
 	/** @type {TestResults} */
 	const results = {
 		passed: [],
-		failed: [],
+		failed: []
 	};
 	/** @type {RuntimeGlobals} */
 	const runtimeGlobals = /** @type {RuntimeGlobals} */ (
@@ -273,7 +273,7 @@
 		}
 		results.failed.push({
 			name,
-			error: error instanceof Error ? error.message : String(error),
+			error: error instanceof Error ? error.message : String(error)
 		});
 	};
 	/**
@@ -302,8 +302,8 @@
 	 */
 	const eq = (actual, expected, label = "") => {
 		if (actual !== expected) throw new Error(`${label} expected ${JSON.stringify(expected)}, got ${JSON.stringify(
-          actual,
-        )}`, );
+          actual
+        )}` );
 	};
 	/**
 	 * Assert truthiness.
@@ -331,7 +331,7 @@
 		} catch (error) {
 			if (kind !== null && !(error instanceof kind)) throw new Error(`${label} expected ${kind.name}, got ${
             error instanceof Error ? error.constructor.name : typeof error
-          }`, );
+          }` );
 			return error;
 		}
 		throw new Error(`${label} expected an exception`);
@@ -386,7 +386,7 @@
 		Object.defineProperty(globalThis, name, {
 			configurable: true,
 			writable: true,
-			value,
+			value
 		});
 	};
 	/**
@@ -410,7 +410,7 @@
 	ok(EvidenceRuntime, "EvidenceRuntime exposed");
 	// ── DOM fixture ─────────────────────────────────────────────────
 	const fixtureStyle = document.createElement("style");
-	fixtureStyle.textContent = ["body { margin: 0; font-family: sans-serif; }", ".box { position: relative; width: 900px; padding: 8px; }", ".card { position: relative; width: 240px; height: 80px; margin: 8px;", "  background: #def; border: 2px solid #369; border-radius: 6px; }", ".card::before { content: 'before'; color: #933; }", ".card::after { content: ''; display: block; width: 12px; height: 12px;", "  background: #393; }", ".moved { transform: translate(10px, 4px) rotate(2deg) scale(1.05); }", ".dim { opacity: 0.4; }", ".clipped { overflow: hidden; height: 20px; }", ".offscreen { position: absolute; left: -9999px; top: 0; }", ".scroller { width: 200px; height: 100px; overflow: auto; }", ".scroller > div { height: 600px; background: linear-gradient(#fff,#000); }", "mark { background: #fd3; }", "@media (min-width: 1px) { .card { outline: 1px solid #369; } }", ].join("\n");
+	fixtureStyle.textContent = ["body { margin: 0; font-family: sans-serif; }", ".box { position: relative; width: 900px; padding: 8px; }", ".card { position: relative; width: 240px; height: 80px; margin: 8px;", "  background: #def; border: 2px solid #369; border-radius: 6px; }", ".card::before { content: 'before'; color: #933; }", ".card::after { content: ''; display: block; width: 12px; height: 12px;", "  background: #393; }", ".moved { transform: translate(10px, 4px) rotate(2deg) scale(1.05); }", ".dim { opacity: 0.4; }", ".clipped { overflow: hidden; height: 20px; }", ".offscreen { position: absolute; left: -9999px; top: 0; }", ".scroller { width: 200px; height: 100px; overflow: auto; }", ".scroller > div { height: 600px; background: linear-gradient(#fff,#000); }", "mark { background: #fd3; }", "@media (min-width: 1px) { .card { outline: 1px solid #369; } }"].join("\n");
 	document.head.appendChild(fixtureStyle);
 	const root = document.createElement("div");
 	root.className = "box";
@@ -570,7 +570,7 @@
 	photo2.src = cv.toDataURL("image/webp", 0.9);
 	cardImg.src = pngUrl;
 	await Promise.all(
-		[pngImage, photo, photo2, cardImg].map(image => image.decode().catch(() => undefined), ), );
+		[pngImage, photo, photo2, cardImg].map(image => image.decode().catch(() => undefined) ) );
 	const videoCanvas = document.createElement("canvas");
 	videoCanvas.width = 96;
 	videoCanvas.height = 54;
@@ -609,9 +609,9 @@
 			context.fillStyle = computedStyle.color || "#000";
 			context.font = computedStyle.font || "10px sans-serif";
 			context.fillText(
-				(element.textContent || element.tagName).trim().slice(0, 60), 2, canvas.height - 2, );
+				(element.textContent || element.tagName).trim().slice(0, 60), 2, canvas.height - 2 );
 			return canvas;
-		},
+		}
 	};
 	setGlobal("htmlToImage", htmlToImage);
 	// ── Descriptor.describe ─────────────────────────────────────────
@@ -630,21 +630,21 @@
 				/** @type {Element} */
 				(
 					/** @type {unknown} */
-					("p")), ), TypeError, "string root", );
+					("p")) ), TypeError, "string root" );
 		await throws(
 			() => Descriptor.describe(
 				/** @type {Element} */
 				(
 					/** @type {unknown} */
-					(null)), ), TypeError, "null root", );
+					(null)) ), TypeError, "null root" );
 		await throws(
 			() => Descriptor.describe(root, {
-				onComplete: 42,
-			}), TypeError, "numeric callback", );
+				onComplete: 42
+			}), TypeError, "numeric callback" );
 		await throws(
 			() => Descriptor.describe(root, {
-				requestId: {},
-			}), TypeError, "object requestId", );
+				requestId: {}
+			}), TypeError, "object requestId" );
 		const hidden = document.createElement("div");
 		await throws(() => Descriptor.describe(hidden), null, "unattached root");
 	});
@@ -661,14 +661,14 @@
 			onComplete: () => {
 				called += 1;
 			},
-			requestId: 9,
+			requestId: 9
 		});
 		eq(third.metadata.requestId, 9, "requestId number");
 		eq(called, 2, "onComplete invoked");
 	});
 	/** @type {Record<string, unknown>[]} */
 	const optionSets = [{
-		includeComputedStyle: true,
+		includeComputedStyle: true
 	}, {
 		includeElementScreenshots: true,
 		elementScreenshotMime: "image/webp",
@@ -676,7 +676,7 @@
 		elementScreenshotMaxDimension: 200,
 		elementScreenshotConcurrency: 2,
 		elementScreenshotSkipAutoScale: true,
-		elementScreenshotBackground: "#fff",
+		elementScreenshotBackground: "#fff"
 	}, {
 		includeBinary: true,
 		includeIconMarkup: true,
@@ -686,46 +686,46 @@
 		iconMaxHeightFraction: 0.9,
 		iconMaxAreaFraction: 0.9,
 		iconGridColumns: 2,
-		iconGridRows: 2,
+		iconGridRows: 2
 	}, {
-		compactSvgIcons: false,
+		compactSvgIcons: false
 	}, {
 		includeRelationships: false,
-		inferSpatialLayouts: false,
+		inferSpatialLayouts: false
 	}, {
 		inferSpatialLayouts: true,
 		spatialMaxTracks: 3,
-		spatialTolerance: 0.2,
+		spatialTolerance: 0.2
 	}, {
-		includeOffscreenScrollable: false,
+		includeOffscreenScrollable: false
 	}, {
-		opacityThreshold: 0.9,
+		opacityThreshold: 0.9
 	}, {
 		gridColumns: 2,
 		gridRows: 2,
 		mediaRegionSimilarityContrast: 0.5,
-		mediaRegionColorDistance: 0.5,
+		mediaRegionColorDistance: 0.5
 	}, {
-		includeBinary: false,
+		includeBinary: false
 	}, {
-		maxRasterDimension: 64,
+		maxRasterDimension: 64
 	}, {
 		includeElementScreenshots: true,
 		elementScreenshotSkipAutoScale: false,
 		elementScreenshotMaxDimension: 3000,
-		elementScreenshotMime: "image/png",
+		elementScreenshotMime: "image/png"
 	}, {
 		inferSpatialLayouts: true,
-		spatialMaxTracks: 16,
-	}, ];
+		spatialMaxTracks: 16
+	}];
 	await Promise.all(optionSets.map((options, index) => test(`describe option set ${index}`, async () => {
 		const output = await Descriptor.describe(root, options);
 		ok(output && typeof output === "object", "scene produced");
-	}), ), );
+	}) ) );
 	await test("describe on nested subtree", async () => {
 		const form = elementById("form", HTMLFormElement);
 		const output = await Descriptor.describe(form, {
-			includeRelationships: true,
+			includeRelationships: true
 		});
 		ok(Object.keys(output.elements).length > 5, "form elements");
 	});
@@ -735,7 +735,7 @@
 	await test("SceneBinaryBundle.create externalizes binary assets", async () => {
 		const rich = await Descriptor.describe(root, {
 			includeBinary: true,
-			includeIconBinary: true,
+			includeIconBinary: true
 		});
 		bundle = await SceneBinaryBundle.create(rich);
 		ok(bundle.manifest && typeof bundle.manifest === "object", "manifest");
@@ -752,27 +752,27 @@
 			none: null,
 			nested: {
 				deep: {
-					deeper: [true, false, null, "x", -1, 3.14],
-				},
+					deeper: [true, false, null, "x", -1, 3.14]
+				}
 			},
-			unicode: "héllo→世界",
+			unicode: "héllo→世界"
 		};
 		const files = new Map([
 			["a.txt",
 				new Blob(["hi"], {
-					type: "text/plain",
-				}),
-			],
+					type: "text/plain"
+				})
+			]
 		]);
 		const zipOutput = await SceneBinaryBundle.zip(manifest, files);
 		ok(
-			(zipOutput instanceof Blob ? zipOutput.size : zipOutput.byteLength) > 0, "zip output", );
+			(zipOutput instanceof Blob ? zipOutput.size : zipOutput.byteLength) > 0, "zip output" );
 		const tarOutput = await SceneBinaryBundle.tar(manifest, files);
 		ok(
-			(tarOutput instanceof Blob ? tarOutput.size : tarOutput.byteLength) > 0, "tar output", );
-		const messagePackOutput = await SceneBinaryBundle.messagePack(manifest, files, );
+			(tarOutput instanceof Blob ? tarOutput.size : tarOutput.byteLength) > 0, "tar output" );
+		const messagePackOutput = await SceneBinaryBundle.messagePack(manifest, files );
 		ok(
-			(messagePackOutput instanceof Blob ? messagePackOutput.size : messagePackOutput.byteLength) > 0, "messagePack output", );
+			(messagePackOutput instanceof Blob ? messagePackOutput.size : messagePackOutput.byteLength) > 0, "messagePack output" );
 		const gzipOutput = await SceneBinaryBundle.gzip(manifest, files);
 		ok(gzipOutput.size > 0, "gzip output");
 		const zstdOutput = await SceneBinaryBundle.zstd(manifest, files);
@@ -781,7 +781,7 @@
 			const brotliOutput = await SceneBinaryBundle.brotli(manifest, files);
 			ok(brotliOutput.size > 0, "brotli output");
 		} else await throws(
-			() => SceneBinaryBundle.brotli(manifest, files), Error, "brotli unsupported", );
+			() => SceneBinaryBundle.brotli(manifest, files), Error, "brotli unsupported" );
 	});
 	await test("SceneBinaryBundle helpers", async () => {
 		eq(SceneBinaryBundle.label("zip"), "JSON + ZIP");
@@ -790,20 +790,20 @@
 		eq(SceneBinaryBundle.label("unknown-format"), "unknown-format");
 		eq(typeof SceneBinaryBundle.compressionSupported("gzip"), "boolean");
 		let clicked = 0;
-		const originalDescriptor = Object.getOwnPropertyDescriptor(HTMLAnchorElement.prototype, "click", );
+		const originalDescriptor = Object.getOwnPropertyDescriptor(HTMLAnchorElement.prototype, "click" );
 		Object.defineProperty(HTMLAnchorElement.prototype, "click", {
 			configurable: true,
 			value: () => {
 				clicked += 1;
-			},
+			}
 		});
 		try {
 			await SceneBinaryBundle.download({
-				a: 1,
-			}, new Map(), "zip", );
+				a: 1
+			}, new Map(), "zip" );
 		} finally {
 			if (originalDescriptor === undefined) Reflect.deleteProperty(HTMLAnchorElement.prototype, "click");
-			else Object.defineProperty(HTMLAnchorElement.prototype, "click", originalDescriptor, );
+			else Object.defineProperty(HTMLAnchorElement.prototype, "click", originalDescriptor );
 		}
 		eq(clicked, 1, "download click");
 	});
@@ -811,7 +811,7 @@
 	await test("captureElementDataUrl returns an encoded frame", async () => {
 		const card = queryElement(root, ".card", HTMLDivElement);
 		const url = await Descriptor.captureElementDataUrl(card, {
-			mime: "image/png",
+			mime: "image/png"
 		});
 		ok(url.startsWith("data:image/"), "data url prefix");
 	});
@@ -819,46 +819,46 @@
 		const card = queryElement(root, ".card", HTMLDivElement);
 		try {
 			const result = await Descriptor.copyElementScreenshot(card, {
-				mime: "image/png",
+				mime: "image/png"
 			});
 			ok(result.blob.size > 0, "clipboard blob");
 		} catch (error) {
-			ok(/clipboard|not supported|denied|permission/i.test(String(error)), `unexpected copy error ${String(error)}`, );
+			ok(/clipboard|not supported|denied|permission/i.test(String(error)), `unexpected copy error ${String(error)}` );
 		}
 	});
 	// ── RollingCapture ──────────────────────────────────────────────
 	await test("RollingCapture validates configuration", async () => {
 		await throws(
 			() => new RollingCapture({
-				quality: "bogus",
-			}), Error, "quality", );
+				quality: "bogus"
+			}), Error, "quality" );
 		await throws(
 			() => new RollingCapture({
-				window: 0,
-			}), RangeError, "window", );
+				window: 0
+			}), RangeError, "window" );
 		await throws(
 			() => new RollingCapture({
-				segmentDuration: -1,
-			}), RangeError, );
+				segmentDuration: -1
+			}), RangeError );
 		await throws(
 			() => new RollingCapture({
-				maxCaptures: 0,
-			}), RangeError, );
+				maxCaptures: 0
+			}), RangeError );
 		await throws(
 			() => new RollingCapture({
-				target: "#missing-target",
-			}), Error, "missing target", );
+				target: "#missing-target"
+			}), Error, "missing target" );
 		await throws(
 			() => new RollingCapture({
-				target: document.createElement("div"),
-			}), TypeError, "non-streamable target", );
+				target: document.createElement("div")
+			}), TypeError, "non-streamable target" );
 	});
 	const rolling = new RollingCapture({
 		target: videoCanvas,
 		quality: "low",
 		window: 2000,
 		segmentDuration: 60,
-		eventPrefix: "testcap",
+		eventPrefix: "testcap"
 	});
 	await test("RollingCapture lifecycle", async () => {
 		ok(rolling.config().target === null, "config snapshot");
@@ -883,18 +883,18 @@
 		ok(rolling.quality.fps === 15, "low quality preset");
 		await throws(
 			() => rolling.set({
-				quality: "high",
-			}), Error, "set while armed", );
+				quality: "high"
+			}), Error, "set while armed" );
 		await throws(
-			() => rolling.setTarget(videoCanvas), Error, "target while armed", );
+			() => rolling.setTarget(videoCanvas), Error, "target while armed" );
 	});
 	await test("RollingCapture record/stop/results", async () => {
 		const pump = setInterval(draw, 15);
 		const video = await rolling.record({
 			duration: 600,
 			metadata: {
-				t: 1,
-			},
+				t: 1
+			}
 		});
 		clearInterval(pump);
 		ok(video.id, "video id");
@@ -908,21 +908,21 @@
 		ok(await rolling.stop("nope") === null, "stop unknown is null");
 		await throws(
 			() => rolling.start({
-				before: -1,
-			}), RangeError, "negative before", );
+				before: -1
+			}), RangeError, "negative before" );
 		await throws(
 			() => rolling.start({
-				before: 99999,
-			}), RangeError, "before exceeds window", );
+				before: 99999
+			}), RangeError, "before exceeds window" );
 		const started = await rolling.start({
 			id: "manual",
-			duration: 0,
+			duration: 0
 		});
 		eq(started.id, "manual", "manual id");
 		await throws(
 			() => rolling.start({
-				id: "manual",
-			}), Error, "duplicate id", );
+				id: "manual"
+			}), Error, "duplicate id" );
 		const secondPump = setInterval(draw, 15);
 		await sleep(200);
 		const stopped = await rolling.stop("manual");
@@ -934,26 +934,26 @@
 	await test("RollingCapture snapshot and images", async () => {
 		const image = await rolling.snapshot({
 			target: videoCanvas,
-			scale: 0.5,
+			scale: 0.5
 		});
 		eq(image.kind, "capture", "image kind");
 		ok(image.size > 0, "image bytes");
 		await throws(
 			() => rolling.snapshot({
 				target: videoCanvas,
-				scale: 0,
-			}), RangeError, "scale", );
+				scale: 0
+			}), RangeError, "scale" );
 		await throws(
 			() => rolling.snapshot({
-				target: "#nope",
-			}), Error, "missing", );
+				target: "#nope"
+			}), Error, "missing" );
 	});
 	await test("RollingCapture snapshot of plain elements", async () => {
 		const card = queryElement(root, ".card", HTMLDivElement);
 		const pngCapture = await rolling.snapshot({
 			target: card,
 			background: "#fff",
-			scale: 1,
+			scale: 1
 		});
 		ok(pngCapture.size > 0, "dom snapshot bytes");
 		const webp = await rolling.snapshot({
@@ -961,22 +961,22 @@
 			type: "image/webp",
 			quality: 0.7,
 			metadata: {
-				tag: "card",
-			},
+				tag: "card"
+			}
 		});
 		eq(webp.kind, "capture", "webp capture");
 		const scaled = await rolling.snapshot({
 			target: root,
-			scale: 0.5,
+			scale: 0.5
 		});
 		ok(typeof scaled.width === "number" && scaled.width > 0, "scaled snapshot");
 		const bigSvg = elementById("big", SVGSVGElement);
 		const svgShot = await rolling.snapshot({
-			target: bigSvg,
+			target: bigSvg
 		});
 		ok(svgShot.size > 0, "svg snapshot");
 		const imgShot = await rolling.snapshot({
-			target: photo,
+			target: photo
 		});
 		ok(imgShot.size > 0, "img snapshot");
 	});
@@ -986,13 +986,13 @@
 			const card = queryElement(root, ".card", HTMLDivElement);
 			const output = await rolling.snapshot({
 				target: card,
-				scale: 0.5,
+				scale: 0.5
 			});
 			ok(output.size > 0, "fallback snapshot bytes");
 			const title = document.getElementById("title");
 			if (!(title instanceof HTMLElement)) throw new TypeError("Expected #title to be an HTMLElement.");
 			const text = await rolling.snapshot({
-				target: title,
+				target: title
 			});
 			ok(text.size > 0, "text snapshot bytes");
 		} finally {
@@ -1011,30 +1011,30 @@
 			 */
 			async payload => {
 				transferEvents.push(payload);
-			}, );
+			} );
 		const pump = setInterval(draw, 15);
 		const video = await rolling.record({
-			duration: 500,
+			duration: 500
 		});
 		clearInterval(pump);
 		const output = await rolling.transfer(video.id, {
-			chunkSize: 1024,
+			chunkSize: 1024
 		});
 		ok(output.transferId, "transfer id");
-		ok(transferEvents.some(event => event.event === "transfer-start"), "start event", );
-		ok(transferEvents.some(event => event.event === "transfer-end"), "end event", );
+		ok(transferEvents.some(event => event.event === "transfer-start"), "start event" );
+		ok(transferEvents.some(event => event.event === "transfer-end"), "end event" );
 		await throws(
-			() => rolling.transfer("missing-id"), Error, "unknown transfer", );
+			() => rolling.transfer("missing-id"), Error, "unknown transfer" );
 		await throws(
 			() => rolling.transfer(video.id, {
-				chunkSize: 0,
-			}), RangeError, "chunkSize", );
+				chunkSize: 0
+			}), RangeError, "chunkSize" );
 		removeGlobal("__evidenceSink");
 		await throws(() => rolling.transfer(video.id), Error, "no sink");
 	});
 	await test("RollingCapture disarm and clear", async () => {
 		const pending = await rolling.start({
-			id: "pending",
+			id: "pending"
 		});
 		eq(pending.id, "pending", "pending started");
 		await throws(() => rolling.disarm(), Error, "active captures block");
@@ -1042,7 +1042,7 @@
 		await sleep(400);
 		const status = await rolling.disarm({
 			force: true,
-			clear: true,
+			clear: true
 		});
 		clearInterval(pump);
 		eq(status.armed, false, "disarmed");
@@ -1054,17 +1054,17 @@
 			target: videoCanvas,
 			quality: {
 				fps: 12,
-				videoBitsPerSecond: 123,
+				videoBitsPerSecond: 123
 			},
-			fps: 7,
+			fps: 7
 		});
 		eq(custom.quality.fps, 7, "fps override");
 		eq(custom.quality.videoBitsPerSecond, 123, "bitrate");
 		const configuredQuality = custom.config().quality;
-		ok(typeof configuredQuality === "object" && configuredQuality !== null && "fps" in configuredQuality && configuredQuality.fps === 12, "config quality object", );
+		ok(typeof configuredQuality === "object" && configuredQuality !== null && "fps" in configuredQuality && configuredQuality.fps === 12, "config quality object" );
 		const named = new RollingCapture({
 			quality: "ultra",
-			target: videoCanvas,
+			target: videoCanvas
 		});
 		eq(named.quality.fps, 60, "ultra preset");
 		named.remove("x");
@@ -1075,35 +1075,35 @@
 			target: videoCanvas,
 			eventPrefix: "testrt",
 			diagnostics: {
-				interval: 25,
+				interval: 25
 			},
 			maxDescriptions: 3,
-			maxTimelineEntries: 50,
+			maxTimelineEntries: 50
 		});
 		eq(runtime.config().eventPrefix, "testrt", "prefix");
 		const status = runtime.status();
 		ok(status.memory, "memory report");
 		eq(status.modes.join(","), "video,capture,description", "modes");
 		runtime.mark("note", {
-			a: 1,
+			a: 1
 		});
 		const marks = runtime.markers();
 		eq(marks.length, 1, "one marker");
 		eq(marks[0]?.type, "note", "marker type");
 		eq(runtime.markers({
-			since: Date.now() + 99999,
-		}).length, 0, "since filter", );
+			since: Date.now() + 99999
+		}).length, 0, "since filter" );
 		await throws(
 			() => runtime.evidence({
-				modes: ["bogus"],
-			}), TypeError, "mode validation", );
+				modes: ["bogus"]
+			}), TypeError, "mode validation" );
 		await throws(
 			() => runtime.evidence({
 				modes: ["video"],
-				duration: 0,
-			}), Error, "video needs duration", );
+				duration: 0
+			}), Error, "video needs duration" );
 		runtime.startDiagnostics({
-			interval: 20,
+			interval: 20
 		});
 		/**
 		 * Append one diagnostic mutation.
@@ -1118,7 +1118,7 @@
 			await sleep(15);
 		};
 		await [0, 1, 2, 3, 4].reduce(
-			(previous, index) => previous.then(() => appendMutation(index)), Promise.resolve(), );
+			(previous, index) => previous.then(() => appendMutation(index)), Promise.resolve() );
 		ok(runtime.diagnostics().length > 0, "diagnostics collected");
 		runtime.stopDiagnostics();
 		await throws(() => runtime.transfer("nope"), Error, "no such transfer");
@@ -1127,21 +1127,21 @@
 			modes: ["capture", "description"],
 			target: videoCanvas,
 			metadata: {
-				run: 1,
+				run: 1
 			},
 			description: {
 				options: {
-					includeRelationships: false,
-				},
-			},
+					includeRelationships: false
+				}
+			}
 		});
 		clearInterval(pump);
 		ok(output.capture && output.capture.kind === "capture", "capture mode");
-		ok(output.description && output.description.kind === "description", "describe mode", );
+		ok(output.description && output.description.kind === "description", "describe mode" );
 		ok(Array.isArray(output.markers), "markers in output");
 		const described = await runtime.describe({
 			target: videoCanvas,
-			externalizeBinary: false,
+			externalizeBinary: false
 		});
 		ok(described.manifest, "describe alias manifest");
 		/** @type {SinkPayload[]} */
@@ -1155,9 +1155,9 @@
 			 */
 			async payload => {
 				sinkEvents.push(payload);
-			}, );
+			} );
 		const transfer = await runtime.transfer(described.id, {
-			sink: "__rtSink",
+			sink: "__rtSink"
 		});
 		ok(transfer.transferId, "description transfer");
 		ok(sinkEvents.length >= 3, "sink received chunks");
@@ -1174,7 +1174,7 @@
 			quality: "low",
 			window: 1500,
 			segmentDuration: 60,
-			eventPrefix: "testvid",
+			eventPrefix: "testvid"
 		});
 		/** @type {string[]} */
 		const resultEvents = [];
@@ -1190,8 +1190,8 @@
 			duration: 500,
 			before: 0,
 			metadata: {
-				m: 2,
-			},
+				m: 2
+			}
 		});
 		clearInterval(pump);
 		ok(output.video && output.video.kind === "video", "video mode");

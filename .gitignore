@@ -42,7 +42,7 @@ node_modules/
 build/*
 !build/README.md
 exec/check
-packages/*/
 tool-linux-amd64-pyqt6.zip
-zip-components/
 exactus/vendor/
+/artifacts
+/artifacts/

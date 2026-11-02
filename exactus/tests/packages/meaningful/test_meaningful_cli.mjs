@@ -30,13 +30,13 @@ class MeaningfulCliHarness {
 		["-m", "exactus.packages.meaningful", ...args], {
 			cwd: MeaningfulCliHarness.root,
 			encoding: "utf8"
-		}, );
+		} );
 	static fixture = () => {
 		const root = mkdtempSync(join(tmpdir(), "meaningful-js-"));
 		const source = join(root, "src");
 		mkdirSync(source);
 		writeFileSync(join(source, "keep.py"), "VALUE = 1\n", "utf8");
-		writeFileSync(join(source, "behavior.py"), "def double(value: int) -> int:\n    return value * 2\n", "utf8", );
+		writeFileSync(join(source, "behavior.py"), "def double(value: int) -> int:\n    return value * 2\n", "utf8" );
 		return {
 			root,
 			source
@@ -61,7 +61,7 @@ test("CLI accepts thresholds, filters, and evidence context", () => {
 	} = MeaningfulCliHarness.fixture();
 	const result = MeaningfulCliHarness.run([
 		join(source, "*.py"), "--exclude",
-		join(source, "keep.py"), "--threshold-test-0-to-1", "0", "--threshold-test-1-to-2", "0", "--threshold-test-2-to-3", "0", "--evidence-context", "0",
+		join(source, "keep.py"), "--threshold-test-0-to-1", "0", "--threshold-test-1-to-2", "0", "--threshold-test-2-to-3", "0", "--evidence-context", "0"
 	]);
 	assert.equal(result.status, 0, result.stderr);
 	const payload = JSON.parse(result.stdout);

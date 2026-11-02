@@ -20,7 +20,7 @@ export const groupCaptures = (screenshots, flows, labelOf) => {
         key,
         flowName: flow?.name ?? "Flow",
         label: event ? labelOf(event) : shot.phase,
-        shots: [],
+        shots: []
       };
       groups.set(key, group);
     }
@@ -42,6 +42,6 @@ export const pairFor = (groups, key) => {
   return {
     group,
     expected: group.shots.length > 1 ? group.shots[0] : undefined,
-    actual: group.shots.at(-1),
+    actual: group.shots.at(-1)
   };
 };

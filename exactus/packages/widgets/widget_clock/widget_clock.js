@@ -6,32 +6,32 @@ class AnalogClock {
   static #sheet = (() => {
     const sheet = new CSSStyleSheet();
     sheet.replaceSync(
-      '.sst-root {\n  position: relative;\n  inline-size: 100%;\n  block-size: 100%;\n  overflow: hidden;\n  display: flex;\n  align-items: center;\n  justify-content: var(--sst-align,center);\n  background: var(--sst-bg);\n  padding: var(--sst-padding);\n  container-type: size;\n}\n\n.sst-stage {\n  display: flex;\n  align-items: center;\n  justify-content: flex-start;\n  gap: var(--sst-widget-gap);\n  transform: scale(var(--sst-scale));\n  transform-origin: center center;\n  inline-size: max-content;\n  block-size: max-content;\n  flex: none;\n}\n\n.sst-clock {\n  display: flex;\n  align-items: center;\n  gap: 0;\n  flex: none;\n}\n\n.sst-root[data-mode="matrix"] .sst-stage {\n  transform: none;\n}\n\n.sst-root[data-mode="matrix"][data-matrix-layout="target"] .sst-stage,\n      .sst-root[data-mode="matrix"][data-matrix-layout="target"] .sst-clock {\n  inline-size: 100%;\n  block-size: 100%;\n}\n\n.sst-root[data-mode="matrix"][data-matrix-layout="target"] .sst-matrix {\n  inline-size: max-content;\n  block-size: max-content;\n}\n\n.sst-group {\n  display: flex;\n  align-items: center;\n  column-gap: var(--sst-digit-gap);\n  flex: none;\n}\n\n.sst-between {\n  margin-inline-start: var(--sst-group-gap);\n  margin-inline-end: var(--sst-group-gap);\n}\n\n.sst-digit {\n  inline-size: var(--sst-digit-width);\n  block-size: 192px;\n  overflow: visible;\n  flex: none;\n}\n\n.sst-separator {\n  inline-size: var(--sst-separator-width);\n  block-size: 192px;\n  overflow: visible;\n  flex: none;\n}\n\n.sst-matrix {\n  display: grid;\n  grid-template-columns: repeat(\n          var(--sst-matrix-cols),\n          var(--sst-matrix-dot)\n        );\n  grid-template-rows: repeat(\n          var(--sst-matrix-rows),\n          var(--sst-matrix-dot)\n        );\n  gap: var(--sst-matrix-gap);\n  align-content: center;\n  justify-content: center;\n  inline-size: max-content;\n  block-size: max-content;\n  flex: none;\n}\n\n.sst-matrix[data-layout="target"] {\n  inline-size: 100%;\n  block-size: 100%;\n  grid-template-columns: repeat(\n          var(--sst-matrix-physical-cols),\n          var(--sst-matrix-dot)\n        );\n  grid-template-rows: repeat(\n          var(--sst-matrix-physical-rows),\n          var(--sst-matrix-dot)\n        );\n  gap: var(--sst-matrix-gap);\n  align-content: center;\n  justify-content: center;\n}\n\n.sst-matrix-dot {\n  inline-size: var(--sst-matrix-dot);\n  min-inline-size: var(--sst-matrix-dot);\n  max-inline-size: var(--sst-matrix-dot);\n  block-size: var(--sst-matrix-dot);\n  min-block-size: var(--sst-matrix-dot);\n  max-block-size: var(--sst-matrix-dot);\n  place-self: center;\n  border-radius: 50%;\n  background: var(--sst-matrix-off);\n  opacity: 1;\n  transition: opacity var(--sst-dot-time) ease;\n}\n\n.sst-matrix-dot.sst-on {\n  background: var(--sst-matrix-on);\n  box-shadow: var(--sst-matrix-glow);\n}\n\n.sst-custom-marker {\n  display: flex;\n  align-items: flex-end;\n  justify-content: center;\n  min-inline-size: var(--marker-size);\n  margin-inline-start: var(--marker-before);\n  margin-inline-end: var(--marker-after);\n  color: var(--marker-color);\n  font-size: var(--marker-size);\n  line-height: 1;\n  text-shadow: 0 0 var(--marker-glow-size) var(--marker-glow-color);\n  flex: none;\n  transition: opacity var(--sst-dot-time) ease;\n}\n\n.sst-segment {\n  fill: var(--sst-off);\n  transition: fill var(--sst-off-time) var(--sst-ease),\n          filter var(--sst-off-time) var(--sst-ease);\n}\n\n.sst-segment.sst-on {\n  fill: var(--sst-on);\n  filter: drop-shadow(var(--sst-segment-glow));\n  transition-duration: var(--sst-on-time),var(--sst-on-time);\n}\n\n.sst-dot {\n  fill: var(--sst-on);\n  opacity: 1;\n  transition: opacity var(--sst-dot-time) ease;\n}\n\n.sst-blink .sst-dot,\n      .sst-blink .sst-matrix-dot.sst-separator-dot[data-blink="true"],\n      .sst-blink .sst-custom-marker[data-blink="true"] {\n  opacity: 0;\n}\n\n.sst-rec {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  gap: var(--sst-rec-gap);\n  flex: none;\n  min-block-size: 192px;\n  color: var(--sst-rec-text);\n  font-family: var(--sst-rec-font);\n  font-size: var(--sst-rec-font-size);\n  font-weight: var(--sst-rec-weight);\n  letter-spacing: var(--sst-rec-spacing);\n  line-height: 1;\n}\n\n.sst-rec[data-visibility="reserved"] {\n  visibility: hidden;\n}\n\n.sst-rec[data-visibility="hidden"] {\n  display: none;\n}\n\n.sst-led {\n  inline-size: var(--sst-rec-size);\n  block-size: var(--sst-rec-size);\n  flex: none;\n  border-radius: 50%;\n  background: var(--sst-rec-off);\n  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 8%);\n}\n\n.sst-rec.sst-recording .sst-led {\n  background: var(--sst-rec-on);\n  box-shadow: var(--sst-rec-glow-effect);\n}\n\n.sst-rec.sst-pulse .sst-led {\n  animation: sst-pulse var(--sst-rec-pulse) ease-in-out infinite;\n}\n\n.sst-rec:not(.sst-enabled) {\n  opacity: .38;\n}\n\n@keyframes sst-pulse {\n0%,100%{opacity:1} 50%{opacity:.3}\n}\n\n@media (prefers-reduced-motion:reduce) {\n.sst-segment,.sst-dot { transition-duration:0ms; }\n        .sst-rec.sst-pulse .sst-led { animation:none; }\n}\n',
+      '.sst-root {\n  position: relative;\n  inline-size: 100%;\n  block-size: 100%;\n  overflow: hidden;\n  display: flex;\n  align-items: center;\n  justify-content: var(--sst-align,center);\n  background: var(--sst-bg);\n  padding: var(--sst-padding);\n  container-type: size;\n}\n\n.sst-stage {\n  display: flex;\n  align-items: center;\n  justify-content: flex-start;\n  gap: var(--sst-widget-gap);\n  transform: scale(var(--sst-scale));\n  transform-origin: center center;\n  inline-size: max-content;\n  block-size: max-content;\n  flex: none;\n}\n\n.sst-clock {\n  display: flex;\n  align-items: center;\n  gap: 0;\n  flex: none;\n}\n\n.sst-root[data-mode="matrix"] .sst-stage {\n  transform: none;\n}\n\n.sst-root[data-mode="matrix"][data-matrix-layout="target"] .sst-stage,\n      .sst-root[data-mode="matrix"][data-matrix-layout="target"] .sst-clock {\n  inline-size: 100%;\n  block-size: 100%;\n}\n\n.sst-root[data-mode="matrix"][data-matrix-layout="target"] .sst-matrix {\n  inline-size: max-content;\n  block-size: max-content;\n}\n\n.sst-group {\n  display: flex;\n  align-items: center;\n  column-gap: var(--sst-digit-gap);\n  flex: none;\n}\n\n.sst-between {\n  margin-inline-start: var(--sst-group-gap);\n  margin-inline-end: var(--sst-group-gap);\n}\n\n.sst-digit {\n  inline-size: var(--sst-digit-width);\n  block-size: 192px;\n  overflow: visible;\n  flex: none;\n}\n\n.sst-separator {\n  inline-size: var(--sst-separator-width);\n  block-size: 192px;\n  overflow: visible;\n  flex: none;\n}\n\n.sst-matrix {\n  display: grid;\n  grid-template-columns: repeat(\n          var(--sst-matrix-cols),\n          var(--sst-matrix-dot)\n        );\n  grid-template-rows: repeat(\n          var(--sst-matrix-rows),\n          var(--sst-matrix-dot)\n        );\n  gap: var(--sst-matrix-gap);\n  align-content: center;\n  justify-content: center;\n  inline-size: max-content;\n  block-size: max-content;\n  flex: none;\n}\n\n.sst-matrix[data-layout="target"] {\n  inline-size: 100%;\n  block-size: 100%;\n  grid-template-columns: repeat(\n          var(--sst-matrix-physical-cols),\n          var(--sst-matrix-dot)\n        );\n  grid-template-rows: repeat(\n          var(--sst-matrix-physical-rows),\n          var(--sst-matrix-dot)\n        );\n  gap: var(--sst-matrix-gap);\n  align-content: center;\n  justify-content: center;\n}\n\n.sst-matrix-dot {\n  inline-size: var(--sst-matrix-dot);\n  min-inline-size: var(--sst-matrix-dot);\n  max-inline-size: var(--sst-matrix-dot);\n  block-size: var(--sst-matrix-dot);\n  min-block-size: var(--sst-matrix-dot);\n  max-block-size: var(--sst-matrix-dot);\n  place-self: center;\n  border-radius: 50%;\n  background: var(--sst-matrix-off);\n  opacity: 1;\n  transition: opacity var(--sst-dot-time) ease;\n}\n\n.sst-matrix-dot.sst-on {\n  background: var(--sst-matrix-on);\n  box-shadow: var(--sst-matrix-glow);\n}\n\n.sst-custom-marker {\n  display: flex;\n  align-items: flex-end;\n  justify-content: center;\n  min-inline-size: var(--marker-size);\n  margin-inline-start: var(--marker-before);\n  margin-inline-end: var(--marker-after);\n  color: var(--marker-color);\n  font-size: var(--marker-size);\n  line-height: 1;\n  text-shadow: 0 0 var(--marker-glow-size) var(--marker-glow-color);\n  flex: none;\n  transition: opacity var(--sst-dot-time) ease;\n}\n\n.sst-segment {\n  fill: var(--sst-off);\n  transition: fill var(--sst-off-time) var(--sst-ease),\n          filter var(--sst-off-time) var(--sst-ease);\n}\n\n.sst-segment.sst-on {\n  fill: var(--sst-on);\n  filter: drop-shadow(var(--sst-segment-glow));\n  transition-duration: var(--sst-on-time),var(--sst-on-time);\n}\n\n.sst-dot {\n  fill: var(--sst-on);\n  opacity: 1;\n  transition: opacity var(--sst-dot-time) ease;\n}\n\n.sst-blink .sst-dot,\n      .sst-blink .sst-matrix-dot.sst-separator-dot[data-blink="true"],\n      .sst-blink .sst-custom-marker[data-blink="true"] {\n  opacity: 0;\n}\n\n.sst-rec {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  gap: var(--sst-rec-gap);\n  flex: none;\n  min-block-size: 192px;\n  color: var(--sst-rec-text);\n  font-family: var(--sst-rec-font);\n  font-size: var(--sst-rec-font-size);\n  font-weight: var(--sst-rec-weight);\n  letter-spacing: var(--sst-rec-spacing);\n  line-height: 1;\n}\n\n.sst-rec[data-visibility="reserved"] {\n  visibility: hidden;\n}\n\n.sst-rec[data-visibility="hidden"] {\n  display: none;\n}\n\n.sst-led {\n  inline-size: var(--sst-rec-size);\n  block-size: var(--sst-rec-size);\n  flex: none;\n  border-radius: 50%;\n  background: var(--sst-rec-off);\n  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 8%);\n}\n\n.sst-rec.sst-recording .sst-led {\n  background: var(--sst-rec-on);\n  box-shadow: var(--sst-rec-glow-effect);\n}\n\n.sst-rec.sst-pulse .sst-led {\n  animation: sst-pulse var(--sst-rec-pulse) ease-in-out infinite;\n}\n\n.sst-rec:not(.sst-enabled) {\n  opacity: .38;\n}\n\n@keyframes sst-pulse {\n0%,100%{opacity:1} 50%{opacity:.3}\n}\n\n@media (prefers-reduced-motion:reduce) {\n.sst-segment,.sst-dot { transition-duration:0ms; }\n        .sst-rec.sst-pulse .sst-led { animation:none; }\n}\n'
     );
     return sheet;
   })();
   /** @type {HTMLDivElement} */
   root = Object.assign(document.createElement("div"), {
-    className: "sst-root",
+    className: "sst-root"
   });
   /** @type {HTMLDivElement} */
   stage = Object.assign(document.createElement("div"), {
-    className: "sst-stage",
+    className: "sst-stage"
   });
   /** @type {HTMLDivElement} */
   clock = Object.assign(document.createElement("div"), {
     className: "sst-clock",
-    role: "timer",
+    role: "timer"
   });
   /** @type {HTMLDivElement} */
   rec = Object.assign(document.createElement("div"), {
     className: "sst-rec",
-    ariaLabel: "Recording indicator",
+    ariaLabel: "Recording indicator"
   });
   /** @type {HTMLSpanElement} */
   led = Object.assign(document.createElement("span"), {
     className: "sst-led",
-    ariaHidden: "true",
+    ariaHidden: "true"
   });
   /** @type {HTMLSpanElement} */
   recLabel = document.createElement("span");
@@ -56,7 +56,7 @@ class AnalogClock {
     7: "abc",
     8: "abcdefg",
     9: "abcdfg",
-    "-": "g",
+    "-": "g"
   });
   /** @type {ClockSettings} */
   static DEFAULTS = Object.freeze({
@@ -114,7 +114,7 @@ class AnalogClock {
     recWidgetGap: 20,
     background: "transparent",
     align: "center",
-    padding: 0,
+    padding: 0
   });
   static #instanceSheet = new CSSStyleSheet();
   static #installedDocuments = new WeakSet();
@@ -138,14 +138,14 @@ class AnalogClock {
     recFontFamily: ["--sst-rec-font", ""],
     recLetterSpacing: ["--sst-rec-spacing", "px"],
     background: ["--sst-bg", ""],
-    align: ["--sst-align", ""],
+    align: ["--sst-align", ""]
   });
   static isCssVariable = (/** @type {any} */ value) =>
     typeof value === "string" && /^--[a-zA-Z_][\w-]*$/.test(value);
   static resolveCssValue = (
     /** @type {any} */ name,
     /** @type {any} */ text,
-    /** @type {any} */ fallback,
+    /** @type {any} */ fallback
   ) => {
     if (!text.trim()) return fallback;
     const value = text.trim();
@@ -198,7 +198,7 @@ class AnalogClock {
       mode: ["segment", "matrix"],
       matrixLayout: ["content", "target"],
       recVisible: ["visible", "reserved", "hidden"],
-      align: ["flex-start", "center", "flex-end"],
+      align: ["flex-start", "center", "flex-end"]
     }).forEach((/** @type {any} */ [name, values]) => {
       if (
         settings[name] !== undefined &&
@@ -221,7 +221,7 @@ class AnalogClock {
       if (
         !Array.isArray(settings.structure) ||
         !settings.structure.some(
-          (/** @type {any} */ item) => item?.type === "group",
+          (/** @type {any} */ item) => item?.type === "group"
         )
       )
         throw new TypeError("structure must contain a digit group");
@@ -240,7 +240,7 @@ class AnalogClock {
         )
           return;
         throw new TypeError(
-          "structure entries must be digit groups (1–12 digits) or single-character markers",
+          "structure entries must be digit groups (1–12 digits) or single-character markers"
         );
       });
     }
@@ -255,18 +255,18 @@ class AnalogClock {
   static validateFps = (/** @type {any} */ fps) => {
     if (!Number.isInteger(fps) || fps < 1 || fps > 100)
       throw new RangeError(
-        "fps must be an integer from 1 to 100 (non-drop-frame)",
+        "fps must be an integer from 1 to 100 (non-drop-frame)"
       );
   };
   /** Non-drop-frame HH:MM:SS.FF, independent of timezone or wall clock. */
   static formatFrame = (
     /** @type {any} */ frame,
-    /** @type {any} */ { fps = 30 } = {},
+    /** @type {any} */ {fps = 30} = {}
   ) => {
     AnalogClock.validateFps(fps);
     if (!Number.isSafeInteger(frame) || frame < 0 || frame >= 360000 * fps)
       throw new RangeError(
-        "frame must be a non-negative integer below 100 hours",
+        "frame must be a non-negative integer below 100 hours"
       );
     const seconds = Math.floor(frame / fps);
     return `${AnalogClock.two(Math.floor(seconds / 3600))}:${AnalogClock.two(Math.floor(seconds / 60) % 60)}:${AnalogClock.two(seconds % 60)}.${AnalogClock.two(frame % fps)}`;
@@ -276,8 +276,8 @@ class AnalogClock {
     /** @type {number} */ milliseconds,
     /** @type {{fps?:number,precision?:"frames"|"milliseconds"}} */ {
       fps = 30,
-      precision = "frames",
-    } = {},
+      precision = "frames"
+    } = {}
   ) => {
     AnalogClock.validateFps(fps);
     if (
@@ -286,14 +286,14 @@ class AnalogClock {
       milliseconds >= 360000000
     )
       throw new RangeError(
-        "time must be finite milliseconds from 0 to below 100 hours",
+        "time must be finite milliseconds from 0 to below 100 hours"
       );
     if (precision === "milliseconds")
-      return `${AnalogClock.formatFrame(Math.floor(milliseconds / 1000) * fps, { fps }).slice(0, -2)}${String(Math.floor(milliseconds) % 1000).padStart(3, "0")}`;
+      return `${AnalogClock.formatFrame(Math.floor(milliseconds / 1000) * fps, {fps}).slice(0, -2)}${String(Math.floor(milliseconds) % 1000).padStart(3, "0")}`;
     if (precision !== "frames")
       throw new TypeError("precision must be frames or milliseconds");
     return AnalogClock.formatFrame(Math.floor(milliseconds * fps / 1000), {
-      fps,
+      fps
     });
   };
   #destroyed = false;
@@ -335,10 +335,10 @@ class AnalogClock {
             ? AnalogClock.resolveCssValue(
                 name,
                 computed.getPropertyValue(value),
-                this.#settings[name],
+                this.#settings[name]
               )
-            : value,
-        ]),
+            : value
+        ])
     );
   }
   /** Rebind CSS variables once custom properties resolve.
@@ -356,25 +356,24 @@ class AnalogClock {
           const value = AnalogClock.resolveCssValue(
             name,
             computed.getPropertyValue(variable),
-            this.#settings[name],
+            this.#settings[name]
           );
           if (value !== this.#settings[name]) changes[name] = value;
         } catch {
           /* Keep the last valid runtime value while CSS is incomplete. */
         }
-      },
+      }
     );
-    if (Object.keys(changes).length) {
+    if (Object.keys(changes).length)
       try {
         this.applySettings(changes, true);
       } catch {
         /* Invalid runtime CSS never corrupts the renderer. */
       }
-    }
     if (
       [...this.#bindings.keys()].some(
         (/** @type {any} */ name) =>
-          !Object.hasOwn(AnalogClock.CSS_SETTINGS, name),
+          !Object.hasOwn(AnalogClock.CSS_SETTINGS, name)
       )
     )
       this.#bindingRequest = requestAnimationFrame(() => this.watchBindings());
@@ -394,7 +393,7 @@ class AnalogClock {
     documentRef.adoptedStyleSheets = [
       ...documentRef.adoptedStyleSheets,
       AnalogClock.#sheet,
-      AnalogClock.#instanceSheet,
+      AnalogClock.#instanceSheet
     ];
     AnalogClock.#installedDocuments.add(documentRef);
   };
@@ -407,7 +406,7 @@ class AnalogClock {
             .join(";");
           return `[data-seven-segment="${id}"]{${body}}`;
         })
-        .join("\n"),
+        .join("\n")
     );
   };
   static createId = () => {
@@ -430,13 +429,13 @@ class AnalogClock {
       throw new Error("target already contains a clock");
     this.target = target;
     this.#settings = {
-      ...AnalogClock.DEFAULTS,
+      ...AnalogClock.DEFAULTS
     };
     AnalogClock.validateSettings(settings);
     const resolved = this.resolveSettings(settings);
     AnalogClock.validateSettings({
       ...this.#settings,
-      ...resolved,
+      ...resolved
     });
     Object.entries(resolved).forEach((/** @type {any} */ [name, value]) => {
       this.#settings[name] =
@@ -451,10 +450,10 @@ class AnalogClock {
       set: (
         /** @type {any} */ _settingsTarget,
         /** @type {any} */ name,
-        /** @type {any} */ value,
+        /** @type {any} */ value
       ) => {
         this.set({
-          [name]: value,
+          [name]: value
         });
         return true;
       },
@@ -463,7 +462,7 @@ class AnalogClock {
       },
       defineProperty: () => {
         throw new TypeError("Use set() to update clock settings");
-      },
+      }
     });
     this.digits = [];
     this.separators = [];
@@ -511,7 +510,7 @@ class AnalogClock {
       lastDigits: "",
       digits: [],
       separators: [],
-      matrixDots: [],
+      matrixDots: []
     });
     if (this.#settings.mode === "matrix") this.buildMatrix();
     else this.buildSegments();
@@ -548,7 +547,7 @@ class AnalogClock {
         easing: this.#settings.transitionEasing,
         matrixColumns: this.#settings.matrixColumns,
         matrixDotSize: this.#settings.matrixDotSize,
-        matrixDotGap: this.#settings.matrixDotGap,
+        matrixDotGap: this.#settings.matrixDotGap
       });
       digits = 0;
     };
@@ -568,7 +567,7 @@ class AnalogClock {
         glowSize: this.#settings.segmentGlowSize,
         gapBefore: this.#settings.groupGap,
         gapAfter: this.#settings.groupGap,
-        blink: true,
+        blink: true
       });
     });
     flush();
@@ -595,7 +594,7 @@ class AnalogClock {
    */
   groupItems() {
     return this.normalizedStructure().filter(
-      (/** @type {any} */ item) => item.type === "group",
+      (/** @type {any} */ item) => item.type === "group"
     );
   }
   /** Split flat digits into per-group strings.
@@ -620,14 +619,14 @@ class AnalogClock {
     const groups = this.groupItems();
     if (!Array.isArray(values) || values.length !== groups.length)
       throw new TypeError(
-        `groupValues must contain exactly ${groups.length} values`,
+        `groupValues must contain exactly ${groups.length} values`
       );
     return values.map((/** @type {any} */ value, /** @type {any} */ index) => {
       const width = Number(groups[index].digits);
       const stringValue = String(value);
       if (!new RegExp(`^\\d{${width}}$`).test(stringValue))
         throw new TypeError(
-          `group ${index + 1} must contain exactly ${width} digits`,
+          `group ${index + 1} must contain exactly ${width} digits`
         );
       return stringValue;
     });
@@ -639,7 +638,7 @@ class AnalogClock {
     return this.normalizedStructure().reduce(
       (/** @type {any} */ total, /** @type {any} */ item) =>
         total + (item.type === "group" ? Number(item.digits) : 0),
-      0,
+      0
     );
   }
   /** Separator and marker entries in the structure.
@@ -647,7 +646,7 @@ class AnalogClock {
    */
   markerItems() {
     return this.normalizedStructure().filter(
-      (/** @type {any} */ item) => item.type === "marker",
+      (/** @type {any} */ item) => item.type === "marker"
     );
   }
   /** Template split into digit groups and separators.
@@ -658,9 +657,9 @@ class AnalogClock {
       if (item.type === "group")
         return Array.from(
           {
-            length: Number(item.digits),
+            length: Number(item.digits)
           },
-          () => "d",
+          () => "d"
         );
       return [String(item.symbol)];
     });
@@ -676,61 +675,61 @@ class AnalogClock {
           group.className = "sst-group";
           group.style.setProperty(
             "column-gap",
-            `${Number(item.digitGap ?? this.#settings.digitGap)}px`,
+            `${Number(item.digitGap ?? this.#settings.digitGap)}px`
           );
           group.style.setProperty(
             "--sst-on",
             this.#settings.structure
               ? String(item.color ?? this.#settings.segmentOnColor)
-              : this.cssValue("segmentOnColor"),
+              : this.cssValue("segmentOnColor")
           );
           group.style.setProperty(
             "--sst-off",
             this.#settings.structure
               ? String(item.offColor ?? this.#settings.segmentOffColor)
-              : this.cssValue("segmentOffColor"),
+              : this.cssValue("segmentOffColor")
           );
           group.style.setProperty(
             "--sst-glow",
-            String(item.glowColor ?? this.#settings.segmentGlowColor),
+            String(item.glowColor ?? this.#settings.segmentGlowColor)
           );
           group.style.setProperty(
             "--sst-segment-glow",
-            `0 0 ${Number(item.glowSize ?? this.#settings.segmentGlowSize)}px ${String(item.glowColor ?? this.#settings.segmentGlowColor)}`,
+            `0 0 ${Number(item.glowSize ?? this.#settings.segmentGlowSize)}px ${String(item.glowColor ?? this.#settings.segmentGlowColor)}`
           );
           group.style.setProperty(
             "--sst-on-time",
             this.#settings.structure
               ? `${Number(item.onDuration ?? this.#settings.segmentOnDuration)}ms`
-              : this.cssValue("segmentOnDuration", "ms"),
+              : this.cssValue("segmentOnDuration", "ms")
           );
           group.style.setProperty(
             "--sst-off-time",
             this.#settings.structure
               ? `${Number(item.offDuration ?? this.#settings.segmentOffDuration)}ms`
-              : this.cssValue("segmentOffDuration", "ms"),
+              : this.cssValue("segmentOffDuration", "ms")
           );
           group.style.setProperty(
             "--sst-ease",
-            String(item.easing ?? this.#settings.transitionEasing),
+            String(item.easing ?? this.#settings.transitionEasing)
           );
           Array.from(
             {
-              length: Number(item.digits),
+              length: Number(item.digits)
             },
             () => {
               const digit = this.createDigit();
               digit.setAttribute("data-group-index", String(String(itemIndex)));
               group.append(digit);
               return digit;
-            },
+            }
           );
           this.clock.append(group);
           return;
         }
         const marker = this.createMarker(item, itemIndex);
         this.clock.append(marker);
-      },
+      }
     );
   }
   /** Create one separator or custom-marker element.
@@ -744,7 +743,7 @@ class AnalogClock {
     marker.setAttribute("data-marker-index", String(String(itemIndex)));
     marker.setAttribute(
       "data-blink",
-      String(item.blink === false ? "false" : "true"),
+      String(item.blink === false ? "false" : "true")
     );
     marker.textContent = String(item.symbol);
     const size = Number(item.size ?? this.#settings.dotSize);
@@ -753,27 +752,27 @@ class AnalogClock {
       "--marker-color",
       this.#settings.structure
         ? String(item.color ?? this.#settings.segmentOnColor)
-        : this.cssValue("segmentOnColor"),
+        : this.cssValue("segmentOnColor")
     );
     marker.style.setProperty(
       "--marker-off",
-      String(item.offColor ?? this.#settings.segmentOffColor),
+      String(item.offColor ?? this.#settings.segmentOffColor)
     );
     marker.style.setProperty(
       "--marker-glow-color",
-      String(item.glowColor ?? item.color ?? this.#settings.segmentGlowColor),
+      String(item.glowColor ?? item.color ?? this.#settings.segmentGlowColor)
     );
     marker.style.setProperty(
       "--marker-glow-size",
-      `${Number(item.glowSize ?? 0)}px`,
+      `${Number(item.glowSize ?? 0)}px`
     );
     marker.style.setProperty(
       "--marker-before",
-      `${Number(item.gapBefore ?? 0)}px`,
+      `${Number(item.gapBefore ?? 0)}px`
     );
     marker.style.setProperty(
       "--marker-after",
-      `${Number(item.gapAfter ?? 0)}px`,
+      `${Number(item.gapAfter ?? 0)}px`
     );
     return marker;
   }
@@ -793,19 +792,19 @@ class AnalogClock {
     if (!this.matrix) return;
     this.matrix.replaceChildren();
     this.matrixDots = [];
-    const { rows, columns } = this.matrixPhysicalSize();
+    const {rows, columns} = this.matrixPhysicalSize();
     this.matrixPhysicalRows = rows;
     this.matrixPhysicalColumns = columns;
     this.setInstanceVariable("--sst-matrix-physical-cols", String(columns));
     this.setInstanceVariable("--sst-matrix-physical-rows", String(rows));
     this.matrixDots = Array.from(
       {
-        length: rows * columns,
+        length: rows * columns
       },
       () =>
         Object.assign(document.createElement("span"), {
-          className: "sst-matrix-dot",
-        }),
+          className: "sst-matrix-dot"
+        })
     );
     this.matrix.append(...this.matrixDots);
   }
@@ -818,18 +817,18 @@ class AnalogClock {
     if (this.#settings.matrixLayout !== "target")
       return {
         rows: logicalRows,
-        columns: logicalColumns,
+        columns: logicalColumns
       };
     const width = Math.max(0, this.root.clientWidth);
     const height = Math.max(0, this.root.clientHeight);
     const pitch = this.#settings.matrixDotSize + this.#settings.matrixDotGap;
     const fittedColumns = Math.max(
       logicalColumns,
-      Math.floor((width + this.#settings.matrixDotGap) / pitch),
+      Math.floor((width + this.#settings.matrixDotGap) / pitch)
     );
     const fittedRows = Math.max(
       logicalRows,
-      Math.floor((height + this.#settings.matrixDotGap) / pitch),
+      Math.floor((height + this.#settings.matrixDotGap) / pitch)
     );
     const columns =
       fittedColumns > logicalColumns && fittedColumns % 2 !== logicalColumns % 2
@@ -841,7 +840,7 @@ class AnalogClock {
         : fittedRows;
     return {
       rows,
-      columns,
+      columns
     };
   }
   /** Gap column count covering a pixel width.
@@ -861,10 +860,10 @@ class AnalogClock {
         if (item.type === "group") {
           const digits = Number(item.digits);
           const digitGapColumns = this.matrixGapColumns(
-            item.digitGap ?? this.#settings.digitGap,
+            item.digitGap ?? this.#settings.digitGap
           );
           const columns = Number(
-            item.matrixColumns ?? this.#settings.matrixColumns,
+            item.matrixColumns ?? this.#settings.matrixColumns
           );
           return (
             width + digits * columns + Math.max(0, digits - 1) * digitGapColumns
@@ -877,7 +876,7 @@ class AnalogClock {
           this.matrixGapColumns(item.gapAfter)
         );
       },
-      0,
+      0
     );
   }
   static matrixGlyph = (/** @type {any} */ char) => {
@@ -893,7 +892,7 @@ class AnalogClock {
       7: ["11111", "00001", "00010", "00100", "01000", "01000", "01000"],
       8: ["01110", "10001", "10001", "01110", "10001", "10001", "01110"],
       9: ["01110", "10001", "10001", "01111", "00001", "00001", "01110"],
-      "-": ["00000", "00000", "00000", "11111", "00000", "00000", "00000"],
+      "-": ["00000", "00000", "00000", "11111", "00000", "00000", "00000"]
     };
     return glyphs[char] ?? glyphs["-"] ?? ["00000"];
   };
@@ -931,7 +930,7 @@ class AnalogClock {
       !/^\d+$/.test(digits)
     )
       throw new TypeError(
-        `value must provide exactly ${this.digitCount()} digits`,
+        `value must provide exactly ${this.digitCount()} digits`
       );
     const previous = this.#settings.groupValues?.join("");
     const groups = this.groupValuesFromDigits(digits);
@@ -969,7 +968,7 @@ class AnalogClock {
    */
   set live(value) {
     this.set({
-      live: value,
+      live: value
     });
   }
   /** Gap between digits within a group.
@@ -983,7 +982,7 @@ class AnalogClock {
    */
   set digitGap(value) {
     this.set({
-      digitGap: value,
+      digitGap: value
     });
   }
   /** Gap between digit groups.
@@ -997,7 +996,7 @@ class AnalogClock {
    */
   set groupGap(value) {
     this.set({
-      groupGap: value,
+      groupGap: value
     });
   }
   /** Gap between segments inside a digit.
@@ -1011,7 +1010,7 @@ class AnalogClock {
    */
   set segmentGap(value) {
     this.set({
-      segmentGap: value,
+      segmentGap: value
     });
   }
   /** Whether the recording indicator pulses while the clock runs.
@@ -1025,7 +1024,7 @@ class AnalogClock {
    */
   set recording(value) {
     this.set({
-      recording: value,
+      recording: value
     });
   }
   /** Record-indicator visibility: visible, reserved or hidden.
@@ -1042,7 +1041,7 @@ class AnalogClock {
     if (!["visible", "reserved", "hidden"].includes(value))
       throw new TypeError("recVisible must be visible, reserved, or hidden");
     this.set({
-      recVisible: value,
+      recVisible: value
     });
   }
   /** Whether the clock has been torn down.
@@ -1076,41 +1075,41 @@ class AnalogClock {
     /** @type {any} */
     const logical = Array.from(
       {
-        length: logicalRows,
+        length: logicalRows
       },
       () =>
         Array.from(
           {
-            length: logicalColumns,
+            length: logicalColumns
           },
-          () => false,
-        ),
+          () => false
+        )
     );
     /** @type {any} */
     const separators = Array.from(
       {
-        length: logicalRows,
+        length: logicalRows
       },
       () =>
         Array.from(
           {
-            length: logicalColumns,
+            length: logicalColumns
           },
-          () => null,
-        ),
+          () => null
+        )
     );
     /** @type {any} */
     const groupStyles = Array.from(
       {
-        length: logicalRows,
+        length: logicalRows
       },
       () =>
         Array.from(
           {
-            length: logicalColumns,
+            length: logicalColumns
           },
-          () => null,
-        ),
+          () => null
+        )
     );
     let valueIndex = 0;
     let columnOffset = 0;
@@ -1118,7 +1117,7 @@ class AnalogClock {
       if (item.type === "group") {
         const digits = Number(item.digits);
         const digitGapColumns = this.matrixGapColumns(
-          item.digitGap ?? this.#settings.digitGap,
+          item.digitGap ?? this.#settings.digitGap
         );
         for (let digit = 0; digit < digits; digit += 1) {
           const glyph = AnalogClock.matrixGlyph(value[valueIndex] ?? "-");
@@ -1127,12 +1126,12 @@ class AnalogClock {
             const source =
               glyph[Math.floor(row * glyph.length / logicalRows)] ?? "00000";
             const groupColumns = Number(
-              item.matrixColumns ?? this.#settings.matrixColumns,
+              item.matrixColumns ?? this.#settings.matrixColumns
             );
             for (let column = 0; column < groupColumns; column += 1) {
               const sourceIndex = Math.min(
                 source.length - 1,
-                Math.floor(column * source.length / groupColumns),
+                Math.floor(column * source.length / groupColumns)
               );
               const active = source[sourceIndex] === "1";
               logical[row][columnOffset + column] = active;
@@ -1140,7 +1139,7 @@ class AnalogClock {
             }
           }
           columnOffset += Number(
-            item.matrixColumns ?? this.#settings.matrixColumns,
+            item.matrixColumns ?? this.#settings.matrixColumns
           );
           if (digit < digits - 1) columnOffset += digitGapColumns;
         }
@@ -1179,13 +1178,13 @@ class AnalogClock {
           dot.classList.add("sst-separator-dot");
           dot.setAttribute(
             "data-blink",
-            String(marker.blink === false ? "false" : "true"),
+            String(marker.blink === false ? "false" : "true")
           );
           const markerSize = Math.min(
             this.#settings.matrixDotSize,
             Number(
-              marker.matrixSize ?? marker.size ?? this.#settings.matrixDotSize,
-            ),
+              marker.matrixSize ?? marker.size ?? this.#settings.matrixDotSize
+            )
           );
           dot.style.setProperty("inline-size", `${markerSize}px`);
           dot.style.setProperty("min-inline-size", `${markerSize}px`);
@@ -1194,22 +1193,22 @@ class AnalogClock {
           dot.style.setProperty("min-block-size", `${markerSize}px`);
           dot.style.setProperty("max-block-size", `${markerSize}px`);
           dot.style.background = String(
-            marker.matrixColor ?? marker.color ?? this.#settings.matrixOnColor,
+            marker.matrixColor ?? marker.color ?? this.#settings.matrixOnColor
           );
           dot.style.boxShadow = `0 0 ${Number(
-            marker.matrixGlowSize ?? marker.glowSize ?? 0,
+            marker.matrixGlowSize ?? marker.glowSize ?? 0
           )}px ${String(marker.matrixGlowColor ?? marker.glowColor ?? marker.matrixColor ?? marker.color ?? this.#settings.matrixOnColor)}`;
         } else if (groupStyle) {
           dot.setAttribute("data-blink", String("false"));
           dot.style.background = String(
             groupStyle.matrixOnColor ??
               groupStyle.color ??
-              this.#settings.matrixOnColor,
+              this.#settings.matrixOnColor
           );
           dot.style.boxShadow = `0 0 ${Number(
             groupStyle.matrixGlowSize ??
               groupStyle.glowSize ??
-              this.#settings.matrixGlowSize,
+              this.#settings.matrixGlowSize
           )}px ${String(groupStyle.matrixGlowColor ?? groupStyle.glowColor ?? groupStyle.matrixOnColor ?? groupStyle.color ?? this.#settings.matrixOnColor)}`;
         } else {
           dot.setAttribute("data-blink", String("false"));
@@ -1221,7 +1220,7 @@ class AnalogClock {
             "min-block-size",
             "max-block-size",
             "background",
-            "box-shadow",
+            "box-shadow"
           ].forEach((/** @type {any} */ property) => {
             dot.style.removeProperty(property);
           });
@@ -1256,7 +1255,7 @@ class AnalogClock {
     const svg = AnalogClock.svg("svg");
     svg.classList.add(
       "sst-separator",
-      `sst-separator-${kind === ":" ? "colon" : "decimal"}`,
+      `sst-separator-${kind === ":" ? "colon" : "decimal"}`
     );
     svg.setAttribute("data-separator", String(kind));
     svg.setAttribute("viewBox", "0 0 24 192");
@@ -1265,7 +1264,7 @@ class AnalogClock {
     const dots = [];
     Array.from(
       {
-        length: kind === ":" ? 2 : 1,
+        length: kind === ":" ? 2 : 1
       },
       () => {
         const dot = AnalogClock.svg("circle");
@@ -1273,11 +1272,11 @@ class AnalogClock {
         svg.append(dot);
         dots.push(dot);
         return dot;
-      },
+      }
     );
     this.separators.push({
       kind,
-      dots,
+      dots
     });
     return svg;
   }
@@ -1294,7 +1293,7 @@ class AnalogClock {
       settings = this.resolveSettings(settings);
       AnalogClock.validateSettings({
         ...this.#settings,
-        ...settings,
+        ...settings
       });
     }
     if (supplied && !preserveBindings)
@@ -1309,7 +1308,7 @@ class AnalogClock {
       matrixLayout: this.#settings.matrixLayout,
       matrixRows: this.#settings.matrixRows,
       matrixColumns: this.#settings.matrixColumns,
-      structure: this.#settings.structure,
+      structure: this.#settings.structure
     };
     if (settings)
       Object.entries(settings).forEach((/** @type {any} */ [name, value]) => {
@@ -1330,7 +1329,7 @@ class AnalogClock {
       previous.matrixColumns !== s.matrixColumns ||
       previous.structure !== s.structure ||
       Object.keys(settings ?? {}).some((/** @type {any} */ name) =>
-        /^(segment|digit|group|transition|dot|matrix)/.test(name),
+        /^(segment|digit|group|transition|dot|matrix)/.test(name)
       );
     const vars = {
       "--sst-matrix-cols": String(s.matrixColumns),
@@ -1372,11 +1371,11 @@ class AnalogClock {
       "--sst-bg": s.background,
       "--sst-padding": `${s.padding}px`,
       "--sst-scale": "1",
-      "--sst-digit-width": `${s.segmentLength + s.segmentGap + s.segmentThickness}px`,
+      "--sst-digit-width": `${s.segmentLength + s.segmentGap + s.segmentThickness}px`
     };
     AnalogClock.#instances.set(this.id, {
       ...vars,
-      "--sst-align": s.align,
+      "--sst-align": s.align
     });
     this.#bindings.forEach(
       (/** @type {any} */ _variable, /** @type {any} */ name) => {
@@ -1384,9 +1383,9 @@ class AnalogClock {
         if (cssSetting)
           AnalogClock.#instances.get(this.id)[cssSetting[0]] = this.cssValue(
             name,
-            cssSetting[1],
+            cssSetting[1]
           );
-      },
+      }
     );
     AnalogClock.refreshInstanceStyles();
     this.rec.setAttribute("data-visibility", String(s.recVisible));
@@ -1395,7 +1394,7 @@ class AnalogClock {
     this.rec.classList.toggle("sst-recording", s.recEnabled && s.recording);
     this.rec.classList.toggle(
       "sst-pulse",
-      s.recEnabled && s.recording && s.recPulse,
+      s.recEnabled && s.recording && s.recPulse
     );
     if (rebuild) {
       if (this.#settings.value?.length !== this.digitCount()) {
@@ -1404,7 +1403,7 @@ class AnalogClock {
         this.#timeMilliseconds = null;
       } else
         this.#settings.groupValues = this.groupValuesFromDigits(
-          this.#settings.value,
+          this.#settings.value
         );
       this.rebuildRenderer();
     }
@@ -1425,7 +1424,7 @@ class AnalogClock {
       this.#bindingRequest === undefined &&
       [...this.#bindings.keys()].some(
         (/** @type {any} */ name) =>
-          !Object.hasOwn(AnalogClock.CSS_SETTINGS, name),
+          !Object.hasOwn(AnalogClock.CSS_SETTINGS, name)
       )
     )
       this.#bindingRequest = requestAnimationFrame(() => this.watchBindings());
@@ -1440,7 +1439,7 @@ class AnalogClock {
         this.matrix.setAttribute("data-layout", String(s.matrixLayout));
         this.setInstanceVariable(
           "--sst-matrix-cols",
-          String(this.matrixTemplateWidth()),
+          String(this.matrixTemplateWidth())
         );
         this.setInstanceVariable("--sst-matrix-rows", String(s.matrixRows));
         this.rebuildMatrixDots();
@@ -1463,7 +1462,7 @@ class AnalogClock {
         [halfLength, 0],
         [halfLength - bevel, halfThickness],
         [-halfLength + bevel, halfThickness],
-        [-halfLength, 0],
+        [-halfLength, 0]
       ]
         .map((/** @type {any} */ point) => point.join(","))
         .join(" ");
@@ -1484,7 +1483,7 @@ class AnalogClock {
         d: [center, bottom, 0],
         e: [left, lower, 90],
         f: [left, upper, 90],
-        g: [center, middle, 0],
+        g: [center, middle, 0]
       };
       svg.style.inlineSize = `${item.digitWidth ?? digitWidth}px`;
       svg.style.blockSize = `${item.digitHeight ?? 192}px`;
@@ -1495,9 +1494,9 @@ class AnalogClock {
           segment.setAttribute("points", points);
           segment.setAttribute(
             "transform",
-            `translate(${x} ${y}) rotate(${angle})`,
+            `translate(${x} ${y}) rotate(${angle})`
           );
-        },
+        }
       );
     });
     this.separators.forEach((/** @type {any} */ separator) => {
@@ -1507,7 +1506,7 @@ class AnalogClock {
           dot.setAttribute("cx", "12");
           dot.setAttribute("cy", String(ys[index]));
           dot.setAttribute("r", String(s.dotSize / 2));
-        },
+        }
       );
     });
   }
@@ -1518,11 +1517,11 @@ class AnalogClock {
     if (this.#settings.mode === "matrix") return;
     const availableWidth = Math.max(
       0,
-      this.root.clientWidth - this.#settings.padding * 2,
+      this.root.clientWidth - this.#settings.padding * 2
     );
     const availableHeight = Math.max(
       0,
-      this.root.clientHeight - this.#settings.padding * 2,
+      this.root.clientHeight - this.#settings.padding * 2
     );
     const naturalWidth =
       this.clock.offsetWidth +
@@ -1533,18 +1532,18 @@ class AnalogClock {
       this.clock.offsetHeight,
       this.rec.getAttribute("data-visibility") === "hidden"
         ? 0
-        : this.rec.offsetHeight,
+        : this.rec.offsetHeight
     );
     if (naturalHeight > 0)
       this.target.style.setProperty(
         "--dynamic-analog-clock-aspect",
-        String(naturalWidth / naturalHeight),
+        String(naturalWidth / naturalHeight)
       );
     const scale =
       naturalWidth > 0 && naturalHeight > 0
         ? Math.min(
             availableWidth / naturalWidth,
-            availableHeight / naturalHeight,
+            availableHeight / naturalHeight
           )
         : 1;
     this.setInstanceVariable("--sst-scale", String(Math.max(0, scale)));
@@ -1573,13 +1572,13 @@ class AnalogClock {
     const current = this.#settings.groupValues
       ? [...this.#settings.groupValues]
       : groups.map((/** @type {any} */ group) =>
-          "0".repeat(Number(group.digits)),
+          "0".repeat(Number(group.digits))
         );
     const width = Number(groups[index].digits);
     const stringValue = String(value);
     if (!new RegExp(`^\\d{${width}}$`).test(stringValue))
       throw new TypeError(
-        `group ${index + 1} must contain exactly ${width} digits`,
+        `group ${index + 1} must contain exactly ${width} digits`
       );
     current[index] = stringValue;
     this.value = current;
@@ -1603,7 +1602,7 @@ class AnalogClock {
     )
       throw new TypeError("configure structure before setting its value");
     const options = {
-      ...settings,
+      ...settings
     };
     delete options.value;
     delete options.groupValues;
@@ -1621,7 +1620,7 @@ class AnalogClock {
   getSettings() {
     return {
       ...structuredClone(this.#settings),
-      ...Object.fromEntries(this.#bindings),
+      ...Object.fromEntries(this.#bindings)
     };
   }
   /** Externally driven timeline position. Does not start a playback timer.
@@ -1632,7 +1631,7 @@ class AnalogClock {
   setTime(milliseconds) {
     this.assertActive();
     const widths = this.groupItems().map(
-      (/** @type {{digits:number}} */ group) => group.digits,
+      (/** @type {{digits:number}} */ group) => group.digits
     );
     if (
       widths.length !== 4 ||
@@ -1640,11 +1639,11 @@ class AnalogClock {
       ![2, 3].includes(widths[3] ?? 0)
     )
       throw new Error(
-        "timeline time requires HH:MM:SS with two frame digits or three millisecond digits",
+        "timeline time requires HH:MM:SS with two frame digits or three millisecond digits"
       );
     this.value = AnalogClock.formatTime(milliseconds, {
       fps: this.#settings.fps,
-      precision: widths[3] === 3 ? "milliseconds" : "frames",
+      precision: widths[3] === 3 ? "milliseconds" : "frames"
     }).split(/[.:]/);
     this.#timeMilliseconds = milliseconds;
     return this;
@@ -1657,7 +1656,7 @@ class AnalogClock {
   setFrame(frame) {
     this.assertActive();
     const timecode = AnalogClock.formatFrame(frame, {
-      fps: this.#settings.fps,
+      fps: this.#settings.fps
     });
     if (
       this.groupItems().length !== 4 ||
@@ -1681,7 +1680,7 @@ class AnalogClock {
   resume() {
     this.#timeMilliseconds = null;
     return this.set({
-      live: true,
+      live: true
     });
   }
   /** Blink the separators once.
@@ -1693,7 +1692,7 @@ class AnalogClock {
     clearTimeout(this.blinkTimer);
     this.blinkTimer = setTimeout(
       () => this.clock.classList.remove("sst-blink"),
-      this.#settings.dotBlinkDuration,
+      this.#settings.dotBlinkDuration
     );
   }
   /** Advance the live clock by one animation frame.
@@ -1705,7 +1704,7 @@ class AnalogClock {
       const second = now.getSeconds();
       const frame = Math.min(
         this.#settings.fps - 1,
-        Math.floor(now.getMilliseconds() * this.#settings.fps / 1000),
+        Math.floor(now.getMilliseconds() * this.#settings.fps / 1000)
       );
       if (this.lastSecond !== undefined && second !== this.lastSecond)
         this.blink();
@@ -1750,9 +1749,9 @@ class AnalogClock {
           segments.forEach(
             (/** @type {any} */ segment, /** @type {any} */ name) => {
               segment.classList.toggle("sst-on", active.includes(name));
-            },
+            }
           );
-        },
+        }
       );
       this.lastDigits = digits;
     }
@@ -1794,5 +1793,5 @@ class AnalogClock {
   }
 }
 Object.assign(globalThis, {
-  AnalogClock,
+  AnalogClock
 });

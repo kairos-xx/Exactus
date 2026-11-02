@@ -1,5 +1,5 @@
 /** The panel that explains one variable pill: where it comes from and how it is read. */
-import { iconElement } from "./icons.js";
+import {iconElement} from "./icons.js";
 /**
  * @typedef {object} InspectorOptions
  * @property {string} token The text between the braces, such as `Order.items[0]|count`.
@@ -22,7 +22,7 @@ export const gettersFor = type => {
     ...whole,
     ["keys", "Keys"],
     ["values", "Values"],
-    ["count", "Count"],
+    ["count", "Count"]
   ];
 };
 /** Build an element with a class.
@@ -101,7 +101,7 @@ export const variableInspector = options => {
     actions,
     row("Type", kind),
     row("Read as", how),
-    row("Get key or index", key),
+    row("Get key or index", key)
   );
   return panel;
 };

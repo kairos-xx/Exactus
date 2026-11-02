@@ -180,7 +180,7 @@ def test_compatible_claim_requests_a_shared_generation(
 def test_incompatible_and_sealed_claims_wait(
     coordinator: PipelineCoordinator,
 ) -> None:
-    """Different configurations and sealed owners do not merge work.
+    """Sealed owners block joins; different configurations join as observers.
 
     Args:
         coordinator: Isolated transactional supervisor.
@@ -194,7 +194,17 @@ def test_incompatible_and_sealed_claims_wait(
         fingerprint="different",
         tty=None,
     )
-    expect_equal(actual=incompatible.mode, expected="wait")
+    expect_equal(actual=incompatible.mode, expected="observer")
+    joined: PipelineRequest | None = incompatible.request
+    expect_true(condition=joined is not None)
+    if joined is None:
+        return
+    expect_equal(actual=joined.fingerprint, expected="different")
+    coordinator.acknowledge(
+        requests=(joined,),
+        generation=2,
+        detail="generation 2 started",
+    )
     expect_true(
         condition=coordinator.seal(
             pipeline="unified",

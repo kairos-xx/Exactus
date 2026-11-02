@@ -9,9 +9,9 @@
  *   node icons/build-icon-set.mjs          write ../icon-set.js
  *   node icons/build-icon-set.mjs --check  fail when ../icon-set.js is stale
  */
-import { readdirSync, readFileSync, writeFileSync } from "node:fs";
+import {readdirSync, readFileSync, writeFileSync} from "node:fs";
 import process from "node:process";
-import { fileURLToPath } from "node:url";
+import {fileURLToPath} from "node:url";
 const here = fileURLToPath(new URL(".", import.meta.url));
 const target = fileURLToPath(new URL("../icon-set.js", import.meta.url));
 const PRESENTATION =
@@ -70,7 +70,7 @@ export const render = () => {
  * @type {Readonly<Record<string,string>>}
  */
 export const ICONS = Object.freeze({
-${lines.join("\n")}
+${lines.join("\n").replace(/,$/, "")}
 });
 `;
 };
@@ -80,7 +80,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   if (process.argv.includes("--check")) {
     if (readFileSync(target, "utf8") !== text) {
       process.stderr.write(
-        "icon-set.js is out of date. Run build-icon-set.mjs.\n",
+        "icon-set.js is out of date. Run build-icon-set.mjs.\n"
       );
       process.exitCode = 1;
     }

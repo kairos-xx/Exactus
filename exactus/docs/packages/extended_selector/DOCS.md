@@ -8,8 +8,8 @@ The selector **engine** and its structured formula editor. The expression widget
 
 The system consists of two independent layers:
 
-1. **`extended-selector.js`** — the query/parser/evaluation engine.
-2. **`extended-selector-editor.js` + `extended-selector-editor.css`** — an optional formula-style visual expression editor.
+1. **`editor/extended-selector.js`** — the query/parser/evaluation engine.
+2. **`editor/extended-selector-editor.js` + `editor/extended-selector-editor.css`** — an optional formula-style visual expression editor.
 
 The engine is synchronous and designed for current-document DOM querying. The editor serializes its structured pill tree into the exact expression language consumed by the engine.
 
@@ -19,12 +19,13 @@ The engine is synchronous and designed for current-document DOM querying. The ed
 
 | File | Purpose |
 |---|---|
-| `extended-selector.js` | Core parser, linter and query engine. |
-| `extended-selector-editor.js` | Formula-style nested-pill expression editor. |
-| `extended-selector-editor.css` | Editor presentation and nesting styles. |
-| `demo.html` | Browser demonstration and integration example. |
+| `editor/extended-selector.js` | Core parser, linter and query engine. |
+| `editor/extended-selector-editor.js` | Formula-style nested-pill expression editor. |
+| `editor/extended-selector-editor.css` | Editor presentation and nesting styles. |
+| `editor/selector-adapters.js` | `bestLocalSelector` and third-party selector-generator adapters. |
+| `examples/` | Demo harness: `run.py` serves `packages/` and opens the structured-editor demo page. |
 | `verify.mjs` | Node verification harness: cross-checks `ExtendedSelector`/`bestLocalSelector` output against `css-selector-generator`, `optimal-select` and `@medv/finder` for selector parity. |
-| `DOC.md` | This complete reference. |
+| `DOCS.md` | This complete reference. |
 
 ---
 
@@ -33,14 +34,14 @@ The engine is synchronous and designed for current-document DOM querying. The ed
 No package installation is required. Use the files as ES modules:
 
 ```js
-import ExtendedSelector from "./extended-selector.js";
-import ExtendedSelectorEditor from "./extended-selector-editor.js";
+import ExtendedSelector from "./editor/extended-selector.js";
+import ExtendedSelectorEditor from "./editor/extended-selector-editor.js";
 ```
 
 Load the editor stylesheet when the visual editor is used:
 
 ```html
-<link rel="stylesheet" href="./extended-selector-editor.css">
+<link rel="stylesheet" href="./editor/extended-selector-editor.css">
 ```
 
 Create an engine:
@@ -1921,8 +1922,8 @@ children(
 JavaScript:
 
 ```js
-import ExtendedSelector from "./extended-selector.js";
-import ExtendedSelectorEditor from "./extended-selector-editor.js";
+import ExtendedSelector from "./editor/extended-selector.js";
+import ExtendedSelectorEditor from "./editor/extended-selector-editor.js";
 
 const engine = new ExtendedSelector(document);
 
@@ -3500,6 +3501,13 @@ call and a following CSS atom.
 | `package.json` | Configuration file. |
 | `verify.mjs` | JavaScript module. |
 
+## Command-line options
+
+| Option | Description | Settings |
+|---|---|---|
+| `--headless` | Load the demo in a headless browser instead of a window. | action='store_true' |
+| `--timeout` | Seconds to keep the browser alive after it loads. | type=float, default=None |
+
 ## Python API reference
 
 Public classes, functions and constants, read from the source. Private names (leading underscore) are omitted.
@@ -3524,7 +3532,7 @@ Run the extended-selector example with the project virtual environment.
 Serve the ExtendedSelector structured-editor demo and open the browser.
 
 - `start_demo(*, log: Path) -> str` — Serve ``packages/`` so the demo page can import sibling packages.
-- `main() -> int` — Launch the demo; leave its reusable background server running.
+- `main(*, arguments: Sequence[str] | None=None) -> int` — Launch the demo; leave its reusable background server running.
 
 ## JavaScript API reference
 
@@ -3556,14 +3564,15 @@ Files: `examples/README.md`, `examples/__init__.py`, `examples/__main__.py`, `ex
 
 ## Dependencies and consumers
 
-- Other packages: [`browser`](../browser/DOCS.md), [`server`](../server/DOCS.md)
+- Other packages: [`argument_parser`](../argument_parser/DOCS.md), [`browser`](../browser/DOCS.md), [`server`](../server/DOCS.md)
 - Used by: `tests/packages/extended_selector/test_examples.py`
 
 ## Tests
 
 Tests live in `exactus/tests/packages/extended_selector/`.
 
-- `test_examples.py` — Exercise the bundled ExtendedSelector demo launcher with stubs. (4 tests)
+- `test_examples.py` — Exercise the bundled ExtendedSelector demo launcher with stubs. (5 tests)
+  - `test_main_headless_loads_then_exits`
   - `test_main_serves_then_opens_and_closes_the_browser`
   - `test_start_demo_reuses_an_existing_server`
   - `test_start_demo_spawns_and_waits`

@@ -4,15 +4,15 @@ window.__REPORT_DATA__ = JSON.parse(`{
   "tool": {
     "name": "lints",
     "display_name": "Lint Exactus",
-    "version": null
+    "version": "0.6.1"
   },
   "summary": {
     "timing": {
-      "date_time": "31/10/2026 05:10:25",
-      "finished_date_time": "31/10/2026 05:10:34",
+      "date_time": "02/11/2026 05:29:11",
+      "finished_date_time": "02/11/2026 05:29:18",
       "timezone": "WET",
-      "duration_seconds": 8.449975,
-      "duration_human": "00:00:08.449975"
+      "duration_seconds": 6.841371,
+      "duration_human": "00:00:06.841371"
     },
     "host": {
       "hostname": "Mac",
@@ -89,17 +89,18 @@ window.__REPORT_DATA__ = JSON.parse(`{
   },
   "all_lints": {
     "schema_version": 2,
-    "generated_at": "2026-10-31T05:10:32.105006+00:00",
-    "started_at": "2026-10-31T05:10:27.438940+00:00",
-    "duration_seconds": 4.666024,
+    "generated_at": "2026-11-02T05:29:16.684571+00:00",
+    "started_at": "2026-11-02T05:29:13.645403+00:00",
+    "duration_seconds": 3.039134,
     "root": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
     "ok": true,
     "summary": {
-      "tools": 8,
+      "tools": 9,
       "passed": 8,
       "failed": 0,
-      "unavailable": 0,
-      "files": 34,
+      "unavailable": 1,
+      "optional_unavailable": 1,
+      "files": 40,
       "files_with_issues": 0,
       "errors": 0,
       "warnings": 0,
@@ -109,7 +110,17 @@ window.__REPORT_DATA__ = JSON.parse(`{
       "ruff": {
         "name": "ruff",
         "status": "passed",
-        "duration_seconds": 0.284287,
+        "duration_seconds": 0.233572,
+        "total_files": 6,
+        "completed_files": 6,
+        "files_with_issues": 0,
+        "diagnostics": [],
+        "files": []
+      },
+      "refurb": {
+        "name": "refurb",
+        "status": "unavailable",
+        "duration_seconds": 0.0,
         "total_files": 6,
         "completed_files": 6,
         "files_with_issues": 0,
@@ -119,7 +130,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
       "ruff_docs": {
         "name": "ruff_docs",
         "status": "passed",
-        "duration_seconds": 0.284287,
+        "duration_seconds": 0.233572,
         "total_files": 6,
         "completed_files": 6,
         "files_with_issues": 0,
@@ -129,7 +140,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
       "basedpyright": {
         "name": "basedpyright",
         "status": "passed",
-        "duration_seconds": 1.830926,
+        "duration_seconds": 1.290921,
         "total_files": 6,
         "completed_files": 6,
         "files_with_issues": 0,
@@ -139,7 +150,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
       "pyrefly": {
         "name": "pyrefly",
         "status": "passed",
-        "duration_seconds": 0.509296,
+        "duration_seconds": 0.348443,
         "total_files": 6,
         "completed_files": 6,
         "files_with_issues": 0,
@@ -149,7 +160,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
       "eslint": {
         "name": "eslint",
         "status": "passed",
-        "duration_seconds": 0.899025,
+        "duration_seconds": 0.667758,
         "total_files": 4,
         "completed_files": 4,
         "files_with_issues": 0,
@@ -159,7 +170,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
       "stylelint": {
         "name": "stylelint",
         "status": "passed",
-        "duration_seconds": 1.478769,
+        "duration_seconds": 0.735674,
         "total_files": 1,
         "completed_files": 1,
         "files_with_issues": 0,
@@ -169,7 +180,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
       "htmlint": {
         "name": "htmlint",
         "status": "passed",
-        "duration_seconds": 0.152769,
+        "duration_seconds": 0.165826,
         "total_files": 1,
         "completed_files": 1,
         "files_with_issues": 0,
@@ -179,7 +190,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
       "typescript": {
         "name": "typescript",
         "status": "passed",
-        "duration_seconds": 4.57235,
+        "duration_seconds": 2.986645,
         "total_files": 4,
         "completed_files": 4,
         "files_with_issues": 0,
@@ -194,12 +205,12 @@ window.__REPORT_DATA__ = JSON.parse(`{
     {
       "name": "@activity.json",
       "path": "ARTIFACTS/@activity.json",
-      "bytes": 2095
+      "bytes": 2336
     },
     {
       "name": "README.md",
       "path": "ARTIFACTS/README.md",
-      "bytes": 449
+      "bytes": 450
     },
     {
       "name": "stderr.log",
@@ -214,15 +225,15 @@ window.__REPORT_DATA__ = JSON.parse(`{
     {
       "name": "steps.txt",
       "path": "ARTIFACTS/steps.txt",
-      "bytes": 37771
+      "bytes": 38146
     }
   ],
   "comparison": {
     "available": true,
-    "previous_generated_at": "2026-10-31T02:56:10.392899+00:00",
-    "previous_run_id": "f9656595c8b74d23b2b6aec3bd0db7de:lints",
+    "previous_generated_at": "2026-11-02T04:26:54.095750+00:00",
+    "previous_run_id": "4eb674a4eaf74587b6b16feda9b3d901:lints",
     "previous_status": "PASS",
-    "previous_duration_seconds": 6.627,
+    "previous_duration_seconds": 9.757,
     "current_total": 0,
     "previous_total": 0,
     "delta": 0,
@@ -285,7 +296,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
       }
     ]
   },
-  "duration_seconds": 9.358,
+  "duration_seconds": 7.692,
   "environment": {
     "os": "Darwin 25.3.0",
     "python": "3.13.9",
@@ -298,7 +309,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
       },
       {
         "name": "EXACTUS_PIPELINE_RUN_ID",
-        "value": "2c65e21142f34f8db22b09b30d9044d1"
+        "value": "a02e863bdc214c449643475edb79e655"
       },
       {
         "name": "EXACTUS_REGISTRY",
@@ -310,7 +321,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
       },
       {
         "name": "EXACTUS_RUN_ID",
-        "value": "2c65e21142f34f8db22b09b30d9044d1:lints"
+        "value": "a02e863bdc214c449643475edb79e655:lints"
       },
       {
         "name": "EXACTUS_TOOL",
@@ -347,7 +358,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 0.0022991250007180497
+          "duration_seconds": 0.0017717910232022405
         },
         {
           "linter": "custom_shebang",
@@ -359,7 +370,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 0.0011241669999435544
+          "duration_seconds": 0.002251582976896316
         },
         {
           "linter": "custom_python",
@@ -371,7 +382,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 0.031
+          "duration_seconds": 0.036
         },
         {
           "linter": "custom_python_long_lines",
@@ -383,7 +394,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 0.0015804580034455284
+          "duration_seconds": 7.774995174258947e-05
         },
         {
           "linter": "custom_javascript",
@@ -407,7 +418,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 0.01899174999562092
+          "duration_seconds": 0.045731999969575554
         },
         {
           "linter": "custom_javascript_notation",
@@ -419,7 +430,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 0.1644098329998087
+          "duration_seconds": 0.19839616701938212
         },
         {
           "linter": "custom_css",
@@ -431,7 +442,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 0.001
+          "duration_seconds": 0.002
         },
         {
           "linter": "custom_html",
@@ -455,7 +466,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 0.284287
+          "duration_seconds": 0.233572
         },
         {
           "linter": "ruff_docs",
@@ -467,7 +478,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 0.284287
+          "duration_seconds": 0.233572
         },
         {
           "linter": "basedpyright",
@@ -479,7 +490,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 1.830926
+          "duration_seconds": 1.290921
         },
         {
           "linter": "pyrefly",
@@ -491,19 +502,19 @@ window.__REPORT_DATA__ = JSON.parse(`{
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 0.232
+          "duration_seconds": 0.299
         },
         {
           "linter": "eslint",
           "status": "ran",
-          "version": "10.13.0",
+          "version": "10.14.0",
           "files": 2,
           "findings": 0,
           "errors": 0,
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 0.899025
+          "duration_seconds": 0.667758
         },
         {
           "linter": "typescript",
@@ -515,7 +526,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 4.57235
+          "duration_seconds": 2.986645
         },
         {
           "linter": "stylelint",
@@ -527,7 +538,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 1.478769
+          "duration_seconds": 0.735674
         },
         {
           "linter": "htmlhint",
@@ -539,7 +550,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 0.152769
+          "duration_seconds": 0.165826
         }
       ],
       "top_rules": [],
@@ -593,8 +604,8 @@ window.__REPORT_DATA__ = JSON.parse(`{
   },
   "findings": [],
   "fingerprint": {
-    "commit": "282d5c7d9518d89751b13d3619d2ee2b3307402d",
-    "tree": "5e6a63ecb4a3768a5f1d9d3776696e9531905933",
+    "commit": "3d9eec7e17a011978573b7cf5d68d0351fd43856",
+    "tree": "d3c0507dcfef765aae70ed83e9536ad2d912e986",
     "dirty": true,
     "python": "3.13.9",
     "ruff": "ruff 0.12.0",
@@ -604,8 +615,8 @@ window.__REPORT_DATA__ = JSON.parse(`{
     "status": "PASS",
     "reason": "No blocking findings"
   },
-  "generated_at": "2026-10-31T05:10:34.240034+00:00",
-  "generated_at_human": "31 October 2026, 05:10:34 UTC",
+  "generated_at": "2026-11-02T05:29:18.391370+00:00",
+  "generated_at_human": "02 November 2026, 05:29:18 UTC",
   "group_final": {
     "files": 6,
     "planned": 0,
@@ -614,16 +625,16 @@ window.__REPORT_DATA__ = JSON.parse(`{
     "dry_run": false
   },
   "invocation": {
-    "command": "/usr/local/bin/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=60293 --orchestrator-control-token=[redacted] --orchestrator-worker-port=60241 --orchestrator-worker-token=[redacted] '--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"lints\\",\\"module\\":\\"exactus.tools.lints.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/LINTS\\",\\"arguments\\":[],\\"run_id\\":\\"2c65e21142f34f8db22b09b30d9044d1:lints\\",\\"pipeline_run_id\\":\\"2c65e21142f34f8db22b09b30d9044d1\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}'",
+    "command": "/Users/joaolopes/Exactus/bin/release/exactus_macos_arm64/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=57866 --orchestrator-control-token=[redacted] --orchestrator-worker-port=57852 --orchestrator-worker-token=[redacted] '--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"lints\\",\\"module\\":\\"exactus.tools.lints.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/LINTS\\",\\"arguments\\":[],\\"run_id\\":\\"a02e863bdc214c449643475edb79e655:lints\\",\\"pipeline_run_id\\":\\"a02e863bdc214c449643475edb79e655\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}'",
     "cwd": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
     "arguments": [
       "exactus.tools.common.tool_worker",
       "ExactusTool",
-      "--orchestrator-control-port=60293",
+      "--orchestrator-control-port=57866",
       "--orchestrator-control-token=[redacted]",
-      "--orchestrator-worker-port=60241",
+      "--orchestrator-worker-port=57852",
       "--orchestrator-worker-token=[redacted]",
-      "--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"lints\\",\\"module\\":\\"exactus.tools.lints.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/LINTS\\",\\"arguments\\":[],\\"run_id\\":\\"2c65e21142f34f8db22b09b30d9044d1:lints\\",\\"pipeline_run_id\\":\\"2c65e21142f34f8db22b09b30d9044d1\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}"
+      "--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"lints\\",\\"module\\":\\"exactus.tools.lints.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/LINTS\\",\\"arguments\\":[],\\"run_id\\":\\"a02e863bdc214c449643475edb79e655:lints\\",\\"pipeline_run_id\\":\\"a02e863bdc214c449643475edb79e655\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}"
     ]
   },
   "local_links": {
@@ -640,15 +651,15 @@ window.__REPORT_DATA__ = JSON.parse(`{
     "tests/test_calc.py": "../../tests/test_calc.py",
     "/opt/anaconda3/bin/basedpyright": "../../../../../../../../../opt/anaconda3/bin/basedpyright",
     "/opt/anaconda3/bin/pyrefly": "../../../../../../../../../opt/anaconda3/bin/pyrefly",
-    "/opt/anaconda3/bin/python3": "../../../../../../../../../opt/anaconda3/bin/python3",
-    "/Users/joaolopes/.cache/exactus-tools/f93a1527036704296d14411f7a1d56e7b1ef52212e71f2dd4b577452903682b3/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/eslint": "../../../../../../../.cache/exactus-tools/f93a1527036704296d14411f7a1d56e7b1ef52212e71f2dd4b577452903682b3/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/eslint",
+    "/Users/joaolopes/Exactus/.venv/bin/python": "../../../../../../.venv/bin/python",
+    "/Users/joaolopes/.cache/exactus-tools/8b7ef0f2198b3e6d3236bca167ecdaed2ec455101542db5323ad77e76f44bef0/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/eslint": "../../../../../../../.cache/exactus-tools/8b7ef0f2198b3e6d3236bca167ecdaed2ec455101542db5323ad77e76f44bef0/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/eslint",
     "tests/code.test.mjs": "../../tests/code.test.mjs",
     "web/code.js": "../../web/code.js",
-    "/Users/joaolopes/.cache/exactus-tools/f93a1527036704296d14411f7a1d56e7b1ef52212e71f2dd4b577452903682b3/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/stylelint": "../../../../../../../.cache/exactus-tools/f93a1527036704296d14411f7a1d56e7b1ef52212e71f2dd4b577452903682b3/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/stylelint",
+    "/Users/joaolopes/.cache/exactus-tools/8b7ef0f2198b3e6d3236bca167ecdaed2ec455101542db5323ad77e76f44bef0/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/stylelint": "../../../../../../../.cache/exactus-tools/8b7ef0f2198b3e6d3236bca167ecdaed2ec455101542db5323ad77e76f44bef0/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/stylelint",
     "web/style.css": "../../web/style.css",
-    "/Users/joaolopes/.cache/exactus-tools/f93a1527036704296d14411f7a1d56e7b1ef52212e71f2dd4b577452903682b3/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/htmlhint": "../../../../../../../.cache/exactus-tools/f93a1527036704296d14411f7a1d56e7b1ef52212e71f2dd4b577452903682b3/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/htmlhint",
+    "/Users/joaolopes/.cache/exactus-tools/8b7ef0f2198b3e6d3236bca167ecdaed2ec455101542db5323ad77e76f44bef0/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/htmlhint": "../../../../../../../.cache/exactus-tools/8b7ef0f2198b3e6d3236bca167ecdaed2ec455101542db5323ad77e76f44bef0/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/htmlhint",
     "web/index.html": "../../web/index.html",
-    "/Users/joaolopes/.cache/exactus-tools/f93a1527036704296d14411f7a1d56e7b1ef52212e71f2dd4b577452903682b3/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/tsc": "../../../../../../../.cache/exactus-tools/f93a1527036704296d14411f7a1d56e7b1ef52212e71f2dd4b577452903682b3/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/tsc",
+    "/Users/joaolopes/.cache/exactus-tools/8b7ef0f2198b3e6d3236bca167ecdaed2ec455101542db5323ad77e76f44bef0/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/tsc": "../../../../../../../.cache/exactus-tools/8b7ef0f2198b3e6d3236bca167ecdaed2ec455101542db5323ad77e76f44bef0/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/tsc",
     "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/.runtime/runs.db": "../.runtime/runs.db",
     "ARTIFACTS/@activity.json": "ARTIFACTS/%40activity.json",
     "README.md": "../../README.md",
@@ -657,7 +668,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
     "ARTIFACTS/stdout.log": "ARTIFACTS/stdout.log",
     "ARTIFACTS/steps.txt": "ARTIFACTS/steps.txt"
   },
-  "markdown": "# Lint Exactus\\n\\n**Run time:** 31 October 2026, 05:10:25 UTC\\n\\n## Identity\\n\\n| Field | Value |\\n|---|---|\\n| Tool | lints |\\n| Run ID | 2c65e21142f34f8db22b09b30d9044d1:lints |\\n| Pipeline run | 2c65e21142f34f8db22b09b30d9044d1 |\\n| Status | PASS |\\n| Exit code | 0 |\\n| Started | 31 October 2026, 05:10:25 UTC |\\n| Finished | 31 October 2026, 05:10:35 UTC |\\n| Duration | 9.4 s |\\n| Previous duration | 6.627s |\\n\\n## What was checked\\n\\n**Result: PASS** — 0 findings across 10 of 10 eligible targets.\\n\\n| Severity | Count |\\n|---|---:|\\n| ERROR | 0 |\\n| WARNING | 0 |\\n| INFORMATION | 0 |\\n\\n### Change since previous report\\n\\n| Metric | Current | Previous | Delta |\\n|---|---:|---:|---:|\\n| Findings | 0 | 0 | 0 |\\n| Previous duration | 6.627s | | |\\n\\n| Finding change | Count |\\n|---|---:|\\n| Added | 0 |\\n| Resolved | 0 |\\n| Unchanged | 0 |\\n\\n#### Category findings\\n\\n| Category | Title | Findings | Previous | Delta |\\n| --- | --- | --- | --- | --- |\\n| CMP000 | Module does not parse | 0 | 0 | 0 |\\n| CMP001 | Suppression marker | 0 | 0 | 0 |\\n| CMP002 | typing.Any usage | 0 | 0 | 0 |\\n| CMP003 | object annotation | 0 | 0 | 0 |\\n| CMP004 | Lint ignore configuration | 0 | 0 | 0 |\\n| CMP005 | Type-check suppression | 0 | 0 | 0 |\\n| CMP006 | pyproject.toml missing | 0 | 0 | 0 |\\n\\n### Scope\\n\\n**Included**\\n\\n- \`.\`\\n\\n**Excluded**\\n\\n- \`.*/**\`\\n- \`**/.*/**\`\\n- \`EXACTUS_RESULTS/**\`\\n- \`**/EXACTUS_RESULTS/**\`\\n- \`node_modules/**\`\\n- \`build/**\`\\n- \`dist/**\`\\n- \`*.egg-info/**\`\\n- \`**/__pycache__/**\`\\n- \`EXACTUS_RESULTS\`\\n- \`EXACTUS_RESULTS/**\`\\n\\n**Skipped targets**\\n\\nNo skipped targets.\\n\\n## Setup\\n\\n### Invocation\\n\\n~~~~shell\\n/usr/local/bin/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=60293 --orchestrator-control-token=[redacted] --orchestrator-worker-port=60241 --orchestrator-worker-token=[redacted] '--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"lints\\",\\"module\\":\\"exactus.tools.lints.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/LINTS\\",\\"arguments\\":[],\\"run_id\\":\\"2c65e21142f34f8db22b09b30d9044d1:lints\\",\\"pipeline_run_id\\":\\"2c65e21142f34f8db22b09b30d9044d1\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}'\\n~~~~\\n\\n| Property | Value |\\n|---|---|\\n| Working directory | [/Users/joaolopes/Exactus/exactus/tests/standalone/project](../..) |\\n| Arguments | \`exactus.tools.common.tool_worker\` \`ExactusTool\` \`--orchestrator-control-port=60293\` \`--orchestrator-control-token=[redacted]\` \`--orchestrator-worker-port=60241\` \`--orchestrator-worker-token=[redacted]\` \`--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"lints\\",\\"module\\":\\"exactus.tools.lints.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/LINTS\\",\\"arguments\\":[],\\"run_id\\":\\"2c65e21142f34f8db22b09b30d9044d1:lints\\",\\"pipeline_run_id\\":\\"2c65e21142f34f8db22b09b30d9044d1\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}\` |\\n\\n### Environment\\n\\n| Property | Value |\\n|---|---|\\n| OS | Darwin 25.3.0 |\\n| Python | 3.13.9 |\\n| Node | v22.21.1 |\\n| CPU count | 18 |\\n\\n| Variable | Value |\\n| --- | --- |\\n| EXACTUS_ORCHESTRATED | 1 |\\n| EXACTUS_PIPELINE_RUN_ID | 2c65e21142f34f8db22b09b30d9044d1 |\\n| EXACTUS_REGISTRY | [/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/.runtime/runs.db](../.runtime/runs.db) |\\n| EXACTUS_ROOT | [/Users/joaolopes/Exactus/exactus/tests/standalone/project](../..) |\\n| EXACTUS_RUN_ID | 2c65e21142f34f8db22b09b30d9044d1:lints |\\n| EXACTUS_TOOL | lints |\\n| LANG | en_US.UTF-8 |\\n| TERM | xterm-256color |\\n\\n## Gate\\n\\n> **Gate: PASS** — No blocking findings\\n\\nNo blocking findings.\\n\\n## Findings\\n\\nNo findings.\\n\\n## Artifacts\\n\\n| Artifact | Path | Bytes |\\n| --- | --- | --- |\\n| @activity.json | [ARTIFACTS/@activity.json](ARTIFACTS/%40activity.json) | 2095 |\\n| README.md | [ARTIFACTS/README.md](ARTIFACTS/README.md) | 449 |\\n| stderr.log | [ARTIFACTS/stderr.log](ARTIFACTS/stderr.log) | 0 |\\n| stdout.log | [ARTIFACTS/stdout.log](ARTIFACTS/stdout.log) | 343 |\\n| steps.txt | [ARTIFACTS/steps.txt](ARTIFACTS/steps.txt) | 37771 |\\n\\n## Integrated stages\\n\\n### group_final\\n\\n| Files scanned | Modules planned | Constants moved | Files changed | Dry run |\\n|---:|---:|---:|---:|---|\\n| 6 | 0 | 0 | 0 | False |\\n\\n### all_lints\\n\\n| Tools | Passed | Failed | Unavailable | File checks | Diagnostics |\\n|---:|---:|---:|---:|---:|---:|\\n| 8 | 8 | 0 | 0 | 34 | 0 |\\n\\n## Rules\\n\\n| Rule | Title | Category | Findings |\\n| --- | --- | --- | --- |\\n| CMP000 | Module does not parse | Parsing | 0 |\\n| CMP001 | Suppression marker | Suppression | 0 |\\n| CMP002 | typing.Any usage | Typing | 0 |\\n| CMP003 | object annotation | Typing | 0 |\\n| CMP004 | Lint ignore configuration | Configuration | 0 |\\n| CMP005 | Type-check suppression | Configuration | 0 |\\n| CMP006 | pyproject.toml missing | Configuration | 0 |\\n\\n\\n## Lint metrics\\n\\n| Metric | Value |\\n| --- | --- |\\n| Linters run | 17 |\\n| Linters unavailable | 0 |\\n| Files analyzed | 10 |\\n| Files with findings | 0 |\\n| Rules triggered | 0 |\\n| Findings | 0 |\\n\\n### Linters\\n\\n| Linter | Status | Version | Files | Findings | Errors | Warnings | Information | Exit code | Duration (s) |\\n|---|---|---|---:|---:|---:|---:|---:|---:|---:|\\n| custom_compliance | ran | built-in | 6 | 0 | 0 | 0 | 0 | 0 | 0.0022991250007180497 |\\n| custom_shebang | ran | built-in | 6 | 0 | 0 | 0 | 0 | 0 | 0.0011241669999435544 |\\n| custom_python | ran | built-in | 6 | 0 | 0 | 0 | 0 | 0 | 0.031 |\\n| custom_python_long_lines | ran | built-in | 6 | 0 | 0 | 0 | 0 | 0 | 0.0015804580034455284 |\\n| custom_javascript | ran | built-in | 2 | 0 | 0 | 0 | 0 | 0 | 0.001 |\\n| custom_javascript_delimiters | ran | built-in | 2 | 0 | 0 | 0 | 0 | 0 | 0.01899174999562092 |\\n| custom_javascript_notation | ran | built-in | 2 | 0 | 0 | 0 | 0 | 0 | 0.1644098329998087 |\\n| custom_css | ran | built-in | 1 | 0 | 0 | 0 | 0 | 0 | 0.001 |\\n| custom_html | ran | built-in | 1 | 0 | 0 | 0 | 0 | 0 | 0.0 |\\n| ruff | ran | 0.12.0 | 6 | 0 | 0 | 0 | 0 | 0 | 0.284287 |\\n| ruff_docs | ran | 0.12.0 | 6 | 0 | 0 | 0 | 0 | 0 | 0.284287 |\\n| basedpyright | ran | 1.40.2 | 6 | 0 | 0 | 0 | 0 | 0 | 1.830926 |\\n| pyrefly | ran | 0.63.0 | 6 | 0 | 0 | 0 | 0 | 0 | 0.232 |\\n| eslint | ran | 10.13.0 | 2 | 0 | 0 | 0 | 0 | 0 | 0.899025 |\\n| typescript | ran | 6.0.3 | 2 | 0 | 0 | 0 | 0 | 0 | 4.57235 |\\n| stylelint | ran | 17.16.0 | 1 | 0 | 0 | 0 | 0 | 0 | 1.478769 |\\n| htmlhint | ran | 1.9.2 | 1 | 0 | 0 | 0 | 0 | 0 | 0.152769 |\\n\\n### Top rules\\n\\nN/A — no rule reported a finding.\\n\\n### Files with the most findings\\n\\nN/A — no file has a finding.\\n\\n---\\n\\nExactus · lints · Run 2c65e21142f34f8db22b09b30d9044d1:lints · Result PASS · Duration 9.4 s\\n",
+  "markdown": "# Lint Exactus\\n\\n**Run time:** 02 November 2026, 05:29:11 UTC\\n\\n## Identity\\n\\n| Field | Value |\\n|---|---|\\n| Tool | lints 0.6.1 |\\n| Run ID | a02e863bdc214c449643475edb79e655:lints |\\n| Pipeline run | a02e863bdc214c449643475edb79e655 |\\n| Status | PASS |\\n| Exit code | 0 |\\n| Started | 02 November 2026, 05:29:11 UTC |\\n| Finished | 02 November 2026, 05:29:19 UTC |\\n| Duration | 7.7 s |\\n| Previous duration | 9.757s |\\n\\n## What was checked\\n\\n**Result: PASS** — 0 findings across 10 of 10 eligible targets.\\n\\n| Severity | Count |\\n|---|---:|\\n| ERROR | 0 |\\n| WARNING | 0 |\\n| INFORMATION | 0 |\\n\\n### Change since previous report\\n\\n| Metric | Current | Previous | Delta |\\n|---|---:|---:|---:|\\n| Findings | 0 | 0 | 0 |\\n| Previous duration | 9.757s | | |\\n\\n| Finding change | Count |\\n|---|---:|\\n| Added | 0 |\\n| Resolved | 0 |\\n| Unchanged | 0 |\\n\\n#### Category findings\\n\\n| Category | Title | Findings | Previous | Delta |\\n| --- | --- | --- | --- | --- |\\n| CMP000 | Module does not parse | 0 | 0 | 0 |\\n| CMP001 | Suppression marker | 0 | 0 | 0 |\\n| CMP002 | typing.Any usage | 0 | 0 | 0 |\\n| CMP003 | object annotation | 0 | 0 | 0 |\\n| CMP004 | Lint ignore configuration | 0 | 0 | 0 |\\n| CMP005 | Type-check suppression | 0 | 0 | 0 |\\n| CMP006 | pyproject.toml missing | 0 | 0 | 0 |\\n\\n### Scope\\n\\n**Included**\\n\\n- \`.\`\\n\\n**Excluded**\\n\\n- \`.*/**\`\\n- \`**/.*/**\`\\n- \`EXACTUS_RESULTS/**\`\\n- \`**/EXACTUS_RESULTS/**\`\\n- \`node_modules/**\`\\n- \`build/**\`\\n- \`dist/**\`\\n- \`*.egg-info/**\`\\n- \`**/__pycache__/**\`\\n- \`EXACTUS_RESULTS\`\\n- \`EXACTUS_RESULTS/**\`\\n\\n**Skipped targets**\\n\\nNo skipped targets.\\n\\n## Setup\\n\\n### Invocation\\n\\n~~~~shell\\n/Users/joaolopes/Exactus/bin/release/exactus_macos_arm64/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=57866 --orchestrator-control-token=[redacted] --orchestrator-worker-port=57852 --orchestrator-worker-token=[redacted] '--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"lints\\",\\"module\\":\\"exactus.tools.lints.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/LINTS\\",\\"arguments\\":[],\\"run_id\\":\\"a02e863bdc214c449643475edb79e655:lints\\",\\"pipeline_run_id\\":\\"a02e863bdc214c449643475edb79e655\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}'\\n~~~~\\n\\n| Property | Value |\\n|---|---|\\n| Working directory | [/Users/joaolopes/Exactus/exactus/tests/standalone/project](../..) |\\n| Arguments | \`exactus.tools.common.tool_worker\` \`ExactusTool\` \`--orchestrator-control-port=57866\` \`--orchestrator-control-token=[redacted]\` \`--orchestrator-worker-port=57852\` \`--orchestrator-worker-token=[redacted]\` \`--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"lints\\",\\"module\\":\\"exactus.tools.lints.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/LINTS\\",\\"arguments\\":[],\\"run_id\\":\\"a02e863bdc214c449643475edb79e655:lints\\",\\"pipeline_run_id\\":\\"a02e863bdc214c449643475edb79e655\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}\` |\\n\\n### Environment\\n\\n| Property | Value |\\n|---|---|\\n| OS | Darwin 25.3.0 |\\n| Python | 3.13.9 |\\n| Node | v22.21.1 |\\n| CPU count | 18 |\\n\\n| Variable | Value |\\n| --- | --- |\\n| EXACTUS_ORCHESTRATED | 1 |\\n| EXACTUS_PIPELINE_RUN_ID | a02e863bdc214c449643475edb79e655 |\\n| EXACTUS_REGISTRY | [/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/.runtime/runs.db](../.runtime/runs.db) |\\n| EXACTUS_ROOT | [/Users/joaolopes/Exactus/exactus/tests/standalone/project](../..) |\\n| EXACTUS_RUN_ID | a02e863bdc214c449643475edb79e655:lints |\\n| EXACTUS_TOOL | lints |\\n| LANG | en_US.UTF-8 |\\n| TERM | xterm-256color |\\n\\n## Gate\\n\\n> **Gate: PASS** — No blocking findings\\n\\nNo blocking findings.\\n\\n## Findings\\n\\nNo findings.\\n\\n## Artifacts\\n\\n| Artifact | Path | Bytes |\\n| --- | --- | --- |\\n| @activity.json | [ARTIFACTS/@activity.json](ARTIFACTS/%40activity.json) | 2336 |\\n| README.md | [ARTIFACTS/README.md](ARTIFACTS/README.md) | 450 |\\n| stderr.log | [ARTIFACTS/stderr.log](ARTIFACTS/stderr.log) | 0 |\\n| stdout.log | [ARTIFACTS/stdout.log](ARTIFACTS/stdout.log) | 343 |\\n| steps.txt | [ARTIFACTS/steps.txt](ARTIFACTS/steps.txt) | 38146 |\\n\\n## Integrated stages\\n\\n### group_final\\n\\n| Files scanned | Modules planned | Constants moved | Files changed | Dry run |\\n|---:|---:|---:|---:|---|\\n| 6 | 0 | 0 | 0 | False |\\n\\n### all_lints\\n\\n| Tools | Passed | Failed | Unavailable | File checks | Diagnostics |\\n|---:|---:|---:|---:|---:|---:|\\n| 9 | 8 | 0 | 1 | 40 | 0 |\\n\\n## Rules\\n\\n| Rule | Title | Category | Findings |\\n| --- | --- | --- | --- |\\n| CMP000 | Module does not parse | Parsing | 0 |\\n| CMP001 | Suppression marker | Suppression | 0 |\\n| CMP002 | typing.Any usage | Typing | 0 |\\n| CMP003 | object annotation | Typing | 0 |\\n| CMP004 | Lint ignore configuration | Configuration | 0 |\\n| CMP005 | Type-check suppression | Configuration | 0 |\\n| CMP006 | pyproject.toml missing | Configuration | 0 |\\n\\n\\n## Lint metrics\\n\\n| Metric | Value |\\n| --- | --- |\\n| Linters run | 17 |\\n| Linters unavailable | 0 |\\n| Files analyzed | 10 |\\n| Files with findings | 0 |\\n| Rules triggered | 0 |\\n| Findings | 0 |\\n\\n### Linters\\n\\n| Linter | Status | Version | Files | Findings | Errors | Warnings | Information | Exit code | Duration (s) |\\n|---|---|---|---:|---:|---:|---:|---:|---:|---:|\\n| custom_compliance | ran | built-in | 6 | 0 | 0 | 0 | 0 | 0 | 0.0017717910232022405 |\\n| custom_shebang | ran | built-in | 6 | 0 | 0 | 0 | 0 | 0 | 0.002251582976896316 |\\n| custom_python | ran | built-in | 6 | 0 | 0 | 0 | 0 | 0 | 0.036 |\\n| custom_python_long_lines | ran | built-in | 6 | 0 | 0 | 0 | 0 | 0 | 7.774995174258947e-05 |\\n| custom_javascript | ran | built-in | 2 | 0 | 0 | 0 | 0 | 0 | 0.001 |\\n| custom_javascript_delimiters | ran | built-in | 2 | 0 | 0 | 0 | 0 | 0 | 0.045731999969575554 |\\n| custom_javascript_notation | ran | built-in | 2 | 0 | 0 | 0 | 0 | 0 | 0.19839616701938212 |\\n| custom_css | ran | built-in | 1 | 0 | 0 | 0 | 0 | 0 | 0.002 |\\n| custom_html | ran | built-in | 1 | 0 | 0 | 0 | 0 | 0 | 0.0 |\\n| ruff | ran | 0.12.0 | 6 | 0 | 0 | 0 | 0 | 0 | 0.233572 |\\n| ruff_docs | ran | 0.12.0 | 6 | 0 | 0 | 0 | 0 | 0 | 0.233572 |\\n| basedpyright | ran | 1.40.2 | 6 | 0 | 0 | 0 | 0 | 0 | 1.290921 |\\n| pyrefly | ran | 0.63.0 | 6 | 0 | 0 | 0 | 0 | 0 | 0.299 |\\n| eslint | ran | 10.14.0 | 2 | 0 | 0 | 0 | 0 | 0 | 0.667758 |\\n| typescript | ran | 6.0.3 | 2 | 0 | 0 | 0 | 0 | 0 | 2.986645 |\\n| stylelint | ran | 17.16.0 | 1 | 0 | 0 | 0 | 0 | 0 | 0.735674 |\\n| htmlhint | ran | 1.9.2 | 1 | 0 | 0 | 0 | 0 | 0 | 0.165826 |\\n\\n### Top rules\\n\\nN/A — no rule reported a finding.\\n\\n### Files with the most findings\\n\\nN/A — no file has a finding.\\n\\n---\\n\\nExactus · lints 0.6.1 · Run a02e863bdc214c449643475edb79e655:lints · Result PASS · Duration 7.7 s\\n",
   "organize": {
     "files": 8,
     "python_files": 6,
@@ -672,8 +683,8 @@ window.__REPORT_DATA__ = JSON.parse(`{
     "dry_run": false
   },
   "passed": true,
-  "pipeline_run_id": "2c65e21142f34f8db22b09b30d9044d1",
-  "previous_duration_seconds": 6.627,
+  "pipeline_run_id": "a02e863bdc214c449643475edb79e655",
+  "previous_duration_seconds": 9.757,
   "project_href": "../../..",
   "project_root": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
   "report_bundle": {
@@ -683,22 +694,22 @@ window.__REPORT_DATA__ = JSON.parse(`{
   },
   "resume": "PASS: analyzer completed with exit status 0.",
   "run": {
-    "id": "2c65e21142f34f8db22b09b30d9044d1:lints",
-    "pipeline_id": "2c65e21142f34f8db22b09b30d9044d1",
+    "id": "a02e863bdc214c449643475edb79e655:lints",
+    "pipeline_id": "a02e863bdc214c449643475edb79e655",
     "status": "PASS",
     "exit_code": 0,
-    "started_at": "2026-10-31T05:10:25.732080+00:00",
-    "finished_at": "2026-10-31T05:10:35.091632+00:00",
-    "at_human": "31 October 2026, 05:10:25 UTC",
-    "started_at_human": "31 October 2026, 05:10:25 UTC",
-    "finished_at_human": "31 October 2026, 05:10:35 UTC",
-    "duration_seconds": 9.358,
-    "duration_human": "9.4 s",
+    "started_at": "2026-11-02T05:29:11.488145+00:00",
+    "finished_at": "2026-11-02T05:29:19.185342+00:00",
+    "at_human": "02 November 2026, 05:29:11 UTC",
+    "started_at_human": "02 November 2026, 05:29:11 UTC",
+    "finished_at_human": "02 November 2026, 05:29:19 UTC",
+    "duration_seconds": 7.692,
+    "duration_human": "7.7 s",
     "error": null
   },
-  "run_at": "2026-10-31T05:10:25.732080+00:00",
-  "run_at_human": "31 October 2026, 05:10:25 UTC",
-  "run_id": "2c65e21142f34f8db22b09b30d9044d1:lints",
+  "run_at": "2026-11-02T05:29:11.488145+00:00",
+  "run_at_human": "02 November 2026, 05:29:11 UTC",
+  "run_id": "a02e863bdc214c449643475edb79e655:lints",
   "schema": "project-exactus-report/v1",
   "scope": {
     "include": [
@@ -807,7 +818,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
       "count": 0,
       "version": "built-in",
       "files": 6,
-      "duration_seconds": 0.0011241669999435544,
+      "duration_seconds": 0.002251582976896316,
       "findings": [],
       "healed": [],
       "skipped_files": []
@@ -819,14 +830,14 @@ window.__REPORT_DATA__ = JSON.parse(`{
       "stderr": "",
       "count": 0,
       "findings": [],
-      "duration_seconds": 0.031
+      "duration_seconds": 0.036
     },
     "custom_javascript_delimiters": {
       "returncode": 0,
       "count": 0,
       "version": "built-in",
       "files": 2,
-      "duration_seconds": 0.01899174999562092,
+      "duration_seconds": 0.045731999969575554,
       "findings": [],
       "healed": []
     },
@@ -835,7 +846,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
       "count": 0,
       "version": "built-in",
       "files": 2,
-      "duration_seconds": 0.1644098329998087,
+      "duration_seconds": 0.19839616701938212,
       "findings": [],
       "healed": []
     },
@@ -855,7 +866,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
       "stderr": "",
       "count": 0,
       "findings": [],
-      "duration_seconds": 0.001
+      "duration_seconds": 0.002
     },
     "custom_html": {
       "tool": "custom_html",
@@ -865,6 +876,15 @@ window.__REPORT_DATA__ = JSON.parse(`{
       "count": 0,
       "findings": [],
       "duration_seconds": 0.0
+    },
+    "custom_python_simplify": {
+      "returncode": 0,
+      "count": 0,
+      "files": 6,
+      "version": "built-in",
+      "findings": [],
+      "proposals": 0,
+      "healed": 0
     },
     "ruff": {
       "tool": "ruff",
@@ -962,9 +982,24 @@ window.__REPORT_DATA__ = JSON.parse(`{
       "findings": [],
       "skipped": false,
       "skipped_files": [],
-      "duration_seconds": 0.284287,
+      "duration_seconds": 0.233572,
       "files_checked": 6,
       "version": "0.12.0"
+    },
+    "refurb": {
+      "tool": "refurb",
+      "command": [],
+      "commands": [],
+      "files": [],
+      "invocations": 0,
+      "returncode": 1,
+      "stderr": "refurb is not installed.",
+      "count": 0,
+      "findings": [],
+      "skipped": true,
+      "skipped_files": [],
+      "duration_seconds": 0.0,
+      "files_checked": 6
     },
     "ruff_docs": {
       "tool": "ruff_docs",
@@ -1062,7 +1097,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
       "findings": [],
       "skipped": false,
       "skipped_files": [],
-      "duration_seconds": 0.284287,
+      "duration_seconds": 0.233572,
       "files_checked": 6,
       "version": "0.12.0"
     },
@@ -1109,7 +1144,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
       "findings": [],
       "skipped": false,
       "skipped_files": [],
-      "duration_seconds": 1.830926,
+      "duration_seconds": 1.290921,
       "files_checked": 6,
       "version": "1.40.2"
     },
@@ -1119,7 +1154,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
         "/opt/anaconda3/bin/pyrefly",
         "check",
         "--python-interpreter-path",
-        "/opt/anaconda3/bin/python3",
+        "/Users/joaolopes/Exactus/.venv/bin/python",
         "--min-severity",
         "warn",
         "--output-format=json",
@@ -1131,17 +1166,17 @@ window.__REPORT_DATA__ = JSON.parse(`{
         "tests/test_calc.py"
       ],
       "returncode": 0,
-      "stderr": " WARN PYTHONPATH environment variable is set to \`/Users/joaolopes/Exactus/exactus/tests/standalone/project/src:/Users/joaolopes/Exactus/exactus/tests/standalone/project:/Users/joaolopes/.cache/exactus-tools/f93a1527036704296d14411f7a1d56e7b1ef52212e71f2dd4b577452903682b3/components/basedpyright_coverage_pyrefly_pytest_ruff/python:/Users/joaolopes/.cache/exactus-tools/f93a1527036704296d14411f7a1d56e7b1ef52212e71f2dd4b577452903682b3/components/build_twine/python:/Users/joaolopes/.cache/exactus-tools/f93a1527036704296d14411f7a1d56e7b1ef52212e71f2dd4b577452903682b3/components/defusedxml/python:/Users/joaolopes/.cache/exactus-tools/f93a1527036704296d14411f7a1d56e7b1ef52212e71f2dd4b577452903682b3/components/fastapi_httpx_httpx2_mcp_pydantic_uvicorn/python:/Users/joaolopes/.cache/exactus-tools/f93a1527036704296d14411f7a1d56e7b1ef52212e71f2dd4b577452903682b3/components/hypothesis_mutmut/python:/Users/joaolopes/.cache/exactus-tools/f93a1527036704296d14411f7a1d56e7b1ef52212e71f2dd4b577452903682b3/components/jinja2/python:/Users/joaolopes/.cache/exactus-tools/f93a1527036704296d14411f7a1d56e7b1ef52212e71f2dd4b577452903682b3/components/pillow/python:/Users/joaolopes/.cache/exactus-tools/f93a1527036704296d14411f7a1d56e7b1ef52212e71f2dd4b577452903682b3/components/playwright/python:/Users/joaolopes/.cache/exactus-tools/f93a1527036704296d14411f7a1d56e7b1ef52212e71f2dd4b577452903682b3/components/psutil/python:/Users/joaolopes/.cache/exactus-tools/f93a1527036704296d14411f7a1d56e7b1ef52212e71f2dd4b577452903682b3/components/tree-sitter_tree-sitter-language-pack/python:/usr/local/bin/exactus\`. Checks in other environments may not include these paths.\\n",
+      "stderr": " WARN PYTHONPATH environment variable is set to \`/Users/joaolopes/Exactus/exactus/tests/standalone/project/src:/Users/joaolopes/Exactus/exactus/tests/standalone/project:/Users/joaolopes/.cache/exactus-tools/8b7ef0f2198b3e6d3236bca167ecdaed2ec455101542db5323ad77e76f44bef0/components/basedpyright_coverage_pyrefly_pytest_ruff/python:/Users/joaolopes/.cache/exactus-tools/8b7ef0f2198b3e6d3236bca167ecdaed2ec455101542db5323ad77e76f44bef0/components/build_twine/python:/Users/joaolopes/.cache/exactus-tools/8b7ef0f2198b3e6d3236bca167ecdaed2ec455101542db5323ad77e76f44bef0/components/defusedxml/python:/Users/joaolopes/.cache/exactus-tools/8b7ef0f2198b3e6d3236bca167ecdaed2ec455101542db5323ad77e76f44bef0/components/fastapi_httpx_httpx2_mcp_pydantic_uvicorn/python:/Users/joaolopes/.cache/exactus-tools/8b7ef0f2198b3e6d3236bca167ecdaed2ec455101542db5323ad77e76f44bef0/components/hypothesis_mutmut/python:/Users/joaolopes/.cache/exactus-tools/8b7ef0f2198b3e6d3236bca167ecdaed2ec455101542db5323ad77e76f44bef0/components/jinja2/python:/Users/joaolopes/.cache/exactus-tools/8b7ef0f2198b3e6d3236bca167ecdaed2ec455101542db5323ad77e76f44bef0/components/pillow/python:/Users/joaolopes/.cache/exactus-tools/8b7ef0f2198b3e6d3236bca167ecdaed2ec455101542db5323ad77e76f44bef0/components/playwright/python:/Users/joaolopes/.cache/exactus-tools/8b7ef0f2198b3e6d3236bca167ecdaed2ec455101542db5323ad77e76f44bef0/components/psutil/python:/Users/joaolopes/.cache/exactus-tools/8b7ef0f2198b3e6d3236bca167ecdaed2ec455101542db5323ad77e76f44bef0/components/tree-sitter_tree-sitter-language-pack/python:/Users/joaolopes/Exactus/bin/release/exactus_macos_arm64/exactus\`. Checks in other environments may not include these paths.\\n WARN PYTHONPATH environment variable is set to \`/Users/joaolopes/Exactus/exactus/tests/standalone/project/src:/Users/joaolopes/Exactus/exactus/tests/standalone/project:/Users/joaolopes/.cache/exactus-tools/8b7ef0f2198b3e6d3236bca167ecdaed2ec455101542db5323ad77e76f44bef0/components/basedpyright_coverage_pyrefly_pytest_ruff/python:/Users/joaolopes/.cache/exactus-tools/8b7ef0f2198b3e6d3236bca167ecdaed2ec455101542db5323ad77e76f44bef0/components/build_twine/python:/Users/joaolopes/.cache/exactus-tools/8b7ef0f2198b3e6d3236bca167ecdaed2ec455101542db5323ad77e76f44bef0/components/defusedxml/python:/Users/joaolopes/.cache/exactus-tools/8b7ef0f2198b3e6d3236bca167ecdaed2ec455101542db5323ad77e76f44bef0/components/fastapi_httpx_httpx2_mcp_pydantic_uvicorn/python:/Users/joaolopes/.cache/exactus-tools/8b7ef0f2198b3e6d3236bca167ecdaed2ec455101542db5323ad77e76f44bef0/components/hypothesis_mutmut/python:/Users/joaolopes/.cache/exactus-tools/8b7ef0f2198b3e6d3236bca167ecdaed2ec455101542db5323ad77e76f44bef0/components/jinja2/python:/Users/joaolopes/.cache/exactus-tools/8b7ef0f2198b3e6d3236bca167ecdaed2ec455101542db5323ad77e76f44bef0/components/pillow/python:/Users/joaolopes/.cache/exactus-tools/8b7ef0f2198b3e6d3236bca167ecdaed2ec455101542db5323ad77e76f44bef0/components/playwright/python:/Users/joaolopes/.cache/exactus-tools/8b7ef0f2198b3e6d3236bca167ecdaed2ec455101542db5323ad77e76f44bef0/components/psutil/python:/Users/joaolopes/.cache/exactus-tools/8b7ef0f2198b3e6d3236bca167ecdaed2ec455101542db5323ad77e76f44bef0/components/tree-sitter_tree-sitter-language-pack/python:/Users/joaolopes/Exactus/bin/release/exactus_macos_arm64/exactus\`. Checks in other environments may not include these paths.\\n",
       "count": 0,
       "findings": [],
       "skipped_files": [],
-      "duration_seconds": 0.232,
+      "duration_seconds": 0.299,
       "version": "0.63.0"
     },
     "eslint": {
       "tool": "eslint",
       "command": [
-        "/Users/joaolopes/.cache/exactus-tools/f93a1527036704296d14411f7a1d56e7b1ef52212e71f2dd4b577452903682b3/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/eslint",
+        "/Users/joaolopes/.cache/exactus-tools/8b7ef0f2198b3e6d3236bca167ecdaed2ec455101542db5323ad77e76f44bef0/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/eslint",
         "eslint.config.mjs",
         "--format",
         "json",
@@ -1149,28 +1184,28 @@ window.__REPORT_DATA__ = JSON.parse(`{
       ],
       "commands": [
         [
-          "/Users/joaolopes/.cache/exactus-tools/f93a1527036704296d14411f7a1d56e7b1ef52212e71f2dd4b577452903682b3/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/eslint",
+          "/Users/joaolopes/.cache/exactus-tools/8b7ef0f2198b3e6d3236bca167ecdaed2ec455101542db5323ad77e76f44bef0/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/eslint",
           "eslint.config.mjs",
           "--format",
           "json",
           "--no-warn-ignored"
         ],
         [
-          "/Users/joaolopes/.cache/exactus-tools/f93a1527036704296d14411f7a1d56e7b1ef52212e71f2dd4b577452903682b3/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/eslint",
+          "/Users/joaolopes/.cache/exactus-tools/8b7ef0f2198b3e6d3236bca167ecdaed2ec455101542db5323ad77e76f44bef0/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/eslint",
           "stylelint.config.mjs",
           "--format",
           "json",
           "--no-warn-ignored"
         ],
         [
-          "/Users/joaolopes/.cache/exactus-tools/f93a1527036704296d14411f7a1d56e7b1ef52212e71f2dd4b577452903682b3/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/eslint",
+          "/Users/joaolopes/.cache/exactus-tools/8b7ef0f2198b3e6d3236bca167ecdaed2ec455101542db5323ad77e76f44bef0/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/eslint",
           "tests/code.test.mjs",
           "--format",
           "json",
           "--no-warn-ignored"
         ],
         [
-          "/Users/joaolopes/.cache/exactus-tools/f93a1527036704296d14411f7a1d56e7b1ef52212e71f2dd4b577452903682b3/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/eslint",
+          "/Users/joaolopes/.cache/exactus-tools/8b7ef0f2198b3e6d3236bca167ecdaed2ec455101542db5323ad77e76f44bef0/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/eslint",
           "web/code.js",
           "--format",
           "json",
@@ -1190,21 +1225,21 @@ window.__REPORT_DATA__ = JSON.parse(`{
       "findings": [],
       "skipped": false,
       "skipped_files": [],
-      "duration_seconds": 0.899025,
+      "duration_seconds": 0.667758,
       "files_checked": 4,
-      "version": "10.13.0"
+      "version": "10.14.0"
     },
     "stylelint": {
       "tool": "stylelint",
       "command": [
-        "/Users/joaolopes/.cache/exactus-tools/f93a1527036704296d14411f7a1d56e7b1ef52212e71f2dd4b577452903682b3/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/stylelint",
+        "/Users/joaolopes/.cache/exactus-tools/8b7ef0f2198b3e6d3236bca167ecdaed2ec455101542db5323ad77e76f44bef0/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/stylelint",
         "web/style.css",
         "--formatter",
         "json"
       ],
       "commands": [
         [
-          "/Users/joaolopes/.cache/exactus-tools/f93a1527036704296d14411f7a1d56e7b1ef52212e71f2dd4b577452903682b3/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/stylelint",
+          "/Users/joaolopes/.cache/exactus-tools/8b7ef0f2198b3e6d3236bca167ecdaed2ec455101542db5323ad77e76f44bef0/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/stylelint",
           "web/style.css",
           "--formatter",
           "json"
@@ -1220,19 +1255,19 @@ window.__REPORT_DATA__ = JSON.parse(`{
       "findings": [],
       "skipped": false,
       "skipped_files": [],
-      "duration_seconds": 1.478769,
+      "duration_seconds": 0.735674,
       "files_checked": 1,
       "version": "17.16.0"
     },
     "htmlhint": {
       "tool": "htmlhint",
       "command": [
-        "/Users/joaolopes/.cache/exactus-tools/f93a1527036704296d14411f7a1d56e7b1ef52212e71f2dd4b577452903682b3/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/htmlhint",
+        "/Users/joaolopes/.cache/exactus-tools/8b7ef0f2198b3e6d3236bca167ecdaed2ec455101542db5323ad77e76f44bef0/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/htmlhint",
         "web/index.html"
       ],
       "commands": [
         [
-          "/Users/joaolopes/.cache/exactus-tools/f93a1527036704296d14411f7a1d56e7b1ef52212e71f2dd4b577452903682b3/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/htmlhint",
+          "/Users/joaolopes/.cache/exactus-tools/8b7ef0f2198b3e6d3236bca167ecdaed2ec455101542db5323ad77e76f44bef0/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/htmlhint",
           "web/index.html"
         ]
       ],
@@ -1246,14 +1281,14 @@ window.__REPORT_DATA__ = JSON.parse(`{
       "findings": [],
       "skipped": false,
       "skipped_files": [],
-      "duration_seconds": 0.152769,
+      "duration_seconds": 0.165826,
       "files_checked": 1,
       "version": "1.9.2"
     },
     "typescript": {
       "tool": "typescript",
       "command": [
-        "/Users/joaolopes/.cache/exactus-tools/f93a1527036704296d14411f7a1d56e7b1ef52212e71f2dd4b577452903682b3/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/tsc",
+        "/Users/joaolopes/.cache/exactus-tools/8b7ef0f2198b3e6d3236bca167ecdaed2ec455101542db5323ad77e76f44bef0/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/tsc",
         "--noEmit",
         "--pretty",
         "false",
@@ -1262,7 +1297,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
       ],
       "commands": [
         [
-          "/Users/joaolopes/.cache/exactus-tools/f93a1527036704296d14411f7a1d56e7b1ef52212e71f2dd4b577452903682b3/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/tsc",
+          "/Users/joaolopes/.cache/exactus-tools/8b7ef0f2198b3e6d3236bca167ecdaed2ec455101542db5323ad77e76f44bef0/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/tsc",
           "--noEmit",
           "--pretty",
           "false",
@@ -1283,7 +1318,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
       "findings": [],
       "skipped": false,
       "skipped_files": [],
-      "duration_seconds": 4.57235,
+      "duration_seconds": 2.986645,
       "files_checked": 4,
       "version": "6.0.3"
     },
@@ -1292,7 +1327,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
       "count": 0,
       "version": "built-in",
       "files": 6,
-      "duration_seconds": 0.0015804580034455284,
+      "duration_seconds": 7.774995174258947e-05,
       "findings": [],
       "healed": [],
       "skipped_files": []
@@ -1302,7 +1337,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
       "count": 0,
       "version": "built-in",
       "files": 6,
-      "duration_seconds": 0.0022991250007180497,
+      "duration_seconds": 0.0017717910232022405,
       "findings": [],
       "skipped_files": []
     }
@@ -1312,30 +1347,30 @@ window.__REPORT_DATA__ = JSON.parse(`{
     "tool": {
       "name": "lints",
       "display_name": "Lint Exactus",
-      "version": null
+      "version": "0.6.1"
     },
     "run": {
-      "id": "2c65e21142f34f8db22b09b30d9044d1:lints",
-      "pipeline_id": "2c65e21142f34f8db22b09b30d9044d1",
+      "id": "a02e863bdc214c449643475edb79e655:lints",
+      "pipeline_id": "a02e863bdc214c449643475edb79e655",
       "status": "PASS",
       "exit_code": 0,
-      "started_at": "2026-10-31T05:10:25.732080+00:00",
-      "finished_at": "2026-10-31T05:10:35.091632+00:00",
-      "at_human": "31 October 2026, 05:10:25 UTC",
-      "started_at_human": "31 October 2026, 05:10:25 UTC",
-      "finished_at_human": "31 October 2026, 05:10:35 UTC",
-      "duration_seconds": 9.358,
-      "duration_human": "9.4 s",
+      "started_at": "2026-11-02T05:29:11.488145+00:00",
+      "finished_at": "2026-11-02T05:29:19.185342+00:00",
+      "at_human": "02 November 2026, 05:29:11 UTC",
+      "started_at_human": "02 November 2026, 05:29:11 UTC",
+      "finished_at_human": "02 November 2026, 05:29:19 UTC",
+      "duration_seconds": 7.692,
+      "duration_human": "7.7 s",
       "error": null
     },
-    "previous_duration_seconds": 6.627,
+    "previous_duration_seconds": 9.757,
     "summary": {
       "timing": {
-        "date_time": "31/10/2026 05:10:25",
-        "finished_date_time": "31/10/2026 05:10:34",
+        "date_time": "02/11/2026 05:29:11",
+        "finished_date_time": "02/11/2026 05:29:18",
         "timezone": "WET",
-        "duration_seconds": 8.449975,
-        "duration_human": "00:00:08.449975"
+        "duration_seconds": 6.841371,
+        "duration_human": "00:00:06.841371"
       },
       "host": {
         "hostname": "Mac",
@@ -1412,10 +1447,10 @@ window.__REPORT_DATA__ = JSON.parse(`{
     },
     "comparison": {
       "available": true,
-      "previous_generated_at": "2026-10-31T02:56:10.392899+00:00",
-      "previous_run_id": "f9656595c8b74d23b2b6aec3bd0db7de:lints",
+      "previous_generated_at": "2026-11-02T04:26:54.095750+00:00",
+      "previous_run_id": "4eb674a4eaf74587b6b16feda9b3d901:lints",
       "previous_status": "PASS",
-      "previous_duration_seconds": 6.627,
+      "previous_duration_seconds": 9.757,
       "current_total": 0,
       "previous_total": 0,
       "delta": 0,
@@ -1502,16 +1537,16 @@ window.__REPORT_DATA__ = JSON.parse(`{
       "skipped": []
     },
     "invocation": {
-      "command": "/usr/local/bin/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=60293 --orchestrator-control-token=[redacted] --orchestrator-worker-port=60241 --orchestrator-worker-token=[redacted] '--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"lints\\",\\"module\\":\\"exactus.tools.lints.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/LINTS\\",\\"arguments\\":[],\\"run_id\\":\\"2c65e21142f34f8db22b09b30d9044d1:lints\\",\\"pipeline_run_id\\":\\"2c65e21142f34f8db22b09b30d9044d1\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}'",
+      "command": "/Users/joaolopes/Exactus/bin/release/exactus_macos_arm64/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=57866 --orchestrator-control-token=[redacted] --orchestrator-worker-port=57852 --orchestrator-worker-token=[redacted] '--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"lints\\",\\"module\\":\\"exactus.tools.lints.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/LINTS\\",\\"arguments\\":[],\\"run_id\\":\\"a02e863bdc214c449643475edb79e655:lints\\",\\"pipeline_run_id\\":\\"a02e863bdc214c449643475edb79e655\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}'",
       "cwd": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
       "arguments": [
         "exactus.tools.common.tool_worker",
         "ExactusTool",
-        "--orchestrator-control-port=60293",
+        "--orchestrator-control-port=57866",
         "--orchestrator-control-token=[redacted]",
-        "--orchestrator-worker-port=60241",
+        "--orchestrator-worker-port=57852",
         "--orchestrator-worker-token=[redacted]",
-        "--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"lints\\",\\"module\\":\\"exactus.tools.lints.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/LINTS\\",\\"arguments\\":[],\\"run_id\\":\\"2c65e21142f34f8db22b09b30d9044d1:lints\\",\\"pipeline_run_id\\":\\"2c65e21142f34f8db22b09b30d9044d1\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}"
+        "--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"lints\\",\\"module\\":\\"exactus.tools.lints.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/LINTS\\",\\"arguments\\":[],\\"run_id\\":\\"a02e863bdc214c449643475edb79e655:lints\\",\\"pipeline_run_id\\":\\"a02e863bdc214c449643475edb79e655\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}"
       ]
     },
     "environment": {
@@ -1526,7 +1561,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
         },
         {
           "name": "EXACTUS_PIPELINE_RUN_ID",
-          "value": "2c65e21142f34f8db22b09b30d9044d1"
+          "value": "a02e863bdc214c449643475edb79e655"
         },
         {
           "name": "EXACTUS_REGISTRY",
@@ -1538,7 +1573,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
         },
         {
           "name": "EXACTUS_RUN_ID",
-          "value": "2c65e21142f34f8db22b09b30d9044d1:lints"
+          "value": "a02e863bdc214c449643475edb79e655:lints"
         },
         {
           "name": "EXACTUS_TOOL",
@@ -1560,12 +1595,12 @@ window.__REPORT_DATA__ = JSON.parse(`{
       {
         "name": "@activity.json",
         "path": "ARTIFACTS/@activity.json",
-        "bytes": 2095
+        "bytes": 2336
       },
       {
         "name": "README.md",
         "path": "ARTIFACTS/README.md",
-        "bytes": 449
+        "bytes": 450
       },
       {
         "name": "stderr.log",
@@ -1580,7 +1615,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
       {
         "name": "steps.txt",
         "path": "ARTIFACTS/steps.txt",
-        "bytes": 37771
+        "bytes": 38146
       }
     ],
     "extension": {
@@ -1604,7 +1639,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
             "warnings": 0,
             "information": 0,
             "exit_code": 0,
-            "duration_seconds": 0.0022991250007180497
+            "duration_seconds": 0.0017717910232022405
           },
           {
             "linter": "custom_shebang",
@@ -1616,7 +1651,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
             "warnings": 0,
             "information": 0,
             "exit_code": 0,
-            "duration_seconds": 0.0011241669999435544
+            "duration_seconds": 0.002251582976896316
           },
           {
             "linter": "custom_python",
@@ -1628,7 +1663,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
             "warnings": 0,
             "information": 0,
             "exit_code": 0,
-            "duration_seconds": 0.031
+            "duration_seconds": 0.036
           },
           {
             "linter": "custom_python_long_lines",
@@ -1640,7 +1675,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
             "warnings": 0,
             "information": 0,
             "exit_code": 0,
-            "duration_seconds": 0.0015804580034455284
+            "duration_seconds": 7.774995174258947e-05
           },
           {
             "linter": "custom_javascript",
@@ -1664,7 +1699,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
             "warnings": 0,
             "information": 0,
             "exit_code": 0,
-            "duration_seconds": 0.01899174999562092
+            "duration_seconds": 0.045731999969575554
           },
           {
             "linter": "custom_javascript_notation",
@@ -1676,7 +1711,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
             "warnings": 0,
             "information": 0,
             "exit_code": 0,
-            "duration_seconds": 0.1644098329998087
+            "duration_seconds": 0.19839616701938212
           },
           {
             "linter": "custom_css",
@@ -1688,7 +1723,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
             "warnings": 0,
             "information": 0,
             "exit_code": 0,
-            "duration_seconds": 0.001
+            "duration_seconds": 0.002
           },
           {
             "linter": "custom_html",
@@ -1712,7 +1747,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
             "warnings": 0,
             "information": 0,
             "exit_code": 0,
-            "duration_seconds": 0.284287
+            "duration_seconds": 0.233572
           },
           {
             "linter": "ruff_docs",
@@ -1724,7 +1759,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
             "warnings": 0,
             "information": 0,
             "exit_code": 0,
-            "duration_seconds": 0.284287
+            "duration_seconds": 0.233572
           },
           {
             "linter": "basedpyright",
@@ -1736,7 +1771,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
             "warnings": 0,
             "information": 0,
             "exit_code": 0,
-            "duration_seconds": 1.830926
+            "duration_seconds": 1.290921
           },
           {
             "linter": "pyrefly",
@@ -1748,19 +1783,19 @@ window.__REPORT_DATA__ = JSON.parse(`{
             "warnings": 0,
             "information": 0,
             "exit_code": 0,
-            "duration_seconds": 0.232
+            "duration_seconds": 0.299
           },
           {
             "linter": "eslint",
             "status": "ran",
-            "version": "10.13.0",
+            "version": "10.14.0",
             "files": 2,
             "findings": 0,
             "errors": 0,
             "warnings": 0,
             "information": 0,
             "exit_code": 0,
-            "duration_seconds": 0.899025
+            "duration_seconds": 0.667758
           },
           {
             "linter": "typescript",
@@ -1772,7 +1807,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
             "warnings": 0,
             "information": 0,
             "exit_code": 0,
-            "duration_seconds": 4.57235
+            "duration_seconds": 2.986645
           },
           {
             "linter": "stylelint",
@@ -1784,7 +1819,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
             "warnings": 0,
             "information": 0,
             "exit_code": 0,
-            "duration_seconds": 1.478769
+            "duration_seconds": 0.735674
           },
           {
             "linter": "htmlhint",
@@ -1796,7 +1831,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
             "warnings": 0,
             "information": 0,
             "exit_code": 0,
-            "duration_seconds": 0.152769
+            "duration_seconds": 0.165826
           }
         ],
         "top_rules": [],
@@ -1855,11 +1890,12 @@ window.__REPORT_DATA__ = JSON.parse(`{
     ],
     "source_label": "Linter",
     "all_lints_summary": {
-      "tools": 8,
+      "tools": 9,
       "passed": 8,
       "failed": 0,
-      "unavailable": 0,
-      "files": 34,
+      "unavailable": 1,
+      "optional_unavailable": 1,
+      "files": 40,
       "files_with_issues": 0,
       "errors": 0,
       "warnings": 0,
@@ -1909,7 +1945,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
         "warnings": 0,
         "information": 0,
         "exit_code": 0,
-        "duration_seconds": 0.0022991250007180497
+        "duration_seconds": 0.0017717910232022405
       },
       {
         "linter": "custom_shebang",
@@ -1921,7 +1957,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
         "warnings": 0,
         "information": 0,
         "exit_code": 0,
-        "duration_seconds": 0.0011241669999435544
+        "duration_seconds": 0.002251582976896316
       },
       {
         "linter": "custom_python",
@@ -1933,7 +1969,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
         "warnings": 0,
         "information": 0,
         "exit_code": 0,
-        "duration_seconds": 0.031
+        "duration_seconds": 0.036
       },
       {
         "linter": "custom_python_long_lines",
@@ -1945,7 +1981,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
         "warnings": 0,
         "information": 0,
         "exit_code": 0,
-        "duration_seconds": 0.0015804580034455284
+        "duration_seconds": 7.774995174258947e-05
       },
       {
         "linter": "custom_javascript",
@@ -1969,7 +2005,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
         "warnings": 0,
         "information": 0,
         "exit_code": 0,
-        "duration_seconds": 0.01899174999562092
+        "duration_seconds": 0.045731999969575554
       },
       {
         "linter": "custom_javascript_notation",
@@ -1981,7 +2017,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
         "warnings": 0,
         "information": 0,
         "exit_code": 0,
-        "duration_seconds": 0.1644098329998087
+        "duration_seconds": 0.19839616701938212
       },
       {
         "linter": "custom_css",
@@ -1993,7 +2029,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
         "warnings": 0,
         "information": 0,
         "exit_code": 0,
-        "duration_seconds": 0.001
+        "duration_seconds": 0.002
       },
       {
         "linter": "custom_html",
@@ -2017,7 +2053,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
         "warnings": 0,
         "information": 0,
         "exit_code": 0,
-        "duration_seconds": 0.284287
+        "duration_seconds": 0.233572
       },
       {
         "linter": "ruff_docs",
@@ -2029,7 +2065,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
         "warnings": 0,
         "information": 0,
         "exit_code": 0,
-        "duration_seconds": 0.284287
+        "duration_seconds": 0.233572
       },
       {
         "linter": "basedpyright",
@@ -2041,7 +2077,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
         "warnings": 0,
         "information": 0,
         "exit_code": 0,
-        "duration_seconds": 1.830926
+        "duration_seconds": 1.290921
       },
       {
         "linter": "pyrefly",
@@ -2053,19 +2089,19 @@ window.__REPORT_DATA__ = JSON.parse(`{
         "warnings": 0,
         "information": 0,
         "exit_code": 0,
-        "duration_seconds": 0.232
+        "duration_seconds": 0.299
       },
       {
         "linter": "eslint",
         "status": "ran",
-        "version": "10.13.0",
+        "version": "10.14.0",
         "files": 2,
         "findings": 0,
         "errors": 0,
         "warnings": 0,
         "information": 0,
         "exit_code": 0,
-        "duration_seconds": 0.899025
+        "duration_seconds": 0.667758
       },
       {
         "linter": "typescript",
@@ -2077,7 +2113,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
         "warnings": 0,
         "information": 0,
         "exit_code": 0,
-        "duration_seconds": 4.57235
+        "duration_seconds": 2.986645
       },
       {
         "linter": "stylelint",
@@ -2089,7 +2125,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
         "warnings": 0,
         "information": 0,
         "exit_code": 0,
-        "duration_seconds": 1.478769
+        "duration_seconds": 0.735674
       },
       {
         "linter": "htmlhint",
@@ -2101,7 +2137,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
         "warnings": 0,
         "information": 0,
         "exit_code": 0,
-        "duration_seconds": 0.152769
+        "duration_seconds": 0.165826
       }
     ],
     "top_rules": [],

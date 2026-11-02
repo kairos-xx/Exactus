@@ -11,17 +11,17 @@ test("capture rejects missing viewports and elements before mutating a page", as
 	await assert.rejects(new SnapshotCapture(
 		/** @type {any} */
 		({
-			viewportSize: () => null,
-		}), "body", ).capture(), /configured viewport/, );
+			viewportSize: () => null
+		}), "body" ).capture(), /configured viewport/ );
 	await assert.rejects(new SnapshotCapture(
 		/** @type {any} */
 		({
 			viewportSize: () => ({
 				width: 390,
-				height: 900,
+				height: 900
 			}),
-			$: async () => null,
-		}), "missing", ).capture(), /not found/, );
+			$: async () => null
+		}), "missing" ).capture(), /not found/ );
 });
 test("nested overflow is expanded for capture and restored even after failure", async t => {
 	await browserTest(t, async (page, url) => {
@@ -36,12 +36,12 @@ test("nested overflow is expanded for capture and restored even after failure", 
 			let expanded = false;
 			let size = {
 				width: innerWidth,
-				height: innerHeight,
+				height: innerHeight
 			};
 			const adapter = {
 				viewportSize: () => size,
 				$: async ( /** @type {string} */ selector) => ({
-					evaluate: async ( /** @type {any} */ fn) => fn(document.querySelector(selector)),
+					evaluate: async ( /** @type {any} */ fn) => fn(document.querySelector(selector))
 				}),
 				evaluate: async ( /** @type {any} */ fn) => fn(),
 				setViewportSize: async ( /** @type {any} */ next) => {
@@ -50,7 +50,7 @@ test("nested overflow is expanded for capture and restored even after failure", 
 				screenshot: async () => {
 					expanded = outer.style.getPropertyValue("overflow-y") === "visible";
 					return [1, 2, 3];
-				},
+				}
 			};
 			const capture = new Capture(adapter, "#outer");
 			const bytes = await capture.capture();
@@ -72,7 +72,7 @@ test("nested overflow is expanded for capture and restored even after failure", 
 				finalStyle: outer.getAttribute("style"),
 				original,
 				stash: /** @type {any} */ (window).__snapshotCapture,
-				size,
+				size
 			};
 		}, url);
 		assert.deepEqual(result.bytes, [1, 2, 3]);
@@ -81,7 +81,7 @@ test("nested overflow is expanded for capture and restored even after failure", 
 		assert.equal(result.stash, undefined);
 		assert.deepEqual(result.size, {
 			width: 1440,
-			height: 900,
+			height: 900
 		});
 	});
 });

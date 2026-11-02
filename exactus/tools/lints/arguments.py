@@ -292,6 +292,36 @@ def create_parser() -> ArgumentParser:
     )
     _ = consume(
         value=parser.add_argument(
+            "--no-python-simplify",
+            action="store_true",
+            help="Disable safe adjacent-statement Python AST rewrites.",
+        ),
+    )
+    _ = consume(
+        value=parser.add_argument(
+            "--no-css-naming",
+            action="store_true",
+            help="Disable the component-aware CSS numeric naming audit.",
+        ),
+    )
+    _ = consume(
+        value=parser.add_argument(
+            "--css-naming-scale",
+            action="append",
+            default=[],
+            metavar="STEM",
+            help="Registered numeric CSS design scale (repeatable).",
+        ),
+    )
+    _ = consume(
+        value=parser.add_argument(
+            "--css-naming-extended",
+            action="store_true",
+            help="Include weak-evidence advisory CSS naming findings.",
+        ),
+    )
+    _ = consume(
+        value=parser.add_argument(
             "--css-context-word",
             action="append",
             default=[],

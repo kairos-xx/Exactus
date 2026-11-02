@@ -7,12 +7,12 @@
  * text, so a change made on a pill is a change to the text; the text stays the
  * one source of truth and the pills are a view of it.
  */
-import { FUNCTIONS, OPERATORS, semanticOf } from "./condition-language.js";
+import {FUNCTIONS, OPERATORS, semanticOf} from "./condition-language.js";
 const SVG_NAMESPACE = "http://www.w3.org/2000/svg";
 const CAP_PATHS = Object.freeze({
   start:
     "M84.2 10c0-4.3 2.3-8 5.8-10H10C4.5 0 0 4.5 0 10s4.5 10 10 10h80c-3.4-2-5.8-5.7-5.8-10Z",
-  end: "M5.3 0H0c3.3 2 5.6 5.7 5.6 10S3.4 18 0 20h5.3c5.3 0 9.7-4.5 9.7-10S10.7 0 5.3 0Z",
+  end: "M5.3 0H0c3.3 2 5.6 5.7 5.6 10S3.4 18 0 20h5.3c5.3 0 9.7-4.5 9.7-10S10.7 0 5.3 0Z"
 });
 /**
  * @typedef {object} MenuEntry One choice in a pill's dropdown.
@@ -51,7 +51,7 @@ const cap = side => {
   const svg = document.createElementNS(SVG_NAMESPACE, "svg");
   svg.setAttribute(
     "class",
-    `pill-cap pill-cap-${side} ${side === "start" ? "st0" : "st00"}`,
+    `pill-cap pill-cap-${side} ${side === "start" ? "st0" : "st00"}`
   );
   svg.setAttribute("viewBox", side === "start" ? "0 0 90 20" : "0 0 15 20");
   svg.setAttribute("preserveAspectRatio", "none");
@@ -88,7 +88,7 @@ const button = (className, text, env, dropdown = false) => {
 const issueAt = (env, start, end) => {
   const hits = env.issues.filter(
     issue =>
-      issue.end > issue.start && issue.start < end && issue.end > start,
+      issue.end > issue.start && issue.start < end && issue.end > start
   );
   if (hits.some(issue => issue.level === "error")) return "error";
   return hits.length ? "warning" : "";
@@ -106,7 +106,7 @@ const valueEntries = (terms, semantic, skip = "") => {
     const kind = semanticOf(term.value_type);
     if (term.name === skip) continue;
     if (semantic !== "any" && kind !== "any" && kind !== semantic) continue;
-    entries.push({ text: term.name, kind: term.kind, detail: term.detail });
+    entries.push({text: term.name, kind: term.kind, detail: term.detail});
   }
   if (semantic === "boolean" || semantic === "any")
     for (const literal of ["True", "False"])
@@ -114,7 +114,7 @@ const valueEntries = (terms, semantic, skip = "") => {
         entries.push({
           text: literal,
           kind: "literal",
-          detail: "A fixed true or false",
+          detail: "A fixed true or false"
         });
   return entries;
 };
@@ -134,7 +134,7 @@ export const renderPills = (tree, env) => {
     group: () => make("span"),
     term: () => make("span"),
     literal: () => make("span"),
-    missing: () => make("span"),
+    missing: () => make("span")
   };
   /** Draw one tree node at a nesting depth.
    * @param {import("./condition-language.js").TreeNode} node Node to draw.
@@ -182,7 +182,7 @@ export const renderPills = (tree, env) => {
       `pill pill-ref pill-${token.kind}`,
       token.text,
       env,
-      true,
+      true
     );
     const problem = issueAt(env, node.start, node.end);
     if (problem) pill.setAttribute("data-issue", problem);
@@ -191,14 +191,14 @@ export const renderPills = (tree, env) => {
         ...valueEntries(
           env.terms,
           node.semantic === "any" ? "any" : node.semantic,
-          token.text,
+          token.text
         ),
         {
           text: "Edit as text",
           kind: "paren",
           detail: "Change it by typing",
-          action: () => env.select(node.start, node.end),
-        },
+          action: () => env.select(node.start, node.end)
+        }
       ];
       env.menu(pill, entries, entry => {
         if (entry.action) entry.action();
@@ -232,8 +232,8 @@ export const renderPills = (tree, env) => {
         ...FUNCTIONS.map(info => ({
           text: info.name,
           kind: "function",
-          detail: info.detail,
-        })),
+          detail: info.detail
+        }))
       ];
       env.menu(pill, entries, entry => {
         const before = env.text.slice(0, node.start);
@@ -262,7 +262,7 @@ export const renderPills = (tree, env) => {
     const word = button("pill-op pill-word", name.text, env);
     word.title = "Click to remove not";
     word.addEventListener("click", () =>
-      env.replace(name.start, operand.start, ""),
+      env.replace(name.start, operand.start, "")
     );
     wrap.append(word, part(operand, depth, cut));
     return wrap;
@@ -291,7 +291,7 @@ export const renderPills = (tree, env) => {
       `pill-op ${logic ? "pill pill-logic" : "pill-compare"}`,
       name.text,
       env,
-      true,
+      true
     );
     const problem = issueAt(env, name.start, name.end);
     if (problem) operator.setAttribute("data-issue", problem);
@@ -301,23 +301,23 @@ export const renderPills = (tree, env) => {
         logic
           ? info.kind === "logic"
           : info.kind !== "logic" &&
-            (info.left.includes(left.semantic) || left.semantic === "any"),
+            (info.left.includes(left.semantic) || left.semantic === "any")
       )
         .filter(info => info.symbol !== name.text)
         .map(info => ({
           text: info.symbol,
           kind: info.kind,
-          detail: info.detail,
+          detail: info.detail
         }));
       env.menu(operator, entries, entry =>
-        env.replace(name.start, name.end, entry.text),
+        env.replace(name.start, name.end, entry.text)
       );
     });
     // Removing one side takes the operator with it.
     wrap.append(
       part(left, depth, [left.start, right.start]),
       operator,
-      part(right, depth, [left.end, right.end]),
+      part(right, depth, [left.end, right.end])
     );
     return wrap;
   };
@@ -337,11 +337,11 @@ export const renderPills = (tree, env) => {
         info => ({
           text: info.name,
           kind: "function",
-          detail: info.detail,
-        }),
+          detail: info.detail
+        })
       );
       env.menu(label, entries, entry =>
-        env.replace(name.start, name.end, entry.text),
+        env.replace(name.start, name.end, entry.text)
       );
     });
     deletable(label, cut);

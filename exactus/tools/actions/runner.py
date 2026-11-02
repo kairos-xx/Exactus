@@ -18,7 +18,9 @@ from exactus.packages.server.local import start_entrypoint, wait_ready
 from exactus.tools.actions.conflict_copies import clear_conflict_copies
 from exactus.tools.actions.process_control import terminate_tree
 from exactus.tools.common.api import ExactusApi
-from exactus.tools.common.catalog import Constants as _GroupFinalConstants
+from exactus.tools.common.catalog import (
+    GroupFinalConstants as _GroupFinalConstants,
+)
 from exactus.tools.common.models import ToolRequest
 from exactus.tools.frontend.core import (
     FrontendExactusInput,
@@ -179,8 +181,7 @@ def _validate_arguments(*, tool: str, arguments: dict[str, JsonValue]) -> None:
         }
     elif tool == "frontend.run":
         allowed = {"projects", "server_log", "workers", "fail_on_findings"}
-    unknown: set[str] = set(arguments) - allowed
-    if unknown:
+    if unknown := set(arguments) - allowed:
         msg: str = f"Unknown {tool} arguments: {', '.join(sorted(unknown))}."
         raise ValueError(msg)
     if tool == "record.crawl":

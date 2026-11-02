@@ -508,8 +508,7 @@ def install(
         + (("\n" if prior and (not prior.endswith("\n")) else "") + block)
     )
     layout.path.parent.mkdir(parents=True, exist_ok=True)
-    changed = prior != updated
-    if changed:
+    if changed := prior != updated:
         _ = layout.path.write_text(data=updated, encoding=encoding)
     return InstallResult(
         shell=shell,

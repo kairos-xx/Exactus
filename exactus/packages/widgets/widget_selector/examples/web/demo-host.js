@@ -2,7 +2,7 @@
  * Demo host: implements pick, highlight and stats against the demo page itself.
  * @returns {{stats:Function, pick:Function, highlight:Function}} The demo host API.
  */
-export const createDemoHost = (/** @type {{engine:any, stage:HTMLElement, layer:HTMLElement}} */ { engine, stage, layer }) => {
+export const createDemoHost = (/** @type {{engine:any, stage:HTMLElement, layer:HTMLElement}} */ {engine, stage, layer}) => {
   /**
    * Count matches for a selector, tolerating engine errors.
    * @param {string} value Selector text.
@@ -25,17 +25,17 @@ export const createDemoHost = (/** @type {{engine:any, stage:HTMLElement, layer:
     const classes = [...element.classList];
     const text = (/** @type {HTMLElement} */ (element).innerText ?? "").trim().replace(/\s+/g, " ").slice(0, 24);
     const candidates = [
-      ...(element.id ? [{ strategy: "id", selector: `#${element.id}` }] : []),
-      ...(classes.length ? [{ strategy: "class", selector: `${tag}.${classes.join(".")}` }] : []),
-      ...(text ? [{ strategy: "text", selector: `${tag}[innerText*="${text}"]` }] : []),
-      { strategy: "tag", selector: tag },
-      ...(element.parentElement?.classList.length ? [{ strategy: "in parent", selector: `has(.${element.parentElement.classList[0]}, ${tag}${classes.length ? `.${classes[0]}` : ""})` }] : []),
+      ...(element.id ? [{strategy: "id", selector: `#${element.id}`}] : []),
+      ...(classes.length ? [{strategy: "class", selector: `${tag}.${classes.join(".")}`}] : []),
+      ...(text ? [{strategy: "text", selector: `${tag}[innerText*="${text}"]`}] : []),
+      {strategy: "tag", selector: tag},
+      ...(element.parentElement?.classList.length ? [{strategy: "in parent", selector: `has(.${element.parentElement.classList[0]}, ${tag}${classes.length ? `.${classes[0]}` : ""})`}] : [])
     ];
-    return candidates.map(c => ({ ...c, matches: safeCount(c.selector) }));
+    return candidates.map(c => ({...c, matches: safeCount(c.selector)}));
   };
   return {
     /** @param {string} value */
-    stats: async value => engine.stats(value, { root: stage }),
+    stats: async value => engine.stats(value, {root: stage}),
     /** @param {(picked:object)=>void} apply */
     pick: apply => {
       document.body.setAttribute("data-picking", "true");
@@ -54,7 +54,7 @@ export const createDemoHost = (/** @type {{engine:any, stage:HTMLElement, layer:
         apply({
           selector: alts.find(a => a.matches === 1)?.selector ?? alts[0]?.selector ?? element.tagName.toLowerCase(),
           alternatives: alts,
-          element: { tag: element.tagName.toLowerCase(), className: element.className, text: (/** @type {HTMLElement} */ (element).innerText ?? "").trim().slice(0, 28) },
+          element: {tag: element.tagName.toLowerCase(), className: element.className, text: (/** @type {HTMLElement} */ (element).innerText ?? "").trim().slice(0, 28)}
         });
       };
       document.addEventListener("click", onClick, true);
@@ -63,12 +63,12 @@ export const createDemoHost = (/** @type {{engine:any, stage:HTMLElement, layer:
     highlight: (value, done) => {
       layer.replaceChildren();
       if (!value) {
-        done({ count: 0 });
+        done({count: 0});
         return;
       }
       const found = (() => {
         try {
-          return /** @type {Element[]} */ (engine.query(value, { root: stage }));
+          return /** @type {Element[]} */ (engine.query(value, {root: stage}));
         } catch {
           return /** @type {Element[]} */ ([]);
         }
@@ -85,7 +85,7 @@ export const createDemoHost = (/** @type {{engine:any, stage:HTMLElement, layer:
         box.style.setProperty("--dynamic-esd-hl-h", `${rect.height}px`);
         layer.append(box);
       }
-      done({ count: found.length });
-    },
+      done({count: found.length});
+    }
   };
 };

@@ -28,7 +28,7 @@ export const LAYOUT_VERSION = 1;
  * @param {boolean} [flex]
  * @returns {Track}
  */
-const track = (size, flex = false) => ({ size, flex });
+const track = (size, flex = false) => ({size, flex});
 /** Return the shipped editor grid with flows, steps, target, properties and timeline.
  * @returns {Layout} The Edit workspace as shipped.
  */
@@ -37,14 +37,14 @@ export const defaultLayout = () => ({
   cols: [track(232), track(480, true), track(352)],
   rows: [track(340), track(300, true), track(200)],
   cells: {
-    workspace: { c: 0, r: 0, cs: 1, rs: 3 },
-    steps: { c: 1, r: 0, cs: 1, rs: 2 },
-    target: { c: 2, r: 0, cs: 1, rs: 1 },
-    properties: { c: 2, r: 1, cs: 1, rs: 1 },
-    timeline: { c: 1, r: 2, cs: 2, rs: 1 },
+    workspace: {c: 0, r: 0, cs: 1, rs: 3},
+    steps: {c: 1, r: 0, cs: 1, rs: 2},
+    target: {c: 2, r: 0, cs: 1, rs: 1},
+    properties: {c: 2, r: 1, cs: 1, rs: 1},
+    timeline: {c: 1, r: 2, cs: 2, rs: 1}
   },
   collapsed: {},
-  floating: {},
+  floating: {}
 });
 /** Return a deep copy of the supplied layout.
  * @param {Layout} layout
@@ -59,12 +59,12 @@ export const defaultGraphLayout = () => ({
   cols: [track(232), track(480, true), track(352)],
   rows: [track(480, true)],
   cells: {
-    workspace: { c: 0, r: 0, cs: 1, rs: 1 },
-    composition: { c: 1, r: 0, cs: 1, rs: 1 },
-    properties: { c: 2, r: 0, cs: 1, rs: 1 },
+    workspace: {c: 0, r: 0, cs: 1, rs: 1},
+    composition: {c: 1, r: 0, cs: 1, rs: 1},
+    properties: {c: 2, r: 0, cs: 1, rs: 1}
   },
   collapsed: {},
-  floating: {},
+  floating: {}
 });
 /** Move one entry of a record to another key.
  * @template T
@@ -105,9 +105,9 @@ export const layoutForMode = (mode, base) => {
       version: LAYOUT_VERSION,
       cols: [track(480, true)],
       rows: [track(480, true)],
-      cells: { timeline: { c: 0, r: 0, cs: 1, rs: 1 } },
+      cells: {timeline: {c: 0, r: 0, cs: 1, rs: 1}},
       collapsed: {},
-      floating: {},
+      floating: {}
     };
     return frame;
   }
@@ -230,7 +230,7 @@ export const collapseAxis = (layout, id) => {
         !(
           start(other, axis) <= start(cell, axis) &&
           end(other, axis) > start(cell, axis)
-        ) || span(other, axis) > 1,
+        ) || span(other, axis) > 1
     );
   const column = alone("c");
   const row = alone("r");
@@ -282,7 +282,7 @@ const collapsedPanelOf = (layout, axis, index) => {
 export const effectiveTracks = (layout, axis) => {
   const tracks = tracksOf(layout, axis);
   const collapsed = tracks.map((_, index) =>
-    Boolean(collapsedPanelOf(layout, axis, index)),
+    Boolean(collapsedPanelOf(layout, axis, index))
   );
   let flex = tracks.findIndex((item, index) => item.flex && !collapsed[index]);
   if (flex < 0) {
@@ -301,7 +301,7 @@ export const effectiveTracks = (layout, axis) => {
   return tracks.map((item, index) => ({
     size: collapsed[index] ? HEADER_SIZE : item.size,
     flex: index === flex,
-    collapsed: collapsed[index] ?? false,
+    collapsed: collapsed[index] ?? false
   }));
 };
 /** Whether collapsing would leave the axis with an expandable track.
@@ -346,7 +346,7 @@ export const setCollapsed = (layout, id, on) => {
  */
 const covered = (layout, axis, index) =>
   Object.values(layout.cells).some(
-    cell => start(cell, axis) <= index && end(cell, axis) > index,
+    cell => start(cell, axis) <= index && end(cell, axis) > index
   );
 /** Check whether panel cells are separated along the given axis.
  * @param {Layout} layout
@@ -356,7 +356,7 @@ const covered = (layout, axis, index) =>
  */
 const separated = (layout, axis, index) =>
   Object.values(layout.cells).some(
-    cell => end(cell, axis) === index + 1 || start(cell, axis) === index + 1,
+    cell => end(cell, axis) === index + 1 || start(cell, axis) === index + 1
   );
 /** Calculate the available space after fixed tracks and minimum sizes.
  * @param {(string|null)[][]} grid
@@ -369,8 +369,8 @@ const free = (grid, row, column, width) => {
   const line = grid[row];
   return (
     line !== undefined &&
-    Array.from({ length: width }, (_, offset) => line[column + offset]).every(
-      item => item === null,
+    Array.from({length: width}, (_, offset) => line[column + offset]).every(
+      item => item === null
     )
   );
 };
@@ -391,10 +391,9 @@ const prune = layout => {
       const heir = tracks[Math.max(0, index - 1)];
       if (removed?.flex && heir) heir.flex = true;
       for (const cell of Object.values(layout.cells))
-        if (start(cell, axis) > index) {
+        if (start(cell, axis) > index)
           if (axis === "c") cell.c -= 1;
           else cell.r -= 1;
-        }
     }
     index = 0;
     while (index < tracks.length - 1) {
@@ -408,14 +407,13 @@ const prune = layout => {
       left.size += right.size;
       left.flex ||= right.flex;
       tracks.splice(index + 1, 1);
-      for (const cell of Object.values(layout.cells)) {
-        if (start(cell, axis) > index + 1) {
+      for (const cell of Object.values(layout.cells))
+        if (start(cell, axis) > index + 1)
           if (axis === "c") cell.c -= 1;
           else cell.r -= 1;
-        } else if (start(cell, axis) <= index && end(cell, axis) > index + 1)
+         else if (start(cell, axis) <= index && end(cell, axis) > index + 1)
           if (axis === "c") cell.cs -= 1;
           else cell.rs -= 1;
-      }
     }
   }
 };
@@ -430,13 +428,13 @@ const fill = layout => {
     let hole = null;
     for (let r = 0; r < grid.length && !hole; r += 1)
       for (let c = 0; c < (grid[r]?.length ?? 0) && !hole; c += 1)
-        if (grid[r]?.[c] === null) hole = { r, c };
+        if (grid[r]?.[c] === null) hole = {r, c};
     if (!hole) return;
     let width = 1;
     while (grid[hole.r]?.[hole.c + width] === null) width += 1;
     let height = 1;
     while (free(grid, hole.r + height, hole.c, width)) height += 1;
-    const area = { c: hole.c, r: hole.r, cs: width, rs: height };
+    const area = {c: hole.c, r: hole.r, cs: width, rs: height};
     /** @type {{id:string,edge:Edge,exact:boolean,size:number}[]} */
     const options = [];
     for (const [id, cell] of Object.entries(layout.cells)) {
@@ -458,10 +456,10 @@ const fill = layout => {
       const exact = cellStart === areaStart && cellEnd === areaEnd;
       const inside = cellStart >= areaStart && cellEnd <= areaEnd;
       if (!exact && !inside) continue;
-      options.push({ id, edge, exact, size: cell.cs * cell.rs });
+      options.push({id, edge, exact, size: cell.cs * cell.rs});
     }
     options.sort(
-      (a, b) => Number(b.exact) - Number(a.exact) || b.size - a.size,
+      (a, b) => Number(b.exact) - Number(a.exact) || b.size - a.size
     );
     const pick = options[0];
     if (!pick) return;
@@ -510,14 +508,13 @@ export const undock = (layout, id) => {
  */
 const insertTrack = (layout, axis, at, size) => {
   tracksOf(layout, axis).splice(at, 0, track(size));
-  for (const cell of Object.values(layout.cells)) {
-    if (start(cell, axis) >= at) {
+  for (const cell of Object.values(layout.cells))
+    if (start(cell, axis) >= at)
       if (axis === "c") cell.c += 1;
       else cell.r += 1;
-    } else if (end(cell, axis) > at)
+     else if (end(cell, axis) > at)
       if (axis === "c") cell.cs += 1;
       else cell.rs += 1;
-  }
 };
 /** Dock a panel against one side of another panel. The panel gets a new column or row; every panel that crossed that line simply grows across it.
  * @param {Layout} layout
@@ -542,7 +539,7 @@ export const dockBeside = (layout, id, targetId, edge, metrics) => {
   const fallback = horizontal ? DEFAULT_COLUMN : DEFAULT_ROW;
   const created = Math.max(
     MIN_NEW_TRACK,
-    Math.min(fallback, Math.floor((targetPx || fallback * 2) / 2)),
+    Math.min(fallback, Math.floor((targetPx || fallback * 2) / 2))
   );
   const at =
     edge === "left" || edge === "top" ? start(target, axis) : end(target, axis);
@@ -555,8 +552,8 @@ export const dockBeside = (layout, id, targetId, edge, metrics) => {
   if (!placed) return layout;
   next.cells[id] =
     axis === "c"
-      ? { c: at, cs: 1, r: placed.r, rs: placed.rs }
-      : { r: at, rs: 1, c: placed.c, cs: placed.cs };
+      ? {c: at, cs: 1, r: placed.r, rs: placed.rs}
+      : {r: at, rs: 1, c: placed.c, cs: placed.cs};
   settle(next);
   return next;
 };
@@ -580,8 +577,8 @@ export const dockOuter = (layout, id, edge, size) => {
   const cols = next.cols.length;
   next.cells[id] =
     axis === "c"
-      ? { c: at, cs: 1, r: 0, rs: rows }
-      : { r: at, rs: 1, c: 0, cs: cols };
+      ? {c: at, cs: 1, r: 0, rs: rows}
+      : {r: at, rs: 1, c: 0, cs: cols};
   settle(next);
   return next;
 };
@@ -598,7 +595,7 @@ export const swap = (layout, a, b) => {
   if (!first || !second) return layout;
   next.cells[a] = second;
   next.cells[b] = first;
-  const collapsed = { ...next.collapsed };
+  const collapsed = {...next.collapsed};
   delete next.collapsed[a];
   delete next.collapsed[b];
   if (collapsed[a]) next.collapsed[a] = collapsed[a];
@@ -616,7 +613,7 @@ export const swap = (layout, a, b) => {
  */
 export const float = (layout, id, rect) => {
   const next = undock(layout, id);
-  next.floating[id] = { ...rect };
+  next.floating[id] = {...rect};
   return next;
 };
 /** The Flows panel is one component in every workspace that shows it. */
@@ -630,7 +627,7 @@ export const describeShared = layout => {
   const floating = layout.floating[SHARED_PANEL] ?? null;
   const cell = layout.cells[SHARED_PANEL];
   const collapsed = SHARED_PANEL in layout.collapsed;
-  if (!cell) return { edge: "left", size: DEFAULT_COLUMN, collapsed, floating };
+  if (!cell) return {edge: "left", size: DEFAULT_COLUMN, collapsed, floating};
   const rows = layout.rows.length;
   const cols = layout.cols.length;
   const tall = cell.r === 0 && cell.rs === rows;
@@ -643,7 +640,7 @@ export const describeShared = layout => {
   const size = tracksOf(layout, axis)
     .slice(start(cell, axis), end(cell, axis))
     .reduce((sum, item) => sum + item.size, 0);
-  return { edge, size, collapsed, floating };
+  return {edge, size, collapsed, floating};
 };
 /** Check whether two descriptions place the shared panel the same way.
  * @param {Shared} a
@@ -677,7 +674,7 @@ const resizedTracks = (layout, axis, index) => {
   while (before >= 0 && effective[before]?.collapsed) before -= 1;
   let after = index + 1;
   while (after < effective.length && effective[after]?.collapsed) after += 1;
-  return before < 0 || after >= effective.length ? null : { before, after };
+  return before < 0 || after >= effective.length ? null : {before, after};
 };
 /** Whether dragging the boundary after track `index` can change anything.
  * @param {Layout} layout
@@ -698,7 +695,7 @@ export const isResizable = (layout, axis, index) =>
 export const resizeRange = (layout, axis, index, minimum, metrics) => {
   const sizes = axis === "c" ? metrics.cols : metrics.rows;
   const moved = resizedTracks(layout, axis, index);
-  if (!moved) return { low: 0, high: 0 };
+  if (!moved) return {low: 0, high: 0};
   /** Resolve preferred track sizes into constrained CSS pixel sizes.
    * @param {number} from
    * @param {number} to
@@ -722,7 +719,7 @@ export const resizeRange = (layout, axis, index, minimum, metrics) => {
   }
   low = Math.max(low, MIN_NEW_TRACK / 2 - (sizes[moved.before] ?? 0));
   high = Math.min(high, (sizes[moved.after] ?? 0) - MIN_NEW_TRACK / 2);
-  return { low: Math.min(low, 0), high: Math.max(high, 0) };
+  return {low: Math.min(low, 0), high: Math.max(high, 0)};
 };
 /** Move the boundary after track `index` by `delta` pixels. The open track before the line grows and the open track after it shrinks; the flexible track, wherever it is, absorbs whatever the fixed ones do not.
  * @param {Layout} layout
@@ -739,7 +736,7 @@ export const resizeBoundary = (
   index,
   delta,
   minimum,
-  metrics,
+  metrics
 ) => {
   const next = clone(layout);
   const moved = resizedTracks(next, axis, index);
@@ -793,7 +790,7 @@ export const boundaries = (layout, axis) => {
           from: lane,
           to: lane + 1,
           before: new Set(),
-          after: new Set(),
+          after: new Set()
         };
         open.to = lane + 1;
         open.before.add(String(left));
@@ -804,7 +801,7 @@ export const boundaries = (layout, axis) => {
           from: open.from,
           to: open.to,
           before: [...open.before],
-          after: [...open.after],
+          after: [...open.after]
         });
         open = null;
       }

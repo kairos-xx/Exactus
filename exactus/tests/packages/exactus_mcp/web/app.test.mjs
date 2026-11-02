@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
-	browserTest,
+	browserTest
 } from "../../../common/browser.mjs";
 /** Fixture page path served by the harness server. */
 const PAGE = "/exactus/tests/packages/exactus_mcp/web/app-fixture.html";
@@ -42,15 +42,15 @@ const stubApi = async (page, bodies) => {
 		await route.fulfill(
 			status === null
 				? {status: 500, body: "down"}
-				: {contentType: "application/json", body: JSON.stringify(status)},
+				: {contentType: "application/json", body: JSON.stringify(status)}
 		);
 	});
 	await page.route("**/api/activity", (/** @type {any} */ route) =>
 		route.fulfill(
 			activity === null
 				? {status: 500, body: "down"}
-				: {contentType: "application/json", body: JSON.stringify(activity)},
-		),
+				: {contentType: "application/json", body: JSON.stringify(activity)}
+		)
 	);
 };
 /** Activity payload exercising every row branch. */
@@ -65,25 +65,25 @@ const ACTIVITY = {
 			state: "done",
 			duration_ms: 42,
 			request: {method: "tools/call"},
-			response: {ok: true},
+			response: {ok: true}
 		},
 		{
-			duration_ms: null,
+			duration_ms: null
 		},
-		null,
-	],
+		null
+	]
 };
 test("app renders status and redacted activity", async t => {
 	await browserTest(t, async (page, url) => {
 		await stubApi(page, {
 			status: {mcp_url: "https://tunnel.example/mcp"},
-			activity: ACTIVITY,
+			activity: ACTIVITY
 		});
 		await page.goto(`${url}${PAGE}`);
 		await page.waitForFunction(textContains, ["mcp-url", "tunnel"]);
 		assert.equal(
 			await page.locator("#service-phase").textContent(),
-			"serving",
+			"serving"
 		);
 		assert.equal(await page.locator("#total-calls").textContent(), "3");
 		const rows = page.locator("#activity-rows tr");
@@ -95,7 +95,7 @@ test("app renders status and redacted activity", async t => {
 		assert.match(await rows.nth(1).textContent(), /—/);
 		assert.match(
 			await page.locator("#activity-note").textContent(),
-			/Secrets and raw report bodies are excluded/,
+			/Secrets and raw report bodies are excluded/
 		);
 	});
 });
@@ -107,16 +107,16 @@ test("app renders the empty activity placeholder", async t => {
 				call_count: 0,
 				active_calls: 0,
 				phase: "idle",
-				events: [],
-			},
+				events: []
+			}
 		});
 		await page.goto(`${url}${PAGE}`);
 		await page.waitForFunction(
-			() => document.getElementById("activity-rows")?.children.length === 1,
+			() => document.getElementById("activity-rows")?.children.length === 1
 		);
 		assert.match(
 			await page.locator("#activity-rows").textContent(),
-			/No MCP calls yet/,
+			/No MCP calls yet/
 		);
 	});
 });
@@ -127,21 +127,21 @@ test("app reports endpoint failures to the user", async t => {
 		await page.waitForFunction(textIs, ["mcp-url", "Address unavailable"]);
 		assert.match(
 			await page.locator("#copy-status").textContent(),
-			/Reload after the public tunnel is ready/,
+			/Reload after the public tunnel is ready/
 		);
 		assert.match(
 			await page.locator("#activity-note").textContent(),
-			/Activity unavailable\. Try again\./,
+			/Activity unavailable\. Try again\./
 		);
 		await page.click("#refresh-activity");
 		await page.waitForFunction(
 			textIs,
-			["activity-note", "Activity unavailable. Try again."],
+			["activity-note", "Activity unavailable. Try again."]
 		);
 		await page.waitForTimeout(3200);
 		assert.match(
 			await page.locator("#activity-note").textContent(),
-			/Live refresh paused/,
+			/Live refresh paused/
 		);
 	});
 });
@@ -149,13 +149,13 @@ test("app rejects malformed API payloads", async t => {
 	await browserTest(t, async (page, url) => {
 		await stubApi(page, {
 			status: {mcp_url: 42},
-			activity: {events: "nope"},
+			activity: {events: "nope"}
 		});
 		await page.goto(`${url}${PAGE}`);
 		await page.waitForFunction(textIs, ["mcp-url", "Address unavailable"]);
 		assert.match(
 			await page.locator("#activity-note").textContent(),
-			/Activity unavailable\. Try again\./,
+			/Activity unavailable\. Try again\./
 		);
 	});
 });
@@ -168,28 +168,28 @@ test("app copies the endpoint through the clipboard", async t => {
 					writeText: (/** @type {string} */ value) => {
 						globalThis.copied.push(value);
 						return Promise.resolve();
-					},
-				},
+					}
+				}
 			});
 		});
 		await stubApi(page, {
 			status: {mcp_url: "https://tunnel.example/mcp"},
 			activity: {call_count: 0, active_calls: 0, phase: "ok", events: []},
-			delay: 400,
+			delay: 400
 		});
 		await page.goto(`${url}${PAGE}`);
 		await page.click("#copy-endpoint");
 		await page.waitForTimeout(100);
 		assert.equal(
 			await page.locator("#copy-status").textContent(),
-			"",
+			""
 		);
 		await page.waitForFunction(textContains, ["mcp-url", "tunnel"]);
 		await page.click("#copy-endpoint");
 		await page.waitForFunction(textIs, ["copy-status", "Address copied."]);
 		assert.deepEqual(
 			await page.evaluate(() => globalThis.copied),
-			["https://tunnel.example/mcp"],
+			["https://tunnel.example/mcp"]
 		);
 	});
 });
@@ -198,20 +198,20 @@ test("app reports clipboard failures", async t => {
 		await page.addInitScript(() => {
 			Object.defineProperty(globalThis.navigator, "clipboard", {
 				value: {
-					writeText: () => Promise.reject(new Error("denied")),
-				},
+					writeText: () => Promise.reject(new Error("denied"))
+				}
 			});
 		});
 		await stubApi(page, {
 			status: {mcp_url: "https://tunnel.example/mcp"},
-			activity: {call_count: 0, active_calls: 0, phase: "ok", events: []},
+			activity: {call_count: 0, active_calls: 0, phase: "ok", events: []}
 		});
 		await page.goto(`${url}${PAGE}`);
 		await page.waitForFunction(textContains, ["mcp-url", "tunnel"]);
 		await page.click("#copy-endpoint");
 		await page.waitForFunction(
 			textContains,
-			["copy-status", "Copy failed"],
+			["copy-status", "Copy failed"]
 		);
 	});
 });
@@ -220,14 +220,14 @@ test("app fails loudly when required elements are missing", async t => {
 		/** @type {Error[]} */
 		const errors = [];
 		page.on("pageerror", (/** @type {Error} */ error) =>
-			errors.push(error),
+			errors.push(error)
 		);
 		await page.goto(`${url}${BROKEN}`);
 		await page.waitForTimeout(200);
 		assert.ok(
 			errors.some(error =>
 				error.message.includes("Missing required element: copy-endpoint")
-			),
+			)
 		);
 	});
 });

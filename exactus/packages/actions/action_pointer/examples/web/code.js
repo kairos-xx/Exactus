@@ -1,11 +1,11 @@
-import { mountPointerStudio } from "../../index.js";
+import {mountPointerStudio} from "../../index.js";
 const form = document.querySelector("#pointer-demo");
 const host = document.querySelector("#pointer-host");
 const preview = document.querySelector("#preview");
 const reset = document.querySelector("#reset");
 const activity = document.querySelector("#activity");
 if (!(form instanceof HTMLFormElement) || !(host instanceof HTMLElement) || !(preview instanceof HTMLElement) || !(reset instanceof HTMLButtonElement) || !(activity instanceof HTMLOutputElement)) throw new Error("The pointer demo markup is incomplete.");
-const seed = Object.freeze({ pointer_action: "click", selector: "#primary-target" });
+const seed = Object.freeze({pointer_action: "click", selector: "#primary-target"});
 mountPointerStudio(host, seed);
 /** Show the form values exactly as the Studio adapter receives them. */
 const renderPreview = () => {

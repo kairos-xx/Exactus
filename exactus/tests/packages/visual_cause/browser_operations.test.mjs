@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import {readFileSync} from "node:fs";
 import test from "node:test";
-import { runInNewContext } from "node:vm";
+import {runInNewContext} from "node:vm";
 /**
  * Evaluate a visual-cause browser operation inside a fresh VM context.
  *
@@ -11,20 +11,20 @@ import { runInNewContext } from "node:vm";
  */
 const operation = (name = "", globals = {}) => {
   const source = new URL(`../../../packages/visual_cause/js/${name}.js`, import.meta.url);
-  return runInNewContext(readFileSync(source, "utf8"), globals, { filename: source.href });
+  return runInNewContext(readFileSync(source, "utf8"), globals, {filename: source.href});
 };
 /** CSSStyleRule stand-in with a mutable declaration list. */
 class CSSStyleRule {
   selectorText = ".card";
   cssText = ".card { color: var(--tone); --tone: red; }";
   style = Object.assign(["color", "--tone", "display"], {
-    getPropertyValue: (name = "") => ({ color: " var(--tone) ", "--tone": " red ", display: "block" })[name],
+    getPropertyValue: (name = "") => ({color: " var(--tone) ", "--tone": " red ", display: "block"})[name],
     getPropertyPriority: (name = "") => name === "color" ? "important" : "",
     removeProperty: (name = "") => {
       const index = this.style.indexOf(name);
       if (index >= 0) this.style.splice(index, 1);
       return name;
-    },
+    }
   });
 }
 /** CSSContainerRule stand-in exposing a name and nested rules. */
@@ -37,11 +37,11 @@ for (const name of ["disable_declaration", "disable_declarations", "disable_rule
   test(`${name} handles missing sheets and nested flat rule indices`, () => {
     const first = new CSSStyleRule();
     const nested = new CSSStyleRule();
-    const cssRules = [first, { cssRules: [nested] }, {}];
+    const cssRules = [first, {cssRules: [nested]}, {}];
     /** Fake document exposing the sheet by id. */
-    const document = { getElementById: () => ({ sheet: { cssRules } }) };
-    const execute = operation(name, { document, CSSStyleRule });
-    const absent = operation(name, { document: { getElementById: () => null }, CSSStyleRule });
+    const document = {getElementById: () => ({sheet: {cssRules}})};
+    const execute = operation(name, {document, CSSStyleRule});
+    const absent = operation(name, {document: {getElementById: () => null}, CSSStyleRule});
     if (name === "disable_declaration") {
       assert.equal(absent([0, "color"]), false);
       assert.equal(execute([99, "color"]), false);
@@ -67,22 +67,22 @@ for (const name of ["disable_declaration", "disable_declarations", "disable_rule
 test("rules serialize nested matches, declaration priority and missing sheets", () => {
   const rule = new CSSStyleRule();
   /** Fake window exposing selector probes. */
-  const window = { __cssCauseQueryAll: () => [{ id: "target" }], __cssCauseSelector: (node = { id: "" }) => `#${node.id}` };
+  const window = {__cssCauseQueryAll: () => [{id: "target"}], __cssCauseSelector: (node = {id: ""}) => `#${node.id}`};
   /** Fake document exposing the sheet by id. */
-  const document = { getElementById: () => ({ sheet: { cssRules: [{ cssRules: [rule] }, {}] } }) };
-  const rows = JSON.parse(operation("rules", { document, window, CSSStyleRule })());
+  const document = {getElementById: () => ({sheet: {cssRules: [{cssRules: [rule]}, {}]}})};
+  const rows = JSON.parse(operation("rules", {document, window, CSSStyleRule})());
   assert.equal(rows.length, 1);
   assert.deepEqual(rows[0].matched, ["#target"]);
   assert.equal(rows[0].index, 0);
   assert.deepEqual(rows[0].declarations, ["color: var(--tone) !important", "--tone: red", "display: block"]);
-  assert.equal(operation("rules", { document: { getElementById: () => null } })(), "[]");
+  assert.equal(operation("rules", {document: {getElementById: () => null}})(), "[]");
 });
 test("CSS variables retain dependency references and nested conditions", () => {
   /** Fake window exposing selector probes. */
-  const window = { __cssCauseQueryAll: () => [{ id: "target" }], __cssCauseSelector: (node = { id: "" }) => `#${node.id}` };
-  const inaccessible = { get cssRules() { throw new Error("cross-origin"); } };
-  const document = { styleSheets: [inaccessible, { cssRules: [{ conditionText: "screen", cssRules: [new CSSStyleRule()] }, { cssRules: [new CSSStyleRule()] }] }] };
-  const rows = JSON.parse(operation("css_variables", { document, window, CSSStyleRule })());
+  const window = {__cssCauseQueryAll: () => [{id: "target"}], __cssCauseSelector: (node = {id: ""}) => `#${node.id}`};
+  const inaccessible = {get cssRules() { throw new Error("cross-origin"); }};
+  const document = {styleSheets: [inaccessible, {cssRules: [{conditionText: "screen", cssRules: [new CSSStyleRule()]}, {cssRules: [new CSSStyleRule()]}]}]};
+  const rows = JSON.parse(operation("css_variables", {document, window, CSSStyleRule})());
   assert.equal(rows.length, 4);
   assert.deepEqual(rows[0].references, ["--tone"]);
   assert.equal(rows[0].defines, null);
@@ -93,13 +93,13 @@ test("CSS variables retain dependency references and nested conditions", () => {
   assert.equal(rows[3].order, 3);
 });
 test("container rule discovery retains parent context and skips inaccessible sheets", () => {
-  const inaccessible = { get cssRules() { throw new Error("cross-origin"); } };
+  const inaccessible = {get cssRules() { throw new Error("cross-origin"); }};
   const parent = new CSSContainerRule();
   const nested = new CSSContainerRule();
   nested.name = "child";
-  Reflect.set(parent, "cssRules", [{ cssRules: [nested] }]);
-  const document = { styleSheets: [inaccessible, { cssRules: [parent, {}] }] };
-  const rows = JSON.parse(operation("container_rules", { document })());
+  Reflect.set(parent, "cssRules", [{cssRules: [nested]}]);
+  const document = {styleSheets: [inaccessible, {cssRules: [parent, {}]}]};
+  const rows = JSON.parse(operation("container_rules", {document})());
   assert.equal(rows.length, 2);
   assert.equal(rows[0].name, "panel");
   assert.deepEqual(rows[1].parents, ["@container panel (width > 10px)"]);
@@ -114,16 +114,16 @@ test("element overrides reject missing targets and set important declarations", 
    * @param {string} value Declaration value.
    * @param {string} priority Declaration priority.
    */
-  const element = { style: { setProperty: (name = "", value = "", priority = "") => calls.set(name, [value, priority]) } };
+  const element = {style: {setProperty: (name = "", value = "", priority = "") => calls.set(name, [value, priority])}};
   /**
    * Fake window resolving the target selector.
    *
    * @param {string} selector Query selector.
    */
-  const window = { __cssCauseQuery: (selector = "") => selector === "#target" ? element : null };
-  const override = operation("override_element", { window });
-  assert.equal(override(["#missing", { color: "red" }]), false);
-  assert.equal(override(["#target", { color: "red", display: "block" }]), true);
+  const window = {__cssCauseQuery: (selector = "") => selector === "#target" ? element : null};
+  const override = operation("override_element", {window});
+  assert.equal(override(["#missing", {color: "red"}]), false);
+  assert.equal(override(["#target", {color: "red", display: "block"}]), true);
   assert.deepEqual([...calls], [["color", ["red", "important"]], ["display", ["block", "important"]]]);
 });
 test("prepare removes stray styles, pauses videos, and installs a stylesheet", () => {
@@ -131,19 +131,19 @@ test("prepare removes stray styles, pauses videos, and installs a stylesheet", (
   const removed = [];
   /** @type {string[]} */
   const paused = [];
-  const styleNode = { id: "" };
+  const styleNode = {id: ""};
   const document = {
     querySelectorAll: (selector = "") =>
       selector.includes("stylesheet")
         ? [
-            { id: "__css_cause_style__", remove: () => removed.push("kept") },
-            { id: "stray", remove: () => removed.push("stray") },
+            {id: "__css_cause_style__", remove: () => removed.push("kept")},
+            {id: "stray", remove: () => removed.push("stray")}
           ]
-        : [{ pause: () => paused.push("video") }],
+        : [{pause: () => paused.push("video")}],
     createElement: () => styleNode,
-    head: { append: (/** @type {unknown} */ node) => removed.push(node) },
+    head: {append: (/** @type {unknown} */ node) => removed.push(node)}
   };
-  assert.equal(operation("prepare", { document })(), "ok");
+  assert.equal(operation("prepare", {document})(), "ok");
   assert.deepEqual(removed.slice(0, 1), ["stray"]);
   assert.deepEqual(paused, ["video"]);
   assert.equal(removed.at(-1), styleNode);
@@ -155,15 +155,15 @@ test("install helpers build selectors and resolve standard and extended queries"
     localName: "span",
     classList: ["tone"],
     nodeType: 1,
-    parentElement: /** @type {object | null} */ (null),
+    parentElement: /** @type {object | null} */ (null)
   };
   const parent = {
     id: "root",
     localName: "div",
     classList: [],
     nodeType: 1,
-    children: [child, { localName: "span" }, { localName: "b" }],
-    parentElement: null,
+    children: [child, {localName: "span"}, {localName: "b"}],
+    parentElement: null
   };
   child.parentElement = parent;
   /** @type {string[]} */
@@ -194,7 +194,7 @@ test("install helpers build selectors and resolve standard and extended queries"
     querySelectorAll: (selector = "") => {
       if (selector === "div") return ["native-a", "native-b"];
       throw new Error("unsupported selector");
-    },
+    }
   };
   /** @type {{
    *   ExtendedSelector?: typeof ExtendedSelector,
@@ -204,18 +204,18 @@ test("install helpers build selectors and resolve standard and extended queries"
    *   __cssCauseQuery: (selector: string) => unknown,
    *   __cssCauseExtended?: unknown
    * }} */
-  const window = /** @type {any} */ ({ ExtendedSelector });
+  const window = /** @type {any} */ ({ExtendedSelector});
   const globals = {
-    CSS: { escape: (/** @type {unknown} */ value) => `E<${value}>` },
-    Node: { ELEMENT_NODE: 1 },
+    CSS: {escape: (/** @type {unknown} */ value) => `E<${value}>`},
+    Node: {ELEMENT_NODE: 1},
     document,
-    window,
+    window
   };
   assert.equal(operation("install_helpers", globals)(), "ok");
-  assert.equal(window.__cssCauseSelector({ id: "card" }), "#E<card>");
+  assert.equal(window.__cssCauseSelector({id: "card"}), "#E<card>");
   assert.equal(
     window.__cssCauseSelector(child),
-    "div > span.E<tone>:nth-of-type(1)",
+    "div > span.E<tone>:nth-of-type(1)"
   );
   assert.deepEqual([...window.__cssCauseQueryAll("div")], ["native-a", "native-b"]);
   assert.deepEqual([...window.__cssCauseQueryAll(":has(x)")], ["extended-hit"]);
@@ -233,17 +233,17 @@ test("dom element serialization filters hidden nodes and builds stable selectors
     classList: classes,
     nodeType: 1,
     textContent: "  many   spaces \n text  ",
-    getBoundingClientRect: () => ({ width: 4, height: 3, x: 2, y: 5 }),
-    parentElement: /** @type {object | null} */ (null),
+    getBoundingClientRect: () => ({width: 4, height: 3, x: 2, y: 5}),
+    parentElement: /** @type {object | null} */ (null)
   };
   const parent = {
     id: "root",
     localName: "section",
     classList: [],
     nodeType: 1,
-    children: [target, { localName: "article" }],
-    getBoundingClientRect: () => ({ width: 1, height: 1, x: 0, y: 0 }),
-    parentElement: null,
+    children: [target, {localName: "article"}],
+    getBoundingClientRect: () => ({width: 1, height: 1, x: 0, y: 0}),
+    parentElement: null
   };
   target.parentElement = parent;
   const hidden = {
@@ -251,23 +251,23 @@ test("dom element serialization filters hidden nodes and builds stable selectors
     localName: "p",
     classList: [],
     nodeType: 1,
-    getBoundingClientRect: () => ({ width: 0, height: 1, x: 0, y: 0 }),
-    parentElement: null,
+    getBoundingClientRect: () => ({width: 0, height: 1, x: 0, y: 0}),
+    parentElement: null
   };
-  const document = { documentElement: parent };
-  const style = { visibility: "visible", display: "block" };
+  const document = {documentElement: parent};
+  const style = {visibility: "visible", display: "block"};
   const globals = {
-    CSS: { escape: (/** @type {unknown} */ value) => `E<${value}>` },
-    Node: { ELEMENT_NODE: 1 },
+    CSS: {escape: (/** @type {unknown} */ value) => `E<${value}>`},
+    Node: {ELEMENT_NODE: 1},
     HTMLElement: class {},
     document,
     getComputedStyle: () => style,
     scrollX: 10,
-    scrollY: 20,
+    scrollY: 20
   };
   const rows = /** @type {any[]} */ (
     JSON.parse(
-      operation("dom_elements", globals)([target, hidden, parent]),
+      operation("dom_elements", globals)([target, hidden, parent])
     )
   );
   assert.equal(rows.length, 2);
@@ -293,43 +293,43 @@ test("element inventory walks shadow roots and serializes typed styles", () => {
       this.value = value;
     }
   }
-  const textNode = { nodeType: 3, textContent: "  own text " };
+  const textNode = {nodeType: 3, textContent: "  own text "};
   const shadowChild = {
     localName: "b",
     children: [],
     childNodes: [],
-    getBoundingClientRect: () => ({ width: 2, height: 2, x: 0, y: 0 }),
+    getBoundingClientRect: () => ({width: 2, height: 2, x: 0, y: 0}),
     computedStyleMap: null,
-    shadowRoot: null,
+    shadowRoot: null
   };
-  const shadow = { children: [shadowChild] };
+  const shadow = {children: [shadowChild]};
   const child = {
     localName: "span",
     children: [],
     childNodes: [textNode],
     textContent: "child",
-    getBoundingClientRect: () => ({ width: 2, height: 2, x: 1, y: 1 }),
+    getBoundingClientRect: () => ({width: 2, height: 2, x: 1, y: 1}),
     computedStyleMap: () => [
       ["width", [new CSSUnitValue(5, "px")]],
       ["color", new CSSKeywordValue("red")],
-      ["display", "block"],
+      ["display", "block"]
     ],
-    shadowRoot: shadow,
+    shadowRoot: shadow
   };
   const hidden = {
     localName: "i",
     children: [],
     childNodes: [],
-    getBoundingClientRect: () => ({ width: 0, height: 0, x: 0, y: 0 }),
-    shadowRoot: null,
+    getBoundingClientRect: () => ({width: 0, height: 0, x: 0, y: 0}),
+    shadowRoot: null
   };
   const root = {
     localName: "html",
     children: [child, hidden],
     childNodes: [],
-    getBoundingClientRect: () => ({ width: 9, height: 9, x: 0, y: 0 }),
+    getBoundingClientRect: () => ({width: 9, height: 9, x: 0, y: 0}),
     computedStyleMap: null,
-    shadowRoot: null,
+    shadowRoot: null
   };
   const style = Object.assign(["position"], {
     display: "block",
@@ -339,27 +339,27 @@ test("element inventory walks shadow roots and serializes typed styles", () => {
     overflowX: "visible",
     overflowY: "visible",
     getPropertyValue: (/** @type {string} */ name) =>
-      /** @type {Record<string, string>} */ ({ position: "static" })[name],
+      /** @type {Record<string, string>} */ ({position: "static"})[name]
   });
-  const beforeAfter = { content: "none" };
-  const document = { documentElement: root };
+  const beforeAfter = {content: "none"};
+  const document = {documentElement: root};
   const window = {
     __cssCauseSelector: (/** @type {{localName: string}} */ node) =>
-      `#${node.localName}`,
+      `#${node.localName}`
   };
   const globals = {
     CSSUnitValue,
     CSSKeywordValue,
-    Node: { TEXT_NODE: 3, ELEMENT_NODE: 1 },
+    Node: {TEXT_NODE: 3, ELEMENT_NODE: 1},
     ShadowRoot: class {},
     document,
     window,
     getComputedStyle: (
       /** @type {unknown} */ _node,
-      /** @type {string} */ pseudo = "",
+      /** @type {string} */ pseudo = ""
     ) => pseudo ? beforeAfter : style,
     scrollX: 0,
-    scrollY: 0,
+    scrollY: 0
   };
   const rows = /** @type {any[]} */ (
     JSON.parse(operation("elements", globals)())

@@ -1,19 +1,19 @@
 /* global process */
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
-import { existsSync, mkdtempSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
-import { join } from "node:path";
-import { fileURLToPath } from "node:url";
+import {spawnSync} from "node:child_process";
+import {existsSync, mkdtempSync, writeFileSync} from "node:fs";
+import {tmpdir} from "node:os";
+import {join} from "node:path";
+import {fileURLToPath} from "node:url";
 import test from "node:test";
 const analyzer = fileURLToPath(
   new URL(
     "../../../../packages/organize/js/class_organizer.js",
-    import.meta.url,
-  ),
+    import.meta.url
+  )
 );
 const npmRoot = spawnSync("npm", ["root", "-g"], {
-  encoding: "utf8",
+  encoding: "utf8"
 }).stdout?.trim();
 /** @type {*} */
 const env = process.env;
@@ -22,7 +22,7 @@ const espreeCandidates = [];
 if (env.EXACTUS_ESPREE) espreeCandidates.push(env.EXACTUS_ESPREE);
 if (npmRoot)
   espreeCandidates.push(
-    join(npmRoot, "eslint", "node_modules", "espree", "dist", "espree.cjs"),
+    join(npmRoot, "eslint", "node_modules", "espree", "dist", "espree.cjs")
   );
 const espree = espreeCandidates.find(path => existsSync(path));
 assert.ok(espree, "Real Espree is required for the torture suite");
@@ -41,16 +41,16 @@ const analyze = (source, direction = null) => {
         file,
         espree,
         action: "convert",
-        direction,
+        direction
       }
     : {
         file,
         espree,
-        action: "analyze",
+        action: "analyze"
       };
   const result = spawnSync(process.execPath, [analyzer], {
     encoding: "utf8",
-    input: JSON.stringify(payload),
+    input: JSON.stringify(payload)
   });
   assert.equal(result.status, 0, result.stderr);
   return JSON.parse(result.stdout);
@@ -62,12 +62,12 @@ const analyze = (source, direction = null) => {
  */
 const execute = source => {
   const result = spawnSync(process.execPath, ["-e", source], {
-    encoding: "utf8",
+    encoding: "utf8"
   });
   return JSON.stringify({
     status: result.status,
     stdout: result.stdout,
-    stderr: result.stderr,
+    stderr: result.stderr
   });
 };
 /**
@@ -80,7 +80,7 @@ const differential = source => {
   assert.equal(
     execute(converted.source),
     execute(source),
-    `Semantic mismatch\nORIGINAL:\n${source}\nCONVERTED:\n${converted.source}`,
+    `Semantic mismatch\nORIGINAL:\n${source}\nCONVERTED:\n${converted.source}`
   );
   return converted;
 };
@@ -109,12 +109,12 @@ test("generated parameter shapes preserve runtime semantics", () => {
     ["function f([x]) { return x; }", "f([6])"],
     [
       "async function f(x) { return x + 1; }",
-      "f(4).then(v => process.stdout.write(String(v)))",
-    ],
+      "f(4).then(v => process.stdout.write(String(v)))"
+    ]
   ];
   for (const [declaration, invocation] of cases)
     differential(
-      `${declaration}\nPromise.resolve(${invocation}).then(v => { if (v !== undefined) process.stdout.write(String(v)); });`,
+      `${declaration}\nPromise.resolve(${invocation}).then(v => { if (v !== undefined) process.stdout.write(String(v)); });`
     );
 });
 test("constructibility and prototype observations block arrow conversion", () => {
@@ -122,7 +122,7 @@ test("constructibility and prototype observations block arrow conversion", () =>
     "const x = new Ctor(); process.stdout.write(String(x instanceof Ctor));",
     "Ctor.prototype.answer = 42; process.stdout.write(String(Ctor.prototype.answer));",
     "process.stdout.write(String(Object.hasOwn(Ctor, 'prototype')));",
-    "const Alias = Ctor; const x = new Alias(); process.stdout.write(String(x instanceof Ctor));",
+    "const Alias = Ctor; const x = new Alias(); process.stdout.write(String(x instanceof Ctor));"
   ]) {
     const source = `function Ctor() { return 1; }\n${suffix}`;
     const converted = differential(source);
@@ -134,7 +134,7 @@ test("dynamic ordinary-function bindings block arrows", () => {
     "function f() { return arguments.length; } process.stdout.write(String(f(1,2,3)));",
     "function f() { return this.value; } process.stdout.write(String(f.call({value: 7})));",
     "function f() { return new.target ? 1 : 0; } process.stdout.write(String(new f()));",
-    "function* f() { yield 3; } process.stdout.write(String(f().next().value));",
+    "function* f() { yield 3; } process.stdout.write(String(f().next().value));"
   ];
   for (const source of cases) {
     const converted = differential(source);
@@ -161,7 +161,7 @@ test("nested ordinary this does not poison enclosing static eligibility", () => 
     const source = `class A { outer() { function inner() { return this.x; } return ${value}; } } process.stdout.write(String(new A().outer()));`;
     const blocks = analyze(source);
     const outer = blocks.find(
-      /** @param {*} item */ item => item.name === "outer",
+      /** @param {*} item */ item => item.name === "outer"
     );
     assert.equal(outer.uses_this_or_super, false);
     assert.equal(outer.static_eligible, true);
@@ -173,7 +173,7 @@ test("nested lexical this prevents static promotion", () => {
     const source = `class A { constructor(){ this.x=${value}; } outer() { const inner = () => this.x; return inner(); } } process.stdout.write(String(new A().outer()));`;
     const blocks = analyze(source);
     const outer = blocks.find(
-      /** @param {*} item */ item => item.name === "outer",
+      /** @param {*} item */ item => item.name === "outer"
     );
     assert.equal(outer.uses_this_or_super, true);
     assert.equal(outer.static_eligible, false);
@@ -186,7 +186,7 @@ test("accessors constructors generators and super remain structurally valid", ()
     "class A { get x(){ return 3; } } process.stdout.write(String(new A().x));",
     "class A { set x(v){ globalThis.y=v; } } new A().x=4; process.stdout.write(String(globalThis.y));",
     "class A { *items(){ yield 5; } } process.stdout.write(String(new A().items().next().value));",
-    "class B { value(){ return 6; } } class A extends B { value(){ return super.value(); } } process.stdout.write(String(new A().value()));",
+    "class B { value(){ return 6; } } class A extends B { value(){ return super.value(); } } process.stdout.write(String(new A().value()));"
   ];
   for (const source of sources) differential(source);
 });

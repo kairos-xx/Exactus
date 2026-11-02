@@ -24,6 +24,7 @@ from typing import (
     TYPE_CHECKING,
     ClassVar,
     Final,
+    NotRequired,
     Protocol,
     TypedDict,
     cast,
@@ -666,10 +667,12 @@ class _BundleMetadata(TypedDict):
 
     Attributes:
         env: Env recorded by this structure.
+        tools: Tool declarations recorded by this structure.
 
     """
 
     env: dict[str, list[str]]
+    tools: NotRequired[dict[str, dict[str, str]]]
 
 
 class _BundleComponent(TypedDict):
@@ -1084,6 +1087,34 @@ def exactus_tool_prefix(*, tool: str, root: Path) -> tuple[str, ...] | None:
     return None
 
 
+def _bundle_tool_names(*, bundle: Path) -> frozenset[str] | None:
+    """Read the tool names a resolved bundle declares.
+
+    Args:
+        bundle: Resolved bundle ``__main__.py`` path.
+
+    Returns:
+        Declared tool names, or ``None`` when the catalog cannot be read.
+
+    """
+    try:
+        catalog: _BundleCatalog = cast(
+            typ="_BundleCatalog",
+            val=loads(
+                s=(
+                    bundle.parent / "data" / "parts" / "fs" / "catalog.json"
+                ).read_text(),
+            ),
+        )
+        return frozenset(
+            name
+            for component in catalog["components"].values()
+            for name in component["metadata"].get("tools", {})
+        )
+    except (OSError, ValueError, KeyError):
+        return None
+
+
 def exactus_tool_command(*, tool: str, root: Path) -> tuple[str, ...]:
     """Resolve an installed exactus tool or the offline Linux AMD64 bundle.
 
@@ -1098,7 +1129,9 @@ def exactus_tool_command(*, tool: str, root: Path) -> tuple[str, ...]:
     if (installed := which(cmd=tool)) is not None:
         return (installed,)
     if (bundle := resolve_exactus_tool_bundle(root=root)) is not None:
-        return (str(object=bundle), tool)
+        supported: frozenset[str] | None = _bundle_tool_names(bundle=bundle)
+        if supported is None or tool in supported:
+            return (str(object=bundle), tool)
     return (tool,)
 
 

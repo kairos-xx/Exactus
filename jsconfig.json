@@ -42,6 +42,7 @@
     "**/.venv/**",
     "**/.history/**",
     "**/EXACTUS_RESULTS/**",
+    "**/eslint.config.*",
     "exactus/bundle/**",
     "dev/**",
   ]

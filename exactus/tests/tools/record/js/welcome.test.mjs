@@ -1,10 +1,10 @@
 /** The first-run screen: when it covers the editor and what its buttons do. */
 import assert from "node:assert/strict";
 import test from "node:test";
-import { modulePage, WEB } from "./module-page.mjs";
+import {modulePage, WEB} from "./module-page.mjs";
 import {
   shouldWelcome,
-  DISMISSED_KEY,
+  DISMISSED_KEY
 } from "../../../../tools/record/studio/web/welcome.js";
 /** A snapshot that qualifies for the welcome screen, with overrides.
  * @param {Record<string, unknown>} [extra] Fields to replace.
@@ -14,19 +14,19 @@ const fresh = (extra = {}) => ({
   library: {
     projects: [],
     recents: [],
-    tags: [],
+    tags: []
   },
   project: {
-    saved: false,
+    saved: false
   },
   workspace: {
     flows: [
       {
-        events: [],
-      },
-    ],
+        events: []
+      }
+    ]
   },
-  ...extra,
+  ...extra
 });
 test("the welcome screen shows only for an empty, unsaved, untouched editor", () => {
   assert.equal(shouldWelcome(fresh(), "edit", false), true);
@@ -36,12 +36,12 @@ test("the welcome screen shows only for an empty, unsaved, untouched editor", ()
   assert.equal(
     shouldWelcome(
       {
-        library: fresh().library,
+        library: fresh().library
       },
       "edit",
-      false,
+      false
     ),
-    false,
+    false
   );
   assert.equal(
     shouldWelcome(
@@ -49,29 +49,29 @@ test("the welcome screen shows only for an empty, unsaved, untouched editor", ()
         library: {
           projects: [
             {
-              slug: "a",
-            },
+              slug: "a"
+            }
           ],
           recents: [],
-          tags: [],
-        },
+          tags: []
+        }
       }),
       "edit",
-      false,
+      false
     ),
-    false,
+    false
   );
   assert.equal(
     shouldWelcome(
       fresh({
         project: {
-          saved: true,
-        },
+          saved: true
+        }
       }),
       "edit",
-      false,
+      false
     ),
-    false,
+    false
   );
   assert.equal(
     shouldWelcome(
@@ -81,34 +81,34 @@ test("the welcome screen shows only for an empty, unsaved, untouched editor", ()
             {
               events: [
                 {
-                  id: "x",
-                },
-              ],
-            },
-          ],
-        },
+                  id: "x"
+                }
+              ]
+            }
+          ]
+        }
       }),
       "edit",
-      false,
+      false
     ),
-    false,
+    false
   );
   assert.equal(
     shouldWelcome(
       fresh({
-        workspace: undefined,
+        workspace: undefined
       }),
       "edit",
-      false,
+      false
     ),
-    true,
+    true
   );
   assert.equal(DISMISSED_KEY, "studio.welcome.dismissed");
 });
 test("the welcome screen offers three ways to begin and a way to skip", async t => {
   await modulePage(t, async page => {
     const outcome = await page.evaluate(async (/** @type {string} */ web) => {
-      const { renderWelcome } = await import(`${web}/welcome.js`);
+      const {renderWelcome} = await import(`${web}/welcome.js`);
       const root = document.createElement("section");
       document.body.append(root);
       /** @type {string[]} */
@@ -117,7 +117,7 @@ test("the welcome screen offers three ways to begin and a way to skip", async t 
         create: () => calls.push("create"),
         openDemo: () => calls.push("demo"),
         importFile: () => calls.push("import"),
-        dismiss: () => calls.push("dismiss"),
+        dismiss: () => calls.push("dismiss")
       };
       renderWelcome(root, actions);
       const first = root.innerHTML;
@@ -132,7 +132,7 @@ test("the welcome screen offers three ways to begin and a way to skip", async t 
         ticks: root.querySelectorAll(".welcome-tick").length,
         hidden: root
           .querySelector(".welcome-timeline")
-          ?.getAttribute("aria-hidden"),
+          ?.getAttribute("aria-hidden")
       };
     }, WEB);
     assert.deepEqual(outcome.calls, ["create", "demo", "import", "dismiss"]);

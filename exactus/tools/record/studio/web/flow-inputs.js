@@ -1,5 +1,5 @@
 /** The inputs a flow takes, edited as a list of rows in the flow settings. */
-import { iconElement } from "./icons.js";
+import {iconElement} from "./icons.js";
 /**
  * @typedef {{name:string,value_type:string,required:boolean,default_value?:string|number|boolean|null}} FlowInput
  */
@@ -11,7 +11,7 @@ export const INPUT_TYPES = [
   ["integer", "Whole number"],
   ["float", "Decimal number"],
   ["boolean", "True or false"],
-  ["json", "JSON"],
+  ["json", "JSON"]
 ];
 /** Build an element with optional class.
  * @template {keyof HTMLElementTagNameMap} K
@@ -108,14 +108,14 @@ export const flowInputsField = inputs => {
   const append = input => {
     const row = inputRow(input, () => {
       row.remove();
-      list.dispatchEvent(new Event("input", { bubbles: true }));
+      list.dispatchEvent(new Event("input", {bubbles: true}));
     });
     list.append(row);
   };
   for (const input of inputs) append(input);
   add.addEventListener("click", () => {
-    append({ name: "", value_type: "string", required: true });
-    list.dispatchEvent(new Event("input", { bubbles: true }));
+    append({name: "", value_type: "string", required: true});
+    list.dispatchEvent(new Event("input", {bubbles: true}));
     const last = list.querySelector(".flow-input:last-child input");
     if (last instanceof HTMLInputElement) last.focus();
   });
@@ -127,7 +127,7 @@ export const flowInputsField = inputs => {
         name: control(row, "name").value.trim(),
         value_type: typeMenu(row).value,
         required: control(row, "required").checked,
-        default_value: control(row, "default").value,
-      })),
+        default_value: control(row, "default").value
+      }))
   };
 };

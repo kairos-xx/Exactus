@@ -46,8 +46,8 @@ test("signatures describe each operator by role", t => browserTest(t, async (pag
 			types: {
 				visible: Reflect.get(CAPABILITIES.predicateTypes, "visible"),
 				innerText: Reflect.get(CAPABILITIES.predicateTypes, "innerText"),
-				width: Reflect.get(CAPABILITIES.predicateTypes, "width"),
-			},
+				width: Reflect.get(CAPABILITIES.predicateTypes, "width")
+			}
 		};
 	});
 	assert.equal(result.has.min, 2);
@@ -63,20 +63,20 @@ test("signatures describe each operator by role", t => browserTest(t, async (pag
 	assert.deepEqual(result.types, {
 		visible: "boolean",
 		innerText: "text",
-		width: "number",
+		width: "number"
 	});
 }));
 test("lint arity messages are unchanged after the table became public", t => browserTest(t, async (page, url) => {
 	await open(page, url);
-	const golden = JSON.parse(await readFile(new URL("./fixtures/lint-arity.golden.json", import.meta.url), "utf8", ), );
+	const golden = JSON.parse(await readFile(new URL("./fixtures/lint-arity.golden.json", import.meta.url), "utf8" ) );
 	const rows = await page.evaluate(
 		( /** @type {string[]} */ list) => list.map(expression => {
 			const found = globalThis.engine.lint(expression);
 			return {
 				expression,
 				messages: found.map(( /** @type {{message:string}} */ x) => x.message),
-				codes: found.map(( /** @type {{code:string}} */ x) => x.code),
+				codes: found.map(( /** @type {{code:string}} */ x) => x.code)
 			};
-		}), golden.map(( /** @type {{expression:string}} */ row) => row.expression), );
+		}), golden.map(( /** @type {{expression:string}} */ row) => row.expression) );
 	assert.deepEqual(rows, golden);
 }));

@@ -1,4 +1,4 @@
-import { mountRunner } from "../../index.js";
+import {mountRunner} from "../../index.js";
 const query = new URLSearchParams(location.search);
 const theme = query.get("theme");
 if (theme === "light" || theme === "dark") document.documentElement.setAttribute("data-theme", theme);
@@ -20,7 +20,7 @@ console.warn("about to read a missing field");
 return scheme.profile.name;`,
   assert: `const size = exactus.vars.get("pagination/pageSize");
 exactus.assert(size > 100, "page size must exceed 100");`,
-  loop: "while (true) {}",
+  loop: "while (true) {}"
 }));
 const host = document.querySelector('[data-component="runner-host"]');
 const carrier = document.querySelector('[data-component="snippet"]');
@@ -32,11 +32,11 @@ const runner = mountRunner(carrier, {
   outputName: "result",
   timeoutMs: 2000,
   variables: [
-    { name: "user/id", value: "usr_28491" },
-    { name: "pagination/pageSize", value: 25 },
-    { name: "auth/scheme", value: "Bearer" },
-    { name: "auth/apiToken", value: "sk_demo_12345678", secret: true },
-  ],
+    {name: "user/id", value: "usr_28491"},
+    {name: "pagination/pageSize", value: 25},
+    {name: "auth/scheme", value: "Bearer"},
+    {name: "auth/apiToken", value: "sk_demo_12345678", secret: true}
+  ]
 });
 runner.on("result", result => {
   saved.textContent = result.status === "ok" && result.saveAs && result.jsonSafe

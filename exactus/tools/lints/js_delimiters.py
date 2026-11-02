@@ -10,7 +10,7 @@ from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 from functools import partial
 from os import cpu_count
-from re import Pattern
+from re import Match, Pattern
 from re import compile as compile_pattern
 from shutil import which
 from tempfile import NamedTemporaryFile
@@ -438,6 +438,11 @@ class JavaScriptDelimiterSimplifier:
     DO_BLOCK: Public value used by this data structure.
     ELSE_BLOCK: Public value used by this data structure.
     UNSAFE_SINGLE_STATEMENT: Public value used by this data structure.
+    DANGLING_ELSE_WORDS: Public value used by this data structure.
+    CONTINUATION_WORDS: Public value used by this data structure.
+    CONTINUATION_CHARS: Public value used by this data structure.
+    BLOCK_KEYWORDS: Public value used by this data structure.
+    WORD: Public value used by this data structure.
 
     """
 
@@ -479,10 +484,23 @@ class JavaScriptDelimiterSimplifier:
     ELSE_BLOCK: Final[Pattern[str]] = compile_pattern(pattern="\\belse\\s*\\{")
     UNSAFE_SINGLE_STATEMENT: Final[Pattern[str]] = compile_pattern(
         pattern=(
-            "^\\s*(?:(?:const|let|class|function)\\b|if\\b|(?:async\\s+)?funct"
-            "ion\\b)"
+            "^\\s*(?:(?:const|let|var|class|function|import|export)\\b|"
+            "(?:async\\s+)?function\\b)"
         ),
     )
+    DANGLING_ELSE_WORDS: Final[frozenset[str]] = frozenset(
+        {"if", "for", "while", "do", "with"},
+    )
+    CONTINUATION_WORDS: Final[frozenset[str]] = frozenset(
+        {"instanceof", "in", "of", "as"},
+    )
+    CONTINUATION_CHARS: Final[frozenset[str]] = frozenset(
+        "+-*/%&|^~!<>=?:,.",
+    )
+    BLOCK_KEYWORDS: Final[frozenset[str]] = frozenset(
+        {"if", "for", "while", "with", "switch"},
+    )
+    WORD: Final[Pattern[str]] = compile_pattern(pattern="[A-Za-z_$][\\w$]*")
 
     def __init__(
         self,
@@ -1060,8 +1078,7 @@ class JavaScriptDelimiterSimplifier:
             source=source,
             index=closing + 1,
         )
-        no_neighbors: bool = left_operator is None and right_operator is None
-        if no_neighbors:
+        if left_operator is None and right_operator is None:
             return not cls._full_expression_context(
                 source=source,
                 opening=opening,
@@ -1601,9 +1618,9 @@ class JavaScriptDelimiterSimplifier:
             return None
         if control_keyword == "if":
             after: str = source[block_end + 1 :]
-            if after.lstrip().startswith("else") and cls._starts_with_if(
-                body=body,
-            ):
+            if compile_pattern(pattern="^\\s*else\\b").match(
+                string=after,
+            ) and cls._dangling_else_risk(body=body):
                 return None
         if not body.strip():
             return None
@@ -1615,8 +1632,47 @@ class JavaScriptDelimiterSimplifier:
         )
 
     @classmethod
+    def _dangling_else_risk(cls, *, body: str) -> bool:
+        """Report whether unbracing could rebind a following ``else``.
+
+        A following ``else`` binds to the nearest unmatched ``if``; a
+        single-statement body whose head can contain an ``if`` —
+        ``if``, ``for``, ``while``, ``do`` or ``with`` — would capture
+        the ``else``. Labeled statements unwrap their labels first.
+
+        Args:
+            body: Block body text.
+
+        Returns:
+            ``True`` when the body may leave an unmatched ``if`` tail.
+
+        """
+        stripped: str = body.strip()
+        while True:
+            word_match: Match[str] | None = cls.WORD.match(
+                string=stripped,
+            )
+            if word_match is None or word_match.group(0) in {
+                "case",
+                "default",
+            }:
+                break
+            after_word: str = stripped[word_match.end() :].lstrip()
+            if not after_word.startswith(":"):
+                break
+            stripped = after_word[1:].strip()
+        word: Match[str] | None = cls.WORD.match(string=stripped)
+        return word is not None and word.group(0) in cls.DANGLING_ELSE_WORDS
+
+    @classmethod
     def _is_single_safe_statement(cls, *, body: str) -> bool:
-        """Is single safe statement.
+        """Report whether the body is exactly one statement.
+
+        Semicolon counting is not a reliable proxy: statements ending
+        inside ``{...}`` wrappers and control statements that never end
+        with ``;`` are invisible to it. The body is walked with a
+        statement-level parser instead so multi-statement blocks never
+        lose their braces.
 
         Args:
             body: Body.
@@ -1631,22 +1687,392 @@ class JavaScriptDelimiterSimplifier:
         if cls._contains_comment(source=stripped):
             return False
         protected: tuple[Span, ...] = cls._protected_spans(source=stripped)
-        semicolons: int = cls._top_level_semicolon_count(
+        end: int = cls._statement_end(
             source=stripped,
+            index=0,
             protected=protected,
         )
-        if semicolons > 1:
-            return False
-        if semicolons == 1 and (not stripped.endswith(";")):
-            return False
-        return not (
-            cls._top_level_token_count(
-                source=stripped,
-                symbol=";",
+        rest: str = stripped[
+            cls._skip_space(source=stripped, index=end) :
+        ].strip()
+        return not rest or rest == ";"
+
+    @classmethod
+    def _statement_end(
+        cls,
+        *,
+        source: str,
+        index: int,
+        protected: tuple[Span, ...],
+    ) -> int:
+        """Return the offset where the statement at ``index`` ends.
+
+        Args:
+            source: Source.
+            index: Statement start offset.
+            protected: Protected.
+
+        Returns:
+            The resulting value.
+
+        """
+        index = cls._skip_space(source=source, index=index)
+        if index >= len(source):
+            return index
+        if source[index] == "{":
+            block_end: int | None = cls._matching_delimiter(
+                source=source,
+                opening=index,
+                opener="{",
+                closer="}",
                 protected=protected,
             )
-            == 0
-            and stripped.startswith("{")
+            return len(source) if block_end is None else block_end + 1
+        word_match: Match[str] | None = cls.WORD.match(
+            string=source,
+            pos=index,
+        )
+        word: str = word_match.group(0) if word_match else ""
+        if (
+            word
+            and word not in cls.BLOCK_KEYWORDS
+            and word
+            not in {
+                "do",
+                "else",
+                "try",
+                "case",
+                "default",
+                "async",
+                "function",
+                "class",
+            }
+        ):
+            label_end: int = cls._skip_space(
+                source=source,
+                index=index + len(word),
+            )
+            if (
+                label_end < len(source)
+                and source[label_end] == ":"
+                and source[label_end + 1 : label_end + 2] != ":"
+            ):
+                return cls._statement_end(
+                    source=source,
+                    index=label_end + 1,
+                    protected=protected,
+                )
+        if word in cls.BLOCK_KEYWORDS:
+            end: int = cls._keyword_statement_end(
+                source=source,
+                index=index,
+                word=word,
+                protected=protected,
+            )
+        elif word == "do":
+            end = cls._do_statement_end(
+                source=source,
+                index=index + 2,
+                protected=protected,
+            )
+        elif word == "else":
+            end = cls._statement_end(
+                source=source,
+                index=index + 4,
+                protected=protected,
+            )
+        elif word == "try":
+            end = cls._try_statement_end(
+                source=source,
+                index=index + 3,
+                protected=protected,
+            )
+        elif word in {"function", "class"} or (
+            word == "async"
+            and source[index + len(word) :].lstrip().startswith("function")
+        ):
+            end = cls._declaration_end(
+                source=source,
+                index=index,
+                protected=protected,
+            )
+        else:
+            end = cls._expression_end(
+                source=source,
+                index=index,
+                protected=protected,
+            )
+        return end
+
+    @classmethod
+    def _keyword_statement_end(
+        cls,
+        *,
+        source: str,
+        index: int,
+        word: str,
+        protected: tuple[Span, ...],
+    ) -> int:
+        """Return the end of an ``if``/``for``/``while``/``with``/``switch``.
+
+        Args:
+            source: Source.
+            index: Keyword start offset.
+            word: Matched keyword.
+            protected: Protected.
+
+        Returns:
+            The resulting value.
+
+        """
+        cursor: int = cls._skip_space(source=source, index=index + len(word))
+        if cursor < len(source) and source[cursor] == "(":
+            closing: int | None = cls._matching_delimiter(
+                source=source,
+                opening=cursor,
+                opener="(",
+                closer=")",
+                protected=protected,
+            )
+            cursor = len(source) if closing is None else closing + 1
+        if word == "switch":
+            cursor = cls._skip_space(source=source, index=cursor)
+            if cursor < len(source) and source[cursor] == "{":
+                closing = cls._matching_delimiter(
+                    source=source,
+                    opening=cursor,
+                    opener="{",
+                    closer="}",
+                    protected=protected,
+                )
+                cursor = len(source) if closing is None else closing + 1
+            return cursor
+        end: int = cls._statement_end(
+            source=source,
+            index=cursor,
+            protected=protected,
+        )
+        if word == "if":
+            following: int = cls._skip_space(source=source, index=end)
+            if source[following : following + 4] == "else":
+                boundary: str = source[following + 4 : following + 5]
+                if not boundary or not (
+                    boundary.isalnum() or boundary in "_$"
+                ):
+                    end = cls._statement_end(
+                        source=source,
+                        index=following + 4,
+                        protected=protected,
+                    )
+        return end
+
+    @classmethod
+    def _do_statement_end(
+        cls,
+        *,
+        source: str,
+        index: int,
+        protected: tuple[Span, ...],
+    ) -> int:
+        """Return the end of a ``do`` statement body and ``while`` clause.
+
+        Args:
+            source: Source.
+            index: Offset after the ``do`` keyword.
+            protected: Protected.
+
+        Returns:
+            The resulting value.
+
+        """
+        end: int = cls._statement_end(
+            source=source,
+            index=index,
+            protected=protected,
+        )
+        cursor: int = cls._skip_space(source=source, index=end)
+        if source[cursor : cursor + 5] == "while":
+            cursor = cls._skip_space(source=source, index=cursor + 5)
+            if cursor < len(source) and source[cursor] == "(":
+                closing: int | None = cls._matching_delimiter(
+                    source=source,
+                    opening=cursor,
+                    opener="(",
+                    closer=")",
+                    protected=protected,
+                )
+                cursor = len(source) if closing is None else closing + 1
+        cursor = cls._skip_space(source=source, index=cursor)
+        return cursor + 1 if source[cursor : cursor + 1] == ";" else cursor
+
+    @classmethod
+    def _try_statement_end(
+        cls,
+        *,
+        source: str,
+        index: int,
+        protected: tuple[Span, ...],
+    ) -> int:
+        """Return the end of a ``try``/``catch``/``finally`` chain.
+
+        Args:
+            source: Source.
+            index: Offset after the ``try`` keyword.
+            protected: Protected.
+
+        Returns:
+            The resulting value.
+
+        """
+        cursor: int = index
+        for keyword in ("try", "catch", "finally"):
+            if keyword != "try":
+                cursor = cls._skip_space(source=source, index=cursor)
+                if not source.startswith(keyword, cursor):
+                    break
+                cursor += len(keyword)
+            cursor = cls._skip_space(source=source, index=cursor)
+            if keyword == "catch" and source[cursor : cursor + 1] == "(":
+                closing: int | None = cls._matching_delimiter(
+                    source=source,
+                    opening=cursor,
+                    opener="(",
+                    closer=")",
+                    protected=protected,
+                )
+                cursor = len(source) if closing is None else closing + 1
+                cursor = cls._skip_space(source=source, index=cursor)
+            if source[cursor : cursor + 1] == "{":
+                closing = cls._matching_delimiter(
+                    source=source,
+                    opening=cursor,
+                    opener="{",
+                    closer="}",
+                    protected=protected,
+                )
+                cursor = len(source) if closing is None else closing + 1
+        return cursor
+
+    @classmethod
+    def _declaration_end(
+        cls,
+        *,
+        source: str,
+        index: int,
+        protected: tuple[Span, ...],
+    ) -> int:
+        """Return the end of a ``function``/``class`` declaration.
+
+        Args:
+            source: Source.
+            index: Declaration keyword offset.
+            protected: Protected.
+
+        Returns:
+            The resulting value.
+
+        """
+        cursor: int = index
+        while cursor < len(source):
+            character: str = source[cursor]
+            if character == "{":
+                closing: int | None = cls._matching_delimiter(
+                    source=source,
+                    opening=cursor,
+                    opener="{",
+                    closer="}",
+                    protected=protected,
+                )
+                return len(source) if closing is None else closing + 1
+            if character == ";":
+                return cursor + 1
+            cursor += 1
+        return cursor
+
+    @classmethod
+    def _expression_end(
+        cls,
+        *,
+        source: str,
+        index: int,
+        protected: tuple[Span, ...],
+    ) -> int:
+        """Return the end of an expression statement.
+
+        The statement ends at a top-level ``;``, at a newline the
+        following token cannot continue (automatic semicolon
+        insertion), or at the end of the source.
+
+        Args:
+            source: Source.
+            index: Statement start offset.
+            protected: Protected.
+
+        Returns:
+            The resulting value.
+
+        """
+        index = cls._skip_space(source=source, index=index)
+        while index < len(source):
+            span: Span | None = cls._span_at(index=index, protected=protected)
+            if span is not None:
+                index = span[1]
+                continue
+            character: str = source[index]
+            if character == ";":
+                return index + 1
+            if character in "([{":
+                closing: int | None = cls._matching_delimiter(
+                    source=source,
+                    opening=index,
+                    opener=character,
+                    closer={"(": ")", "[": "]", "{": "}"}[character],
+                    protected=protected,
+                )
+                index = len(source) if closing is None else closing + 1
+                continue
+            if character == "}":
+                return index
+            if character in "\r\n":
+                following: int = cls._skip_space(source=source, index=index)
+                if following >= len(source) or not cls._expression_continues(
+                    source=source,
+                    index=following,
+                ):
+                    return index
+                index = following
+                continue
+            index += 1
+        return index
+
+    @classmethod
+    def _expression_continues(
+        cls,
+        *,
+        source: str,
+        index: int,
+    ) -> bool:
+        """Report whether the token at ``index`` extends an expression.
+
+        Args:
+            source: Source.
+            index: Token start offset.
+
+        Returns:
+            The resulting value.
+
+        """
+        if source[index : index + 2] in {"++", "--"}:
+            return False
+        if source[index] in cls.CONTINUATION_CHARS:
+            return True
+        word_match: Match[str] | None = cls.WORD.match(
+            string=source,
+            pos=index,
+        )
+        return (
+            word_match is not None
+            and word_match.group(0) in cls.CONTINUATION_WORDS
         )
 
     @classmethod
@@ -2430,8 +2856,7 @@ class JavaScriptDelimiterSimplifier:
 
         """
         available: bool = self._node is not None
-        performed: bool = changed and self._validate and available
-        if performed:
+        if performed := changed and self._validate and available:
             self._validate_source(path=path, source=source)
         return ValidationMetrics(
             requested=self._validate,

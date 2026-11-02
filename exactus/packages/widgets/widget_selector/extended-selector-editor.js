@@ -1,5 +1,5 @@
 /** Compatibility wrapper with the contract Studio's field already uses. */
-import { mountExpressionWidget } from "./index.js";
+import {mountExpressionWidget} from "./index.js";
 /** Compatibility wrapper with the contract Studio's field already uses. */
 export class ExtendedSelectorEditor extends EventTarget {
   /**
@@ -14,15 +14,15 @@ export class ExtendedSelectorEditor extends EventTarget {
     this.controller = mountExpressionWidget(target, {
       engine: options.engine,
       label: options.label ?? "Expression",
-      ...(options.multiple !== undefined ? { multiple: options.multiple } : {}),
-      ...(options.startAsText !== undefined ? { startAsText: options.startAsText } : {}),
-      ...(options.theme !== undefined ? { theme: options.theme } : {}),
+      ...(options.multiple !== undefined ? {multiple: options.multiple} : {}),
+      ...(options.startAsText !== undefined ? {startAsText: options.startAsText} : {}),
+      ...(options.theme !== undefined ? {theme: options.theme} : {}),
       providers: {
         variables: options.variables ?? (() => []),
-        saved: options.saved ?? (() => (options.selectors ?? []).map(name => ({ name }))),
-        ...(options.expected ? { expected: options.expected } : {}),
+        saved: options.saved ?? (() => (options.selectors ?? []).map(name => ({name}))),
+        ...(options.expected ? {expected: options.expected} : {})
       },
-      ...(options.host ? { host: options.host } : {}),
+      ...(options.host ? {host: options.host} : {})
     });
     this.surface = this.controller.surface;
     this.controller.on("change", () => this.dispatchEvent(new Event("change")));

@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from contextlib import closing
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from datetime import UTC, datetime, timedelta
 from typing import TYPE_CHECKING, Final, Literal, Self, final
 
@@ -127,6 +127,8 @@ class PipelineRequest:
         requested_at: ISO-8601 creation timestamp.
         updated_at: ISO-8601 update timestamp.
         detail: Human-readable timeline detail.
+        plan: Requested work plan carried in the materialized
+            request JSON, when the observer supplied one.
         error: Reset failure, when applicable.
 
     """
@@ -142,6 +144,7 @@ class PipelineRequest:
     requested_at: str
     updated_at: str
     detail: str
+    plan: dict[str, JsonValue] | None = None
     error: str | None = None
 
     def payload(self: Self) -> dict[str, JsonValue]:
@@ -164,6 +167,7 @@ class PipelineRequest:
             "requested_at": self.requested_at,
             "updated_at": self.updated_at,
             "detail": self.detail,
+            "plan": self.plan,
             "error": self.error,
             "observer_alive": process_exists(pid=self.pid),
         }
@@ -265,15 +269,12 @@ class PipelineCoordinator:
             if current is None:
                 msg: str = "live pipeline claim has no owner record"
                 raise RuntimeError(msg)
-            if (
-                current.state == Constants.running
-                and current.fingerprint == fingerprint
-            ):
+            if current.state == Constants.running:
                 request: PipelineRequest = PipelineRequest(
                     request_id=run_id,
                     pipeline=current.pipeline,
                     pipeline_run_id=current.run_id,
-                    fingerprint=current.fingerprint,
+                    fingerprint=fingerprint,
                     pid=pid,
                     tty=tty,
                     state=Constants.pending,
@@ -303,6 +304,30 @@ class PipelineCoordinator:
                 request=None,
                 detail=detail,
             )
+
+    def record_plan(
+        self: Self,
+        *,
+        request: PipelineRequest,
+        plan: dict[str, JsonValue],
+    ) -> PipelineRequest:
+        """Attach a work plan to a pending observer request.
+
+        The plan travels only in the materialized request JSON, so no
+        database schema change is needed; the owner reads it back from
+        ``requests_root`` when applying resets.
+
+        Args:
+            request: Pending observer request admitted by ``claim``.
+            plan: Requested work plan to materialize alongside it.
+
+        Returns:
+            The updated request carrying the plan.
+
+        """
+        updated: PipelineRequest = replace(request, plan=plan)
+        self._materialize(request=updated)
+        return updated
 
     def owner(self: Self, *, pipeline: str) -> PipelineOwner | None:
         """Return the stored owner of a named pipeline.

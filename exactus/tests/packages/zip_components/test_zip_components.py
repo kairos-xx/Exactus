@@ -81,6 +81,7 @@ def _project_tree(root: Path) -> None:
         "exactus/bundle/stale.txt": "stale\n",
         "exactus/tools/lints/__init__.py": "",
         "exactus/packages/pkg/__init__.py": "",
+        "artifacts/packages/release.zip": "zip\n",
         "build/exactus/bundle/BUILT.txt": "built\n",
         "build/exactus/bundle/__pycache__/noise.pyc": "",
         "node_modules/pkg/index.js": "",
@@ -98,8 +99,8 @@ def _project_tree(root: Path) -> None:
 def test_bundle_name_joins_kinds_in_request_order() -> None:
     """Name archives after the requested components only."""
     expect_true(
-        condition=bundle_name(exactus=("lints", "docs"))
-        == "exactus_lints_docs.zip",
+        condition=bundle_name(tools=("lints", "docs"))
+        == "tools_lints_docs.zip",
     )
     expect_true(
         condition=bundle_name(packages=("all_lints", "browser"))
@@ -107,10 +108,10 @@ def test_bundle_name_joins_kinds_in_request_order() -> None:
     )
     expect_true(
         condition=bundle_name(
-            exactus=("lints", "docs"),
+            tools=("lints", "docs"),
             packages=("all_lints", "browser"),
         )
-        == "exactus_lints_docs_packages_all_lints_browser.zip",
+        == "tools_lints_docs_packages_all_lints_browser.zip",
     )
     expect_true(
         condition=bundle_name(packages=("steps", "steps"))
@@ -130,7 +131,7 @@ def test_discover_components_is_transitive(tmp_path: Path) -> None:
         root=tmp_path,
         packages=("alpha",),
     )
-    expect_true(condition=selection.exactus == ())
+    expect_true(condition=selection.tools == ())
     expect_true(
         condition=selection.packages == ("alpha", "beta", "delta", "gamma"),
     )
@@ -216,7 +217,7 @@ def test_collect_files_includes_results_directories(tmp_path: Path) -> None:
     _bytes = (other / "result.md").write_text(data="", encoding="utf-8")
     files: tuple[str, ...] = collect_files(
         root=tmp_path,
-        selection=Selection(exactus=("helper",), packages=()),
+        selection=Selection(tools=("helper",), packages=()),
     )
     expect_in(member="EXACTUS_RESULTS/HELPER/result.md", container=files)
     expect_not_in(member="EXACTUS_RESULTS/OTHER/result.md", container=files)
@@ -232,7 +233,7 @@ def test_collect_files_ignores_missing_results(tmp_path: Path) -> None:
     _fake_tree(root=tmp_path)
     files: tuple[str, ...] = collect_files(
         root=tmp_path,
-        selection=Selection(exactus=("helper",), packages=("alpha",)),
+        selection=Selection(tools=("helper",), packages=("alpha",)),
     )
     expect_true(
         condition=not any(
@@ -265,7 +266,7 @@ def test_create_bundle_writes_a_real_archive(tmp_path: Path) -> None:
 
 
 def test_create_bundle_scaffolds_readme_and_tree(tmp_path: Path) -> None:
-    """Default bundles nest under ``zip-components/<stem>/``.
+    """Default bundles nest under ``artifacts/zip-components/<stem>/``.
 
     Args:
         tmp_path: Temporary test directory.
@@ -275,7 +276,8 @@ def test_create_bundle_scaffolds_readme_and_tree(tmp_path: Path) -> None:
     result: BundleResult = create_bundle(root=tmp_path, packages=("alpha",))
     bundle: Path = result.path.parent
     expect_true(
-        condition=bundle == tmp_path / "zip-components" / "packages_alpha",
+        condition=bundle
+        == tmp_path / "artifacts" / "zip-components" / "packages_alpha",
     )
     expect_true(condition=(bundle / "README.md").is_file())
     expect_true(condition=(bundle / "TREE.txt").is_file())
@@ -289,10 +291,10 @@ def test_lints_selection_discovers_pipeline_components() -> None:
     """Expand the real lints tool into its shared dependencies."""
     selection: Selection = discover_components(
         root=_root(),
-        exactus=("lints",),
+        tools=("lints",),
     )
-    expect_in(member="common", container=selection.exactus)
-    expect_in(member="reports", container=selection.exactus)
+    expect_in(member="common", container=selection.tools)
+    expect_in(member="reports", container=selection.tools)
     expect_in(member="all_lints", container=selection.packages)
     expect_in(member="organize", container=selection.packages)
 
@@ -301,7 +303,7 @@ def test_main_writes_the_scaffolded_bundle(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    """Place the archive inside ``zip-components/<stem>/`` with docs.
+    """Place the archive inside ``artifacts/zip-components/<stem>/`` with docs.
 
     Args:
         tmp_path: Temporary test directory.
@@ -320,7 +322,7 @@ def test_main_writes_the_scaffolded_bundle(
     )
     status: int = main(arguments=("--packages", "alpha"))
     expect_true(condition=status == 0)
-    folder: Path = tmp_path / "zip-components"
+    folder: Path = tmp_path / "artifacts" / "zip-components"
     bundle: Path = folder / "packages_alpha"
     archive: Path = bundle / "packages_alpha.zip"
     expect_true(condition=archive.is_file())
@@ -366,7 +368,9 @@ def test_main_output_folder_overrides_the_default_directory(
         condition=(custom / "packages_alpha" / "packages_alpha.zip").is_file(),
     )
     expect_true(condition=(custom / "README.md").is_file())
-    expect_true(condition=not (tmp_path / "zip-components").exists())
+    expect_true(
+        condition=not (tmp_path / "artifacts" / "zip-components").exists(),
+    )
 
 
 def test_main_root_flag_bundles_from_the_given_directory(
@@ -392,6 +396,7 @@ def test_main_root_flag_bundles_from_the_given_directory(
     expect_true(
         condition=(
             tmp_path
+            / "artifacts"
             / "zip-components"
             / "packages_alpha"
             / "packages_alpha.zip"
@@ -416,7 +421,7 @@ def test_available_components_lists_every_package(tmp_path: Path) -> None:
         == ("alpha", "beta", "delta", "gamma", "unused"),
     )
     expect_true(
-        condition=selection.exactus
+        condition=selection.tools
         == (
             "coverage_tests",
             "docs",
@@ -460,8 +465,8 @@ def test_main_list_outputs_every_component(
         condition=payload["packages"]
         == ["alpha", "beta", "delta", "gamma", "unused"],
     )
-    expect_in(member="lints", container=payload["exactus"])
-    expect_not_in(member="helper", container=payload["exactus"])
+    expect_in(member="lints", container=payload["tools"])
+    expect_not_in(member="helper", container=payload["tools"])
     expect_not_in(member=".zip", container=capture.getvalue())
 
 
@@ -546,6 +551,7 @@ def test_main_positional_names_are_packages_shorthand(
     expect_true(
         condition=(
             tmp_path
+            / "artifacts"
             / "zip-components"
             / "packages_alpha"
             / "packages_alpha.zip"
@@ -581,7 +587,7 @@ def test_main_wildcard_expands_to_every_package(
         condition=payload["packages"]
         == ["alpha", "beta", "delta", "gamma", "unused"],
     )
-    expect_true(condition=payload["exactus"] == [])
+    expect_true(condition=payload["tools"] == [])
 
 
 def test_main_bare_star_selects_everything(
@@ -610,15 +616,15 @@ def test_main_bare_star_selects_everything(
     payload: dict[str, list[str]] = loads(s=capture.getvalue())
     expect_in(member="alpha", container=payload["packages"])
     expect_in(member="unused", container=payload["packages"])
-    expect_in(member="lints", container=payload["exactus"])
+    expect_in(member="lints", container=payload["tools"])
 
 
 def test_bundle_name_renders_wildcards_as_all() -> None:
     """Name wildcard bundles ``packages_all.zip`` rather than ``*.zip``."""
     expect_true(condition=bundle_name(packages=("*",)) == "packages_all.zip")
     expect_true(
-        condition=bundle_name(exactus=("*",), packages=("*",))
-        == "exactus_all_packages_all.zip",
+        condition=bundle_name(tools=("*",), packages=("*",))
+        == "tools_all_packages_all.zip",
     )
 
 
@@ -679,7 +685,10 @@ def test_create_project_archive_replaces_the_bundle(tmp_path: Path) -> None:
     expect_in(member="visible.py", container=names)
     expect_in(member="exactus/bundle/BUILT.txt", container=names)
     expect_not_in(member="exactus/bundle/stale.txt", container=names)
-    expect_true(condition=not any("packages" in member for member in names))
+    expect_in(member="exactus/packages/pkg/__init__.py", container=names)
+    expect_true(
+        condition=not any(member.startswith("artifacts/") for member in names),
+    )
     expect_true(condition=not any("__pycache__" in member for member in names))
     expect_true(
         condition=not any("node_modules" in member for member in names),

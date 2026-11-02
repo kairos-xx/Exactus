@@ -10,7 +10,7 @@ const panelKeys = Object.freeze({
   target: "target",
   properties: "properties",
   timeline: "timeline",
-  runs: "runs",
+  runs: "runs"
 });
 /** Require a model entry to exist before checking its geometry.
  * @template T
@@ -43,7 +43,7 @@ import {
   stateOwner,
   swap,
   undock,
-  validate,
+  validate
 } from "../../../../tools/record/studio/web/dock-model.js";
 const known = new Set([
   "workspace",
@@ -53,19 +53,19 @@ const known = new Set([
   "target",
   "properties",
   "timeline",
-  "runs",
+  "runs"
 ]);
 /** Return the small panel limits used by model-only geometry tests.
  * @returns {{width:number,height:number}} Test panel minimum.
  */
-const minimum = () => ({ width: 120, height: 80 });
+const minimum = () => ({width: 120, height: 80});
 /** Resolve the model's preferred track sizes for docking calculations.
  * @param {import('../../../../tools/record/studio/web/dock-model.js').Layout} layout Test layout.
  * @returns {{cols:number[],rows:number[]}} Column and row pixel sizes.
  */
 const metrics = layout => ({
   cols: layout.cols.map(item => item.size),
-  rows: layout.rows.map(item => item.size),
+  rows: layout.rows.map(item => item.size)
 });
 /** Every cell is covered once, so no gap and no overlap exists.
  * @param {import('../../../../tools/record/studio/web/dock-model.js').Layout} layout Layout under test.
@@ -84,7 +84,7 @@ test("the default layout is a valid tiled grid", () => {
   const layout = defaultLayout();
   assertTiled(layout);
   assert.ok(validate(layout, known));
-  assert.equal(validate({ version: 99 }, known), null);
+  assert.equal(validate({version: 99}, known), null);
   assert.equal(validate(null, known), null);
 });
 test("panels in different rows share one column line", () => {
@@ -93,14 +93,14 @@ test("panels in different rows share one column line", () => {
   // Workspace|steps and steps|right column separate the same two track edges.
   assert.deepEqual(
     [...new Set(lines.map(item => item.index))].sort(),
-    [0, 1],
+    [0, 1]
   );
   const dockedRight = dockBeside(
     layout,
     "properties",
     "steps",
     "right",
-    metrics(layout),
+    metrics(layout)
   );
   assertTiled(dockedRight);
   for (const line of boundaries(dockedRight, "c"))
@@ -114,14 +114,14 @@ test("docking beside a panel adds a track and tiles the grid", () => {
       "steps",
       "target",
       "properties",
-      "timeline",
+      "timeline"
     ]) {
       const next = dockBeside(
         layout,
         "properties",
         target,
         edge,
-        metrics(layout),
+        metrics(layout)
       );
       assertTiled(next);
       assert.ok(next.cells[panelKeys.properties], `${target}:${edge}`);
@@ -136,7 +136,7 @@ test("moving a panel away lets a neighbour fill the gap", () => {
   assertTiled(withoutProperties);
   assert.equal(
     requiredValue(withoutProperties.cells[panelKeys.target]).rs >= 1,
-    true,
+    true
   );
   for (const id of ["workspace", "steps", "target", "properties", "timeline"])
     assertTiled(undock(layout, id));
@@ -148,13 +148,13 @@ test("outer docks span the whole window", () => {
   assert.equal(requiredValue(left.cells[panelKeys.target]).c, 0);
   assert.equal(
     requiredValue(left.cells[panelKeys.target]).rs,
-    left.rows.length,
+    left.rows.length
   );
   const top = dockOuter(layout, "timeline", "top", 200);
   assertTiled(top);
   assert.equal(
     requiredValue(top.cells[panelKeys.timeline]).cs,
-    top.cols.length,
+    top.cols.length
   );
 });
 test("swap exchanges places and keeps the grid tiled", () => {
@@ -163,16 +163,16 @@ test("swap exchanges places and keeps the grid tiled", () => {
   assertTiled(next);
   assert.deepEqual(
     next.cells[panelKeys.workspace],
-    layout.cells[panelKeys.steps],
+    layout.cells[panelKeys.steps]
   );
   assert.deepEqual(
     next.cells[panelKeys.steps],
-    layout.cells[panelKeys.workspace],
+    layout.cells[panelKeys.workspace]
   );
 });
 test("floating a panel frees its cells", () => {
   const layout = defaultLayout();
-  const next = float(layout, "target", { x: 10, y: 10, w: 300, h: 200 });
+  const next = float(layout, "target", {x: 10, y: 10, w: 300, h: 200});
   assertTiled(next);
   assert.ok(next.floating[panelKeys.target]);
   assert.equal(next.cells[panelKeys.target], undefined);
@@ -210,7 +210,7 @@ test("collapsing shrinks only its own track and a neighbour takes the space", ()
   const restored = setCollapsed(timeline, "timeline", false);
   assert.deepEqual(
     effectiveTracks(restored, "r").map(item => item.size),
-    [340, 300, 200],
+    [340, 300, 200]
   );
 });
 test("the last open track on an axis cannot be collapsed away", () => {
@@ -266,11 +266,11 @@ test("graph derives its own flow-only layout, never Edit's actions", () => {
   assert.deepEqual(Object.keys(requiredValue(graph).cells).sort(), [
     "composition",
     "properties",
-    "workspace",
+    "workspace"
   ]);
   assert.deepEqual(
     requiredValue(graph).cells[panelKeys.steps],
-    layout.cells[panelKeys.steps],
+    layout.cells[panelKeys.steps]
   );
   assert.deepEqual(requiredValue(graph).cols, layout.cols);
   assert.deepEqual(requiredValue(graph).rows, layout.rows);
@@ -284,17 +284,17 @@ test("mode layouts show only the panels that belong to them", () => {
   const record = layoutForMode("record", layout);
   assert.deepEqual(
     requiredValue(record).cells[panelKeys.target],
-    layout.cells[panelKeys.steps],
+    layout.cells[panelKeys.steps]
   );
   assert.deepEqual(
     requiredValue(record).cells[panelKeys.steps],
-    layout.cells[panelKeys.target],
+    layout.cells[panelKeys.target]
   );
   assert.equal(stateOwner("record", "target"), "steps");
   assert.equal(stateOwner("record", "steps"), "target");
   assert.deepEqual(
     Object.keys(requiredValue(layoutForMode("timeline", layout)).cells),
-    ["timeline"],
+    ["timeline"]
   );
   assert.equal(layoutForMode("edit", layout), layout);
 });
@@ -306,7 +306,7 @@ test("random docking sequences always leave a tiled grid", () => {
     "properties",
     "timeline",
     "composition",
-    "runs",
+    "runs"
   ];
   const edges = ["left", "right", "top", "bottom"];
   let seed = 7;
@@ -336,7 +336,7 @@ test("random docking sequences always leave a tiled grid", () => {
       else if (action < 0.85 && docked.length > 1 && layout.cells[id])
         layout = swap(layout, id, pick(docked.filter(item => item !== id)));
       else if (action < 0.92 && docked.length > 1 && layout.cells[id])
-        layout = float(layout, id, { x: 0, y: 0, w: 300, h: 200 });
+        layout = float(layout, id, {x: 0, y: 0, w: 300, h: 200});
       else if (layout.cells[id])
         layout = setCollapsed(layout, id, random() < 0.5);
       if (Object.keys(layout.cells).length === 0) {
@@ -347,7 +347,7 @@ test("random docking sequences always leave a tiled grid", () => {
         assertTiled(layout);
       } catch (error) {
         throw new Error(`run ${run} step ${step}: ${String(error)}`, {
-          cause: error,
+          cause: error
         });
       }
     }
@@ -356,7 +356,7 @@ test("random docking sequences always leave a tiled grid", () => {
 test("the Flows panel sits in the same place in Edit and Graph by default", () => {
   const edit = describeShared(defaultLayout());
   const graph = describeShared(defaultGraphLayout());
-  assert.ok(sameShared(edit, graph), JSON.stringify({ edit, graph }));
+  assert.ok(sameShared(edit, graph), JSON.stringify({edit, graph}));
   const cell = requiredValue(defaultLayout().cells[panelKeys.workspace]);
   assert.equal(cell.rs, defaultLayout().rows.length);
 });
@@ -375,7 +375,7 @@ test("moving, resizing or collapsing Flows in one workspace carries over to the 
     x: 40,
     y: 80,
     w: 260,
-    h: 400,
+    h: 400
   });
   const floating = adoptShared(defaultGraphLayout(), describeShared(detached));
   assert.ok(panelKeys.workspace in floating.floating);
@@ -384,21 +384,21 @@ test("moving, resizing or collapsing Flows in one workspace carries over to the 
 test("an older saved Edit layout is moved to the full-height column without a gap", () => {
   // The shipped layout before Flows became shared: Flows stopped above the timeline.
   const legacy = defaultLayout();
-  legacy.cells[panelKeys.workspace] = { c: 0, r: 0, cs: 1, rs: 2 };
-  legacy.cells[panelKeys.timeline] = { c: 0, r: 2, cs: 3, rs: 1 };
+  legacy.cells[panelKeys.workspace] = {c: 0, r: 0, cs: 1, rs: 2};
+  legacy.cells[panelKeys.timeline] = {c: 0, r: 2, cs: 3, rs: 1};
   const migrated = adoptShared(legacy, describeShared(legacy));
   const flows = requiredValue(migrated.cells[panelKeys.workspace]);
   assert.equal(flows.r, 0);
   assert.equal(flows.rs, migrated.rows.length);
   assert.ok(
     coverage(migrated).every(row => row.every(Boolean)),
-    "the grid must stay fully tiled",
+    "the grid must stay fully tiled"
   );
   for (const id of [
     panelKeys.steps,
     panelKeys.target,
     panelKeys.properties,
-    panelKeys.timeline,
+    panelKeys.timeline
   ])
     assert.ok(id in migrated.cells, `${id} must still be docked`);
 });

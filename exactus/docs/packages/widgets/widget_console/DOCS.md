@@ -79,6 +79,13 @@ python exactus/packages/widgets/widget_console/examples/run.py
 | `recorder.js` | JavaScript module. |
 | `style.css` | — |
 
+## Command-line options
+
+| Option | Description | Settings |
+|---|---|---|
+| `--headless` | Load the demo in a headless browser instead of a window. | action='store_true' |
+| `--timeout` | Seconds to keep the browser alive after it loads. | type=float, default=None |
+
 ## Python API reference
 
 Public classes, functions and constants, read from the source. Private names (leading underscore) are omitted.
@@ -103,7 +110,7 @@ Run the console widget example with the project virtual environment.
 Start the loopback console widget demo and open the managed browser.
 
 - `start_demo(*, log: Path) -> str` — Serve ``packages/`` so the demo can reach sibling widget packages.
-- `main() -> int` — Launch the demo; leave its reusable background server running.
+- `main(*, arguments: Sequence[str] | None=None) -> int` — Launch the demo; leave its reusable background server running.
 
 ## JavaScript API reference
 
@@ -167,15 +174,16 @@ Files: `examples/README.md`, `examples/__init__.py`, `examples/__main__.py`, `ex
 
 ## Dependencies and consumers
 
-- Other packages: [`browser`](../../browser/DOCS.md), [`server`](../../server/DOCS.md)
+- Other packages: [`argument_parser`](../../argument_parser/DOCS.md), [`browser`](../../browser/DOCS.md), [`server`](../../server/DOCS.md)
 - Used by: `tests/packages/widgets/widget_console/test_examples.py`
 
 ## Tests
 
 Tests live in `exactus/tests/packages/widgets/widget_console/`.
 
-- `test_examples.py` — Coverage for the console widget demo server launcher. (6 tests)
+- `test_examples.py` — Coverage for the console widget demo server launcher. (7 tests)
   - `test_demo_assets_exist`
+  - `test_main_headless_loads_page_then_exits`
   - `test_main_prints_url_and_opens_browser`
   - `test_module_entrypoint_invokes_main`
   - `test_start_demo_replaces_unready_server`

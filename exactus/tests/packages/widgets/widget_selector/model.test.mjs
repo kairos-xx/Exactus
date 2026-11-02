@@ -6,12 +6,12 @@ import {
 	serialize,
 	slotsOf,
 	tokenize,
-	variableKind,
+	variableKind
 } from "../../../../packages/widgets/widget_selector/selector-tree.js";
 import {
 	createValidator
 } from "../../../../packages/widgets/widget_selector/validator.js";
-for (const text of ["", " div.card#main > * + a:hover ~ span::before || section, footer ", "has(div, child(.item, 2))", "{{device/width}} {{count = 3}} {{unfinished", '[data-value="quoted ] and \\" text"]', "[data-value='quoted ] text']", '[extended-selector="saved"] [width={{device/width}}] [text="{{literal}}"]', "[unfinished", ":not(.item) ::part(button) : :: . # 123$", ])
+for (const text of ["", " div.card#main > * + a:hover ~ span::before || section, footer ", "has(div, child(.item, 2))", "{{device/width}} {{count = 3}} {{unfinished", '[data-value="quoted ] and \\" text"]', "[data-value='quoted ] text']", '[extended-selector="saved"] [width={{device/width}}] [text="{{literal}}"]', "[unfinished", ":not(.item) ::part(button) : :: . # 123$"])
 	test(`selector token spans round-trip ${JSON.stringify(text)}`, () => {
 		const tokens = tokenize(text);
 		assert.equal(serialize(tokens), text);
@@ -46,7 +46,7 @@ test("enclosing frames and required slots track nested arguments", () => {
 		child: {
 			min: 3,
 			roles: ["base", "index", "condition"]
-		},
+		}
 	};
 	assert.deepEqual(slotsOf(tokens, signatures).map(slot => slot.role), ["index", "condition"]);
 	assert.deepEqual(slotsOf(tokenize("has( "), signatures).map(slot => slot.role), ["base", "condition"]);
@@ -79,7 +79,7 @@ test("validator distinguishes idle, valid, warning and error and steps problems"
 		engine: {
 			lint: (text = "") => new Map([["warning", [warning]], ["error", [error, warning]]]).get(text) ?? []
 		},
-		onResult: result => results.add(result.state),
+		onResult: result => results.add(result.state)
 	});
 	assert.equal(validator.current().state, "idle");
 	assert.equal(validator.step(1), null);
@@ -120,7 +120,7 @@ test("multiline validator rebases diagnostics and fixes across blank lines", () 
 			}]
 		},
 		multiple: true,
-		onResult: () => {},
+		onResult: () => {}
 	});
 	validator.flush("ab\n\ncd");
 	const result = validator.current();

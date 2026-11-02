@@ -25,18 +25,18 @@ Both kinds may be combined; the archive name is derived from the
 
 | Command | Archive |
 |---------|---------|
-| `--tools lints docs` | `exactus_lints_docs.zip` |
+| `--tools lints docs` | `tools_lints_docs.zip` |
 | `--packages all_lints browser` | `packages_all_lints_browser.zip` |
 | `all_lints browser` (positional) | `packages_all_lints_browser.zip` |
-| `--tools lints docs --packages all_lints browser` | `exactus_lints_docs_packages_all_lints_browser.zip` |
+| `--tools lints docs --packages all_lints browser` | `tools_lints_docs_packages_all_lints_browser.zip` |
 | `--packages all` / `--packages '*'` | `packages_all.zip` |
-| `all` / `'*'` (positional) | `exactus_all_packages_all.zip` |
+| `all` / `'*'` (positional) | `tools_all_packages_all.zip` |
 
 By default each run scaffolds a bundle directory under
-`<root>/zip-components/` (git-ignored):
+`<root>/artifacts/zip-components/` (git-ignored):
 
 ```text
-zip-components/
+artifacts/zip-components/
 ├── README.md                      # explains the folder (created once)
 └── packages_steps/                  # named after the archive
     ├── packages_steps.zip           # the bundle
@@ -45,7 +45,7 @@ zip-components/
 ```
 
 `--output-folder <DIR>` substitutes another parent for
-`zip-components/`; `--output` / `-o <ZIP>` writes a bare archive at an
+`artifacts/zip-components/`; `--output` / `-o <ZIP>` writes a bare archive at an
 explicit path and bypasses the scaffold entirely. Unknown component
 names exit through the parser with status `2`; invoking without any
 selection prints usage and returns `1`.
@@ -201,10 +201,10 @@ Run it as a module: `python -m exactus.packages.zip_components`.
 | Option | Description | Settings |
 |---|---|---|
 | `names` | exactus/packages/<PACKAGE> components (shorthand for --packages). | nargs='*', metavar='PACKAGE' |
-| `--tools` | exactus/tools/<TOOL> components to bundle (``all``/``*`` selects every tool). | dest='exactus', nargs='+', default=(), metavar='TOOL' |
+| `--tools` | exactus/tools/<TOOL> components to bundle (``all``/``*`` selects every tool). | dest='tools', nargs='+', default=(), metavar='TOOL' |
 | `--packages` | exactus/packages/<PACKAGE> components to bundle (``all``/``*`` selects every package). | dest='packages', nargs='+', default=(), metavar='PACKAGE' |
 | `--output, -o` | Destination archive (writes a bare zip, no bundle layout). | dest='output', type=Path, default=None, metavar='ZIP' |
-| `--output-folder` | Directory holding the bundle folder (defaults to <root>/zip-components). | dest='output_folder', type=Path, default=None, metavar='DIR' |
+| `--output-folder` | Directory holding the bundle folder (defaults to <root>/artifacts/zip-components). | dest='output_folder', type=Path, default=None, metavar='DIR' |
 | `--list, -l` | Print the resolved selection as JSON instead of bundling; without components lists every available package. | dest='listing', action='store_true' |
 | `--project` | Archive the whole project as a release ZIP: the regular exactus/bundle directory is replaced by the contents of build/exactus/bundle inside the archive. | dest='project', action='store_true' |
 | `--root` | Project root to bundle from (defaults to auto-detection). | dest='root', type=Path, default=None, metavar='DIR' |
@@ -234,24 +234,24 @@ Create source-bundle archives of exactus tools and packages packages.
   - `skipped_suffixes` = `frozenset({'.pyc', '.pyo'})`
   - `skipped_names` = `frozenset({'.DS_Store'})`
   - `shared_paths` = `('pyproject.toml', 'exactus/tests/__init__.py', 'exactus/tests/conftest.p...`
-  - `exactus_paths` = `('exactus/__init__.py', 'exactus/__main__.py', 'exactus/tools/__init__.py...`
+  - `tools_paths` = `('exactus/__init__.py', 'exactus/__main__.py', 'exactus/tools/__init__.py...`
   - `package_paths` = `('exactus/packages/__init__.py', 'exactus/packages/__main__.py', 'exactus...`
-  - `bundles_folder` = `'zip-components'`
+  - `bundles_folder` = `Path('artifacts', 'zip-components')`
   - `project_excluded_directories` = `frozenset({'__pycache__', 'build', 'dist', 'bin', 'EXACTUS_RESULTS_RELEAS...`
   - `project_bundle` = `Path('exactus', 'bundle')`
   - `project_build_bundle` = `Path('build', 'exactus', 'bundle')`
   - `project_archive` = `'exactus-release.zip'`
-  - `folder_readme` = `'# `zip-components/`\n\nArchives produced by `exactus.packages.zip_compon...`
+  - `folder_readme` = `'# `artifacts/zip-components/`\n\nArchives produced by `exactus.packages....`
 - `class Selection` — Component names bundled by kind.
-  - Fields: `exactus: tuple[str, ...]`, `packages: tuple[str, ...]`
+  - Fields: `tools: tuple[str, ...]`, `packages: tuple[str, ...]`
 - `class BundleResult` — Outcome of one bundle write.
   - Fields: `path: Path`, `files: tuple[str, ...]`, `selection: Selection`
 - `project_root() -> Path` — Return the repository root that owns this package.
-- `discover_components(*, root: Path, exactus: Sequence[str]=(), packages: Sequence[str]=()) -> Selection` — Expand a selection with every transitively imported component.
+- `discover_components(*, root: Path, tools: Sequence[str]=(), packages: Sequence[str]=()) -> Selection` — Expand a selection with every transitively imported component.
 - `available_components(*, root: Path) -> Selection` — Return every bundleable component, sorted by name.
 - `collect_files(*, root: Path, selection: Selection) -> tuple[str, ...]` — List every repository-relative file a selection bundles.
-- `bundle_name(*, exactus: Sequence[str]=(), packages: Sequence[str]=()) -> str` — Return the archive name derived from the requested components.
-- `create_bundle(*, root: Path, exactus: Sequence[str]=(), packages: Sequence[str]=(), output: Path | None=None, output_folder: Path | None=None) -> BundleResult` — Write one source-bundle archive for the requested components.
+- `bundle_name(*, tools: Sequence[str]=(), packages: Sequence[str]=()) -> str` — Return the archive name derived from the requested components.
+- `create_bundle(*, root: Path, tools: Sequence[str]=(), packages: Sequence[str]=(), output: Path | None=None, output_folder: Path | None=None) -> BundleResult` — Write one source-bundle archive for the requested components.
 - `create_project_archive(*, root: Path, output: Path | None=None) -> BundleResult` — Write the project release ZIP with the current built bundle.
 - `main(*, arguments: Sequence[str] | None=None) -> int` — Bundle the requested exactus tools and/or packages packages.
 

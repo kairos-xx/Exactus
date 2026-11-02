@@ -164,7 +164,7 @@ def test_packages_main_module_runs_the_cli(
 def test_packages_runs_every_example_without_errors() -> None:
     """Run every discovered example cleanly via the packages entry point."""
     completed: CompletedProcess[str] = run(
-        args=(executable, "-m", "exactus.packages"),
+        args=(executable, "-m", "exactus.packages", "--headless"),
         cwd=runner.Constants.packages.parent.parent,
         capture_output=True,
         text=True,

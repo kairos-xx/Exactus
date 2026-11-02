@@ -8,7 +8,7 @@
    * @returns {void}
    */
   const walk = (rules, parents = []) => {
-    for (const rule of rules) {
+    for (const rule of rules)
       if (rule.constructor.name === "CSSContainerRule") {
         const containerRule =
           /** @type {CSSContainerRule & {name?: string}} */ (rule);
@@ -19,23 +19,20 @@
           query,
           nested_rules: containerRule.cssRules.length,
           parents,
-          condition_evaluation: "requires-container-context",
+          condition_evaluation: "requires-container-context"
         });
         walk(containerRule.cssRules, [
           ...parents,
-          `@container ${name} ${query}`,
+          `@container ${name} ${query}`
         ]);
-      } else if ("cssRules" in rule) {
+      } else if ("cssRules" in rule)
         walk(/** @type {CSSRuleList} */ (rule.cssRules), parents);
-      }
-    }
   };
-  for (const sheet of document.styleSheets) {
+  for (const sheet of document.styleSheets)
     try {
       walk(sheet.cssRules);
     } catch {
       // Cross-origin stylesheets throw SecurityError; skip them.
     }
-  }
   return JSON.stringify(result);
 };

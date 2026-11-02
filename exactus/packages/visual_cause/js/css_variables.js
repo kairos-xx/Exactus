@@ -10,7 +10,7 @@
    * @returns {void}
    */
   const walk = (rules, conditions = []) => {
-    for (const rule of rules) {
+    for (const rule of rules)
       if (rule instanceof CSSStyleRule) {
         const matches = window
           .__cssCauseQueryAll(rule.selectorText)
@@ -35,7 +35,7 @@
               references: refs,
               defines: property.startsWith("--") ? property : null,
               matches,
-              conditions,
+              conditions
             });
         }
       } else if ("cssRules" in rule) {
@@ -50,17 +50,15 @@
           "";
         walk(
           /** @type {CSSRuleList} */ (rule.cssRules),
-          label ? [...conditions, label] : conditions,
+          label ? [...conditions, label] : conditions
         );
       }
-    }
   };
-  for (const sheet of [...document.styleSheets]) {
+  for (const sheet of [...document.styleSheets])
     try {
       walk(sheet.cssRules);
     } catch {
       // Cross-origin stylesheets throw SecurityError; skip them.
     }
-  }
   return JSON.stringify(rows);
 };

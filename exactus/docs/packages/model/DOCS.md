@@ -133,6 +133,7 @@ Typed registry schema and statements without handwritten SQL.
   - `delete_resource` = `leases.delete().where(predicate=leases.col(name='lease_id').eq(value=Para...`
   - `delete_run_resources` = `leases.delete().where(predicate=leases.col(name='run_id').eq(value=Param()))`
   - `select_live` = `runs.select().where(predicate=runs.col(name='status').eq(value=Param()))`
+  - `select_run` = `runs.select().where(predicate=runs.col(name='run_id').eq(value=Param()))`
   - `count_runs` = `runs.select(columns=(function(name='COUNT', arguments=(runs.col(name='run...`
   - `count_finished` = `runs.select(columns=(function(name='COUNT', arguments=(runs.col(name='run...`
   - `insert_run` = `runs.insert(replace=True)`

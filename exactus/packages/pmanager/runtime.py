@@ -1466,8 +1466,13 @@ class Worker:
                     )
         if self.pause_owners:
             self.pause.set()
+            self._set(
+                state=State.PAUSED,
+                reason="waiting for " + ", ".join(sorted(self.pause_owners)),
+            )
         else:
             self.pause.clear()
+            self._set(state=State.STARTING)
         Thread(target=self.execute, daemon=True).start()
         return self.snapshot()
 

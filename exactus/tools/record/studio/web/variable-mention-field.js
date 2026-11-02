@@ -1,6 +1,6 @@
 /** Variable-aware form controls with mention suggestions and token pills. */
-import { iconElement } from "./icons.js";
-import { variableInspector } from "./variable-inspector.js";
+import {iconElement} from "./icons.js";
+import {variableInspector} from "./variable-inspector.js";
 const templatePattern = /\{\{([^{}]+)\}\}/g;
 /** Create an element with a class.
  * @template {keyof HTMLElementTagNameMap} K
@@ -32,7 +32,7 @@ export const variableMentionField = (input, variables) => {
     name: variableName(item),
     type: typeof item === "string" ? "" : (item.type ?? ""),
     icon: typeof item === "string" ? "tag" : (item.icon ?? "tag"),
-    tone: typeof item === "string" ? "silver" : (item.tone ?? "silver"),
+    tone: typeof item === "string" ? "silver" : (item.tone ?? "silver")
   }));
   const known = new Map(sources.map(item => [item.name, item]));
   /** Dress an element as a variable pill: the colour and icon of its source, then its name.
@@ -48,7 +48,7 @@ export const variableMentionField = (input, variables) => {
     pill.setAttribute("data-tone", asked ? "silver" : (source?.tone ?? "silver"));
     pill.replaceChildren(
       iconElement(asked ? "keyboard" : (source?.icon ?? "tag")),
-      asked ? `Ask: ${token.slice(4)}` : token,
+      asked ? `Ask: ${token.slice(4)}` : token
     );
   };
   const names = [...new Set(sources.map(item => item.name))].sort();
@@ -89,7 +89,7 @@ export const variableMentionField = (input, variables) => {
       return node.textContent ?? "";
     }).join("");
     selfWrite = true;
-    input.dispatchEvent(new Event("input", { bubbles: true }));
+    input.dispatchEvent(new Event("input", {bubbles: true}));
     selfWrite = false;
   };
   /** Move the caret to the end of the editor.
@@ -227,10 +227,10 @@ export const variableMentionField = (input, variables) => {
         onReveal: name => {
           popover.hidden = true;
           wrapper.dispatchEvent(
-            new CustomEvent("variable-reveal", { bubbles: true, detail: { name } }),
+            new CustomEvent("variable-reveal", {bubbles: true, detail: {name}})
           );
-        },
-      }),
+        }
+      })
     );
     popover.hidden = false;
   };

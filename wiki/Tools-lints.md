@@ -44,6 +44,16 @@ The `lints` tool: clean, lint and type-check sources with rollback.
   `exactus/packages/all_lints`; `--no-long-lines` (or `no-long-lines = true`) disables
   only that repair and `LintExactusConfig.long_lines` is the Python form.
   Details: [Long-line repair](#long-line-repair).
+- Formats JavaScript with `eslint --fix` during `clean`, applying the
+  project eslint config — or the materialized fallback
+  `eslint.config.mjs` — before the delimiter scan removes
+  expression-level delimiters. The fallback config enables
+  `arrow-body-style` and `curly` unconditionally, plus `@stylistic/*`
+  rules (arrow parens, trailing commas, property quotes, bracket
+  spacing, semicolons) when `@stylistic/eslint-plugin` resolves through
+  `NODE_PATH` — the bundled toolchain exports `js/node_modules` and
+  `npm root -g` is prepended for global installs. An eslint exit status
+  of one reports unfixable findings rather than failing the formatter.
 - Scans JavaScript for removable delimiters and rewrites them under
   `--fix`; `--no-delimiters` (or `no-delimiters = true`) disables the
   scan and `LintExactusConfig.delimiters` is the Python form.

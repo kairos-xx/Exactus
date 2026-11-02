@@ -1,31 +1,31 @@
 import assert from "node:assert/strict";
-import { test } from "node:test";
-import { installDom, inputEvent, keyEvent, FakeElement } from "./dom-stub.mjs";
+import {test} from "node:test";
+import {installDom, inputEvent, keyEvent, FakeElement} from "./dom-stub.mjs";
 installDom();
 await import("../../../../packages/widgets/widget_selector/widget.js");
-const { mountExpressionWidget } = await import(
+const {mountExpressionWidget} = await import(
   "../../../../packages/widgets/widget_selector/index.js"
 );
-const { icon } = await import(
+const {icon} = await import(
   "../../../../packages/widgets/widget_selector/icons.js"
 );
-const { buildShape, joinOf } = await import(
+const {buildShape, joinOf} = await import(
   "../../../../packages/widgets/widget_selector/shapes.js"
 );
-const { suggest, createSampler, ENVIRONMENT_VARIABLES } = await import(
+const {suggest, createSampler, ENVIRONMENT_VARIABLES} = await import(
   "../../../../packages/widgets/widget_selector/suggest.js"
 );
-const { createMenu } = await import(
+const {createMenu} = await import(
   "../../../../packages/widgets/widget_selector/mention-menu.js"
 );
 /** Minimal suggestion engine stand-in for menu tests. */
 class FakeEngine {
   static SIGNATURES = {
-    child: { roles: ["subject", "part"], min: 2 },
-    has: { roles: ["subject"], variadicRole: "part", min: 1 },
+    child: {roles: ["subject", "part"], min: 2},
+    has: {roles: ["subject"], variadicRole: "part", min: 1}
   };
   static CAPABILITIES = {
-    predicateTypes: { text: "text", width: "number", visible: "boolean" },
+    predicateTypes: {text: "text", width: "number", visible: "boolean"}
   };
   static lintResult = /** @type {(text: string) => any[]} */ (() => []);
   /**
@@ -46,8 +46,8 @@ const STATS = {
   scanned: 10,
   truncated: false,
   elapsedMs: 3.4,
-  nodes: [{ path: [0], label: "div", kind: "tag", count: 2 }],
-  first: { tag: "div", css: "div.card", text: "hello" },
+  nodes: [{path: [0], label: "div", kind: "tag", count: 2}],
+  first: {tag: "div", css: "div.card", text: "hello"}
 };
 /**
  * Wait for a delay.
@@ -82,9 +82,9 @@ const mount = (options = {}) => {
   const widget = mountExpressionWidget(carrier, {
     engine: new FakeEngine(),
     label: "Selector",
-    ...options,
+    ...options
   });
-  return { parent, carrier, widget };
+  return {parent, carrier, widget};
 };
 /**
  * Cast a DOM query result to the stub element type.
@@ -117,7 +117,7 @@ const draftOf = widget =>
     /** @type {unknown} */ (widget.element.querySelector(".ese-draft"))
   );
 test("mount hides the carrier and mirrors its value", () => {
-  const { carrier, widget } = mount({ value: "div.card" });
+  const {carrier, widget} = mount({value: "div.card"});
   assert.equal(carrier.hidden, true);
   assert.equal(widget.value, "div.card");
   assert.equal(widget.mode(), "expression");
@@ -132,13 +132,13 @@ test("mountExpressionWidget rejects unsupported languages", () => {
     () =>
       mountExpressionWidget(
         carrier,
-        /** @type {any} */ ({ language: "python" }),
+        /** @type {any} */ ({language: "python"})
       ),
-    /language/i,
+    /language/i
   );
 });
 test("value setter syncs carrier and emits change events", () => {
-  const { carrier, widget } = mount();
+  const {carrier, widget} = mount();
   /** @type {string[]} */
   const seen = [];
   widget.on("change", (/** @type {string} */ value) => seen.push(value));
@@ -149,7 +149,7 @@ test("value setter syncs carrier and emits change events", () => {
   widget.destroy();
 });
 test("setMode toggles between expression and text surfaces", () => {
-  const { widget } = mount();
+  const {widget} = mount();
   /** @type {string[]} */
   const modes = [];
   widget.on("mode", (/** @type {string} */ mode) => modes.push(mode));
@@ -162,7 +162,7 @@ test("setMode toggles between expression and text surfaces", () => {
   widget.destroy();
 });
 test("startAsText mounts the widget in text mode", () => {
-  const { widget } = mount({ startAsText: true });
+  const {widget} = mount({startAsText: true});
   assert.equal(widget.mode(), "text");
   widget.destroy();
 });
@@ -176,7 +176,7 @@ test("validation paints diagnostics and the fix button applies suggestions", () 
       line: 1,
       column: 5,
       severity: "error",
-      suggestion: { offset: 4, length: 3, text: "card" },
+      suggestion: {offset: 4, length: 3, text: "card"}
     },
     {
       code: "slow",
@@ -185,10 +185,10 @@ test("validation paints diagnostics and the fix button applies suggestions", () 
       length: 3,
       line: 1,
       column: 1,
-      severity: "warning",
-    },
+      severity: "warning"
+    }
   ];
-  const { widget } = mount();
+  const {widget} = mount();
   /** @type {unknown[]} */
   const results = [];
   widget.on("validate", (/** @type {unknown} */ result) => results.push(result));
@@ -200,26 +200,26 @@ test("validation paints diagnostics and the fix button applies suggestions", () 
   const message = asElement(widget.element.querySelector(".ese-message"));
   assert.equal(message.hidden, false);
   const fix = qsa(widget.element, "button").find(button =>
-    button.textContent.includes("Use"),
+    button.textContent.includes("Use")
   );
   assert.ok(fix);
   fix.dispatchEvent(new Event("click"));
   assert.equal(widget.value, "div.card");
   widget.value = "div.crx";
   const next = qsa(widget.element, "button").find(
-    button => button.getAttribute("aria-label") === "Next problem",
+    button => button.getAttribute("aria-label") === "Next problem"
   );
   assert.ok(next);
   next.dispatchEvent(new Event("click"));
   assert.equal(widget.validation().index, 1);
   widget.element.dispatchEvent(keyEvent("F8"));
-  widget.element.dispatchEvent(keyEvent("F8", { shiftKey: true }));
+  widget.element.dispatchEvent(keyEvent("F8", {shiftKey: true}));
   widget.destroy();
   FakeEngine.lintResult = () => [];
 });
 test("valid text reports an idle-valid semaphore state", () => {
   FakeEngine.lintResult = () => [];
-  const { widget } = mount();
+  const {widget} = mount();
   widget.value = "a[href]";
   assert.equal(widget.validation().state, "valid");
   const dot = asElement(widget.element.querySelector(".ese-dot"));
@@ -245,14 +245,14 @@ test("multiple mode lints each non-empty line", () => {
   const widget = mountExpressionWidget(carrier, {
     engine,
     label: "Selectors",
-    multiple: true,
+    multiple: true
   });
   widget.value = "div\n\nspan";
   assert.deepEqual(calls, ["div", "span"]);
   widget.destroy();
 });
 test("typing into the draft opens suggestions and Enter commits", () => {
-  const { widget } = mount({ value: "" });
+  const {widget} = mount({value: ""});
   const draft = draftOf(widget);
   assert.ok(draft);
   draft.value = "ch";
@@ -265,7 +265,7 @@ test("typing into the draft opens suggestions and Enter commits", () => {
   widget.destroy();
 });
 test("explicit menu request, branch expansion and Escape", () => {
-  const { widget } = mount({ value: "" });
+  const {widget} = mount({value: ""});
   const draft = draftOf(widget);
   draft.value = "";
   draft.dispatchEvent(keyEvent("ArrowDown"));
@@ -284,7 +284,7 @@ test("explicit menu request, branch expansion and Escape", () => {
   widget.destroy();
 });
 test("Backspace dissolves the previous token and Home/End move the caret", () => {
-  const { widget } = mount({ value: "div span" });
+  const {widget} = mount({value: "div span"});
   const draft = draftOf(widget);
   draft.value = "";
   draft.dispatchEvent(keyEvent("Backspace"));
@@ -300,18 +300,18 @@ test("Backspace dissolves the previous token and Home/End move the caret", () =>
   widget.destroy();
 });
 test("clicking the surface places the caret at the nearest boundary", () => {
-  const { widget } = mount({ value: "div span" });
+  const {widget} = mount({value: "div span"});
   widget.surface.dispatchEvent(
-    Object.assign(new Event("click", { bubbles: true }), {
+    Object.assign(new Event("click", {bubbles: true}), {
       clientX: 50,
-      clientY: 10,
-    }),
+      clientY: 10
+    })
   );
   widget.focus();
   widget.destroy();
 });
 test("setTheme sets and clears the data-theme attribute", () => {
-  const { widget } = mount();
+  const {widget} = mount();
   widget.setTheme("dark");
   assert.equal(widget.element.getAttribute("data-theme"), "dark");
   widget.setTheme(null);
@@ -326,14 +326,14 @@ test("footer renders chips, stats panel and pick alternatives", async () => {
       pickedCallback = done;
     },
     highlight: () => {},
-    stats: async () => STATS,
+    stats: async () => STATS
   };
-  const { widget } = mount({ host, providers: { expected: () => 2 } });
+  const {widget} = mount({host, providers: {expected: () => 2}});
   widget.value = "div.card";
   await sleep(260);
   const panel = asElement(widget.element.querySelector(".ese-panel"));
   const pickButton = qsa(widget.element, "button").find(
-    button => button.getAttribute("aria-label") === "Pick on page",
+    button => button.getAttribute("aria-label") === "Pick on page"
   );
   assert.ok(pickButton);
   pickButton.dispatchEvent(new Event("click"));
@@ -341,36 +341,36 @@ test("footer renders chips, stats panel and pick alternatives", async () => {
   /** @type {(result: Record<string, unknown>) => void} */
   const picked = pickedCallback;
   picked({
-    element: { tag: "div", text: "hi" },
+    element: {tag: "div", text: "hi"},
     selector: "#one",
     matches: 1,
     alternatives: [
-      { strategy: "id", selector: "#one", matches: 1 },
-      { strategy: "class", selector: ".card", matches: 2 },
-    ],
+      {strategy: "id", selector: "#one", matches: 1},
+      {strategy: "class", selector: ".card", matches: 2}
+    ]
   });
   assert.equal(widget.value, "#one");
   const rows = qsa(widget.element, ".ese-pick-row");
   assert.ok(rows.length >= 2);
   const radios = qsa(widget.element, "input").filter(
-    input => input.type === "radio",
+    input => input.type === "radio"
   );
   const other = radios.find(radio => !radio.checked);
   if (other)
     other.dispatchEvent(new Event("change"));
   const chevron = qsa(widget.element, "button").find(
-    button => button.getAttribute("aria-label") === "Show stats",
+    button => button.getAttribute("aria-label") === "Show stats"
   );
   assert.ok(chevron);
   chevron.dispatchEvent(new Event("click"));
   assert.equal(panel.hidden, false);
   const close = qsa(widget.element, "button").find(
-    button => button.getAttribute("aria-label") === "Dismiss",
+    button => button.getAttribute("aria-label") === "Dismiss"
   );
   assert.ok(close);
   close.dispatchEvent(new Event("click"));
   const highlight = qsa(widget.element, "button").find(
-    button => button.getAttribute("aria-label") === "Highlight on page",
+    button => button.getAttribute("aria-label") === "Highlight on page"
   );
   assert.ok(highlight);
   highlight.dispatchEvent(new Event("click"));
@@ -379,15 +379,15 @@ test("footer renders chips, stats panel and pick alternatives", async () => {
 });
 test("stats errors clear chips and live variables reveal devices chip", async () => {
   const failure = Object.assign(new Error("no variable"), {
-    code: "missing-variable",
+    code: "missing-variable"
   });
   const host = {
     stats: async () => {
       throw failure;
     },
-    highlight: () => {},
+    highlight: () => {}
   };
-  const { widget } = mount({ host, value: "{{flow/x}}" });
+  const {widget} = mount({host, value: "{{flow/x}}"});
   widget.value = "div";
   await sleep(260);
   widget.destroy();
@@ -409,7 +409,7 @@ test("buildShape renders cap, body and horn for each type", () => {
       kind: "tag",
       label: "div",
       editable: true,
-      title: "tag",
+      title: "tag"
     });
     assert.equal(shape.getAttribute("data-type"), type);
     assert.ok(shape.children.length >= 1);
@@ -422,16 +422,16 @@ test("createMenu paints rows, expands branches and chooses items", () => {
   const host = document.createElement("div");
   /** @type {import("../../../../packages/widgets/widget_selector/suggest.js").Item[]} */
   const chosen = [];
-  const menu = createMenu({ host, onChoose: item => chosen.push(item) });
+  const menu = createMenu({host, onChoose: item => chosen.push(item)});
   /** @type {import("../../../../packages/widgets/widget_selector/suggest.js").Item[]} */
   const items = [
     {
       label: "device/",
       group: "Environment",
       branch: true,
-      children: [{ label: "device/width", group: "Environment" }],
+      children: [{label: "device/width", group: "Environment"}]
     },
-    { label: "div", group: "Page" },
+    {label: "div", group: "Page"}
   ];
   menu.open("Suggestions", items, "device/");
   assert.equal(menu.isOpen(), true);
@@ -443,9 +443,9 @@ test("createMenu paints rows, expands branches and chooses items", () => {
   const lastRow = rows.at(-1);
   assert.ok(lastRow);
   lastRow.dispatchEvent(
-    Object.assign(new Event("mousedown", { bubbles: true }), {
-      preventDefault: () => {},
-    }),
+    Object.assign(new Event("mousedown", {bubbles: true}), {
+      preventDefault: () => {}
+    })
   );
   assert.ok(chosen.length >= 1);
   menu.open("Again", items);
@@ -464,7 +464,7 @@ test("sampler counts tags, classes, ids and attributes once per scope", () => {
   root.append(child);
   const sampler = createSampler({
     root: /** @type {Element} */ (/** @type {unknown} */ (root)),
-    cap: 10,
+    cap: 10
   });
   const one = sampler.sample();
   assert.equal(one.tags.get("button"), 1);
@@ -486,7 +486,7 @@ test("suggest covers tags, predicates, pseudos, variables and saved", () => {
   card.setAttribute("data-role", "tile");
   root.append(card);
   const sampler = createSampler({
-    root: /** @type {Element} */ (/** @type {unknown} */ (root)),
+    root: /** @type {Element} */ (/** @type {unknown} */ (root))
   });
   /**
    * Build a suggestion context with optional overrides.
@@ -499,49 +499,49 @@ test("suggest covers tags, predicates, pseudos, variables and saved", () => {
       signatures: FakeEngine.SIGNATURES,
       predicateTypes: FakeEngine.CAPABILITIES.predicateTypes,
       sampler,
-      saved: [{ name: "cards", count: 3 }],
+      saved: [{name: "cards", count: 3}],
       variables: [
-        { path: "flow/name", scope: "flow", type: "text", value: "x" },
-        { path: "device/width", scope: "env", type: "num" },
-        { path: "loose", scope: "flow", type: "bool" },
+        {path: "flow/name", scope: "flow", type: "text", value: "x"},
+        {path: "device/width", scope: "env", type: "num"},
+        {path: "loose", scope: "flow", type: "bool"}
       ],
       supports: () => true,
-      ...overrides,
+      ...overrides
     });
-  assert.ok(suggest(context({ draft: "art" })).items.length > 0);
-  assert.ok(suggest(context({ draft: "ch" })).items.length > 0);
+  assert.ok(suggest(context({draft: "art"})).items.length > 0);
+  assert.ok(suggest(context({draft: "ch"})).items.length > 0);
   assert.ok(
-    suggest(context({ draft: ".c" })).items.some(i => i.label === ".card"),
+    suggest(context({draft: ".c"})).items.some(i => i.label === ".card")
   );
   assert.ok(
-    suggest(context({ draft: "#h" })).items.some(i => i.label === "#hero"),
+    suggest(context({draft: "#h"})).items.some(i => i.label === "#hero")
   );
   assert.ok(
-    suggest(context({ draft: "[te" })).items.some(i =>
-      i.label.includes("text"),
-    ),
+    suggest(context({draft: "[te"})).items.some(i =>
+      i.label.includes("text")
+    )
   );
   assert.ok(
-    suggest(context({ draft: ":hov" })).items.some(i => i.label === ":hover"),
+    suggest(context({draft: ":hov"})).items.some(i => i.label === ":hover")
   );
   assert.ok(
-    suggest(context({ draft: "::bef" })).items.some(
-      i => i.label === "::before",
-    ),
+    suggest(context({draft: "::bef"})).items.some(
+      i => i.label === "::before"
+    )
   );
-  const mention = suggest(context({ draft: "@" }));
+  const mention = suggest(context({draft: "@"}));
   assert.ok(mention.items.some(i => i.branch));
   assert.ok(
-    suggest(context({ draft: "@dev" })).items.some(
-      i => i.label === "device/width",
-    ),
+    suggest(context({draft: "@dev"})).items.some(
+      i => i.label === "device/width"
+    )
   );
   assert.ok(
-    suggest(context({ draft: "@.c" })).items.some(i => i.label === ".card"),
+    suggest(context({draft: "@.c"})).items.some(i => i.label === ".card")
   );
-  const scoped = suggest(context({ draft: ".zzz", scope: "main" }));
+  const scoped = suggest(context({draft: ".zzz", scope: "main"}));
   assert.ok(scoped.items !== undefined);
-  const scopedTag = suggest(context({ draft: "zzz", scope: "main" }));
+  const scopedTag = suggest(context({draft: "zzz", scope: "main"}));
   assert.ok(scopedTag.items !== undefined);
   assert.ok(ENVIRONMENT_VARIABLES.length > 5);
 });

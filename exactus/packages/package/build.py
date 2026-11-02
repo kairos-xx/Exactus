@@ -1276,8 +1276,7 @@ def _target_names(
             "all",
         ),
     )
-    unknown: set[str] = set(names) - allowed
-    if unknown:
+    if unknown := set(names) - allowed:
         parser.error(
             message=f"[tool.build{label}] unknown target(s): "
             + ", ".join(sorted(unknown)),

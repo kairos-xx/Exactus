@@ -5,9 +5,9 @@
  * Create a debounced validator around an engine.
  * @returns {{flush:Function, schedule:Function, current:()=>ValidationResult, step:Function, destroy:()=>void}} The validator API.
  */
-export const createValidator = (/** @type {{engine:any, delayMs?:number, multiple?:boolean, onResult:(r:ValidationResult)=>void}} */ { engine, delayMs = 120, multiple = false, onResult }) => {
+export const createValidator = (/** @type {{engine:any, delayMs?:number, multiple?:boolean, onResult:(r:ValidationResult)=>void}} */ {engine, delayMs = 120, multiple = false, onResult}) => {
   /** @type {ValidationResult} */
-  let current = { state: "idle", diagnostics: [], errors: 0, warnings: 0, index: 0 };
+  let current = {state: "idle", diagnostics: [], errors: 0, warnings: 0, index: 0};
   /** @type {ReturnType<typeof setTimeout>|undefined} */
   let timer;
   /**
@@ -16,7 +16,7 @@ export const createValidator = (/** @type {{engine:any, delayMs?:number, multipl
    * @returns {ValidationResult} The validation result.
    */
   const run = text => {
-    if (!text.trim()) return { state: "idle", diagnostics: [], errors: 0, warnings: 0, index: 0 };
+    if (!text.trim()) return {state: "idle", diagnostics: [], errors: 0, warnings: 0, index: 0};
     /** @type {Diagnostic[]} */
     let found = [];
     if (!engine) found = [];
@@ -24,13 +24,13 @@ export const createValidator = (/** @type {{engine:any, delayMs?:number, multipl
       let offset = 0;
       text.split("\n").forEach((line, row) => {
         if (line.trim())
-          found.push(...engine.lint(line, { warnings: true }).map((/** @type {Diagnostic} */ d) => ({ ...d, offset: d.offset + offset, line: row + 1, ...(d.suggestion ? { suggestion: { ...d.suggestion, offset: d.suggestion.offset + offset } } : {}) })));
+          found.push(...engine.lint(line, {warnings: true}).map((/** @type {Diagnostic} */ d) => ({...d, offset: d.offset + offset, line: row + 1, ...(d.suggestion ? {suggestion: {...d.suggestion, offset: d.suggestion.offset + offset}} : {})})));
         offset += line.length + 1;
       });
-    } else found = engine.lint(text, { warnings: true });
+    } else found = engine.lint(text, {warnings: true});
     const errors = found.filter(d => d.severity === "error").length;
     const warnings = found.length - errors;
-    return { state: errors ? "error" : warnings ? "warning" : "valid", diagnostics: found, errors, warnings, index: 0 };
+    return {state: errors ? "error" : warnings ? "warning" : "valid", diagnostics: found, errors, warnings, index: 0};
   };
   /**
    * Validate immediately, cancelling any pending debounce.
@@ -48,7 +48,7 @@ export const createValidator = (/** @type {{engine:any, delayMs?:number, multipl
     /** @param {string} text */
     schedule: text => {
       clearTimeout(timer);
-      current = { ...current, state: "checking" };
+      current = {...current, state: "checking"};
       onResult(current);
       timer = setTimeout(() => flush(text), delayMs);
     },
@@ -60,6 +60,6 @@ export const createValidator = (/** @type {{engine:any, delayMs?:number, multipl
       onResult(current);
       return current.diagnostics[current.index] ?? null;
     },
-    destroy: () => clearTimeout(timer),
+    destroy: () => clearTimeout(timer)
   };
 };

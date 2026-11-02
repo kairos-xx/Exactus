@@ -27,7 +27,7 @@ export const formatNumber = value => Object.is(value, -0) ? "-0" : String(value)
  */
 export const formatFunction = descriptor => {
   if (descriptor.kind === "class") return `class ${descriptor.name || "(anonymous)"}`;
-  const prefix = { async: "async ƒ", generator: "ƒ*", function: "ƒ" }[descriptor.kind];
+  const prefix = {async: "async ƒ", generator: "ƒ*", function: "ƒ"}[descriptor.kind];
   return `${prefix} ${descriptor.name || "(anonymous)"}()`;
 };
 /**
@@ -50,7 +50,7 @@ const formatMembers = (entries, truncated, show, limit) => {
  * @returns {string} Display text.
  */
 export const formatValue = (descriptor, options = {}) => {
-  const { nested = false, depth = 1, entries: limit = 5 } = options;
+  const {nested = false, depth = 1, entries: limit = 5} = options;
   switch (descriptor.t) {
     case "undefined":
       return "undefined";
@@ -76,7 +76,7 @@ export const formatValue = (descriptor, options = {}) => {
       break;
   }
   if (descriptor.circular) return "[Circular]";
-  const inner = { nested: true, depth: depth - 1, entries: limit };
+  const inner = {nested: true, depth: depth - 1, entries: limit};
   const members = descriptor.entries ?? [];
   const truncated = Boolean(descriptor.more);
   const expandable = !descriptor.lazy && depth > 0;
@@ -121,7 +121,7 @@ export const formatValue = (descriptor, options = {}) => {
  * @returns {string} Space-joined text.
  */
 export const partsText = parts =>
-  parts.map(part => formatValue(part, { depth: 3, entries: 100 })).join(" ");
+  parts.map(part => formatValue(part, {depth: 3, entries: 100})).join(" ");
 /**
  * Apply printf-style substitutions to the first message part.
  * Supports `%s %d %i %f %o %O %c %%`; `%c` consumes its argument and
@@ -138,7 +138,7 @@ export const applyFormat = parts => {
   let used = 0;
   /** Push the accumulated text as a string part. */
   const flush = () => {
-    if (text) out.push({ t: "string", v: text });
+    if (text) out.push({t: "string", v: text});
     text = "";
   };
   const source = first.v;
@@ -168,7 +168,7 @@ export const applyFormat = parts => {
       continue;
     }
     if (spec === "s") {
-      text += formatValue(arg, { depth: 0 });
+      text += formatValue(arg, {depth: 0});
       continue;
     }
     const numeric = arg.t === "number" ? arg.v : arg.t === "string" ? Number(arg.v) : arg.t === "boolean" ? Number(arg.v) : Number.NaN;

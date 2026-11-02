@@ -649,7 +649,6 @@ class _InstallUi:
                     for name, _weight in Constants.progress_steps
                 ),
             ),
-            previous_lines=0,
         )
 
 

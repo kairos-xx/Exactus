@@ -760,8 +760,7 @@ def playwright_browsers() -> Path | None:
         ``None`` when it does not exist.
 
     """
-    override: str | None = environ.get("PLAYWRIGHT_BROWSERS_PATH")
-    if override:
+    if override := environ.get("PLAYWRIGHT_BROWSERS_PATH"):
         root: Path = Path(override)
         return root if root.is_dir() else None
     home: Path = Path.home()

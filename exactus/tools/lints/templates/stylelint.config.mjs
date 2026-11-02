@@ -6,7 +6,7 @@ export default {
     "**/dist/**",
     "**/build/**",
     "**/coverage/**",
-    "**/.cache/**",
+    "**/.cache/**"
   ],
   reportDescriptionlessDisables: true,
   reportInvalidScopeDisables: true,
@@ -52,8 +52,8 @@ export default {
     "selector-type-no-unknown": [
       true,
       {
-        ignore: ["custom-elements"],
-      },
+        ignore: ["custom-elements"]
+      }
     ],
     "string-no-newline": true,
     "unit-no-unknown": true,
@@ -68,6 +68,6 @@ export default {
     "color-function-notation": "modern",
     "hue-degree-notation": "angle",
     "media-feature-range-notation": "context",
-    "selector-not-notation": "complex",
-  },
+    "selector-not-notation": "complex"
+  }
 };

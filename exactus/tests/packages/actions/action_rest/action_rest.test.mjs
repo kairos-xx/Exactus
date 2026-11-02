@@ -11,7 +11,7 @@ const DEMO = "/exactus/packages/actions/action_rest/examples/web/index.html";
 const pageErrors = page => {
 	/** @type {string[]} */
 	const errors = [];
-	page.on("pageerror", ( /** @type {Error} */ error) => errors.push(error.message), );
+	page.on("pageerror", ( /** @type {Error} */ error) => errors.push(error.message) );
 	return errors;
 };
 test("request API resolves variables, params, headers and package exports", async t => {
@@ -35,19 +35,19 @@ test("request API resolves variables, params, headers and package exports", asyn
 			check(module.default === Studio, "default export aliases RequestStudio");
 			check(Studio.isRowKind("params"), "params is a row kind");
 			check(!Studio.isRowKind("body"), "body is not a row kind");
-			check(Studio.json('{"a":1}') === '{\n  "a": 1\n}', "JSON formatter pretty prints valid JSON", );
+			check(Studio.json('{"a":1}') === '{\n  "a": 1\n}', "JSON formatter pretty prints valid JSON" );
 			check(Studio.json("not-json") === "not-json", "invalid JSON is preserved");
 			const editor = document.createElement("div");
 			Studio.setEditorText(editor, "a/{{user/id}}/{{missing}}");
-			check(Studio.editorText(editor) === "a/{{user/id}}/{{missing}}", "token editor round trips variable syntax", );
-			check(editor.querySelectorAll(".token-pill").length === 2, "token editor renders variable pills", );
-			check(typeof Studio.prototype.send === "function" && typeof Studio.prototype.resolve === "function", "instance behavior lives on prototype", );
+			check(Studio.editorText(editor) === "a/{{user/id}}/{{missing}}", "token editor round trips variable syntax" );
+			check(editor.querySelectorAll(".token-pill").length === 2, "token editor renders variable pills" );
+			check(typeof Studio.prototype.send === "function" && typeof Studio.prototype.resolve === "function", "instance behavior lives on prototype" );
 			return failures;
 		});
 		assert.deepEqual(result, []);
 		assert.deepEqual(errors, []);
 		assert.equal(await page.title(), "Request Studio");
-		assert.equal(await page.locator("#resolved-url").textContent(), "https://api.example.com/v1/users/usr_28491?limit=25&include=profile", );
+		assert.equal(await page.locator("#resolved-url").textContent(), "https://api.example.com/v1/users/usr_28491?limit=25&include=profile" );
 		assert.equal(await page.locator("#params-count").textContent(), "2");
 		assert.equal(await page.locator("#headers-count").textContent(), "2");
 	});
@@ -110,21 +110,21 @@ test("HTTP send builds the request and renders success, error and network respon
 					method: init?.method,
 					headers: Object.fromEntries(new Headers(init?.headers).entries()),
 					body: init?.body,
-					credentials: init?.credentials,
+					credentials: init?.credentials
 				});
 				return new Response('{"ok":true,"nested":{"id":7}}', {
 					status: 201,
 					statusText: "Created",
 					headers: {
 						"content-type": "application/json"
-					},
+					}
 				});
 			});
 		});
 		await page.locator("#method").selectOption("POST");
 		await page.locator("#method").dispatchEvent("change");
 		await page.locator("#send").click();
-		await page.waitForFunction(() => document.querySelector("#response-meta")?.textContent?.includes("201 Created"), );
+		await page.waitForFunction(() => document.querySelector("#response-meta")?.textContent?.includes("201 Created") );
 		const call = await page.evaluate(() => Reflect.get(globalThis, "requestCalls")[0]);
 		assert.equal(call.method, "POST");
 		assert.equal(call.credentials, "include");
@@ -138,10 +138,10 @@ test("HTTP send builds the request and renders success, error and network respon
 			Reflect.set(globalThis, "fetch", async () => new Response("denied", {
 				status: 403,
 				statusText: "Forbidden"
-			}), );
+			}) );
 		});
 		await page.locator("#send").click();
-		await page.waitForFunction(() => document.querySelector("#response-meta")?.textContent?.includes("403 Forbidden"), );
+		await page.waitForFunction(() => document.querySelector("#response-meta")?.textContent?.includes("403 Forbidden") );
 		assert.equal(await page.locator("#response-meta").getAttribute("class"), "error");
 		assert.equal(await page.locator("#response-text").textContent(), "denied");
 		await page.evaluate(() => {
@@ -150,7 +150,7 @@ test("HTTP send builds the request and renders success, error and network respon
 			});
 		});
 		await page.locator("#send").click();
-		await page.waitForFunction(() => document.querySelector("#response-meta")?.textContent?.includes("Network error"), );
+		await page.waitForFunction(() => document.querySelector("#response-meta")?.textContent?.includes("Network error") );
 		assert.match(await page.locator("#response-text").textContent(), /offline/);
 		assert.deepEqual(errors, []);
 	});
@@ -199,7 +199,7 @@ test("WebSocket mode maps protocols, logs frames and restores HTTP controls", as
 						},
 						reason: {
 							value: "Closed by user"
-						},
+						}
 					});
 					this.dispatchEvent(event);
 				}
@@ -213,7 +213,7 @@ test("WebSocket mode maps protocols, logs frames and restores HTTP controls", as
 		assert.match(await page.locator("#resolved-url").textContent(), /^wss:\/\//);
 		await page.locator("#ws-protocols").fill("chat.v1, json");
 		await page.locator("#send").click();
-		await page.waitForFunction(() => document.querySelector("#ws-state")?.getAttribute("data-state") === "open", );
+		await page.waitForFunction(() => document.querySelector("#ws-state")?.getAttribute("data-state") === "open" );
 		const socket = await page.evaluate(() => {
 			const value = Reflect.get(globalThis, "fakeSocket");
 			return {
@@ -226,12 +226,12 @@ test("WebSocket mode maps protocols, logs frames and restores HTTP controls", as
 		await page.locator("#ws-message").fill("hello {{user/id}}");
 		await page.locator("#ws-send").click();
 		assert.deepEqual(await page.evaluate(() => Reflect.get(globalThis, "fakeSocket").sent),
-			["hello usr_28491"], );
+			["hello usr_28491"] );
 		assert.equal(await page.locator("#messages-count").textContent(), "2");
 		await page.locator("#ws-clear").click();
 		assert.equal(await page.locator("#messages-count").textContent(), "0");
 		await page.locator("#send").click();
-		await page.waitForFunction(() => document.querySelector("#ws-state")?.getAttribute("data-state") === "closed", );
+		await page.waitForFunction(() => document.querySelector("#ws-state")?.getAttribute("data-state") === "closed" );
 		await page.locator("#transport").selectOption("http");
 		await page.locator("#transport").dispatchEvent("change");
 		assert.equal(await page.locator("#method").isHidden(), false);
@@ -250,7 +250,7 @@ test("JSON capture saves response values as variables and demo is responsive", a
 		await page.locator("#capture").evaluate(( /** @type {HTMLFormElement} */ form) => form.requestSubmit());
 		await page.locator("#variables-toggle").click();
 		const saved = page.locator("#variable-list .variable").filter({
-			has: page.locator('.v-name[value="response/userName"]'),
+			has: page.locator('.v-name[value="response/userName"]')
 		});
 		assert.equal(await saved.count(), 1);
 		assert.equal(await saved.locator(".v-value").inputValue(), "Ada Lovelace");

@@ -44,7 +44,9 @@ from exactus.tests.common.support import (
     expect_not_in,
     expect_true,
 )
-from exactus.tools.common.catalog import Constants as _GroupFinalConstants
+from exactus.tools.common.catalog import (
+    GroupFinalConstants as _GroupFinalConstants,
+)
 from exactus.tools.completion.defaults import (
     Constants as _GroupFinalConstants_3,
 )

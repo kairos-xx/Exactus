@@ -14,7 +14,7 @@ const PATHS = Object.freeze({
   scan: "M4 8V4h4M16 4h4v4M20 16v4h-4M8 20H4v-4",
   devices: "M3 6h12v9H3zM17 9h4v9h-4z",
   enabled: "M4 12h16M4 7h16M4 17h10",
-  close: "M6 6l12 12M18 6L6 18",
+  close: "M6 6l12 12M18 6L6 18"
 });
 /**
  * Build an inline SVG icon.

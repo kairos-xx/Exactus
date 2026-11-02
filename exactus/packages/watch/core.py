@@ -1527,8 +1527,7 @@ class PyprojectConfig:
         )
         if table is None:
             return {}
-        unknown: set[str] = set(table) - allowed
-        if unknown:
+        if unknown := set(table) - allowed:
             msg: str = "Unknown [tool.watch] setting(s): " + ", ".join(
                 sorted(unknown),
             )

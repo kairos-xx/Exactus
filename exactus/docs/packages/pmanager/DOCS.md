@@ -524,7 +524,7 @@ Files: `examples/README.md`, `examples/__init__.py`, `examples/__main__.py`, `ex
 
 ## Dependencies and consumers
 
-- Used by: `__main__.py`, `tests/common/check/test_check_extra.py`, `tests/packages/pmanager/test_api.py`, `tests/packages/pmanager/test_api_extended.py`, `tests/packages/pmanager/test_broadcast.py`, `tests/packages/pmanager/test_class_runner.py`, `tests/packages/pmanager/test_core.py`, `tests/packages/pmanager/test_example_run.py`, `tests/packages/pmanager/test_examples.py`, `tests/packages/pmanager/test_model.py`, `tests/packages/pmanager/test_object_api.py`, `tests/packages/pmanager/test_platform.py`, `tests/packages/pmanager/test_spec.py`, `tests/tools/common/test_execution.py`, `tests/tools/common/test_pipeline_output.py`, `tests/tools/common/test_tool_worker.py`, `tools/common/api.py`, `tools/common/execution.py`, `tools/common/tool_worker.py`
+- Used by: `__main__.py`, `tests/common/check/test_check_extra.py`, `tests/packages/pmanager/test_api.py`, `tests/packages/pmanager/test_api_extended.py`, `tests/packages/pmanager/test_broadcast.py`, `tests/packages/pmanager/test_class_runner.py`, `tests/packages/pmanager/test_core.py`, `tests/packages/pmanager/test_example_run.py`, `tests/packages/pmanager/test_examples.py`, `tests/packages/pmanager/test_model.py`, `tests/packages/pmanager/test_object_api.py`, `tests/packages/pmanager/test_platform.py`, `tests/packages/pmanager/test_spec.py`, `tests/tools/common/test_execution.py`, `tests/tools/common/test_pipeline_output.py`, `tests/tools/common/test_pipeline_scope.py`, `tests/tools/common/test_tool_worker.py`, `tools/common/api.py`, `tools/common/execution.py`, `tools/common/tool_worker.py`
 
 ## Tests
 

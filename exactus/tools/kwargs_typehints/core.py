@@ -268,7 +268,7 @@ class Constants:
     Attributes:
         dataclass_markers: Decorator names marking dataclass definitions.
         skip_dirs: Directory names excluded from source discovery.
-        skip_calls: Builtin call names excluded from call exactusing.
+        skip_calls: Builtin call names excluded from call checking.
         dynamic_callee_prefixes: Callee prefixes that are dynamic by design
             (``pytest.mark.<anything>``) and cannot be resolved.
         positional_only_methods: Method names of standard-library and
@@ -9636,8 +9636,7 @@ class CallExactusor:
             obj = self.project.external_object(dotted=resolved.dotted)
         if member is not None:
             obj = _verify_member(obj=obj, member=member)
-        names: frozenset[str] = self.posonly_names(resolved=resolved, obj=obj)
-        if names:
+        if names := self.posonly_names(resolved=resolved, obj=obj):
             sets = [
                 tuple(
                     replace(param, kind="posonly")
@@ -12087,7 +12086,7 @@ def _scan_sources(
     parameters_checked: int = 0
     lanes: BoundedLaneProgress = BoundedLaneProgress(
         total=len(source_paths),
-        step="exactusing imports and hints",
+        step="checking imports and hints",
         span=(0.3, 0.5),
     )
     source_path: Path

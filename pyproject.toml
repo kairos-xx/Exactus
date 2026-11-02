@@ -12,7 +12,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "exactus"
-version = "0.6.1"
+version = "0.7.0"
 description = "Standalone, project-agnostic exactus for Python/JavaScript projects."
 readme = "README.md"
 requires-python = ">=3.13"
@@ -352,8 +352,7 @@ exclude = [
     "bin/release/exactus",
     "bin/release/exactus_all/exactus",
     "bin/release/exactus_*/exactus",
-    "packages/**",
-    "zip-components/**",
+    "artifacts/**",
     # "dev/**",
     # "**/dev/**",
 ]
@@ -549,6 +548,8 @@ simple = false # true runs only the all_lints package audit and reports
 # no-long-lines = true             # skip the long-line repair inside --fix
 # no-delimiters = true             # skip the JS delimiter scan/simplification
 # no-notation = true               # skip the JS function-block normalization
+no-css-naming = true               # numbered CATALOG token families (h2, w4,
+                                   # spacing-8) are this system's convention
 # no-infer = true                  # skip environment inference
 # no-group-final = true            # skip the group_final pre-pass
 # no-organize = true               # skip the class-method reorder pass

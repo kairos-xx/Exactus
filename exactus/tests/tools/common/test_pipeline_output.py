@@ -38,7 +38,7 @@ from exactus.tools.common.activity import (
     ActivityLog,
     ActivityProgress,
 )
-from exactus.tools.common.catalog import Constants, ToolSpec
+from exactus.tools.common.catalog import GroupFinalConstants, ToolSpec
 from exactus.tools.common.models import ToolActivity, ToolRunResult
 from exactus.tools.common.pipeline_supervisor import PipelineCoordinator
 from exactus.tools.common.registry import RunClaim, RunRecord, RunRegistry
@@ -114,7 +114,7 @@ def _lints() -> ToolSpec:
 
     """
     return require_type(
-        value=Constants.exactus_catalog.tool(identifier="lints"),
+        value=GroupFinalConstants.exactus_catalog.tool(identifier="lints"),
         kind=ToolSpec,
     )
 
@@ -675,7 +675,7 @@ def _docs() -> ToolSpec:
 
     """
     return require_type(
-        value=Constants.exactus_catalog.tool(identifier="docs"),
+        value=GroupFinalConstants.exactus_catalog.tool(identifier="docs"),
         kind=ToolSpec,
     )
 
@@ -995,7 +995,7 @@ def test_pipeline_pauses_and_releases_prelaunched_tools(
             actual=rows[1],
             expected=(
                 "docs",
-                "PAUSED*",
+                "HELD*",
                 0.0,
                 "waiting for dependencies",
                 None,
@@ -1258,7 +1258,7 @@ def test_progress_rows_overlay_external_run_progress(
     )
     expect_equal(
         actual=rows[1],
-        expected=("docs", "RUNNING*", 0.0, "starting", None),
+        expected=("docs", "RUN*", 0.0, "starting", None),
     )
     del registry
 
@@ -1366,7 +1366,7 @@ def test_wave_adopts_and_drains_an_external_run(
     expect_true(condition=waiter.is_alive())
     expect_true(
         condition=any(
-            row[0] == "docs" and row[1] == "RUNNING*"
+            row[0] == "docs" and row[1] == "RUN*"
             for rows in seen
             for row in rows
         ),
@@ -1478,6 +1478,78 @@ def test_adopted_progress_resets_on_superseding_run(
         )["docs"].run_id,
         expected="ext-docs-2",
     )
+
+
+def test_adopted_interrupted_external_settles_as_interrupt(
+    results_root: Path,
+) -> None:
+    """A cancelled external run settles as ``INTERRUPT``, not ``FAIL``.
+
+    The registry's final record identifies the kill even after the
+    worker descriptor vanished, and a stale ``result.json`` from an
+    unrelated run must not be adopted as the dead run's verdict.
+
+    Args:
+        results_root: Temporary ``EXACTUS_RESULTS`` directory.
+
+    """
+    registry: RunRegistry = _claim_run(
+        results_root=results_root,
+        kind="tool",
+        identifier="lints",
+        run_id="ext-lints",
+    )
+    run: object = private_call(
+        owner=Check,
+        name="_new_pipeline_run",
+        pipeline="self",
+        run_id="pipe",
+        waves=((_lints(),),),
+    )
+    external: dict[str, RunRecord] = cast(
+        typ="dict[str, RunRecord]",
+        val=private_call(owner=Check, name="_external_tools", run=run),
+    )
+    cast(
+        typ="dict[str, RunRecord]",
+        val=private(owner=run, name="adopted"),
+    ).update(external)
+    registry.finish(
+        run_id="ext-lints",
+        status="INTERRUPT",
+        elapsed_seconds=1.0,
+    )
+    stale: Path = results_root / "LINTS"
+    stale.mkdir(parents=True, exist_ok=True)
+    _ = (stale / "result.json").write_text(
+        data=dumps(
+            obj={
+                "run_id": "unrelated-run",
+                "status": "PASS",
+                "passed": True,
+                "duration_seconds": 9.9,
+            },
+        ),
+    )
+    results: dict[str, ToolRunResult] = {}
+    refreshed: dict[str, RunRecord] = cast(
+        typ="dict[str, RunRecord]",
+        val=private_call(owner=Check, name="_external_tools", run=run),
+    )
+    private_call(
+        owner=Check,
+        name="_drain_adopted",
+        run=run,
+        external=refreshed,
+        results=results,
+    )
+    result: ToolRunResult = require_type(
+        value=results["lints"],
+        kind=ToolRunResult,
+    )
+    expect_equal(actual=result.status, expected="INTERRUPT")
+    expect_equal(actual=result.exit_code, expected=130)
+    expect_false(condition=result.passed)
 
 
 def test_standalone_run_waits_at_the_group_gate(results_root: Path) -> None:

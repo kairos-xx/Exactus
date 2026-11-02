@@ -11,7 +11,7 @@ const ACTIONS = Object.freeze([
 	["touch_tap", "Touch", "Tap"],
 	["touch_long_press", "Touch", "Long press"],
 	["touch_swipe", "Touch", "Swipe"],
-	["touch_pinch", "Touch", "Pinch / zoom"],
+	["touch_pinch", "Touch", "Pinch / zoom"]
 ]);
 /** @type {Readonly<Record<string, string>>} */
 const DETAILS = Object.freeze({
@@ -25,7 +25,7 @@ const DETAILS = Object.freeze({
 	touch_tap: "Tap the center of the selected target.",
 	touch_long_press: "Press and hold the center of the selected target.",
 	touch_swipe: "Swipe from the center of the selected target.",
-	touch_pinch: "Pinch or zoom around the selected target.",
+	touch_pinch: "Pinch or zoom around the selected target."
 });
 /** Create an HTML element.
  * @template {keyof HTMLElementTagNameMap} K

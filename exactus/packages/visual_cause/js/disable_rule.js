@@ -15,7 +15,7 @@ index => {
    * @returns {boolean} True when the target rule was disabled.
    */
   const walk = rules => {
-    for (const rule of rules) {
+    for (const rule of rules)
       if (rule instanceof CSSStyleRule) {
         if (current === index) {
           for (const name of [...rule.style]) rule.style.removeProperty(name);
@@ -27,7 +27,6 @@ index => {
         walk(/** @type {CSSRuleList} */ (rule.cssRules))
       )
         return true;
-    }
     return false;
   };
   walk(sheet.cssRules);

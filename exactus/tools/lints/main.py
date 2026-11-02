@@ -36,6 +36,7 @@ from exactus.tools.lints.core import (
     LintExactusConfig,
     LintExactusRequest,
 )
+from exactus.tools.lints.css_naming import CssNamingSettings
 from exactus.tools.lints.report import report_data
 from exactus.tools.lints.shebang import ShebangSettings
 from exactus.tools.reports.bundle import ReportBundle, ReportPaths
@@ -159,6 +160,14 @@ def main(*, arguments: tuple[str, ...] | None = None) -> int:
             ),
         ),
         simple=cast(typ="bool", val=options.simple),
+        python_simplify=not cast(typ="bool", val=options.no_python_simplify),
+        css_naming=CssNamingSettings(
+            enabled=not cast(typ="bool", val=options.no_css_naming),
+            registered_scales=frozenset(
+                cast(typ="list[str]", val=options.css_naming_scale),
+            ),
+            check_extended=cast(typ="bool", val=options.css_naming_extended),
+        ),
     )
     generated_ignores: tuple[str, ...] = ()
     output_parent: Path = output_dir.parent

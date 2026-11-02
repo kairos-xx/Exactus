@@ -1,5 +1,5 @@
 /** DOM rendering of value descriptors as inline, expandable inspector trees. */
-import { formatFunction, formatValue } from "./format.js";
+import {formatFunction, formatValue} from "./format.js";
 /** @typedef {import("./describe.js").Descriptor} Descriptor */
 /** @typedef {import("./describe.js").Entry} Entry */
 /** @typedef {import("./describe.js").ObjectDescriptor} ObjectDescriptor */
@@ -114,12 +114,12 @@ export class Inspector {
     box.setAttribute("data-kind", descriptor.kind);
     const expandable = Boolean(descriptor.entries?.length || descriptor.more || descriptor.error?.stack);
     if (descriptor.circular || !expandable) {
-      box.append(Inspector.leaf(descriptor.kind, formatValue(descriptor, { nested })));
+      box.append(Inspector.leaf(descriptor.kind, formatValue(descriptor, {nested})));
       return box;
     }
     const head = make("span", "jc-object-head");
     const button = Inspector.twisty(`Expand ${descriptor.preview}`);
-    const title = descriptor.kind === "error" && !nested ? descriptor.preview : formatValue(descriptor, { nested: true, depth: 1 });
+    const title = descriptor.kind === "error" && !nested ? descriptor.preview : formatValue(descriptor, {nested: true, depth: 1});
     head.append(button, Inspector.leaf(descriptor.kind === "error" ? "error" : "object", title));
     box.append(head);
     Inspector.wire(box, head, button, () => Inspector.children(descriptor));
@@ -153,9 +153,9 @@ export class Inspector {
       case "object":
         return Inspector.object(descriptor, nested);
       case "string":
-        return Inspector.leaf("string", formatValue(descriptor, { nested }));
+        return Inspector.leaf("string", formatValue(descriptor, {nested}));
       default:
-        return Inspector.leaf(descriptor.t, formatValue(descriptor, { nested }));
+        return Inspector.leaf(descriptor.t, formatValue(descriptor, {nested}));
     }
   };
   /**
@@ -168,7 +168,7 @@ export class Inspector {
     /** @type {string[]} */
     const columns = [];
     let hasValues = false;
-    for (const entry of data.entries) {
+    for (const entry of data.entries)
       if (entry.v.t === "object" && entry.v.entries)
         for (const cell of entry.v.entries) {
           const name = cell.k ?? "";
@@ -176,7 +176,6 @@ export class Inspector {
         }
        else
         hasValues = true;
-    }
     const table = make("table", "jc-table");
     const head = make("tr");
     head.append(make("th", "", data.kind === "map" ? "(key)" : "(index)"), ...columns.map(name => make("th", "", name)));
@@ -184,7 +183,7 @@ export class Inspector {
     table.append(head);
     data.entries.forEach((entry, index) => {
       const row = make("tr");
-      const label = entry.kd ? formatValue(entry.kd, { nested: true }) : (entry.k ?? String(index));
+      const label = entry.kd ? formatValue(entry.kd, {nested: true}) : (entry.k ?? String(index));
       row.append(make("th", "", label));
       const cells = entry.v.t === "object" ? (entry.v.entries ?? []) : [];
       for (const name of columns) {

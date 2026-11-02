@@ -1,4 +1,4 @@
-import { iconElement } from "./icons.js";
+import {iconElement} from "./icons.js";
 /** Explicit DOM rendering for the flow graph. Positions never change execution order.
  */
 /** @typedef {import('./editor.js').EditorFlow} Flow */
@@ -50,7 +50,7 @@ const fields = (values, label) => {
   const content = element(
     "span",
     "graph-field-values",
-    names.join(", ") || "None",
+    names.join(", ") || "None"
   );
   content.title = content.textContent || "";
   row.append(content);
@@ -68,7 +68,7 @@ export const defaultGraphPositions = (flows, edges) => {
       ids.has(edge.source) &&
       ids.has(edge.target) &&
       edge.source !== edge.target &&
-      edge.mode !== "retry",
+      edge.mode !== "retry"
   );
   const degree = new Map(flows.map(flow => [flow.id, 0]));
   const level = new Map(flows.map(flow => [flow.id, 0]));
@@ -85,7 +85,7 @@ export const defaultGraphPositions = (flows, edges) => {
     for (const edge of links.filter(item => item.source === source)) {
       level.set(
         edge.target,
-        Math.max(level.get(edge.target) ?? 0, (level.get(source) ?? 0) + 1),
+        Math.max(level.get(edge.target) ?? 0, (level.get(source) ?? 0) + 1)
       );
       degree.set(edge.target, (degree.get(edge.target) ?? 1) - 1);
       if (!degree.get(edge.target)) ready.push(edge.target);
@@ -101,7 +101,7 @@ export const defaultGraphPositions = (flows, edges) => {
         : index % 3;
     const row = rows.get(column) ?? 0;
     rows.set(column, row + 1);
-    positions[flow.id] = { x: 32 + column * 296, y: 32 + row * 240 };
+    positions[flow.id] = {x: 32 + column * 296, y: 32 + row * 240};
   }
   return positions;
 };
@@ -120,7 +120,7 @@ export const graphNodes = (flows, active, positions, edges) => {
     const position =
       saved && Number.isFinite(saved.x) && Number.isFinite(saved.y)
         ? saved
-        : (defaults[flow.id] ?? { x: 32, y: 32 });
+        : (defaults[flow.id] ?? {x: 32, y: 32});
     const node = element("article", "flow-node");
     node.setAttribute("data-node-flow", flow.id);
     node.classList.toggle("active", flow.id === active);
@@ -134,17 +134,17 @@ export const graphNodes = (flows, active, positions, edges) => {
     title.append(
       icon("arrows-join"),
       element("span", "graph-node-name", flow.name),
-      element("small", "graph-node-index", String(index + 1).padStart(2, "0")),
+      element("small", "graph-node-index", String(index + 1).padStart(2, "0"))
     );
     node.append(
       title,
       fields(flow.parameters ?? [], "Inputs"),
-      fields(flow.outputs ?? [], "Outputs"),
+      fields(flow.outputs ?? [], "Outputs")
     );
     for (const direction of ["input", "output"]) {
       const port = element(
         "button",
-        `flow-node-port flow-node-port-${direction}`,
+        `flow-node-port flow-node-port-${direction}`
       );
       port.setAttribute("type", "button");
       port.setAttribute(`data-graph-${direction}`, flow.id);
@@ -160,7 +160,7 @@ export const graphNodes = (flows, active, positions, edges) => {
     empty.append(
       icon("arrows-join"),
       element("h2", "", "Connect your flows"),
-      element("p", "", "Add a flow to start building your graph."),
+      element("p", "", "Add a flow to start building your graph.")
     );
     canvas.append(empty);
   }
@@ -178,7 +178,7 @@ export const graphBounds = canvas => {
     width = Math.max(width, node.offsetLeft + node.offsetWidth + 32);
     height = Math.max(height, node.offsetTop + node.offsetHeight + 32);
   });
-  return { width, height };
+  return {width, height};
 };
 /** Render transition paths and their selection handlers.
  * @param {HTMLElement} canvas
@@ -204,7 +204,7 @@ export const graphLinks = (canvas, edges, flows, zoom, selected, select) => {
     width: String(width),
     height: String(height),
     viewBox: `0 0 ${width} ${height}`,
-    "aria-label": "Flow connections",
+    "aria-label": "Flow connections"
   });
   const defs = graphSvg("defs", {});
   const marker = graphSvg("marker", {
@@ -214,17 +214,17 @@ export const graphLinks = (canvas, edges, flows, zoom, selected, select) => {
     refY: "4",
     markerWidth: "6",
     markerHeight: "6",
-    orient: "auto",
+    orient: "auto"
   });
-  marker.append(graphSvg("path", { d: "M 0 0 L 8 4 L 0 8 Z" }));
+  marker.append(graphSvg("path", {d: "M 0 0 L 8 4 L 0 8 Z"}));
   defs.append(marker);
   svg.append(defs);
   for (const edge of edges) {
     const source = canvas.querySelector(
-      `[data-graph-output="${CSS.escape(edge.source)}"]`,
+      `[data-graph-output="${CSS.escape(edge.source)}"]`
     );
     const target = canvas.querySelector(
-      `[data-graph-input="${CSS.escape(edge.target)}"]`,
+      `[data-graph-input="${CSS.escape(edge.target)}"]`
     );
     if (!(source instanceof HTMLElement) || !(target instanceof HTMLElement))
       continue;
@@ -253,19 +253,19 @@ export const graphLinks = (canvas, edges, flows, zoom, selected, select) => {
       tabindex: "0",
       role: "button",
       "aria-label": `${from} to ${to}: ${label}`,
-      "aria-pressed": String(key === selected),
+      "aria-pressed": String(key === selected)
     });
     group.append(
       graphSvg("path", {
         d: path,
         class: "graph-edge-line",
-        "marker-end": "url(#composition-arrow)",
+        "marker-end": "url(#composition-arrow)"
       }),
-      graphSvg("path", { d: path, class: "graph-edge-hit" }),
+      graphSvg("path", {d: path, class: "graph-edge-hit"})
     );
     const text = graphSvg("text", {
       x: String((x1 + x2) / 2),
-      y: String((y1 + y2) / 2 - 10),
+      y: String((y1 + y2) / 2 - 10)
     });
     text.textContent = label.length > 32 ? `${label.slice(0, 31)}…` : label;
     group.append(text);
@@ -299,21 +299,21 @@ export const graphConnectionInspector = (edge, flows, remove, update) => {
   heading.append(icon("arrows-join"), element("h2", "", "Connection"));
   section.append(
     heading,
-    element("p", "graph-inspector-help", "Controls which flow runs next."),
+    element("p", "graph-inspector-help", "Controls which flow runs next.")
   );
   const list = element("dl", "graph-connection-details");
   for (const [label, value] of [
     [
       "From",
-      flows.find(flow => flow.id === edge.source)?.name || edge.source,
+      flows.find(flow => flow.id === edge.source)?.name || edge.source
     ],
-    ["To", flows.find(flow => flow.id === edge.target)?.name || edge.target],
+    ["To", flows.find(flow => flow.id === edge.target)?.name || edge.target]
   ])
     list.append(element("dt", "", label), element("dd", "", value));
   const button = element(
     "button",
     "graph-remove-connection",
-    "Remove connection",
+    "Remove connection"
   );
   button.setAttribute("type", "button");
   button.addEventListener("click", remove);
@@ -326,7 +326,7 @@ export const graphConnectionInspector = (edge, flows, remove, update) => {
     ["fallback", "Fallback"],
     ["finally", "Always finish"],
     ["retry", "Retry on failure"],
-    ["condition", "If condition matches"],
+    ["condition", "If condition matches"]
   ]) {
     const option = document.createElement("option");
     option.value = value || "";
@@ -352,7 +352,7 @@ export const graphConnectionInspector = (edge, flows, remove, update) => {
     ["Run when", mode],
     ["Condition", condition],
     ["Priority", priority],
-    ["Traversal limit", limit],
+    ["Traversal limit", limit]
   ])) {
     const label = document.createElement("label");
     label.append(document.createTextNode(name), control);
@@ -383,7 +383,7 @@ export const graphConnectionInspector = (edge, flows, remove, update) => {
         mode: mode.value,
         condition_expression: mode.value === "condition" ? condition.value : "",
         priority: Number(priority.value),
-        max_traversals: Number(limit.value),
+        max_traversals: Number(limit.value)
       });
       status.textContent = "Connection updated";
     } catch (error) {

@@ -87,6 +87,7 @@ from exactus.tools.lints.compliance import (
     ComplianceResult,
     scan_compliance,
 )
+from exactus.tools.lints.css_naming import CssNamingSettings, scan_css_naming
 from exactus.tools.lints.css_tokens import (
     CssTokenFinding,
     CssTokenInput,
@@ -116,6 +117,7 @@ from exactus.tools.lints.packages_pipeline import (
     run_group_final,
     run_organize,
 )
+from exactus.tools.lints.python_simplify import simplify_python_files
 from exactus.tools.lints.shebang import (
     ShebangInput,
     ShebangResult,
@@ -1039,6 +1041,8 @@ class LintExactusConfig:
         simple: Run only the all-lints package audit: the report carries
             its findings alone while cleaning, convention scans,
             refactors, compliance and guarded inference are skipped.
+        css_naming: CATALOG custom-property naming scan settings.
+        python_simplify: Whether the python_simplify transform runs.
 
     """
 
@@ -1055,6 +1059,8 @@ class LintExactusConfig:
     workers: int | None = None
     shebang: ShebangSettings = field(default_factory=ShebangSettings)
     simple: bool = False
+    css_naming: CssNamingSettings = field(default_factory=CssNamingSettings)
+    python_simplify: bool = True
 
 
 @dataclass(frozen=True, slots=True)
@@ -1127,6 +1133,7 @@ class CustomToolsInput:
         targets: Included source paths for owned-file scans.
         ignores: Excluded path globs for owned-file scans.
         css_context_words: Words forbidden in CATALOG token names.
+        css_naming: CATALOG custom-property naming scan settings.
         shebang: Executable/shebang healing settings.
         progress: Shared stage tracker for progress publication.
         fix: Whether safe custom convention fixes are applied.
@@ -1145,6 +1152,7 @@ class CustomToolsInput:
     targets: Sequence[str]
     ignores: Sequence[str]
     css_context_words: Sequence[str] = ()
+    css_naming: CssNamingSettings = field(default_factory=CssNamingSettings)
     shebang: ShebangSettings = field(default_factory=ShebangSettings)
     progress: LintProgress = field(default_factory=LintProgress)
     fix: bool = True
@@ -2193,11 +2201,16 @@ class SourceCleaner:
         commands: ToolCommands,
         writer: Writer,
     ) -> None:
-        """Format Python plus CSS/HTML sources.
+        """Format Python, CSS/HTML, and JavaScript sources.
 
-        JavaScript is intentionally excluded from Prettier here because the
-        delimiter convention pass owns JavaScript syntax and deliberately
-        produces forms that Prettier can canonicalize back on the next run.
+        JavaScript skips Prettier — the delimiter convention pass owns
+        JavaScript syntax and deliberately produces forms that Prettier can
+        canonicalize back on the next run. Instead ``eslint --fix`` applies
+        the project (or materialized fallback) config's fixable rules —
+        compact arrow bodies, minimal braces/parens, and stylistic cleanup —
+        before the delimiter scan removes expression-level delimiters. An
+        exit status of one means unfixable findings remain; those are
+        reported by the lint pass rather than failing the formatter.
 
         Args:
             files: Source files to format.
@@ -2209,7 +2222,7 @@ class SourceCleaner:
             RuntimeError: If a formatter exits with a failure status.
 
         """
-        formatter_commands: list[tuple[str, ...]] = []
+        formatter_commands: list[tuple[tuple[str, ...], bool]] = []
         py_files: list[str] = [
             str(object=file) for file in files if file.suffix in cls.py
         ]
@@ -2224,12 +2237,15 @@ class SourceCleaner:
             )
             formatter_commands.append(
                 (
-                    *ruff,
-                    "check",
-                    *Constants.ruff_policy(cwd=cwd),
-                    "--fix",
-                    "--exit-zero",
-                    *py_files,
+                    (
+                        *ruff,
+                        "check",
+                        *Constants.ruff_policy(cwd=cwd),
+                        "--fix",
+                        "--exit-zero",
+                        *py_files,
+                    ),
+                    False,
                 ),
             )
         prettier_files: list[str] = [
@@ -2244,12 +2260,30 @@ class SourceCleaner:
                 ),
                 depth=3,
             )
-            formatter_commands.append((*prettier, "--write", *prettier_files))
+            formatter_commands.append(
+                ((*prettier, "--write", *prettier_files), False),
+            )
+        js_files: list[str] = [
+            str(object=file) for file in files if file.suffix in cls.js
+        ]
+        eslint: tuple[str, ...] | None = commands.get("eslint")
+        if js_files and eslint is not None:
+            trace(
+                step=(
+                    f"clean: format — eslint --fix on "
+                    f"{len(js_files)} javascript files"
+                ),
+                depth=3,
+            )
+            formatter_commands.append(
+                ((*eslint, "--fix", "--no-warn-ignored", *js_files), True),
+            )
         skipped: list[str] = [
             tool
             for tool, needed in (
                 ("ruff", py_files),
                 ("prettier", prettier_files),
+                ("eslint", js_files),
             )
             if needed and commands.get(tool) is None
         ]
@@ -2258,7 +2292,7 @@ class SourceCleaner:
                 f"Skipping formatters not installed: {', '.join(skipped)}.",
                 file=writer,
             )
-        for command in formatter_commands:
+        for command, tolerate_findings in formatter_commands:
             result: CommandResult = LintExactus.run_command(
                 command=command,
                 cwd=cwd,
@@ -2269,7 +2303,9 @@ class SourceCleaner:
                 ),
                 depth=3,
             )
-            if result.returncode:
+            if result.returncode and not (
+                tolerate_findings and result.returncode == 1
+            ):
                 msg: str = dedent(
                     text=f"""\
     Formatter failed: {" ".join(command)}
@@ -2665,34 +2701,10 @@ class LintExactus:
                 progress=progress,
             ),
         )
-        progress.stage(name="toolchain")
-        trace(step="stage: toolchain", depth=1)
-        if config.install_tools:
-            required: frozenset[str] = cls._required_tools(
-                python_args=python_args,
-                eslint_args=eslint_args,
-                stylelint_args=stylelint_args,
-                htmlhint_args=htmlhint_args,
-                clean_files=clean_files,
-            )
-            trace(step=f"toolchain: required — {sorted(required)}", depth=2)
-            cls._ensure_tools(cwd=cwd, writer=status_writer, required=required)
-        commands: dict[str, tuple[str, ...] | None] = cls._resolve_commands(
-            cwd=cwd,
-            toolchain=request.toolchain,
-        )
-        resolved_tools: list[str] = sorted(
-            name for name, command in commands.items() if command is not None
-        )
-        missing_tools: list[str] = sorted(
-            name for name, command in commands.items() if command is None
-        )
-        trace(
-            step=(
-                f"toolchain: resolved — {resolved_tools}; "
-                f"missing — {missing_tools}"
-            ),
-            depth=2,
+        commands: dict[str, tuple[str, ...] | None] = cls._prepare_toolchain(
+            request=request,
+            scope=scope,
+            progress=progress,
         )
         if not config.simple:
             progress.stage(name="clean")
@@ -3026,15 +3038,16 @@ class LintExactus:
             return
         cls._ensure_node(cwd=cwd, writer=writer)
         if eslint_needed:
-            jsdoc_probe: CompletedProcess[str] = run(
-                args=("npm", "list", "-g", "eslint-plugin-jsdoc", "--depth=0"),
-                cwd=cwd,
-                check=False,
-                capture_output=True,
-                text=True,
-            )
-            if jsdoc_probe.returncode:
-                missing_node_packages.append("eslint-plugin-jsdoc")
+            for plugin in ("eslint-plugin-jsdoc", "@stylistic/eslint-plugin"):
+                plugin_probe: CompletedProcess[str] = run(
+                    args=("npm", "list", "-g", plugin, "--depth=0"),
+                    cwd=cwd,
+                    check=False,
+                    capture_output=True,
+                    text=True,
+                )
+                if plugin_probe.returncode:
+                    missing_node_packages.append(plugin)
         for package in missing_node_packages:
             trace(step=f"toolchain: install {package}", depth=3)
             sprint(f"Installing missing tool: {package}", file=writer)
@@ -5243,6 +5256,7 @@ class LintExactus:
                         targets=targets,
                         ignores=ignores,
                         css_context_words=inputs.css_context_words,
+                        css_naming=config.css_naming,
                         shebang=config.shebang,
                         progress=progress,
                         fix=config.fix,
@@ -5252,6 +5266,25 @@ class LintExactus:
                     ),
                 ),
             )
+        if config.python_simplify and not config.simple:
+            simplify_counts: dict[str, int] = run_source_activity(
+                mode="write",
+                identity="lints:python-simplify",
+                enabled=config.fix,
+                action=lambda: simplify_python_files(
+                    files=sorted(python_files),
+                    fix=config.fix,
+                ),
+            )
+            tools["custom_python_simplify"] = {
+                "returncode": 0,
+                "count": 0,
+                "files": simplify_counts["files"],
+                "version": "built-in",
+                "findings": [],
+                "proposals": simplify_counts["proposals"],
+                "healed": simplify_counts["changed"],
+            }
         report: dict[str, JsonValue] = {
             "version": Constants.report_version,
             "tools": tools,
@@ -5950,6 +5983,26 @@ class LintExactus:
                     files=scopes.css_files,
                     context_words=inputs.css_context_words,
                 ),
+                *[
+                    {
+                        **cast(
+                            typ="dict[str, JsonValue]",
+                            val=cls._finding(
+                                tool="custom_css",
+                                file=finding.file,
+                                rule=finding.rule,
+                                message=finding.message,
+                                position=(finding.line, 1),
+                            ),
+                        ),
+                        "severity": finding.severity,
+                    }
+                    for finding in scan_css_naming(
+                        root=inputs.cwd,
+                        files=scopes.css_files,
+                        settings=inputs.css_naming,
+                    )
+                ],
             ],
             key=cls._sort_key,
         )
@@ -6578,6 +6631,100 @@ class LintExactus:
             )
             return 0, True
 
+    @classmethod
+    def _prepare_toolchain(
+        cls: type[Self],
+        *,
+        request: LintExactusRequest,
+        scope: _RunScope,
+        progress: LintProgress,
+    ) -> dict[str, tuple[str, ...] | None]:
+        """Install, resolve, and expose the external lint toolchain.
+
+        Args:
+            request: Run inputs carrying cwd, config, toolchain, and
+                writer.
+            scope: Collected file groups feeding every stage.
+            progress: Shared stage tracker for progress publication.
+
+        Returns:
+            Executable prefixes keyed by tool name; ``None`` marks a
+            tool that is not available.
+
+        """
+        progress.stage(name="toolchain")
+        trace(step="stage: toolchain", depth=1)
+        if request.config.install_tools:
+            required: frozenset[str] = cls._required_tools(
+                python_args=scope.python_args,
+                eslint_args=scope.eslint_args,
+                stylelint_args=scope.stylelint_args,
+                htmlhint_args=scope.htmlhint_args,
+                clean_files=scope.clean_files,
+            )
+            trace(
+                step=f"toolchain: required — {sorted(required)}",
+                depth=2,
+            )
+            cls._ensure_tools(
+                cwd=request.cwd,
+                writer=request.writer,
+                required=required,
+            )
+        commands: dict[str, tuple[str, ...] | None] = cls._resolve_commands(
+            cwd=request.cwd,
+            toolchain=request.toolchain,
+        )
+        resolved_tools: list[str] = sorted(
+            name for name, command in commands.items() if command is not None
+        )
+        missing_tools: list[str] = sorted(
+            name for name, command in commands.items() if command is None
+        )
+        trace(
+            step=(
+                f"toolchain: resolved — {resolved_tools}; "
+                f"missing — {missing_tools}"
+            ),
+            depth=2,
+        )
+        if scope.eslint_args and commands.get("eslint") is not None:
+            cls._augment_node_path(cwd=request.cwd)
+        return commands
+
+    @staticmethod
+    def _augment_node_path(cwd: Path) -> None:
+        """Expose globally installed Node packages to ESLint configs.
+
+        Flat-config plugin loading uses ``createRequire``, which honors
+        ``NODE_PATH``; prepending the global npm root lets the fallback
+        config resolve globally installed plugins. Bundled runs already
+        receive ``NODE_PATH=js/node_modules`` from component metadata.
+
+        Args:
+            cwd: Working directory used for the ``npm root`` query.
+
+        """
+        probe: CompletedProcess[str] = run(
+            args=("npm", "root", "-g"),
+            cwd=cwd,
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        root: str = probe.stdout.strip()
+        if probe.returncode or not root:
+            return
+        entries: list[str] = [
+            entry
+            for entry in environ.get("NODE_PATH", default="").split(
+                sep=pathsep,
+            )
+            if entry
+        ]
+        if root not in entries:
+            environ["NODE_PATH"] = pathsep.join([root, *entries])
+
     @staticmethod
     def _fix_string_transforms(
         *,
@@ -6749,6 +6896,7 @@ class LintExactus:
             )
         for tool in (
             "pyrefly",
+            "refurb",
             "eslint",
             "tsc",
             "stylelint",

@@ -40,6 +40,7 @@ class ProviderId(StrEnum):
         DIRECTORY: Directories only.
         TOOL: Exactus catalog tool identifiers.
         PIPELINE: Exactus catalog pipeline identifiers.
+        TARGET: Exactus catalog tool and pipeline identifiers.
         TOOL_ARGUMENT: Scoped tool argument prefixes.
 
     """
@@ -52,6 +53,8 @@ class ProviderId(StrEnum):
     "Exactus catalog tool identifiers."
     PIPELINE = "pipeline"
     "Exactus catalog pipeline identifiers."
+    TARGET = "target"
+    "Exactus catalog tool and pipeline identifiers."
     TOOL_ARGUMENT = "tool-argument"
     "``TOOL::ARG`` scoped-argument prefixes."
 
@@ -280,6 +283,8 @@ class Constants:
         "tools": ProviderId.TOOL,
         "exclude_tools": ProviderId.TOOL,
         "clear": ProviderId.TOOL,
+        "kill": ProviderId.TARGET,
+        "status": ProviderId.TARGET,
         "pipeline": ProviderId.PIPELINE,
     }
 

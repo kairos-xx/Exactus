@@ -28,10 +28,10 @@ const mount = getElement("analog-clock-mount");
 const analogClock = new AnalogClock(mount, {
   recording: true,
   recVisible: "visible",
-  background: "#080a0c",
+  background: "#080a0c"
 });
 Object.assign(globalThis, {
-  analogClock,
+  analogClock
 });
 const resizeHandle = /** @type {HTMLButtonElement} */ (
   target.querySelector(".target-resize-handle")
@@ -58,7 +58,7 @@ const resizeTarget = (width, height) => {
    */
   const resolveLimit = (
     /** @type {string} */ limit,
-    /** @type {number} */ available,
+    /** @type {number} */ available
   ) =>
     limit.endsWith("%")
       ? (parseFloat(limit) * available) / 100
@@ -78,7 +78,7 @@ resizeHandle.addEventListener("pointerdown", event => {
     startX: event.clientX,
     startY: event.clientY,
     width: rect.width,
-    height: rect.height,
+    height: rect.height
   };
   resizeHandle.setPointerCapture(event.pointerId);
   event.preventDefault();
@@ -87,7 +87,7 @@ resizeHandle.addEventListener("pointermove", event => {
   if (!resizeState || resizeState.pointerId !== event.pointerId) return;
   resizeTarget(
     resizeState.width + event.clientX - resizeState.startX,
-    resizeState.height + event.clientY - resizeState.startY,
+    resizeState.height + event.clientY - resizeState.startY
   );
 });
 /** End a resize drag and release the pointer capture.
@@ -119,7 +119,7 @@ resizeHandle.addEventListener("keydown", event => {
           ? -step
           : 0),
     rect.height +
-      (event.key === "ArrowDown" ? step : event.key === "ArrowUp" ? -step : 0),
+      (event.key === "ArrowDown" ? step : event.key === "ArrowUp" ? -step : 0)
   );
 });
 /** @type {Record<string,[string,string]>} */
@@ -138,7 +138,7 @@ const numericControls = Object.freeze({
   "rec-font-weight": ["recFontWeight", ""],
   "rec-letter-spacing": ["recLetterSpacing", ""],
   "rec-gap": ["recGap", ""],
-  padding: ["padding", ""],
+  padding: ["padding", ""]
 });
 Object.entries(numericControls).forEach(([id, [property, suffix]]) => {
   const input = getElement(id);
@@ -148,7 +148,7 @@ Object.entries(numericControls).forEach(([id, [property, suffix]]) => {
     const value = Number(input.value);
     if (output instanceof HTMLOutputElement) output.value = `${value}${suffix}`;
     analogClock.set({
-      [property]: value,
+      [property]: value
     });
   });
 });
@@ -157,28 +157,28 @@ const booleanControls = Object.freeze({
   "blink-separators": "blinkSeparatorsOnSecond",
   "rec-enabled": "recEnabled",
   recording: "recording",
-  "rec-pulse": "recPulse",
+  "rec-pulse": "recPulse"
 });
 Object.entries(booleanControls).forEach(([id, property]) => {
   const input = getElement(id);
   if (!(input instanceof HTMLInputElement)) return;
   input.addEventListener("change", () => {
     analogClock.set({
-      [property]: input.checked,
+      [property]: input.checked
     });
   });
 });
 const textControls = Object.freeze({
   "transition-easing": "transitionEasing",
   "rec-label": "recLabel",
-  "rec-font-family": "recFontFamily",
+  "rec-font-family": "recFontFamily"
 });
 Object.entries(textControls).forEach(([id, property]) => {
   const input = getElement(id);
   if (!(input instanceof HTMLInputElement)) return;
   input.addEventListener("input", () => {
     analogClock.set({
-      [property]: input.value,
+      [property]: input.value
     });
   });
 });
@@ -187,25 +187,25 @@ const colorControls = Object.freeze({
   "rec-led-off-color": "recLedOffColor",
   "rec-led-glow-color": "recLedGlowColor",
   "rec-text-color": "recTextColor",
-  background: "background",
+  background: "background"
 });
 Object.entries(colorControls).forEach(([id, property]) => {
   const input = getElement(id);
   if (!(input instanceof HTMLInputElement)) return;
   input.addEventListener("input", () => {
     analogClock.set({
-      [property]: input.value,
+      [property]: input.value
     });
   });
 });
 getElement("mode").addEventListener("change", event => {
   analogClock.set({
-    mode: controlFromEvent(event).value,
+    mode: controlFromEvent(event).value
   });
 });
 getElement("matrix-layout").addEventListener("change", event => {
   analogClock.set({
-    matrixLayout: controlFromEvent(event).value,
+    matrixLayout: controlFromEvent(event).value
   });
 });
 const groupValuesEditor = getElement("group-values");
@@ -226,7 +226,7 @@ const renderGroupValues = () => {
         inputMode: "numeric",
         maxLength: Number(group.digits),
         placeholder: "-".repeat(Number(group.digits)),
-        value: values?.[index] ?? "",
+        value: values?.[index] ?? ""
       });
       input.addEventListener("input", () => {
         if (!new RegExp(`^\\d{${group.digits}}$`).test(input.value)) return;
@@ -243,7 +243,7 @@ const renderGroupValues = () => {
           analogClock.setGroupValue(index, input.value);
         } catch (error) {
           input.setCustomValidity(
-            String(error instanceof Error ? error.message : error),
+            String(error instanceof Error ? error.message : error)
           );
           input.reportValidity();
           input.setCustomValidity("");
@@ -251,7 +251,7 @@ const renderGroupValues = () => {
       });
       label.append(input);
       groupValuesEditor.append(label);
-    },
+    }
   );
 };
 getElement("clear-values").addEventListener("click", () => {
@@ -273,7 +273,7 @@ const updateStructureItem = (index, name, value) => {
   const structure = analogClock.normalizedStructure();
   structure[index][name] = value;
   analogClock.set({
-    structure,
+    structure
   });
   renderGroupValues();
 };
@@ -303,7 +303,7 @@ const renderStructureEditor = () => {
                 item.digitGap ?? analogClock.settings.digitGap,
                 0,
                 200,
-                0.5,
+                0.5
               ],
               [
                 "color",
@@ -311,7 +311,7 @@ const renderStructureEditor = () => {
                 item.color ?? analogClock.settings.segmentOnColor,
                 null,
                 null,
-                null,
+                null
               ],
               [
                 "offColor",
@@ -319,7 +319,7 @@ const renderStructureEditor = () => {
                 item.offColor ?? analogClock.settings.segmentOffColor,
                 null,
                 null,
-                null,
+                null
               ],
               [
                 "glowColor",
@@ -327,7 +327,7 @@ const renderStructureEditor = () => {
                 item.glowColor ?? analogClock.settings.segmentGlowColor,
                 null,
                 null,
-                null,
+                null
               ],
               [
                 "glowSize",
@@ -335,7 +335,7 @@ const renderStructureEditor = () => {
                 item.glowSize ?? analogClock.settings.segmentGlowSize,
                 0,
                 100,
-                0.5,
+                0.5
               ],
               [
                 "digitWidth",
@@ -343,7 +343,7 @@ const renderStructureEditor = () => {
                 item.digitWidth ?? analogClock.settings.digitWidth,
                 20,
                 300,
-                1,
+                1
               ],
               [
                 "digitHeight",
@@ -351,7 +351,7 @@ const renderStructureEditor = () => {
                 item.digitHeight ?? analogClock.settings.digitHeight,
                 40,
                 500,
-                1,
+                1
               ],
               [
                 "segmentLength",
@@ -359,7 +359,7 @@ const renderStructureEditor = () => {
                 item.segmentLength ?? analogClock.settings.segmentLength,
                 20,
                 200,
-                1,
+                1
               ],
               [
                 "segmentThickness",
@@ -367,7 +367,7 @@ const renderStructureEditor = () => {
                 item.segmentThickness ?? analogClock.settings.segmentThickness,
                 2,
                 50,
-                0.5,
+                0.5
               ],
               [
                 "segmentGap",
@@ -375,7 +375,7 @@ const renderStructureEditor = () => {
                 item.segmentGap ?? analogClock.settings.segmentGap,
                 0,
                 30,
-                0.5,
+                0.5
               ],
               [
                 "onDuration",
@@ -383,7 +383,7 @@ const renderStructureEditor = () => {
                 item.onDuration ?? analogClock.settings.segmentOnDuration,
                 0,
                 2000,
-                10,
+                10
               ],
               [
                 "offDuration",
@@ -391,7 +391,7 @@ const renderStructureEditor = () => {
                 item.offDuration ?? analogClock.settings.segmentOffDuration,
                 0,
                 2000,
-                10,
+                10
               ],
               [
                 "easing",
@@ -399,7 +399,7 @@ const renderStructureEditor = () => {
                 item.easing ?? analogClock.settings.transitionEasing,
                 null,
                 null,
-                null,
+                null
               ],
               [
                 "matrixColumns",
@@ -407,7 +407,7 @@ const renderStructureEditor = () => {
                 item.matrixColumns ?? analogClock.settings.matrixColumns,
                 3,
                 15,
-                1,
+                1
               ],
               [
                 "matrixDotSize",
@@ -415,7 +415,7 @@ const renderStructureEditor = () => {
                 item.matrixDotSize ?? analogClock.settings.matrixDotSize,
                 1,
                 30,
-                0.5,
+                0.5
               ],
               [
                 "matrixDotGap",
@@ -423,7 +423,7 @@ const renderStructureEditor = () => {
                 item.matrixDotGap ?? analogClock.settings.matrixDotGap,
                 0,
                 20,
-                0.5,
+                0.5
               ],
               [
                 "matrixOnColor",
@@ -433,7 +433,7 @@ const renderStructureEditor = () => {
                   analogClock.settings.matrixOnColor,
                 null,
                 null,
-                null,
+                null
               ],
               [
                 "matrixOffColor",
@@ -443,7 +443,7 @@ const renderStructureEditor = () => {
                   analogClock.settings.matrixOffColor,
                 null,
                 null,
-                null,
+                null
               ],
               [
                 "matrixGlowColor",
@@ -453,7 +453,7 @@ const renderStructureEditor = () => {
                   analogClock.settings.matrixOnColor,
                 null,
                 null,
-                null,
+                null
               ],
               [
                 "matrixGlowSize",
@@ -463,8 +463,8 @@ const renderStructureEditor = () => {
                   analogClock.settings.matrixGlowSize,
                 0,
                 100,
-                0.5,
-              ],
+                0.5
+              ]
             ]
           : [
               ["symbol", "text", item.symbol, null, null, null],
@@ -481,7 +481,7 @@ const renderStructureEditor = () => {
                 item.matrixSize ?? analogClock.settings.matrixDotSize,
                 1,
                 30,
-                0.5,
+                0.5
               ],
               [
                 "matrixColor",
@@ -491,7 +491,7 @@ const renderStructureEditor = () => {
                   analogClock.settings.matrixOnColor,
                 null,
                 null,
-                null,
+                null
               ],
               [
                 "matrixOffColor",
@@ -501,7 +501,7 @@ const renderStructureEditor = () => {
                   analogClock.settings.matrixOffColor,
                 null,
                 null,
-                null,
+                null
               ],
               [
                 "matrixGlowColor",
@@ -511,7 +511,7 @@ const renderStructureEditor = () => {
                   analogClock.settings.matrixOnColor,
                 null,
                 null,
-                null,
+                null
               ],
               [
                 "matrixGlowSize",
@@ -519,8 +519,8 @@ const renderStructureEditor = () => {
                 item.matrixGlowSize ?? item.glowSize ?? 0,
                 0,
                 100,
-                0.5,
-              ],
+                0.5
+              ]
             ];
       fields.forEach(([name, type, value, minimum, maximum, step]) => {
         const label = document.createElement("label");
@@ -594,10 +594,10 @@ const renderStructureEditor = () => {
           .normalizedStructure()
           .filter(
             (/** @type {unknown} */ _, /** @type {number} */ entryIndex) =>
-              entryIndex !== index,
+              entryIndex !== index
           );
         analogClock.set({
-          structure,
+          structure
         });
         renderStructureEditor();
         renderGroupValues();
@@ -610,7 +610,7 @@ getElement("import-template").addEventListener("click", () => {
   const template = getElement("template").value.trim();
   if (!template.includes("d")) return;
   analogClock.set({
-    structure: analogClock.structureFromTemplate(template),
+    structure: analogClock.structureFromTemplate(template)
   });
   renderStructureEditor();
   renderGroupValues();
@@ -628,7 +628,7 @@ getElement("add-group").addEventListener("click", () => {
       glowSize: analogClock.settings.segmentGlowSize,
       gapBefore: analogClock.settings.groupGap,
       gapAfter: analogClock.settings.groupGap,
-      blink: true,
+      blink: true
     });
   structure.push({
     type: "group",
@@ -646,10 +646,10 @@ getElement("add-group").addEventListener("click", () => {
     easing: analogClock.settings.transitionEasing,
     matrixColumns: analogClock.settings.matrixColumns,
     matrixDotSize: analogClock.settings.matrixDotSize,
-    matrixDotGap: analogClock.settings.matrixDotGap,
+    matrixDotGap: analogClock.settings.matrixDotGap
   });
   analogClock.set({
-    structure,
+    structure
   });
   renderStructureEditor();
   renderGroupValues();
@@ -658,12 +658,12 @@ renderStructureEditor();
 renderGroupValues();
 getElement("rec-visible").addEventListener("change", event => {
   analogClock.set({
-    recVisible: controlFromEvent(event).value,
+    recVisible: controlFromEvent(event).value
   });
 });
 getElement("align").addEventListener("change", event => {
   analogClock.set({
-    align: controlFromEvent(event).value,
+    align: controlFromEvent(event).value
   });
 });
 getElement("blink-now").addEventListener("click", () => {

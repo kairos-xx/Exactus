@@ -24,7 +24,7 @@ export class RequestStudio {
 			query: "",
 			selected: 0,
 			items: [],
-			expanded: new Set(),
+			expanded: new Set()
 		};
 		/** @type {HTMLElement | null} */
 		this.selectedToken = null;
@@ -81,7 +81,7 @@ export class RequestStudio {
 		ws_log: /** @type {HTMLElement} */ (document.getElementById("ws-log")),
 		ws_message: /** @type {HTMLElement} */ (document.getElementById("ws-message")),
 		ws_send: /** @type {HTMLButtonElement} */ (document.getElementById("ws-send")),
-		ws_clear: /** @type {HTMLButtonElement} */ (document.getElementById("ws-clear")),
+		ws_clear: /** @type {HTMLButtonElement} */ (document.getElementById("ws-clear"))
 	});
 	/** @param {string} text @returns {string} */
 	static json = text => {
@@ -98,7 +98,7 @@ export class RequestStudio {
 	 */
 	bind() {
 		document.querySelectorAll("[data-tab]").forEach(tab => {
-			tab.addEventListener("click", () => this.activate(tab.getAttribute("data-tab") ?? undefined), );
+			tab.addEventListener("click", () => this.activate(tab.getAttribute("data-tab") ?? undefined) );
 		});
 		document.querySelectorAll("[data-add]").forEach(button => {
 			button.addEventListener("click", () => {
@@ -106,21 +106,21 @@ export class RequestStudio {
 				if (RequestStudio.isRowKind(kind)) this.addRow(kind);
 			});
 		});
-		this.el.variables_toggle.addEventListener("click", () => this.toggleVariables(), );
-		this.el.variables_close.addEventListener("click", () => this.toggleVariables(false), );
+		this.el.variables_toggle.addEventListener("click", () => this.toggleVariables() );
+		this.el.variables_close.addEventListener("click", () => this.toggleVariables(false) );
 		this.el.variable_add.addEventListener("click", () => this.addVariable());
 		this.el.send.addEventListener("click", () => this.send());
 		this.el.transport.addEventListener("change", () => this.setTransport());
-		this.el.ws_send.addEventListener("click", () => this.sendWebSocketMessage(), );
+		this.el.ws_send.addEventListener("click", () => this.sendWebSocketMessage() );
 		this.el.ws_clear.addEventListener("click", () => this.clearWebSocketLog());
 		this.el.copy.addEventListener("click", () => this.copy());
 		document.addEventListener("input", event => this.editorInput(event));
 		document.addEventListener("keydown", event => this.keydown(event));
-		document.addEventListener("beforeinput", event => this.beforeInput(event), );
+		document.addEventListener("beforeinput", event => this.beforeInput(event) );
 		document.addEventListener("copy", event => this.clipboard(event, false));
 		document.addEventListener("cut", event => this.clipboard(event, true));
 		document.addEventListener("paste", event => RequestStudio.paste(event));
-		document.addEventListener("pointerdown", event => this.tokenPointerDown(event), true, );
+		document.addEventListener("pointerdown", event => this.tokenPointerDown(event), true );
 		document.addEventListener("selectionchange", () => this.selectionChanged());
 		document.addEventListener("pointerdown", event => this.outside(event));
 	}
@@ -144,7 +144,7 @@ export class RequestStudio {
 		for (const match of text.matchAll(pattern)) {
 			const index = match.index ?? 0;
 			if (index > offset) editor.append(document.createTextNode(text.slice(offset, index)));
-			editor.append(RequestStudio.token(match[1] ?? ""), document.createTextNode("\u200b"), );
+			editor.append(RequestStudio.token(match[1] ?? ""), document.createTextNode("\u200b") );
 			offset = index + match[0].length;
 		}
 		if (offset < text.length) editor.append(document.createTextNode(text.slice(offset)));
@@ -180,10 +180,10 @@ export class RequestStudio {
 	 */
 	renderRows(kind) {
 		const table = this.el[`${kind}_table`];
-		table.replaceChildren(...this.rows[kind].map((row, index) => this.row(kind, row, index)), );
+		table.replaceChildren(...this.rows[kind].map((row, index) => this.row(kind, row, index)) );
 		this.el[`${kind}_count`].textContent = String(this.rows[kind].filter(({
 			enabled
-		}) => enabled).length, );
+		}) => enabled).length );
 	}
 	/**
 	 * Create one editable row for a request section.
@@ -201,9 +201,9 @@ export class RequestStudio {
 		enabled.checked = row.enabled;
 		RequestStudio.setEditorText(key, row.key);
 		RequestStudio.setEditorText(value, row.value);
-		enabled.addEventListener("change", () => this.changeRow(kind, index, "enabled", enabled.checked), );
-		key.addEventListener("input", () => this.changeRow(kind, index, "key", RequestStudio.editorText(key)), );
-		value.addEventListener("input", () => this.changeRow(kind, index, "value", RequestStudio.editorText(value)), );
+		enabled.addEventListener("change", () => this.changeRow(kind, index, "enabled", enabled.checked) );
+		key.addEventListener("input", () => this.changeRow(kind, index, "key", RequestStudio.editorText(key)) );
+		value.addEventListener("input", () => this.changeRow(kind, index, "value", RequestStudio.editorText(value)) );
 		/** @type {HTMLButtonElement} */
 		(node.querySelector(".delete")).addEventListener("click", () => {
 			this.rows[kind].splice(index, 1);
@@ -227,7 +227,7 @@ export class RequestStudio {
 		else row[property] = String(value);
 		this.el[`${kind}_count`].textContent = String(this.rows[kind].filter(({
 			enabled
-		}) => enabled).length, );
+		}) => enabled).length );
 		this.updateUrl();
 	}
 	/**
@@ -239,7 +239,7 @@ export class RequestStudio {
 		this.rows[kind].push({
 			enabled: true,
 			key: "",
-			value: "",
+			value: ""
 		});
 		this.renderRows(kind);
 		const key = this.el[`${kind}_table`].querySelector(".row:last-child .key");
@@ -249,7 +249,7 @@ export class RequestStudio {
 	 * Render the variables table.
 	 */
 	renderVariables() {
-		this.el.variable_list.replaceChildren(...this.variables.map((variable, index) => this.variable(variable, index), ), );
+		this.el.variable_list.replaceChildren(...this.variables.map((variable, index) => this.variable(variable, index) ) );
 		this.updateUrl();
 	}
 	/**
@@ -297,10 +297,10 @@ export class RequestStudio {
 		this.variables.push({
 			name: `variable${this.variables.length + 1}`,
 			value: "",
-			secret: false,
+			secret: false
 		});
 		this.renderVariables();
-		const input = this.el.variable_list.querySelector(".variable:last-child .v-name", );
+		const input = this.el.variable_list.querySelector(".variable:last-child .v-name" );
 		if (input instanceof HTMLInputElement) input.select();
 	}
 	/**
@@ -342,7 +342,7 @@ export class RequestStudio {
 		}) => name.trim()).map(({
 			name,
 			value
-		}) => [name.trim(), value]), );
+		}) => [name.trim(), value]) );
 	}
 	/**
 	 * Expand {{variable}} tokens in text.
@@ -353,7 +353,7 @@ export class RequestStudio {
 	resolve(value) {
 		const map = this.map();
 		return value.replace(/\{\{([^{}]+)\}\}/g,
-			(token, name) => map.get(name) ?? token, );
+			(token, name) => map.get(name) ?? token );
 	}
 	/**
 	 * Build the resolved request URL.
@@ -361,7 +361,7 @@ export class RequestStudio {
 	 * @returns {URL}
 	 */
 	url() {
-		const url = new URL(this.resolve(RequestStudio.editorText(this.el.url).trim()), );
+		const url = new URL(this.resolve(RequestStudio.editorText(this.el.url).trim()) );
 		this.rows.params.filter(({
 			enabled,
 			key
@@ -422,7 +422,7 @@ export class RequestStudio {
 			query,
 			selected: 0,
 			items: this.visibleItems(query, expanded),
-			expanded,
+			expanded
 		};
 		this.renderCompletion();
 	}
@@ -439,8 +439,8 @@ export class RequestStudio {
 		const flatten = level => level.flatMap(item => [
 			item, ...(item.branch && expanded.has(item.path) ? flatten(this.hierarchy(`${item.path}/`).map(child => ({
 				...child,
-				depth: item.depth + 1,
-			})), ) : []),
+				depth: item.depth + 1
+			})) ) : [])
 		]);
 		return flatten(this.hierarchy(query));
 	}
@@ -471,15 +471,15 @@ export class RequestStudio {
 				depth: 0,
 				count: branch ? this.variables.filter(({
 					name: variableName
-				}) => variableName.startsWith(`${path}/`), ).length : 0,
+				}) => variableName.startsWith(`${path}/`) ).length : 0,
 				variable: branch ? null : this.variables.find(
 					({
 						name: variableName
-					}) => variableName === path, ),
+					}) => variableName === path )
 			});
 		});
 		return [...branches.values()].sort(
-			(left, right) => Number(left.branch) - Number(right.branch) || left.segment.localeCompare(right.segment), );
+			(left, right) => Number(left.branch) - Number(right.branch) || left.segment.localeCompare(right.segment) );
 	}
 	/**
 	 * Render the completion popup.
@@ -537,11 +537,11 @@ export class RequestStudio {
 		this.el.autocomplete.setAttribute("role", "tree");
 		document.body.append(this.el.autocomplete);
 		this.el.autocomplete.hidden = false;
-		this.el.autocomplete.setAttribute("data-depth", String(query.split("/").length - 1), );
+		this.el.autocomplete.setAttribute("data-depth", String(query.split("/").length - 1) );
 		this.positionCompletion(editor);
 		/** @type {HTMLElement | null} */
 		(selectedRow)?.scrollIntoView({
-			block: "nearest",
+			block: "nearest"
 		});
 	}
 	/**
@@ -565,7 +565,7 @@ export class RequestStudio {
 		this.completion.items = next;
 		this.completion.selected = Math.max(0, next.findIndex(({
 			path
-		}) => path === focusPath), );
+		}) => path === focusPath) );
 		this.renderCompletion();
 	}
 	/**
@@ -619,11 +619,11 @@ export class RequestStudio {
 		const popup = this.el.autocomplete.getBoundingClientRect();
 		const gap = 6;
 		const margin = 12;
-		const left = Math.max(margin, Math.min(anchorLeft, window.innerWidth - popup.width - margin), );
+		const left = Math.max(margin, Math.min(anchorLeft, window.innerWidth - popup.width - margin) );
 		const below = anchorBottom + gap;
 		const top = below + popup.height <= window.innerHeight - margin ? below : Math.max(margin, (caret?.top ?? fallback.top) - popup.height - gap);
-		this.el.autocomplete.style.setProperty("--dynamic-completion-left", `${Math.round(left)}px`, );
-		this.el.autocomplete.style.setProperty("--dynamic-completion-top", `${Math.round(top)}px`, );
+		this.el.autocomplete.style.setProperty("--dynamic-completion-left", `${Math.round(left)}px` );
+		this.el.autocomplete.style.setProperty("--dynamic-completion-top", `${Math.round(top)}px` );
 	}
 	/**
 	 * Apply one completion candidate.
@@ -695,10 +695,10 @@ export class RequestStudio {
 		editor.dispatchEvent(new InputEvent("input", {
 			bubbles: true,
 			inputType: "insertReplacementText",
-			data: null,
-		}), );
+			data: null
+		}) );
 		editor.focus({
-			preventScroll: true,
+			preventScroll: true
 		});
 		this.selectionChanged();
 	}
@@ -733,7 +733,7 @@ export class RequestStudio {
 			["ArrowUp", () => this.move(-1)],
 			["Enter", () => this.chooseSelected()],
 			["Tab", () => this.chooseSelected()],
-			["Escape", () => this.hideCompletion()],
+			["Escape", () => this.hideCompletion()]
 		]);
 		if (!actions.has(event.key)) return;
 		event.preventDefault();
@@ -775,15 +775,15 @@ export class RequestStudio {
 		token.replaceWith(text);
 		boundary?.remove();
 		const range = document.createRange();
-		range.setStart(text, key === "Backspace" ? text.data.length : Math.min(1, text.data.length), );
+		range.setStart(text, key === "Backspace" ? text.data.length : Math.min(1, text.data.length) );
 		range.collapse(true);
 		selection.removeAllRanges();
 		selection.addRange(range);
 		editor.dispatchEvent(new InputEvent("input", {
 			bubbles: true,
 			inputType: key === "Backspace" ? "deleteContentBackward" : "deleteContentForward",
-			data: null,
-		}), );
+			data: null
+		}) );
 		this.detectCompletion(editor);
 		return true;
 	}
@@ -805,7 +805,7 @@ export class RequestStudio {
 			event.preventDefault();
 			return;
 		}
-		if (!["deleteContentBackward", "deleteContentForward"].includes(event.inputType, )) return;
+		if (!["deleteContentBackward", "deleteContentForward"].includes(event.inputType )) return;
 		const key = event.inputType === "deleteContentBackward" ? "Backspace" : "Delete";
 		if (!this.dissolveAdjacentToken(editor, key)) return;
 		event.preventDefault();
@@ -826,8 +826,8 @@ export class RequestStudio {
 		editor.dispatchEvent(new InputEvent("input", {
 			bubbles: true,
 			inputType: "insertText",
-			data: node.data,
-		}), );
+			data: node.data
+		}) );
 		return true;
 	};
 	/** @param {ClipboardEvent} event */
@@ -851,8 +851,8 @@ export class RequestStudio {
 		editor.dispatchEvent(new InputEvent("input", {
 			bubbles: true,
 			inputType: "insertFromPaste",
-			data: normalized,
-		}), );
+			data: normalized
+		}) );
 	};
 	/**
 	 * Serialize the selection to plain text for copy and cut.
@@ -876,7 +876,7 @@ export class RequestStudio {
 			if (node instanceof HTMLElement && node.tagName === "BR") return editor.getAttribute("aria-multiline") === "true" ? "\n" : "";
 			return [...node.childNodes].map(serialize).join("");
 		};
-		const text = [...holder.childNodes].map(serialize).join("").replace(editor.getAttribute("aria-multiline") === "true" ? /\u200b/g : /[\r\n\u200b]+/g, "", );
+		const text = [...holder.childNodes].map(serialize).join("").replace(editor.getAttribute("aria-multiline") === "true" ? /\u200b/g : /[\r\n\u200b]+/g, "" );
 		event.preventDefault();
 		event.clipboardData?.setData("text/plain", text);
 		if (cut) {
@@ -884,8 +884,8 @@ export class RequestStudio {
 			editor.dispatchEvent(new InputEvent("input", {
 				bubbles: true,
 				inputType: "deleteByCut",
-				data: null,
-			}), );
+				data: null
+			}) );
 			this.selectionChanged();
 		}
 	}
@@ -921,8 +921,8 @@ export class RequestStudio {
 		editor.dispatchEvent(new InputEvent("input", {
 			bubbles: true,
 			inputType: "deleteContentBackward",
-			data: null,
-		}), );
+			data: null
+		}) );
 		return true;
 	}
 	/**
@@ -948,16 +948,15 @@ export class RequestStudio {
 		selection?.removeAllRanges();
 		selection?.addRange(range);
 		editor.focus({
-			preventScroll: true,
+			preventScroll: true
 		});
 		this.hideCompletion();
 	}
 	/** @param {HTMLElement} token @param {boolean} before @returns {Text} */
 	static tokenBoundary = (token, before) => {
 		const sibling = before ? token.previousSibling : token.nextSibling;
-		if (sibling instanceof Text) {
+		if (sibling instanceof Text)
 			if (sibling.data.includes("\u200b") || sibling.data.length > 0) return sibling;
-		}
 		const boundary = document.createTextNode("\u200b");
 		if (before) token.before(boundary);
 		else token.after(boundary);
@@ -976,7 +975,7 @@ export class RequestStudio {
 		/** @param {Node | null} candidate @param {"before" | "after"} side @returns {TokenBoundary | null} */
 		const result = (candidate, side) => candidate instanceof HTMLElement && candidate.classList.contains("token-pill") ? {
 			token: candidate,
-			side,
+			side
 		} : null;
 		if (node instanceof Text) {
 			if (offset === 0) {
@@ -1008,7 +1007,7 @@ export class RequestStudio {
 		const range = selection?.rangeCount ? selection.getRangeAt(0) : null;
 		RequestStudio.clearBoundaryCarets();
 		const boundary = RequestStudio.boundaryCaretToken(selection);
-		if (boundary && boundary.token.closest(".token-editor")?.matches(":focus-within")) boundary.token.classList.add(boundary.side === "after" ? "caret-after" : "caret-before", );
+		if (boundary && boundary.token.closest(".token-editor")?.matches(":focus-within")) boundary.token.classList.add(boundary.side === "after" ? "caret-after" : "caret-before" );
 		if (this.selectedToken instanceof HTMLElement && range && !range.intersectsNode(this.selectedToken)) this.clearSelectedToken();
 		document.querySelectorAll(".token-pill.range-selected").forEach(token => {
 			token.classList.remove("range-selected");
@@ -1031,7 +1030,7 @@ export class RequestStudio {
 		const competing = this.variables.filter(
 			({
 				name
-			}) => name.startsWith(query) && name !== query, );
+			}) => name.startsWith(query) && name !== query );
 		if (exact.length !== 1 || competing.length) return false;
 		this.insertToken(query);
 		return true;
@@ -1065,7 +1064,7 @@ export class RequestStudio {
 			query: "",
 			selected: 0,
 			items: [],
-			expanded: new Set(),
+			expanded: new Set()
 		};
 		document.body.append(this.el.autocomplete);
 	}
@@ -1124,8 +1123,8 @@ export class RequestStudio {
 			if (element instanceof HTMLElement && element.matches("[role='tab']")) element.hidden = !websocket;
 		});
 		document.getElementById("body-tab")?.toggleAttribute("hidden", websocket);
-		this.sendLabel(websocket ? (this.socket ? " Disconnect " : " Connect ") : " Send ", );
-		this.el.url.setAttribute("data-placeholder", websocket ? "wss://host/path" : "Request URL", );
+		this.sendLabel(websocket ? (this.socket ? " Disconnect " : " Connect ") : " Send " );
+		this.el.url.setAttribute("data-placeholder", websocket ? "wss://host/path" : "Request URL" );
 		if (websocket) this.activate("messages");
 		else if (document.querySelector("[data-tab].active")?.getAttribute("data-tab") === "messages") this.activate("params");
 		this.updateUrl();
@@ -1155,7 +1154,7 @@ export class RequestStudio {
 		try {
 			url = this.webSocketUrl();
 		} catch (error) {
-			this.webSocketState("error", error instanceof Error ? error.message : "Invalid WebSocket URL", );
+			this.webSocketState("error", error instanceof Error ? error.message : "Invalid WebSocket URL" );
 			return;
 		}
 		const protocols = this.el.ws_protocols.value.split(",").map(value => value.trim()).filter(Boolean);
@@ -1166,7 +1165,7 @@ export class RequestStudio {
 			this.sendLabel(" Disconnect ");
 			socket.addEventListener("open", () => {
 				if (this.socket !== socket) return;
-				this.webSocketState("open", socket.protocol ? `Connected · ${socket.protocol}` : "Connected", );
+				this.webSocketState("open", socket.protocol ? `Connected · ${socket.protocol}` : "Connected" );
 				this.appendWebSocketLog("system", "Connection opened");
 			});
 			socket.addEventListener("message", event => {
@@ -1181,13 +1180,13 @@ export class RequestStudio {
 			socket.addEventListener("close", event => {
 				if (this.socket === socket) this.socket = null;
 				this.sendLabel(" Connect ");
-				this.webSocketState("closed", `Disconnected · ${event.code}${event.reason ? ` · ${event.reason}` : ""}`, );
-				this.appendWebSocketLog("system", `Connection closed · ${event.code}${event.reason ? ` · ${event.reason}` : ""}`, );
+				this.webSocketState("closed", `Disconnected · ${event.code}${event.reason ? ` · ${event.reason}` : ""}` );
+				this.appendWebSocketLog("system", `Connection closed · ${event.code}${event.reason ? ` · ${event.reason}` : ""}` );
 			});
 		} catch (error) {
 			this.socket = null;
 			this.sendLabel(" Connect ");
-			this.webSocketState("error", error instanceof Error ? error.message : "Could not create WebSocket", );
+			this.webSocketState("error", error instanceof Error ? error.message : "Could not create WebSocket" );
 		}
 	}
 	/**
@@ -1258,7 +1257,7 @@ export class RequestStudio {
 		try {
 			url = this.url();
 		} catch {
-			this.response("Invalid URL. Use an absolute URL before sending.", "error", "Invalid URL", );
+			this.response("Invalid URL. Use an absolute URL before sending.", "error", "Invalid URL" );
 			return;
 		}
 		const headers = this.headers();
@@ -1268,9 +1267,9 @@ export class RequestStudio {
 		const types = {
 			json: "application/json",
 			text: "text/plain",
-			xml: "application/xml",
+			xml: "application/xml"
 		};
-		if (hasBody && !headers.has("Content-Type")) headers.set("Content-Type", types[this.el.body_format.value] ?? "text/plain", );
+		if (hasBody && !headers.has("Content-Type")) headers.set("Content-Type", types[this.el.body_format.value] ?? "text/plain" );
 		this.response("Sending request…", "", "Sending");
 		const started = performance.now();
 		try {
@@ -1278,13 +1277,13 @@ export class RequestStudio {
 				method,
 				headers,
 				body: hasBody ? this.resolve(RequestStudio.editorText(this.el.body)) : null,
-				credentials: "include",
+				credentials: "include"
 			});
 			const elapsed = Math.round(performance.now() - started);
 			const text = await result.text();
-			this.response(result.headers.get("content-type")?.includes("json") ? RequestStudio.json(text) : text || "(empty response)", result.ok ? "success" : "error", `${result.status} ${result.statusText} · ${elapsed} ms`, );
+			this.response(result.headers.get("content-type")?.includes("json") ? RequestStudio.json(text) : text || "(empty response)", result.ok ? "success" : "error", `${result.status} ${result.statusText} · ${elapsed} ms` );
 		} catch (error) {
-			this.response(`Request failed. Browser CORS rules still apply. Explicit Cookie headers are represented by the editor but browser fetch uses browser-managed cookies.\n\n${error instanceof Error ? error.message : String(error)}`, "error", "Network error", );
+			this.response(`Request failed. Browser CORS rules still apply. Explicit Cookie headers are represented by the editor but browser fetch uses browser-managed cookies.\n\n${error instanceof Error ? error.message : String(error)}`, "error", "Network error" );
 		}
 	}
 	/**
@@ -1297,13 +1296,12 @@ export class RequestStudio {
 	response(text, state, label) {
 		this.el.response_view.classList.remove("json-mode");
 		this.el.response_text.textContent = text;
-		if (typeof text === "string") {
+		if (typeof text === "string")
 			try {
 				this.showJson(JSON.parse(text));
 			} catch {
 				/* Plain response stays plain text. */
 			}
-		}
 		this.el.response_meta.className = state;
 		if (this.el.response_meta.lastChild) this.el.response_meta.lastChild.textContent = ` ${label}`;
 	}
@@ -1311,7 +1309,7 @@ export class RequestStudio {
 	 * Copy the response to the clipboard.
 	 */
 	async copy() {
-		await navigator.clipboard.writeText(this.el.response_text.textContent ?? "", );
+		await navigator.clipboard.writeText(this.el.response_text.textContent ?? "" );
 		this.toast("Response copied");
 	}
 	/**
@@ -1376,7 +1374,7 @@ export class RequestStudio {
 			toggle.setAttribute("aria-label", `Collapse ${path}`);
 			toggle.addEventListener("click", () => {
 				const collapsed = row.classList.toggle("collapsed");
-				toggle.setAttribute("aria-label", `${collapsed ? "Expand" : "Collapse"} ${path}`, );
+				toggle.setAttribute("aria-label", `${collapsed ? "Expand" : "Collapse"} ${path}` );
 			});
 			line.append(toggle, makePick(array ? "[" : "{", true));
 			const summary = document.createElement("span");
@@ -1388,7 +1386,7 @@ export class RequestStudio {
 			children.className = "json-children";
 			Object.entries(value).forEach(([childKey, childValue]) => {
 				const childPath = array ? `${path}[${childKey}]` : `${path}.${childKey}`;
-				children.append(this.jsonNode(childValue, childPath, array ? null : childKey, selectable, ), );
+				children.append(this.jsonNode(childValue, childPath, array ? null : childKey, selectable ) );
 			});
 			row.append(children);
 			const close = document.createElement("span");
@@ -1401,7 +1399,7 @@ export class RequestStudio {
 		spacer.className = "json-toggle";
 		line.append(spacer);
 		const type = value === null ? "null" : typeof value;
-		const pick = makePick(typeof value === "string" ? JSON.stringify(value) : String(value), );
+		const pick = makePick(typeof value === "string" ? JSON.stringify(value) : String(value) );
 		pick.classList.add(`json-${type}`);
 		line.append(pick);
 		row.append(line);
@@ -1429,7 +1427,7 @@ export class RequestStudio {
 			left: margin,
 			top: margin,
 			right: window.innerWidth - margin,
-			bottom: window.innerHeight - margin,
+			bottom: window.innerHeight - margin
 		};
 		const anchor = button.getBoundingClientRect();
 		const selected = button.closest(".json-node")?.getBoundingClientRect() ?? anchor;
@@ -1442,30 +1440,30 @@ export class RequestStudio {
 			side: "bottom",
 			left: anchor.left,
 			top: selected.bottom + gap,
-			space: viewport.bottom - selected.bottom,
+			space: viewport.bottom - selected.bottom
 		}, {
 			side: "top",
 			left: anchor.left,
 			top: selected.top - height - gap,
-			space: selected.top - viewport.top,
+			space: selected.top - viewport.top
 		}, {
 			side: "right",
 			left: selected.right + gap,
 			top: anchor.top,
-			space: viewport.right - selected.right,
+			space: viewport.right - selected.right
 		}, {
 			side: "left",
 			left: selected.left - width - gap,
 			top: anchor.top,
-			space: selected.left - viewport.left,
-		}, ];
+			space: selected.left - viewport.left
+		}];
 		/** @param {{side: string, left: number, top: number, space: number}} candidate */
 		const fits = candidate => candidate.side === "top" || candidate.side === "bottom" ? candidate.space >= height + gap : candidate.space >= width + gap;
 		const candidate = candidates.find(fits) ?? [...candidates].sort((a, b) => b.space - a.space)[0] ?? candidates[0] ?? {
 			side: "bottom",
 			left: anchor.left,
 			top: anchor.bottom + gap,
-			space: 0,
+			space: 0
 		};
 		let left = candidate.left;
 		let top = candidate.top;
@@ -1492,7 +1490,7 @@ export class RequestStudio {
 		this.el.capture_name.value = "";
 		this.placeCapture(button);
 		this.el.capture_name.focus({
-			preventScroll: true,
+			preventScroll: true
 		});
 	}
 	/**
@@ -1506,7 +1504,7 @@ export class RequestStudio {
 			node.classList.remove("value-selected");
 		});
 		if (focusResponse) this.el.response_view.focus({
-			preventScroll: true,
+			preventScroll: true
 		});
 	}
 	/**
@@ -1518,7 +1516,7 @@ export class RequestStudio {
 		event.preventDefault();
 		const name = this.el.capture_name.value.trim();
 		if (!/^[A-Za-z_][\w.-]*(?:\/[A-Za-z_][\w.-]*)*$/.test(name)) {
-			this.toast("Use letters, numbers, _, -, . and /; each segment must start with a letter or _", );
+			this.toast("Use letters, numbers, _, -, . and /; each segment must start with a letter or _" );
 			return;
 		}
 		const serialized = typeof this.captureValue === "string" ? this.captureValue : (JSON.stringify(this.captureValue) ?? "null");
@@ -1527,7 +1525,7 @@ export class RequestStudio {
 		else this.variables.push({
 			name,
 			value: serialized,
-			secret: false,
+			secret: false
 		});
 		this.renderVariables();
 		this.closeCapture();
@@ -1550,7 +1548,7 @@ export class RequestStudio {
 		toggle.className = "json-toggle";
 		toggle.textContent = children.length ? "▾" : "";
 		toggle.disabled = !children.length;
-		if (children.length) toggle.addEventListener("click", () => wrap.classList.toggle("collapsed"), );
+		if (children.length) toggle.addEventListener("click", () => wrap.classList.toggle("collapsed") );
 		line.append(toggle);
 		const label = document.createElement("span");
 		label.className = "json-pick json-string";
@@ -1589,17 +1587,17 @@ export class RequestStudio {
 		try {
 			if (format === "json") {
 				const resolved = this.resolve(raw);
-				this.el.body_tree.replaceChildren(this.jsonNode(JSON.parse(resolved), "$", null, false), );
+				this.el.body_tree.replaceChildren(this.jsonNode(JSON.parse(resolved), "$", null, false) );
 			} else {
-				const documentNode = new DOMParser().parseFromString(this.resolve(raw), "application/xml", );
+				const documentNode = new DOMParser().parseFromString(this.resolve(raw), "application/xml" );
 				if (documentNode.querySelector("parsererror")) throw new Error("Invalid XML");
-				this.el.body_tree.replaceChildren(this.xmlNode(documentNode.documentElement), );
+				this.el.body_tree.replaceChildren(this.xmlNode(documentNode.documentElement) );
 			}
 			this.el.body_tree.setAttribute("data-valid", "true");
 		} catch {
 			this.el.body_tree.replaceChildren(Object.assign(document.createElement("span"), {
-				textContent: `Invalid ${format.toUpperCase()} — edit Source to continue.`,
-			}), );
+				textContent: `Invalid ${format.toUpperCase()} — edit Source to continue.`
+			}) );
 			this.el.body_tree.setAttribute("data-valid", "false");
 		}
 	}
@@ -1615,7 +1613,7 @@ export class RequestStudio {
 		this.el.body_tree.hidden = source;
 		this.el.body_format_action.hidden = !source || this.el.body_format.value === "text";
 		this.el.body_mode.querySelectorAll("button").forEach(button => {
-			button.classList.toggle("active", button.getAttribute("data-body-mode") === (source ? "source" : "tree"), );
+			button.classList.toggle("active", button.getAttribute("data-body-mode") === (source ? "source" : "tree") );
 		});
 		if (!source) this.refreshBodyTree();
 	}
@@ -1637,13 +1635,13 @@ export class RequestStudio {
 				return value ? `${pad}${value}` : "";
 			}
 			if (!(node instanceof Element)) return "";
-			const attributes = [...node.attributes].map(attribute => ` ${attribute.name}=${JSON.stringify(attribute.value)}`, ).join("");
-			const children = [...node.childNodes].filter(child => child.nodeType !== Node.TEXT_NODE || child.nodeValue?.trim(), );
+			const attributes = [...node.attributes].map(attribute => ` ${attribute.name}=${JSON.stringify(attribute.value)}` ).join("");
+			const children = [...node.childNodes].filter(child => child.nodeType !== Node.TEXT_NODE || child.nodeValue?.trim() );
 			if (!children.length) return `${pad}<${node.tagName}${attributes}/>`;
 			const [only] = children;
 			if (children.length === 1 && only?.nodeType === Node.TEXT_NODE) return `${pad}<${node.tagName}${attributes}>${only.nodeValue?.trim() ?? ""}</${node.tagName}>`;
 			return `${pad}<${node.tagName}${attributes}>\n${children
-        .map((child) => indent(child, depth + 1))
+        .map(child => indent(child, depth + 1))
         .filter(Boolean)
         .join("\n")}\n${pad}</${node.tagName}>`;
 		};

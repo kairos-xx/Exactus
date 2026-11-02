@@ -15,7 +15,7 @@
           .join("");
       if (current.parentElement) {
         const same = [...current.parentElement.children].filter(
-          child => child.localName === current.localName,
+          child => child.localName === current.localName
         );
         if (same.length > 1)
           part += `:nth-of-type(${same.indexOf(current) + 1})`;

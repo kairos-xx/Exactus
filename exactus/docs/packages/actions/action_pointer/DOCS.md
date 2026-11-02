@@ -2,7 +2,7 @@
 
 ## Purpose
 
-`action_pointer` provides one configuration surface for every interaction listed in `docs/ACTIONS.md` §2.1 and §2.2. It groups Click, Double click, Right click, Hover, Drag to, Scroll, Viewport position, Tap, Long press, Swipe, and Pinch / zoom in one **Interaction** chooser.
+`action_pointer` provides one configuration surface for every interaction listed in `docs/todo/ACTIONS.md` §2.1 and §2.2. It groups Click, Double click, Right click, Hover, Drag to, Scroll, Viewport position, Tap, Long press, Swipe, and Pinch / zoom in one **Interaction** chooser.
 
 ## Files
 
@@ -74,6 +74,13 @@ The launcher starts a reusable loopback server and opens a managed browser. The 
 | `index.js` | JavaScript module. |
 | `pointer_studio.js` | JavaScript module. |
 
+## Command-line options
+
+| Option | Description | Settings |
+|---|---|---|
+| `--headless` | Load the demo in a headless browser instead of a window. | action='store_true' |
+| `--timeout` | Seconds to keep the browser alive after it loads. | type=float, default=None |
+
 ## Python API reference
 
 Public classes, functions and constants, read from the source. Private names (leading underscore) are omitted.
@@ -98,7 +105,7 @@ Run the pointer-action example with the project virtual environment.
 Start the loopback pointer-action demo and open the managed browser.
 
 - `start_demo(*, log: Path) -> str` — Serve this package and return its browser-demo URL.
-- `main() -> int` — Launch the demo and leave its reusable server running.
+- `main(*, arguments: Sequence[str] | None=None) -> int` — Launch the demo and leave its reusable server running.
 
 ## JavaScript API reference
 
@@ -123,14 +130,15 @@ Files: `examples/README.md`, `examples/__init__.py`, `examples/__main__.py`, `ex
 
 ## Dependencies and consumers
 
-- Other packages: [`browser`](../../browser/DOCS.md), [`server`](../../server/DOCS.md)
+- Other packages: [`argument_parser`](../../argument_parser/DOCS.md), [`browser`](../../browser/DOCS.md), [`server`](../../server/DOCS.md)
 - Used by: `tests/packages/actions/action_pointer/test_examples.py`
 
 ## Tests
 
 Tests live in `exactus/tests/packages/actions/action_pointer/`.
 
-- `test_examples.py` — Coverage for the pointer-action demo launcher. (4 tests)
+- `test_examples.py` — Coverage for the pointer-action demo launcher. (5 tests)
+  - `test_main_headless_loads_page_then_exits`
   - `test_main_prints_url_and_opens_browser`
   - `test_module_entrypoint_invokes_main`
   - `test_start_demo_reports_unready_server_and_cleans_up`

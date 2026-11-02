@@ -19,7 +19,9 @@ if TYPE_CHECKING:
     from exactus.tools.common.json_types import JsonValue
     from exactus.tools.common.registry import RunRecord
 from exactus.packages.steps import trace
-from exactus.tools.common.catalog import Constants as CatalogConstants
+from exactus.tools.common.catalog import (
+    GroupFinalConstants as CatalogConstants,
+)
 from exactus.tools.common.registry import RunRegistry
 
 

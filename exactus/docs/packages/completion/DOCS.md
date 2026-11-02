@@ -9,7 +9,8 @@ adapters and user-level installation.
 1. A generated shell function intercepts completion and invokes
    `exactus __complete …` with the current words and cursor position.
 2. `protocol.py` decodes the request; `engine.py` walks the grammar from
-   `catalog.py`/`defaults.py` to find the expected token kind.
+   `catalog.py` plus `tools/completion/defaults.py` to find the expected
+   token kind.
 3. `providers.py` resolves dynamic candidates (tool names, pipeline
    names, filesystem paths, option values) deterministically.
 4. Candidates return over the wire protocol; the shell renders them.
@@ -91,6 +92,7 @@ Completion catalog: the CLI grammar described for the engine.
   - `DIRECTORY` = `'directory'`
   - `TOOL` = `'tool'`
   - `PIPELINE` = `'pipeline'`
+  - `TARGET` = `'target'`
   - `TOOL_ARGUMENT` = `'tool-argument'`
 - `class OptionSpec` — One option accepted by a command grammar.
   - `repeatable` = `False`

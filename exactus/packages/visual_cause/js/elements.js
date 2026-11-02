@@ -6,13 +6,13 @@
   const serializeTyped = value => {
     const base = {
       type: value?.constructor?.name || typeof value,
-      text: String(value),
+      text: String(value)
     };
     if (value instanceof CSSUnitValue)
       return {
         ...base,
         value: value.value,
-        unit: value.unit,
+        unit: value.unit
       };
     if (
       typeof CSSKeywordValue !== "undefined" &&
@@ -20,7 +20,7 @@
     )
       return {
         ...base,
-        value: value.value,
+        value: value.value
       };
     if (
       typeof CSSUnparsedValue !== "undefined" &&
@@ -32,10 +32,10 @@
           typeof part === "string"
             ? {
                 type: "string",
-                text: part,
+                text: part
               }
-            : serializeTyped(part),
-        ),
+            : serializeTyped(part)
+        )
       };
     if (
       typeof CSSTransformValue !== "undefined" &&
@@ -46,19 +46,18 @@
         components: [...value].map(component => ({
           type: component.constructor?.name || "CSSTransformComponent",
           text: String(component),
-          is2D: component.is2D,
-        })),
+          is2D: component.is2D
+        }))
       };
-    if (value && typeof value === "object" && Symbol.iterator in value) {
+    if (value && typeof value === "object" && Symbol.iterator in value)
       try {
         return {
           ...base,
-          items: [...value].map(serializeTyped),
+          items: [...value].map(serializeTyped)
         };
       } catch {
         // Iterating a non-list Typed OM value throws; keep the base form.
       }
-    }
     return base;
   };
   /** @type {object[]} */
@@ -106,7 +105,7 @@
           position: style.position,
           zIndex: style.zIndex,
           computed: Object.fromEntries(
-            [...style].map(name => [name, style.getPropertyValue(name)]),
+            [...style].map(name => [name, style.getPropertyValue(name)])
           ),
           typedComputed: (() => {
             if (!node.computedStyleMap) return {};
@@ -116,8 +115,8 @@
                 name,
                 Array.isArray(values)
                   ? values.map(serializeTyped)
-                  : serializeTyped(values),
-              ]),
+                  : serializeTyped(values)
+              ])
             );
           })(),
           beforeContent: getComputedStyle(node, "::before").content,
@@ -128,7 +127,7 @@
           clientWidth: node.clientWidth,
           clientHeight: node.clientHeight,
           overflowX: style.overflowX,
-          overflowY: style.overflowY,
+          overflowY: style.overflowY
         });
       walk(node, path, path);
       if (node.shadowRoot) walk(node.shadowRoot, `${path}/#shadow-root`, path);

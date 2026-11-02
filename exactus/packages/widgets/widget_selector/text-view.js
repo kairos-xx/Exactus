@@ -1,10 +1,10 @@
 /** The Text view: a plain textarea with a colour overlay and problem underlines. */
-import { tokenize } from "./selector-tree.js";
+import {tokenize} from "./selector-tree.js";
 /**
  * Create the plain-text view bound to a host element.
  * @returns {{element:HTMLElement, input:HTMLTextAreaElement, getText:()=>string, setText:Function, setDiagnostics:Function, focus:()=>void, getCaret:()=>number, setCaret:Function}} The text view API.
  */
-export const createTextView = (/** @type {{host:HTMLElement, label:string, onChange:(text:string)=>void}} */ { host, label, onChange }) => {
+export const createTextView = (/** @type {{host:HTMLElement, label:string, onChange:(text:string)=>void}} */ {host, label, onChange}) => {
   const wrap = document.createElement("div");
   wrap.className = "ese-text";
   const mirror = document.createElement("div");
@@ -55,6 +55,6 @@ export const createTextView = (/** @type {{host:HTMLElement, label:string, onCha
     focus: () => input.focus(),
     getCaret: () => input.selectionStart ?? input.value.length,
     /** @param {number} at */
-    setCaret: at => input.setSelectionRange(at, at),
+    setCaret: at => input.setSelectionRange(at, at)
   };
 };

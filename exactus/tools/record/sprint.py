@@ -612,8 +612,7 @@ def sprint(
         if style.level in ("warning", "error")
         else stdout
     )
-    text: str = sep.join(str(object=arg) for arg in args)
-    if text:
+    if text := sep.join(str(object=arg) for arg in args):
         prefix: str
         code: str
         prefix, code = _style(level=style.level)

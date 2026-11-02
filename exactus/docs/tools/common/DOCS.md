@@ -12,7 +12,7 @@ excerpts and the packaged utilities.
 | `api.py` | Process-isolated Python API for canonical tools: invokes each tool's module entry point in a detached worker, parses its `result.json` back and returns typed run results without sharing the caller's process state. |
 | `catalog.py` | Canonical tool/pipeline catalog: tools are executable leaves, pipelines hold only references to tool ids or other pipelines; resolution flattens nested pipelines in declaration order and de-duplicates by canonical id. |
 | `config.py` | `[tool.exactus]` discovery and rendering: upward `pyproject.toml` walk with `root=true`, `--config`/`--no-config`, layered precedence, per-option provenance, path resolution relative to the declaring file, `--show-config`. |
-| `parser.py` | Shared `ExactusArgumentParser`: folds `-`/`_` in long-option names so every CLI accepts `--foo-bar` and `--foo_bar` identically; collisions degrade to exact matching. |
+| `packages/argument_parser/parser.py` | Shared `ExactusArgumentParser` (lives in `packages/`): folds `-`/`_` in long-option names so every CLI accepts `--foo-bar` and `--foo_bar` identically; collisions degrade to exact matching. |
 | `envelope.py` | Build the normalized report envelope — `tool`/`run`/`invocation`/`environment`/`gate`/`artifacts` — plus crash/cancel stamping. |
 | `execution.py` | Shared standalone entry-point reporting: wraps a tool's main() with the envelope, artifact directory layout, activity heartbeat and exit-status contract used by every `exactus --<tool>` run. |
 | `models.py` | Shared orchestration dataclasses and records exchanged between the runner, workers and supervisors — run/item states, findings counters and lifecycle payloads. |
@@ -63,21 +63,29 @@ consumed by the orchestrator and tool workers, never a standalone tool.
 There is no registry, PID file, or discovery database: identity is
 proven live over a private loopback listener.
 
-- `access.py` provisions the shared secret (`.runtime/authkey`,
+- `process_layer/access.py` provisions the shared secret (`.runtime/authkey`,
   `EXACTUS_AUTHKEY` override) and wires the `RunRegistry` over
   `.runtime/runs.db`.
-- `process_control.py` provides `IdentityResponder` plus
+- `process_layer/process_control.py` provides `IdentityResponder` plus
   `identify()`/`discover()`: a nonce/HMAC handshake on `127.0.0.1`,
   listener-table enumeration that skips per-process `AccessDenied`, and
   identity validation bound to process creation time — so a reused PID
   impersonating a stale record is rejected.
-- `process_termination.py` provides `ProcessTerminator` and
+- `process_layer/process_termination.py` provides `ProcessTerminator` and
   `terminate_tree`: child-first teardown restricted to trees verified
   through `identify`, with PID-reuse and stale-record protection.
 
 `exactus/__main__.py` wires the responder around every run and drives
-`--kill`/`--kill-all`; `tools/common/tool_worker.py` uses the same
+`--kill`/`--kill-all`/`--status`/`--status-all`; `tools/common/tool_worker.py` uses the same
 access layer for worker-side termination requests.
+
+`--status`/`--status-all` expose the same surface read-only:
+`Check._status` serializes this project's live `RunRegistry` records
+(each row enriched with the pmanager worker state when its descriptor
+answers), and `Check._status_all` lists every verified responder on
+the host (`identify`/`discover` with candidate authkeys), embedding
+each identity's live records read from its `runs_db`. Both print JSON
+on the CLI and return `list[dict]` from the Python classmethods.
 
 <!-- exactus:reference:start -->
 
@@ -239,7 +247,7 @@ Canonical exactus tool and pipeline catalog.
   - `pipelines(self) -> tuple[PipelineSpec, ...]` — Return pipelines.
   - `waves(self, *, identifier: str) -> tuple[tuple[ToolSpec, ...], ...]` — Return waves.
   - `resolve(self, *, selections: tuple[str, ...]) -> tuple[ToolSpec, ...]` — Flatten tool/pipeline selections and de-duplicate canonical tools.
-- `class Constants` — Group module-level constants.
+- `class GroupFinalConstants` — Group module-level constants.
   - `tools` = `(_tool(identifier='lints'), _tool(identifier='coverage_tests', dependenci...`
   - `url_gated` = `frozenset({'frontend', 'record', 'visual_cause'})`
   - `pipelines` = `(PipelineSpec(identifier='self', stages=(('coverage_tests', 'docs', 'kwar...`
@@ -546,6 +554,7 @@ Provide transactional ownership and reset coordination for pipelines.
 - `class PipelineOwner` — Describe one named pipeline owner.
   - Fields: `pipeline: str`, `run_id: str`, `pid: int`, `fingerprint: str`, `state: str`, `generation: int`, `started_at: str`, `updated_at: str`
 - `class PipelineRequest` — Describe one invocation observing a pipeline owner.
+  - `plan` = `None`
   - `error` = `None`
   - Fields: `request_id: str`, `pipeline: str`, `pipeline_run_id: str`, `fingerprint: str`, `pid: int`, `tty: str | None`, `state: str`, `generation: int | None`, `requested_at: str`, `updated_at: str`, `detail: str`
   - `payload(self: Self) -> dict[str, JsonValue]` — Return an inspectable JSON request document.
@@ -554,6 +563,7 @@ Provide transactional ownership and reset coordination for pipelines.
 - `class PipelineCoordinator` — Serialize pipeline claims and finalization through SQLite.
   - `__init__(self: Self, *, runtime: Path) -> None` — Bind the supervisor to a shared runtime directory.
   - `claim(self: Self, *, pipeline: str, run_id: str, pid: int, fingerprint: str, tty: str | None) -> PipelineClaim` — Atomically elect an owner, admit an observer, or require waiting.
+  - `record_plan(self: Self, *, request: PipelineRequest, plan: dict[str, JsonValue]) -> PipelineRequest` — Attach a work plan to a pending observer request.
   - `owner(self: Self, *, pipeline: str) -> PipelineOwner | None` — Return the stored owner of a named pipeline.
   - `requests(self: Self, *, pipeline_run_id: str, state: str) -> tuple[PipelineRequest, ...]` — Return one owner's requests in deterministic order.
   - `get(self: Self, *, request_id: str) -> PipelineRequest | None` — Return one observer request.
@@ -731,6 +741,7 @@ Cross-process exactus run registry backed by an embedded database.
   - `beat(self, *, pulse: RunBeat) -> None` — Refresh one run's progress fields and liveness timestamp.
   - `finish(self, *, run_id: str, status: str, elapsed_seconds: float) -> None` — Stamp one run's terminal lifecycle status.
   - `live(self) -> tuple[RunRecord, ...]` — Return every registered run whose process is still alive.
+  - `record(self, *, run_id: str) -> RunRecord | None` — Return the stored row for one run, live or finished.
 
 ### `report_comparison.py`
 
@@ -739,6 +750,7 @@ Compare normalized exactus findings with the preceding report bundle.
 - `capture(*, output: Path) -> None` — Capture report documents before an output tree is replaced.
 - `clear() -> None` — Discard reports captured for the current execution.
 - `previous_duration(*, path: Path) -> float | None` — Return the duration of the report that preceded ``path``.
+- `previous_tool_durations(*, path: Path) -> dict[str, float] | None` — Return per-tool durations from the report that preceded ``path``.
 - `markdown(*, comparison: JsonValue) -> str` — Render global and subsection deltas for any Markdown report.
 - `apply(*, payload: JsonObject, path: Path) -> None` — Attach finding-level comparison data to a current report payload.
 
@@ -905,7 +917,8 @@ Responsive ANSI terminal presentation for exactus execution.
   - `dsr_timeout` = `0.4`
   - `o_noctty` = `getattr(import_module(name='os'), 'O_NOCTTY', 0)`
   - `o_nonblock` = `getattr(import_module(name='os'), 'O_NONBLOCK', 0)`
-  - `failed` = `frozenset({'FAIL', 'INTERRUPT', 'TIMEOUT'})`
+  - `failed` = `frozenset({'FAIL', 'INTERRUPT', 'TIMEOUT', 'KILL', 'ERROR'})`
+  - `canonical_status` = `{'RUNNING': 'RUN', 'WAITING': 'WAIT', 'PAUSED': 'HELD', 'DONE': 'PASS', '...`
 - `class ResultRow` — Represent result row.
   - `report` = `''`
   - `stats` = `''`
@@ -913,7 +926,7 @@ Responsive ANSI terminal presentation for exactus execution.
 - `class ExactusTerminal` — Render the only user-facing exactus terminal protocol.
   - `clear_screen(cls) -> None` — Erase the interactive screen and scrollback before a run.
   - `emit(cls, *, text: str, stream: TextIO | None=None) -> None` — Print log text without corrupting a live progress block.
-  - `progress(cls, *, title: str, global_fraction: float, stage: str, tools: tuple[tuple[str, str, float, str, float | None], ...], previous_lines: int) -> int` — Repaint the live pipeline block in place.
+  - `progress(cls, *, title: str, global_fraction: float, stage: str, tools: tuple[tuple[str, str, float, str, float | None], ...], weights: tuple[float, ...]=()) -> int` — Repaint the live pipeline block in place.
   - `clear_progress(cls, *, lines: int) -> None` — Remove the live block and restore the cursor.
   - `standalone_progress(cls, *, tool: str, fraction: float, step: str) -> None` — Repaint the single standalone progress row in place.
   - `finish_standalone_progress(cls, *, failed: bool=False) -> None` — Clear the standalone progress row before final results.
@@ -1014,7 +1027,7 @@ Files: `examples/README.md`, `examples/__init__.py`, `examples/__main__.py`, `ex
 ## Dependencies and consumers
 
 - Other packages: [`argument_parser`](../../packages/argument_parser/DOCS.md), [`markdown`](../../packages/markdown/DOCS.md), [`model`](../../packages/model/DOCS.md), [`pmanager`](../../packages/pmanager/DOCS.md), [`project_python`](../../packages/project_python/DOCS.md), [`steps`](../../packages/steps/DOCS.md), [`tree`](../../packages/tree/DOCS.md), [`reports`](../reports/DOCS.md)
-- Used by: `__init__.py`, `__main__.py`, `bundle/linux/glibc/amd64/partition_launcher.py`, `bundle/linux/glibc/amd64/zstd_portable/__init__.py`, `bundle/linux/glibc/arm64/partition_launcher.py`, `bundle/linux/glibc/arm64/zstd_portable/__init__.py`, `bundle/linux/musl/amd64/partition_launcher.py`, `bundle/linux/musl/amd64/zstd_portable/__init__.py`, `bundle/linux/musl/arm64/partition_launcher.py`, `bundle/linux/musl/arm64/zstd_portable/__init__.py`, `bundle/macos/amd64/partition_launcher.py`, `bundle/macos/amd64/zstd_portable/__init__.py`, `bundle/macos/arm64/partition_launcher.py`, `bundle/macos/arm64/zstd_portable/__init__.py`, `bundle/windows/amd64/partition_launcher.py`, `bundle/windows/amd64/zstd_portable/__init__.py`, `bundle/windows/arm64/partition_launcher.py`, `bundle/windows/arm64/zstd_portable/__init__.py`, `packages/exactus_mcp/runner.py`, `packages/external/cli.py`, `packages/group_final/core.py`, `packages/meaningful/api.py`, `packages/package/api.py`, `packages/package/build.py`, `packages/package/bundle.py`, `packages/package/install.py`, `packages/package/partition_launcher.py`, `packages/package/readmes.py`, `packages/zip_components/core.py`, `packages/zstd_portable/__init__.py`, `tests/common/check/test_check_extra.py`, `tests/common/check/test_public_api.py`, `tests/common/json_serializers/test_json_serializers.py`, `tests/common/support.py`, `tests/packages/external/test_cli.py`, `tests/packages/markdown/test_engine.py`, `tests/packages/markdown/test_filters.py`, `tests/packages/markdown/test_mapping.py`, `tests/packages/markdown/test_paths.py`, `tests/packages/markdown/test_predicates.py`, `tests/packages/server/test_server_lifecycle.py`, `tests/packages/zstd_portable/test_directory_inventory.py`, `tests/tools/actions/test_actions.py`, `tests/tools/common/process_layer/test_access.py`, `tests/tools/common/process_layer/test_control.py`, `tests/tools/common/process_layer/test_termination.py`, `tests/tools/common/test_activity.py`, `tests/tools/common/test_analyzers.py`, `tests/tools/common/test_catalog.py`, `tests/tools/common/test_collect_files.py`, `tests/tools/common/test_common.py`, `tests/tools/common/test_config.py`, `tests/tools/common/test_conflict_copies.py`, `tests/tools/common/test_context_lines.py`, `tests/tools/common/test_digest.py`, `tests/tools/common/test_envelope.py`, `tests/tools/common/test_examples_run.py`, `tests/tools/common/test_execution.py`, `tests/tools/common/test_models_api.py`, `tests/tools/common/test_output_tree.py`, `tests/tools/common/test_pipeline_output.py`, `tests/tools/common/test_pipeline_supervisor.py`, `tests/tools/common/test_process_control.py`, `tests/tools/common/test_progress_ownership.py`, `tests/tools/common/test_registry.py`, `tests/tools/common/test_report_comparison.py`, `tests/tools/common/test_report_templates.py`, `tests/tools/common/test_report_time.py`, `tests/tools/common/test_snippets.py`, `tests/tools/common/test_sprint.py`, `tests/tools/common/test_stderr_capture.py`, `tests/tools/common/test_terminal.py`, `tests/tools/common/test_terminal_progress.py`, `tests/tools/common/test_toml.py`, `tests/tools/common/test_tool_worker.py`, `tests/tools/common/test_toolkit.py`, `tests/tools/completion/test_integration.py`, `tests/tools/coverage_tests/test_core_boundaries.py`, `tests/tools/coverage_tests/test_coverage_tool.py`, `tests/tools/coverage_tests/test_coverage_validator.py`, `tests/tools/coverage_tests/test_javascript_gate.py`, `tests/tools/coverage_tests/test_meaningful.py`, `tests/tools/coverage_tests/test_report_layout.py`, `tests/tools/coverage_tests/test_skipped_report.py`, `tests/tools/coverage_tests/test_steps_trace.py`, `tests/tools/docs/test_docs_metrics.py`, `tests/tools/docs/test_docs_report.py`, `tests/tools/frontend/test_frontend.py`, `tests/tools/frontend/test_frontend_progress.py`, `tests/tools/frontend/test_frontend_report.py`, `tests/tools/frontend/test_parallel_flows.py`, `tests/tools/kwargs_typehints/test_kwargs_report.py`, `tests/tools/kwargs_typehints/test_kwargs_typehints.py`, `tests/tools/lints/test_compliance.py`, `tests/tools/lints/test_css_tokens.py`, `tests/tools/lints/test_js_delimiters.py`, `tests/tools/lints/test_js_function_blocks.py`, `tests/tools/lints/test_lints.py`, `tests/tools/lints/test_lints_normalizers.py`, `tests/tools/lints/test_lints_report.py`, `tests/tools/lints/test_method_contracts.py`, `tests/tools/lints/test_shebang_metrics.py`, `tests/tools/readme/test_readme_report.py`, `tests/tools/record/selector_support.py`, `tests/tools/record/test_action_schema.py`, `tests/tools/record/test_discovery_project.py`, `tests/tools/record/test_flow_contracts.py`, `tests/tools/record/test_flow_runner.py`, `tests/tools/record/test_flow_runner_actions.py`, `tests/tools/record/test_flow_runner_selectors.py`, `tests/tools/record/test_flow_runner_variables.py`, `tests/tools/record/test_persistence_selectors.py`, `tests/tools/record/test_project_assets.py`, `tests/tools/record/test_record_core.py`, `tests/tools/record/test_record_report.py`, `tests/tools/record/test_run_gate.py`, `tests/tools/record/test_selector_resolver.py`, `tests/tools/record/test_selector_sandbox.py`, `tests/tools/record/test_selector_snapshot.py`, `tests/tools/record/test_store_selectors.py`, `tests/tools/record/test_studio_action_setup.py`, `tests/tools/record/test_studio_duplicate_step.py`, `tests/tools/record/test_studio_projects.py`, `tests/tools/record/test_studio_selectors.py`, `tests/tools/record/test_v3_execution.py`, `tests/tools/record/test_v3_fixture_builder.py`, `tests/tools/record/test_v3_fixtures.py`, `tests/tools/record/v3_fixture_builder.py`, `tests/tools/reports/test_report_bundle.py`, `tests/tools/reports/test_report_render.py`, `tests/tools/reports/test_report_snippets.py`, `tests/tools/reports/test_report_web.py`, `tests/tools/test_self_test.py`, `tests/tools/visual_cause/test_report.py`, `tests/tools/visual_cause/test_targets.py`, `tools/actions/runner.py`, `tools/coverage_tests/arguments.py`, `tools/coverage_tests/core.py`, `tools/coverage_tests/main.py`, `tools/coverage_tests/meaningful.py`, `tools/coverage_tests/report.py`, `tools/docs/arguments.py`, `tools/docs/core.py`, `tools/docs/main.py`, `tools/frontend/arguments.py`, `tools/frontend/core.py`, `tools/frontend/main.py`, `tools/frontend/progress.py`, `tools/frontend/report.py`, `tools/kwargs_typehints/arguments.py`, `tools/kwargs_typehints/core.py`, `tools/kwargs_typehints/main.py`, `tools/kwargs_typehints/report.py`, `tools/lints/arguments.py`, `tools/lints/compliance.py`, `tools/lints/core.py`, `tools/lints/js_delimiters.py`, `tools/lints/js_function_blocks.py`, `tools/lints/long_lines_engine.py`, `tools/lints/main.py`, `tools/lints/report.py`, `tools/lints/shebang.py`, `tools/performance/arguments.py`, `tools/performance/main.py`, `tools/readme/arguments.py`, `tools/readme/core.py`, `tools/readme/main.py`, `tools/readme/metrics.py`, `tools/record/action_schema.py`, `tools/record/arguments.py`, `tools/record/core.py`, `tools/record/http_request.py`, `tools/record/main.py`, `tools/record/project_info.py`, `tools/record/response_paths.py`, `tools/record/selector_engine.py`, `tools/record/selector_resolver.py`, `tools/record/selector_sandbox.py`, `tools/record/selector_snapshot.py`, `tools/record/selector_targets.py`, `tools/record/selectors.py`, `tools/record/studio/action_commands.py`, `tools/record/studio/project_commands.py`, `tools/record/studio/projects.py`, `tools/record/studio/selector_commands.py`, `tools/record/studio/service.py`, `tools/record/studio/window.py`, `tools/reports/bundle.py`, `tools/reports/render.py`, `tools/self_test/arguments.py`, `tools/self_test/main.py`, `tools/visual_cause/arguments.py`, `tools/visual_cause/core.py`, `tools/visual_cause/main.py`, `tools/visual_cause/queries.py`, `tools/visual_cause/report.py`, `tools/visual_cause/service.py`, `tools/visual_cause/targets.py`
+- Used by: `__init__.py`, `__main__.py`, `bundle/linux/glibc/amd64/partition_launcher.py`, `bundle/linux/glibc/amd64/zstd_portable/__init__.py`, `bundle/linux/glibc/arm64/partition_launcher.py`, `bundle/linux/glibc/arm64/zstd_portable/__init__.py`, `bundle/linux/musl/amd64/partition_launcher.py`, `bundle/linux/musl/amd64/zstd_portable/__init__.py`, `bundle/linux/musl/arm64/partition_launcher.py`, `bundle/linux/musl/arm64/zstd_portable/__init__.py`, `bundle/macos/amd64/partition_launcher.py`, `bundle/macos/amd64/zstd_portable/__init__.py`, `bundle/macos/arm64/partition_launcher.py`, `bundle/macos/arm64/zstd_portable/__init__.py`, `bundle/windows/amd64/partition_launcher.py`, `bundle/windows/amd64/zstd_portable/__init__.py`, `bundle/windows/arm64/partition_launcher.py`, `bundle/windows/arm64/zstd_portable/__init__.py`, `packages/exactus_mcp/runner.py`, `packages/external/cli.py`, `packages/group_final/core.py`, `packages/meaningful/api.py`, `packages/package/api.py`, `packages/package/build.py`, `packages/package/bundle.py`, `packages/package/install.py`, `packages/package/partition_launcher.py`, `packages/package/readmes.py`, `packages/zip_components/core.py`, `packages/zstd_portable/__init__.py`, `tests/common/check/test_check_extra.py`, `tests/common/check/test_public_api.py`, `tests/common/json_serializers/test_json_serializers.py`, `tests/common/support.py`, `tests/packages/external/test_cli.py`, `tests/packages/markdown/test_engine.py`, `tests/packages/markdown/test_filters.py`, `tests/packages/markdown/test_mapping.py`, `tests/packages/markdown/test_paths.py`, `tests/packages/markdown/test_predicates.py`, `tests/packages/server/test_server_lifecycle.py`, `tests/packages/zstd_portable/test_directory_inventory.py`, `tests/tools/actions/test_actions.py`, `tests/tools/common/process_layer/test_access.py`, `tests/tools/common/process_layer/test_control.py`, `tests/tools/common/process_layer/test_termination.py`, `tests/tools/common/test_activity.py`, `tests/tools/common/test_analyzers.py`, `tests/tools/common/test_catalog.py`, `tests/tools/common/test_collect_files.py`, `tests/tools/common/test_common.py`, `tests/tools/common/test_config.py`, `tests/tools/common/test_conflict_copies.py`, `tests/tools/common/test_context_lines.py`, `tests/tools/common/test_digest.py`, `tests/tools/common/test_envelope.py`, `tests/tools/common/test_examples_run.py`, `tests/tools/common/test_execution.py`, `tests/tools/common/test_models_api.py`, `tests/tools/common/test_output_tree.py`, `tests/tools/common/test_pipeline_output.py`, `tests/tools/common/test_pipeline_scope.py`, `tests/tools/common/test_pipeline_supervisor.py`, `tests/tools/common/test_process_control.py`, `tests/tools/common/test_progress_ownership.py`, `tests/tools/common/test_registry.py`, `tests/tools/common/test_report_comparison.py`, `tests/tools/common/test_report_templates.py`, `tests/tools/common/test_report_time.py`, `tests/tools/common/test_snippets.py`, `tests/tools/common/test_sprint.py`, `tests/tools/common/test_stderr_capture.py`, `tests/tools/common/test_terminal.py`, `tests/tools/common/test_terminal_progress.py`, `tests/tools/common/test_toml.py`, `tests/tools/common/test_tool_worker.py`, `tests/tools/common/test_toolkit.py`, `tests/tools/completion/test_integration.py`, `tests/tools/coverage_tests/test_core_boundaries.py`, `tests/tools/coverage_tests/test_coverage_tool.py`, `tests/tools/coverage_tests/test_coverage_validator.py`, `tests/tools/coverage_tests/test_javascript_gate.py`, `tests/tools/coverage_tests/test_meaningful.py`, `tests/tools/coverage_tests/test_report_layout.py`, `tests/tools/coverage_tests/test_skipped_report.py`, `tests/tools/coverage_tests/test_steps_trace.py`, `tests/tools/docs/test_docs_metrics.py`, `tests/tools/docs/test_docs_report.py`, `tests/tools/frontend/test_frontend.py`, `tests/tools/frontend/test_frontend_progress.py`, `tests/tools/frontend/test_frontend_report.py`, `tests/tools/frontend/test_parallel_flows.py`, `tests/tools/kwargs_typehints/test_kwargs_report.py`, `tests/tools/kwargs_typehints/test_kwargs_typehints.py`, `tests/tools/lints/test_compliance.py`, `tests/tools/lints/test_css_tokens.py`, `tests/tools/lints/test_js_delimiters.py`, `tests/tools/lints/test_js_function_blocks.py`, `tests/tools/lints/test_lints.py`, `tests/tools/lints/test_lints_normalizers.py`, `tests/tools/lints/test_lints_report.py`, `tests/tools/lints/test_method_contracts.py`, `tests/tools/lints/test_shebang_metrics.py`, `tests/tools/readme/test_readme_report.py`, `tests/tools/record/selector_support.py`, `tests/tools/record/test_action_schema.py`, `tests/tools/record/test_discovery_project.py`, `tests/tools/record/test_flow_contracts.py`, `tests/tools/record/test_flow_runner.py`, `tests/tools/record/test_flow_runner_actions.py`, `tests/tools/record/test_flow_runner_selectors.py`, `tests/tools/record/test_flow_runner_variables.py`, `tests/tools/record/test_persistence_selectors.py`, `tests/tools/record/test_project_assets.py`, `tests/tools/record/test_record_core.py`, `tests/tools/record/test_record_report.py`, `tests/tools/record/test_run_gate.py`, `tests/tools/record/test_selector_resolver.py`, `tests/tools/record/test_selector_sandbox.py`, `tests/tools/record/test_selector_snapshot.py`, `tests/tools/record/test_store_selectors.py`, `tests/tools/record/test_studio_action_setup.py`, `tests/tools/record/test_studio_duplicate_step.py`, `tests/tools/record/test_studio_projects.py`, `tests/tools/record/test_studio_selectors.py`, `tests/tools/record/test_v3_execution.py`, `tests/tools/record/test_v3_fixture_builder.py`, `tests/tools/record/test_v3_fixtures.py`, `tests/tools/record/v3_fixture_builder.py`, `tests/tools/reports/test_report_bundle.py`, `tests/tools/reports/test_report_render.py`, `tests/tools/reports/test_report_snippets.py`, `tests/tools/reports/test_report_web.py`, `tests/tools/test_self_test.py`, `tests/tools/visual_cause/test_report.py`, `tests/tools/visual_cause/test_targets.py`, `tools/actions/runner.py`, `tools/coverage_tests/arguments.py`, `tools/coverage_tests/core.py`, `tools/coverage_tests/main.py`, `tools/coverage_tests/meaningful.py`, `tools/coverage_tests/report.py`, `tools/docs/arguments.py`, `tools/docs/core.py`, `tools/docs/main.py`, `tools/frontend/arguments.py`, `tools/frontend/core.py`, `tools/frontend/main.py`, `tools/frontend/progress.py`, `tools/frontend/report.py`, `tools/kwargs_typehints/arguments.py`, `tools/kwargs_typehints/core.py`, `tools/kwargs_typehints/main.py`, `tools/kwargs_typehints/report.py`, `tools/lints/arguments.py`, `tools/lints/compliance.py`, `tools/lints/core.py`, `tools/lints/js_delimiters.py`, `tools/lints/js_function_blocks.py`, `tools/lints/long_lines_engine.py`, `tools/lints/main.py`, `tools/lints/report.py`, `tools/lints/shebang.py`, `tools/performance/arguments.py`, `tools/performance/main.py`, `tools/readme/arguments.py`, `tools/readme/core.py`, `tools/readme/main.py`, `tools/readme/metrics.py`, `tools/record/action_schema.py`, `tools/record/arguments.py`, `tools/record/core.py`, `tools/record/http_request.py`, `tools/record/main.py`, `tools/record/project_info.py`, `tools/record/response_paths.py`, `tools/record/selector_engine.py`, `tools/record/selector_resolver.py`, `tools/record/selector_sandbox.py`, `tools/record/selector_snapshot.py`, `tools/record/selector_targets.py`, `tools/record/selectors.py`, `tools/record/studio/action_commands.py`, `tools/record/studio/project_commands.py`, `tools/record/studio/projects.py`, `tools/record/studio/selector_commands.py`, `tools/record/studio/service.py`, `tools/record/studio/window.py`, `tools/reports/bundle.py`, `tools/reports/render.py`, `tools/self_test/arguments.py`, `tools/self_test/main.py`, `tools/visual_cause/arguments.py`, `tools/visual_cause/core.py`, `tools/visual_cause/main.py`, `tools/visual_cause/queries.py`, `tools/visual_cause/report.py`, `tools/visual_cause/service.py`, `tools/visual_cause/targets.py`
 
 ## Tests
 
@@ -1031,10 +1044,11 @@ Tests live in `exactus/tests/tools/common/`.
   - `test_runtime_dir_uses_output_parent`
   - `test_start_responder_starts_or_degrades`
   - `test_stop_responder_accepts_none`
-- `process_layer/test_control.py` — Authenticated loopback identity discovery behavior. (11 tests)
+- `process_layer/test_control.py` — Authenticated loopback identity discovery behavior. (12 tests)
   - `test_discover_finds_responder`
   - `test_discover_validates_workers`
   - `test_exactus_candidates_filters_by_process_identity`
+  - `test_exactus_candidates_survive_unreadable_command_lines`
   - `test_identify_rejects_bad_inputs`
   - `test_identify_rejects_wrong_authkey`
   - `test_identify_verifies_live_responder`
@@ -1197,9 +1211,9 @@ Tests live in `exactus/tests/tools/common/`.
   - `test_registry_snapshot_handles_missing_and_live_databases`
   - `test_run_demo_monitors_stubbed_processes_until_settled`
   - `test_transcript_failed_detects_coordinator_markers`
-- `test_execution.py` — The shared exactus execution wrapper, fallbacks, and crash recording. (25 tests)
+- `test_execution.py` — The shared exactus execution wrapper, fallbacks, and crash recording. (26 tests)
   - `test_analyzer_written_reports_are_kept`
-  - `test_conflicting_run_is_terminated`
+  - `test_conflicting_run_is_joined_then_terminated`
   - `test_crashed_exactus_records_failure`
   - `test_crashed_exactus_respects_reclaimed_output`
   - `test_exceptions_become_failed_reports`
@@ -1207,21 +1221,22 @@ Tests live in `exactus/tests/tools/common/`.
   - `test_failed_analyzer_stamps_existing_reports`
   - `test_fallback_markdown_truncates_and_lists`
   - `test_help_preserves_existing_exactus_evidence`
+  - `test_observe_live_run_ignores_missing_or_finished`
   - `test_output_reclaimed_detection`
   - `test_output_streams_are_captured`
   - `test_prepare_output_cleans_and_preserves`
   - `test_prepare_output_moves_aside_when_locked`
   - `test_previous_duration_propagates_to_reports_and_activity`
   - `test_progress_helpers`
-  - `test_registry_unavailable_falls_back_to_activity`
+  - `test_registry_unavailable_observes_stale_activity`
   - `test_report_output_argument`
   - `test_report_snapshot_and_emitted`
   - `test_run_exactus_returns_exit_code`
   - `test_signal_during_run_records_interrupt`
+  - `test_stamp_result_prefers_facts_verdict`
   - `test_stream_capture_failure_is_tolerated`
   - `test_success_without_report_gets_fallback`
   - `test_terminal_summary_and_ids`
-  - `test_terminate_live_run_ignores_missing_or_finished`
   - `test_web_data_payload_is_stamped`
 - `test_models_api.py` — Result models, progress documents, the process API, and runtime. (12 tests)
   - `test_activity_payloads`
@@ -1241,7 +1256,8 @@ Tests live in `exactus/tests/tools/common/`.
   - `test_nested_reports_stay_out_of_artifacts`
   - `test_tool_run_writes_the_three_artifacts`
   - `test_uncaptured_streams_still_get_stderr_files`
-- `test_pipeline_output.py` — Pipeline output lives under ``EXACTUS_RESULTS/PIPELINES/``. (21 tests)
+- `test_pipeline_output.py` — Pipeline output lives under ``EXACTUS_RESULTS/PIPELINES/``. (22 tests)
+  - `test_adopted_interrupted_external_settles_as_interrupt`
   - `test_adopted_progress_resets_on_superseding_run`
   - `test_claim_pipeline_joins_owner_without_terminating_it`
   - `test_failed_analysis_does_not_block_ready_tool`
@@ -1263,6 +1279,27 @@ Tests live in `exactus/tests/tools/common/`.
   - `test_standalone_run_waits_at_the_group_gate`
   - `test_unified_refresh_completes_the_progress_block`
   - `test_wave_adopts_and_drains_an_external_run`
+- `test_pipeline_scope.py` — Scope a joined pipeline reset to the tools a request asks to rerun. (20 tests)
+  - `test_append_requested_tools_grows_the_plan_by_dependency`
+  - `test_inline_plans_union_and_ignore_unknown_tools`
+  - `test_invalidate_holds_dependents_of_an_external_rerun`
+  - `test_invalidate_keeps_reset_workers_out_of_pending`
+  - `test_invalidate_releases_dependents_for_a_fresh_rerun`
+  - `test_observer_scope_result_aggregates_requested_reports`
+  - `test_observer_scope_result_falls_back_without_tools`
+  - `test_pause_waiting_external_excludes_the_worker_subtree`
+  - `test_plan_is_read_from_the_materialized_request_file`
+  - `test_requested_scope_collects_arguments_and_missing_tools`
+  - `test_requested_scope_survives_missing_arguments_block`
+  - `test_retire_worker_releases_retargeted_and_ignores_pending`
+  - `test_same_fingerprint_requests_reset_the_full_plan`
+  - `test_scoped_apply_requeues_roots_dependents_and_retargets`
+  - `test_scoped_reset_needs_an_owner`
+  - `test_status_all_embeds_live_runs`
+  - `test_status_filters_named_outputs`
+  - `test_status_serializes_live_records`
+  - `test_tool_dependency_follows_the_catalog`
+  - `test_unusable_plans_fall_back_to_the_full_reset`
 - `test_pipeline_supervisor.py` — Verify transactional pipeline ownership and observer generations. (5 tests)
   - `test_claims_are_isolated_by_pipeline`
   - `test_compatible_claim_requests_a_shared_generation`
@@ -1353,7 +1390,7 @@ Tests live in `exactus/tests/tools/common/`.
   - `test_pending_line_buffer_is_capped`
   - `test_recorder_lock_is_reentrant`
   - `test_recorder_splits_chunks_into_lines`
-- `test_terminal.py` — ANSI terminal rendering, progress painting, and cursor probing. (19 tests)
+- `test_terminal.py` — ANSI terminal rendering, progress painting, and cursor probing. (20 tests)
   - `test_bar_is_contiguous_and_marks_issues_red`
   - `test_clear_screen_on_windows`
   - `test_dsr_cursor_moves`
@@ -1371,6 +1408,7 @@ Tests live in `exactus/tests/tools/common/`.
   - `test_progress_requires_tty`
   - `test_refreshed_report_status_and_legend`
   - `test_results_table`
+  - `test_segmented_bar_splits_weighted_segments`
   - `test_standalone_progress_and_cursor`
   - `test_tty_name_requires_real_terminal`
 - `test_terminal_progress.py` — Determinate and indeterminate terminal progress rendering. (5 tests)

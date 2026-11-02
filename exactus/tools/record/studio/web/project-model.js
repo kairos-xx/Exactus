@@ -14,7 +14,7 @@ export const emptyFilter = () => ({
   author: "",
   modifiedWithin: 0,
   runs: "any",
-  sort: "modified",
+  sort: "modified"
 });
 /** Whether a filter narrows the list.
  * @param {GalleryFilter} filter
@@ -26,7 +26,7 @@ export const isFiltered = filter =>
     filter.tags.length ||
     filter.author.trim() ||
     filter.modifiedWithin ||
-    filter.runs !== "any",
+    filter.runs !== "any"
   );
 /** What is wrong with a project name, if anything.
  * @param {string} name
@@ -40,7 +40,7 @@ export const nameIssue = (name, projects, ignore = "") => {
   if (wanted.length > 80) return "Use at most 80 characters.";
   const taken = projects.some(
     project =>
-      project.slug !== ignore && project.name.trim().toLowerCase() === wanted,
+      project.slug !== ignore && project.name.trim().toLowerCase() === wanted
   );
   return taken ? "A project with this name already exists." : "";
 };
@@ -69,7 +69,7 @@ const haystack = project =>
     project.author,
     project.version,
     project.base_url,
-    ...project.tags,
+    ...project.tags
   ]
     .join("\n")
     .toLowerCase();
@@ -109,7 +109,7 @@ export const filterProjects = (projects, filter, now = Date.now()) => {
     created: (a, b) => b.created_at.localeCompare(a.created_at),
     run: (a, b) => b.last_run_at.localeCompare(a.last_run_at),
     name: (a, b) =>
-      a.name.localeCompare(b.name, undefined, { sensitivity: "base" }),
+      a.name.localeCompare(b.name, undefined, {sensitivity: "base"})
   };
   return kept.sort(order[filter.sort]);
 };
@@ -128,14 +128,13 @@ export const ago = (iso, now = Date.now()) => {
     [2_592_000, "month"],
     [86_400, "day"],
     [3600, "hour"],
-    [60, "minute"],
+    [60, "minute"]
   ];
-  for (const [size, unit] of units) {
+  for (const [size, unit] of units)
     if (seconds >= size) {
       const count = Math.floor(seconds / size);
       return `${count} ${unit}${count === 1 ? "" : "s"} ago`;
     }
-  }
   return "just now";
 };
 /** A date and time for a details list.
@@ -147,7 +146,7 @@ export const when = iso => {
   if (!iso || Number.isNaN(time)) return "—";
   return new Date(time).toLocaleString(undefined, {
     dateStyle: "medium",
-    timeStyle: "short",
+    timeStyle: "short"
   });
 };
 /** The recently opened projects, in order, that still exist.

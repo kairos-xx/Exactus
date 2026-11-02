@@ -17,8 +17,9 @@ Tests of the lints tool.
 
 ### Files
 
-- [`__init__.py`](__init__.py) — Tests of the lints tool.
+- [`__init__.py`](__init__.py) — Tests of Exactus lint source transformations.
 - [`test_compliance.py`](test_compliance.py) — LINTS includes the canonical engineering rules and their source evidence.
+- [`test_css_naming.py`](test_css_naming.py) — Regression tests for numeric CSS custom-property naming.
 - [`test_css_tokens.py`](test_css_tokens.py) — The lints CSS token audit resolves one token graph across stylesheets.
 - [`test_js_delimiters.py`](test_js_delimiters.py) — Behavioral tests for the JavaScript delimiter simplifier.
 - [`test_js_function_blocks.py`](test_js_function_blocks.py) — Behavioral tests for the Python JavaScript block analyzer API.
@@ -28,6 +29,7 @@ Tests of the lints tool.
 - [`test_lints_report.py`](test_lints_report.py) — LINTS renders result.md and its web view from normalized data.
 - [`test_long_lines.py`](test_long_lines.py) — The lints long-line repair keeps behavior and converges to a fixpoint.
 - [`test_method_contracts.py`](test_method_contracts.py) — Protect externally inherited instance methods from binding changes.
+- [`test_python_simplify.py`](test_python_simplify.py) — Regression tests for conservative Python simplifications.
 - [`test_shebang.py`](test_shebang.py) — The lints shebang check reports and heals permission mismatches.
 - [`test_shebang_metrics.py`](test_shebang_metrics.py) — The lints shebang check counts executables, shebangs and interpreters.
 - [`test_source_cleaner.py`](test_source_cleaner.py) — Behavioral tests for the lints source cleaner.

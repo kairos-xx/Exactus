@@ -81,6 +81,8 @@ class Constants:
         "tools": ProviderId.TOOL,
         "exclude_tools": ProviderId.TOOL,
         "clear": ProviderId.TOOL,
+        "kill": ProviderId.TARGET,
+        "status": ProviderId.TARGET,
         "pipeline": ProviderId.PIPELINE,
         "tool_arg": ProviderId.TOOL_ARGUMENT,
     }

@@ -1,9 +1,9 @@
 /** The console widget: a filterable, searchable message list with inspectable values. */
-import { Describer } from "./describe.js";
-import { applyFormat, partsText } from "./format.js";
-import { icon } from "./icons.js";
-import { renderTable, renderValue } from "./inspect.js";
-import { ConsoleRecorder } from "./recorder.js";
+import {Describer} from "./describe.js";
+import {applyFormat, partsText} from "./format.js";
+import {icon} from "./icons.js";
+import {renderTable, renderValue} from "./inspect.js";
+import {ConsoleRecorder} from "./recorder.js";
 /** @typedef {import("./describe.js").Descriptor} Descriptor */
 /** @typedef {"log"|"info"|"warn"|"error"|"debug"} Level */
 /** @typedef {"message"|"table"|"group"|"result"|"input"|"divider"} Kind */
@@ -48,7 +48,7 @@ const LEVEL_NAMES = /** @type {Record<string, string>} */ ({
   warn: "Warnings",
   info: "Info",
   log: "Logs",
-  debug: "Debug",
+  debug: "Debug"
 });
 const MAX_DEPTH = 5;
 /**
@@ -132,7 +132,7 @@ const renderMessage = entry => {
  * @returns The widget API.
  */
 export const mountConsole = (host, options = {}) => {
-  const { label = "Console", theme = null, maxEntries = 1000, emptyText = "No messages yet." } = options;
+  const {label = "Console", theme = null, maxEntries = 1000, emptyText = "No messages yet."} = options;
   const root = make("section", "jc-console");
   if (theme) root.setAttribute("data-theme", theme);
   root.setAttribute("aria-label", label);
@@ -206,10 +206,9 @@ export const mountConsole = (host, options = {}) => {
    * @returns {Record<Level, number>} Counts by level.
    */
   const counts = () => {
-    const total = { log: 0, info: 0, warn: 0, error: 0, debug: 0 };
-    for (const { entry } of rows) {
+    const total = {log: 0, info: 0, warn: 0, error: 0, debug: 0};
+    for (const {entry} of rows)
       if (entry.kind === "message" || entry.kind === "table" || entry.kind === "group") total[entry.level] += entry.repeat;
-    }
     return total;
   };
   /**
@@ -218,7 +217,7 @@ export const mountConsole = (host, options = {}) => {
    * @returns {boolean} True when the row should show.
    */
   const passes = row => {
-    const { kind, level } = row.entry;
+    const {kind, level} = row.entry;
     if (kind === "divider") return true;
     const levelOk = filter === "all" || kind === "input" || kind === "result" || level === filter;
     const queryOk = query === "" || kind === "input" || row.text.includes(query);
@@ -248,7 +247,7 @@ export const mountConsole = (host, options = {}) => {
   const changed = () => {
     refresh();
     const total = counts();
-    emit("change", { count: rows.length, errors: total.error, warnings: total.warn });
+    emit("change", {count: rows.length, errors: total.error, warnings: total.warn});
   };
   /**
    * Add one entry.
@@ -282,7 +281,7 @@ export const mountConsole = (host, options = {}) => {
     }
     sequence += 1;
     /** @type {ConsoleEntry} */
-    const entry = { id: sequence, level, kind, parts, time: input.time ?? Date.now(), depth, repeat: 1 };
+    const entry = {id: sequence, level, kind, parts, time: input.time ?? Date.now(), depth, repeat: 1};
     if (input.source) entry.source = input.source;
     const node = make("div", "jc-entry");
     node.setAttribute("data-level", level);
@@ -301,14 +300,14 @@ export const mountConsole = (host, options = {}) => {
         const source = make("button", "jc-source", `${entry.source.line}:${entry.source.column}`);
         source.type = "button";
         source.title = `Go to line ${entry.source.line}`;
-        const { line, column } = entry.source;
-        source.addEventListener("click", () => emit("source", { line, column }));
+        const {line, column} = entry.source;
+        source.addEventListener("click", () => emit("source", {line, column}));
         node.append(source);
       }
     }
     const stick = list.scrollHeight - list.scrollTop - list.clientHeight < 24;
     list.append(node);
-    rows.push({ entry, node, text });
+    rows.push({entry, node, text});
     if (rows.length > maxEntries) {
       rows.shift()?.node.remove();
       trimmed.hidden = false;
@@ -323,7 +322,7 @@ export const mountConsole = (host, options = {}) => {
    * @param {...unknown} values Values to describe.
    * @returns {number} The entry id.
    */
-  const log = (level, ...values) => append({ level, parts: values.map(value => Describer.describe(value)) });
+  const log = (level, ...values) => append({level, parts: values.map(value => Describer.describe(value))});
   /** Remove every row. */
   const clear = () => {
     for (const row of rows) row.node.remove();
@@ -367,7 +366,7 @@ export const mountConsole = (host, options = {}) => {
   const text = () =>
     rows
       .filter(row => !row.node.hidden)
-      .map(({ entry }) => `${"  ".repeat(entry.depth)}${partsText(entry.parts)}${entry.repeat > 1 ? ` (×${entry.repeat})` : ""}`)
+      .map(({entry}) => `${"  ".repeat(entry.depth)}${partsText(entry.parts)}${entry.repeat > 1 ? ` (×${entry.repeat})` : ""}`)
       .join("\n");
   levelSelect.addEventListener("change", () => setFilter(levelSelect.value));
   searchInput.addEventListener("input", () => setQuery(searchInput.value));
@@ -384,12 +383,12 @@ export const mountConsole = (host, options = {}) => {
   copyButton.addEventListener("click", async () => {
     try {
       await navigator.clipboard.writeText(text());
-      emit("copy", { length: rows.length });
+      emit("copy", {length: rows.length});
     } catch (error) {
-      emit("copy", { error });
+      emit("copy", {error});
     }
   });
-  const recorder = new ConsoleRecorder({ append, clear });
+  const recorder = new ConsoleRecorder({append, clear});
   const methods = recorder.methods();
   /**
    * Mirror a host console and uncaught errors into this widget.
@@ -465,7 +464,7 @@ export const mountConsole = (host, options = {}) => {
     destroy: () => {
       root.remove();
       for (const set of Object.values(listeners)) set.clear();
-    },
+    }
   };
   return api;
 };

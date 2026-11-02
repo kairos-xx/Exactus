@@ -44,6 +44,7 @@
 		"**/.cache/**",
 		"**/EXACTUS_RESULTS/**",
 		"**/.exactus-cache/**",
+		"**/eslint.config.*",
 		"**/.venv/**"
 	]
 }

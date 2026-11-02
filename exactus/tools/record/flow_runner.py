@@ -1773,8 +1773,7 @@ class FlowRunner:
         body: str = (
             self._template(value=str(object=config.get("body") or "")) or ""
         )
-        cookies: str | None = cookie_header(rows=config.get("cookies"))
-        if cookies:
+        if cookies := cookie_header(rows=config.get("cookies")):
             authored: str = headers.get("Cookie", "")
             headers["Cookie"] = (
                 f"{authored}; {cookies}" if authored else cookies

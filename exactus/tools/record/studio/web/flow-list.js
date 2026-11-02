@@ -1,4 +1,4 @@
-import { iconElement } from "./icons.js";
+import {iconElement} from "./icons.js";
 /** The one Flows list: every place that shows saved flows renders it here. */
 /**
  * @typedef {{id:string,name:string}} FlowItem
@@ -46,6 +46,6 @@ export const renderFlowList = (target, flows, selectedId, onSelect, onMenu) => {
       button.append(icon, name, more);
       button.addEventListener("click", () => onSelect(flow.id));
       return button;
-    }),
+    })
   );
 };

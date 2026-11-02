@@ -9,14 +9,13 @@
 /** @param {SandboxContext} ctx */
 async ctx => {
   const Engine = /** @type {any} */ (globalThis).__EXACTUS_ES__;
-  const engine = new Engine(document, { deep: true });
-  for (const [name, expression] of Object.entries(ctx.definitions)) {
+  const engine = new Engine(document, {deep: true});
+  for (const [name, expression] of Object.entries(ctx.definitions))
     try {
       engine.define(name, expression);
     } catch {
       // The resolver already reports selectors that cannot be defined.
     }
-  }
   const AsyncFunction = Object.getPrototypeOf(async () => {}).constructor;
   const names = [
     "document",
@@ -24,7 +23,7 @@ async ctx => {
     "globalThis",
     "self",
     "exactus",
-    "__EXACTUS_FLOW__",
+    "__EXACTUS_FLOW__"
   ];
   /** Compile a snippet, preferring expression form.
    * @param {string} script Snippet source.
@@ -52,9 +51,9 @@ async ctx => {
         index,
         value: null,
         error: firstLine(error),
-        out: [],
+        out: []
       })),
-      vars: ctx.vars,
+      vars: ctx.vars
     };
   }
   /** Format one logged value for the stream.
@@ -71,15 +70,13 @@ async ctx => {
   };
   const facade = new Proxy(document, {
     get: (target, key) => {
-      if (key === "querySelector") {
+      if (key === "querySelector")
         return (/** @type {string} */ text) => engine.queryOne(text);
-      }
-      if (key === "querySelectorAll") {
+      if (key === "querySelectorAll")
         return (/** @type {string} */ text) => engine.query(text);
-      }
       const value = Reflect.get(target, key, target);
       return typeof value === "function" ? value.bind(target) : value;
-    },
+    }
   });
   const sandboxWindow = new Proxy(window, {
     get: (target, key) => {
@@ -89,17 +86,17 @@ async ctx => {
       const value = Reflect.get(target, key, target);
       return typeof value === "function" ? value.bind(target) : value;
     },
-    set: (target, key, value) => Reflect.set(target, key, value, target),
+    set: (target, key, value) => Reflect.set(target, key, value, target)
   });
   const targets = ctx.targets.map(css => engine.queryChain(css)[0] ?? null);
   /** @type {Record<SandboxLevel, SandboxLogEntry[]>} */
   const history = {
     log: ctx.logs,
     warn: ctx.warnings,
-    error: ctx.errors,
+    error: ctx.errors
   };
   /** @type {Record<SandboxLevel, "logs"|"warnings"|"errors">} */
-  const sources = { log: "logs", warn: "warnings", error: "errors" };
+  const sources = {log: "logs", warn: "warnings", error: "errors"};
   const results = await Promise.all(
     ctx.indices.map(async index => {
       /** @type {SandboxLogEntry[]} */
@@ -110,7 +107,7 @@ async ctx => {
           const entry = {
             level,
             message: parts.map(format).join(" "),
-            at: Date.now(),
+            at: Date.now()
           };
           out.push(entry);
           history[level].push(entry);
@@ -130,41 +127,41 @@ async ctx => {
         error: note("error"),
         assert: (
           /** @type {unknown} */ condition,
-          /** @type {string|undefined} */ message,
+          /** @type {string|undefined} */ message
         ) => {
           if (!condition) throw new Error(message ?? "Assertion failed.");
-        },
+        }
       };
       const exactus = Object.freeze({
-        project: Object.freeze({ ...ctx.project }),
-        context: Object.freeze({ ...ctx.context }),
-        flow: Object.freeze({ id: ctx.flowId, name: ctx.flowName }),
+        project: Object.freeze({...ctx.project}),
+        context: Object.freeze({...ctx.context}),
+        flow: Object.freeze({id: ctx.flowId, name: ctx.flowName}),
         graph: null,
-        run: Object.freeze({ id: ctx.runId, mode: "playback", attempt: 1 }),
+        run: Object.freeze({id: ctx.runId, mode: "playback", attempt: 1}),
         action: Object.freeze({
           id: ctx.actionId,
           kind: ctx.actionKind,
           label: ctx.actionLabel,
-          attempt: 1,
+          attempt: 1
         }),
         page: Object.freeze({
           id: "main",
           url: window.location.href,
           origin: window.location.origin,
           title: document.title,
-          isPopup: Boolean(window.opener),
+          isPopup: Boolean(window.opener)
         }),
         frame: Object.freeze({
           id: window === window.top ? "main" : "frame",
           url: window.location.href,
           name: window.name,
-          isMain: window === window.top,
+          isMain: window === window.top
         }),
         device: Object.freeze({
           profileId: ctx.context.id,
           viewport: Object.freeze({
             width: window.innerWidth,
-            height: window.innerHeight,
+            height: window.innerHeight
           }),
           orientation: window.innerWidth >= window.innerHeight
             ? "landscape"
@@ -178,7 +175,7 @@ async ctx => {
           colorScheme: window.matchMedia("(prefers-color-scheme: dark)").matches
             ? "dark"
             : "light",
-          platform: navigator.platform,
+          platform: navigator.platform
         }),
         inputs: Object.freeze({}),
         vars: Object.freeze({
@@ -191,13 +188,13 @@ async ctx => {
           metadata: (/** @type {string} */ name) => Object.freeze({
             name,
             available: Object.hasOwn(ctx.vars, name),
-            type: typeof ctx.vars[name],
-          }),
+            type: typeof ctx.vars[name]
+          })
         }),
         selectors: Object.freeze({
           query: (/** @type {string} */ source) => engine.query(source),
           queryOne: (/** @type {string} */ source) => engine.queryOne(source),
-          describe: (/** @type {string} */ source) => Object.freeze({ source }),
+          describe: (/** @type {string} */ source) => Object.freeze({source})
         }),
         target: targets[index] ?? null,
         targets: Object.freeze([...targets]),
@@ -209,14 +206,14 @@ async ctx => {
         log: note("log"),
         warn: note("warn"),
         error: note("error"),
-        assert: flow.assert,
+        assert: flow.assert
       });
       for (const [level, property] of /** @type {[SandboxLevel, string][]} */ (
         Object.entries(sources)
       ))
         Object.defineProperty(flow, property, {
           get: () => history[level],
-          enumerable: true,
+          enumerable: true
         });
       try {
         const returned = await run(
@@ -225,7 +222,7 @@ async ctx => {
           sandboxWindow,
           sandboxWindow,
           exactus,
-          flow,
+          flow
         );
         const value =
           typeof returned === "function" ? await returned() : returned;
@@ -235,11 +232,11 @@ async ctx => {
         } catch {
           json = String(value);
         }
-        return { index, value: json, error: null, out };
+        return {index, value: json, error: null, out};
       } catch (error) {
-        return { index, value: null, error: firstLine(error), out };
+        return {index, value: null, error: firstLine(error), out};
       }
-    }),
+    })
   );
-  return { results, vars: ctx.vars };
+  return {results, vars: ctx.vars};
 };

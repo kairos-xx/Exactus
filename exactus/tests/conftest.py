@@ -43,8 +43,7 @@ class Constants:
         "EXACTUS_RESULTS/**",
         "build/**",
         "exec/**",
-        "packages/**",
-        "exactus/record/**",
+        "artifacts/**",
         "demo/**",
     )
     signals: Final[tuple[Signals, ...]] = tuple(

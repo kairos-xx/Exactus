@@ -18,7 +18,9 @@ from exactus.tests.common.support import (
     private_call,
 )
 from exactus.tools.common.catalog import Catalog, PipelineSpec, ToolSpec
-from exactus.tools.common.catalog import Constants as _GroupFinalConstants
+from exactus.tools.common.catalog import (
+    GroupFinalConstants as _GroupFinalConstants,
+)
 
 
 @final

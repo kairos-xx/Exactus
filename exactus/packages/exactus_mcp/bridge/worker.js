@@ -42,7 +42,7 @@ class Router {
 	static resourceMetadata = url => Response.json({
 		resource: Router.resource(url),
 		authorization_servers: [url.origin],
-		scopes_supported: ["mcp:tools"],
+		scopes_supported: ["mcp:tools"]
 	});
 	/** Return OAuth authorization-server metadata.
 	 * @param {URL} url Request URL.
@@ -58,7 +58,7 @@ class Router {
 		code_challenge_methods_supported: ["S256"],
 		token_endpoint_auth_methods_supported: ["none"],
 		scopes_supported: ["mcp:tools"],
-		authorization_response_iss_parameter_supported: true,
+		authorization_response_iss_parameter_supported: true
 	});
 	/** Register one public OAuth client.
 	 * @param {Request} request Registration request.

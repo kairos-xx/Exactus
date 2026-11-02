@@ -130,10 +130,10 @@ export class FakeEventTarget {
    * @param {{capture?: boolean, once?: boolean} | boolean} [options] Options.
    */
   addEventListener(type, listener, options = {}) {
-    if (typeof options === "boolean") options = { capture: options };
+    if (typeof options === "boolean") options = {capture: options};
     (this.__listeners[type] ??= []).push({
       listener,
-      once: Boolean(options.once),
+      once: Boolean(options.once)
     });
   }
   /**
@@ -144,7 +144,7 @@ export class FakeEventTarget {
    */
   removeEventListener(type, listener) {
     this.__listeners[type] = (this.__listeners[type] ?? []).filter(
-      entry => entry.listener !== listener,
+      entry => entry.listener !== listener
     );
   }
   /**
@@ -157,7 +157,7 @@ export class FakeEventTarget {
     if (!event.target)
       Object.defineProperty(event, "target", {
         value: this,
-        configurable: true,
+        configurable: true
       });
     const list = this.__listeners[event.type] ?? [];
     this.__listeners[event.type] = list.filter(entry => !entry.once);
@@ -335,11 +335,11 @@ const parseSimple = element => ({
         .some(part => parseSimple(element).match(part));
     const nth = /:nth-child\((\d+)\)$/.exec(trimmed);
     const positional = /:(first-child|last-child|focus-within)$/.exec(
-      trimmed,
+      trimmed
     );
     const base = (nth ? trimmed.slice(0, nth.index) : trimmed).replace(
       /:(first-child|last-child|focus-within)$/,
-      "",
+      ""
     );
     if (nth || positional?.[1] === "first-child" || positional?.[1] === "last-child") {
       const parent = element.parentElement;
@@ -370,14 +370,14 @@ const parseSimple = element => ({
     if (tag && tag !== "*" && element.localName !== tag.toLowerCase())
       return false;
     return pieces.slice(1).every(name => element.classList.contains(name));
-  },
+  }
 });
 /** Media stream stand-in with scripted tracks. */
 class FakeMediaStream extends FakeEventTarget {
   constructor() {
     super();
     /** @type {FakeTrack[]} */
-    this.__tracks = [{ stop: () => {}, kind: "video" }];
+    this.__tracks = [{stop: () => {}, kind: "video"}];
   }
   /**
    * All tracks.
@@ -511,10 +511,10 @@ export class Element extends FakeNode {
        */
       getPropertyValue(name) {
         return this.__vars.get(name) ?? "";
-      },
+      }
     };
     /** @type {FakeRect} */
-    this.rect = { left: 0, top: 0, width: 100, height: 20 };
+    this.rect = {left: 0, top: 0, width: 100, height: 20};
     /** @type {Record<string, string>} */
     this.styleOverrides = {};
     /** @type {Record<string, Record<string, string>> | undefined} */
@@ -541,7 +541,7 @@ export class Element extends FakeNode {
   get attributes() {
     return [...this.attributesMap].map(([name, value]) => ({
       name,
-      value,
+      value
     }));
   }
   /**
@@ -880,7 +880,7 @@ export class Element extends FakeNode {
     };
     const pool = scoped ? this.children : this.#descendants();
     return pool.filter(
-      element => element.matches(last) && chain(element),
+      element => element.matches(last) && chain(element)
     );
   }
   /**
@@ -898,7 +898,7 @@ export class Element extends FakeNode {
    * @returns {object} Bounding rectangle.
    */
   getBoundingClientRect() {
-    const { left, top, width, height } = this.rect;
+    const {left, top, width, height} = this.rect;
     return {
       x: left,
       y: top,
@@ -910,7 +910,7 @@ export class Element extends FakeNode {
       bottom: top + height,
       toJSON() {
         return this;
-      },
+      }
     };
   }
   /**
@@ -957,12 +957,11 @@ export class Element extends FakeNode {
      * @param {Element} node Subtree root.
      */
     const walk = node => {
-      for (const child of node.childNodes) {
+      for (const child of node.childNodes)
         if (child instanceof Element) {
           all.push(child);
           walk(child);
         }
-      }
     };
     walk(this);
     return all;
@@ -1021,7 +1020,7 @@ export class SVGGraphicsElement extends SVGElement {
    * @returns {object} Bounding box.
    */
   getBBox() {
-    const { left, top, width, height } = this.rect;
+    const {left, top, width, height} = this.rect;
     return {
       x: left,
       y: top,
@@ -1029,7 +1028,7 @@ export class SVGGraphicsElement extends SVGElement {
       height,
       toJSON() {
         return this;
-      },
+      }
     };
   }
 }
@@ -1044,7 +1043,7 @@ export class FakeDOMMatrixReadOnly {
    *   Matrix init.
    */
   constructor(init = "") {
-    const values = { a: 1, b: 0, c: 0, d: 1, e: 0, f: 0 };
+    const values = {a: 1, b: 0, c: 0, d: 1, e: 0, f: 0};
     if (typeof init === "string") {
       const match = /matrix\(([^)]*)\)/.exec(init);
       const parts = match?.[1]
@@ -1091,7 +1090,7 @@ export class FakeDOMMatrixReadOnly {
       c: this.a * other.c + this.c * other.d,
       d: this.b * other.c + this.d * other.d,
       e: this.a * other.e + this.c * other.f + this.e,
-      f: this.b * other.e + this.d * other.f + this.f,
+      f: this.b * other.e + this.d * other.f + this.f
     });
   }
 }
@@ -1138,24 +1137,24 @@ const createContext2d = () => ({
   fillText: () => {},
   strokeText: () => {},
   measureText: (/** @type {string} */ text) => ({
-    width: String(text).length * 8,
+    width: String(text).length * 8
   }),
   getImageData: (
     /** @type {number} */ _x,
     /** @type {number} */ _y,
     w = 1,
-    h = 1,
+    h = 1
   ) => ({
     width: w,
     height: h,
-    data: new Uint8ClampedArray(w * h * 4).fill(255),
+    data: new Uint8ClampedArray(w * h * 4).fill(255)
   }),
   putImageData: () => {},
   createImageData: (/** @type {number} */ w, /** @type {number} */ h) => ({
     width: w,
     height: h,
-    data: new Uint8ClampedArray(w * h * 4),
-  }),
+    data: new Uint8ClampedArray(w * h * 4)
+  })
 });
 /** Canvas element returning a fake 2d context. */
 export class HTMLCanvasElement extends HTMLElement {
@@ -1195,7 +1194,7 @@ export class HTMLCanvasElement extends HTMLElement {
    */
   toBlob(callback, type = "image/png") {
     queueMicrotask(() =>
-      callback(new Blob([new Uint8Array(32)], { type })),
+      callback(new Blob([new Uint8Array(32)], {type}))
     );
   }
 }
@@ -1332,7 +1331,7 @@ class FakeRange {
       width: 60,
       height: 14,
       right: 60,
-      bottom: 14,
+      bottom: 14
     };
     return [rect];
   }
@@ -1372,15 +1371,15 @@ class FakeMediaRecorder extends FakeEventTarget {
     queueMicrotask(() =>
       this.dispatchEvent(
         Object.assign(new Event("dataavailable"), {
-          data: this.#chunk(),
-        }),
-      ),
+          data: this.#chunk()
+        })
+      )
     );
   }
   /** Emit a data chunk on demand. */
   requestData() {
     this.dispatchEvent(
-      Object.assign(new Event("dataavailable"), { data: this.#chunk() }),
+      Object.assign(new Event("dataavailable"), {data: this.#chunk()})
     );
   }
   /** Pause the fake recording. */
@@ -1396,7 +1395,7 @@ class FakeMediaRecorder extends FakeEventTarget {
     if (this.state === "inactive") return;
     this.state = "inactive";
     this.dispatchEvent(
-      Object.assign(new Event("dataavailable"), { data: this.#chunk() }),
+      Object.assign(new Event("dataavailable"), {data: this.#chunk()})
     );
     this.dispatchEvent(new Event("stop"));
   }
@@ -1408,7 +1407,7 @@ class FakeMediaRecorder extends FakeEventTarget {
   #chunk() {
     const head = Uint8Array.of(0x1a, 0x45, 0xdf, 0xa3);
     const body = new Uint8Array(512).fill(7);
-    return new Blob([head, body], { type: this.mimeType });
+    return new Blob([head, body], {type: this.mimeType});
   }
 }
 /** Image stand-in resolving loads immediately. */
@@ -1625,7 +1624,7 @@ const STYLE_DEFAULTS = {
   willChange: "auto",
   wordBreak: "normal",
   writingMode: "horizontal-tb",
-  zIndex: "auto",
+  zIndex: "auto"
 };
 /** @type {Record<string, new (tag: string, doc: FakeDocument) => Element>} */
 const TAG_CLASSES = {
@@ -1645,7 +1644,7 @@ const TAG_CLASSES = {
   details: HTMLDetailsElement,
   form: HTMLFormElement,
   svg: SVGSVGElement,
-  text: SVGTextElement,
+  text: SVGTextElement
 };
 /**
  * Fixture document.
@@ -1666,13 +1665,13 @@ export const createDocument = () => {
       ? (element.pseudoStyles?.[pseudo] ?? {})
       : element.styleOverrides;
     /** @type {Record<string, string>} */
-    const styles = { ...STYLE_DEFAULTS, ...overrides };
+    const styles = {...STYLE_DEFAULTS, ...overrides};
     return new Proxy(styles, {
       get: (target, property) => {
         if (property === "getPropertyValue")
           return (/** @type {string} */ name) => target[name] ?? "";
         return target[String(property)] ?? "";
-      },
+      }
     });
   };
   const document = /** @type {FakeDocument} */ (
@@ -1691,15 +1690,15 @@ export const createDocument = () => {
       createElement: (/** @type {string} */ tag) =>
         new (TAG_CLASSES[String(tag).toLowerCase()] ?? HTMLElement)(
           tag,
-          document,
+          document
         ),
       createElementNS: (
         /** @type {string | null} */ _ns,
-        /** @type {string} */ tag,
+        /** @type {string} */ tag
       ) =>
         new (TAG_CLASSES[String(tag).toLowerCase()] ?? SVGElement)(
           tag,
-          document,
+          document
         ),
       createTextNode: (/** @type {string} */ text) =>
         new FakeTextNode(text, document),
@@ -1712,7 +1711,7 @@ export const createDocument = () => {
           .querySelectorAll("*")
           .find(element => element.id === id) ?? null,
       addEventListener: () => {},
-      removeEventListener: () => {},
+      removeEventListener: () => {}
     })
   );
   document.documentElement = new HTMLElement("html", document);
@@ -1860,7 +1859,7 @@ export const createDocument = () => {
  * @returns {SandboxGlobal} Populated VM sandbox global.
  */
 export const buildSandbox = dependencies => {
-  const { webcrypto } = dependencies;
+  const {webcrypto} = dependencies;
   const listeners = new Map();
   const document = createDocument();
   const visualViewport = /** @type {FakeEventTarget & {
@@ -1879,7 +1878,7 @@ export const buildSandbox = dependencies => {
     offsetTop: 0,
     pageLeft: 0,
     pageTop: 0,
-    scale: 1,
+    scale: 1
   });
   const globalListeners = new FakeEventTarget();
   const sandbox = {
@@ -1957,7 +1956,7 @@ export const buildSandbox = dependencies => {
       DOCUMENT_POSITION_PRECEDING: 2,
       DOCUMENT_POSITION_FOLLOWING: 4,
       DOCUMENT_POSITION_CONTAINS: 8,
-      DOCUMENT_POSITION_CONTAINED_BY: 16,
+      DOCUMENT_POSITION_CONTAINED_BY: 16
     }),
     Element,
     HTMLElement,
@@ -2053,7 +2052,7 @@ export const buildSandbox = dependencies => {
         this.disconnected = true;
       }
     },
-    location: { href: "https://scene-tests.local/page" },
+    location: {href: "https://scene-tests.local/page"},
     CSS: {
       /**
        * Identifier to escape.
@@ -2067,7 +2066,7 @@ export const buildSandbox = dependencies => {
        *
        * @returns {boolean} Always supported.
        */
-      supports: () => true,
+      supports: () => true
     },
     innerWidth: 800,
     innerHeight: 600,
@@ -2083,11 +2082,11 @@ export const buildSandbox = dependencies => {
     visualViewport,
     matchMedia: (/** @type {string} */ query) => ({
       matches: false,
-      media: query,
+      media: query
     }),
     getComputedStyle: (
       /** @type {Element} */ element,
-      /** @type {string | null} */ pseudo = null,
+      /** @type {string | null} */ pseudo = null
     ) => document.getComputedStyle(element, pseudo),
     navigator: {
       language: "en-US",
@@ -2110,10 +2109,10 @@ export const buildSandbox = dependencies => {
         downlink: 10,
         rtt: 50,
         saveData: false,
-        type: "wifi",
+        type: "wifi"
       },
-      storage: { quota: 1000, usage: 100, usageDetails: {} },
-      userAgentData: { mobile: false },
+      storage: {quota: 1000, usage: 100, usageDetails: {}},
+      userAgentData: {mobile: false}
     },
     screen: {
       width: 1920,
@@ -2124,11 +2123,11 @@ export const buildSandbox = dependencies => {
       availTop: 0,
       colorDepth: 24,
       pixelDepth: 24,
-      isExtended: false,
+      isExtended: false
     },
     fetch: async () => ({
       blob: async () =>
-        new Blob([new Uint8Array(16)], { type: "image/png" }),
+        new Blob([new Uint8Array(16)], {type: "image/png"})
     }),
     htmlToImage: {
       toCanvas: async () => {
@@ -2136,23 +2135,23 @@ export const buildSandbox = dependencies => {
         canvas.width = 200;
         canvas.height = 100;
         return canvas;
-      },
+      }
     },
     document,
     addEventListener: (
       /** @type {string} */ type,
-      /** @type {(event: any) => void} */ listener,
+      /** @type {(event: any) => void} */ listener
     ) => globalListeners.addEventListener(type, listener),
     removeEventListener: (
       /** @type {string} */ type,
-      /** @type {(event: any) => void} */ listener,
+      /** @type {(event: any) => void} */ listener
     ) => globalListeners.removeEventListener(type, listener),
     dispatchEvent: (/** @type {Event} */ event) =>
       globalListeners.dispatchEvent(event),
     __globalListeners: globalListeners,
     __listeners: listeners,
     __evidenceSha256: async (/** @type {BufferSource} */ buffer) =>
-      webcrypto.subtle.digest("SHA-256", buffer),
+      webcrypto.subtle.digest("SHA-256", buffer)
   };
   return sandbox;
 };

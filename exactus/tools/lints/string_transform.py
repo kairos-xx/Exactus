@@ -836,8 +836,7 @@ def _call_arguments(
     for comma in commas:
         chunks.append(original_call[previous:comma].strip())
         previous = comma + 1
-    tail: str = original_call[previous:closing].strip()
-    if tail:
+    if tail := original_call[previous:closing].strip():
         chunks.append(tail)
     return (opening.end[1], closing, chunks)
 
@@ -1145,7 +1144,11 @@ class SplitResult:
 
 
 def literal_parts(value: str | bytes, width: int) -> list[str] | None:
-    """Split at code-point boundaries, retaining exact escape semantics.
+    """Split at word boundaries, retaining exact escape semantics.
+
+    Each fragment ends at the last space that still fits ``width`` — the
+    space stays at the end of the fragment — falling back to a
+    code-point boundary when no usable space exists.
 
     Args:
         value: Literal content to split.
@@ -1171,8 +1174,17 @@ def literal_parts(value: str | bytes, width: int) -> list[str] | None:
                 high = middle - 1
         if not best:
             return None
-        parts.append(repr(rest[:best]))
-        rest = rest[best:]
+        cut: int = best
+        if len(rest) > best:
+            boundary: int = (
+                rest.rfind(b" ", 1, best + 1)
+                if isinstance(rest, bytes)
+                else rest.rfind(" ", 1, best + 1)
+            )
+            if boundary >= max(1, best // 3):
+                cut = boundary + 1
+        parts.append(repr(rest[:cut]))
+        rest = rest[cut:]
     return parts
 
 

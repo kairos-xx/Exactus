@@ -70,7 +70,17 @@ class Constants:
         ("-t", "--tools", "--tool"),
     )
     info_flags: Final[frozenset[str]] = frozenset(
-        ("-h", "--help", "--list-tools", "--list-pipelines", "--show-config"),
+        (
+            "-h",
+            "--help",
+            "--list-tools",
+            "--list-pipelines",
+            "--show-config",
+            "--status",
+            "--status-all",
+            "--kill",
+            "--kill-all",
+        ),
     )
     repeat_actions: Final[frozenset[str]] = frozenset(("_AppendAction",))
     multi_actions: Final[frozenset[str]] = frozenset(("_ExtendAction",))

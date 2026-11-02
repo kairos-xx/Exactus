@@ -7,7 +7,7 @@ test("clock API supports timeline time, arrow callbacks and safe disposal", asyn
 	await browserTest(t, async (page, url) => {
 		/** @type {string[]} */
 		const errors = [];
-		page.on("pageerror", ( /** @type {Error} */ error) => errors.push(error.message), );
+		page.on("pageerror", ( /** @type {Error} */ error) => errors.push(error.message) );
 		await page.goto(`${url}/exactus/packages/widgets/widget_clock/examples/web/index.html`);
 		const result = await page.evaluate(() => {
 			const Clock = /** @type {any} */ (globalThis).AnalogClock;
@@ -44,7 +44,7 @@ test("clock API supports timeline time, arrow callbacks and safe disposal", asyn
 			const setTime = clock.setTime.bind(clock);
 			check(setTime(1234) === clock, "bound chainable setTime");
 			check(clock.timecode === "00:00:01.07", "milliseconds at 30 fps");
-			check(clock.timeMilliseconds === 1234 && clock.frameRequest === undefined, "external clock owns no playback loop", );
+			check(clock.timeMilliseconds === 1234 && clock.frameRequest === undefined, "external clock owns no playback loop" );
 			clock.setFrame(1799);
 			check(clock.timecode === "00:00:59.29", "frame before minute rollover");
 			clock.setFrame(1800);
@@ -52,11 +52,11 @@ test("clock API supports timeline time, arrow callbacks and safe disposal", asyn
 			check(Clock.formatTime(3600000) === "01:00:00.00", "hour rollover");
 			check(Clock.formatFrame(17, {
 				fps: 24
-			}) === "00:00:00.17", "24 fps formatting", );
+			}) === "00:00:00.17", "24 fps formatting" );
 			clock.set({
 				template: "dd:dd:dd.ddd"
 			}).setTime(1234);
-			check(clock.timecode === "00:00:01.234", "timeline millisecond precision", );
+			check(clock.timecode === "00:00:01.234", "timeline millisecond precision" );
 			clock.set({
 				template: "dd:dd:dd.dd"
 			}).setFrame(1800);
@@ -64,21 +64,21 @@ test("clock API supports timeline time, arrow callbacks and safe disposal", asyn
 			check(rejects(() => clock.set({
 				padding: 8,
 				fps: 0
-			})), "invalid settings rejected", );
-			check(clock.settings.padding === snapshot.padding, "invalid settings atomic", );
-			check(rejects(() => clock.setTime(-1)) && rejects(() => clock.setTime(Infinity)), "invalid elapsed time rejected", );
-			check(rejects(() => clock.setFrame(1.5)) && rejects(() => Clock.formatTime(360000000)), "frame and overflow validation", );
+			})), "invalid settings rejected" );
+			check(clock.settings.padding === snapshot.padding, "invalid settings atomic" );
+			check(rejects(() => clock.setTime(-1)) && rejects(() => clock.setTime(Infinity)), "invalid elapsed time rejected" );
+			check(rejects(() => clock.setFrame(1.5)) && rejects(() => Clock.formatTime(360000000)), "frame and overflow validation" );
 			check(rejects(() => {
 				clock.value = "bad00123456";
-			}), "malformed value rejected", );
+			}), "malformed value rejected" );
 			clock.set({
 				mode: "matrix"
 			});
-			check(clock.timecode === "00:01:00.00" && Boolean(mount.querySelector(".sst-matrix")), "matrix switch retains timeline position", );
+			check(clock.timecode === "00:01:00.00" && Boolean(mount.querySelector(".sst-matrix")), "matrix switch retains timeline position" );
 			clock.set({
 				mode: "segment"
 			});
-			check(mount.querySelectorAll(".sst-on").length > 0, "segment rebuild restores lit digits", );
+			check(mount.querySelectorAll(".sst-on").length > 0, "segment rebuild restores lit digits" );
 			clock.set({
 				structure: [{
 					type: "group",
@@ -92,14 +92,14 @@ test("clock API supports timeline time, arrow callbacks and safe disposal", asyn
 			const structure = clock.normalizedStructure();
 			structure[0].digits = 8;
 			check(clock.digitCount() === 2, "defensive structure snapshots");
-			check(rejects(() => clock.setTime(0)), "incompatible timeline structure rejected", );
-			check(typeof Clock.prototype.setTime === "function" && clock.setTime === Clock.prototype.setTime, "methods live on the prototype", );
-			check(Object.values(clock).every(value => typeof value !== "function"), "no instance arrow fields", );
-			check(typeof Clock.matrixGlyph === "function", "pure glyph factory is static", );
+			check(rejects(() => clock.setTime(0)), "incompatible timeline structure rejected" );
+			check(typeof Clock.prototype.setTime === "function" && clock.setTime === Clock.prototype.setTime, "methods live on the prototype" );
+			check(Object.values(clock).every(value => typeof value !== "function"), "no instance arrow fields" );
+			check(typeof Clock.matrixGlyph === "function", "pure glyph factory is static" );
 			clock.destroy();
 			clock.destroy();
-			check(clock.destroyed && !mount.querySelector(".sst-root"), "idempotent disposal", );
-			check(rejects(() => clock.setTime(0)), "destroyed instances reject updates", );
+			check(clock.destroyed && !mount.querySelector(".sst-root"), "idempotent disposal" );
+			check(rejects(() => clock.setTime(0)), "destroyed instances reject updates" );
 			mount.remove();
 			return failures;
 		});
@@ -111,7 +111,7 @@ test("target resizes by pointer and keyboard and controls remain functional", as
 	await browserTest(t, async (page, url) => {
 		/** @type {string[]} */
 		const errors = [];
-		page.on("pageerror", ( /** @type {Error} */ error) => errors.push(error.message), );
+		page.on("pageerror", ( /** @type {Error} */ error) => errors.push(error.message) );
 		await page.goto(`${url}/exactus/packages/widgets/widget_clock/examples/web/index.html`);
 		assert.equal(await page.title(), "AnalogClock Demo");
 		assert.equal(await page.locator("#analog-clock-target").count(), 1);
@@ -127,7 +127,7 @@ test("target resizes by pointer and keyboard and controls remain functional", as
 		});
 		await page.mouse.up();
 		const after = await target.boundingBox();
-		assert.ok(after && after.width < before.width - 80 && after.height < before.height - 60, );
+		assert.ok(after && after.width < before.width - 80 && after.height < before.height - 60 );
 		assert.ok(after.width > 288 && after.height > 128);
 		await handle.focus();
 		await page.keyboard.press("ArrowRight");
@@ -136,9 +136,9 @@ test("target resizes by pointer and keyboard and controls remain functional", as
 		await page.locator("#clear-values").click();
 		await page.locator("#group-values input").first().fill("12");
 		await page.locator("#group-values input").first().press("Tab");
-		assert.equal(await page.locator(".sst-clock").getAttribute("aria-label"), "12:00:00.00", );
+		assert.equal(await page.locator(".sst-clock").getAttribute("aria-label"), "12:00:00.00" );
 		await page.locator("#mode").selectOption("matrix");
-		assert.equal(await page.locator(".sst-root").getAttribute("data-mode"), "matrix", );
+		assert.equal(await page.locator(".sst-root").getAttribute("data-mode"), "matrix" );
 		await page.locator("#mode").selectOption("segment");
 		const length = page.locator(".structure-row").first().getByLabel("segmentLength value", {
 			exact: true
@@ -149,7 +149,7 @@ test("target resizes by pointer and keyboard and controls remain functional", as
 		assert.notEqual(await polygon.getAttribute("points"), points);
 		assert.equal(await page.locator(".structure-row").first().getByLabel("segmentLength slider", {
 			exact: true
-		}).inputValue(), "95", );
+		}).inputValue(), "95" );
 		assert.deepEqual(errors, []);
 		await [1440, 1728, 390].reduce(async (previous, width) => {
 			await previous;
@@ -187,14 +187,14 @@ test("CSS bindings update native styles and runtime rows; ESM import needs no ex
 			clock.settings.segmentOffDuration = "--off-duration";
 			clock.settings.matrixRows = "--rows";
 		});
-		assert.equal(await page.locator("#bound-clock .sst-group").first().evaluate(( /** @type {Element} */ element) => getComputedStyle(element).getPropertyValue("--sst-off-time").trim(), ), "300ms", );
+		assert.equal(await page.locator("#bound-clock .sst-group").first().evaluate(( /** @type {Element} */ element) => getComputedStyle(element).getPropertyValue("--sst-off-time").trim() ), "300ms" );
 		await page.evaluate(() => {
 			const mount = document.getElementById("bound-clock");
 			mount?.style.setProperty("--off-duration", "0.5s");
 			mount?.style.setProperty("--rows", "12");
 		});
-		await page.waitForFunction("Reflect.get(globalThis, 'boundClock').getSettings().matrixRows === '--rows' && Reflect.get(globalThis, 'boundClock').matrixPhysicalSize().rows === 12", );
-		assert.equal(await page.locator("#bound-clock .sst-group").first().evaluate(( /** @type {Element} */ element) => getComputedStyle(element).getPropertyValue("--sst-off-time").trim(), ), "0.5s", );
+		await page.waitForFunction("Reflect.get(globalThis, 'boundClock').getSettings().matrixRows === '--rows' && Reflect.get(globalThis, 'boundClock').matrixPhysicalSize().rows === 12" );
+		assert.equal(await page.locator("#bound-clock .sst-group").first().evaluate(( /** @type {Element} */ element) => getComputedStyle(element).getPropertyValue("--sst-off-time").trim() ), "0.5s" );
 		await page.evaluate(() => Reflect.get(globalThis, "boundClock").destroy());
 	});
 });
@@ -202,7 +202,7 @@ test("demo sidebar controls drive clock settings", async t => {
 	await browserTest(t, async (page, url) => {
 		/** @type {string[]} */
 		const errors = [];
-		page.on("pageerror", ( /** @type {Error} */ error) => errors.push(error.message), );
+		page.on("pageerror", ( /** @type {Error} */ error) => errors.push(error.message) );
 		await page.goto(`${url}/exactus/packages/widgets/widget_clock/examples/web/index.html`);
 		// Numeric slider propagates to its readout and the clock.
 		await page.locator("#fps").fill("60");

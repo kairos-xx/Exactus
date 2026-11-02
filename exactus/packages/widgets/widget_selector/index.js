@@ -1,5 +1,5 @@
 /** Public entry of the expression widget. */
-import { createWidget } from "./widget.js";
+import {createWidget} from "./widget.js";
 /**
  * Mount the widget on a carrier element that keeps the stored value.
  * @param {HTMLTextAreaElement|HTMLInputElement} carrier Carrier element.
@@ -10,6 +10,6 @@ import { createWidget } from "./widget.js";
 export const mountExpressionWidget = (carrier, options) => {
   if ((options.language ?? "selector") !== "selector")
     throw new Error(`Unsupported language: ${options.language}`);
-  return createWidget({ carrier, label: options.label ?? "Expression", ...options });
+  return createWidget({carrier, label: options.label ?? "Expression", ...options});
 };
 export default mountExpressionWidget;

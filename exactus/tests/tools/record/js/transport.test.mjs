@@ -1,8 +1,8 @@
 /** Verify authenticated Studio transport and interrupted command responses. */
-import { setImmediate } from "node:timers";
+import {setImmediate} from "node:timers";
 import assert from "node:assert/strict";
 import test from "node:test";
-import { StudioTransport } from "../../../../tools/record/studio/web/transport.js";
+import {StudioTransport} from "../../../../tools/record/studio/web/transport.js";
 /** Restore every patched global after a transport contract test.
  * @param {import("node:test").TestContext} t Test cleanup registry.
  * @param {(...args: any[]) => Promise<any>} fetch Stubbed fetch double.
@@ -13,33 +13,33 @@ const environment = (t, fetch) => {
     fetch,
     location: {
       hash: "#token=secret",
-      pathname: "/studio",
+      pathname: "/studio"
     },
     history: {
-      replaceState: () => {},
+      replaceState: () => {}
     },
     document: {
       getElementById: () => ({
-        textContent: "",
-      }),
+        textContent: ""
+      })
     },
     EventSource: class {
       /** @param {string} url */
       constructor(url) {
         this.url = url;
       }
-    },
+    }
   })) {
     const descriptor = Object.getOwnPropertyDescriptor(globalThis, name);
     Object.defineProperty(globalThis, name, {
       configurable: true,
       writable: true,
-      value,
+      value
     });
     t.after(() =>
       descriptor
         ? Object.defineProperty(globalThis, name, descriptor)
-        : Reflect.deleteProperty(globalThis, name),
+        : Reflect.deleteProperty(globalThis, name)
     );
   }
 };
@@ -54,10 +54,10 @@ test("authorization, snapshot, events, and command responses", async t => {
         ok: true,
         json: async () => ({
           ok: true,
-          result: {},
-        }),
+          result: {}
+        })
       };
-    },
+    }
   );
   const transport = new StudioTransport();
   const messages = [];
@@ -67,7 +67,7 @@ test("authorization, snapshot, events, and command responses", async t => {
   assert.match(calls[1][0], /^\/api\/snapshot\?client=/);
   const events = /** @type {any} */ (transport.events);
   events.onmessage({
-    data: '{"event":"snapshot"}',
+    data: '{"event":"snapshot"}'
   });
   events.onerror();
   await transport.send('{"id":"cmd"}');
@@ -81,7 +81,7 @@ test("authorization, snapshot, events, and command responses", async t => {
 });
 test("authorization and snapshot failures are explicit", async t => {
   environment(t, async () => ({
-    ok: false,
+    ok: false
   }));
   await assert.rejects(new StudioTransport().connect(), /authorization failed/);
   location.hash = "";

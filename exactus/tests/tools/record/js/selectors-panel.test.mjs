@@ -1,7 +1,7 @@
 /** The selectors list, test result, tested-on pages and the selector inspector. */
 import assert from "node:assert/strict";
 import test from "node:test";
-import { modulePage, WEB } from "./module-page.mjs";
+import {modulePage, WEB} from "./module-page.mjs";
 /** Run a scenario in a blank page with the panel module loaded as `panel`.
  * @param {import("node:test").TestContext} t Test context.
  * @param {string} body Async function body receiving `panel`.
@@ -23,13 +23,13 @@ const inPanel = async (t, body) => {
         expression: "css:.card",
         expected_count: 1,
         checks: ["[a]", "[b]"],
-        validated_on: [{ url: "http://x/", at: "now", matches: 1 }],
-        ...extra,
+        validated_on: [{url: "http://x/", at: "now", matches: 1}],
+        ...extra
       });
-      /** @type {any} */ (globalThis).env = { panel, item };
+      /** @type {any} */ (globalThis).env = {panel, item};
     }, WEB);
     outcome = await page.evaluate(
-      `(async () => { const { panel, item } = globalThis.env; ${body} })()`,
+      `(async () => { const { panel, item } = globalThis.env; ${body} })()`
     );
   });
   return outcome;
@@ -39,13 +39,13 @@ test("usage sentences count actions, selectors and conditions", async t => {
     t,
     `const use = (a, s, c) => ({ actions: Array(a).fill({}), flows: a ? 1 : 0, selectors: Array(s).fill("x"), conditions: c });
      return [panel.usageSentence(undefined), panel.usageSentence(use(0,0,0)),
-       panel.usageSentence(use(1,1,1)), panel.usageSentence(use(3,2,4))];`,
+       panel.usageSentence(use(1,1,1)), panel.usageSentence(use(3,2,4))];`
   );
   assert.deepEqual(out, [
     "Not used yet",
     "Not used yet",
     "Used by 1 action in 1 flow, 1 selector, 1 condition",
-    "Used by 3 actions in 1 flow, 2 selectors, 4 conditions",
+    "Used by 3 actions in 1 flow, 2 selectors, 4 conditions"
   ]);
 });
 test("the list is empty, then rows with flags, counts and selection", async t => {
@@ -65,7 +65,7 @@ test("the list is empty, then rows with flags, counts and selection", async t =>
        active: rows.map((r) => r.classList.contains("active")),
        pressed: rows.map((r) => r.getAttribute("aria-pressed")),
        flags: rows.map((r) => r.querySelector(".tree-item-flag") !== null),
-       badges: rows.map((r) => r.querySelector(".tree-item-count").textContent) };`,
+       badges: rows.map((r) => r.querySelector(".tree-item-count").textContent) };`
   );
   assert.match(out.empty, /No selectors yet/);
   assert.deepEqual(out.chosen, ["s1"]);
@@ -100,7 +100,7 @@ test("test results cover running, idle, pass, fail, errors and truncation", asyn
      panel.renderTestResult(box, { ...base, count: 60, matches: Array.from({ length: 60 }, (_, i) => match(i)) });
      seen.long = box.querySelectorAll(".selector-match").length;
      seen.more = box.textContent.includes("And 10 more");
-     return seen;`,
+     return seen;`
   );
   assert.match(out.running, /Testing against the live page/);
   assert.match(out.idle, /Test the expression/);
@@ -127,7 +127,7 @@ test("the tested-on area lists pages and warns about the open one", async t => {
      panel.renderSeen(box, item({}), "http://x/"); seen.same = text();
      panel.renderSeen(box, item({ validated_on: [{ url: "http://x/", at: "", matches: 2 }] }), "http://other/");
      seen.other = text();
-     return seen;`,
+     return seen;`
   );
   assert.match(out.none, /Not tested on any page yet/);
   assert.match(out.same, /http:\/\/x\/1 match$/);
@@ -178,7 +178,7 @@ test("the inspector reads the form back and wires every handler", async t => {
      [...form.querySelectorAll(".selector-icon")][1].click();
      document.querySelector(".selector-open").click();
      return { calls, hiddenOne, shown, title: document.querySelector("h2").textContent,
-       open: document.querySelector(".selector-open").textContent };`,
+       open: document.querySelector(".selector-open").textContent };`
   );
   assert.equal(out.hiddenOne, true);
   assert.equal(out.shown, true);
@@ -190,7 +190,7 @@ test("the inspector reads the form back and wires every handler", async t => {
     name: "renamed",
     expression: "css:.card",
     expected_count: 4,
-    checks: ["[x]", "[y]"],
+    checks: ["[x]", "[y]"]
   });
   assert.equal(out.calls[1][1].expected_count, 4);
   assert.equal(out.calls[2][0], "copy");
@@ -221,13 +221,13 @@ test("the selector widget picks a generated strategy and reports page matches", 
        selected: strategy.value,
        count: form.querySelector(".selector-live-count").textContent,
        highlighted: calls[0][1].expression,
-     };`,
+     };`
   );
   assert.deepEqual(out.labels, ["Pick on page", "Highlight on page"]);
   assert.equal(out.picked, 'role=button[name="Save"]');
   assert.deepEqual(out.choices, [
     "css — 3 matches",
-    "role and name — 1 match",
+    "role and name — 1 match"
   ]);
   assert.equal(out.selected, "1");
   assert.equal(out.count, "1 match");
@@ -244,7 +244,7 @@ test("a new selector has no copy or delete and no actions list", async t => {
        sub: document.querySelector("small").textContent,
        icons: view.form.querySelectorAll(".selector-icon").length,
        used: document.querySelector(".selector-used").children.length, mode,
-       hidden: view.form.querySelector('[name="expression"]').hidden };`,
+       hidden: view.form.querySelector('[name="expression"]').hidden };`
   );
   assert.equal(out.title, "New selector");
   assert.equal(out.sub, "Not saved yet");
@@ -263,7 +263,7 @@ test("the count modes map to null, a number or one", async t => {
        modes.push(view.form.querySelector('[name="count_mode"]').value);
        view.form.requestSubmit();
      }
-     return { modes, saved: calls.map((c) => c[1].expected_count) };`,
+     return { modes, saved: calls.map((c) => c[1].expected_count) };`
   );
   assert.deepEqual(out.modes, ["any", "exact", "one", "one"]);
   assert.deepEqual(out.saved, [null, 3, 1, 1]);
@@ -312,21 +312,21 @@ test("with an editor the formula view lints, toggles to text and back", async t 
      editorSurface.click();
      seen.focused = document.activeElement === form.querySelector('[data-role="atom"]');
      form.querySelector('[data-role="atom"]').click();
-     return seen;`,
+     return seen;`
   );
   assert.deepEqual(out.initial, {
     toggle: false,
     text: "Edit as text",
-    diagnosticHidden: true,
+    diagnosticHidden: true
   });
   assert.deepEqual(out.textMode, {
     label: "Edit as expression",
-    expressionHidden: false,
+    expressionHidden: false
   });
   assert.equal(out.diagnostic, "Broken");
   assert.deepEqual(out.formulaMode, {
     label: "Edit as text",
-    expressionHidden: true,
+    expressionHidden: true
   });
   assert.equal(out.focused, true);
 });
@@ -343,7 +343,7 @@ test("an empty expression starts in text mode and an editor change re-lints", as
      made[0].dispatchEvent(new Event("change"));
      const diagnostic = view.form.querySelector(".selector-expression-field .selector-diagnostic");
      return { startsText, diag: diagnostic.textContent,
-       shown: !diagnostic.hidden };`,
+       shown: !diagnostic.hidden };`
   );
   assert.equal(out.startsText, true);
   assert.equal(out.diag, "Broken");

@@ -188,6 +188,9 @@ The ``check`` orchestrator driven in-process with isolated global state.
 - `test_kill_dispatches_run_tools(monkeypatch: pytest.MonkeyPatch) -> None` — Bare ``--kill`` terminates every live run and exits.
 - `test_kill_named_and_unknown(monkeypatch: pytest.MonkeyPatch) -> None` — ``--kill NAME`` scopes termination and rejects unknown names.
 - `test_kill_all_dispatches_scanner(monkeypatch: pytest.MonkeyPatch) -> None` — ``--kill-all`` and ``--kill_all`` run the global scan once.
+- `test_status_prints_project_runs_json(monkeypatch: pytest.MonkeyPatch) -> None` — ``--status`` prints the live-run dicts as JSON and exits.
+- `test_status_unknown_name_is_usage_error(monkeypatch: pytest.MonkeyPatch) -> None` — ``--status bogus`` reports the operand through the parser.
+- `test_status_all_prints_systems_json(monkeypatch: pytest.MonkeyPatch) -> None` — ``--status-all`` and ``--status_all`` print systems as JSON.
 - `test_kill_all_terminates_verified_and_leftovers(monkeypatch: pytest.MonkeyPatch) -> None` — Global kill verifies identities then sweeps leftovers.
 - `test_exactus_processes_heuristic(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None` — The leftover scan matches Exactus processes, not lookalikes.
 
@@ -352,7 +355,7 @@ Shared pytest fixtures for the toolkit tests.
 
 - `class Constants` — Group module-level constants.
   - `root` = `Path(__file__).resolve().parents[2]`
-  - `excludes` = `('EXACTUS_RESULTS/**', 'build/**', 'exec/**', 'packages/**', 'exactus/rec...`
+  - `excludes` = `('EXACTUS_RESULTS/**', 'build/**', 'exec/**', 'artifacts/**', 'exactus/re...`
   - `signals` = `tuple((Signals[name] for name in ('SIGHUP', 'SIGINT', 'SIGTERM', 'SIGQUIT...`
 - `repo_args() -> tuple[str, ...]` — Return the root plus exclusion arguments for self-exactuss.
 - `sample_project(tmp_path: Path) -> Path` — Create a small Python/JS/CSS/HTML project with known defects.
@@ -415,6 +418,7 @@ Coverage for the JavaScript runner widget demo server launcher.
 - `test_start_demo_spawns_and_waits(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None` — A fresh spawn waits for readiness and returns the demo URL.
 - `test_start_demo_replaces_unready_server(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None` — Terminate and clear a spawned server that never answers.
 - `test_main_prints_url_and_opens_browser(monkeypatch: pytest.MonkeyPatch) -> None` — Print the demo URL and hand it to the system browser.
+- `test_main_headless_loads_page_then_exits(monkeypatch: pytest.MonkeyPatch) -> None` — ``--headless`` loads the page without a window and returns zero.
 - `test_module_entrypoint_invokes_main(monkeypatch: pytest.MonkeyPatch) -> None` — Verify the examples module forwards to ``run.main``.
 
 ### `packages/actions/action_pointer/__init__.py`
@@ -430,6 +434,7 @@ Coverage for the pointer-action demo launcher.
   - `root` = `Path(run.__file__).resolve().parents[1]`
 - `test_start_demo_serves_assets_and_reuses(tmp_path: Path) -> None` — Serve the page and package from one reusable loopback server.
 - `test_main_prints_url_and_opens_browser(monkeypatch: pytest.MonkeyPatch) -> None` — Print the demo URL and open it in the managed browser.
+- `test_main_headless_loads_page_then_exits(monkeypatch: pytest.MonkeyPatch) -> None` — ``--headless`` loads the page without a window and returns zero.
 - `test_module_entrypoint_invokes_main(monkeypatch: pytest.MonkeyPatch) -> None` — Verify the examples module forwards to the launcher.
 - `test_start_demo_reports_unready_server_and_cleans_up(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None` — A failed readiness check kills fresh servers and raises.
 
@@ -447,6 +452,7 @@ Coverage for the mini postman demo server launcher.
 - `test_start_demo_serves_assets_and_reuses(tmp_path: Path) -> None` — Serve the demo and the library from one reusable loopback server.
 - `test_start_demo_replaces_unready_server(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None` — Terminate and clear a spawned server that never answers.
 - `test_main_prints_url_and_opens_browser(monkeypatch: pytest.MonkeyPatch) -> None` — Print the demo URL and hand it to the system browser.
+- `test_main_headless_loads_page_then_exits(monkeypatch: pytest.MonkeyPatch) -> None` — ``--headless`` loads the page without a window and returns zero.
 - `test_module_entrypoint_invokes_main(monkeypatch: pytest.MonkeyPatch) -> None` — Verify the action-rest examples module forwards to ``serve.main``.
 
 ### `packages/all_lints/__init__.py`
@@ -549,6 +555,14 @@ Cover the bundled ``all_lints`` example entry point.
 - `class Constants` — Group module-level constants.
   - `example` = `Path(__file__).resolve().parents[4] / 'exactus' / 'packages' / 'all_lints...`
 - `test_example_module_runs_as_a_script(monkeypatch: pytest.MonkeyPatch) -> None` — Execute the example file's ``__main__`` entry for real.
+
+### `packages/all_lints/test_refurb_optional.py`
+
+Verify Refurb diagnostics and optional offline tool behavior.
+
+- `test_refurb_cli_registered_optional() -> None` — Missing Refurb must remain a reported nonfatal optional tool.
+- `test_refurb_output_parses(tmp_path: Path) -> None` — Normalize native Refurb text output with Windows-aware path handling.
+- `test_optional_unavailable_is_reported_without_failure(tmp_path: Path) -> None` — Distinguish optional absence from mandatory tooling failure.
 
 ### `packages/argument_parser/__init__.py`
 
@@ -1093,6 +1107,7 @@ Exercise the bundled ExtendedSelector demo launcher with stubs.
 - `test_start_demo_spawns_and_waits(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None` — A fresh spawn waits for readiness and returns the demo URL.
 - `test_start_demo_terminates_a_server_that_never_readies(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None` — A failed readiness check kills the spawned server and raises.
 - `test_main_serves_then_opens_and_closes_the_browser(monkeypatch: pytest.MonkeyPatch) -> None` — ``main`` launches the demo, opens the session, and returns zero.
+- `test_main_headless_loads_then_exits(monkeypatch: pytest.MonkeyPatch) -> None` — ``--headless`` waits for page readiness and returns zero.
 
 ### `packages/external/__init__.py`
 
@@ -3026,6 +3041,7 @@ Coverage for the widget_clock demo server launcher.
 - `test_start_demo_serves_assets_and_reuses(tmp_path: Path) -> None` — Serve the demo and the library from one reusable loopback server.
 - `test_start_demo_replaces_unready_server(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None` — Terminate and clear a spawned server that never answers.
 - `test_main_prints_url_and_opens_browser(monkeypatch: pytest.MonkeyPatch) -> None` — Print the demo URL and hand it to the system browser.
+- `test_main_headless_loads_page_then_exits(monkeypatch: pytest.MonkeyPatch) -> None` — ``--headless`` loads the page without a window and returns zero.
 - `test_module_entrypoint_invokes_main(monkeypatch: pytest.MonkeyPatch) -> None` — Verify the analog-clock examples module forwards to ``serve.main``.
 
 ### `packages/widgets/widget_console/__init__.py`
@@ -3045,6 +3061,7 @@ Coverage for the console widget demo server launcher.
 - `test_start_demo_spawns_and_waits(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None` — A fresh spawn waits for readiness and returns the demo URL.
 - `test_start_demo_replaces_unready_server(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None` — Terminate and clear a spawned server that never answers.
 - `test_main_prints_url_and_opens_browser(monkeypatch: pytest.MonkeyPatch) -> None` — Print the demo URL and hand it to the system browser.
+- `test_main_headless_loads_page_then_exits(monkeypatch: pytest.MonkeyPatch) -> None` — ``--headless`` loads the page without a window and returns zero.
 - `test_module_entrypoint_invokes_main(monkeypatch: pytest.MonkeyPatch) -> None` — Verify the examples module forwards to ``run.main``.
 
 ### `packages/widgets/widget_selector/__init__.py`
@@ -3060,6 +3077,7 @@ Exercise the bundled widget_selector demo launcher with stubs.
 - `test_start_demo_spawns_and_waits(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None` — A fresh spawn waits for readiness and returns the demo URL.
 - `test_start_demo_terminates_a_server_that_never_readies(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None` — A failed readiness check kills the spawned server and raises.
 - `test_main_serves_then_opens_and_closes_the_browser(monkeypatch: pytest.MonkeyPatch) -> None` — ``main`` launches the demo, opens the session, and returns zero.
+- `test_main_headless_loads_then_exits(monkeypatch: pytest.MonkeyPatch) -> None` — ``--headless`` waits for page readiness and returns zero.
 
 ### `packages/zip_components/__init__.py`
 
@@ -3077,9 +3095,9 @@ Tests for source-bundle archives of exactus tools and packages packages.
 - `test_collect_files_includes_results_directories(tmp_path: Path) -> None` — Bundle existing report directories of selected exactus tools.
 - `test_collect_files_ignores_missing_results(tmp_path: Path) -> None` — Skip report directories that do not exist.
 - `test_create_bundle_writes_a_real_archive(tmp_path: Path) -> None` — Write archive members at repository-relative paths.
-- `test_create_bundle_scaffolds_readme_and_tree(tmp_path: Path) -> None` — Default bundles nest under ``zip-components/<stem>/``.
+- `test_create_bundle_scaffolds_readme_and_tree(tmp_path: Path) -> None` — Default bundles nest under ``artifacts/zip-components/<stem>/``.
 - `test_lints_selection_discovers_pipeline_components() -> None` — Expand the real lints tool into its shared dependencies.
-- `test_main_writes_the_scaffolded_bundle(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None` — Place the archive inside ``zip-components/<stem>/`` with docs.
+- `test_main_writes_the_scaffolded_bundle(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None` — Place the archive inside ``artifacts/zip-components/<stem>/`` with docs.
 - `test_main_output_folder_overrides_the_default_directory(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None` — Place the bundle under ``--output-folder`` instead.
 - `test_main_root_flag_bundles_from_the_given_directory(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None` — Bundle from ``--root`` instead of the auto-detected root.
 - `test_available_components_lists_every_package(tmp_path: Path) -> None` — List canonical exactus tools plus every packages package.
@@ -3280,6 +3298,7 @@ Authenticated loopback identity discovery behavior.
 - `test_receive_none_on_early_close() -> None` — ``_receive`` reports truncated streams as ``None``.
 - `test_listen_table_reports_own_responder_port(tmp_path: Path) -> None` — ``_listen_table`` lists this process's private loopback listener.
 - `test_exactus_candidates_filters_by_process_identity() -> None` — ``_exactus_candidates`` keeps interpreters and drops dead pids.
+- `test_exactus_candidates_survive_unreadable_command_lines(*, process_name: str | None, command: tuple[str, ...] | None, kept: bool, monkeypatch: pytest.MonkeyPatch) -> None` — A failing command-line read never vetoes a matching process name.
 
 ### `tools/common/process_layer/test_termination.py`
 
@@ -3553,10 +3572,11 @@ The shared exactus execution wrapper, fallbacks, and crash recording.
 - `test_prepare_output_moves_aside_when_locked(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None` — An undeletable child forces the directory aside with a preserved name.
 - `test_progress_helpers() -> None` — Progress payloads are normalized defensively.
 - `test_report_snapshot_and_emitted(tmp_path: Path) -> None` — Only new or rewritten md and json pairs count as emitted.
-- `test_terminate_live_run_ignores_missing_or_finished(tmp_path: Path) -> None` — Only RUNNING activity documents with integer pids are acted upon.
-- `test_conflicting_run_is_terminated(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None` — Live runs conflicting on the output directory are terminated.
-- `test_registry_unavailable_falls_back_to_activity(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None` — Without a registry ``@activity.json`` names the process to stop.
+- `test_observe_live_run_ignores_missing_or_finished(tmp_path: Path) -> None` — Only RUNNING activity documents with live pids are waited upon.
+- `test_conflicting_run_is_joined_then_terminated(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None` — An unobservable live conflict stays a last-resort termination.
+- `test_registry_unavailable_observes_stale_activity(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None` — A stale RUNNING heartbeat with a dead pid blocks no successor.
 - `test_fallback_markdown_truncates_and_lists(tmp_path: Path) -> None` — Fallback reports include errors, tails and artifacts.
+- `test_stamp_result_prefers_facts_verdict(tmp_path: Path) -> None` — Interrupted zero-exit runs stamp INTERRUPT, never PASS.
 - `test_stream_capture_failure_is_tolerated(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None` — Streams without descriptors are simply not captured.
 - `test_crashed_exactus_records_failure(tmp_path: Path) -> None` — A dead worker still yields a report and failed result.
 - `test_crashed_exactus_respects_reclaimed_output(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None` — When a newer run owns the directory nothing is rewritten.
@@ -3627,7 +3647,33 @@ Pipeline output lives under ``EXACTUS_RESULTS/PIPELINES/``.
 - `test_progress_rows_overlay_external_run_progress(results_root: Path) -> None` — A running external member shows live progress in its row.
 - `test_wave_adopts_and_drains_an_external_run(results_root: Path, monkeypatch: pytest.MonkeyPatch) -> None` — A live external member run is adopted instead of duplicated.
 - `test_adopted_progress_resets_on_superseding_run(results_root: Path) -> None` — A newer external run resets the adopted tool's progress share.
+- `test_adopted_interrupted_external_settles_as_interrupt(results_root: Path) -> None` — A cancelled external run settles as ``INTERRUPT``, not ``FAIL``.
 - `test_standalone_run_waits_at_the_group_gate(results_root: Path) -> None` — A standalone later-group run holds until the pipeline catches up.
+
+### `tools/common/test_pipeline_scope.py`
+
+Scope a joined pipeline reset to the tools a request asks to rerun.
+
+- `test_tool_dependency_follows_the_catalog(*, identifier: str, dependency: str, expected: bool) -> None` — A tool depends on exactly the prerequisites its spec declares.
+- `test_scoped_reset_needs_an_owner(tmp_path: Path) -> None` — Without an owner there is no scope, so the full plan resets.
+- `test_same_fingerprint_requests_reset_the_full_plan(tmp_path: Path) -> None` — A request matching the owner configuration is not scoped.
+- `test_inline_plans_union_and_ignore_unknown_tools(tmp_path: Path) -> None` — Roots are the union of requested tools the owner actually runs.
+- `test_requested_scope_collects_arguments_and_missing_tools(tmp_path: Path) -> None` — Requested CLI arguments and out-of-plan tools join the scope.
+- `test_requested_scope_survives_missing_arguments_block(tmp_path: Path) -> None` — Plans without an arguments map scope to empty overrides.
+- `test_plan_is_read_from_the_materialized_request_file(tmp_path: Path) -> None` — A request without an inline plan falls back to its JSON file.
+- `test_unusable_plans_fall_back_to_the_full_reset(document: str | None, tmp_path: Path) -> None` — Any request whose plan cannot be materialized is not scoped.
+- `test_observer_scope_result_falls_back_without_tools(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None` — Requests with no usable plan defer to the owner's status.
+- `test_observer_scope_result_aggregates_requested_reports(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None` — Only the requested tools' reports decide an observer's outcome.
+- `test_append_requested_tools_grows_the_plan_by_dependency(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None` — Out-of-plan tools append after existing waves, ordered by depth.
+- `test_scoped_apply_requeues_roots_dependents_and_retargets(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None` — A ``--lints`` join requeues lints + dependents and applies args.
+- `test_invalidate_releases_dependents_for_a_fresh_rerun(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None` — A dependent's stale worker is released and requeued, not reset.
+- `test_invalidate_holds_dependents_of_an_external_rerun(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None` — A dependent gated on an externally rerun tool is HELD.
+- `test_invalidate_keeps_reset_workers_out_of_pending(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None` — A gracefully reset worker is the rerun itself, not a queue entry.
+- `test_pause_waiting_external_excludes_the_worker_subtree(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None` — Only the owner process freezes, never the pmanager worker chain.
+- `test_retire_worker_releases_retargeted_and_ignores_pending(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None` — Only live owned handles are retired; pending tools stay queued.
+- `test_status_serializes_live_records(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None` — ``Check._status`` returns every live record as a JSON dict.
+- `test_status_filters_named_outputs(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None` — ``Check._status`` resolves NAME operands like ``--clear``.
+- `test_status_all_embeds_live_runs(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None` — ``Check._status_all`` lists identities and their live records.
 
 ### `tools/common/test_pipeline_supervisor.py`
 
@@ -3637,7 +3683,7 @@ Verify transactional pipeline ownership and observer generations.
 - `test_claims_are_isolated_by_pipeline(coordinator: PipelineCoordinator) -> None` — Independent pipeline names elect independent owners.
 - `test_connection_recreates_schema_after_runtime_reset(coordinator: PipelineCoordinator) -> None` — A deleted database is recreated before the next owner query.
 - `test_compatible_claim_requests_a_shared_generation(coordinator: PipelineCoordinator) -> None` — A compatible collision observes its owner and requests one reset.
-- `test_incompatible_and_sealed_claims_wait(coordinator: PipelineCoordinator) -> None` — Different configurations and sealed owners do not merge work.
+- `test_incompatible_and_sealed_claims_wait(coordinator: PipelineCoordinator) -> None` — Sealed owners block joins; different configurations join as observers.
 - `test_terminal_owner_is_observable_and_replaceable(coordinator: PipelineCoordinator) -> None` — Observers see terminal state and a later run can own the pipeline.
 
 ### `tools/common/test_process_control.py`
@@ -3800,11 +3846,12 @@ ANSI terminal rendering, progress painting, and cursor probing.
   - `max_width` = `160`
   - `tools` = `(('lints', 'RUNNING', 0.5, 'ruff', None), ('docs', 'WAITING', 0.0, '', No...`
 - `test_helpers() -> None` — Width fitting, ANSI measuring, clipping and row counting.
-- `test_bar_is_contiguous_and_marks_issues_red() -> None` — Aggregate bars fill continuously and propagate issue color.
+- `test_bar_is_contiguous_and_marks_issues_red() -> None` — Bars fill continuously and mark only failure cells red.
+- `test_segmented_bar_splits_weighted_segments() -> None` — The GLOBAL bar fills each segment to its own fraction.
 - `test_results_table(plain: StringIO) -> None` — Results render a summary, rows, and report paths.
 - `test_progress_requires_tty(plain: StringIO) -> None` — Non-terminal output draws nothing.
 - `test_progress_paints_and_repaints(tty: Tty) -> None` — The live block is painted once and replaced on change.
-- `test_progress_marks_failure_cells(tty: Tty) -> None` — A failed tool paints a red x at its failure fraction.
+- `test_progress_marks_failure_cells(tty: Tty) -> None` — A failed tool paints a red block at its failure fraction.
 - `test_plain_progress_logs_transitions(tty: Tty, monkeypatch: pytest.MonkeyPatch) -> None` — Terminals without cursor control get an appended change log.
 - `test_standalone_progress_and_cursor(tty: Tty) -> None` — Standalone rows hide and restore the cursor.
 - `test_clear_screen_on_windows(tty: Tty, monkeypatch: pytest.MonkeyPatch) -> None` — Windows consoles clear through ``cmd /c cls``.
@@ -4211,6 +4258,7 @@ The kwargs-typehints analyzer on projects, flags and its artifacts.
 - `test_kwargs_strict_flag(sample_project: Path, tmp_path: Path) -> None` — Strict mode reports unannotatable bindings too.
 - `test_typevar_assignments_need_no_annotation(tmp_path: Path, *, strict: bool) -> None` — Exempt typing factories but retain ordinary assignment diagnostics.
 - `test_kwargs_exempts_positional_only_and_dynamic_callees(tmp_path: Path) -> None` — Dynamic and positional-only calls are counted apart, not unresolved.
+- `test_kwargs_setsockopt_stays_positional_on_unknown_receiver(tmp_path: Path) -> None` — Unresolved ``setsockopt`` calls are exempt, not kwarg-flagged.
 - `test_kwargs_default_root_is_repository_root() -> None` — The kwargs core's ``--root`` default is the repository root.
 - `test_import_roots_and_annotated_factories(tmp_path: Path) -> None` — Configured namespace roots and type aliases resolve real classes.
 - `test_external_module_and_bound_classmethod_resolution(tmp_path: Path) -> None` — Imported submodules and class methods keep their actual receivers.
@@ -4235,7 +4283,7 @@ The kwargs-typehints analyzer on projects, flags and its artifacts.
 
 ### `tools/lints/__init__.py`
 
-Tests of the lints tool.
+Tests of Exactus lint source transformations.
 
 
 ### `tools/lints/test_compliance.py`
@@ -4248,6 +4296,24 @@ LINTS includes the canonical engineering rules and their source evidence.
 - `test_configuration_rules_preserve_findings(tmp_path: Path, settings: str | None, rule: str) -> None` — Keep configuration bans and the missing configuration diagnostic.
 - `no_commands(cwd: Path, toolchain: Path | None) -> dict[str, tuple[str, ...] | None]` — Resolve no external tools for the built-in report integration test.
 - `test_engineering_findings_are_part_of_lints(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None` — Run the lints entry point and retain rule counts, gating and excerpts.
+
+### `tools/lints/test_css_naming.py`
+
+Regression tests for numeric CSS custom-property naming.
+
+- `test_parallel_numeric_families(tmp_path: Path) -> None` — Detect parallel numbered families but not isolated identifiers.
+- `test_mask_comments_and_strings(tmp_path: Path) -> None` — Ignore declarations embedded in CSS comments and strings.
+- `test_arbitrary_identifier(tmp_path: Path) -> None` — Flag padded arbitrary identifiers.
+- `test_numeric_policies_and_unit_consistency(tmp_path: Path) -> None` — Allow numeric units and registered scales; detect contradictory values.
+- `test_cross_file_component_and_isolation(tmp_path: Path) -> None` — Combine CSS from one component while isolating unrelated components.
+- `test_two_groups_one_index_is_not_parallel(tmp_path: Path) -> None` — One ordinal per subgroup does not establish a parallel sequence.
+- `test_parallel_groups_have_error_severity(tmp_path: Path) -> None` — Parallel groups are a stronger structural defect than one sequence.
+- `test_configuration_can_disable_scan(tmp_path: Path) -> None` — An explicit policy switch prevents all naming analysis.
+- `test_extended_alias_warning(tmp_path: Path) -> None` — Only extended checks report weak evidence of duplicate aliases.
+- `test_inconsistent_separators_are_one_family(tmp_path: Path) -> None` — Treat equivalent dashed/undashed ordinals as one semantic family.
+- `test_css_alias_depth_and_cycle(tmp_path: Path) -> None` — Detect too-deep static aliases and cycles only in extended mode.
+- `test_invalid_thresholds_are_rejected(tmp_path: Path) -> None` — Validate settings before accessing source files.
+- `test_namespaced_parallel_hyphenated_families(tmp_path: Path) -> None` — Identify the T/P pattern with conventional CSS dash separators.
 
 ### `tools/lints/test_css_tokens.py`
 
@@ -4365,6 +4431,10 @@ In-process runs of the lints analyzer over generated projects.
 - `test_inline_style_scan_lints_generated_code_not_embedded_source(tmp_path: Path) -> None` — Lint generated code while ignoring its serialized source excerpts.
 - `test_javascript_organizer_orders_safe_method_runs(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None` — Order JavaScript methods while leaving class fields as barriers.
 - `test_uppercase_globals_exempt_generic_binders(tmp_path: Path) -> None` — ``TypeVar``-family bindings skip ``PY002``; mutable globals do not.
+- `test_eslint_template_declares_stylistic_rules() -> None` — The fallback eslint config loads @stylistic optionally.
+- `test_eslint_fix_compacts_javascript(tmp_path: Path) -> None` — The clean pass compacts verbose JavaScript via ``eslint --fix``.
+- `test_eslint_fix_preserves_mandatory_syntax(tmp_path: Path) -> None` — ``eslint --fix`` keeps syntax required for validity.
+- `test_eslint_template_degrades_without_plugin(tmp_path: Path) -> None` — A missing @stylistic plugin yields a core-only config, not a crash.
 
 ### `tools/lints/test_lints_install.py`
 
@@ -4459,6 +4529,25 @@ The lints long-line repair keeps behavior and converges to a fixpoint.
 Protect externally inherited instance methods from binding changes.
 
 - `test_external_override_keeps_instance_binding() -> None` — Retain explicit base contracts while diagnosing ordinary helpers.
+
+### `tools/lints/test_python_simplify.py`
+
+Regression tests for conservative Python simplifications.
+
+- `test_inline_annotated_immediate_return() -> None` — Inline an immediately returned, single-use annotated temporary.
+- `test_walrus_in_if_and_preserve_body() -> None` — Introduce a named expression without re-evaluating its initializer.
+- `test_audit_does_not_modify_source() -> None` — Audit mode returns proposed edits without applying them.
+- `test_nonadjacent_statements_are_preserved() -> None` — Never move computation past statements with observable behavior.
+- `test_nested_read_prevents_inline() -> None` — Maintain variables referenced in more than one expression.
+- `test_comment_prevents_rewrite() -> None` — Do not relocate source lines containing comments.
+- `test_walrus_can_be_disabled() -> None` — Explicit policy disables named-expression changes.
+- `test_multiline_assignment_is_not_moved() -> None` — Skip expressions that cannot be replaced as one source line.
+- `test_file_runner_audit_only(tmp_path: Path) -> None` — No-fix mode leaves files byte-for-byte unchanged.
+- `test_file_runner_fixes_once(tmp_path: Path) -> None` — Repeated execution converges to one stable representation.
+- `test_file_runner_preserves_utf8_bom_and_crlf(tmp_path: Path) -> None` — Preserve BOM and newline bytes after an atomic transform.
+- `test_file_runner_supports_source_encoding_cookie(tmp_path: Path) -> None` — Honor PEP 263 encodings instead of unconditionally using UTF-8.
+- `test_file_runner_skips_unreadable_python(tmp_path: Path) -> None` — Invalid source should be skipped without an attempted rewrite.
+- `test_file_runner_preserves_symlink_target(tmp_path: Path) -> None` — Avoid replacing links with unrelated temporary regular files.
 
 ### `tools/lints/test_shebang.py`
 
@@ -5584,6 +5673,7 @@ Test self-diagnostic boundaries without running the nested tool suite.
 - `test_probe_tools_records_missing_declarations_and_sources(*, monkeypatch: pytest.MonkeyPatch, available: bool) -> None` — Bundle listings refine planned checks without hiding missing tools.
 - `test_bundle_listing_uses_its_resolved_launcher(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, exit_code: int) -> None` — Parse only successful bundle listings and preserve sorted tool names.
 - `test_demo_site_waits_for_readiness_and_kills_failed_start(*, tmp_path: Path, monkeypatch: pytest.MonkeyPatch, ready: bool) -> None` — Bound readiness probing and keep demo assets confined to the fixture.
+- `test_self_test_stays_available_inside_the_exactus_repository(*, monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None` — Bundled executables enable ``self_test`` at the repo root only.
 
 ### `tools/test_tools.py`
 

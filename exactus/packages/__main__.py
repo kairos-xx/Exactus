@@ -27,7 +27,7 @@ Usage:
 from __future__ import annotations
 
 from concurrent.futures import ThreadPoolExecutor
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from functools import partial
 from operator import attrgetter
 from pathlib import Path
@@ -58,6 +58,7 @@ class Constants:
         timeout: Grouped module constant.
         watch_seconds: Grouped module constant.
         daemons: Grouped module constant.
+        openers: Grouped module constant.
         packages: Grouped module constant.
 
     """
@@ -72,6 +73,18 @@ class Constants:
             "action_rest",
             "extended_selector",
             "watch",
+            "widget_clock",
+            "widget_console",
+            "widget_selector",
+        },
+    )
+    openers: Final[frozenset[str]] = frozenset(
+        {
+            "action_javascript",
+            "action_pointer",
+            "action_rest",
+            "browser",
+            "extended_selector",
             "widget_clock",
             "widget_console",
             "widget_selector",
@@ -332,6 +345,11 @@ def main(*, arguments: tuple[str, ...] | None = None) -> int:
             "-cause trials need several minutes."
         ),
     )
+    _ = parser.add_argument(
+        "--headless",
+        action="store_true",
+        help="Pass --headless to the browser demos so no windows open.",
+    )
     args: Namespace = parser.parse_args(args=arguments)
     scratch_dir: str
     with TemporaryDirectory(prefix="packages-examples-") as scratch_dir:
@@ -350,6 +368,16 @@ def main(*, arguments: tuple[str, ...] | None = None) -> int:
                 )
                 return 2
             examples = list(filter(lambda item: item.name in wanted, examples))
+        if args.headless:
+            examples = [
+                replace(
+                    example,
+                    arguments=(*example.arguments, "--headless"),
+                )
+                if example.name in Constants.openers
+                else example
+                for example in examples
+            ]
         run: partial[tuple[Report, ...]] = partial(
             _run,
             timeout=args.timeout,

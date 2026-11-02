@@ -5,8 +5,8 @@
  * project dialog asks for. Changes apply to the open project; Save project
  * writes them to disk, like every other edit.
  */
-import { h, icon } from "./project-dialogs.js";
-import { nameIssue, parseTags, when } from "./project-model.js";
+import {h, icon} from "./project-dialogs.js";
+import {nameIssue, parseTags, when} from "./project-model.js";
 /** The fields of the form, as text.
  * @typedef {{name:string,description:string,tags:string,author:string,version:string}} ProjectDraft
  */
@@ -28,7 +28,7 @@ export class ProjectSection {
     description: project.description,
     tags: project.tags.join(", "),
     author: project.author,
-    version: project.version,
+    version: project.version
   });
   /** Draw the section for the open project.
    * @returns {HTMLElement}
@@ -38,11 +38,11 @@ export class ProjectSection {
     const section = h("section", {
       class: "settings-section",
       id: "settings-project",
-      "aria-labelledby": "settings-project-title",
+      "aria-labelledby": "settings-project-title"
     });
     if (!project) {
       section.append(
-        h("p", { class: "settings-intro", text: "No project is open." }),
+        h("p", {class: "settings-intro", text: "No project is open."})
       );
       return section;
     }
@@ -62,50 +62,50 @@ export class ProjectSection {
           id: `project-field-${name}`,
           autocomplete: "off",
           spellcheck: "false",
-          ...extra,
+          ...extra
         })
       );
     const name = input("name", values.name, {
       required: true,
-      maxlength: "80",
+      maxlength: "80"
     });
-    const tags = input("tags", values.tags, { placeholder: "web, smoke" });
-    const author = input("author", values.author, { maxlength: "80" });
+    const tags = input("tags", values.tags, {placeholder: "web, smoke"});
+    const author = input("author", values.author, {maxlength: "80"});
     const version = input("version", values.version, {
       maxlength: "80",
-      placeholder: "0.1.0",
+      placeholder: "0.1.0"
     });
     const description = /** @type {HTMLTextAreaElement} */ (
       h("textarea", {
         name: "description",
         id: "project-field-description",
-        rows: "3",
+        rows: "3"
       })
     );
     description.value = values.description;
-    const error = h("p", { class: "field-error", role: "alert" });
-    const issue = h("p", { class: "field-error", role: "status" });
+    const error = h("p", {class: "field-error", role: "alert"});
+    const issue = h("p", {class: "field-error", role: "status"});
     const apply = /** @type {HTMLButtonElement} */ (
-      h("button", { type: "submit", class: "accent" }, [
-        h("span", { text: "Apply changes" }),
+      h("button", {type: "submit", class: "accent"}, [
+        h("span", {text: "Apply changes"})
       ])
     );
     const revert = /** @type {HTMLButtonElement} */ (
-      h("button", { type: "button" }, [h("span", { text: "Revert" })])
+      h("button", {type: "button"}, [h("span", {text: "Revert"})])
     );
     const gallery = /** @type {HTMLButtonElement} */ (
-      h("button", { type: "button" }, [
+      h("button", {type: "button"}, [
         icon("folder-open"),
-        h("span", { text: "Open project gallery" }),
+        h("span", {text: "Open project gallery"})
       ])
     );
     gallery.addEventListener("click", () => this.actions.gallery());
     /** @param {string} label @param {HTMLElement} control @param {string} [note] */
     const row = (label, control, note = "") =>
-      h("div", { class: "settings-field" }, [
-        h("label", { for: control.id, text: label }),
+      h("div", {class: "settings-field"}, [
+        h("label", {for: control.id, text: label}),
         control,
-        ...(note ? [h("p", { class: "field-note", text: note })] : []),
+        ...(note ? [h("p", {class: "field-note", text: note})] : [])
       ]);
     const form = /** @type {HTMLFormElement} */ (
       h(
@@ -113,7 +113,7 @@ export class ProjectSection {
         {
           class: "profile-form project-form",
           novalidate: true,
-          "aria-label": "Project details",
+          "aria-label": "Project details"
         },
         [
           row("Name", name),
@@ -122,15 +122,15 @@ export class ProjectSection {
           row(
             "Tags",
             tags,
-            "Separate tags with commas. The gallery filters by them.",
+            "Separate tags with commas. The gallery filters by them."
           ),
           row("Author", author),
           row("Version", version),
           error,
-          h("div", { class: "settings-actions" }, [
-            h("div", { class: "settings-actions-main" }, [apply, revert]),
-          ]),
-        ],
+          h("div", {class: "settings-actions"}, [
+            h("div", {class: "settings-actions-main"}, [apply, revert])
+          ])
+        ]
       )
     );
     /** @returns {ProjectDraft} */
@@ -139,7 +139,7 @@ export class ProjectSection {
       description: description.value.trim(),
       tags: parseTags(tags.value).join(", "),
       author: author.value.trim(),
-      version: version.value.trim(),
+      version: version.value.trim()
     });
     const changed = () => JSON.stringify(typed()) !== JSON.stringify(base);
     const check = () => {
@@ -156,7 +156,7 @@ export class ProjectSection {
             description: description.value,
             tags: tags.value,
             author: author.value,
-            version: version.value,
+            version: version.value
           }
         : null;
       check();
@@ -183,11 +183,11 @@ export class ProjectSection {
           description: details.description,
           tags: parseTags(details.tags),
           author: details.author,
-          version: details.version,
+          version: details.version
         });
         this.draft = null;
         this.actions.host.say(
-          "Project details applied. Save the project to keep them.",
+          "Project details applied. Save the project to keep them."
         );
       } catch (failure) {
         error.textContent =
@@ -197,16 +197,16 @@ export class ProjectSection {
     check();
     section.append(
       h("header", {}, [
-        h("h3", { id: "settings-project-title", text: "Project" }),
+        h("h3", {id: "settings-project-title", text: "Project"}),
         h("p", {
           class: "settings-intro",
           text: `Created ${when(project.created_at)}. ${
             project.saved ? "" : "Not saved yet. "
-          }The base address is the target below.`,
-        }),
+          }The base address is the target below.`
+        })
       ]),
       form,
-      h("div", { class: "settings-actions-main" }, [gallery]),
+      h("div", {class: "settings-actions-main"}, [gallery])
     );
     return section;
   }

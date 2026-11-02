@@ -390,7 +390,7 @@ Exactus keyword-call policy, imports, and explicit typing.
   - `file_openers` = `frozenset({'open', 'fdopen', 'popen'})`
   - `skip_calls` = `frozenset({'__import__', 'print', 'exec', 'eval', 'vars'})`
   - `dynamic_callee_prefixes` = `('pytest.mark.',)`
-  - `positional_only_methods` = `frozenset({'bind', 'connect', 'count', 'emit', 'end', 'execute', 'execute...`
+  - `positional_only_methods` = `frozenset({'bind', 'connect', 'connect_ex', 'count', 'emit', 'end', 'exec...`
   - `foreign_binding_pattern` = `'^[a-z]+[A-Z]\\w*$'`
   - `receiver_names` = `frozenset({'self', 'cls'})`
   - `callable_kinds` = `frozenset({'function', 'class', 'instance', 'stubclass', 'stubinstance'})`
@@ -663,7 +663,6 @@ Exactus keyword-call policy, imports, and explicit typing.
 - `class CallExactusor` — Walk one module's AST resolving every call site.
   - `__init__(self: Self, *, project: Project, module: ModuleInfo) -> None` — Initialize the exactusor for one module.
   - `unresolved_reason(*, node: Call) -> str` — Classify why a call's callee has no known signature.
-  - `is_exempt(*, callee_text: str, node: Call) -> bool` — Return whether an unresolved call cannot take keyword arguments.
   - `branch_scope(*, scope: Scope) -> Scope` — Clone flow-sensitive bindings for one control-flow branch.
   - `merge_branch_maps(*, target: dict[str, T], left: dict[str, T], right: dict[str, T]) -> None` — Keep only bindings proven identical after both branches.
   - `record_import(*, node: Import, scope: Scope) -> None` — Record a function-local `import x` statement.
@@ -677,6 +676,9 @@ Exactus keyword-call policy, imports, and explicit typing.
   - `name_var_call(*, name: str, scope: Scope) -> Resolved | None` — Resolve `name` as a variable bound to a callable reference.
   - `ready_params(sig: Sig, *, bound: bool) -> tuple[Param, ...]` — Return call-ready parameters with the receiver dropped.
   - `posonly_names(*, resolved: Resolved, obj: LiveObject) -> frozenset[str]` — Return runtime-verified positional-only parameter names.
+  - `is_exempt(self: Self, *, callee_text: str, node: Call) -> bool` — Return whether an unresolved call cannot take keyword arguments.
+  - `method_name_posonly(self: Self, *, name: str) -> bool` — Return whether a method name is positional-only by contract.
+  - `stub_posonly_names(self: Self) -> frozenset[str]` — Collect stub-declared positional-only method names.
   - `record_unresolved(self: Self, *, callee_text: str, node: Call) -> None` — Count an unresolved call, apart when it is not actionable.
   - `exactus(self: Self) -> None` — Parse and walk the module, collecting findings.
   - `walk_body(self: Self, *, stmts: list[stmt], scope: Scope) -> None` — Walk a statement list in order.
@@ -832,7 +834,7 @@ Tests live in `exactus/tests/tools/kwargs_typehints/`.
   - `test_golden_result_renders_expected_markdown`
   - `test_normalization_of_rare_categories`
   - `test_summary_scope_and_metrics`
-- `test_kwargs_typehints.py` — The kwargs-typehints analyzer on projects, flags and its artifacts. (24 tests)
+- `test_kwargs_typehints.py` — The kwargs-typehints analyzer on projects, flags and its artifacts. (25 tests)
   - `test_bare_import_heal_keeps_module_value_uses`
   - `test_bare_imports_require_only_attribute_access`
   - `test_external_module_and_bound_classmethod_resolution`
@@ -842,6 +844,7 @@ Tests live in `exactus/tests/tools/kwargs_typehints/`.
   - `test_kwargs_dry_run_preserves_sources`
   - `test_kwargs_exempts_positional_only_and_dynamic_callees`
   - `test_kwargs_pyproject_dry_reports_without_writing`
+  - `test_kwargs_setsockopt_stays_positional_on_unknown_receiver`
   - `test_kwargs_strict_flag`
   - `test_kwargs_writes_heuristics_under_artifacts`
   - `test_pointer_keywords_follow_the_project_python`

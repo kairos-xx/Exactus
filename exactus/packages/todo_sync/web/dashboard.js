@@ -20,7 +20,7 @@
     sort: "document",
     filters: new Map(),
     theme: "dark",
-    view: "tasks",
+    view: "tasks"
   };
   const fields = [
     "status",
@@ -28,7 +28,7 @@
     "priority",
     "workstream",
     "prefix",
-    "ongoing",
+    "ongoing"
   ];
   /**
    * Create a DOM element using text content rather than HTML parsing.
@@ -74,7 +74,7 @@
    */
   const score = task => {
     const haystack = normalize(
-      [task.id, task.text, task.priority, ...task.wpath].join(" "),
+      [task.id, task.text, task.priority, ...task.wpath].join(" ")
     );
     let total = 0;
     for (const token of normalize(state.query)
@@ -110,13 +110,13 @@
   const persist = () => {
     const payload = {
       ...state,
-      filters: [...state.filters].map(([key, values]) => [key, [...values]]),
+      filters: [...state.filters].map(([key, values]) => [key, [...values]])
     };
     // URL fragments stay local and make state shareable without storage access.
     history.replaceState(
       null,
       "",
-      `${location.pathname}${location.search}#s=${encodeURIComponent(JSON.stringify(payload))}`,
+      `${location.pathname}${location.search}#s=${encodeURIComponent(JSON.stringify(payload))}`
     );
   };
   /**
@@ -149,7 +149,7 @@
       event.preventDefault();
       setView("doc");
       byId(`L${line}`)?.scrollIntoView({
-        block: "center",
+        block: "center"
       });
     });
     return anchor;
@@ -164,11 +164,11 @@
     for (const field of fields) {
       const wrapper = node("section", "", "filter");
       wrapper.append(
-        node("div", field === "prefix" ? "ID prefix" : field, "filter-title"),
+        node("div", field === "prefix" ? "ID prefix" : field, "filter-title")
       );
       const choices = node("div", "", "choices");
       const values = [
-        ...new Set(tasks.map(task => value(task, field))),
+        ...new Set(tasks.map(task => value(task, field)))
       ].sort();
       for (const label of values) {
         const button = node("button", "", "chip");
@@ -181,10 +181,10 @@
           node(
             "span",
             tasks.filter(
-              task => matches(task, field) && value(task, field) === label,
+              task => matches(task, field) && value(task, field) === label
             ).length,
-            "count",
-          ),
+            "count"
+          )
         );
         button.addEventListener("click", () => {
           const filters = state.filters.get(field) || new Set();
@@ -197,7 +197,7 @@
             .find(
               item =>
                 item.getAttribute("data-field") === field &&
-                item.getAttribute("data-label") === label,
+                item.getAttribute("data-label") === label
             )
             ?.focus();
         });
@@ -225,8 +225,8 @@
         node(
           "span",
           task.priority,
-          `badge priority ${task.priority.toLowerCase()}`,
-        ),
+          `badge priority ${task.priority.toLowerCase()}`
+        )
       );
     header.append(node("span", task.category, "badge category"));
     if (task.ongoing) header.append(node("span", "ONGOING", "badge ongoing"));
@@ -240,7 +240,7 @@
     });
     context.append(
       breadcrumb,
-      lineLink(`Source · line ${task.line}`, task.line, "task-source"),
+      lineLink(`Source · line ${task.line}`, task.line, "task-source")
     );
     body.append(context);
     article.append(node("div", "", "task-rail"), body);
@@ -258,8 +258,8 @@
           String(b[state.sort] || "ZZZ"),
           undefined,
           {
-            numeric: true,
-          },
+            numeric: true
+          }
         ) || a.line - b.line
       );
     });
@@ -270,8 +270,8 @@
         node(
           "div",
           "No matching tasks. Broaden a filter or clear the search.",
-          "empty",
-        ),
+          "empty"
+        )
       );
     /** @type {Map<string, TodoTask[]>} */
     const groups = new Map();
@@ -287,9 +287,9 @@
           node("div", key, "group-name"),
           node(
             "span",
-            `${group.length} tasks · ${group.filter((task) => !task.done).length} open`,
-            "group-count",
-          ),
+            `${group.length} tasks · ${group.filter(task => !task.done).length} open`,
+            "group-count"
+          )
         );
         root.append(summary);
       }
@@ -302,7 +302,7 @@
     byId("matchingFoot").textContent = `of ${tasks.length} total`;
     byId("openStat").textContent = rows.filter(task => !task.done).length;
     byId("p0Stat").textContent = rows.filter(
-      task => !task.done && task.priority === "P0",
+      task => !task.done && task.priority === "P0"
     ).length;
     byId("completion").textContent =
       `${tasks.length ? ((done / tasks.length) * 100).toFixed(1) : "0.0"}%`;
@@ -331,26 +331,26 @@
     });
   try {
     const saved = JSON.parse(
-      decodeURIComponent(location.hash.match(/^#s=(.*)$/)?.[1] || "null"),
+      decodeURIComponent(location.hash.match(/^#s=(.*)$/)?.[1] || "null")
     );
     if (saved && typeof saved === "object") {
       if (typeof saved.query === "string") state.query = saved.query;
       if (
         ["none", "category", "priority", "workstream", "prefix"].includes(
-          saved.group,
+          saved.group
         )
       )
         state.group = saved.group;
       if (
         ["document", "relevance", "priority", "category", "id"].includes(
-          saved.sort,
+          saved.sort
         )
       )
         state.sort = saved.sort;
       if (["light", "dark"].includes(saved.theme)) state.theme = saved.theme;
       if (["tasks", "doc"].includes(saved.view)) state.view = saved.view;
       if (Array.isArray(saved.filters))
-        for (const pair of saved.filters) {
+        for (const pair of saved.filters)
           if (
             Array.isArray(pair) &&
             fields.includes(pair[0]) &&
@@ -358,7 +358,6 @@
             pair[1].every(item => typeof item === "string")
           )
             state.filters.set(pair[0], new Set(pair[1]));
-        }
     }
   } catch {
     /* A malformed URL state must not prevent rendering. */
@@ -410,12 +409,12 @@
         JSON.stringify(
           tasks.filter(task => matches(task)),
           null,
-          2,
-        ),
+          2
+        )
       ],
       {
-        type: "application/json",
-      },
+        type: "application/json"
+      }
     );
     const anchor = node("a");
     const url = URL.createObjectURL(blob);
@@ -428,7 +427,7 @@
     if (
       event.key === "/" &&
       !["INPUT", "SELECT", "TEXTAREA"].includes(
-        document.activeElement?.tagName ?? "",
+        document.activeElement?.tagName ?? ""
       )
     ) {
       event.preventDefault();

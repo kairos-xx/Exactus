@@ -1,5 +1,5 @@
 import ExtendedSelector from "../../../../../packages/extended_selector/editor/extended-selector.js";
-import { createDemoHost } from "../../../../../packages/widgets/widget_selector/examples/web/demo-host.js";
+import {createDemoHost} from "../../../../../packages/widgets/widget_selector/examples/web/demo-host.js";
 /**
  * Unwrap a nullable fixture lookup or fail the page load.
  *
@@ -18,6 +18,6 @@ globalThis.hostReady = true;
 globalThis.demoHost = createDemoHost({
 	engine: new ExtendedSelector(document),
 	stage,
-	layer,
+	layer
 });
 globalThis.must = must;

@@ -1,5 +1,5 @@
 /** Footer: pick, highlight, stats chips, stats panel and the pick result. */
-import { icon } from "./icons.js";
+import {icon} from "./icons.js";
 /** @typedef {{count:number, visible:number, inView:number, enabled:number, scanned:number, truncated:boolean, elapsedMs:number, nodes:{path:number[], label:string, kind:string, count:number}[], first:{tag:string, css:string, text:string}|null}} Stats */
 /**
  * Create an element with an optional class and text.
@@ -18,7 +18,7 @@ const make = (tag, className = "", text = "") => {
  * Build the footer row, stats panel and pick list.
  * @returns {{element:HTMLElement, panel:HTMLElement, onValidation:Function, onText:Function, setStats:Function, armed:()=>boolean}} The footer API.
  */
-export const createFooter = (/** @type {{host:{pick?:Function, highlight?:Function, stats?:Function, profiles?:Function}, getValue:()=>string, setValue:(v:string)=>void, usesLiveVariables:()=>boolean, expected?:()=>number|null}} */ { host, getValue, setValue, usesLiveVariables, expected }) => {
+export const createFooter = (/** @type {{host:{pick?:Function, highlight?:Function, stats?:Function, profiles?:Function}, getValue:()=>string, setValue:(v:string)=>void, usesLiveVariables:()=>boolean, expected?:()=>number|null}} */ {host, getValue, setValue, usesLiveVariables, expected}) => {
   const element = make("div", "ese-footer");
   const row = make("div", "ese-footer-row");
   const panel = make("div", "ese-panel");
@@ -77,7 +77,7 @@ export const createFooter = (/** @type {{host:{pick?:Function, highlight?:Functi
       chip("enabled", "enabled", "enabled", "560"),
       chip("verdict", "check", "expected", "680"),
       chip("scanned", "scan", "scanned", "780"),
-      chip("devices", "devices", "profiles", "880"),
+      chip("devices", "devices", "profiles", "880")
     );
     row.append(make("span", "ese-spacer"), chevron);
   }
@@ -215,7 +215,7 @@ export const createFooter = (/** @type {{host:{pick?:Function, highlight?:Functi
     head.append(close);
     pickBox.append(head, make("div", "ese-pick-note", "Choose how to select it. The change applies as you choose."));
     /** @type {{strategy:string, selector:string, matches:number}[]} */
-    const alts = picked.alternatives ?? [{ strategy: "picked", selector: picked.selector, matches: picked.matches ?? 0 }];
+    const alts = picked.alternatives ?? [{strategy: "picked", selector: picked.selector, matches: picked.matches ?? 0}];
     const best = alts.find(a => a.matches === 1) ?? alts[0];
     /**
      * Append a group of selectable selector alternatives.
@@ -258,6 +258,6 @@ export const createFooter = (/** @type {{host:{pick?:Function, highlight?:Functi
     },
     onText: requestStats,
     setStats,
-    armed: () => armed,
+    armed: () => armed
   };
 };

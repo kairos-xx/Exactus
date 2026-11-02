@@ -121,6 +121,7 @@ Run project linters in parallel and merge diagnostics into one report.
 - `class StabilizationStart` — Capture the moment one file's stabilization began.
   - Fields: `size: int`, `datetime: datetime`, `time: float`
 - `class ToolResult` — Represent the aggregate result of one tool's file tasks.
+  - `optional` = `False`
   - Fields: `name: str`, `status: str`, `duration_seconds: float`, `total_files: int`, `completed_files: int`, `diagnostics: list[Diagnostic]`, `files: list[FileResult]`
 - `class ToolSpec` — Describe a linter and the files it accepts.
   - `file_before_arguments` = `False`
@@ -131,6 +132,7 @@ Run project linters in parallel and merge diagnostics into one report.
   - `derived_from` = `None`
   - `derived_prefix` = `''`
   - `derived_exclude` = `()`
+  - `optional` = `False`
   - Fields: `name: str`, `executable: str`, `parser: str`, `suffixes: frozenset[str]`, `arguments: tuple[str, ...]`
   - `command(self, *, file: Path) -> list[str]` — Build the command for exactly one source file.
   - `available(self) -> bool` — Return whether the command prefix can be launched.
@@ -219,7 +221,7 @@ Files: `examples/README.md`, `examples/__init__.py`, `examples/__main__.py`, `ex
 ## Dependencies and consumers
 
 - Other packages: [`argument_parser`](../argument_parser/DOCS.md), [`steps`](../steps/DOCS.md), [`tree`](../tree/DOCS.md)
-- Used by: `tests/packages/all_lints/test_all_lints.py`, `tools/lints/core.py`, `tools/lints/packages_pipeline.py`
+- Used by: `tests/packages/all_lints/test_all_lints.py`, `tests/packages/all_lints/test_refurb_optional.py`, `tools/lints/core.py`, `tools/lints/packages_pipeline.py`
 
 ## Tests
 
@@ -291,5 +293,9 @@ Tests live in `exactus/tests/packages/all_lints/`.
   - `test_typescript_skips_without_project_config`
 - `test_example_run.py` — Cover the bundled ``all_lints`` example entry point. (1 tests)
   - `test_example_module_runs_as_a_script`
+- `test_refurb_optional.py` — Verify Refurb diagnostics and optional offline tool behavior. (3 tests)
+  - `test_optional_unavailable_is_reported_without_failure`
+  - `test_refurb_cli_registered_optional`
+  - `test_refurb_output_parses`
 
 <!-- exactus:reference:end -->

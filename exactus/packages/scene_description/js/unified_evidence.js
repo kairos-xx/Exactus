@@ -731,11 +731,11 @@ class Descriptor {
     } = /** @type {DescribeOptionsObject} */ (
       typeof options === "function"
         ? {
-            onComplete: options,
+            onComplete: options
           }
         : ["string", "number"].includes(typeof options)
           ? {
-              requestId: options,
+              requestId: options
             }
           : (options ?? {})
     );
@@ -774,7 +774,7 @@ class Descriptor {
       iconGridRows: 3,
       includeIconMarkup: true,
       includeIconBinary: false,
-      ...configuration,
+      ...configuration
     });
     const rootRect = root.getBoundingClientRect();
     if (rootRect.width <= 0 || rootRect.height <= 0)
@@ -793,7 +793,7 @@ class Descriptor {
       elementRegistry: new Map(),
       elementsById: new Map(),
       screenshotAssets: new Map(),
-      iconAssets: new Map(),
+      iconAssets: new Map()
     });
     await this.#walk(root, null, context);
     if (settings.includeElementScreenshots)
@@ -822,7 +822,7 @@ class Descriptor {
           language: document.documentElement.lang || navigator.language || null,
           characterSet: document.characterSet || null,
           contentType: document.contentType || null,
-          compatMode: document.compatMode || null,
+          compatMode: document.compatMode || null
         },
         client: await this.#clientMetadata(),
         screen: {
@@ -840,9 +840,9 @@ class Descriptor {
           orientation: screen.orientation
             ? {
                 type: screen.orientation.type,
-                angle: screen.orientation.angle,
+                angle: screen.orientation.angle
               }
-            : null,
+            : null
         },
         window: {
           width: innerWidth,
@@ -853,7 +853,7 @@ class Descriptor {
           screenY: globalThis.screenY,
           scrollX: this.#round(scrollX),
           scrollY: this.#round(scrollY),
-          devicePixelRatio,
+          devicePixelRatio
         },
         visualViewport: globalThis.visualViewport
           ? {
@@ -863,14 +863,14 @@ class Descriptor {
               offsetY: this.#round(globalThis.visualViewport.offsetTop),
               pageX: this.#round(globalThis.visualViewport.pageLeft),
               pageY: this.#round(globalThis.visualViewport.pageTop),
-              scale: this.#round(globalThis.visualViewport.scale),
+              scale: this.#round(globalThis.visualViewport.scale)
             }
           : null,
         document: {
           readyState: document.readyState,
           visibilityState: document.visibilityState,
           fullscreen: Boolean(document.fullscreenElement),
-          pictureInPicture: Boolean(document.pictureInPictureElement),
+          pictureInPicture: Boolean(document.pictureInPictureElement)
         },
         timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || null,
         locale: Intl.DateTimeFormat().resolvedOptions().locale || null,
@@ -881,9 +881,9 @@ class Descriptor {
           icons: context.iconAssets.size,
           screenshots: context.screenshotAssets.size,
           scrollRegions: context.scrollRegions.length,
-          relationships: relationships.length,
+          relationships: relationships.length
         },
-        executionMs: 0,
+        executionMs: 0
       },
       reference: {
         tag: root.tagName.toLowerCase(),
@@ -898,7 +898,7 @@ class Descriptor {
           right: this.#round(rootRect.right),
           bottom: this.#round(rootRect.bottom),
           width: this.#round(rootRect.width),
-          height: this.#round(rootRect.height),
+          height: this.#round(rootRect.height)
         },
         documentFrame: {
           x: this.#round(rootRect.left + scrollX),
@@ -906,23 +906,23 @@ class Descriptor {
           right: this.#round(rootRect.right + scrollX),
           bottom: this.#round(rootRect.bottom + scrollY),
           width: this.#round(rootRect.width),
-          height: this.#round(rootRect.height),
-        },
+          height: this.#round(rootRect.height)
+        }
       },
       viewport: {
         width: this.#ratio(rootRect.width, innerWidth),
-        height: this.#ratio(rootRect.height, innerHeight),
+        height: this.#ratio(rootRect.height, innerHeight)
       },
       scroll: this.#scrollState(root),
-      objects: context.objects.map(({ transform, layering, ...object }) => ({
+      objects: context.objects.map(({transform, layering, ...object}) => ({
         ...object,
         elementVisualRef: object.sourceElementId,
-        paintLayer: layering?.[String("localPaintLayer")] ?? null,
+        paintLayer: layering?.[String("localPaintLayer")] ?? null
       })),
       elements: Object.fromEntries(context.elementRegistry),
       assets: {
         icons: [...context.iconAssets.values()],
-        screenshots: [...context.screenshotAssets.values()],
+        screenshots: [...context.screenshotAssets.values()]
       },
       scrollRegions: context.scrollRegions,
       spatialLayouts: settings.inferSpatialLayouts
@@ -967,7 +967,7 @@ class Descriptor {
           canvasAnalysis:
             "intrinsic-bitmap-css-size-pixel-density-and-visible-raster-color-analysis",
           svgPaintResolution:
-            "computed-svg-paint-with-currentcolor-resolved-before-serialization-including-fill-stroke-and-color-bearing-paint-properties",
+            "computed-svg-paint-with-currentcolor-resolved-before-serialization-including-fill-stroke-and-color-bearing-paint-properties"
         },
         limitations: [
           "Arbitrary CSS mix-blend-mode is exact only when the sampled backdrop is available; otherwise it is marked approximate.",
@@ -977,15 +977,15 @@ class Descriptor {
           "Occlusion uses geometric intersection plus sampled paint order; transparent holes in arbitrary DOM surfaces are not pixel-perfect without page screenshot access.",
           "Browser privacy rules do not expose reliable visited-link state, so links describe destination semantics but never claim :visited state.",
           "Perceptual salience is a descriptor heuristic, not a WCAG conformance rule; it intentionally combines normalized size, contrast, thickness, and visible exposure.",
-          "Inferred spatial grids describe rendered alignment and density and can differ from author-declared CSS layout intent.",
-        ],
-      },
+          "Inferred spatial grids describe rendered alignment and density and can differ from author-declared CSS layout intent."
+        ]
+      }
     };
     /** @type {SceneRecord} */
     const sceneMetadata = /** @type {SceneRecord} */ (scene.metadata);
     sceneMetadata[String("executionMs")] = this.#round(
       performance.now() - startedAt,
-      3,
+      3
     );
     await onComplete?.(scene, JSON.stringify(scene));
     return scene;
@@ -1015,13 +1015,13 @@ class Descriptor {
             key,
             url.searchParams.getAll(key).length === 1
               ? url.searchParams.get(key)
-              : url.searchParams.getAll(key),
-          ]),
-        ),
+              : url.searchParams.getAll(key)
+          ])
+        )
       },
       hash: url.hash || null,
       hashValue: url.hash ? url.hash.slice(1) : null,
-      credentialsPresent: Boolean(url.username || url.password),
+      credentialsPresent: Boolean(url.username || url.password)
     };
   };
   /**
@@ -1049,9 +1049,9 @@ class Descriptor {
                     "model",
                     "platformVersion",
                     "uaFullVersion",
-                    "wow64",
+                    "wow64"
                   ])
-                : null,
+                : null
             }
           : null;
       } catch {
@@ -1092,7 +1092,7 @@ class Descriptor {
               userAgent.match(/Version\/([\d.]+).*Safari/))?.[1] ?? null,
           vendor: navigator.vendor || null,
           userAgent,
-          appVersion: navigator.appVersion || null,
+          appVersion: navigator.appVersion || null
         },
         os: {
           name:
@@ -1117,9 +1117,9 @@ class Descriptor {
               userAgent.match(/Android ([\d.]+)/) ??
               userAgent.match(/CrOS [^ ]+ ([\d.]+)/))?.[1]?.replaceAll(
               "_",
-              ".",
+              "."
             ) ?? null,
-          platform: navigator.platform || null,
+          platform: navigator.platform || null
         },
         device: {
           mobile:
@@ -1128,7 +1128,7 @@ class Descriptor {
           hardwareConcurrency: navigator.hardwareConcurrency ?? null,
           deviceMemoryGiB: navigatorEx.deviceMemory ?? null,
           maxTouchPoints: navigator.maxTouchPoints ?? 0,
-          touchCapable: (navigator.maxTouchPoints ?? 0) > 0,
+          touchCapable: (navigator.maxTouchPoints ?? 0) > 0
         },
         navigator: {
           language: navigator.language || null,
@@ -1138,7 +1138,7 @@ class Descriptor {
           doNotTrack: navigator.doNotTrack ?? null,
           globalPrivacyControl: navigatorEx.globalPrivacyControl ?? null,
           webdriver: navigator.webdriver,
-          pdfViewerEnabled: navigator.pdfViewerEnabled ?? null,
+          pdfViewerEnabled: navigator.pdfViewerEnabled ?? null
         },
         preferences: {
           colorScheme: matchMedia("(prefers-color-scheme: dark)").matches
@@ -1164,7 +1164,7 @@ class Descriptor {
               : matchMedia("(color-gamut: srgb)").matches
                 ? "srgb"
                 : null,
-          dynamicRangeHigh: matchMedia("(dynamic-range: high)").matches,
+          dynamicRangeHigh: matchMedia("(dynamic-range: high)").matches
         },
         network: connection
           ? {
@@ -1172,17 +1172,17 @@ class Descriptor {
               downlinkMbps: connection.downlink ?? null,
               rttMs: connection.rtt ?? null,
               saveData: connection.saveData ?? null,
-              type: connection.type ?? null,
+              type: connection.type ?? null
             }
           : null,
         storage: storage
           ? {
               quotaBytes: storage.quota ?? null,
               usageBytes: storage.usage ?? null,
-              usageDetails: storage.usageDetails ?? null,
+              usageDetails: storage.usageDetails ?? null
             }
           : null,
-        userAgentData,
+        userAgentData
       };
     })();
     return this.#clientMetadataCache;
@@ -1225,7 +1225,7 @@ class Descriptor {
       visibleRect,
       visualParentId,
       scrollAncestor,
-      context,
+      context
     );
     /** @type {SceneObject[]} */
     const created = [];
@@ -1256,7 +1256,7 @@ class Descriptor {
         type: "shadow",
         boxShadow: style.boxShadow === "none" ? null : style.boxShadow,
         textShadow: style.textShadow === "none" ? null : style.textShadow,
-        paintConfidence: "computed-style",
+        paintConfidence: "computed-style"
       });
     const control = this.#controlPrimitive(element, style, meta);
     if (control) created.push(control);
@@ -1267,8 +1267,8 @@ class Descriptor {
         localPaintLayer: this.#localPaintLayer(
           object.type,
           /** @type {?string} */
-          (object[String("sourceKind")]),
-        ),
+          (object[String("sourceKind")])
+        )
       };
       context.objects.push(object);
       const sourceObjects = context.sourceToObjects.get(element) ?? [];
@@ -1277,7 +1277,7 @@ class Descriptor {
     }
     const nextVisualParentId =
       created.find(item =>
-        ["surface", "control", "image", "svg", "icon"].includes(item.type),
+        ["surface", "control", "image", "svg", "icon"].includes(item.type)
       )?.id ?? visualParentId;
     const scrollState = this.#scrollState(element);
     if (scrollState.x.scrollable || scrollState.y.scrollable)
@@ -1291,19 +1291,19 @@ class Descriptor {
         contentExtent: {
           width: this.#ratio(
             element.scrollWidth,
-            Math.max(1, element.clientWidth),
+            Math.max(1, element.clientWidth)
           ),
           height: this.#ratio(
             element.scrollHeight,
-            Math.max(1, element.clientHeight),
-          ),
+            Math.max(1, element.clientHeight)
+          )
         },
         hiddenContent: {
           left: scrollState.x.position,
           right: this.#round(1 - scrollState.x.position),
           top: scrollState.y.position,
-          bottom: this.#round(1 - scrollState.y.position),
-        },
+          bottom: this.#round(1 - scrollState.y.position)
+        }
       });
     /* SVG internals are already represented by the vector/icon primitive.
      * Walking paths, groups and uses separately creates substantial JSON noise.
@@ -1311,8 +1311,8 @@ class Descriptor {
     if (element instanceof SVGSVGElement) return;
     await Promise.all(
       [...element.children].map(child =>
-        this.#walk(child, nextVisualParentId, context),
-      ),
+        this.#walk(child, nextVisualParentId, context)
+      )
     );
   };
   /**
@@ -1332,7 +1332,7 @@ class Descriptor {
     visibleRect,
     visualParentId,
     scrollAncestor,
-    context,
+    context
   ) => {
     const rootRect = context.rootRect;
     const parentRect =
@@ -1369,13 +1369,13 @@ class Descriptor {
           left: visibleRect.left > rect.left + 0.5,
           visibleWidth: this.#ratio(
             visibleRect.width,
-            Math.max(1e-9, rect.width),
+            Math.max(1e-9, rect.width)
           ),
           visibleHeight: this.#ratio(
             visibleRect.height,
-            Math.max(1e-9, rect.height),
-          ),
-        },
+            Math.max(1e-9, rect.height)
+          )
+        }
       },
       transform:
         /** @type {SceneRecord | undefined} */
@@ -1390,8 +1390,8 @@ class Descriptor {
         focused: element === document.activeElement,
         focusWithin: element.matches(":focus-within"),
         pointerEvents: style.pointerEvents,
-        cursor: style.cursor,
-      },
+        cursor: style.cursor
+      }
     };
   };
   /**
@@ -1418,16 +1418,16 @@ class Descriptor {
           size: style.backgroundSize,
           position: style.backgroundPosition,
           repeat: style.backgroundRepeat,
-          blendMode: style.backgroundBlendMode,
+          blendMode: style.backgroundBlendMode
         },
         mixBlendMode: style.mixBlendMode,
         filter: style.filter === "none" ? null : style.filter,
         backdropFilter: this.#backdropFilter(style),
-        shape: this.#shapeDescriptor(style, element.getBoundingClientRect()),
+        shape: this.#shapeDescriptor(style, element.getBoundingClientRect())
       },
       paintConfidence: hasImage
         ? "computed-style-not-final-pixels"
-        : "solid-background-exact",
+        : "solid-background-exact"
     };
   };
   /**
@@ -1459,7 +1459,7 @@ class Descriptor {
       ...meta,
       id: this.#nextObjectId(
         context,
-        type === "svg-raster" ? "svg-render" : type,
+        type === "svg-raster" ? "svg-render" : type
       ),
       type: type === "svg-raster" ? "svg-render" : type,
       appearance: {
@@ -1469,7 +1469,7 @@ class Descriptor {
         effectiveOpacity: meta.visibility.effectiveOpacity,
         mixBlendMode: style.mixBlendMode,
         filter: style.filter === "none" ? null : style.filter,
-        backdropFilter: this.#backdropFilter(style),
+        backdropFilter: this.#backdropFilter(style)
       },
       ...(canvasElement &&
         canvasRect && {
@@ -1480,11 +1480,11 @@ class Descriptor {
               pixels: canvasElement.width * canvasElement.height,
               aspectRatio: canvasElement.height
                 ? this.#round(canvasElement.width / canvasElement.height)
-                : null,
+                : null
             },
             css: {
               width: this.#round(canvasRect.width),
-              height: this.#round(canvasRect.height),
+              height: this.#round(canvasRect.height)
             },
             backingPixelsPerCssPixel: {
               x: canvasRect.width
@@ -1492,11 +1492,11 @@ class Descriptor {
                 : null,
               y: canvasRect.height
                 ? this.#round(canvasElement.height / canvasRect.height)
-                : null,
+                : null
             },
             attributes: {
               width: element.getAttribute("width"),
-              height: element.getAttribute("height"),
+              height: element.getAttribute("height")
             },
             visibleRaster: raster
               ? {
@@ -1506,10 +1506,10 @@ class Descriptor {
                   averageColor: raster.stats.averageColor,
                   luminance: raster.stats.luminance,
                   alpha: raster.stats.alpha,
-                  colorRegions: raster.stats.regions,
+                  colorRegions: raster.stats.regions
                 }
-              : null,
-          },
+              : null
+          }
         }),
       raster: raster
         ? {
@@ -1519,8 +1519,8 @@ class Descriptor {
               width: this.#ratio(raster.canvas.width, context.rootRect.width),
               height: this.#ratio(
                 raster.canvas.height,
-                context.rootRect.height,
-              ),
+                context.rootRect.height
+              )
             },
             averageColor: raster.stats.averageColor,
             averageContrast: raster.stats.averageContrast,
@@ -1532,9 +1532,9 @@ class Descriptor {
             luminance: raster.stats.luminance,
             alpha: raster.stats.alpha,
             composition: raster.composition,
-            accuracy: raster.accuracy,
+            accuracy: raster.accuracy
           }
-        : null,
+        : null
     };
   };
   /**
@@ -1557,7 +1557,7 @@ class Descriptor {
           x: this.#ratio(raw.x - view.x, view.width),
           y: this.#ratio(raw.y - view.y, view.height),
           width: this.#ratio(raw.width, view.width),
-          height: this.#ratio(raw.height, view.height),
+          height: this.#ratio(raw.height, view.height)
         };
     } catch {
       // Detached SVG geometry is unavailable; preserve a null view-box sample.
@@ -1576,9 +1576,9 @@ class Descriptor {
       appearance: {
         opacity: Number(style.opacity),
         mixBlendMode: style.mixBlendMode,
-        filter: style.filter === "none" ? null : style.filter,
+        filter: style.filter === "none" ? null : style.filter
       },
-      renderedCompanion: rasterObject?.id ?? null,
+      renderedCompanion: rasterObject?.id ?? null
     };
   };
   /**
@@ -1592,7 +1592,7 @@ class Descriptor {
    */
   static #textPrimitive = (element, style, meta, context) => {
     const nodes = [...element.childNodes].filter(
-      node => node.nodeType === Node.TEXT_NODE && node.textContent?.trim(),
+      node => node.nodeType === Node.TEXT_NODE && node.textContent?.trim()
     );
     if (!nodes.length) return null;
     /** @type {SceneTextLineBox[]} */
@@ -1604,12 +1604,12 @@ class Descriptor {
         range.setStart(node, match.index);
         range.setEnd(
           node,
-          Math.min(text.length, match.index + match[0].length),
+          Math.min(text.length, match.index + match[0].length)
         );
         for (const rect of range.getClientRects()) {
           if (rect.width <= 0 || rect.height <= 0) continue;
           let line = lines.find(
-            entry => Math.abs(entry.top - rect.top) <= 1.5,
+            entry => Math.abs(entry.top - rect.top) <= 1.5
           );
           if (!line) {
             line = {
@@ -1617,7 +1617,7 @@ class Descriptor {
               bottom: rect.bottom,
               left: rect.left,
               right: rect.right,
-              text: "",
+              text: ""
             };
             lines.push(line);
           }
@@ -1658,10 +1658,10 @@ class Descriptor {
             right: line.right,
             bottom: line.bottom,
             width: line.right - line.left,
-            height: line.bottom - line.top,
+            height: line.bottom - line.top
           },
-          context.rootRect,
-        ),
+          context.rootRect
+        )
       });
       previous = line;
     }
@@ -1681,28 +1681,28 @@ class Descriptor {
       content,
       paragraphs: paragraphs.map(group => ({
         text: group.map(line => line.text).join("\n"),
-        lines: group,
+        lines: group
       })),
       appearance: {
         typography: this.#typography(
           style,
           element.getBoundingClientRect(),
-          context.rootRect,
+          context.rootRect
         ),
         color: this.#colorDescriptor(color),
         mixBlendMode: style.mixBlendMode,
-        filter: style.filter === "none" ? null : style.filter,
+        filter: style.filter === "none" ? null : style.filter
       },
       overflow: {
         horizontal: hasHorizontalOverflow,
         vertical: hasVerticalOverflow,
         ellipsis: style.textOverflow === "ellipsis" && hasHorizontalOverflow,
         whiteSpace: style.whiteSpace,
-        scroll: this.#scrollState(element),
+        scroll: this.#scrollState(element)
       },
       contrast: {
-        status: "pending-background-resolution",
-      },
+        status: "pending-background-resolution"
+      }
     };
   };
   /**
@@ -1720,11 +1720,11 @@ class Descriptor {
       top: this.#borderSide(style, "Top"),
       right: this.#borderSide(style, "Right"),
       bottom: this.#borderSide(style, "Bottom"),
-      left: this.#borderSide(style, "Left"),
+      left: this.#borderSide(style, "Left")
     };
     const active = Object.entries(sides).filter(
       ([, side]) =>
-        side.width > 0 && side.style !== "none" && (side.color?.[3] ?? 0) > 0,
+        side.width > 0 && side.style !== "none" && (side.color?.[3] ?? 0) > 0
     );
     /** @type {SceneObject[]} */
     const output = [];
@@ -1742,25 +1742,25 @@ class Descriptor {
                 side.width,
                 name === "top" || name === "bottom"
                   ? Math.max(1, rect.height)
-                  : Math.max(1, rect.width),
+                  : Math.max(1, rect.width)
               ),
               style: side.style,
               stroke: this.#cssStrokeDescriptor(
                 side.style,
                 side.width,
                 rect,
-                name,
+                name
               ),
-              color: this.#colorDescriptor(side.color),
-            },
-          ]),
+              color: this.#colorDescriptor(side.color)
+            }
+          ])
         ),
-        shape: this.#shapeDescriptor(style, rect),
+        shape: this.#shapeDescriptor(style, rect)
       });
     else
       for (const [side, data] of active)
         output.push(
-          this.#lineFromBorder(side, data, rect, style, meta, context),
+          this.#lineFromBorder(side, data, rect, style, meta, context)
         );
     const outlineWidth = parseFloat(style.outlineWidth);
     const outlineColor = this.#parseColor(style.outlineColor);
@@ -1778,19 +1778,19 @@ class Descriptor {
         color: this.#colorDescriptor(outlineColor),
         thickness: this.#ratio(
           outlineWidth,
-          Math.max(1, Math.min(rect.width, rect.height)),
+          Math.max(1, Math.min(rect.width, rect.height))
         ),
         offset: this.#ratio(
           parseFloat(style.outlineOffset),
-          Math.max(1, Math.min(rect.width, rect.height)),
+          Math.max(1, Math.min(rect.width, rect.height))
         ),
         shape: this.#shapeDescriptor(style, rect),
         stroke: this.#cssStrokeDescriptor(
           style.outlineStyle,
           outlineWidth,
           rect,
-          "outline",
-        ),
+          "outline"
+        )
       });
     return output;
   };
@@ -1821,7 +1821,7 @@ class Descriptor {
                 ? meta.frame.y
                 : this.#round(meta.frame.y + meta.frame.height),
             width: meta.frame.width,
-            height: 0,
+            height: 0
           }
         : {
             x:
@@ -1830,16 +1830,16 @@ class Descriptor {
                 : this.#round(meta.frame.x + meta.frame.width),
             y: meta.frame.y,
             width: 0,
-            height: meta.frame.height,
+            height: meta.frame.height
           },
       thickness: this.#ratio(
         data.width,
-        horizontal ? Math.max(1, rect.height) : Math.max(1, rect.width),
+        horizontal ? Math.max(1, rect.height) : Math.max(1, rect.width)
       ),
       style: data.style,
       stroke: this.#cssStrokeDescriptor(data.style, data.width, rect, side),
       edgeGeometry: this.#borderEdgeGeometry(side, style, rect),
-      color: this.#colorDescriptor(data.color),
+      color: this.#colorDescriptor(data.color)
     };
   };
   /**
@@ -1878,7 +1878,7 @@ class Descriptor {
         this.#cleanText(element.getAttribute("aria-description")) ||
         this.#idRefs(element, "aria-describedby")
           .map(id =>
-            this.#cleanText(document.getElementById(id)?.textContent),
+            this.#cleanText(document.getElementById(id)?.textContent)
           )
           .filter(Boolean)
           .join(" ") ||
@@ -1890,9 +1890,9 @@ class Descriptor {
             ? null
             : this.#colorDescriptor(this.#parseColor(style.accentColor)),
         nativeAppearance: style.appearance,
-        cursor: style.cursor,
+        cursor: style.cursor
       },
-      affordances: this.#controlAffordances(element, semanticType),
+      affordances: this.#controlAffordances(element, semanticType)
     });
     const labelledBy = this.#idRefs(element, "aria-labelledby");
     const describedBy = this.#idRefs(element, "aria-describedby");
@@ -1907,24 +1907,24 @@ class Descriptor {
       output[String("relations")] = {
         ...(labelledBy.length
           ? {
-              labelledBy,
+              labelledBy
             }
           : {}),
         ...(describedBy.length
           ? {
-              describedBy,
+              describedBy
             }
           : {}),
         ...(controls.length
           ? {
-              controls,
+              controls
             }
           : {}),
         ...(owns.length
           ? {
-              owns,
+              owns
             }
-          : {}),
+          : {})
       };
     if (["button", "toggle-button", "disclosure-button"].includes(semanticType))
       output[String("action")] = this.#buttonAction(element, semanticType);
@@ -1932,12 +1932,12 @@ class Descriptor {
       output[String("action")] = this.#linkAction(element);
     if (
       ["slider", "spinbox", "scrollbar", "progressbar", "meter"].includes(
-        semanticType,
+        semanticType
       )
     ) {
       output[String("value")] = this.#numericControlValue(
         element,
-        semanticType,
+        semanticType
       );
       if (["slider", "scrollbar"].includes(semanticType)) {
         const value = /** @type {SceneRecord} */ (output[String("value")]);
@@ -1973,12 +1973,12 @@ class Descriptor {
         controls: this.#idRefs(element, "aria-controls"),
         position: tabs.length ? Math.max(0, tabs.indexOf(element)) : null,
         count: tabs.length || null,
-        orientation: tablist?.getAttribute("aria-orientation") || "horizontal",
+        orientation: tablist?.getAttribute("aria-orientation") || "horizontal"
       };
     }
     if (
       ["menuitem", "menuitemcheckbox", "menuitemradio", "treeitem"].includes(
-        semanticType,
+        semanticType
       )
     )
       output[String("item")] = this.#structuredItemState(element, semanticType);
@@ -1989,7 +1989,7 @@ class Descriptor {
         element instanceof HTMLInputElement && element.type === "color"
           ? {
               value: element.value,
-              color: this.#colorDescriptor(this.#parseColor(element.value)),
+              color: this.#colorDescriptor(this.#parseColor(element.value))
             }
           : null;
     if (
@@ -1998,7 +1998,7 @@ class Descriptor {
         "time-picker",
         "datetime-picker",
         "month-picker",
-        "week-picker",
+        "week-picker"
       ].includes(semanticType)
     )
       output[String("value")] =
@@ -2007,7 +2007,7 @@ class Descriptor {
               value: element.value || null,
               min: element.min || null,
               max: element.max || null,
-              step: element.step || null,
+              step: element.step || null
             }
           : null;
     return output;
@@ -2040,7 +2040,7 @@ class Descriptor {
       menuitemradio: "menuitemradio",
       treeitem: "treeitem",
       scrollbar: "scrollbar",
-      progressbar: "progressbar",
+      progressbar: "progressbar"
     };
     if (role && roleMap[role]) return roleMap[role];
     if (element instanceof HTMLAnchorElement && element.hasAttribute("href"))
@@ -2082,7 +2082,7 @@ class Descriptor {
           time: "time-picker",
           "datetime-local": "datetime-picker",
           month: "month-picker",
-          week: "week-picker",
+          week: "week-picker"
         })[element.type] ?? null
       );
     if (element instanceof HTMLElement && element.isContentEditable)
@@ -2112,7 +2112,7 @@ class Descriptor {
           rangeOverflow: Boolean(validityState.rangeOverflow),
           stepMismatch: Boolean(validityState.stepMismatch),
           badInput: Boolean(validityState.badInput),
-          customError: Boolean(validityState.customError),
+          customError: Boolean(validityState.customError)
         }
       : null;
     /** @type {SceneRecord} */
@@ -2129,7 +2129,7 @@ class Descriptor {
       focused: element === document.activeElement,
       hovered: element.matches(":hover"),
       focusVisible: element.matches(":focus-visible"),
-      tabIndex: element instanceof HTMLElement ? element.tabIndex : null,
+      tabIndex: element instanceof HTMLElement ? element.tabIndex : null
     };
     const expanded = this.#ariaBoolean(element, "aria-expanded");
     const pressed = this.#ariaTriState(element, "aria-pressed");
@@ -2152,7 +2152,7 @@ class Descriptor {
         message:
           "validationMessage" in element && element.validationMessage
             ? /** @type {?string} */ (element.validationMessage)
-            : null,
+            : null
       };
     const current = element.getAttribute("aria-current");
     if (current && current !== "false")
@@ -2226,7 +2226,7 @@ class Descriptor {
           ? "toggle"
           : semanticType === "disclosure-button"
             ? "disclosure"
-            : "activate",
+            : "activate"
     };
     if (
       element instanceof HTMLButtonElement ||
@@ -2244,7 +2244,7 @@ class Descriptor {
             "get"
           ).toLowerCase(),
           action: element.formAction || form.action || location.href,
-          target: element.formTarget || form.target || null,
+          target: element.formTarget || form.target || null
         };
     }
     const expanded = this.#ariaBoolean(element, "aria-expanded");
@@ -2271,7 +2271,7 @@ class Descriptor {
         : element.getAttribute("href");
     let destinationKind = "unknown";
     let external = null;
-    if (href) {
+    if (href)
       try {
         const url = new URL(href, document.baseURI);
         external = url.origin !== location.origin;
@@ -2292,7 +2292,6 @@ class Descriptor {
       } catch {
         // Malformed href remains an unknown destination in the description.
       }
-    }
     return {
       kind: "navigate",
       href: href || null,
@@ -2303,7 +2302,7 @@ class Descriptor {
         element instanceof HTMLAnchorElement && element.hasAttribute("download")
           ? element.download || true
           : false,
-      rel: element.getAttribute("rel")?.split(/\s+/).filter(Boolean) ?? [],
+      rel: element.getAttribute("rel")?.split(/\s+/).filter(Boolean) ?? []
     };
   };
   /**
@@ -2347,7 +2346,7 @@ class Descriptor {
         : fallback;
     };
     const defaultRange = ["slider", "scrollbar", "progressbar"].includes(
-      semanticType,
+      semanticType
     );
     let min = readNumber("min", defaultRange ? 0 : null);
     let max = readNumber("max", defaultRange ? 100 : null);
@@ -2381,7 +2380,7 @@ class Descriptor {
       atMin: min !== null ? value <= min : null,
       atMax: max !== null ? value >= max : null,
       step,
-      text: this.#cleanText(element.getAttribute("aria-valuetext")),
+      text: this.#cleanText(element.getAttribute("aria-valuetext"))
     };
     if (element instanceof HTMLInputElement && element.type === "range") {
       const list = /** @type {?HTMLDataListElement} */ (element.list);
@@ -2390,7 +2389,7 @@ class Descriptor {
           value: Number.isFinite(Number(option.value))
             ? Number(option.value)
             : option.value,
-          label: this.#cleanText(option.label || option.textContent),
+          label: this.#cleanText(option.label || option.textContent)
         }));
     }
     if (semanticType === "meter" && element instanceof HTMLMeterElement) {
@@ -2434,14 +2433,14 @@ class Descriptor {
     ) {
       const group = /** @type {HTMLInputElement[]} */ ([
         ...document.querySelectorAll(
-          `input[type="radio"][name="${CSS.escape(element.name)}"]`,
-        ),
+          `input[type="radio"][name="${CSS.escape(element.name)}"]`
+        )
       ]).filter(item => item.form === element.form);
       return {
         name: element.name,
         count: group.length,
         position: Math.max(0, group.indexOf(element)),
-        checkedValue: group.find(item => item.checked)?.value ?? null,
+        checkedValue: group.find(item => item.checked)?.value ?? null
       };
     }
     const group = element.closest('[role="radiogroup"]');
@@ -2453,9 +2452,9 @@ class Descriptor {
       position: Math.max(0, radios.indexOf(element)),
       checkedName: this.#accessibleName(
         radios.find(
-          item => this.#ariaTriState(item, "aria-checked") === true,
-        ) ?? null,
-      ),
+          item => this.#ariaTriState(item, "aria-checked") === true
+        ) ?? null
+      )
     };
   };
   /**
@@ -2474,13 +2473,13 @@ class Descriptor {
         "placeholder" in element
           ? this.#cleanText(
               /** @type {?string} */
-              (element.placeholder),
+              (element.placeholder)
             )
           : null,
       autocomplete:
         element.getAttribute("autocomplete") ||
         element.getAttribute("aria-autocomplete") ||
-        null,
+        null
     };
     if (element instanceof HTMLInputElement) {
       state[String("inputType")] = element.type;
@@ -2499,13 +2498,13 @@ class Descriptor {
         state[String("selection")] = {
           start: this.#ratio(
             element.selectionStart,
-            Math.max(1, element.value.length),
+            Math.max(1, element.value.length)
           ),
           end: this.#ratio(
             element.selectionEnd ?? element.selectionStart,
-            Math.max(1, element.value.length),
+            Math.max(1, element.value.length)
           ),
-          direction: element.selectionDirection,
+          direction: element.selectionDirection
         };
     } else if (element instanceof HTMLTextAreaElement) {
       state[String("value")] = element.value;
@@ -2516,23 +2515,23 @@ class Descriptor {
       state[String("selection")] = {
         start: this.#ratio(
           element.selectionStart ?? 0,
-          Math.max(1, element.value.length),
+          Math.max(1, element.value.length)
         ),
         end: this.#ratio(
           element.selectionEnd ?? 0,
-          Math.max(1, element.value.length),
+          Math.max(1, element.value.length)
         ),
-        direction: element.selectionDirection,
+        direction: element.selectionDirection
       };
     } else if (element instanceof HTMLElement && element.isContentEditable) {
       state[String("value")] = this.#cleanText(element.innerText);
       state[String("contentEditable")] = element.contentEditable;
     } else
       state[String("value")] = this.#cleanText(
-        element.getAttribute("aria-valuetext") || element.textContent,
+        element.getAttribute("aria-valuetext") || element.textContent
       );
     return {
-      textInput: state,
+      textInput: state
     };
   };
   /**
@@ -2563,7 +2562,7 @@ class Descriptor {
         group:
           option.parentElement instanceof HTMLOptGroupElement
             ? this.#cleanText(option.parentElement.label)
-            : null,
+            : null
       }));
       selected = options
         .filter(option => option.selected)
@@ -2573,11 +2572,11 @@ class Descriptor {
       multiple = this.#ariaBoolean(element, "aria-multiselectable") === true;
       const ids = [
         ...this.#idRefs(element, "aria-controls"),
-        ...this.#idRefs(element, "aria-owns"),
+        ...this.#idRefs(element, "aria-owns")
       ];
       const roots = [
         element,
-        ...ids.map(id => document.getElementById(id)).filter(Boolean),
+        ...ids.map(id => document.getElementById(id)).filter(Boolean)
       ];
       const seen = new Set();
       for (const root of roots)
@@ -2594,7 +2593,7 @@ class Descriptor {
               null,
             selected: this.#ariaBoolean(option, "aria-selected") === true,
             disabled: this.#ariaBoolean(option, "aria-disabled") === true,
-            hidden: !this.#isRendered(option, 0.001),
+            hidden: !this.#isRendered(option, 0.001)
           };
           options.push(entry);
           if (entry.selected) selected.push(entry.index);
@@ -2622,8 +2621,8 @@ class Descriptor {
             ? element.value
             : (element.getAttribute("aria-valuetext") ?? null),
         expanded: this.#ariaBoolean(element, "aria-expanded"),
-        options,
-      },
+        options
+      }
     };
   };
   /**
@@ -2656,8 +2655,8 @@ class Descriptor {
         selected,
         disabled,
         position: this.#integerAttribute(element, "aria-posinset"),
-        setSize: this.#integerAttribute(element, "aria-setsize"),
-      },
+        setSize: this.#integerAttribute(element, "aria-setsize")
+      }
     };
   };
   /**
@@ -2678,8 +2677,8 @@ class Descriptor {
           : null,
         level: this.#integerAttribute(element, "aria-level"),
         position: this.#integerAttribute(element, "aria-posinset"),
-        setSize: this.#integerAttribute(element, "aria-setsize"),
-      }).filter(([, value]) => value !== null),
+        setSize: this.#integerAttribute(element, "aria-setsize")
+      }).filter(([, value]) => value !== null)
     );
   /**
    * Derive file control state for the current rendered scene.
@@ -2701,8 +2700,8 @@ class Descriptor {
       count: element.files?.length ?? 0,
       files: [...(element.files ?? [])].map(file => ({
         name: file.name,
-        type: file.type || null,
-      })),
+        type: file.type || null
+      }))
     };
   };
   /**
@@ -2743,8 +2742,8 @@ class Descriptor {
         "time-picker": ["choose-time", "enter-value"],
         "datetime-picker": ["choose-date-time", "enter-value"],
         "month-picker": ["choose-month", "enter-value"],
-        "week-picker": ["choose-week", "enter-value"],
-      }[semanticType] ?? []),
+        "week-picker": ["choose-week", "enter-value"]
+      }[semanticType] ?? [])
     ];
     const disabled =
       "disabled" in element && Boolean(element.disabled) ||
@@ -2752,7 +2751,7 @@ class Descriptor {
     return {
       actions,
       interactive: actions.length > 0,
-      available: !disabled,
+      available: !disabled
     };
   };
   /**
@@ -2844,21 +2843,21 @@ class Descriptor {
         source: {
           ...meta.source,
           visualSelector: `${String(meta.source[String("selector")] ?? "")}${pseudo}`,
-          pseudo,
+          pseudo
         },
         content,
         appearance: {
           color: this.#colorDescriptor(this.#parseColor(style.color)),
           backgroundColor: this.#colorDescriptor(
-            this.#parseColor(style.backgroundColor),
+            this.#parseColor(style.backgroundColor)
           ),
           backgroundImage:
             style.backgroundImage === "none" ? null : style.backgroundImage,
           border: style.border,
           opacity: Number(style.opacity),
-          filter: style.filter === "none" ? null : style.filter,
+          filter: style.filter === "none" ? null : style.filter
         },
-        geometryConfidence: "pseudo-element-box-not-exposed-by-standard-dom",
+        geometryConfidence: "pseudo-element-box-not-exposed-by-standard-dom"
       });
     }
     return result;
@@ -2886,7 +2885,7 @@ class Descriptor {
     canvas.width = Math.max(1, Math.round(visible.width * scale));
     canvas.height = Math.max(1, Math.round(visible.height * scale));
     const draw = canvas.getContext("2d", {
-      willReadFrequently: true,
+      willReadFrequently: true
     });
     if (!draw) return null;
     draw.scale(scale, scale);
@@ -2907,14 +2906,14 @@ class Descriptor {
           element.naturalHeight,
           rect,
           style.objectFit,
-          style.objectPosition,
+          style.objectPosition
         );
         draw.drawImage(
           element,
           fit.left - visible.left,
           fit.top - visible.top,
           fit.width,
-          fit.height,
+          fit.height
         );
       } else if (element instanceof HTMLCanvasElement)
         draw.drawImage(
@@ -2922,7 +2921,7 @@ class Descriptor {
           rect.left - visible.left,
           rect.top - visible.top,
           rect.width,
-          rect.height,
+          rect.height
         );
       else if (element instanceof HTMLVideoElement) {
         if (element.readyState < globalThis.HTMLMediaElement.HAVE_CURRENT_DATA)
@@ -2934,14 +2933,14 @@ class Descriptor {
           intrinsicHeight,
           rect,
           style.objectFit,
-          style.objectPosition,
+          style.objectPosition
         );
         draw.drawImage(
           element,
           fit.left - visible.left,
           fit.top - visible.top,
           fit.width,
-          fit.height,
+          fit.height
         );
       } else if (element instanceof SVGSVGElement) {
         const image = await this.#svgImage(element);
@@ -2950,14 +2949,14 @@ class Descriptor {
           rect.left - visible.left,
           rect.top - visible.top,
           rect.width,
-          rect.height,
+          rect.height
         );
       }
     } catch (error) {
       context.warnings.push({
         sourceElementId: meta.sourceElementId,
         kind: "media-rasterization",
-        message: String(error),
+        message: String(error)
       });
       return null;
     }
@@ -2970,7 +2969,7 @@ class Descriptor {
       canvas,
       context.settings.gridColumns,
       context.settings.gridRows,
-      background.color,
+      background.color
     );
     let binary = null;
     try {
@@ -2980,7 +2979,7 @@ class Descriptor {
       context.warnings.push({
         sourceElementId: meta.sourceElementId,
         kind: "canvas-readback",
-        message: String(error),
+        message: String(error)
       });
     }
     const mixBlendMode = style.mixBlendMode;
@@ -2990,7 +2989,7 @@ class Descriptor {
           background.color,
           mixBlendMode,
           context.settings.gridColumns,
-          context.settings.gridRows,
+          context.settings.gridRows
         )
       : null;
     return {
@@ -3019,15 +3018,15 @@ class Descriptor {
               colorRegions: composite.stats.regions,
               colorRegionDefinition: composite.stats.regionDefinition,
               luminance: composite.stats.luminance,
-              alpha: composite.stats.alpha,
+              alpha: composite.stats.alpha
             }
           : null,
         finalPixelConfidence: this.#backdropFilter(style)
           ? "reduced-backdrop-filter-final-pixels-unavailable"
           : background.exact
             ? "high-for-flat-ancestor-backdrop; underlying-sibling-content-may-change-result"
-            : "approximate-flat-ancestor-backdrop; complex-background-or-underlying-content-may-change-result",
-      },
+            : "approximate-flat-ancestor-backdrop; complex-background-or-underlying-content-may-change-result"
+      }
     };
   };
   /**
@@ -3044,13 +3043,13 @@ class Descriptor {
     background,
     mixBlendMode,
     columns,
-    rows,
+    rows
   ) => {
     const output = document.createElement("canvas");
     output.width = canvas.width;
     output.height = canvas.height;
     const context = output.getContext("2d", {
-      willReadFrequently: true,
+      willReadFrequently: true
     });
     if (!context) return null;
     context.fillStyle = `rgba(${Math.round(background[0])}, ${Math.round(background[1])}, ${Math.round(background[2])}, ${this.#clamp(background[3], 0, 1)})`;
@@ -3070,7 +3069,7 @@ class Descriptor {
       "hue",
       "saturation",
       "color",
-      "luminosity",
+      "luminosity"
     ].includes(mixBlendMode)
       ? /** @type {GlobalCompositeOperation} */ (mixBlendMode)
       : "source-over";
@@ -3086,7 +3085,7 @@ class Descriptor {
     return {
       canvas: output,
       binary,
-      stats: this.#colorStats(output, columns, rows, background),
+      stats: this.#colorStats(output, columns, rows, background)
     };
   };
   /**
@@ -3099,7 +3098,7 @@ class Descriptor {
    */
   static #colorStats = (canvas, columns, rows, backdrop = null) => {
     const context = canvas.getContext("2d", {
-      willReadFrequently: true,
+      willReadFrequently: true
     });
     const gridColumns = this.#gridDimension(columns);
     const gridRows = this.#gridDimension(rows);
@@ -3111,17 +3110,17 @@ class Descriptor {
         columns: gridColumns,
         rows: gridRows,
         neighbourhood: "8-connected",
-        coordinates: "normalized-to-raster",
+        coordinates: "normalized-to-raster"
       },
       gridContrast: null,
       regions: [],
       regionDefinition: {
         connectivity: "4-connected",
         similarityContrastMaximum: 1.35,
-        colorDistanceMaximum: 0.22,
+        colorDistanceMaximum: 0.22
       },
       luminance: null,
-      alpha: null,
+      alpha: null
     };
     if (!context) return empty;
     let image;
@@ -3162,44 +3161,44 @@ class Descriptor {
           Math.round(red / divisor),
           Math.round(green / divisor),
           Math.round(blue / divisor),
-          this.#round(alphaWeighted / Math.max(1, count)),
+          this.#round(alphaWeighted / Math.max(1, count))
         ])
       );
     };
     const colors = Array.from(
       {
-        length: gridRows,
+        length: gridRows
       },
       (_, row) => {
         const y0 = Math.floor(row / gridRows * canvas.height);
         const y1 = Math.max(
           y0 + 1,
-          Math.floor((row + 1) / gridRows * canvas.height),
+          Math.floor((row + 1) / gridRows * canvas.height)
         );
         return Array.from(
           {
-            length: gridColumns,
+            length: gridColumns
           },
           (_unusedCell, column) => {
             const x0 = Math.floor(column / gridColumns * canvas.width);
             const x1 = Math.max(
               x0 + 1,
-              Math.floor((column + 1) / gridColumns * canvas.width),
+              Math.floor((column + 1) / gridColumns * canvas.width)
             );
             return sample(x0, y0, x1, y1);
-          },
+          }
         );
-      },
+      }
     );
     const averageColor = sample(0, 0, canvas.width, canvas.height);
     const contrast = this.#gridContrast(colors, averageColor, backdrop);
     const regions = this.#gridRegions(contrast.grid, backdrop);
     const flatColors = colors.flat();
     const luminances = flatColors
-      .map(({ luminance }) => luminance)
+      .map(({luminance}) => luminance)
       .filter(Number.isFinite);
     const alphas = flatColors
-      .map(({ rgba }) => rgba[3] ?? 0)
+      .map(({rgba}) => rgba[3] ?? 0)
       .filter(Number.isFinite);
     return {
       averageColor,
@@ -3208,10 +3207,10 @@ class Descriptor {
           ? this.#perceivedContrast(
               averageColor,
               this.#colorDescriptor(backdrop),
-              backdrop,
+              backdrop
             )
           : null,
-        basis: backdrop ? "flat-backdrop-composited" : "isolated-rgb",
+        basis: backdrop ? "flat-backdrop-composited" : "isolated-rgb"
       },
       grid: contrast.grid,
       gridDefinition: {
@@ -3220,7 +3219,7 @@ class Descriptor {
         neighbourhood: "8-connected",
         coordinates: "normalized-to-raster",
         cellWidth: this.#round(1 / gridColumns),
-        cellHeight: this.#round(1 / gridRows),
+        cellHeight: this.#round(1 / gridRows)
       },
       gridContrast: contrast.summary,
       regions,
@@ -3228,7 +3227,7 @@ class Descriptor {
         connectivity: "4-connected",
         similarityContrastMaximum: 1.35,
         colorDistanceMaximum: 0.22,
-        coordinates: "normalized-to-raster",
+        coordinates: "normalized-to-raster"
       },
       luminance: luminances.length
         ? {
@@ -3236,8 +3235,8 @@ class Descriptor {
             max: this.#round(Math.max(...luminances)),
             average: this.#round(
               luminances.reduce((sum, value) => sum + value, 0) /
-                luminances.length,
-            ),
+                luminances.length
+            )
           }
         : null,
       alpha: alphas.length
@@ -3245,10 +3244,10 @@ class Descriptor {
             min: this.#round(Math.min(...alphas)),
             max: this.#round(Math.max(...alphas)),
             average: this.#round(
-              alphas.reduce((sum, value) => sum + value, 0) / alphas.length,
-            ),
+              alphas.reduce((sum, value) => sum + value, 0) / alphas.length
+            )
           }
-        : null,
+        : null
     };
   };
   /**
@@ -3277,14 +3276,14 @@ class Descriptor {
       ["bottom", 1, 0],
       ["bottomLeft", 1, -1],
       ["left", 0, -1],
-      ["topLeft", -1, -1],
+      ["topLeft", -1, -1]
     ];
     /** @type {[string, number, number][]} */
     const uniqueDirections = [
       ["right", 0, 1],
       ["bottomRight", 1, 1],
       ["bottom", 1, 0],
-      ["bottomLeft", 1, -1],
+      ["bottomLeft", 1, -1]
     ];
     const grid = colors.map((rowColors, row) =>
       rowColors.map((color, column) => {
@@ -3293,13 +3292,13 @@ class Descriptor {
             const neighbour = colors[row + rowOffset]?.[column + columnOffset];
             return neighbour
               ? /** @type {[string, number | null][]} */ ([
-                  [name, this.#perceivedContrast(color, neighbour, backdrop)],
+                  [name, this.#perceivedContrast(color, neighbour, backdrop)]
                 ])
               : [];
-          }),
+          })
         );
         const neighbourRatios = Object.values(neighbours).map(
-          value => value ?? 0,
+          value => value ?? 0
         );
         return {
           row,
@@ -3308,7 +3307,7 @@ class Descriptor {
             x: this.#round(column / columns),
             y: this.#round(row / rows),
             width: this.#round(1 / columns),
-            height: this.#round(1 / rows),
+            height: this.#round(1 / rows)
           },
           color,
           contrast: {
@@ -3317,7 +3316,7 @@ class Descriptor {
               ? this.#perceivedContrast(
                   color,
                   this.#colorDescriptor(backdrop),
-                  backdrop,
+                  backdrop
                 )
               : null,
             neighbours,
@@ -3330,7 +3329,7 @@ class Descriptor {
             averageNeighbour: neighbourRatios.length
               ? this.#round(
                   neighbourRatios.reduce((sum, value) => sum + value, 0) /
-                    neighbourRatios.length,
+                    neighbourRatios.length
                 )
               : null,
             wcag22GraphicalObjectIfMeaningful: {
@@ -3339,18 +3338,18 @@ class Descriptor {
               applicability: "conditional-on-cell-boundary-carrying-meaning",
               strongestBoundaryPasses: neighbourRatios.length
                 ? Math.max(...neighbourRatios) >= 3
-                : null,
-            },
+                : null
+            }
           },
           perception: this.#salienceMetrics(
             neighbourRatios.length ? Math.max(...neighbourRatios) : 1,
             1 / Math.max(1, rows * columns),
             Math.min(1 / Math.max(1, columns), 1 / Math.max(1, rows)),
             1,
-            1,
-          ),
+            1
+          )
         };
-      }),
+      })
     );
     const comparisons = colors.flatMap((rowColors, row) =>
       rowColors.flatMap((color, column) =>
@@ -3364,16 +3363,16 @@ class Descriptor {
                   from: [row, column],
                   to: [targetRow, targetColumn],
                   direction,
-                  ratio: this.#perceivedContrast(color, neighbour, backdrop),
-                },
+                  ratio: this.#perceivedContrast(color, neighbour, backdrop)
+                }
               ]
             : [];
-        }),
-      ),
+        })
+      )
     );
-    const ratios = comparisons.map(({ ratio }) => ratio ?? 0);
+    const ratios = comparisons.map(({ratio}) => ratio ?? 0);
     const sorted = [...comparisons].sort(
-      (a, b) => (a.ratio ?? 0) - (b.ratio ?? 0),
+      (a, b) => (a.ratio ?? 0) - (b.ratio ?? 0)
     );
     return {
       grid,
@@ -3385,12 +3384,12 @@ class Descriptor {
             min: this.#round(Math.min(...ratios)),
             max: this.#round(Math.max(...ratios)),
             average: this.#round(
-              ratios.reduce((sum, value) => sum + value, 0) / ratios.length,
+              ratios.reduce((sum, value) => sum + value, 0) / ratios.length
             ),
             weakestBoundary: sorted[0] ?? null,
-            strongestBoundary: sorted.at(-1) ?? null,
+            strongestBoundary: sorted.at(-1) ?? null
           }
-        : null,
+        : null
     };
   };
   /**
@@ -3416,7 +3415,7 @@ class Descriptor {
     const resolve = color =>
       backdrop && color[3] < 1 ? this.#alphaComposite(color, backdrop) : color;
     return this.#round(
-      this.#contrastRatio(resolve(firstColor), resolve(secondColor)),
+      this.#contrastRatio(resolve(firstColor), resolve(secondColor))
     );
   };
   /**
@@ -3431,7 +3430,7 @@ class Descriptor {
       const source = this.#elementFromId(
         object.sourceElementId,
         context.root,
-        context,
+        context
       );
       if (!source) continue;
       const style = getComputedStyle(source);
@@ -3440,17 +3439,17 @@ class Descriptor {
         /** @type {unknown} */
         (object[String("paragraphs")])
       );
-      const samplePoints = paragraphs.flatMap(({ lines }) =>
-        lines.flatMap(({ frame }) => {
+      const samplePoints = paragraphs.flatMap(({lines}) =>
+        lines.flatMap(({frame}) => {
           const rect = this.#rectFromFrame(frame, context.rootRect);
           return [0.15, 0.5, 0.85].map(
             fraction =>
               /** @type {[number, number]} */ ([
                 rect.left + rect.width * fraction,
-                rect.top + rect.height * 0.5,
-              ]),
+                rect.top + rect.height * 0.5
+              ])
           );
-        }),
+        })
       );
       const samples = /** @type {SceneRecord[]} */ (
         samplePoints
@@ -3460,7 +3459,7 @@ class Descriptor {
       if (!foreground || !samples.length) {
         object[String("contrast")] = {
           status: "unresolved",
-          reason: "No readable background sample was available.",
+          reason: "No readable background sample was available."
         };
         continue;
       }
@@ -3476,10 +3475,10 @@ class Descriptor {
           ratio: this.#contrastRatio(resolvedForeground, color),
           source: sample[String("source")] ?? null,
           confidence: sample[String("confidence")] ?? null,
-          background: this.#colorDescriptor(color),
+          background: this.#colorDescriptor(color)
         };
       });
-      const rawValues = rawRatios.map(({ ratio }) => ratio);
+      const rawValues = rawRatios.map(({ratio}) => ratio);
       const minimum = Math.min(...rawValues);
       const fontSize = parseFloat(style.fontSize) || 0;
       const weight = Number(style.fontWeight);
@@ -3492,11 +3491,11 @@ class Descriptor {
         min: this.#round(minimum),
         max: this.#round(Math.max(...rawValues)),
         average: this.#round(
-          rawValues.reduce((sum, value) => sum + value, 0) / rawValues.length,
+          rawValues.reduce((sum, value) => sum + value, 0) / rawValues.length
         ),
         samples: rawRatios.map(entry => ({
           ...entry,
-          ratio: this.#round(entry.ratio),
+          ratio: this.#round(entry.ratio)
         })),
         wcag22: {
           applicableAs: "text",
@@ -3510,15 +3509,15 @@ class Descriptor {
           AA: {
             criterion: "1.4.3 Contrast (Minimum)",
             required: aaRequired,
-            passes: minimum >= aaRequired,
+            passes: minimum >= aaRequired
           },
           AAA: {
             criterion: "1.4.6 Contrast (Enhanced)",
             required: aaaRequired,
-            passes: minimum >= aaaRequired,
+            passes: minimum >= aaaRequired
           },
-          thresholdComparison: "unrounded-ratio",
-        },
+          thresholdComparison: "unrounded-ratio"
+        }
       };
     }
   };
@@ -3549,17 +3548,17 @@ class Descriptor {
           return {
             color,
             source: "underlying-media-raster",
-            confidence: "high",
+            confidence: "high"
           };
       }
       const color = this.#parseColor(
-        getComputedStyle(candidate).backgroundColor,
+        getComputedStyle(candidate).backgroundColor
       );
       if (color && color[3] > 0)
         return {
           color,
           source: "underlying-solid-background",
-          confidence: "high",
+          confidence: "high"
         };
     }
     const fallback = this.#effectiveFlatBackground(textElement, context.root);
@@ -3567,7 +3566,7 @@ class Descriptor {
       ? {
           color: fallback.color,
           source: "ancestor-alpha-composited-background",
-          confidence: fallback.exact ? "high" : "approximate",
+          confidence: fallback.exact ? "high" : "approximate"
         }
       : null;
   };
@@ -3583,18 +3582,18 @@ class Descriptor {
     const localX = this.#clamp(
       (x - rect.left) / Math.max(1e-9, rect.width),
       0,
-      0.999999,
+      0.999999
     );
     const localY = this.#clamp(
       (y - rect.top) / Math.max(1e-9, rect.height),
       0,
-      0.999999,
+      0.999999
     );
     const px = Math.floor(localX * raster.canvas.width);
     const py = Math.floor(localY * raster.canvas.height);
     try {
       const context = raster.canvas.getContext("2d", {
-        willReadFrequently: true,
+        willReadFrequently: true
       });
       if (!context) return null;
       const data = context.getImageData(px, py, 1, 1).data;
@@ -3611,7 +3610,7 @@ class Descriptor {
    */
   static #relationships = context => {
     const objects = context.objects.filter(
-      object => object.frame && object.visibility?.currentlyVisible,
+      object => object.frame && object.visibility?.currentlyVisible
     );
     const relationships = [];
     for (let a = 0; a < objects.length; a++)
@@ -3638,7 +3637,7 @@ class Descriptor {
             frame,
             area: this.#round(overlapArea),
             ofA: this.#round(overlapArea / firstArea),
-            ofB: this.#round(overlapArea / secondArea),
+            ofB: this.#round(overlapArea / secondArea)
           },
           stack: order,
           layer: order.topObjectId
@@ -3650,17 +3649,17 @@ class Descriptor {
               order.topObjectId === second.id
                 ? this.#round(
                     overlapArea / firstArea *
-                      (second.visibility?.effectiveOpacity ?? 1),
+                      (second.visibility?.effectiveOpacity ?? 1)
                   )
                 : 0,
             estimatedEffectiveCoverageOfB:
               order.topObjectId === first.id
                 ? this.#round(
                     overlapArea / secondArea *
-                      (first.visibility?.effectiveOpacity ?? 1),
+                      (first.visibility?.effectiveOpacity ?? 1)
                   )
-                : 0,
-          },
+                : 0
+          }
         });
       }
     return relationships;
@@ -3688,10 +3687,10 @@ class Descriptor {
           ? this.#round(
               Math.max(
                 0,
-                element.scrollWidth - element.clientWidth - element.scrollLeft,
-              ) / element.scrollWidth,
+                element.scrollWidth - element.clientWidth - element.scrollLeft
+              ) / element.scrollWidth
             )
-          : 0,
+          : 0
       },
       y: {
         scrollable: maxY > 0.5,
@@ -3706,11 +3705,11 @@ class Descriptor {
           ? this.#round(
               Math.max(
                 0,
-                element.scrollHeight - element.clientHeight - element.scrollTop,
-              ) / element.scrollHeight,
+                element.scrollHeight - element.clientHeight - element.scrollTop
+              ) / element.scrollHeight
             )
-          : 0,
-      },
+          : 0
+      }
     };
   };
   /**
@@ -3745,7 +3744,7 @@ class Descriptor {
     }
     return {
       color: composed,
-      exact,
+      exact
     };
   };
   /**
@@ -3804,7 +3803,7 @@ class Descriptor {
       "filter",
       "clip-path",
       "mask",
-      "mix-blend-mode",
+      "mix-blend-mode"
     ];
     originalNodes.forEach((node, index) => {
       const target = cloneNodes[index];
@@ -3816,7 +3815,7 @@ class Descriptor {
           "stroke",
           "stop-color",
           "flood-color",
-          "lighting-color",
+          "lighting-color"
         ].includes(property)
           ? this.#svgPaintValue(style, property)
           : style.getPropertyValue(property);
@@ -3836,8 +3835,8 @@ class Descriptor {
     const rootRect = svg.getBoundingClientRect();
     return [
       ...svg.querySelectorAll(
-        "path,rect,circle,ellipse,line,polyline,polygon,text,use",
-      ),
+        "path,rect,circle,ellipse,line,polyline,polygon,text,use"
+      )
     ]
       .filter(node => this.#isRendered(node, 0.001))
       .map(node => {
@@ -3854,18 +3853,18 @@ class Descriptor {
             fill: {
               raw: style.fill,
               resolved: fill,
-              paintServer: /^url\(/i.test(fill) ? fill : null,
+              paintServer: /^url\(/i.test(fill) ? fill : null
             },
             stroke: {
               raw: style.stroke,
               resolved: stroke,
-              paintServer: /^url\(/i.test(stroke) ? stroke : null,
+              paintServer: /^url\(/i.test(stroke) ? stroke : null
             },
-            color: style.color,
+            color: style.color
           },
           strokeWidthRelativeToSvg: this.#ratio(
             parseFloat(style.strokeWidth) || 0,
-            Math.max(1, Math.min(rootRect.width, rootRect.height)),
+            Math.max(1, Math.min(rootRect.width, rootRect.height))
           ),
           strokeDashArrayRelativeToSvg:
             style.strokeDasharray && style.strokeDasharray !== "none"
@@ -3875,15 +3874,15 @@ class Descriptor {
                   .map(value =>
                     this.#cssLengthRatio(
                       value,
-                      Math.max(1, Math.min(rootRect.width, rootRect.height)),
-                    ),
+                      Math.max(1, Math.min(rootRect.width, rootRect.height))
+                    )
                   )
               : [],
           strokeLineCap: style.strokeLinecap,
           strokeLineJoin: style.strokeLinejoin,
           opacity: this.#effectiveOpacity(node),
           text:
-            node instanceof globalThis.SVGTextElement ? node.textContent : null,
+            node instanceof globalThis.SVGTextElement ? node.textContent : null
         };
       });
   };
@@ -3901,7 +3900,7 @@ class Descriptor {
     const area = width * height;
     const explicitHint =
       svg.matches(
-        '[role="img"], [aria-hidden="true"], [data-icon], .icon, [class*="icon" i]',
+        '[role="img"], [aria-hidden="true"], [data-icon], .icon, [class*="icon" i]'
       ) || Boolean(svg.querySelector("use"));
     const compactSize =
       width <= context.settings.iconMaxWidthFraction &&
@@ -3926,8 +3925,8 @@ class Descriptor {
       settings: {
         ...context.settings,
         gridColumns: context.settings.iconGridColumns,
-        gridRows: context.settings.iconGridRows,
-      },
+        gridRows: context.settings.iconGridRows
+      }
     });
     const styledMarkup = this.#serializeStyledSvg(svg)
       .replace(/>\s+</g, "><")
@@ -3941,17 +3940,17 @@ class Descriptor {
     if (!context.iconAssets.has(assetId)) {
       const vectors = this.#svgVectorElements(svg);
       const primitiveTypes = Object.fromEntries(
-        [...new Set(vectors.map(({ tag }) => tag))].map(tag => [
+        [...new Set(vectors.map(({tag}) => tag))].map(tag => [
           tag,
-          vectors.filter(item => item.tag === tag).length,
-        ]),
+          vectors.filter(item => item.tag === tag).length
+        ])
       );
       const colors = [
         ...vectors
           .reduce(
             (
               /** @type {Map<string, SceneColorDescriptor>} */ result,
-              vector,
+              vector
             ) => {
               for (const color of [vector.fill, vector.stroke])
                 if (color?.hex && color.rgba[3] > 0)
@@ -3959,9 +3958,9 @@ class Descriptor {
               return result;
             },
             /** @type {Map<string, SceneColorDescriptor>} */
-            (new Map()),
+            (new Map())
           )
-          .values(),
+          .values()
       ].slice(0, 12);
       context.iconAssets.set(assetId, {
         id: assetId,
@@ -3970,7 +3969,7 @@ class Descriptor {
         aspectRatio: svg.getBoundingClientRect().height
           ? this.#round(
               svg.getBoundingClientRect().width /
-                svg.getBoundingClientRect().height,
+                svg.getBoundingClientRect().height
             )
           : null,
         primitiveCount: vectors.length,
@@ -3989,7 +3988,7 @@ class Descriptor {
         binary: context.settings.includeIconBinary
           ? (raster?.binary ?? null)
           : null,
-        accuracy: raster?.accuracy ?? "vector-summary-only",
+        accuracy: raster?.accuracy ?? "vector-summary-only"
       });
     }
     const semantics = this.#svgIconSemantics(svg);
@@ -4003,8 +4002,8 @@ class Descriptor {
         opacity: Number(style.opacity),
         effectiveOpacity: meta.visibility.effectiveOpacity,
         mixBlendMode: style.mixBlendMode,
-        filter: style.filter === "none" ? null : style.filter,
-      },
+        filter: style.filter === "none" ? null : style.filter
+      }
     };
   };
   /**
@@ -4026,12 +4025,12 @@ class Descriptor {
       null;
     const classHint =
       [...svg.classList].find(name =>
-        /(?:^|[-_])(icon|ico)(?:[-_]|$)/i.test(name),
+        /(?:^|[-_])(icon|ico)(?:[-_]|$)/i.test(name)
       ) ||
       [...svg.classList].find(name =>
         /(chevron|arrow|close|menu|search|edit|delete|trash|plus|minus|check|settings|info|warning|user|home|play|pause)/i.test(
-          name,
-        ),
+          name
+        )
       ) ||
       null;
     const rawName =
@@ -4046,7 +4045,7 @@ class Descriptor {
       title,
       symbolReference,
       sourceHint: dataName || classHint,
-      decorative: svg.getAttribute("aria-hidden") === "true",
+      decorative: svg.getAttribute("aria-hidden") === "true"
     };
   };
   /**
@@ -4058,8 +4057,8 @@ class Descriptor {
     const rootRect = svg.getBoundingClientRect();
     const strokes = [
       ...svg.querySelectorAll(
-        "path,line,polyline,polygon,rect,circle,ellipse,use",
-      ),
+        "path,line,polyline,polygon,rect,circle,ellipse,use"
+      )
     ]
       .filter(node => this.#isRendered(node, 0.001))
       .map(node => {
@@ -4067,7 +4066,7 @@ class Descriptor {
         const width = parseFloat(style.strokeWidth) || 0;
         const strokeBase = Math.max(
           1,
-          Math.min(rootRect.width, rootRect.height),
+          Math.min(rootRect.width, rootRect.height)
         );
         const dashArray =
           style.strokeDasharray && style.strokeDasharray !== "none"
@@ -4077,17 +4076,17 @@ class Descriptor {
           style: dashArray.length ? "dashed" : "solid",
           widthRelativeToSvg: this.#ratio(width, strokeBase),
           dashPatternRelativeToSvg: dashArray.map(value =>
-            this.#cssLengthRatio(value, strokeBase),
+            this.#cssLengthRatio(value, strokeBase)
           ),
           dashOffsetRelativeToSvg: this.#ratio(
             parseFloat(style.strokeDashoffset) || 0,
-            strokeBase,
+            strokeBase
           ),
           lineCap: style.strokeLinecap,
-          lineJoin: style.strokeLinejoin,
+          lineJoin: style.strokeLinejoin
         };
       })
-      .filter(({ widthRelativeToSvg }) => widthRelativeToSvg > 0);
+      .filter(({widthRelativeToSvg}) => widthRelativeToSvg > 0);
     if (!strokes.length) return null;
     /** @type {Map<string, SceneRecord & {count: number}>} */
     const signatures = new Map();
@@ -4098,7 +4097,7 @@ class Descriptor {
       else
         signatures.set(key, {
           ...stroke,
-          count: 1,
+          count: 1
         });
     }
     return [...signatures.values()];
@@ -4111,7 +4110,7 @@ class Descriptor {
   static #svgImage = async svg => {
     const source = this.#serializeStyledSvg(svg);
     const blob = new Blob([source], {
-      type: "image/svg+xml;charset=utf-8",
+      type: "image/svg+xml;charset=utf-8"
     });
     const url = URL.createObjectURL(blob);
     try {
@@ -4138,7 +4137,7 @@ class Descriptor {
     intrinsicHeight,
     rect,
     objectFit,
-    objectPosition,
+    objectPosition
   ) => {
     const fit = objectFit || "fill";
     let width = rect.width;
@@ -4149,7 +4148,7 @@ class Descriptor {
           ? Math.max(rect.width / intrinsicWidth, rect.height / intrinsicHeight)
           : Math.min(
               rect.width / intrinsicWidth,
-              rect.height / intrinsicHeight,
+              rect.height / intrinsicHeight
             );
       if (fit === "scale-down") scale = Math.min(1, scale);
       if (fit === "none") scale = 1;
@@ -4161,7 +4160,7 @@ class Descriptor {
       left: rect.left + (rect.width - width) * position.x,
       top: rect.top + (rect.height - height) * position.y,
       width,
-      height,
+      height
     };
   };
   /**
@@ -4184,12 +4183,12 @@ class Descriptor {
           ? {
               left: 0,
               center: 0.5,
-              right: 1,
+              right: 1
             }
           : {
               top: 0,
               center: 0.5,
-              bottom: 1,
+              bottom: 1
             }
       );
       if (part in keywords) return keywords[part] ?? 0.5;
@@ -4198,7 +4197,7 @@ class Descriptor {
     };
     return {
       x: parse(parts[0], "x"),
-      y: parse(parts[1] ?? "50%", "y"),
+      y: parse(parts[1] ?? "50%", "y")
     };
   };
   /**
@@ -4217,12 +4216,12 @@ class Descriptor {
       bottom: Math.min(innerHeight, rootRect.bottom),
       width: Math.max(
         0,
-        Math.min(innerWidth, rootRect.right) - Math.max(0, rootRect.left),
+        Math.min(innerWidth, rootRect.right) - Math.max(0, rootRect.left)
       ),
       height: Math.max(
         0,
-        Math.min(innerHeight, rootRect.bottom) - Math.max(0, rootRect.top),
-      ),
+        Math.min(innerHeight, rootRect.bottom) - Math.max(0, rootRect.top)
+      )
     });
     for (
       let ancestor = element.parentElement;
@@ -4231,10 +4230,10 @@ class Descriptor {
     ) {
       const style = getComputedStyle(ancestor);
       const clipsX = ["hidden", "clip", "scroll", "auto"].includes(
-        style.overflowX,
+        style.overflowX
       );
       const clipsY = ["hidden", "clip", "scroll", "auto"].includes(
-        style.overflowY,
+        style.overflowY
       );
       if (!clipsX && !clipsY) continue;
       const ancestorRect = ancestor.getBoundingClientRect();
@@ -4246,12 +4245,12 @@ class Descriptor {
         top: clipsY ? Math.max(visible.top, ancestorRect.top) : visible.top,
         bottom: clipsY
           ? Math.min(visible.bottom, ancestorRect.bottom)
-          : visible.bottom,
+          : visible.bottom
       };
       visible = {
         ...clipped,
         width: Math.max(0, clipped.right - clipped.left),
-        height: Math.max(0, clipped.bottom - clipped.top),
+        height: Math.max(0, clipped.bottom - clipped.top)
       };
     }
     return visible;
@@ -4298,12 +4297,12 @@ class Descriptor {
   static #borderSide = (style, suffix) => ({
     width:
       parseFloat(
-        style.getPropertyValue(`border-${suffix.toLowerCase()}-width`),
+        style.getPropertyValue(`border-${suffix.toLowerCase()}-width`)
       ) || 0,
     style: style.getPropertyValue(`border-${suffix.toLowerCase()}-style`),
     color: this.#parseColor(
-      style.getPropertyValue(`border-${suffix.toLowerCase()}-color`),
-    ),
+      style.getPropertyValue(`border-${suffix.toLowerCase()}-color`)
+    )
   });
   /**
    * Derive radius for the current rendered scene.
@@ -4323,24 +4322,24 @@ class Descriptor {
         .split(/\s+/);
       return {
         x: this.#cssLengthRatio(horizontal, Math.max(1, rect.width)),
-        y: this.#cssLengthRatio(vertical, Math.max(1, rect.height)),
+        y: this.#cssLengthRatio(vertical, Math.max(1, rect.height))
       };
     };
     const corners = {
       topLeft: corner(style.borderTopLeftRadius),
       topRight: corner(style.borderTopRightRadius),
       bottomRight: corner(style.borderBottomRightRadius),
-      bottomLeft: corner(style.borderBottomLeftRadius),
+      bottomLeft: corner(style.borderBottomLeftRadius)
     };
     const values = Object.values(corners);
     return {
       ...corners,
-      rounded: values.some(({ x, y }) => x > 0 || y > 0),
+      rounded: values.some(({x, y}) => x > 0 || y > 0),
       uniform: values.every(
-        ({ x, y }) =>
+        ({x, y}) =>
           Math.abs(x - (values[0]?.x ?? 0)) <= 0.001 &&
-          Math.abs(y - (values[0]?.y ?? 0)) <= 0.001,
-      ),
+          Math.abs(y - (values[0]?.y ?? 0)) <= 0.001
+      )
     };
   };
   /**
@@ -4355,10 +4354,10 @@ class Descriptor {
       radius.topLeft,
       radius.topRight,
       radius.bottomRight,
-      radius.bottomLeft,
+      radius.bottomLeft
     ];
-    const fullyRoundedX = corners.every(({ x }) => x >= 0.49);
-    const fullyRoundedY = corners.every(({ y }) => y >= 0.49);
+    const fullyRoundedX = corners.every(({x}) => x >= 0.49);
+    const fullyRoundedY = corners.every(({y}) => y >= 0.49);
     const aspect = rect.height ? rect.width / rect.height : 0;
     const kind =
       fullyRoundedX && fullyRoundedY && Math.abs(aspect - 1) <= 0.05
@@ -4370,7 +4369,7 @@ class Descriptor {
             : "rectangle";
     return {
       kind,
-      radius,
+      radius
     };
   };
   /**
@@ -4390,43 +4389,43 @@ class Descriptor {
     const thickness = Math.max(1e-9, width);
     const pattern = {
       solid: {
-        kind: "solid",
+        kind: "solid"
       },
       dashed: {
         kind: "dashed",
         dashToThickness: "browser-defined",
         estimatedSegmentCount: Math.max(
           1,
-          Math.round(length / (thickness * 6)),
-        ),
+          Math.round(length / (thickness * 6))
+        )
       },
       dotted: {
         kind: "dotted",
         dotDiameterToThickness: 1,
-        estimatedDotCount: Math.max(1, Math.round(length / (thickness * 2))),
+        estimatedDotCount: Math.max(1, Math.round(length / (thickness * 2)))
       },
       double: {
         kind: "double",
-        layers: 2,
+        layers: 2
       },
       groove: {
-        kind: "3d-groove",
+        kind: "3d-groove"
       },
       ridge: {
-        kind: "3d-ridge",
+        kind: "3d-ridge"
       },
       inset: {
-        kind: "3d-inset",
+        kind: "3d-inset"
       },
       outset: {
-        kind: "3d-outset",
-      },
+        kind: "3d-outset"
+      }
     }[style] ?? {
-      kind: style || "unknown",
+      kind: style || "unknown"
     };
     return {
       pattern,
-      thicknessRelativeToLength: this.#ratio(width, length),
+      thicknessRelativeToLength: this.#ratio(width, length)
     };
   };
   /**
@@ -4442,7 +4441,7 @@ class Descriptor {
       top: [radius.topLeft, radius.topRight],
       right: [radius.topRight, radius.bottomRight],
       bottom: [radius.bottomLeft, radius.bottomRight],
-      left: [radius.topLeft, radius.bottomLeft],
+      left: [radius.topLeft, radius.bottomLeft]
     }[side];
     if (!corners) return null;
     const [startCorner, endCorner] = corners;
@@ -4451,7 +4450,7 @@ class Descriptor {
     return {
       followsRoundedCorners: corners.some(corner => corner[axis] > 0),
       startRadius: startCorner[axis],
-      endRadius: endCorner[axis],
+      endRadius: endCorner[axis]
     };
   };
   /**
@@ -4475,7 +4474,7 @@ class Descriptor {
       sizeRelativeToBoxHeight: this.#ratio(fontSize, Math.max(1, rect.height)),
       sizeRelativeToReferenceHeight: this.#ratio(
         fontSize,
-        Math.max(1, referenceRect?.height ?? rect.height),
+        Math.max(1, referenceRect?.height ?? rect.height)
       ),
       weight: style.fontWeight,
       weightClass: Number.isFinite(weightNumber)
@@ -4518,7 +4517,7 @@ class Descriptor {
       transform: style.textTransform,
       indentRelativeToBoxWidth: this.#cssLengthRatio(
         style.textIndent,
-        Math.max(1, rect.width),
+        Math.max(1, rect.width)
       ),
       decoration: {
         lines:
@@ -4533,7 +4532,7 @@ class Descriptor {
             ? "auto"
             : this.#cssLengthRatio(style.textUnderlineOffset, fontSize),
         underlinePosition: style.textUnderlinePosition,
-        skipInk: style.textDecorationSkipInk,
+        skipInk: style.textDecorationSkipInk
       },
       emphasisMarks: {
         style:
@@ -4541,29 +4540,29 @@ class Descriptor {
             ? style.textEmphasisStyle
             : null,
         color: this.#colorDescriptor(this.#parseColor(style.textEmphasisColor)),
-        position: style.textEmphasisPosition || null,
+        position: style.textEmphasisPosition || null
       },
       emphasis: {
         italic:
           style.fontStyle === "italic" || style.fontStyle.startsWith("oblique"),
         bold: Number.isFinite(weightNumber) && weightNumber >= 600,
         uppercase: style.textTransform === "uppercase",
-        smallCaps: String(style.fontVariantCaps).includes("small-caps"),
+        smallCaps: String(style.fontVariantCaps).includes("small-caps")
       },
       stroke: {
         widthRelativeToFont: this.#cssLengthRatio(
           style.webkitTextStrokeWidth || "0",
-          fontSize,
+          fontSize
         ),
         color: this.#colorDescriptor(
-          this.#parseColor(style.webkitTextStrokeColor),
-        ),
+          this.#parseColor(style.webkitTextStrokeColor)
+        )
       },
       shadow: style.textShadow === "none" ? null : style.textShadow,
       lineClamp:
         style.webkitLineClamp && style.webkitLineClamp !== "none"
           ? Number(style.webkitLineClamp) || style.webkitLineClamp
-          : null,
+          : null
     };
   };
   /**
@@ -4606,7 +4605,7 @@ class Descriptor {
           transformOrigin: style.transformOrigin,
           transformBox: style.transformBox,
           perspective,
-          perspectiveOrigin: style.perspectiveOrigin,
+          perspectiveOrigin: style.perspectiveOrigin
         });
     }
     return chain;
@@ -4626,7 +4625,7 @@ class Descriptor {
     style,
     rect,
     parentRect,
-    rootRect,
+    rootRect
   ) => {
     const quad = this.#quadDescriptor(element, rect, rootRect);
     const own = this.#matrixDescriptor(style.transform, rootRect);
@@ -4643,7 +4642,7 @@ class Descriptor {
       transformed: Boolean(
         own ||
         Object.values(individual).some(Boolean) ||
-        this.#transformChain(element.parentElement, rootRect).length,
+        this.#transformChain(element.parentElement, rootRect).length
       ),
       own,
       individual,
@@ -4654,7 +4653,7 @@ class Descriptor {
       finalAxisAlignedFrame: this.#frame(rect, rootRect),
       layoutSizeBeforeOwnTransform: {
         width: this.#ratio(layoutWidth, parentRect.width),
-        height: this.#ratio(layoutHeight, parentRect.height),
+        height: this.#ratio(layoutHeight, parentRect.height)
       },
       effect: {
         axisAlignedWidthScale: layoutWidth
@@ -4667,7 +4666,7 @@ class Descriptor {
           layoutWidth && layoutHeight
             ? this.#round(
                 quad.area * rootRect.width * rootRect.height /
-                  (layoutWidth * layoutHeight),
+                  (layoutWidth * layoutHeight)
               )
             : null,
         finalCenter: quad.center,
@@ -4679,13 +4678,13 @@ class Descriptor {
           own?.translation?.x ||
           own?.translation?.y ||
           quad.orientationDegrees ||
-          style.transformOrigin !== "50% 50%",
+          style.transformOrigin !== "50% 50%"
         ),
         changesVisualSize:
           Math.abs((layoutWidth ? rect.width / layoutWidth : 1) - 1) > 0.001 ||
           Math.abs((layoutHeight ? rect.height / layoutHeight : 1) - 1) > 0.001,
-        note: "Final quad is authoritative for visual geometry. Size/position effects include ancestor transforms; own matrix describes this element's declared computed transform.",
-      },
+        note: "Final quad is authoritative for visual geometry. Size/position effects include ancestor transforms; own matrix describes this element's declared computed transform."
+      }
     };
   };
   /**
@@ -4711,7 +4710,7 @@ class Descriptor {
       active: modal || popover || document.fullscreenElement === element,
       modal,
       popover,
-      fullscreen: document.fullscreenElement === element,
+      fullscreen: document.fullscreenElement === element
     };
   };
   /**
@@ -4727,14 +4726,14 @@ class Descriptor {
       ? getComputedStyle(element.parentElement)
       : null;
     const positioned = ["absolute", "relative", "fixed", "sticky"].includes(
-      style.position,
+      style.position
     );
     const zIndex = style.zIndex !== "auto";
     const topLayer = this.#topLayerState(element);
     if (!element.parentElement) reasons.push("document-root");
     if (topLayer.active)
       reasons.push(
-        `top-layer:${topLayer.modal ? "modal" : topLayer.popover ? "popover" : "fullscreen"}`,
+        `top-layer:${topLayer.modal ? "modal" : topLayer.popover ? "popover" : "fullscreen"}`
       );
     if (["fixed", "sticky"].includes(style.position))
       reasons.push(style.position);
@@ -4742,7 +4741,7 @@ class Descriptor {
     if (
       parentStyle &&
       ["flex", "inline-flex", "grid", "inline-grid"].includes(
-        parentStyle.display,
+        parentStyle.display
       ) &&
       zIndex
     )
@@ -4766,7 +4765,7 @@ class Descriptor {
       reasons.push(`contain:${style.contain}`);
     if (
       /(?:transform|opacity|filter|perspective|clip-path|mask)/.test(
-        style.willChange,
+        style.willChange
       )
     )
       reasons.push(`will-change:${style.willChange}`);
@@ -4795,7 +4794,7 @@ class Descriptor {
           numericZIndex: style.zIndex === "auto" ? null : Number(style.zIndex),
           position: style.position,
           topLayer: this.#topLayerState(current),
-          reasons,
+          reasons
         });
     }
     return chain;
@@ -4837,7 +4836,7 @@ class Descriptor {
       stackingContextReasons: reasons,
       stackingContextChain: this.#stackingContextChain(element),
       selector: this.#selectElement(element),
-      paintOrderBasis: "css-stacking-context-plus-overlap-hit-test",
+      paintOrderBasis: "css-stacking-context-plus-overlap-hit-test"
     };
   };
   /**
@@ -4849,41 +4848,41 @@ class Descriptor {
   static #hitTestPolygonSamples = (polygon, context) => {
     const center = {
       x: polygon.reduce((sum, point) => sum + point.x, 0) / polygon.length,
-      y: polygon.reduce((sum, point) => sum + point.y, 0) / polygon.length,
+      y: polygon.reduce((sum, point) => sum + point.y, 0) / polygon.length
     };
     const normalized = [
       center,
       ...polygon.map(point => ({
         x: point.x * 0.82 + center.x * 0.18,
-        y: point.y * 0.82 + center.y * 0.18,
+        y: point.y * 0.82 + center.y * 0.18
       })),
       ...polygon.map((point, index) => {
         const next = polygon[(index + 1) % polygon.length] ?? point;
         return {
           x: (point.x + next.x) / 2 * 0.9 + center.x * 0.1,
-          y: (point.y + next.y) / 2 * 0.9 + center.y * 0.1,
+          y: (point.y + next.y) / 2 * 0.9 + center.y * 0.1
         };
-      }),
+      })
     ];
     return normalized
       .map(point => ({
         normalized: {
           x: this.#round(point.x, 6),
-          y: this.#round(point.y, 6),
+          y: this.#round(point.y, 6)
         },
         x: context.rootRect.left + point.x * context.rootRect.width,
-        y: context.rootRect.top + point.y * context.rootRect.height,
+        y: context.rootRect.top + point.y * context.rootRect.height
       }))
       .filter(
-        ({ x, y }, index, points) =>
+        ({x, y}, index, points) =>
           x >= 0 &&
           y >= 0 &&
           x <= innerWidth &&
           y <= innerHeight &&
           points.findIndex(
-            ({ x: px, y: py }) =>
-              Math.abs(px - x) < 0.5 && Math.abs(py - y) < 0.5,
-          ) === index,
+            ({x: px, y: py}) =>
+              Math.abs(px - x) < 0.5 && Math.abs(py - y) < 0.5
+          ) === index
       );
   };
   /**
@@ -4898,20 +4897,20 @@ class Descriptor {
     if (this.#topLayerState(element).active)
       return {
         group: 7,
-        z: 0,
+        z: 0
       };
     const positioned = ["absolute", "relative", "fixed", "sticky"].includes(
-      style.position,
+      style.position
     );
     if (z < 0)
       return {
         group: 1,
-        z,
+        z
       };
     if (style.float !== "none")
       return {
         group: 3,
-        z,
+        z
       };
     if (
       !positioned &&
@@ -4919,21 +4918,21 @@ class Descriptor {
     )
       return {
         group: 4,
-        z,
+        z
       };
     if (z > 0)
       return {
         group: 6,
-        z,
+        z
       };
     if (positioned || this.#stackingContextReasons(element, style).length)
       return {
         group: 5,
-        z,
+        z
       };
     return {
       group: 2,
-      z,
+      z
     };
   };
   /**
@@ -4974,7 +4973,7 @@ class Descriptor {
         bottom: ancestorAbove ? second : first,
         reason: ancestorAbove
           ? "ancestor-outline-after-descendants"
-          : "descendant-painted-over-ancestor-background-content-model",
+          : "descendant-painted-over-ancestor-background-content-model"
       };
     }
     if (secondElement.contains(firstElement)) {
@@ -4985,7 +4984,7 @@ class Descriptor {
         bottom: ancestorAbove ? first : second,
         reason: ancestorAbove
           ? "ancestor-outline-after-descendants"
-          : "descendant-painted-over-ancestor-background-content-model",
+          : "descendant-painted-over-ancestor-background-content-model"
       };
     }
     const firstChain = this.#stackingContextElements(firstElement);
@@ -5013,31 +5012,31 @@ class Descriptor {
         ? {
             top: first,
             bottom: second,
-            reason: "css-paint-phase",
+            reason: "css-paint-phase"
           }
         : {
             top: second,
             bottom: first,
-            reason: "css-paint-phase",
+            reason: "css-paint-phase"
           };
     if (firstPhase.z !== secondPhase.z)
       return firstPhase.z > secondPhase.z
         ? {
             top: first,
             bottom: second,
-            reason: "stacking-context-z-index",
+            reason: "stacking-context-z-index"
           }
         : {
             top: second,
             bottom: first,
-            reason: "stacking-context-z-index",
+            reason: "stacking-context-z-index"
           };
     if (
       firstParticipant.parentElement === secondParticipant.parentElement &&
       firstParticipant.parentElement
     ) {
       const parentDisplay = getComputedStyle(
-        firstParticipant.parentElement,
+        firstParticipant.parentElement
       ).display;
       if (
         ["flex", "inline-flex", "grid", "inline-grid"].includes(parentDisplay)
@@ -5051,12 +5050,12 @@ class Descriptor {
             ? {
                 top: first,
                 bottom: second,
-                reason: "order-modified-document-paint-order",
+                reason: "order-modified-document-paint-order"
               }
             : {
                 top: second,
                 bottom: first,
-                reason: "order-modified-document-paint-order",
+                reason: "order-modified-document-paint-order"
               };
       }
     }
@@ -5066,13 +5065,13 @@ class Descriptor {
       return {
         top: second,
         bottom: first,
-        reason: "same-phase-document-paint-order",
+        reason: "same-phase-document-paint-order"
       };
     if (position & Node.DOCUMENT_POSITION_PRECEDING)
       return {
         top: first,
         bottom: second,
-        reason: "same-phase-document-paint-order",
+        reason: "same-phase-document-paint-order"
       };
     return null;
   };
@@ -5090,7 +5089,7 @@ class Descriptor {
     return stack.findIndex(
       candidate =>
         candidate instanceof Element &&
-        (element.contains(candidate) || candidate.contains(element)),
+        (element.contains(candidate) || candidate.contains(element))
     );
   };
   /**
@@ -5107,13 +5106,13 @@ class Descriptor {
         first.type,
         typeof first[String("sourceKind")] === "string"
           ? first[String("sourceKind")]
-          : null,
+          : null
       );
       const secondRank = this.#localPaintLayer(
         second.type,
         typeof second[String("sourceKind")] === "string"
           ? second[String("sourceKind")]
-          : null,
+          : null
       );
       const firstAbove = firstRank > secondRank;
       return {
@@ -5129,28 +5128,28 @@ class Descriptor {
           firstAbove: 0,
           secondAbove: 0,
           tied: 0,
-          points: [],
-        },
+          points: []
+        }
       };
     }
     const firstElement = this.#elementFromId(
       first.sourceElementId,
       context.root,
-      context,
+      context
     );
     const secondElement = this.#elementFromId(
       second.sourceElementId,
       context.root,
-      context,
+      context
     );
     let firstAbove = 0;
     let secondAbove = 0;
     let tied = 0;
     let usable = 0;
     const details = [];
-    for (const { x, y, normalized } of this.#hitTestPolygonSamples(
+    for (const {x, y, normalized} of this.#hitTestPolygonSamples(
       overlapPolygon,
-      context,
+      context
     )) {
       const stack = document.elementsFromPoint(x, y);
       const firstIndex = this.#stackIndex(stack, firstElement);
@@ -5163,7 +5162,7 @@ class Descriptor {
       details.push({
         point: normalized,
         firstStackIndex: firstIndex,
-        secondStackIndex: secondIndex,
+        secondStackIndex: secondIndex
       });
     }
     const sampledWinner =
@@ -5183,7 +5182,7 @@ class Descriptor {
       first,
       second,
       firstElement,
-      secondElement,
+      secondElement
     );
     const winner = sampledWinner ?? modeled?.top ?? null;
     const loser = sampledLoser ?? modeled?.bottom ?? null;
@@ -5211,7 +5210,7 @@ class Descriptor {
         !usable &&
         [firstElement, secondElement].some(
           element =>
-            element && getComputedStyle(element).pointerEvents === "none",
+            element && getComputedStyle(element).pointerEvents === "none"
         )
           ? "pointer-events-none-excluded-from-browser-hit-test;css-stack-model-used"
           : null,
@@ -5220,12 +5219,12 @@ class Descriptor {
         firstAbove,
         secondAbove,
         tied,
-        points: details,
+        points: details
       },
       stackingContextRefs: {
         first: first.sourceElementId,
-        second: second.sourceElementId,
-      },
+        second: second.sourceElementId
+      }
     };
   };
   /**
@@ -5252,7 +5251,7 @@ class Descriptor {
         reasons,
         parentContext:
           this.#stackingContextChain(element).at(-2)?.[String("selector")] ??
-          null,
+          null
       });
     }
     return {
@@ -5262,7 +5261,7 @@ class Descriptor {
       resolvedOverlapCount: relationships.filter(
         record =>
           /** @type {?SceneRecord} */
-          (record[String("stack")])?.[String("topObjectId")],
+          (record[String("stack")])?.[String("topObjectId")]
       ).length,
       unresolvedOverlapCount: relationships.filter(
         record =>
@@ -5270,8 +5269,7 @@ class Descriptor {
             /** @type {?SceneRecord} */ (record[String("stack")])?.[
               String("topObjectId")
             ]
-          ,
-      ).length,
+      ).length
     };
   };
   /**
@@ -5284,7 +5282,7 @@ class Descriptor {
     x: this.#ratio(rect.left - reference.left, reference.width),
     y: this.#ratio(rect.top - reference.top, reference.height),
     width: this.#ratio(rect.width, reference.width),
-    height: this.#ratio(rect.height, reference.height),
+    height: this.#ratio(rect.height, reference.height)
   });
   /**
    * Reconstruct absolute geometry from a normalized scene frame.
@@ -5303,7 +5301,7 @@ class Descriptor {
       right: left + width,
       bottom: top + height,
       width,
-      height,
+      height
     };
   };
   /**
@@ -5323,7 +5321,7 @@ class Descriptor {
       right,
       bottom,
       width: Math.max(0, right - left),
-      height: Math.max(0, bottom - top),
+      height: Math.max(0, bottom - top)
     };
   };
   /**
@@ -5342,7 +5340,7 @@ class Descriptor {
       x: this.#round(left),
       y: this.#round(top),
       width: this.#round(right - left),
-      height: this.#round(bottom - top),
+      height: this.#round(bottom - top)
     };
   };
   /**
@@ -5373,9 +5371,9 @@ class Descriptor {
         computedStyle: Object.fromEntries(
           [...style].map(property => [
             property,
-            style.getPropertyValue(property),
-          ]),
-        ),
+            style.getPropertyValue(property)
+          ])
+        )
       }),
       visual: {
         frame: this.#frame(rect, context.rootRect),
@@ -5385,7 +5383,7 @@ class Descriptor {
           right: this.#round(rect.right),
           bottom: this.#round(rect.bottom),
           width: this.#round(rect.width),
-          height: this.#round(rect.height),
+          height: this.#round(rect.height)
         },
         documentFrame: {
           x: this.#round(rect.left + scrollX),
@@ -5393,17 +5391,17 @@ class Descriptor {
           right: this.#round(rect.right + scrollX),
           bottom: this.#round(rect.bottom + scrollY),
           width: this.#round(rect.width),
-          height: this.#round(rect.height),
+          height: this.#round(rect.height)
         },
         transform: this.#transformDescriptor(
           element,
           style,
           rect,
           parentRect,
-          context.rootRect,
+          context.rootRect
         ),
-        layering: this.#layeringDescriptor(element, style),
-      },
+        layering: this.#layeringDescriptor(element, style)
+      }
     });
   };
   /**
@@ -5436,8 +5434,8 @@ class Descriptor {
           : 1,
         height: parentRect.height
           ? this.#round(rect.height / parentRect.height)
-          : 1,
-      },
+          : 1
+      }
     };
   };
   /**
@@ -5476,8 +5474,8 @@ class Descriptor {
           style.font,
           style.filter,
           style.clipPath,
-          style.overflow,
-        ].join("\u001f"),
+          style.overflow
+        ].join("\u001f")
     ].join("\u001e");
   };
   /**
@@ -5493,7 +5491,7 @@ class Descriptor {
     const htmlToImage = evidenceGlobal.htmlToImage;
     if (!htmlToImage?.toCanvas)
       throw new Error("htmlToImage.toCanvas is unavailable.");
-    const { parent, rect, parentRect, frame, x, y } =
+    const {parent, rect, parentRect, frame, x, y} =
       this.#elementScreenshotFrame(element);
     if (rect.width <= 0 || rect.height <= 0)
       throw new Error("Element has no rendered area.");
@@ -5507,15 +5505,15 @@ class Descriptor {
       0.1,
       Math.min(
         options.pixelRatio ?? 1,
-        (options.maxDimension ?? Infinity) / Math.max(rect.width, rect.height),
-      ),
+        (options.maxDimension ?? Infinity) / Math.max(rect.width, rect.height)
+      )
     );
     const background =
       options.background === "computed"
         ? getComputedStyle(element).backgroundColor
         : ({
             white: "#fff",
-            black: "#000",
+            black: "#000"
           }[typeof options.background === "string" ? options.background : ""] ??
           null);
     const resolvedBackground =
@@ -5530,7 +5528,7 @@ class Descriptor {
       pixelRatio,
       resolvedBackground,
       options.skipAutoScale ?? false,
-      this.#screenshotVisualSignature(element, parentRect, x, y),
+      this.#screenshotVisualSignature(element, parentRect, x, y)
     ].join("\u001d");
     const cachedScreenshot = this.#screenshotCache.get(element);
     if (!options.fresh && cachedScreenshot?.[String("signature")] === signature)
@@ -5541,18 +5539,18 @@ class Descriptor {
       width: rect.width,
       height: rect.height,
       style: {
-        overflow: "hidden",
-      },
+        overflow: "hidden"
+      }
     });
     const canvas = Object.assign(document.createElement("canvas"), {
       width: Math.max(1, Math.round(rect.width * pixelRatio)),
-      height: Math.max(1, Math.round(rect.height * pixelRatio)),
+      height: Math.max(1, Math.round(rect.height * pixelRatio))
     });
     const context = canvas.getContext("2d");
     if (!context) throw new Error("2D canvas context is unavailable.");
     resolvedBackground &&
       Object.assign(context, {
-        fillStyle: resolvedBackground,
+        fillStyle: resolvedBackground
       }) &&
       context.fillRect(0, 0, canvas.width, canvas.height);
     context.drawImage(source, 0, 0, canvas.width, canvas.height);
@@ -5569,7 +5567,7 @@ class Descriptor {
            * Resolve the current FileReader operation after its terminal event.
            * @returns {void} Updates the capture context in place.
            */
-          onloadend: () => resolve(reader.result),
+          onloadend: () => resolve(reader.result)
         });
         reader.readAsDataURL(blob);
       }),
@@ -5580,7 +5578,7 @@ class Descriptor {
         x: 0,
         y: 0,
         width: 1,
-        height: 1,
+        height: 1
       },
       mime: blob.type || mime,
       quality:
@@ -5588,16 +5586,16 @@ class Descriptor {
       pixelRatio,
       pixelDimensions: {
         width: canvas.width,
-        height: canvas.height,
+        height: canvas.height
       },
       background: resolvedBackground ?? "transparent",
       placementScale: 1,
       scrollIndependent: true,
-      viewportIndependent: true,
+      viewportIndependent: true
     };
     this.#screenshotCache.set(element, {
       signature,
-      capture,
+      capture
     });
     return capture;
   };
@@ -5613,7 +5611,7 @@ class Descriptor {
       context.warnings.push({
         kind: "element-screenshots",
         message:
-          "Element screenshots requested but htmlToImage.toCanvas is unavailable.",
+          "Element screenshots requested but htmlToImage.toCanvas is unavailable."
       });
       return;
     }
@@ -5622,25 +5620,25 @@ class Descriptor {
       context.warnings.push({
         kind: "element-screenshots",
         message:
-          "Element screenshots requested but #preview-card was not found.",
+          "Element screenshots requested but #preview-card was not found."
       });
       return;
     }
     const entries = [...context.elementsById]
       .filter(
         ([, element]) =>
-          element === previewCard || previewCard.contains(element),
+          element === previewCard || previewCard.contains(element)
       )
       .filter(([, element]) => element.getBoundingClientRect().width > 0);
     const cardRect = previewCard.getBoundingClientRect();
     const mime = ["image/png", "image/webp", "image/jpeg"].includes(
-      context.settings.elementScreenshotMime,
+      context.settings.elementScreenshotMime
     )
       ? context.settings.elementScreenshotMime
       : "image/png";
     const quality = Math.max(
       0.1,
-      Math.min(1, context.settings.elementScreenshotQuality ?? 0.92),
+      Math.min(1, context.settings.elementScreenshotQuality ?? 0.92)
     );
     const skipAutoScale =
       context.settings.elementScreenshotSkipAutoScale ?? false;
@@ -5654,7 +5652,7 @@ class Descriptor {
           ? null
           : ({
               white: "#fff",
-              black: "#000",
+              black: "#000"
             }[background] ?? null);
       return bg && !["transparent", "rgba(0, 0, 0, 0)"].includes(bg)
         ? bg
@@ -5667,8 +5665,8 @@ class Descriptor {
       Math.min(
         context.settings.elementScreenshotPixelRatio ?? 1,
         (context.settings.elementScreenshotMaxDimension ?? Infinity) /
-          Math.max(cardRect.width, cardRect.height),
-      ),
+          Math.max(cardRect.width, cardRect.height)
+      )
     );
     const canvasW = Math.max(1, Math.round(cardRect.width * pixelRatio));
     const canvasH = Math.max(1, Math.round(cardRect.height * pixelRatio));
@@ -5697,18 +5695,18 @@ class Descriptor {
           width: rect.width,
           height: rect.height,
           style: {
-            overflow: "hidden",
-          },
+            overflow: "hidden"
+          }
         });
         const canvas = Object.assign(document.createElement("canvas"), {
           width: canvasW,
-          height: canvasH,
+          height: canvasH
         });
         const ctx = canvas.getContext("2d");
         if (!ctx) throw new Error("2D canvas context is unavailable.");
         resolvedBackground &&
           Object.assign(ctx, {
-            fillStyle: resolvedBackground,
+            fillStyle: resolvedBackground
           }) &&
           ctx.fillRect(0, 0, canvas.width, canvas.height);
         const offsetX = Math.round((rect.left - cardRect.left) * pixelRatio);
@@ -5725,7 +5723,7 @@ class Descriptor {
              * Resolve the current FileReader operation after its terminal event.
              * @returns {void} Updates the capture context in place.
              */
-            onloadend: () => resolve(reader.result),
+            onloadend: () => resolve(reader.result)
           });
           reader.readAsDataURL(blob);
         });
@@ -5738,11 +5736,11 @@ class Descriptor {
           data,
           dimensions: {
             width: this.#round(cardRect.width),
-            height: this.#round(cardRect.height),
+            height: this.#round(cardRect.height)
           },
           pixelDimensions: {
             width: canvas.width,
-            height: canvas.height,
+            height: canvas.height
           },
           pixelRatio: this.#round(pixelRatio),
           quality:
@@ -5752,7 +5750,7 @@ class Descriptor {
           targetVisibility: "direct-element-capture",
           scrollIndependent: true,
           viewportIndependent: true,
-          source: "html-to-image",
+          source: "html-to-image"
         });
         const record = context.elementRegistry.get(id);
         if (record) record[String("screenshotRef")] = assetId;
@@ -5761,12 +5759,12 @@ class Descriptor {
         if (record)
           record[String("screenshot")] = {
             unavailable: true,
-            reason: error instanceof Error ? error.message : String(error),
+            reason: error instanceof Error ? error.message : String(error)
           };
         context.warnings.push({
           sourceElementId: id,
           kind: "element-screenshots",
-          message: `Element screenshot failed for ${this.#selectElement(element)}.`,
+          message: `Element screenshot failed for ${this.#selectElement(element)}.`
         });
       }
       await captureNext();
@@ -5777,13 +5775,13 @@ class Descriptor {
           length: Math.min(
             Math.max(
               1,
-              Math.floor(context.settings.elementScreenshotConcurrency),
+              Math.floor(context.settings.elementScreenshotConcurrency)
             ),
-            entries.length,
-          ),
+            entries.length
+          )
         },
-        captureNext,
-      ),
+        captureNext
+      )
     );
   };
   /**
@@ -5798,26 +5796,26 @@ class Descriptor {
   static copyElementScreenshot = async (element, options = {}) => {
     let capture = await this.#captureElementInParentFrame(element, {
       ...options,
-      fresh: true,
+      fresh: true
     });
     if (
       !navigator.clipboard?.write ||
       typeof globalThis.ClipboardItem !== "function"
     )
       throw new Error(
-        "Image clipboard writing is not supported in this browser.",
+        "Image clipboard writing is not supported in this browser."
       );
     if (globalThis.ClipboardItem.supports?.(capture.blob.type) === false)
       capture = await this.#captureElementInParentFrame(element, {
         ...options,
         mime: "image/png",
         quality: 1,
-        fresh: true,
+        fresh: true
       });
     await navigator.clipboard.write([
       new globalThis.ClipboardItem({
-        [capture.blob.type]: capture.blob,
-      }),
+        [capture.blob.type]: capture.blob
+      })
     ]);
     return capture;
   };
@@ -5831,7 +5829,7 @@ class Descriptor {
   static captureElementDataUrl = async (element, options = {}) => {
     const capture = await this.#captureElementInParentFrame(element, {
       ...options,
-      fresh: true,
+      fresh: true
     });
     return capture.data;
   };
@@ -5857,7 +5855,7 @@ class Descriptor {
       visualSelector: selector,
       html: this.#htmlSignature(element),
       interactive: this.#serializedInteractive(element),
-      focusable: element instanceof HTMLElement && element.tabIndex >= 0,
+      focusable: element instanceof HTMLElement && element.tabIndex >= 0
     };
   };
   /**
@@ -5876,7 +5874,7 @@ class Descriptor {
       rootSelector: this.#rootSelector(element, context.root),
       outerHTML: element.outerHTML.replace(
         /(\s[\w:-]+=")data:[^"]*(")/gi,
-        "$1<data-uri>$2",
+        "$1<data-uri>$2"
       ),
       html: this.#htmlSignature(element),
       id: element.id || null,
@@ -5884,18 +5882,18 @@ class Descriptor {
       attributes: Object.fromEntries(
         [...element.attributes]
           .filter(
-            ({ name }) =>
-              !["id", "class"].includes(name) && !name.startsWith("data-"),
+            ({name}) =>
+              !["id", "class"].includes(name) && !name.startsWith("data-")
           )
-          .map(({ name, value }) => [
+          .map(({name, value}) => [
             name,
-            /^data:/i.test(value) ? `<${name}-data-uri>` : value,
-          ]),
+            /^data:/i.test(value) ? `<${name}-data-uri>` : value
+          ])
       ),
       dataset:
         element instanceof HTMLElement
           ? {
-              ...element.dataset,
+              ...element.dataset
             }
           : {},
       properties: this.#ownElementProperties(element),
@@ -5927,7 +5925,7 @@ class Descriptor {
                 element.validity !== null &&
                 "valid" in element.validity
                   ? element.validity.valid === true
-                  : null,
+                  : null
             }
           : null,
       structure: {
@@ -5935,14 +5933,14 @@ class Descriptor {
           ? this.#selectElement(element.parentElement)
           : null,
         children: [...element.children].map(child =>
-          this.#selectElement(child),
+          this.#selectElement(child)
         ),
         childCount: element.children.length,
         index: element.parentElement
           ? [...element.parentElement.children].indexOf(element)
           : null,
-        shadowRoot: Boolean(element.shadowRoot),
-      },
+        shadowRoot: Boolean(element.shadowRoot)
+      }
     };
   };
   /**
@@ -5968,16 +5966,16 @@ class Descriptor {
         const found = [
           current.id && `#${this.#cssEscape(current.id)}`,
           ...[...current.attributes]
-            .filter(({ value }) => value)
-            .flatMap(({ name, value }) => [
+            .filter(({value}) => value)
+            .flatMap(({name, value}) => [
               `[${this.#cssEscape(name)}="${this.#cssEscape(value)}"]`,
-              `${current.tagName.toLowerCase()}[${this.#cssEscape(name)}="${this.#cssEscape(value)}"]`,
+              `${current.tagName.toLowerCase()}[${this.#cssEscape(name)}="${this.#cssEscape(value)}"]`
             ]),
           ...[...current.classList].flatMap(name => [
             `.${this.#cssEscape(name)}`,
-            `${current.tagName.toLowerCase()}.${this.#cssEscape(name)}`,
+            `${current.tagName.toLowerCase()}.${this.#cssEscape(name)}`
           ]),
-          current.tagName.toLowerCase(),
+          current.tagName.toLowerCase()
         ]
           .filter(candidate => typeof candidate === "string")
           .sort((a, b) => a.length - b.length)
@@ -5990,7 +5988,7 @@ class Descriptor {
               try {
                 unique =
                   document.querySelectorAll(
-                    `${candidate}${path ? `>${path}` : ""}`,
+                    `${candidate}${path ? `>${path}` : ""}`
                   ).length === 1;
                 uniqueChild =
                   !current.parentElement ||
@@ -6001,13 +5999,13 @@ class Descriptor {
               }
               return {
                 result: unique ? `${candidate}${path ? `>${path}` : ""}` : null,
-                part: selection.part || (uniqueChild ? candidate : null),
+                part: selection.part || (uniqueChild ? candidate : null)
               };
             },
             /** @type {{result:string|null,part:string|null}} */ ({
               result: null,
-              part: null,
-            }),
+              part: null
+            })
           );
         if (found.result) return found.result;
         let part = found.part ?? current.tagName.toLowerCase();
@@ -6029,7 +6027,7 @@ class Descriptor {
           return null;
         }
       },
-      /** @type {string|null} */ (null),
+      /** @type {string|null} */ (null)
     );
     const result = selected ?? this.#uniqueSelector(element);
     this.#selectorCache.set(element, result);
@@ -6064,7 +6062,7 @@ class Descriptor {
         ASIDE: "complementary",
         HEADER: "banner",
         FOOTER: "contentinfo",
-        FORM: "form",
+        FORM: "form"
       }[element.tagName] ||
       (element.tagName === "INPUT" &&
         input &&
@@ -6076,7 +6074,7 @@ class Descriptor {
           radio: "radio",
           range: "slider",
           number: "spinbutton",
-          search: "searchbox",
+          search: "searchbox"
         }[input.type] ||
           "textbox")) ||
       html?.getAttribute("role") ||
@@ -6133,11 +6131,11 @@ class Descriptor {
           "textbox",
           "searchbox",
           "combobox",
-          "listbox",
+          "listbox"
         ].includes(role) ||
       html?.onclick ||
       element.hasAttribute("tabindex") ||
-      html?.isContentEditable,
+      html?.isContentEditable
     );
   };
   /**
@@ -6153,19 +6151,19 @@ class Descriptor {
           "disabled",
           "disabled" in element
             ? element.disabled
-            : element.getAttribute("aria-disabled"),
+            : element.getAttribute("aria-disabled")
         ],
         [
           "checked",
           "checked" in element
             ? element.checked
-            : element.getAttribute("aria-checked"),
+            : element.getAttribute("aria-checked")
         ],
         [
           "selected",
           "selected" in element
             ? element.selected
-            : element.getAttribute("aria-selected"),
+            : element.getAttribute("aria-selected")
         ],
         ["expanded", element.getAttribute("aria-expanded")],
         ["pressed", element.getAttribute("aria-pressed")],
@@ -6173,24 +6171,24 @@ class Descriptor {
           "required",
           "required" in element
             ? element.required
-            : element.getAttribute("aria-required"),
+            : element.getAttribute("aria-required")
         ],
         [
           "readOnly",
           "readOnly" in element
             ? element.readOnly
-            : element.getAttribute("aria-readonly"),
+            : element.getAttribute("aria-readonly")
         ],
         ["open", "open" in element ? element.open : null],
         [
           "hidden",
           element instanceof HTMLElement && element.hidden ||
-            element.getAttribute("aria-hidden"),
+            element.getAttribute("aria-hidden")
         ],
         ["invalid", element.getAttribute("aria-invalid")],
         ["busy", element.getAttribute("aria-busy")],
-        ["current", element.getAttribute("aria-current")],
-      ].filter(([, value]) => value !== null && value !== undefined),
+        ["current", element.getAttribute("aria-current")]
+      ].filter(([, value]) => value !== null && value !== undefined)
     );
   /**
    * Read serializable own properties without retaining DOM references.
@@ -6209,10 +6207,10 @@ class Descriptor {
           } catch (error) {
             return [
               String(key),
-              `[Unserializable:${error instanceof Error ? error.name : "Error"}]`,
+              `[Unserializable:${error instanceof Error ? error.name : "Error"}]`
             ];
           }
-        }),
+        })
     );
   };
   /**
@@ -6266,7 +6264,7 @@ class Descriptor {
       "data-testid",
       "data-test",
       "name",
-      "aria-label",
+      "aria-label"
     ]) {
       const value = element.getAttribute(attribute);
       if (!value) continue;
@@ -6283,7 +6281,7 @@ class Descriptor {
       .filter(
         name =>
           name &&
-          !/^is-|^has-|^active$|^selected$|^open$|^hover$|^focus$/.test(name),
+          !/^is-|^has-|^active$|^selected$|^open$|^hover$|^focus$/.test(name)
       )
       .slice(0, 3)
       .map(name => `.${this.#cssEscape(name)}`)
@@ -6291,7 +6289,7 @@ class Descriptor {
     const base = `${tag}${classes}`;
     if (!element.parentElement) return base;
     const siblings = [...element.parentElement.children].filter(
-      sibling => sibling.tagName === element.tagName,
+      sibling => sibling.tagName === element.tagName
     );
     return siblings.length > 1
       ? `${base}:nth-of-type(${siblings.indexOf(element) + 1})`
@@ -6368,8 +6366,8 @@ class Descriptor {
       return compact.length > 120 ? `${compact.slice(0, 117)}...` : compact;
     };
     const attributes = [...element.attributes]
-      .filter(({ name }) => !["style", "srcset"].includes(name))
-      .map(({ name, value }) => {
+      .filter(({name}) => !["style", "srcset"].includes(name))
+      .map(({name, value}) => {
         const compact = compactValue(name, value);
         const escaped = compact
           .replace(/&/g, "&amp;")
@@ -6404,9 +6402,9 @@ class Descriptor {
    */
   static #elementFromId = (id, root, context) => {
     if (context.elementIds.get(root) === id) return root;
-    for (const element of root.querySelectorAll("*")) {
+    for (const element of root.querySelectorAll("*")) 
       if (context.elementIds.get(element) === id) return element;
-    }
+    
     return null;
   };
   /**
@@ -6425,16 +6423,16 @@ class Descriptor {
     if (!rows || !columns) return [];
     const visited = Array.from(
       {
-        length: rows,
+        length: rows
       },
-      () => Array(columns).fill(false),
+      () => Array(columns).fill(false)
     );
     /** @type {[number, number][]} */
     const directions = [
       [-1, 0],
       [0, 1],
       [1, 0],
-      [0, -1],
+      [0, -1]
     ];
     /**
      * Derive similar for the current rendered scene.
@@ -6451,7 +6449,7 @@ class Descriptor {
         Math.sqrt(
           ((firstColor[0] - secondColor[0]) / 255) ** 2 +
             ((firstColor[1] - secondColor[1]) / 255) ** 2 +
-            ((firstColor[2] - secondColor[2]) / 255) ** 2,
+            ((firstColor[2] - secondColor[2]) / 255) ** 2
         ) /
           Math.sqrt(3) <=
           0.22
@@ -6459,7 +6457,7 @@ class Descriptor {
     };
     /** @type {SceneRecord[]} */
     const regions = [];
-    for (let row = 0; row < rows; row++) {
+    for (let row = 0; row < rows; row++) 
       for (let column = 0; column < columns; column++) {
         if (visited[row]?.[column]) continue;
         /** @type {[number, number][]} */
@@ -6496,9 +6494,9 @@ class Descriptor {
         }
         const membership = new Set(
           cells.map(
-            ({ row: cellRow, column: cellColumn }) =>
-              `${cellRow}:${cellColumn}`,
-          ),
+            ({row: cellRow, column: cellColumn}) =>
+              `${cellRow}:${cellColumn}`
+          )
         );
         /** @type {number[]} */
         const boundaryRatios = [];
@@ -6514,26 +6512,26 @@ class Descriptor {
             if (membership.has(`${target.row}:${target.column}`)) continue;
             exposedEdges++;
             boundaryRatios.push(
-              this.#perceivedContrast(cell.color, target.color, backdrop) ?? 1,
+              this.#perceivedContrast(cell.color, target.color, backdrop) ?? 1
             );
           }
 
-        const colors = cells.map(({ color }) => color.rgba);
+        const colors = cells.map(({color}) => color.rgba);
         const averageColor = colors.length
           ? this.#colorDescriptor([
               colors.reduce((sum, color) => sum + color[0], 0) / colors.length,
               colors.reduce((sum, color) => sum + color[1], 0) / colors.length,
               colors.reduce((sum, color) => sum + color[2], 0) / colors.length,
-              colors.reduce((sum, color) => sum + color[3], 0) / colors.length,
+              colors.reduce((sum, color) => sum + color[3], 0) / colors.length
             ])
           : null;
-        const minRow = Math.min(...cells.map(({ row: cellRow }) => cellRow));
-        const maxRow = Math.max(...cells.map(({ row: cellRow }) => cellRow));
+        const minRow = Math.min(...cells.map(({row: cellRow}) => cellRow));
+        const maxRow = Math.max(...cells.map(({row: cellRow}) => cellRow));
         const minColumn = Math.min(
-          ...cells.map(({ column: cellColumn }) => cellColumn),
+          ...cells.map(({column: cellColumn}) => cellColumn)
         );
         const maxColumn = Math.max(
-          ...cells.map(({ column: cellColumn }) => cellColumn),
+          ...cells.map(({column: cellColumn}) => cellColumn)
         );
         const area = cells.length / (rows * columns);
         const averageBoundary = boundaryRatios.length
@@ -6542,9 +6540,9 @@ class Descriptor {
           : 1;
         regions.push({
           id: `region-${regions.length + 1}`,
-          cells: cells.map(({ row: cellRow, column: cellColumn }) => [
+          cells: cells.map(({row: cellRow, column: cellColumn}) => [
             cellRow,
-            cellColumn,
+            cellColumn
           ]),
           cellCount: cells.length,
           area: this.#round(area),
@@ -6552,21 +6550,21 @@ class Descriptor {
             x: this.#round(minColumn / columns),
             y: this.#round(minRow / rows),
             width: this.#round((maxColumn - minColumn + 1) / columns),
-            height: this.#round((maxRow - minRow + 1) / rows),
+            height: this.#round((maxRow - minRow + 1) / rows)
           },
           averageColor,
           contrastToSurroundings: boundaryRatios.length
             ? {
                 min: this.#round(Math.min(...boundaryRatios)),
                 max: this.#round(Math.max(...boundaryRatios)),
-                average: this.#round(averageBoundary),
+                average: this.#round(averageBoundary)
               }
             : null,
           boundary: {
             exposedEdgeCount: exposedEdges,
             exposedFractionOfPossible: this.#round(
-              exposedEdges / Math.max(1, cells.length * 4),
-            ),
+              exposedEdges / Math.max(1, cells.length * 4)
+            )
           },
           wcag22GraphicalObjectIfMeaningful: {
             criterion: "1.4.11 Non-text Contrast",
@@ -6575,34 +6573,34 @@ class Descriptor {
               "conditional-on-region-being-required-for-understanding",
             passesIfApplicable: boundaryRatios.length
               ? Math.min(...boundaryRatios) >= 3
-              : null,
+              : null
           },
           perception: this.#salienceMetrics(
             averageBoundary,
             area,
             Math.min(
               (maxColumn - minColumn + 1) / columns,
-              (maxRow - minRow + 1) / rows,
+              (maxRow - minRow + 1) / rows
             ),
             1,
-            exposedEdges / Math.max(1, cells.length * 4),
-          ),
+            exposedEdges / Math.max(1, cells.length * 4)
+          )
         });
       }
-    }
+    
     return regions.sort(
       (first, second) =>
         Number(second[String("area")]) - Number(first[String("area")]) ||
         Number(
           /** @type {SceneRecord} */ (second[String("perception")])[
             String("score")
-          ],
+          ]
         ) -
           Number(
             /** @type {SceneRecord} */ (first[String("perception")])[
               String("score")
-            ],
-          ),
+            ]
+          )
     );
   };
   /**
@@ -6618,13 +6616,13 @@ class Descriptor {
       const source = this.#elementFromId(
         object.sourceElementId,
         context.root,
-        context,
+        context
       );
       const colors = this.#visualObjectColors(object, context);
       if (!source || !colors.length) continue;
       const rawRect = this.#rectFromFrame(
         object.visibleFrame ?? object.frame,
-        context.rootRect,
+        context.rootRect
       );
       const rect = {
         left: rawRect.left - (rawRect.width <= 0 ? 0.5 : 0),
@@ -6632,21 +6630,21 @@ class Descriptor {
         right: rawRect.right + (rawRect.width <= 0 ? 0.5 : 0),
         bottom: rawRect.bottom + (rawRect.height <= 0 ? 0.5 : 0),
         width: Math.max(1, rawRect.width),
-        height: Math.max(1, rawRect.height),
+        height: Math.max(1, rawRect.height)
       };
       const normalizedPoints = /** @type {[number, number][]} */ ([
         [0.5, 0.5],
         [0.15, 0.15],
         [0.85, 0.15],
         [0.15, 0.85],
-        [0.85, 0.85],
+        [0.85, 0.85]
       ]);
       const points = normalizedPoints.map(
         ([x, y]) =>
           /** @type {[number, number]} */ ([
             rect.left + rect.width * x,
-            rect.top + rect.height * y,
-          ]),
+            rect.top + rect.height * y
+          ])
       );
       const backgrounds =
         /** @type {{color:SceneRgba,source:string,confidence:string}[]} */ (
@@ -6663,15 +6661,15 @@ class Descriptor {
             foreground[3] < 1
               ? this.#alphaComposite(foreground, background.color)
               : foreground,
-            background.color,
+            background.color
           ),
           foreground: this.#colorDescriptor(foreground),
           background: this.#colorDescriptor(background.color),
           source: background.source,
-          confidence: background.confidence,
-        })),
+          confidence: background.confidence
+        }))
       );
-      const values = ratios.map(({ ratio }) => ratio);
+      const values = ratios.map(({ratio}) => ratio);
       const minimum = Math.min(...values);
       const wcagConditional = [
         "line",
@@ -6681,7 +6679,7 @@ class Descriptor {
         "svg-render",
         "image",
         "canvas",
-        "video",
+        "video"
       ].includes(object.type);
       object[String("contrast")] = {
         status: "resolved",
@@ -6689,12 +6687,12 @@ class Descriptor {
           min: this.#round(minimum),
           max: this.#round(Math.max(...values)),
           average: this.#round(
-            values.reduce((sum, value) => sum + value, 0) / values.length,
+            values.reduce((sum, value) => sum + value, 0) / values.length
           ),
           samples: ratios.map(entry => ({
             ...entry,
-            ratio: this.#round(entry.ratio),
-          })),
+            ratio: this.#round(entry.ratio)
+          }))
         },
         wcag22: wcagConditional
           ? {
@@ -6703,13 +6701,13 @@ class Descriptor {
               applicability:
                 "conditional-on-visual-information-being-required-to-identify-state-or-understand-content",
               passesIfApplicable: minimum >= 3,
-              thresholdComparison: "unrounded-ratio",
+              thresholdComparison: "unrounded-ratio"
             }
           : {
               criterion: null,
               applicability:
-                "surface-separation-is-descriptive-not-automatically-normative",
-            },
+                "surface-separation-is-descriptive-not-automatically-normative"
+            }
       };
     }
   };
@@ -6727,8 +6725,8 @@ class Descriptor {
           ? [
               object[String("color")],
               ...Object.values(object[String("sides")] ?? {}).map(
-                ({ color }) => color,
-              ),
+                ({color}) => color
+              )
             ]
           : object.type === "surface"
             ? [object[String("appearance")]?.background?.color]
@@ -6738,14 +6736,14 @@ class Descriptor {
                 ? [
                     context.iconAssets.get(object[String("assetRef")])?.[
                       String("averageColor")
-                    ],
+                    ]
                   ]
                 : [];
     return /** @type {SceneRgba[]} */ (
       /** @type {unknown} */ (
         descriptors
           .filter(Boolean)
-          .map(({ rgba }) => rgba)
+          .map(({rgba}) => rgba)
           .filter(rgba => rgba?.length === 4 && rgba[3] > 0)
       )
     );
@@ -6764,7 +6762,7 @@ class Descriptor {
       return groups;
     }, /** @type {Map<string, SceneObject[]>} */ (new Map()));
     for (const control of context.objects.filter(
-      ({ type }) => type === "control",
+      ({type}) => type === "control"
     )) {
       /**
        * Read an object's resolved local minimum contrast ratio.
@@ -6784,10 +6782,10 @@ class Descriptor {
         .map(object => ({
           objectId: object.id,
           type: object.type,
-          ratio: /** @type {number} */ (contrastMin(object)),
+          ratio: /** @type {number} */ (contrastMin(object))
         }));
       if (!candidates.length) continue;
-      const minimum = Math.min(...candidates.map(({ ratio }) => ratio));
+      const minimum = Math.min(...candidates.map(({ratio}) => ratio));
       control[String("contrast")] = {
         status: "resolved-from-visual-indicators",
         indicatorCandidates: candidates,
@@ -6798,8 +6796,8 @@ class Descriptor {
           applicability:
             "conditional-on-these-indicators-being-required-to-identify-the-control-or-state",
           passesIfApplicable: minimum >= 3,
-          thresholdComparison: "unrounded-ratio-when-source-sample-available",
-        },
+          thresholdComparison: "unrounded-ratio-when-source-sample-available"
+        }
       };
     }
   };
@@ -6816,7 +6814,7 @@ class Descriptor {
       const source = this.#elementFromId(
         object.sourceElementId,
         context.root,
-        context,
+        context
       );
       const thickness = source
         ? this.#normalizedVisualThickness(object, source, context.rootRect)
@@ -6867,7 +6865,7 @@ class Descriptor {
           area: this.#round(area),
           effectivePaintArea: this.#round(effectiveArea),
           minimumDimension: this.#round(minimumDimension),
-          thickness: thickness == null ? null : this.#round(thickness),
+          thickness: thickness == null ? null : this.#round(thickness)
         },
         visibilityFraction: object.visibility?.visibleArea ?? 1,
         salience: this.#salienceMetrics(
@@ -6876,13 +6874,13 @@ class Descriptor {
           Math.max(
             thickness ??
               Math.min(Math.max(0, frame.width), Math.max(0, frame.height)),
-            1e-6,
+            1e-6
           ),
           thickness == null ? 1 : this.#clamp(thickness * 120, 0, 1),
-          object.visibility?.visibleArea ?? 1,
+          object.visibility?.visibleArea ?? 1
         ),
         normativeStatus: "non-normative-perceptual-model",
-        note: "WCAG contrast thresholds remain separate; this score estimates noticeability from contrast, normalized size, thickness and visible exposure.",
+        note: "WCAG contrast thresholds remain separate; this score estimates noticeability from contrast, normalized size, thickness and visible exposure."
       };
     }
   };
@@ -6900,7 +6898,7 @@ class Descriptor {
     area,
     minimumDimension,
     thicknessFactor = 1,
-    exposure = 1,
+    exposure = 1
   ) => {
     const contrast = Number.isFinite(contrastRatio)
       ? this.#clamp(contrastRatio, 1, 21)
@@ -6911,14 +6909,14 @@ class Descriptor {
     const geometryStrength = this.#clamp(
       (sizeStrength * 0.7 + dimensionStrength * 0.3) * thicknessFactor,
       0,
-      1,
+      1
     );
     const score = this.#clamp(
       contrastStrength *
         (0.3 + geometryStrength * 0.7) *
         this.#clamp(exposure, 0, 1),
       0,
-      1,
+      1
     );
     return {
       score: this.#round(score),
@@ -6935,11 +6933,11 @@ class Descriptor {
         size: this.#round(sizeStrength),
         minimumDimension: this.#round(dimensionStrength),
         thickness: this.#round(thicknessFactor),
-        exposure: this.#round(this.#clamp(exposure, 0, 1)),
+        exposure: this.#round(this.#clamp(exposure, 0, 1))
       },
       inputContrastRatio: this.#round(contrast),
       model: "log-contrast × saturating-size × thickness × exposure",
-      wcag: false,
+      wcag: false
     };
   };
   /**
@@ -6957,27 +6955,27 @@ class Descriptor {
       const suffix = side ? `${side[0].toUpperCase()}${side.slice(1)}` : null;
       const width = suffix
         ? parseFloat(
-            style.getPropertyValue(`border-${suffix.toLowerCase()}-width`),
+            style.getPropertyValue(`border-${suffix.toLowerCase()}-width`)
           ) || 0
         : 0;
       return this.#ratio(
         width,
         object[String("orientation")] === "horizontal"
           ? rootRect.height
-          : rootRect.width,
+          : rootRect.width
       );
     }
     if (object.type === "contour") {
       const widths = ["Top", "Right", "Bottom", "Left"].map(
         suffix =>
           parseFloat(
-            style.getPropertyValue(`border-${suffix.toLowerCase()}-width`),
-          ) || 0,
+            style.getPropertyValue(`border-${suffix.toLowerCase()}-width`)
+          ) || 0
       );
       const outline = parseFloat(style.outlineWidth) || 0;
       return this.#ratio(
         Math.max(outline, ...widths),
-        Math.min(rootRect.width, rootRect.height),
+        Math.min(rootRect.width, rootRect.height)
       );
     }
     return null;
@@ -6991,24 +6989,24 @@ class Descriptor {
   static #inferSpatialLayouts = context => {
     const containers = [
       context.root,
-      ...context.root.querySelectorAll("*"),
+      ...context.root.querySelectorAll("*")
     ].filter(
       element =>
         !(element instanceof SVGElement) &&
-        this.#isRendered(element, context.settings.opacityThreshold),
+        this.#isRendered(element, context.settings.opacityThreshold)
     );
     return containers
       .flatMap(container => {
         const children = [...container.children].filter(
           child =>
             !(child instanceof SVGElement) &&
-            this.#isRendered(child, context.settings.opacityThreshold),
+            this.#isRendered(child, context.settings.opacityThreshold)
         );
         if (!children.length) return [];
         const containerRect = container.getBoundingClientRect();
         const rootArea = Math.max(
           1e-9,
-          context.rootRect.width * context.rootRect.height,
+          context.rootRect.width * context.rootRect.height
         );
         const containerAreaFraction =
           containerRect.width * containerRect.height / rootArea;
@@ -7021,7 +7019,7 @@ class Descriptor {
         const layout = this.#inferContainerLayout(container, children, context);
         if (!layout) return [];
         const meaningfulPattern = !["free", "single"].includes(
-          layout[String("inference")].pattern,
+          layout[String("inference")].pattern
         );
         const meaningfulSingle =
           layout[String("inference")].pattern === "single" &&
@@ -7039,7 +7037,7 @@ class Descriptor {
           second[String("scope")].frame.width *
             second[String("scope")].frame.height -
           first[String("scope")].frame.width *
-            first[String("scope")].frame.height,
+            first[String("scope")].frame.height
       );
   };
   /**
@@ -7058,59 +7056,59 @@ class Descriptor {
         element: child,
         sourceElementId: this.#elementId(child, context),
         source: this.#sourceDescriptor(child, context),
-        frame: this.#spatialFrame(child, container),
+        frame: this.#spatialFrame(child, container)
       }))
-      .filter(({ frame }) => frame.width > 0 && frame.height > 0);
+      .filter(({frame}) => frame.width > 0 && frame.height > 0);
     if (!items.length) return null;
     const columns = this.#inferAxisTracks(
       items,
       "x",
       context.settings.spatialMaxTracks,
-      context.settings.spatialTolerance,
+      context.settings.spatialTolerance
     );
     const rows = this.#inferAxisTracks(
       items,
       "y",
       context.settings.spatialMaxTracks,
-      context.settings.spatialTolerance,
+      context.settings.spatialTolerance
     );
     const placements = items.map(item =>
-      this.#spatialPlacement(item, columns, rows),
+      this.#spatialPlacement(item, columns, rows)
     );
     const cells = this.#spatialCells(placements, columns, rows);
     const overlapPairs = items.flatMap((first, firstIndex) =>
       items
         .slice(firstIndex + 1)
         .map(second =>
-          this.#frameIntersection(first.frame, second.frame) ? 1 : 0,
-        ),
+          this.#frameIntersection(first.frame, second.frame) ? 1 : 0
+        )
     );
     const overlapFraction = overlapPairs.length
       ? overlapPairs.reduce(
           (sum, value) => sum + value,
-          /** @type {number} */ (0),
+          /** @type {number} */ (0)
         ) / overlapPairs.length
       : 0;
     const occupiedCells = cells.filter(
-      ({ occupancy }) => occupancy !== "empty",
+      ({occupancy}) => occupancy !== "empty"
     );
     const enrichedPlacements = placements.map(placement => {
       const coveredCells = cells.filter(
-        ({ row, column }) =>
+        ({row, column}) =>
           row >= placement.placement.rowStart &&
           row <= placement.placement.rowEnd &&
           column >= placement.placement.columnStart &&
-          column <= placement.placement.columnEnd,
+          column <= placement.placement.columnEnd
       );
       const aloneInEveryCoveredCell = coveredCells.every(
-        ({ occupants }) => occupants.length === 1,
+        ({occupants}) => occupants.length === 1
       );
       const sharedCellCount = coveredCells.filter(
-        ({ occupants }) => occupants.length > 1,
+        ({occupants}) => occupants.length > 1
       ).length;
       const spannedArea = coveredCells.reduce(
-        (sum, { frame }) => sum + frame.width * frame.height,
-        0,
+        (sum, {frame}) => sum + frame.width * frame.height,
+        0
       );
       return {
         ...placement,
@@ -7128,10 +7126,10 @@ class Descriptor {
               : "shares-cell",
             fillOfCoveredCells: this.#round(
               placement.frame.width * placement.frame.height /
-                Math.max(1e-9, spannedArea),
-            ),
-          },
-        },
+                Math.max(1e-9, spannedArea)
+            )
+          }
+        }
       };
     });
     const pattern =
@@ -7149,10 +7147,10 @@ class Descriptor {
     const alignmentEvidence = this.#spatialAlignmentEvidence(
       placements,
       columns,
-      rows,
+      rows
     );
     const occupancyCoherence = occupiedCells.length
-      ? occupiedCells.filter(({ occupants }) => occupants.length <= 1).length /
+      ? occupiedCells.filter(({occupants}) => occupants.length <= 1).length /
         occupiedCells.length
       : 0;
     const confidence = this.#clamp(
@@ -7162,7 +7160,7 @@ class Descriptor {
         occupancyCoherence * 0.2 -
         overlapFraction * 0.18,
       0,
-      1,
+      1
     );
     const style = getComputedStyle(container);
     return {
@@ -7175,7 +7173,7 @@ class Descriptor {
           this.#scrollState(container).x.scrollable ||
           this.#scrollState(container).y.scrollable
             ? "scroll-content"
-            : "container-box",
+            : "container-box"
       },
       inference: {
         basis: "rendered-geometry-only",
@@ -7183,17 +7181,17 @@ class Descriptor {
         confidence: this.#round(confidence),
         declaredDisplayForReferenceOnly: style.display,
         declaredGridOrFlexNotUsedForInference: true,
-        overlapFraction: this.#round(overlapFraction),
+        overlapFraction: this.#round(overlapFraction)
       },
       columns: columns.map((track, index) => ({
         index,
         ...track,
-        label: this.#axisTrackLabel(index, columns.length, "x"),
+        label: this.#axisTrackLabel(index, columns.length, "x")
       })),
       rows: rows.map((track, index) => ({
         index,
         ...track,
-        label: this.#axisTrackLabel(index, rows.length, "y"),
+        label: this.#axisTrackLabel(index, rows.length, "y")
       })),
       density: {
         itemCount: items.length,
@@ -7201,20 +7199,20 @@ class Descriptor {
         occupiedCells: occupiedCells.length,
         occupiedCellFraction: this.#ratio(
           occupiedCells.length,
-          Math.max(1, cells.length),
+          Math.max(1, cells.length)
         ),
         averageObjectsPerOccupiedCell: occupiedCells.length
           ? this.#round(
               occupiedCells.reduce(
-                (sum, { occupants }) => sum + occupants.length,
-                0,
-              ) / occupiedCells.length,
+                (sum, {occupants}) => sum + occupants.length,
+                0
+              ) / occupiedCells.length
             )
           : 0,
-        alignmentEvidence: this.#round(alignmentEvidence),
+        alignmentEvidence: this.#round(alignmentEvidence)
       },
       cells,
-      items: enrichedPlacements.map(({ element, ...placement }) => placement),
+      items: enrichedPlacements.map(({element, ...placement}) => placement)
     };
   };
   /**
@@ -7238,13 +7236,13 @@ class Descriptor {
     const widthBase = Math.max(1, container.scrollWidth || containerRect.width);
     const heightBase = Math.max(
       1,
-      container.scrollHeight || containerRect.height,
+      container.scrollHeight || containerRect.height
     );
     return {
       x: this.#round((rect.left - containerRect.left + scrollX) / widthBase),
       y: this.#round((rect.top - containerRect.top + scrollY) / heightBase),
       width: this.#round(rect.width / widthBase),
-      height: this.#round(rect.height / heightBase),
+      height: this.#round(rect.height / heightBase)
     };
   };
   /**
@@ -7259,20 +7257,20 @@ class Descriptor {
     const startKey = axis === "x" ? "x" : "y";
     const sizeKey = axis === "x" ? "width" : "height";
     const sizes = items
-      .map(({ frame }) => frame[sizeKey])
+      .map(({frame}) => frame[sizeKey])
       .filter(value => value > 0)
       .sort((a, b) => a - b);
     const median = sizes[Math.floor(sizes.length / 2)] ?? 1;
     const anchors = items.filter(
-      ({ frame }) =>
+      ({frame}) =>
         frame[sizeKey] < 0.82 &&
-        frame[sizeKey] <= Math.max(median * 1.65, 0.18),
+        frame[sizeKey] <= Math.max(median * 1.65, 0.18)
     );
     const candidates = (anchors.length >= 2 ? anchors : items)
       .map(item => ({
         item,
         center: item.frame[startKey] + item.frame[sizeKey] / 2,
-        size: item.frame[sizeKey],
+        size: item.frame[sizeKey]
       }))
       .sort((first, second) => first.center - second.center);
     const threshold = Math.max(tolerance, Math.min(0.16, median * 0.32));
@@ -7280,7 +7278,7 @@ class Descriptor {
     const clusters = [];
     for (const candidate of candidates) {
       const cluster = clusters.find(
-        ({ center }) => Math.abs(center - candidate.center) <= threshold,
+        ({center}) => Math.abs(center - candidate.center) <= threshold
       );
       if (cluster) {
         cluster.values.push(candidate);
@@ -7290,7 +7288,7 @@ class Descriptor {
       } else
         clusters.push({
           center: candidate.center,
-          values: [candidate],
+          values: [candidate]
         });
     }
     while (clusters.length > maxTracks) {
@@ -7314,7 +7312,7 @@ class Descriptor {
         values: mergedValues,
         center:
           mergedValues.reduce((sum, value) => sum + value.center, 0) /
-          mergedValues.length,
+          mergedValues.length
       });
     }
     clusters.sort((first, second) => first.center - second.center);
@@ -7324,8 +7322,8 @@ class Descriptor {
           start: 0,
           end: 1,
           size: 1,
-          center: 0.5,
-        },
+          center: 0.5
+        }
       ];
     if (clusters.length === 1)
       return [
@@ -7333,8 +7331,8 @@ class Descriptor {
           start: 0,
           end: 1,
           size: 1,
-          center: 0.5,
-        },
+          center: 0.5
+        }
       ];
     const boundaries = [
       0,
@@ -7345,18 +7343,18 @@ class Descriptor {
             (cluster.center + (clusters[index + 1]?.center ?? cluster.center)) /
               2,
             0,
-            1,
-          ),
+            1
+          )
         ),
-      1,
+      1
     ];
     return clusters.map((cluster, index) => ({
       start: this.#round(boundaries[index] ?? 0),
       end: this.#round(boundaries[index + 1] ?? 1),
       size: this.#round(
-        (boundaries[index + 1] ?? 1) - (boundaries[index] ?? 0),
+        (boundaries[index + 1] ?? 1) - (boundaries[index] ?? 0)
       ),
-      center: this.#round(cluster.center),
+      center: this.#round(cluster.center)
     }));
   };
   /**
@@ -7370,12 +7368,12 @@ class Descriptor {
     const columnIndexes = this.#tracksCovered(
       item.frame.x,
       item.frame.width,
-      columns,
+      columns
     );
     const rowIndexes = this.#tracksCovered(
       item.frame.y,
       item.frame.height,
-      rows,
+      rows
     );
     const columnStart = Math.min(...columnIndexes);
     const columnEnd = Math.max(...columnIndexes);
@@ -7400,8 +7398,8 @@ class Descriptor {
         rowSpan: rowEnd - rowStart + 1,
         horizontal,
         vertical,
-        semanticRegion: `${vertical} · ${horizontal}`,
-      },
+        semanticRegion: `${vertical} · ${horizontal}`
+      }
     };
   };
   /**
@@ -7416,7 +7414,7 @@ class Descriptor {
     const covered = tracks.flatMap((track, index) => {
       const intersection = Math.max(
         0,
-        Math.min(end, track.end) - Math.max(start, track.start),
+        Math.min(end, track.end) - Math.max(start, track.start)
       );
       const centerInside = track.center >= start && track.center <= end;
       return intersection / Math.max(1e-9, track.size) >= 0.22 || centerInside
@@ -7432,8 +7430,8 @@ class Descriptor {
           Math.abs((tracks[best]?.center ?? center) - center)
             ? index
             : best,
-        0,
-      ),
+        0
+      )
     ];
   };
   /**
@@ -7450,17 +7448,17 @@ class Descriptor {
           x: column.start,
           y: row.start,
           width: column.size,
-          height: row.size,
+          height: row.size
         };
         const occupants = placements.filter(
-          ({ placement }) =>
+          ({placement}) =>
             columnIndex >= placement.columnStart &&
             columnIndex <= placement.columnEnd &&
             rowIndex >= placement.rowStart &&
-            rowIndex <= placement.rowEnd,
+            rowIndex <= placement.rowEnd
         );
         const stackingDensity = occupants.reduce(
-          (sum, { frame: itemFrame }) => {
+          (sum, {frame: itemFrame}) => {
             const intersection = this.#frameIntersection(frame, itemFrame);
             return (
               sum +
@@ -7470,7 +7468,7 @@ class Descriptor {
                 : 0)
             );
           },
-          0,
+          0
         );
         return {
           row: rowIndex,
@@ -7484,11 +7482,11 @@ class Descriptor {
                 ? "single"
                 : "shared",
           alone: occupants.length === 1,
-          occupants: occupants.map(({ sourceElementId }) => sourceElementId),
+          occupants: occupants.map(({sourceElementId}) => sourceElementId),
           coverage: this.#round(Math.min(1, stackingDensity)),
-          stackingDensity: this.#round(stackingDensity),
+          stackingDensity: this.#round(stackingDensity)
         };
-      }),
+      })
     );
   /**
    * Derive spatial alignment evidence for the current rendered scene.
@@ -7499,7 +7497,7 @@ class Descriptor {
    */
   static #spatialAlignmentEvidence = (placements, columns, rows) => {
     if (!placements.length) return 0;
-    const score = placements.reduce((sum, { frame, placement }) => {
+    const score = placements.reduce((sum, {frame, placement}) => {
       const columnCenter =
         ((columns[placement.columnStart]?.start ?? frame.x) +
           (columns[placement.columnEnd]?.end ?? frame.x + frame.width)) /
@@ -7543,13 +7541,13 @@ class Descriptor {
             "first quarter",
             "second quarter",
             "third quarter",
-            "fourth quarter",
+            "fourth quarter"
           ][index] ?? "horizontal quarter")
         : ([
             "top quarter",
             "upper-middle quarter",
             "lower-middle quarter",
-            "bottom quarter",
+            "bottom quarter"
           ][index] ?? "vertical quarter");
     return `${axis === "x" ? "column" : "row"} ${index + 1} of ${count}`;
   };
@@ -7595,7 +7593,7 @@ class Descriptor {
       const index = this.#clamp(
         Math.round(center * denominator - 0.5),
         0,
-        denominator - 1,
+        denominator - 1
       );
       const expectedCenter = (index + 0.5) / denominator;
       if (Math.abs(center - expectedCenter) <= 0.1)
@@ -7639,7 +7637,7 @@ class Descriptor {
     canvas.width = 1;
     canvas.height = 1;
     const context = canvas.getContext("2d", {
-      willReadFrequently: true,
+      willReadFrequently: true
     });
     if (!context) return null;
     context.clearRect(0, 0, 1, 1);
@@ -7664,15 +7662,15 @@ class Descriptor {
       Math.round(color[0]),
       Math.round(color[1]),
       Math.round(color[2]),
-      this.#round(color[3]),
+      this.#round(color[3])
     ]);
     return {
       rgba,
       hex: `#${rgba
         .slice(0, 3)
-        .map((value) => value.toString(16).padStart(2, "0"))
+        .map(value => value.toString(16).padStart(2, "0"))
         .join("")}`,
-      luminance: this.#round(this.#relativeLuminance(rgba)),
+      luminance: this.#round(this.#relativeLuminance(rgba))
     };
   };
   /**
@@ -7690,7 +7688,7 @@ class Descriptor {
       (foreground[0] * fa + background[0] * ba * (1 - fa)) / alpha,
       (foreground[1] * fa + background[1] * ba * (1 - fa)) / alpha,
       (foreground[2] * fa + background[2] * ba * (1 - fa)) / alpha,
-      alpha,
+      alpha
     ];
   };
   /**
@@ -7734,7 +7732,7 @@ class Descriptor {
     let threeDimensional = false;
     if (style.rotate && style.rotate !== "none") {
       const match = style.rotate.match(
-        /^(?:(z)\s+)?(-?(?:\d+(?:\.\d+)?|\.\d+)(?:deg|grad|rad|turn))$/i,
+        /^(?:(z)\s+)?(-?(?:\d+(?:\.\d+)?|\.\d+)(?:deg|grad|rad|turn))$/i
       );
       if (match) parts.push(`rotate(${match[2]})`);
       else threeDimensional = true;
@@ -7751,18 +7749,18 @@ class Descriptor {
     if (!parts.length)
       return {
         matrix: null,
-        threeDimensional,
+        threeDimensional
       };
     try {
       const matrix = new globalThis.DOMMatrixReadOnly(parts.join(" "));
       return {
         matrix,
-        threeDimensional: threeDimensional || !matrix.is2D,
+        threeDimensional: threeDimensional || !matrix.is2D
       };
     } catch {
       return {
         matrix: null,
-        threeDimensional: true,
+        threeDimensional: true
       };
     }
   };
@@ -7775,7 +7773,7 @@ class Descriptor {
     translate:
       style.translate && style.translate !== "none" ? style.translate : null,
     rotate: style.rotate && style.rotate !== "none" ? style.rotate : null,
-    scale: style.scale && style.scale !== "none" ? style.scale : null,
+    scale: style.scale && style.scale !== "none" ? style.scale : null
   });
   /**
    * Derive quad descriptor for the current rendered scene.
@@ -7795,12 +7793,12 @@ class Descriptor {
         /** @type {{getBoxQuads?: (options: {box: string}) => {p1:ScenePoint,p2:ScenePoint,p3:ScenePoint,p4:ScenePoint}[]}} */ (
           element
         ).getBoxQuads?.({
-          box: "border",
+          box: "border"
         })?.[0];
       if (quad) {
-        points = [quad.p1, quad.p2, quad.p3, quad.p4].map(({ x, y }) => ({
+        points = [quad.p1, quad.p2, quad.p3, quad.p4].map(({x, y}) => ({
           x,
-          y,
+          y
         }));
         source = "getBoxQuads-final-border-quad";
       }
@@ -7846,53 +7844,53 @@ class Descriptor {
       if (transforms.length && !threeDimensional && width && height) {
         const combined = transforms.reduce(
           (matrix, transform) => matrix.multiply(transform),
-          new DOMMatrix(),
+          new DOMMatrix()
         );
         const top = {
           x: combined.a * width,
-          y: combined.b * width,
+          y: combined.b * width
         };
         const left = {
           x: combined.c * height,
-          y: combined.d * height,
+          y: combined.d * height
         };
         const relative = [
           {
             x: 0,
-            y: 0,
+            y: 0
           },
           top,
           {
             x: top.x + left.x,
-            y: top.y + left.y,
+            y: top.y + left.y
           },
-          left,
+          left
         ];
-        const minX = Math.min(...relative.map(({ x }) => x));
-        const minY = Math.min(...relative.map(({ y }) => y));
-        points = relative.map(({ x, y }) => ({
+        const minX = Math.min(...relative.map(({x}) => x));
+        const minY = Math.min(...relative.map(({y}) => y));
+        points = relative.map(({x, y}) => ({
           x: rect.left + x - minX,
-          y: rect.top + y - minY,
+          y: rect.top + y - minY
         }));
         source = "computed-2d-transform-chain-plus-final-bounding-rect";
       } else {
         points = [
           {
             x: rect.left,
-            y: rect.top,
+            y: rect.top
           },
           {
             x: rect.right,
-            y: rect.top,
+            y: rect.top
           },
           {
             x: rect.right,
-            y: rect.bottom,
+            y: rect.bottom
           },
           {
             x: rect.left,
-            y: rect.bottom,
-          },
+            y: rect.bottom
+          }
         ];
         source = threeDimensional
           ? "axis-aligned-fallback-3d-or-perspective"
@@ -7900,9 +7898,9 @@ class Descriptor {
         confidence = threeDimensional ? "reduced" : "high";
       }
     }
-    const normalized = points.map(({ x, y }) => ({
+    const normalized = points.map(({x, y}) => ({
       x: this.#ratio(x - reference.left, reference.width),
-      y: this.#ratio(y - reference.top, reference.height),
+      y: this.#ratio(y - reference.top, reference.height)
     }));
     /**
      * Derive edge for the current rendered scene.
@@ -7913,7 +7911,7 @@ class Descriptor {
     const edge = (from, to) => Math.hypot(to.x - from.x, to.y - from.y);
     const fallbackPoint = {
       x: 0,
-      y: 0,
+      y: 0
     };
     const point0 = points[0] ?? fallbackPoint;
     const point1 = points[1] ?? fallbackPoint;
@@ -7923,15 +7921,15 @@ class Descriptor {
       points.reduce((sum, point, index) => {
         const next = points[(index + 1) % points.length] ?? point;
         return sum + point.x * next.y - next.x * point.y;
-      }, 0) / 2,
+      }, 0) / 2
     );
     const topVector = {
       x: point1.x - point0.x,
-      y: point1.y - point0.y,
+      y: point1.y - point0.y
     };
     const leftVector = {
       x: point3.x - point0.x,
-      y: point3.y - point0.y,
+      y: point3.y - point0.y
     };
     const topLength = edge(point0, point1);
     const leftLength = edge(point0, point3);
@@ -7942,18 +7940,18 @@ class Descriptor {
       points: normalized,
       center: {
         x: this.#round(normalized.reduce((sum, point) => sum + point.x, 0) / 4),
-        y: this.#round(normalized.reduce((sum, point) => sum + point.y, 0) / 4),
+        y: this.#round(normalized.reduce((sum, point) => sum + point.y, 0) / 4)
       },
       area: this.#ratio(area, reference.width * reference.height),
       edgeLengths: {
         top: this.#ratio(topLength, reference.width),
         right: this.#ratio(edge(point1, point2), reference.height),
         bottom: this.#ratio(edge(point2, point3), reference.width),
-        left: this.#ratio(leftLength, reference.height),
+        left: this.#ratio(leftLength, reference.height)
       },
       orientationDegrees: this.#round(
         Math.atan2(topVector.y, topVector.x) * 180 / Math.PI,
-        3,
+        3
       ),
       cornerAngleDegrees:
         topLength && leftLength
@@ -7961,9 +7959,9 @@ class Descriptor {
               Math.acos(this.#clamp(dot / (topLength * leftLength), -1, 1)) *
                 180 /
                 Math.PI,
-              3,
+              3
             )
-          : null,
+          : null
     };
   };
   /**
@@ -7987,33 +7985,33 @@ class Descriptor {
               c: this.#round(matrix.c),
               d: this.#round(matrix.d),
               e: this.#ratio(matrix.e, reference.width),
-              f: this.#ratio(matrix.f, reference.height),
+              f: this.#ratio(matrix.f, reference.height)
             }
           : null,
         is2D: matrix.is2D,
         scale: {
           x: this.#round(scaleX),
-          y: this.#round(scaleY),
+          y: this.#round(scaleY)
         },
         rotationDegrees: matrix.is2D
           ? this.#round(Math.atan2(matrix.b, matrix.a) * 180 / Math.PI, 3)
           : null,
         determinant: this.#round(
-          matrix.is2D ? matrix.a * matrix.d - matrix.b * matrix.c : 0,
+          matrix.is2D ? matrix.a * matrix.d - matrix.b * matrix.c : 0
         ),
         translation: {
           x: this.#ratio(matrix.m41, reference.width),
           y: this.#ratio(matrix.m42, reference.height),
           z: this.#ratio(
             matrix.m43,
-            Math.max(reference.width, reference.height),
-          ),
-        },
+            Math.max(reference.width, reference.height)
+          )
+        }
       };
     } catch {
       return {
         css: value,
-        parseable: false,
+        parseable: false
       };
     }
   };
@@ -8032,20 +8030,20 @@ class Descriptor {
       : [
           {
             x: object.frame.x,
-            y: object.frame.y,
+            y: object.frame.y
           },
           {
             x: object.frame.x + object.frame.width,
-            y: object.frame.y,
+            y: object.frame.y
           },
           {
             x: object.frame.x + object.frame.width,
-            y: object.frame.y + object.frame.height,
+            y: object.frame.y + object.frame.height
           },
           {
             x: object.frame.x,
-            y: object.frame.y + object.frame.height,
-          },
+            y: object.frame.y + object.frame.height
+          }
         ];
   };
   /**
@@ -8084,22 +8082,22 @@ class Descriptor {
   static #polygonIntersectionPoint = (start, end, clipStart, clipEnd) => {
     const segment = {
       x: end.x - start.x,
-      y: end.y - start.y,
+      y: end.y - start.y
     };
     const edge = {
       x: clipEnd.x - clipStart.x,
-      y: clipEnd.y - clipStart.y,
+      y: clipEnd.y - clipStart.y
     };
     const denominator = this.#cross2(segment, edge);
     if (Math.abs(denominator) <= 1e-12) return end;
     const offset = {
       x: clipStart.x - start.x,
-      y: clipStart.y - start.y,
+      y: clipStart.y - start.y
     };
     const t = this.#cross2(offset, edge) / denominator;
     return {
       x: this.#round(start.x + segment.x * t, 6),
-      y: this.#round(start.y + segment.y * t, 6),
+      y: this.#round(start.y + segment.y * t, 6)
     };
   };
   /**
@@ -8123,17 +8121,17 @@ class Descriptor {
         this.#cross2(
           {
             x: end.x - start.x,
-            y: end.y - start.y,
+            y: end.y - start.y
           },
           {
             x: point.x - start.x,
-            y: point.y - start.y,
-          },
+            y: point.y - start.y
+          }
         ) >=
       -1e-9;
-    let output = subject.map(({ x, y }) => ({
+    let output = subject.map(({x, y}) => ({
       x,
-      y,
+      y
     }));
     for (let index = 0; index < clip.length && output.length; index++) {
       const clipStart = clip[index];
@@ -8149,19 +8147,19 @@ class Descriptor {
         if (endInside) {
           if (!startInside)
             output.push(
-              this.#polygonIntersectionPoint(start, end, clipStart, clipEnd),
+              this.#polygonIntersectionPoint(start, end, clipStart, clipEnd)
             );
           output.push(end);
         } else if (startInside)
           output.push(
-            this.#polygonIntersectionPoint(start, end, clipStart, clipEnd),
+            this.#polygonIntersectionPoint(start, end, clipStart, clipEnd)
           );
         start = end;
       }
     }
-    return output.map(({ x, y }) => ({
+    return output.map(({x, y}) => ({
       x: this.#round(x, 6),
-      y: this.#round(y, 6),
+      y: this.#round(y, 6)
     }));
   };
   /**
@@ -8170,8 +8168,8 @@ class Descriptor {
    * @returns {SceneRecord} Captured polygonBounds evidence for the calling operation.
    */
   static #polygonBounds = polygon => {
-    const xs = polygon.map(({ x }) => x);
-    const ys = polygon.map(({ y }) => y);
+    const xs = polygon.map(({x}) => x);
+    const ys = polygon.map(({y}) => y);
     const left = Math.min(...xs);
     const top = Math.min(...ys);
     const right = Math.max(...xs);
@@ -8180,7 +8178,7 @@ class Descriptor {
       x: this.#round(left),
       y: this.#round(top),
       width: this.#round(right - left),
-      height: this.#round(bottom - top),
+      height: this.#round(bottom - top)
     };
   };
   /**
@@ -8234,19 +8232,19 @@ class SceneBinaryBundle {
     "video/mp4": "mp4",
     "video/webm": "webm",
     "audio/mpeg": "mp3",
-    "audio/ogg": "ogg",
+    "audio/ogg": "ogg"
   });
   static #encoder = new TextEncoder();
   static #crcTable = Array.from(
     {
-      length: 256,
+      length: 256
     },
     (_, index) => {
       let crc = index;
       for (let bit = 0; bit < 8; bit += 1)
         crc = crc & 1 ? 0xedb88320 ^ crc >>> 1 : crc >>> 1;
       return crc >>> 0;
-    },
+    }
   );
   /**
    * Derive hex for the current rendered scene.
@@ -8281,13 +8279,13 @@ class SceneBinaryBundle {
       [
         match[2]
           ? Uint8Array.from(atob(match[3] ?? ""), character =>
-              character.charCodeAt(0),
+              character.charCodeAt(0)
             )
-          : this.#encoder.encode(decodeURIComponent(match[3] ?? "")),
+          : this.#encoder.encode(decodeURIComponent(match[3] ?? ""))
       ],
       {
-        type: match[1] || "application/octet-stream",
-      },
+        type: match[1] || "application/octet-stream"
+      }
     );
   };
   /**
@@ -8300,7 +8298,7 @@ class SceneBinaryBundle {
     const sha256 = this.#hex(
       await /** @type {{__evidenceSha256: (buffer: ArrayBuffer) => Promise<ArrayBuffer>}} */ (
         /** @type {unknown} */ (globalThis)
-      ).__evidenceSha256(await blob.arrayBuffer()),
+      ).__evidenceSha256(await blob.arrayBuffer())
     );
     const file = `sha256-${sha256}.${this.#extension(blob.type || "application/octet-stream")}`;
     files.has(file) || files.set(file, blob);
@@ -8308,7 +8306,7 @@ class SceneBinaryBundle {
       file,
       sha256,
       mime: blob.type || "application/octet-stream",
-      bytes: blob.size,
+      bytes: blob.size
     };
   };
   /**
@@ -8324,7 +8322,7 @@ class SceneBinaryBundle {
         : Boolean(
             value &&
             typeof value === "object" &&
-            Object.values(value).some(this.#containsDataUri),
+            Object.values(value).some(this.#containsDataUri)
           );
   /**
    * Replace embedded data URIs with deduplicated binary-file references.
@@ -8342,7 +8340,7 @@ class SceneBinaryBundle {
     }
     if (Array.isArray(value))
       return Promise.all(
-        value.map(item => this.#externalize(item, files, cache)),
+        value.map(item => this.#externalize(item, files, cache))
       );
     return !value || typeof value !== "object"
       ? value
@@ -8352,10 +8350,10 @@ class SceneBinaryBundle {
               async ([key, item]) =>
                 /** @type {[string, SceneValue]} */ ([
                   key,
-                  await this.#externalize(item, files, cache),
-                ]),
-            ),
-          ),
+                  await this.#externalize(item, files, cache)
+                ])
+            )
+          )
         );
   };
   /**
@@ -8369,19 +8367,19 @@ class SceneBinaryBundle {
       this.#containsDataUri(scene)
         ? await this.#externalize(scene, files, new Map())
         : {
-            ...scene,
+            ...scene
           }
     );
     manifest[String("binaryFiles")] = [...files.entries()].map(
       ([file, blob]) => ({
         file,
         mime: blob.type || "application/octet-stream",
-        bytes: blob.size,
-      }),
+        bytes: blob.size
+      })
     );
     return {
       manifest,
-      files,
+      files
     };
   };
   /**
@@ -8411,7 +8409,7 @@ class SceneBinaryBundle {
       value & 255,
       value >>> 8 & 255,
       value >>> 16 & 255,
-      value >>> 24 & 255,
+      value >>> 24 & 255
     ]);
   /**
    * Copy byte-array parts into a single contiguous buffer.
@@ -8420,7 +8418,7 @@ class SceneBinaryBundle {
    */
   static #concat = parts => {
     const output = new Uint8Array(
-      parts.reduce((sum, part) => sum + part.length, 0),
+      parts.reduce((sum, part) => sum + part.length, 0)
     );
     let offset = 0;
     for (const part of parts) {
@@ -8442,7 +8440,7 @@ class SceneBinaryBundle {
     date:
       date.getFullYear() - 1980 << 9 |
       date.getMonth() + 1 << 5 |
-      date.getDate(),
+      date.getDate()
   });
   /**
    * Encode a manifest and binary assets as a ZIP archive.
@@ -8455,15 +8453,15 @@ class SceneBinaryBundle {
       [
         "scene.json",
         new Blob([JSON.stringify(manifest, null, 2)], {
-          type: "application/json",
-        }),
+          type: "application/json"
+        })
       ],
-      ...files,
+      ...files
     ]);
     const locals = [];
     const centrals = [];
     let offset = 0;
-    const { time, date } = this.#dosTime();
+    const {time, date} = this.#dosTime();
     const prepared = await Promise.all(
       entries.map(async ([name, blob]) => {
         const nameBytes = this.#encoder.encode(name);
@@ -8471,11 +8469,11 @@ class SceneBinaryBundle {
         return {
           nameBytes,
           bytes,
-          crc: this.#crc32(bytes),
+          crc: this.#crc32(bytes)
         };
-      }),
+      })
     );
-    for (const { nameBytes, bytes, crc } of prepared) {
+    for (const {nameBytes, bytes, crc} of prepared) {
       const local = this.#concat([
         this.#u32(0x04034b50),
         this.#u16(20),
@@ -8489,7 +8487,7 @@ class SceneBinaryBundle {
         this.#u16(nameBytes.length),
         this.#u16(0),
         nameBytes,
-        bytes,
+        bytes
       ]);
       locals.push(local);
       centrals.push(
@@ -8511,8 +8509,8 @@ class SceneBinaryBundle {
           this.#u16(0),
           this.#u32(0),
           this.#u32(offset),
-          nameBytes,
-        ]),
+          nameBytes
+        ])
       );
       offset += local.length;
     }
@@ -8529,12 +8527,12 @@ class SceneBinaryBundle {
           this.#u16(entries.length),
           this.#u32(central.length),
           this.#u32(offset),
-          this.#u16(0),
-        ]),
+          this.#u16(0)
+        ])
       ],
       {
-        type: "application/zip",
-      },
+        type: "application/zip"
+      }
     );
   };
   /**
@@ -8588,7 +8586,7 @@ class SceneBinaryBundle {
       `${header
         .reduce((sum, byte) => sum + byte, 0)
         .toString(8)
-        .padStart(6, "0")}\0 `,
+        .padStart(6, "0")}\0 `
     );
     return header;
   };
@@ -8606,20 +8604,20 @@ class SceneBinaryBundle {
           [
             "scene.json",
             new Blob([JSON.stringify(manifest, null, 2)], {
-              type: "application/json",
-            }),
+              type: "application/json"
+            })
           ],
-          ...files,
+          ...files
         ]).flatMap(([name, blob]) => [
           this.#tarHeader(name, blob.size, date),
           blob,
-          new Uint8Array((512 - blob.size % 512) % 512),
+          new Uint8Array((512 - blob.size % 512) % 512)
         ]),
-        new Uint8Array(1024),
+        new Uint8Array(1024)
       ],
       {
-        type: "application/x-tar",
-      },
+        type: "application/x-tar"
+      }
     );
   };
   /**
@@ -8652,11 +8650,11 @@ class SceneBinaryBundle {
         : length <= 0xffff
           ? this.#concat([
               Uint8Array.of(Number(code16)),
-              this.#be(2, "setUint16", length),
+              this.#be(2, "setUint16", length)
             ])
           : this.#concat([
               Uint8Array.of(Number(code32)),
-              this.#be(4, "setUint32", length),
+              this.#be(4, "setUint32", length)
             ]);
   /**
    * Derive mp number for the current rendered scene.
@@ -8667,7 +8665,7 @@ class SceneBinaryBundle {
     if (!Number.isInteger(value) || !Number.isSafeInteger(value))
       return this.#concat([
         Uint8Array.of(0xcb),
-        this.#be(8, "setFloat64", value),
+        this.#be(8, "setFloat64", value)
       ]);
     if (value >= 0)
       return value <= 0x7f
@@ -8677,16 +8675,16 @@ class SceneBinaryBundle {
           : value <= 0xffff
             ? this.#concat([
                 Uint8Array.of(0xcd),
-                this.#be(2, "setUint16", value),
+                this.#be(2, "setUint16", value)
               ])
             : value <= 0xffffffff
               ? this.#concat([
                   Uint8Array.of(0xce),
-                  this.#be(4, "setUint32", value),
+                  this.#be(4, "setUint32", value)
                 ])
               : this.#concat([
                   Uint8Array.of(0xcb),
-                  this.#be(8, "setFloat64", value),
+                  this.#be(8, "setFloat64", value)
                 ]);
     return value >= -32
       ? Uint8Array.of(0x100 + value)
@@ -8697,11 +8695,11 @@ class SceneBinaryBundle {
           : value >= -2147483648
             ? this.#concat([
                 Uint8Array.of(0xd2),
-                this.#be(4, "setInt32", value),
+                this.#be(4, "setInt32", value)
               ])
             : this.#concat([
                 Uint8Array.of(0xcb),
-                this.#be(8, "setFloat64", value),
+                this.#be(8, "setFloat64", value)
               ]);
   };
   /**
@@ -8719,7 +8717,7 @@ class SceneBinaryBundle {
       const bytes = this.#encoder.encode(value);
       parts.push(
         this.#mpLength(bytes.length, 31, 0xa0, 0xd9, 0xda, 0xdb),
-        bytes,
+        bytes
       );
     } else if (value instanceof Uint8Array)
       parts.push(
@@ -8728,20 +8726,20 @@ class SceneBinaryBundle {
           : value.length <= 0xffff
             ? this.#concat([
                 Uint8Array.of(0xc5),
-                this.#be(2, "setUint16", value.length),
+                this.#be(2, "setUint16", value.length)
               ])
             : this.#concat([
                 Uint8Array.of(0xc6),
-                this.#be(4, "setUint32", value.length),
+                this.#be(4, "setUint32", value.length)
               ]),
-        value,
+        value
       );
     else if (value instanceof ArrayBuffer || ArrayBuffer.isView(value))
       this.#mpEncode(
         value instanceof ArrayBuffer
           ? new Uint8Array(value)
           : new Uint8Array(value.buffer, value.byteOffset, value.byteLength),
-        parts,
+        parts
       );
     else if (Array.isArray(value)) {
       parts.push(this.#mpLength(value.length, 15, 0x90, null, 0xdc, 0xdd));
@@ -8775,18 +8773,18 @@ class SceneBinaryBundle {
           await Promise.all(
             [...files].map(async ([name, blob]) => [
               name,
-              new Uint8Array(await blob.arrayBuffer()),
-            ]),
-          ),
-        ),
+              new Uint8Array(await blob.arrayBuffer())
+            ])
+          )
+        )
       },
-      parts,
+      parts
     );
     return new Blob(
       parts.map(part => new Uint8Array(part)),
       {
-        type: "application/msgpack",
-      },
+        type: "application/msgpack"
+      }
     );
   };
   /**
@@ -8799,8 +8797,8 @@ class SceneBinaryBundle {
     try {
       return Boolean(
         new globalThis.CompressionStream(
-          /** @type {CompressionFormat} */ (format),
-        ),
+          /** @type {CompressionFormat} */ (format)
+        )
       );
     } catch {
       return false;
@@ -8816,16 +8814,16 @@ class SceneBinaryBundle {
   static #compress = async (blob, format, mime) => {
     if (!this.compressionSupported(format))
       throw new Error(
-        `This browser does not support native ${format} compression.`,
+        `This browser does not support native ${format} compression.`
       );
     const compressed = await new Response(
       blob
         .stream()
         .pipeThrough(
           new globalThis.CompressionStream(
-            /** @type {CompressionFormat} */ (format),
-          ),
-        ),
+            /** @type {CompressionFormat} */ (format)
+          )
+        )
     ).blob();
     return compressed.slice(0, compressed.size, mime);
   };
@@ -8847,7 +8845,7 @@ class SceneBinaryBundle {
     this.#compress(
       await this.messagePack(manifest, files),
       "brotli",
-      "application/octet-stream",
+      "application/octet-stream"
     );
   /**
    * Derive zstd store for the current rendered scene.
@@ -8861,12 +8859,12 @@ class SceneBinaryBundle {
         this.#u32(bytes.length),
         ...Array.from(
           {
-            length: Math.max(1, Math.ceil(bytes.length / 131072)),
+            length: Math.max(1, Math.ceil(bytes.length / 131072))
           },
           (_, index) => {
             const chunk = bytes.subarray(
               index * 131072,
-              Math.min(bytes.length, (index + 1) * 131072),
+              Math.min(bytes.length, (index + 1) * 131072)
             );
             const header =
               chunk.length << 3 |
@@ -8875,16 +8873,16 @@ class SceneBinaryBundle {
               Uint8Array.of(
                 header & 255,
                 header >>> 8 & 255,
-                header >>> 16 & 255,
+                header >>> 16 & 255
               ),
-              chunk,
+              chunk
             ];
-          },
-        ).flat(),
+          }
+        ).flat()
       ],
       {
-        type: "application/zstd",
-      },
+        type: "application/zstd"
+      }
     );
   /**
    * Derive zstd for the current rendered scene.
@@ -8909,7 +8907,7 @@ class SceneBinaryBundle {
       gzip: "JSON + TAR.GZ",
       msgpack: "MessagePack",
       "msgpack-brotli": "MessagePack + Brotli",
-      "msgpack-zstd": "MessagePack + Zstd",
+      "msgpack-zstd": "MessagePack + Zstd"
     })[format] ?? format;
   /**
    * Encode the chosen archive format and trigger its browser download.
@@ -8927,7 +8925,7 @@ class SceneBinaryBundle {
         gzip: [() => this.gzip(manifest, files), "tar.gz"],
         msgpack: [() => this.messagePack(manifest, files), "msgpack"],
         "msgpack-brotli": [() => this.brotli(manifest, files), "msgpack.br"],
-        "msgpack-zstd": [() => this.zstd(manifest, files), "msgpack.zst"],
+        "msgpack-zstd": [() => this.zstd(manifest, files), "msgpack.zst"]
       })[format];
     if (!output) throw new TypeError(`Unsupported bundle format: ${format}`);
     const blob = await output[0]();
@@ -8935,12 +8933,12 @@ class SceneBinaryBundle {
     const url = URL.createObjectURL(blob);
     Object.assign(document.createElement("a"), {
       href: url,
-      download: file,
+      download: file
     }).click();
     queueMicrotask(() => URL.revokeObjectURL(url));
     return {
       blob,
-      file,
+      file
     };
   };
 }
@@ -8983,11 +8981,11 @@ class SceneBinaryBundle {
       0xc24b8b70, 0xc76c51a3, 0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070,
       0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a,
       0x5b9cca4f, 0x682e6ff3, 0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208,
-      0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2,
+      0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
     ]);
     const hash = new Uint32Array([
       0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c,
-      0x1f83d9ab, 0x5be0cd19,
+      0x1f83d9ab, 0x5be0cd19
     ]);
     const words = new Uint32Array(64);
     /**
@@ -9070,20 +9068,20 @@ class SceneBinaryBundle {
       Object.freeze({
         low: {
           fps: 15,
-          videoBitsPerSecond: 750000,
+          videoBitsPerSecond: 750000
         },
         medium: {
           fps: 30,
-          videoBitsPerSecond: 2500000,
+          videoBitsPerSecond: 2500000
         },
         high: {
           fps: 60,
-          videoBitsPerSecond: 6000000,
+          videoBitsPerSecond: 6000000
         },
         ultra: {
           fps: 60,
-          videoBitsPerSecond: 12000000,
-        },
+          videoBitsPerSecond: 12000000
+        }
       })
     );
     static mimeTypes = Object.freeze([
@@ -9091,7 +9089,7 @@ class SceneBinaryBundle {
       "video/webm;codecs=vp8",
       "video/mp4;codecs=avc1.42E01E",
       "video/webm",
-      "video/mp4",
+      "video/mp4"
     ]);
     /** @type {RollingConfig} */
     #config = {
@@ -9109,7 +9107,7 @@ class SceneBinaryBundle {
       maxBufferBytes: 64 * 1024 * 1024,
       maxCompletedBytes: 256 * 1024 * 1024,
       maxCaptures: 32,
-      autoRemoveAfterTransfer: true,
+      autoRemoveAfterTransfer: true
     };
     /** @type {?Element} */
     #target = null;
@@ -9186,13 +9184,13 @@ class SceneBinaryBundle {
         ...(this.#config.fps == null
           ? {}
           : {
-              fps: this.#config.fps,
+              fps: this.#config.fps
             }),
         ...(this.#config.videoBitsPerSecond == null
           ? {}
           : {
-              videoBitsPerSecond: this.#config.videoBitsPerSecond,
-            }),
+              videoBitsPerSecond: this.#config.videoBitsPerSecond
+            })
       });
     }
     /**
@@ -9207,13 +9205,13 @@ class SceneBinaryBundle {
         segments: this.#segments.length,
         bytes: this.#segments.reduce(
           (sum, segment) => sum + segment.blob.size,
-          0,
+          0
         ),
         duration: Math.max(0, now - oldest),
         configuredDuration: this.#config.window,
         maxBytes: this.#config.maxBufferBytes,
         oldest,
-        now,
+        now
       };
     }
     /**
@@ -9228,10 +9226,10 @@ class SceneBinaryBundle {
         quality:
           typeof this.#config.quality === "object"
             ? {
-                ...this.#config.quality,
+                ...this.#config.quality
               }
             : this.#config.quality,
-        mimeTypes: [...this.#config.mimeTypes],
+        mimeTypes: [...this.#config.mimeTypes]
       };
     }
     /**
@@ -9243,15 +9241,15 @@ class SceneBinaryBundle {
     set(options = {}) {
       if (this.#armed)
         throw new Error("Disarm before changing recorder configuration.");
-      const { target, ...configuration } = options;
+      const {target, ...configuration} = options;
       this.#config = {
         ...this.#config,
-        ...configuration,
+        ...configuration
       };
       if (target !== undefined) this.setTarget(target);
       this.#validate();
       this.#emit("configchange", {
-        config: this.config(),
+        config: this.config()
       });
       return this;
     }
@@ -9271,12 +9269,12 @@ class SceneBinaryBundle {
         typeof surface.webkitCaptureStream !== "function"
       )
         throw new TypeError(
-          "Video target must expose captureStream(), normally canvas or video.",
+          "Video target must expose captureStream(), normally canvas or video."
         );
       this.#target = element;
       this.#targetReference = typeof target === "string" ? target : null;
       this.#emit("targetchange", {
-        target: this.#describeTarget(),
+        target: this.#describeTarget()
       });
       return this;
     }
@@ -9303,7 +9301,7 @@ class SceneBinaryBundle {
         throw new Error("MediaRecorder is unavailable in this browser.");
       this.#mimeType =
         this.#config.mimeTypes.find(type =>
-          MediaRecorder.isTypeSupported(type),
+          MediaRecorder.isTypeSupported(type)
         ) ?? null;
       this.#stream = this.#captureStream();
       this.#segments = [];
@@ -9323,7 +9321,7 @@ class SceneBinaryBundle {
      * @throws {Error} When the operation cannot complete.
      */
     async disarm(
-      /** @type {RollingDisarmOptions} */ { clear = false, force = false } = {},
+      /** @type {RollingDisarmOptions} */ {clear = false, force = false} = {}
     ) {
       if (!this.#armed) return this.status();
       if (this.#captures.size && !force)
@@ -9332,9 +9330,9 @@ class SceneBinaryBundle {
         await Promise.all(
           [...this.#captures.keys()].map(id =>
             this.stop(id, {
-              reason: "disarm",
-            }),
-          ),
+              reason: "disarm"
+            })
+          )
         );
       this.#armed = false;
       clearTimeout(this.#rotationTimer);
@@ -9365,15 +9363,15 @@ class SceneBinaryBundle {
         before = 0,
         duration = 0,
         id = evidenceId(),
-        metadata = null,
-      } = {},
+        metadata = null
+      } = {}
     ) {
       if (!this.#armed) await this.arm();
       if (before < 0 || duration < 0)
         throw new RangeError("before and duration must be >= 0.");
       if (before > this.#config.window)
         throw new RangeError(
-          `before ${before} exceeds window ${this.#config.window}.`,
+          `before ${before} exceeds window ${this.#config.window}.`
         );
       if (this.#captures.has(id))
         throw new Error(`Capture ${id} already exists.`);
@@ -9400,7 +9398,7 @@ class SceneBinaryBundle {
         stopping: false,
         done,
         resolve,
-        reject,
+        reject
       };
       this.#captures.set(id, capture);
       this.#lastCaptureId = id;
@@ -9411,10 +9409,10 @@ class SceneBinaryBundle {
           () => {
             this.stop(id, {
               reason: "duration",
-              at: end,
+              at: end
             }).catch(() => null);
           },
-          Math.max(0, end - this.#now()),
+          Math.max(0, end - this.#now())
         );
       }
       const result = {
@@ -9424,7 +9422,7 @@ class SceneBinaryBundle {
         requestedStart: capture.requestedStart,
         before,
         duration,
-        metadata,
+        metadata
       };
       this.#emit("start", result);
       return result;
@@ -9437,7 +9435,7 @@ class SceneBinaryBundle {
      */
     async stop(
       id = this.#lastCaptureId,
-      { reason = "manual", at = null } = {},
+      {reason = "manual", at = null} = {}
     ) {
       if (id === null) return null;
       const capture = this.#captures.get(id);
@@ -9468,7 +9466,7 @@ class SceneBinaryBundle {
         this.#emit("error", {
           id,
           name: error instanceof Error ? error.name : "Error",
-          message: error instanceof Error ? error.message : String(error),
+          message: error instanceof Error ? error.message : String(error)
         });
         throw error;
       }
@@ -9483,9 +9481,9 @@ class SceneBinaryBundle {
     async record(options = {}) {
       if (!(typeof options.duration === "number" && options.duration > 0))
         throw new Error(
-          "record() requires duration > 0; use start()/stop() otherwise.",
+          "record() requires duration > 0; use start()/stop() otherwise."
         );
-      const { id } = await this.start(options);
+      const {id} = await this.start(options);
       return this.done(id);
     }
     /**
@@ -9517,8 +9515,8 @@ class SceneBinaryBundle {
         scale = 1,
         id = evidenceId(),
         metadata = null,
-        background = "transparent",
-      } = {},
+        background = "transparent"
+      } = {}
     ) {
       const source = this.#resolveTarget(target);
       if (!(scale > 0)) throw new RangeError("scale must be > 0.");
@@ -9526,7 +9524,7 @@ class SceneBinaryBundle {
         type,
         quality,
         scale,
-        background,
+        background
       });
       const dimensions = await this.#blobDimensions(blob);
       const result = {
@@ -9540,7 +9538,7 @@ class SceneBinaryBundle {
         quality,
         scale,
         metadata,
-        blob,
+        blob
       };
       this.#images.delete(id);
       this.#images.set(id, result);
@@ -9563,8 +9561,8 @@ class SceneBinaryBundle {
       id,
       {
         sink = "__evidenceSink",
-        chunkSize = this.#config.transferChunkSize,
-      } = {},
+        chunkSize = this.#config.transferChunkSize
+      } = {}
     ) {
       const send = evidenceGlobal[sink];
       if (typeof send !== "function")
@@ -9586,13 +9584,13 @@ class SceneBinaryBundle {
             blob: segment.blob,
             asset: `segment-${String(index).padStart(4, "0")}.${this.#extension(segment.mimeType)}`,
             start: segment.start,
-            end: segment.end,
+            end: segment.end
           }))
         : [
             {
               blob: /** @type {RollingImageResult} */ (image).blob,
-              asset: `capture.${this.#imageExtension(/** @type {RollingImageResult} */ (image).mimeType)}`,
-            },
+              asset: `capture.${this.#imageExtension(/** @type {RollingImageResult} */ (image).mimeType)}`
+            }
           ];
       await sinkFn({
         event: "transfer-start",
@@ -9600,12 +9598,12 @@ class SceneBinaryBundle {
         id,
         kind: metadata.kind,
         metadata,
-        assetCount: assets.length,
+        assetCount: assets.length
       });
       this.#emit("transferstart", {
         transferId,
         id,
-        kind: metadata.kind,
+        kind: metadata.kind
       });
       await Promise.all(
         assets.map((asset, index) =>
@@ -9620,27 +9618,27 @@ class SceneBinaryBundle {
               assetCount: assets.length,
               mimeType: asset.blob.type || "application/octet-stream",
               start: asset.start ?? null,
-              end: asset.end ?? null,
+              end: asset.end ?? null
             },
-            chunkSize,
-          ),
-        ),
+            chunkSize
+          )
+        )
       );
       await sinkFn({
         event: "transfer-end",
         transferId,
         id,
-        assetCount: assets.length,
+        assetCount: assets.length
       });
       this.#emit("transferend", {
         transferId,
         id,
-        kind: metadata.kind,
+        kind: metadata.kind
       });
       if (this.#config.autoRemoveAfterTransfer) this.remove(id);
       return {
         transferId,
-        ...metadata,
+        ...metadata
       };
     }
     /**
@@ -9684,13 +9682,13 @@ class SceneBinaryBundle {
         memory: {
           bufferBytes: this.#segments.reduce(
             (sum, segment) => sum + segment.blob.size,
-            0,
+            0
           ),
           completedBytes: this.#completedBytes(),
           maxBufferBytes: this.#config.maxBufferBytes,
           maxCompletedBytes: this.#config.maxCompletedBytes,
-          maxCaptures: this.#config.maxCaptures,
-        },
+          maxCaptures: this.#config.maxCaptures
+        }
       };
     }
     /**
@@ -9708,7 +9706,7 @@ class SceneBinaryBundle {
         throw new Error("Capture has no requested end time.");
       const segments = this.#segments.filter(
         segment =>
-          segment.end > requestedStart && segment.start < requestedEnd,
+          segment.end > requestedStart && segment.start < requestedEnd
       );
       if (!segments.length)
         throw new Error("No buffered video intersects the requested interval.");
@@ -9740,7 +9738,7 @@ class SceneBinaryBundle {
         mimeType: firstSegment.mimeType,
         audio: this.#config.audio,
         size: segments.reduce((sum, segment) => sum + segment.blob.size, 0),
-        segments,
+        segments
       };
     }
     /**
@@ -9788,30 +9786,30 @@ class SceneBinaryBundle {
         resolve = accept;
         reject = fail;
       });
-      const { videoBitsPerSecond } = this.quality;
+      const {videoBitsPerSecond} = this.quality;
       if (!this.#stream) throw new Error("Capture stream is unavailable.");
       const recorder = new MediaRecorder(this.#stream, {
         ...(this.#mimeType
           ? {
-              mimeType: this.#mimeType,
+              mimeType: this.#mimeType
             }
           : {}),
         ...(videoBitsPerSecond
           ? {
-              videoBitsPerSecond,
+              videoBitsPerSecond
             }
           : {}),
         ...(this.#config.audioBitsPerSecond
           ? {
-              audioBitsPerSecond: this.#config.audioBitsPerSecond,
+              audioBitsPerSecond: this.#config.audioBitsPerSecond
             }
-          : {}),
+          : {})
       });
       const segment = {
         recorder,
         chunks,
         start: 0,
-        done,
+        done
       };
       recorder.addEventListener("dataavailable", event => {
         if (event.data.size) chunks.push(event.data);
@@ -9821,8 +9819,8 @@ class SceneBinaryBundle {
         event =>
           reject(event.error ?? new Error("MediaRecorder segment failed.")),
         {
-          once: true,
-        },
+          once: true
+        }
       );
       recorder.addEventListener(
         "stop",
@@ -9834,14 +9832,14 @@ class SceneBinaryBundle {
             chunks[0]?.type ||
             "video/webm";
           const blob = new Blob(chunks, {
-            type: mimeType,
+            type: mimeType
           });
           const result = {
             start: segment.start,
             end,
             duration: end - segment.start,
             mimeType,
-            blob,
+            blob
           };
           if (blob.size && await this.#validMediaBlob(blob, mimeType)) {
             this.#segments.push(result);
@@ -9854,13 +9852,13 @@ class SceneBinaryBundle {
               duration: end - segment.start,
               mimeType,
               size: blob.size,
-              reason: "invalid-or-header-only-media-container",
+              reason: "invalid-or-header-only-media-container"
             });
           resolve(result);
         },
         {
-          once: true,
-        },
+          once: true
+        }
       );
       return segment;
     }
@@ -9911,13 +9909,13 @@ class SceneBinaryBundle {
         this.#segments.shift();
       let bytes = this.#segments.reduce(
         (sum, segment) => sum + segment.blob.size,
-        0,
+        0
       );
       const protectedStart = this.#captures.size
         ? Math.min(
             ...[...this.#captures.values()].map(
-              capture => capture.requestedStart,
-            ),
+              capture => capture.requestedStart
+            )
           )
         : Infinity;
       while (
@@ -9954,7 +9952,7 @@ class SceneBinaryBundle {
       return (
         [...this.#results.values()].reduce(
           (sum, value) => sum + value.size,
-          0,
+          0
         ) +
         [...this.#images.values()].reduce((sum, value) => sum + value.size, 0)
       );
@@ -9984,32 +9982,32 @@ class SceneBinaryBundle {
      * @param {Element} source @param {RollingDrawOptions} options
      * @returns {Promise<SceneValue>} The resulting value.
      */
-    async #snapshotBlob(source, { type, quality, scale, background }) {
+    async #snapshotBlob(source, {type, quality, scale, background}) {
       if (
         source instanceof HTMLCanvasElement ||
         source instanceof HTMLVideoElement ||
         source instanceof HTMLImageElement
       ) {
-        const { width, height } = this.#sourceSize(source);
+        const {width, height} = this.#sourceSize(source);
         return this.#drawToBlob(source, width, height, {
           type,
           quality,
           scale,
-          background,
+          background
         });
       }
       if (source instanceof SVGSVGElement) {
         const rect = source.getBoundingClientRect();
         const markup = new XMLSerializer().serializeToString(source);
         const blob = new Blob([markup], {
-          type: "image/svg+xml",
+          type: "image/svg+xml"
         });
         const image = await this.#loadImage(URL.createObjectURL(blob), true);
         return this.#drawToBlob(image, rect.width, rect.height, {
           type,
           quality,
           scale,
-          background,
+          background
         });
       }
       if (evidenceGlobal.htmlToImage?.toCanvas) {
@@ -10018,7 +10016,7 @@ class SceneBinaryBundle {
           quality,
           pixelRatio: scale,
           background,
-          fresh: true,
+          fresh: true
         });
         return fetch(data).then(response => response.blob());
       }
@@ -10026,7 +10024,7 @@ class SceneBinaryBundle {
         type,
         quality,
         scale,
-        background,
+        background
       });
     }
     /**
@@ -10036,13 +10034,13 @@ class SceneBinaryBundle {
      * @returns {Promise<SceneValue>} The resulting value.
      * @throws {Error} When the operation cannot complete.
      */
-    async #domElementBlob(source, { type, quality, scale, background }) {
+    async #domElementBlob(source, {type, quality, scale, background}) {
       const rootRect = source.getBoundingClientRect();
       if (!(rootRect.width > 0 && rootRect.height > 0))
         throw new Error("Capture target has no rendered area.");
       const canvas = Object.assign(document.createElement("canvas"), {
         width: Math.max(1, Math.round(rootRect.width * scale)),
-        height: Math.max(1, Math.round(rootRect.height * scale)),
+        height: Math.max(1, Math.round(rootRect.height * scale))
       });
       const context = canvas.getContext("2d");
       if (!context) throw new Error("2D canvas context unavailable.");
@@ -10084,7 +10082,7 @@ class SceneBinaryBundle {
           x,
           y,
           rect.width,
-          rect.height,
+          rect.height
         );
         if (
           element instanceof HTMLCanvasElement ||
@@ -10101,8 +10099,8 @@ class SceneBinaryBundle {
             const markup = new XMLSerializer().serializeToString(element);
             const url = URL.createObjectURL(
               new Blob([markup], {
-                type: "image/svg+xml",
-              }),
+                type: "image/svg+xml"
+              })
             );
             const image = await this.#loadImage(url, true);
             context.drawImage(image, x, y, rect.width, rect.height);
@@ -10122,7 +10120,7 @@ class SceneBinaryBundle {
                 ? resolve(blob)
                 : reject(new Error("Image encoding failed.")),
             type,
-            quality,
+            quality
           );
         } catch (error) {
           reject(error);
@@ -10151,7 +10149,7 @@ class SceneBinaryBundle {
             y,
             width,
             height,
-            Math.min(radius, width / 2, height / 2),
+            Math.min(radius, width / 2, height / 2)
           );
         else context.rect(x, y, width, height);
       };
@@ -10170,26 +10168,26 @@ class SceneBinaryBundle {
           "top",
           style.borderTopWidth,
           style.borderTopStyle,
-          style.borderTopColor,
+          style.borderTopColor
         ],
         [
           "right",
           style.borderRightWidth,
           style.borderRightStyle,
-          style.borderRightColor,
+          style.borderRightColor
         ],
         [
           "bottom",
           style.borderBottomWidth,
           style.borderBottomStyle,
-          style.borderBottomColor,
+          style.borderBottomColor
         ],
         [
           "left",
           style.borderLeftWidth,
           style.borderLeftStyle,
-          style.borderLeftColor,
-        ],
+          style.borderLeftColor
+        ]
       ];
       for (const [side, widthValue, lineStyle, color] of sides) {
         const lineWidth = parseFloat(widthValue);
@@ -10203,7 +10201,7 @@ class SceneBinaryBundle {
             ? [lineWidth * 3, lineWidth * 2]
             : lineStyle === "dotted"
               ? [lineWidth, lineWidth]
-              : [],
+              : []
         );
         if (side === "top") {
           context.moveTo(x, y + lineWidth / 2);
@@ -10238,7 +10236,7 @@ class SceneBinaryBundle {
      */
     #drawDirectText(context, element, style, rootRect) {
       const nodes = [...element.childNodes].filter(
-        node => node.nodeType === Node.TEXT_NODE && node.textContent?.trim(),
+        node => node.nodeType === Node.TEXT_NODE && node.textContent?.trim()
       );
       if (!nodes.length) return;
       context.fillStyle = style.color;
@@ -10257,7 +10255,7 @@ class SceneBinaryBundle {
           range.setStart(node, match.index);
           range.setEnd(
             node,
-            Math.min(text.length, match.index + match[0].length),
+            Math.min(text.length, match.index + match[0].length)
           );
           const rectangles = [...range.getClientRects()];
           for (const rect of rectangles) {
@@ -10272,7 +10270,7 @@ class SceneBinaryBundle {
             context.fillText(
               value,
               x,
-              rect.bottom - rootRect.top - Math.max(0, rect.height * 0.12),
+              rect.bottom - rootRect.top - Math.max(0, rect.height * 0.12)
             );
           }
         }
@@ -10314,7 +10312,7 @@ class SceneBinaryBundle {
         const style = getComputedStyle(current);
         if (
           [style.overflow, style.overflowX, style.overflowY].some(value =>
-            ["hidden", "clip", "scroll", "auto"].includes(value),
+            ["hidden", "clip", "scroll", "auto"].includes(value)
           ) ||
           current === root
         ) {
@@ -10326,13 +10324,13 @@ class SceneBinaryBundle {
             Math.max(
               0,
               Math.min(rootRect.right, rect.right) -
-                Math.max(rootRect.left, rect.left),
+                Math.max(rootRect.left, rect.left)
             ),
             Math.max(
               0,
               Math.min(rootRect.bottom, rect.bottom) -
-                Math.max(rootRect.top, rect.top),
-            ),
+                Math.max(rootRect.top, rect.top)
+            )
           );
           context.clip();
         }
@@ -10350,10 +10348,10 @@ class SceneBinaryBundle {
      * @throws {Error} When the operation cannot complete.
      */
     #drawToBlob(source, width, height, options) {
-      const { type, quality, scale, background } = options;
+      const {type, quality, scale, background} = options;
       const canvas = Object.assign(document.createElement("canvas"), {
         width: Math.max(1, Math.round(width * scale)),
-        height: Math.max(1, Math.round(height * scale)),
+        height: Math.max(1, Math.round(height * scale))
       });
       const context = canvas.getContext("2d");
       if (!context) throw new Error("2D canvas context unavailable.");
@@ -10369,7 +10367,7 @@ class SceneBinaryBundle {
           blob =>
             blob ? resolve(blob) : reject(new Error("Image encoding failed.")),
           type,
-          quality,
+          quality
         );
       });
     }
@@ -10405,7 +10403,7 @@ class SceneBinaryBundle {
       const image = await this.#loadImage(url, true);
       return {
         width: image.naturalWidth,
-        height: image.naturalHeight,
+        height: image.naturalHeight
       };
     }
     /**
@@ -10418,21 +10416,21 @@ class SceneBinaryBundle {
       if (source instanceof HTMLVideoElement)
         return {
           width: source.videoWidth,
-          height: source.videoHeight,
+          height: source.videoHeight
         };
       if (source instanceof HTMLImageElement)
         return {
           width: source.naturalWidth,
-          height: source.naturalHeight,
+          height: source.naturalHeight
         };
       if ("width" in source && "height" in source)
         return {
           width: Number(source.width),
-          height: Number(source.height),
+          height: Number(source.height)
         };
       return {
         width: 0,
-        height: 0,
+        height: 0
       };
     }
     /**
@@ -10451,14 +10449,14 @@ class SceneBinaryBundle {
         ...metadata,
         size: blob.size,
         chunks,
-        sha256,
+        sha256
       });
       /** @param {number} index @returns {Promise<void>} */
       const sendChunk = async index => {
         if (index >= chunks) return;
         const part = blob.slice(
           index * chunkSize,
-          Math.min(blob.size, (index + 1) * chunkSize),
+          Math.min(blob.size, (index + 1) * chunkSize)
         );
         await send({
           event: "chunk",
@@ -10466,14 +10464,14 @@ class SceneBinaryBundle {
           index,
           chunks,
           sha256,
-          data: await this.#base64(part),
+          data: await this.#base64(part)
         });
         this.#emit("transferprogress", {
           id: metadata[String("id")],
           asset: metadata[String("asset")],
           index: index + 1,
           chunks,
-          progress: (index + 1) / chunks,
+          progress: (index + 1) / chunks
         });
         await sendChunk(index + 1);
       };
@@ -10483,7 +10481,7 @@ class SceneBinaryBundle {
         ...metadata,
         size: blob.size,
         chunks,
-        sha256,
+        sha256
       });
     }
     /** @param {Blob} blob */
@@ -10495,8 +10493,8 @@ class SceneBinaryBundle {
         ...new Uint8Array(
           await /** @type {(buffer:ArrayBuffer)=>Promise<ArrayBuffer>} */ (
             /** @type {unknown} */ (sha)
-          )(await blob.arrayBuffer()),
-        ),
+          )(await blob.arrayBuffer())
+        )
       ]
         .map(byte => byte.toString(16).padStart(2, "0"))
         .join("");
@@ -10557,8 +10555,8 @@ class SceneBinaryBundle {
         audio: result.audio,
         size: result.size,
         segments: result.segments.map(segment =>
-          this.#publicSegment(segment),
-        ),
+          this.#publicSegment(segment)
+        )
       };
     }
     /**
@@ -10578,7 +10576,7 @@ class SceneBinaryBundle {
         size: result.size,
         quality: result.quality,
         scale: result.scale,
-        metadata: result.metadata,
+        metadata: result.metadata
       };
     }
     /**
@@ -10593,7 +10591,7 @@ class SceneBinaryBundle {
         end: segment.end,
         duration: segment.duration,
         mimeType: segment.mimeType,
-        size: segment.blob.size,
+        size: segment.blob.size
       };
     }
     /**
@@ -10613,7 +10611,7 @@ class SceneBinaryBundle {
         height:
           this.#target instanceof HTMLVideoElement
             ? this.#target.videoHeight
-            : this.#target.clientHeight,
+            : this.#target.clientHeight
       };
     }
     /**
@@ -10633,7 +10631,7 @@ class SceneBinaryBundle {
         ["transferChunkSize", this.#config.transferChunkSize],
         ["maxBufferBytes", this.#config.maxBufferBytes],
         ["maxCompletedBytes", this.#config.maxCompletedBytes],
-        ["maxCaptures", this.#config.maxCaptures],
+        ["maxCaptures", this.#config.maxCaptures]
       ]))
         if (!(value > 0)) throw new RangeError(`${name} must be > 0.`);
     }
@@ -10678,18 +10676,18 @@ class SceneBinaryBundle {
         ...(detail && typeof detail === "object"
           ? detail
           : {
-              detail,
-            }),
+              detail
+            })
       };
       this.dispatchEvent(
         new CustomEvent(type, {
-          detail: data,
-        }),
+          detail: data
+        })
       );
       globalThis.dispatchEvent?.(
         new CustomEvent(`${this.#config.eventPrefix}:${type}`, {
-          detail: data,
-        }),
+          detail: data
+        })
       );
       return data;
     }
@@ -10718,7 +10716,7 @@ class SceneBinaryBundle {
       "transferend",
       "mark",
       "diagnostic",
-      "error",
+      "error"
     ]);
     /** @type {EvidenceConfig} */
     #config;
@@ -10746,7 +10744,7 @@ class SceneBinaryBundle {
         maxDescriptions: options.maxDescriptions ?? 16,
         maxDescriptionBytes: options.maxDescriptionBytes ?? 128 * 1024 * 1024,
         eventPrefix: options.eventPrefix ?? "evidence",
-        ...options,
+        ...options
       };
       this.#video = new RollingCapture(options);
       for (const type of [
@@ -10765,10 +10763,10 @@ class SceneBinaryBundle {
         "transferstart",
         "transferprogress",
         "transferend",
-        "error",
+        "error"
       ])
         this.#video.addEventListener(type, event =>
-          this.#emit(type, event instanceof CustomEvent ? event.detail : null),
+          this.#emit(type, event instanceof CustomEvent ? event.detail : null)
         );
       if (this.#config.diagnostics) this.startDiagnostics();
     }
@@ -10816,7 +10814,7 @@ class SceneBinaryBundle {
         diagnostics: this.#config.diagnostics,
         maxTimelineEntries: this.#config.maxTimelineEntries,
         maxDescriptions: this.#config.maxDescriptions,
-        maxDescriptionBytes: this.#config.maxDescriptionBytes,
+        maxDescriptionBytes: this.#config.maxDescriptionBytes
       };
     }
     /**
@@ -10835,8 +10833,8 @@ class SceneBinaryBundle {
           ...videoStatus.memory,
           descriptionBytes: this.#descriptionBytes(),
           maxDescriptionBytes: this.#config.maxDescriptionBytes,
-          maxDescriptions: this.#config.maxDescriptions,
-        },
+          maxDescriptions: this.#config.maxDescriptions
+        }
       };
     }
     /**
@@ -10919,7 +10917,7 @@ class SceneBinaryBundle {
       id = evidenceId(),
       metadata = null,
       options = {},
-      externalizeBinary = true,
+      externalizeBinary = true
     } = {}) {
       const element = this.#resolveTarget(target);
       const scene = await Descriptor.describe(element, options);
@@ -10927,7 +10925,7 @@ class SceneBinaryBundle {
         ? await SceneBinaryBundle.create(scene)
         : {
             manifest: scene,
-            files: new Map(),
+            files: new Map()
           };
       const result = {
         id,
@@ -10940,8 +10938,8 @@ class SceneBinaryBundle {
           .length,
         binaryBytes: [...bundle.files.values()].reduce(
           (sum, blob) => sum + blob.size,
-          0,
-        ),
+          0
+        )
       };
       this.#descriptions.delete(id);
       this.#descriptions.set(id, result);
@@ -10978,7 +10976,7 @@ class SceneBinaryBundle {
       target = this.#config.target,
       metadata = null,
       capture = {},
-      description = {},
+      description = {}
     } = {}) {
       this.#validateModes(modes);
       const output = {};
@@ -10988,20 +10986,20 @@ class SceneBinaryBundle {
         output.video = await this.record({
           before,
           duration,
-          metadata,
+          metadata
         });
       }
       if (modes.includes("capture"))
         output.capture = await this.capture({
           target,
           metadata,
-          ...capture,
+          ...capture
         });
       if (modes.includes("description"))
         output.description = await this.description({
           target,
           metadata,
-          ...description,
+          ...description
         });
       output.markers = this.markers();
       output.diagnostics = this.diagnostics();
@@ -11031,18 +11029,18 @@ class SceneBinaryBundle {
       const manifestBlob = new Blob(
         [JSON.stringify(result.manifest, null, 2)],
         {
-          type: "application/json",
-        },
+          type: "application/json"
+        }
       );
       const assets = [
         {
           asset: "description.json",
-          blob: manifestBlob,
+          blob: manifestBlob
         },
         ...[...result.files].map(([asset, blob]) => ({
           asset,
-          blob,
-        })),
+          blob
+        }))
       ];
       const publicResult = this.#publicDescription(result);
       const metadata = {
@@ -11052,7 +11050,7 @@ class SceneBinaryBundle {
         metadata: publicResult.metadata,
         manifestBytes: publicResult.manifestBytes,
         binaryBytes: publicResult.binaryBytes,
-        binaryFiles: publicResult.binaryFiles,
+        binaryFiles: publicResult.binaryFiles
       };
       await send({
         event: "transfer-start",
@@ -11060,12 +11058,12 @@ class SceneBinaryBundle {
         id,
         kind: "description",
         metadata,
-        assetCount: assets.length,
+        assetCount: assets.length
       });
       this.#emit("transferstart", {
         transferId,
         id,
-        kind: "description",
+        kind: "description"
       });
       await Promise.all(
         assets.map((asset, index) =>
@@ -11078,27 +11076,27 @@ class SceneBinaryBundle {
               asset: asset.asset,
               assetIndex: index,
               assetCount: assets.length,
-              mimeType: asset.blob.type || "application/octet-stream",
+              mimeType: asset.blob.type || "application/octet-stream"
             },
-            chunkSize,
-          ),
-        ),
+            chunkSize
+          )
+        )
       );
       await send({
         event: "transfer-end",
         transferId,
         id,
-        assetCount: assets.length,
+        assetCount: assets.length
       });
       this.#emit("transferend", {
         transferId,
         id,
-        kind: "description",
+        kind: "description"
       });
       if (this.#video.config().autoRemoveAfterTransfer) this.remove(id);
       return {
         transferId,
-        ...metadata,
+        ...metadata
       };
     }
     /**
@@ -11135,7 +11133,7 @@ class SceneBinaryBundle {
         time: this.#now(),
         type,
         data,
-        url: location.href,
+        url: location.href
       };
       this.#markers.push(entry);
       this.#trimTimeline(this.#markers);
@@ -11146,14 +11144,14 @@ class SceneBinaryBundle {
      * Handle markers for scene-evidence processing.
      * @returns {SceneValue} The resulting value.
      */
-    markers({ since = 0 } = {}) {
+    markers({since = 0} = {}) {
       return this.#markers.filter(entry => entry.time >= since);
     }
     /**
      * Handle diagnostics for scene-evidence processing.
      * @returns {SceneValue} The resulting value.
      */
-    diagnostics({ since = 0 } = {}) {
+    diagnostics({since = 0} = {}) {
       return this.#diagnostics.filter(entry => entry.time >= since);
     }
     /**
@@ -11168,13 +11166,13 @@ class SceneBinaryBundle {
         mutations: true,
         viewport: true,
         performance: true,
-        ...options,
+        ...options
       };
       /** @param {EventTarget} target @param {string} type @param {EventListener} listener @param {boolean} [capture] */
       const listen = (target, type, listener, capture = false) => {
         target.addEventListener(type, listener, capture);
         this.#diagnosticCleanup.push(() =>
-          target.removeEventListener(type, listener, capture),
+          target.removeEventListener(type, listener, capture)
         );
       };
       if (settings.errors) {
@@ -11184,15 +11182,15 @@ class SceneBinaryBundle {
             message: errorEvent.message,
             source: errorEvent.filename || null,
             line: errorEvent.lineno || null,
-            column: errorEvent.colno || null,
+            column: errorEvent.colno || null
           });
         });
         listen(globalThis, "unhandledrejection", event =>
           this.#diagnostic("unhandled-rejection", {
             reason: this.#serializable(
-              /** @type {PromiseRejectionEvent} */ (event).reason,
-            ),
-          }),
+              /** @type {PromiseRejectionEvent} */ (event).reason
+            )
+          })
         );
       }
       if (settings.viewport) {
@@ -11200,8 +11198,8 @@ class SceneBinaryBundle {
           this.#diagnostic("viewport-resize", {
             width: innerWidth,
             height: innerHeight,
-            devicePixelRatio,
-          }),
+            devicePixelRatio
+          })
         );
         const viewport = globalThis.visualViewport;
         viewport &&
@@ -11209,8 +11207,8 @@ class SceneBinaryBundle {
             this.#diagnostic("visual-viewport-resize", {
               width: viewport.width,
               height: viewport.height,
-              scale: viewport.scale,
-            }),
+              scale: viewport.scale
+            })
           );
       }
       if (settings.mutations && document.documentElement) {
@@ -11222,7 +11220,7 @@ class SceneBinaryBundle {
             childList: records.filter(record => record.type === "childList")
               .length,
             characterData: records.filter(
-              record => record.type === "characterData",
+              record => record.type === "characterData"
             ).length,
             targets: [
               ...new Set(
@@ -11233,27 +11231,27 @@ class SceneBinaryBundle {
                       record.target instanceof Element
                         ? record.target
                         : (record.target.parentElement ??
-                            document.documentElement),
-                    ),
-                  ),
-              ),
-            ].filter(Boolean),
-          }),
+                            document.documentElement)
+                    )
+                  )
+              )
+            ].filter(Boolean)
+          })
         );
         this.#mutationObserver.observe(document.documentElement, {
           subtree: true,
           childList: true,
           attributes: true,
-          characterData: true,
+          characterData: true
         });
       }
-      if (settings.performance && typeof PerformanceObserver === "function") {
+      if (settings.performance && typeof PerformanceObserver === "function")
         for (const type of [
           "navigation",
           "resource",
           "paint",
           "longtask",
-          "layout-shift",
+          "layout-shift"
         ])
           try {
             const observer = new globalThis.PerformanceObserver(list => {
@@ -11261,18 +11259,17 @@ class SceneBinaryBundle {
                 this.#diagnostic(`performance:${entry.entryType}`, {
                   name: entry.name,
                   startTime: entry.startTime,
-                  duration: entry.duration,
+                  duration: entry.duration
                 });
             });
             observer.observe({
               type,
-              buffered: true,
+              buffered: true
             });
             this.#performanceObservers.push(observer);
           } catch {
             // Browser does not support this PerformanceObserver entry type.
           }
-      }
       return this;
     }
     /**
@@ -11294,7 +11291,7 @@ class SceneBinaryBundle {
       this.stopDiagnostics();
       await this.#video
         .disarm({
-          force: true,
+          force: true
         })
         .catch(() => null);
       this.clear();
@@ -11315,14 +11312,14 @@ class SceneBinaryBundle {
         ...metadata,
         size: blob.size,
         chunks,
-        sha256,
+        sha256
       });
       /** @param {number} index @returns {Promise<void>} */
       const sendChunk = async index => {
         if (index >= chunks) return;
         const part = blob.slice(
           index * chunkSize,
-          Math.min(blob.size, (index + 1) * chunkSize),
+          Math.min(blob.size, (index + 1) * chunkSize)
         );
         await send({
           event: "chunk",
@@ -11330,14 +11327,14 @@ class SceneBinaryBundle {
           index,
           chunks,
           sha256,
-          data: await this.#base64(part),
+          data: await this.#base64(part)
         });
         this.#emit("transferprogress", {
           id: metadata[String("id")],
           asset: metadata[String("asset")],
           index: index + 1,
           chunks,
-          progress: (index + 1) / chunks,
+          progress: (index + 1) / chunks
         });
         await sendChunk(index + 1);
       };
@@ -11347,7 +11344,7 @@ class SceneBinaryBundle {
         ...metadata,
         size: blob.size,
         chunks,
-        sha256,
+        sha256
       });
     }
     /**
@@ -11362,7 +11359,7 @@ class SceneBinaryBundle {
         time: this.#now(),
         type,
         data,
-        url: location.href,
+        url: location.href
       };
       this.#diagnostics.push(entry);
       this.#trimTimeline(this.#diagnostics);
@@ -11384,7 +11381,7 @@ class SceneBinaryBundle {
     #descriptionBytes() {
       return [...this.#descriptions.values()].reduce(
         (sum, result) => sum + result.manifestBytes + result.binaryBytes,
-        0,
+        0
       );
     }
     /**
@@ -11405,8 +11402,8 @@ class SceneBinaryBundle {
         binaryFiles: [...result.files].map(([file, blob]) => ({
           file,
           mimeType: blob.type || "application/octet-stream",
-          size: blob.size,
-        })),
+          size: blob.size
+        }))
       };
     }
     /**
@@ -11434,7 +11431,7 @@ class SceneBinaryBundle {
       if (element.id) return `#${CSS.escape(element.id)}`;
       return `${element.tagName.toLowerCase()}${[...element.classList]
         .slice(0, 2)
-        .map((name) => `.${CSS.escape(name)}`)
+        .map(name => `.${CSS.escape(name)}`)
         .join("")}`;
     }
     /**
@@ -11449,7 +11446,7 @@ class SceneBinaryBundle {
         modes.some(mode => !EvidenceRuntime.modes.includes(mode))
       )
         throw new TypeError(
-          `modes must contain only: ${EvidenceRuntime.modes.join(", ")}.`,
+          `modes must contain only: ${EvidenceRuntime.modes.join(", ")}.`
         );
     }
     /**
@@ -11474,8 +11471,8 @@ class SceneBinaryBundle {
         ...new Uint8Array(
           await /** @type {(buffer:ArrayBuffer)=>Promise<ArrayBuffer>} */ (
             /** @type {unknown} */ (sha)
-          )(await blob.arrayBuffer()),
-        ),
+          )(await blob.arrayBuffer())
+        )
       ]
         .map(byte => byte.toString(16).padStart(2, "0"))
         .join("");
@@ -11515,18 +11512,18 @@ class SceneBinaryBundle {
         ...(detail && typeof detail === "object"
           ? detail
           : {
-              detail,
-            }),
+              detail
+            })
       };
       this.dispatchEvent(
         new CustomEvent(type, {
-          detail: data,
-        }),
+          detail: data
+        })
       );
       globalThis.dispatchEvent?.(
         new CustomEvent(`${this.#config.eventPrefix}:${type}`, {
-          detail: data,
-        }),
+          detail: data
+        })
       );
       return data;
     }
@@ -11534,11 +11531,11 @@ class SceneBinaryBundle {
   Object.defineProperties(globalThis, {
     RollingCapture: {
       value: RollingCapture,
-      configurable: true,
+      configurable: true
     },
     EvidenceRuntime: {
       value: EvidenceRuntime,
-      configurable: true,
-    },
+      configurable: true
+    }
   });
 })();

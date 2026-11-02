@@ -65,9 +65,8 @@ class ExactusReport {
    *     or ``null`` when the target must not become a link.
    */
   static linkHref = href => {
-    if (/^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(href)) {
+    if (/^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(href))
       return /^https?:\/\//i.test(href) ? href : null;
-    }
     return /^[#/]/.test(href) ? href : `../${href}`;
   };
   /**
@@ -93,7 +92,7 @@ class ExactusReport {
    * @param {string} text Markdown prose without code spans.
    * @returns {string} HTML with links and emphasis applied.
    */
-  static prose = (text) => {
+  static prose = text => {
     const parts = text.split(/\[([^\]]+)\]\(([^)]+)\)/);
     return parts
       .map((part, index) => {
@@ -110,7 +109,7 @@ class ExactusReport {
    * @param {string} value Markdown inline text.
    * @returns {string} HTML with inline markup applied.
    */
-  static inline = (value) =>
+  static inline = value =>
     String(value ?? "")
       .split(/(\[[^\]]+\]\([^)]+\)|`[^`]+`)/)
       .map(part => {
@@ -157,11 +156,11 @@ class ExactusReport {
     const head = rows[0] ?? [];
     const body = rows.slice(2);
     return `<div class="table-wrap"><table class="ds-table"><thead><tr>${head
-      .map((cell) => `<th scope="col">${ExactusReport.inline(cell)}</th>`)
+      .map(cell => `<th scope="col">${ExactusReport.inline(cell)}</th>`)
       .join("")}</tr></thead><tbody>${body
-      .map((row) => {
+      .map(row => {
         const cells = row.map(
-          (cell) => `<td>${ExactusReport.inline(cell)}</td>`,
+          cell => `<td>${ExactusReport.inline(cell)}</td>`
         );
         return `<tr>${cells.join("")}</tr>`;
       })
@@ -225,7 +224,7 @@ class ExactusReport {
           index += 1;
         }
         html.push(
-          `<p class="report-alert"><span class="ds-badge ${variant}">${ExactusReport.inline(content.join(" "))}</span></p>`,
+          `<p class="report-alert"><span class="ds-badge ${variant}">${ExactusReport.inline(content.join(" "))}</span></p>`
         );
         continue;
       }
@@ -235,7 +234,7 @@ class ExactusReport {
         const [, marks = "", text = ""] = heading;
         const level = Math.min(marks.length + 1, 6);
         html.push(
-          `<h${level} id="md-${ExactusReport.slug(text)}">${ExactusReport.inline(text)}</h${level}>`,
+          `<h${level} id="md-${ExactusReport.slug(text)}">${ExactusReport.inline(text)}</h${level}>`
         );
         index += 1;
         continue;
@@ -311,7 +310,7 @@ class ExactusReport {
    * @returns {string} Formatted percentage.
    */
   static percent = value =>
-    `${Number(value ?? 0).toLocaleString(undefined, { maximumFractionDigits: 1 })}%`;
+    `${Number(value ?? 0).toLocaleString(undefined, {maximumFractionDigits: 1})}%`;
   /**
    * @param {string} key Snake-case key.
    * @returns {string} Sentence-case label.
@@ -354,11 +353,11 @@ class ExactusReport {
       INVALID_RESULT: ["ds-badge-danger", "Invalid result"],
       INTERRUPT: ["ds-badge-warn", "Interrupted"],
       TIMEOUT: ["ds-badge-warn", "Timed out"],
-      RUNNING: ["ds-badge-verified", "Running"],
+      RUNNING: ["ds-badge-verified", "Running"]
     };
     const [variant, label] = variants[value] ?? [
       "ds-badge-unknown",
-      value || "Unknown",
+      value || "Unknown"
     ];
     return `<span class="ds-badge ${variant}">${ExactusReport.escape(label)}</span>`;
   };
@@ -373,11 +372,11 @@ class ExactusReport {
       warning: ["ds-badge-warn", "Warning"],
       info: ["ds-badge-verified", "Info"],
       information: ["ds-badge-verified", "Info"],
-      log: ["ds-badge-verified", "Log"],
+      log: ["ds-badge-verified", "Log"]
     };
     const [variant, label] = variants[severity] ?? [
       "ds-badge-unknown",
-      ExactusReport.humanize(severity || "note"),
+      ExactusReport.humanize(severity || "note")
     ];
     return `<span class="ds-badge ${variant}">${ExactusReport.escape(label)}</span>`;
   };
@@ -389,7 +388,7 @@ class ExactusReport {
     items
       .map(
         ([label, value]) =>
-          `<div class="metric"><dt class="metric-label">${ExactusReport.escape(label)}</dt><dd class="metric-value">${ExactusReport.escape(value)}</dd></div>`,
+          `<div class="metric"><dt class="metric-label">${ExactusReport.escape(label)}</dt><dd class="metric-value">${ExactusReport.escape(value)}</dd></div>`
       )
       .join("");
   /**
@@ -416,21 +415,21 @@ class ExactusReport {
     const lists = [
       ["findings", "finding"],
       ["type_hints", "missing-type-hint"],
-      ["bare_imports", "bare-import"],
+      ["bare_imports", "bare-import"]
     ];
     return lists.flatMap(([key, fallback]) =>
       ExactusReport.array(data[key]).map(raw => {
         const item = ExactusReport.object(raw);
         const file = ExactusReport.relative(
           String(item.file ?? item.path ?? ""),
-          root,
+          root
         );
         return {
           severity: String(item.severity ?? "error").toLowerCase(),
           rule: String(
             item.rule ??
               item.code ??
-              (item.callee ? "positional-argument" : fallback),
+              (item.callee ? "positional-argument" : fallback)
           ),
           file: file || "Project",
           line: Number(item.line ?? 0),
@@ -439,9 +438,9 @@ class ExactusReport {
           detail: String(item.suggestion ?? item.signature ?? ""),
           source: String(item.tool ?? data.analyzer ?? ""),
           change: String(item.change ?? ""),
-          category: String(item.category ?? ""),
+          category: String(item.category ?? "")
         };
-      }),
+      })
     );
   };
   /**
@@ -469,7 +468,7 @@ class ExactusReport {
       ["Net delta", `${delta > 0 ? "+" : ""}${delta.toLocaleString()}`],
       ["Added", count("added_count")],
       ["Resolved", count("resolved_count")],
-      ["Unchanged", count("unchanged_count")],
+      ["Unchanged", count("unchanged_count")]
     ]);
     /**
      * @param {unknown} items Comparison finding entries.
@@ -487,8 +486,8 @@ class ExactusReport {
       if (!rows.length) return "";
       return `<div><h3 class="ds-subsection-title">${ExactusReport.escape(state)}</h3><ul class="comparison-list">${rows
         .map(
-          (item) =>
-            `<li><span class="ds-badge ds-badge-outline">${ExactusReport.escape(String(item.rule ?? item.code ?? "finding"))}</span><span>${ExactusReport.inline(ExactusReport.describe(item))}</span><span class="ds-muted">${ExactusReport.escape(String(item.path ?? item.file ?? "Project"))}</span></li>`,
+          item =>
+            `<li><span class="ds-badge ds-badge-outline">${ExactusReport.escape(String(item.rule ?? item.code ?? "finding"))}</span><span>${ExactusReport.inline(ExactusReport.describe(item))}</span><span class="ds-muted">${ExactusReport.escape(String(item.path ?? item.file ?? "Project"))}</span></li>`
         )
         .join("")}</ul></div>`;
     };
@@ -496,21 +495,21 @@ class ExactusReport {
       [
         "Category findings",
         "categories",
-        ["category", "title", "current", "previous", "delta"],
-      ],
+        ["category", "title", "current", "previous", "delta"]
+      ]
     ]
       .map(([label, key, columns]) => {
         const rows = ExactusReport.array(
-          ExactusReport.record(comparison)[String(key)],
+          ExactusReport.record(comparison)[String(key)]
         );
         if (!rows.length || !Array.isArray(columns)) return "";
         const records = rows.map(row =>
           Object.fromEntries(
             columns.map(column => [
               column,
-              ExactusReport.record(row)[String(column)],
-            ]),
-          ),
+              ExactusReport.record(row)[String(column)]
+            ])
+          )
         );
         return `<h3 class="ds-subsection-title">${ExactusReport.escape(String(label))}</h3>${ExactusReport.recordTable(String(label), records, null, columns)}`;
       })
@@ -528,8 +527,8 @@ class ExactusReport {
       `<button class="ds-chip" type="button" data-severity="" aria-pressed="true">All ${rows.length}</button>`,
       ...severities.map(
         severity =>
-          `<button class="ds-chip" type="button" data-severity="${ExactusReport.escape(severity)}" aria-pressed="false">${ExactusReport.escape(ExactusReport.humanize(severity))} ${rows.filter((row) => row.severity === severity).length}</button>`,
-      ),
+          `<button class="ds-chip" type="button" data-severity="${ExactusReport.escape(severity)}" aria-pressed="false">${ExactusReport.escape(ExactusReport.humanize(severity))} ${rows.filter(row => row.severity === severity).length}</button>`
+      )
     ];
     return `<section class="section" aria-labelledby="findings-title"><h2 class="ds-section-title" id="findings-title">Findings</h2><div class="toolbar"><div class="search"><label class="ds-label" for="finding-search">Filter by file, rule or message</label><input class="ds-input" id="finding-search" type="search" autocomplete="off"></div><div class="filters" role="group" aria-label="Severity">${chips.join("")}</div></div><p class="ds-supporting result-count" role="status" id="finding-count"></p><div id="finding-groups"></div></section>`;
   };
@@ -591,7 +590,7 @@ class ExactusReport {
       ([left, a], [right, b]) =>
         b.filter(row => row.severity === "error").length -
           a.filter(row => row.severity === "error").length ||
-        left.localeCompare(right),
+        left.localeCompare(right)
     );
     const open = ordered.length <= 12 ? " open" : "";
     return ordered
@@ -612,7 +611,7 @@ class ExactusReport {
     const chips = [...document.querySelectorAll("[data-severity]")];
     if (!(search instanceof HTMLInputElement) || !groups || !count) return;
     const filter = {
-      severity: "",
+      severity: ""
     };
     /** Re-render the findings that match the search and severity filter. */
     const update = () => {
@@ -623,7 +622,7 @@ class ExactusReport {
           (!query ||
             `${row.file} ${row.rule} ${row.message} ${row.source}`
               .toLowerCase()
-              .includes(query)),
+              .includes(query))
       );
       const files = new Set(shown.map(row => row.file)).size;
       count.textContent = shown.length
@@ -653,13 +652,12 @@ class ExactusReport {
       ["Findings", rows.length.toLocaleString()],
       [
         "Files affected",
-        new Set(rows.map(row => row.file)).size.toLocaleString(),
-      ],
+        new Set(rows.map(row => row.file)).size.toLocaleString()
+      ]
     ];
-    for (const [key, value] of Object.entries(summary)) {
+    for (const [key, value] of Object.entries(summary))
       if (typeof value === "number" && pairs.length < 6 && key !== "findings")
         pairs.push([ExactusReport.humanize(key), value.toLocaleString()]);
-    }
     return pairs;
   };
   /**
@@ -680,7 +678,7 @@ class ExactusReport {
               ? `${start}`
               : previous === start + 1
                 ? `${start}, ${previous}`
-                : `${start}-${previous}`,
+                : `${start}-${previous}`
           );
         start = line;
       }
@@ -710,9 +708,9 @@ class ExactusReport {
         "(?<keyword>\\b(?:False|None|True|and|as|assert|async|await|break|case|class|continue|def|del|elif|else|except|finally|for|from|global|if|import|in|is|lambda|match|nonlocal|not|or|pass|raise|return|try|while|with|yield)\\b)",
         "(?<builtin>\\b(?:abs|all|any|bool|callable|classmethod|dataclass|dict|dir|enumerate|filter|float|format|getattr|hasattr|hash|id|input|int|isinstance|iter|len|list|map|max|min|next|object|open|print|property|range|repr|self|set|setattr|sorted|staticmethod|str|sum|super|tuple|type|vars|zip|BaseException|Exception|KeyError|RuntimeError|TypeError|ValueError)\\b)",
         "(?<number>\\b0[xX][\\da-fA-F_]+\\b|\\b0[bB][01_]+\\b|\\b0[oO][0-7_]+\\b|\\b\\d[\\d_]*(?:\\.\\d+)?(?:[eE][+-]?\\d+)?\\b)",
-        "(?<decorator>@[\\w.]+)",
+        "(?<decorator>@[\\w.]+)"
       ].join("|"),
-      "g",
+      "g"
     ),
     javascript: new RegExp(
       [
@@ -720,17 +718,17 @@ class ExactusReport {
         "(?<string>`(?:[^`\\\\]|\\\\.)*`|\"(?:[^\"\\\\\\n]|\\\\.)*\"|'(?:[^'\\\\\\n]|\\\\.)*')",
         "(?<keyword>\\b(?:async|await|break|case|catch|class|const|continue|debugger|default|delete|do|else|export|extends|finally|for|from|function|get|if|import|in|instanceof|let|new|null|of|return|set|static|super|switch|this|throw|true|try|typeof|undefined|var|void|while|with|yield)\\b)",
         "(?<builtin>\\b(?:Array|Boolean|JSON|Map|Math|Number|Object|Promise|Set|String|console|document|fetch|window)\\b)",
-        "(?<number>\\b0[xX][\\da-fA-F_]+\\b|\\b0[bB][01_]+\\b|\\b0[oO][0-7_]+\\b|\\b\\d[\\d_]*(?:\\.\\d+)?(?:[eE][+-]?\\d+)?\\b)",
+        "(?<number>\\b0[xX][\\da-fA-F_]+\\b|\\b0[bB][01_]+\\b|\\b0[oO][0-7_]+\\b|\\b\\d[\\d_]*(?:\\.\\d+)?(?:[eE][+-]?\\d+)?\\b)"
       ].join("|"),
-      "g",
-    ),
+      "g"
+    )
   };
   /**
    * Highlight language used for a fence language the rules lack.
    * @type {Record<string, string>}
    */
   static TOKEN_ALIASES = {
-    typescript: "javascript",
+    typescript: "javascript"
   };
   /**
    * Syntax-highlight one source text, returning per-line HTML so spans
@@ -761,7 +759,7 @@ class ExactusReport {
             ?.push(
               cls
                 ? `<span class="tok-${cls}">${ExactusReport.escape(part)}</span>`
-                : ExactusReport.escape(part),
+                : ExactusReport.escape(part)
             );
       }
     };
@@ -772,7 +770,7 @@ class ExactusReport {
         const index = match.index ?? 0;
         push("", source.slice(cursor, index));
         const kind = Object.keys(match.groups ?? {}).find(
-          key => match.groups?.[key] !== undefined,
+          key => match.groups?.[key] !== undefined
         );
         push(kind ?? "", match[0]);
         cursor = index + match[0].length;
@@ -827,7 +825,7 @@ class ExactusReport {
     for (const [index, run] of runs.entries()) {
       if (index > 0)
         rows.push(
-          '<tr class="code-gap" aria-hidden="true"><td class="code-gutter"></td><td class="code-line">⋮</td></tr>',
+          '<tr class="code-gap" aria-hidden="true"><td class="code-gutter"></td><td class="code-line">⋮</td></tr>'
         );
       const source = run.map(line => String(line.text ?? "")).join("\n");
       const highlighted = ExactusReport.codeLines(source, language);
@@ -838,7 +836,7 @@ class ExactusReport {
           ? `<span class="visually-hidden"> (${marked === "code-miss" ? "uncovered" : "finding line"})</span>`
           : "";
         rows.push(
-          `<tr data-n="${number}"${marked ? ` class="${marked}"` : ""}><td class="code-gutter">${number}${note}</td><td class="code-line"><code>${highlighted[offset] || "&nbsp;"}</code></td></tr>`,
+          `<tr data-n="${number}"${marked ? ` class="${marked}"` : ""}><td class="code-gutter">${number}${note}</td><td class="code-line"><code>${highlighted[offset] || "&nbsp;"}</code></td></tr>`
         );
       }
     }
@@ -859,10 +857,10 @@ class ExactusReport {
         ExactusReport.snippetTable(
           ExactusReport.snippetRuns(
             ExactusReport.array(hunk.lines).map(ExactusReport.object),
-            shown,
+            shown
           ),
-          language,
-        ),
+          language
+        )
       );
     const flag = snippets.truncated
       ? '<p class="ds-supporting">Snippet list truncated; the file has more uncovered regions.</p>'
@@ -878,7 +876,7 @@ class ExactusReport {
     const entries = [];
     const report = ExactusReport.object(data.coverage);
     for (const [path, raw] of Object.entries(
-      ExactusReport.object(report.files),
+      ExactusReport.object(report.files)
     )) {
       const entry = ExactusReport.object(raw);
       const snippets = ExactusReport.object(entry.snippets);
@@ -888,13 +886,13 @@ class ExactusReport {
         lane: "python",
         missing: ExactusReport.array(entry.missing_lines).length,
         percent: Number(
-          ExactusReport.object(entry.summary).percent_covered ?? 0,
+          ExactusReport.object(entry.summary).percent_covered ?? 0
         ),
-        snippets,
+        snippets
       });
     }
     for (const raw of ExactusReport.array(
-      ExactusReport.object(data.javascript).files,
+      ExactusReport.object(data.javascript).files
     )) {
       const entry = ExactusReport.object(raw);
       const snippets = ExactusReport.object(entry.snippets);
@@ -906,11 +904,11 @@ class ExactusReport {
           ExactusReport.array(entry.uncovered_lines).length ||
           Number(entry.missing_lines ?? 0),
         percent: Number(entry.percent_covered ?? 0),
-        snippets,
+        snippets
       });
     }
     return entries.sort(
-      (a, b) => b.missing - a.missing || a.path.localeCompare(b.path),
+      (a, b) => b.missing - a.missing || a.path.localeCompare(b.path)
     );
   };
   /**
@@ -935,7 +933,7 @@ class ExactusReport {
       const directory = ExactusReport.directoryOf(entry.path);
       directories.set(directory, [
         ...(directories.get(directory) ?? []),
-        entry,
+        entry
       ]);
     }
     return [...directories.entries()]
@@ -945,7 +943,7 @@ class ExactusReport {
         const groups = files
           .map(
             file =>
-              `<details class="file-group code-file" id="cov-${ExactusReport.slug(file.path)}" data-lane="${ExactusReport.escape(file.lane)}"><summary class="file-summary">${ExactusReport.fileLink(file.path, base)}<span class="ds-badge ds-badge-outline">${ExactusReport.escape(file.lane)}</span><span class="ds-badge ds-badge-danger">${ExactusReport.plural(file.missing, "uncovered line")}</span><span class="ds-badge">${ExactusReport.percent(file.percent)} covered</span></summary><div class="snippet-blocks">${ExactusReport.snippetBlocks(file.snippets, context)}</div></details>`,
+              `<details class="file-group code-file" id="cov-${ExactusReport.slug(file.path)}" data-lane="${ExactusReport.escape(file.lane)}"><summary class="file-summary">${ExactusReport.fileLink(file.path, base)}<span class="ds-badge ds-badge-outline">${ExactusReport.escape(file.lane)}</span><span class="ds-badge ds-badge-danger">${ExactusReport.plural(file.missing, "uncovered line")}</span><span class="ds-badge">${ExactusReport.percent(file.percent)} covered</span></summary><div class="snippet-blocks">${ExactusReport.snippetBlocks(file.snippets, context)}</div></details>`
           )
           .join("");
         return `<section class="snippet-dir" aria-labelledby="dir-${ExactusReport.slug(directory)}"><h3 class="ds-card-title snippet-dir-title" id="dir-${ExactusReport.slug(directory)}">${ExactusReport.escape(directory)}</h3><p class="ds-supporting">${ExactusReport.plural(files.length, "file")}, ${ExactusReport.plural(total, "uncovered line")}</p>${groups}</section>`;
@@ -962,7 +960,7 @@ class ExactusReport {
     const index = entries
       .map(
         entry =>
-          `<a class="ds-chip index-chip" href="#cov-${ExactusReport.slug(entry.path)}">${ExactusReport.escape(entry.path)}<span class="chip-count">${entry.missing}</span></a>`,
+          `<a class="ds-chip index-chip" href="#cov-${ExactusReport.slug(entry.path)}">${ExactusReport.escape(entry.path)}<span class="chip-count">${entry.missing}</span></a>`
       )
       .join("");
     return `<section class="section" aria-labelledby="uncovered-title"><h2 class="ds-section-title" id="uncovered-title">Uncovered code</h2><div class="toolbar"><div class="search"><label class="ds-label" for="uncovered-search">Filter by path</label><input class="ds-input" id="uncovered-search" type="search" autocomplete="off"></div><div class="filters" role="group" aria-label="Lane"><button class="ds-chip" type="button" data-lane="" aria-pressed="true">All</button><button class="ds-chip" type="button" data-lane="python" aria-pressed="false">Python</button><button class="ds-chip" type="button" data-lane="javascript" aria-pressed="false">JavaScript</button></div><div class="context-stepper"><label class="ds-label" for="context-lines">Context lines</label><input id="context-lines" type="range" min="0" max="${maxContext}" step="1" value="${maxContext}"><span class="ds-supporting" id="context-value">${maxContext}</span></div><div class="filters" role="group" aria-label="Expand"><button class="ds-chip" type="button" id="expand-all">Expand all</button><button class="ds-chip" type="button" id="collapse-all">Collapse all</button></div></div><nav class="code-index" aria-label="Uncovered files">${index}</nav><p class="ds-supporting result-count" role="status" id="uncovered-count"></p><div id="uncovered-groups"></div></section>`;
@@ -994,29 +992,28 @@ class ExactusReport {
     const state = {
       lane: "",
       query: "",
-      context: Number(range.value),
+      context: Number(range.value)
     };
     /** Re-render visible file groups from the current state. */
     const update = () => {
       const shown = entries.filter(
         entry =>
           (!state.lane || entry.lane === state.lane) &&
-          (!state.query || entry.path.toLowerCase().includes(state.query)),
+          (!state.query || entry.path.toLowerCase().includes(state.query))
       );
       count.textContent = shown.length
         ? `Showing ${ExactusReport.plural(shown.length, "file")} with uncovered code.`
         : "No files match. Clear the filter to see all of them.";
       const open = new Set(
-        [...groups.querySelectorAll("details[open]")].map(item => item.id),
+        [...groups.querySelectorAll("details[open]")].map(item => item.id)
       );
       groups.innerHTML = ExactusReport.uncoveredGroups(
         shown,
         state.context,
-        base,
+        base
       );
-      for (const item of groups.querySelectorAll("details")) {
+      for (const item of groups.querySelectorAll("details"))
         if (open.has(item.id)) item.open = true;
-      }
     };
     search.addEventListener("input", () => {
       state.query = search.value.trim().toLowerCase();
@@ -1035,14 +1032,12 @@ class ExactusReport {
       update();
     });
     expand?.addEventListener("click", () => {
-      for (const item of groups.querySelectorAll("details")) {
+      for (const item of groups.querySelectorAll("details"))
         if (item instanceof HTMLDetailsElement) item.open = true;
-      }
     });
     collapse?.addEventListener("click", () => {
-      for (const item of groups.querySelectorAll("details")) {
+      for (const item of groups.querySelectorAll("details"))
         if (item instanceof HTMLDetailsElement) item.open = false;
-      }
     });
     document
       .querySelector(".code-index")
@@ -1080,32 +1075,32 @@ class ExactusReport {
         return {
           path,
           summary,
-          missing,
+          missing
         };
       })
       .sort(
         (a, b) =>
           Number(a.summary.percent_covered ?? 0) -
-          Number(b.summary.percent_covered ?? 0),
+          Number(b.summary.percent_covered ?? 0)
       );
     const pyTable = `<div class="table-wrap"><table class="ds-table"><caption class="ds-supporting">Python files, least covered first</caption><thead><tr><th scope="col">File</th><th scope="col" class="cell-number">Statements</th><th scope="col" class="cell-number">Missing</th><th scope="col" class="bar-cell">Coverage</th><th scope="col" class="cell-number">%</th><th scope="col">Missing lines</th></tr></thead><tbody>${pyRows
       .map(
-        (row) =>
-          `<tr><td>${ExactusReport.fileLink(row.path, base)}</td><td class="cell-number">${Number(row.summary.num_statements ?? 0)}</td><td class="cell-number">${Number(row.summary.missing_lines ?? 0)}</td><td class="bar-cell">${ExactusReport.bar(row.path, Number(row.summary.percent_covered ?? 0))}</td><td class="cell-number">${ExactusReport.percent(row.summary.percent_covered)}</td><td>${ExactusReport.escape(ExactusReport.ranges(row.missing)) || "None"}</td></tr>`,
+        row =>
+          `<tr><td>${ExactusReport.fileLink(row.path, base)}</td><td class="cell-number">${Number(row.summary.num_statements ?? 0)}</td><td class="cell-number">${Number(row.summary.missing_lines ?? 0)}</td><td class="bar-cell">${ExactusReport.bar(row.path, Number(row.summary.percent_covered ?? 0))}</td><td class="cell-number">${ExactusReport.percent(row.summary.percent_covered)}</td><td>${ExactusReport.escape(ExactusReport.ranges(row.missing)) || "None"}</td></tr>`
       )
       .join("")}</tbody></table></div>`;
     const jsRows = ExactusReport.array(js.files).map(ExactusReport.object);
     const jsTable = jsRows.length
       ? `<div class="table-wrap"><table class="ds-table"><caption class="ds-supporting">JavaScript files</caption><thead><tr><th scope="col">File</th><th scope="col" class="cell-number">Lines</th><th scope="col" class="cell-number">Missing</th><th scope="col" class="bar-cell">Coverage</th><th scope="col" class="cell-number">%</th></tr></thead><tbody>${jsRows
           .map(
-            (row) =>
-              `<tr><td>${ExactusReport.fileLink(String(row.path), base)}</td><td class="cell-number">${Number(row.num_statements ?? 0)}</td><td class="cell-number">${Number(row.missing_lines ?? 0)}</td><td class="bar-cell">${ExactusReport.bar(String(row.path), Number(row.percent_covered ?? 0))}</td><td class="cell-number">${ExactusReport.percent(row.percent_covered)}</td></tr>`,
+            row =>
+              `<tr><td>${ExactusReport.fileLink(String(row.path), base)}</td><td class="cell-number">${Number(row.num_statements ?? 0)}</td><td class="cell-number">${Number(row.missing_lines ?? 0)}</td><td class="bar-cell">${ExactusReport.bar(String(row.path), Number(row.percent_covered ?? 0))}</td><td class="cell-number">${ExactusReport.percent(row.percent_covered)}</td></tr>`
           )
           .join("")}</tbody></table></div>`
       : `<p class="ds-supporting">No JavaScript tests importing node:test were found.</p>`;
     const failures = failed.length
       ? `<section class="section" aria-labelledby="failed-title"><h2 class="ds-section-title" id="failed-title">Failed tests</h2><ul class="finding-list">${failed
-          .map((raw) => {
+          .map(raw => {
             const item = ExactusReport.object(raw);
             return `<li class="finding"><div class="finding-meta">${ExactusReport.severityBadge("error")}</div><p class="finding-message"><code>${ExactusReport.escape(item.test)}</code> ${ExactusReport.escape(item.detail ?? "")}</p></li>`;
           })
@@ -1114,7 +1109,7 @@ class ExactusReport {
     const uncovered = ExactusReport.uncoveredFiles(data);
     const maxContext = Math.max(
       0,
-      ...uncovered.map(entry => Number(entry.snippets.context ?? 0)),
+      ...uncovered.map(entry => Number(entry.snippets.context ?? 0))
     );
     const uncoveredSection = uncovered.length
       ? ExactusReport.uncoveredSection(uncovered, maxContext)
@@ -1124,14 +1119,14 @@ class ExactusReport {
         ["Python coverage", ExactusReport.percent(pyPercent)],
         [
           "JavaScript coverage",
-          jsRows.length ? ExactusReport.percent(jsPercent) : "None",
+          jsRows.length ? ExactusReport.percent(jsPercent) : "None"
         ],
         ["Statements", Number(totals.num_statements ?? 0).toLocaleString()],
         ["Missing lines", Number(totals.missing_lines ?? 0).toLocaleString()],
-        ["Failed tests", failed.length.toLocaleString()],
+        ["Failed tests", failed.length.toLocaleString()]
       ],
       summary: `${ExactusReport.percent(pyPercent)} of Python statements and ${jsRows.length ? ExactusReport.percent(jsPercent) : "no"} JavaScript lines are covered by tests.`,
-      view: `${failures}${uncoveredSection}<section class="section" aria-labelledby="python-title"><h2 class="ds-section-title" id="python-title">Python</h2>${pyTable}</section><section class="section" aria-labelledby="js-title"><h2 class="ds-section-title" id="js-title">JavaScript</h2>${jsTable}</section>`,
+      view: `${failures}${uncoveredSection}<section class="section" aria-labelledby="python-title"><h2 class="ds-section-title" id="python-title">Python</h2>${pyTable}</section><section class="section" aria-labelledby="js-title"><h2 class="ds-section-title" id="js-title">JavaScript</h2>${jsTable}</section>`
     };
   };
   /**
@@ -1142,12 +1137,12 @@ class ExactusReport {
     const tools = Object.entries(ExactusReport.object(data.tools)).map(
       ([name, raw]) => ({
         name,
-        entry: ExactusReport.object(raw),
-      }),
+        entry: ExactusReport.object(raw)
+      })
     );
     const failed = tools.filter(tool => !tool.entry.passed);
     const rows = tools
-      .map(({ name, entry }) => {
+      .map(({name, entry}) => {
         const legacy = String(entry.report_web ?? "")
           .split("/")
           .slice(-3)
@@ -1165,12 +1160,12 @@ class ExactusReport {
       metrics: [
         ["Tools", tools.length.toLocaleString()],
         ["Passed", (tools.length - failed.length).toLocaleString()],
-        ["Failed", failed.length.toLocaleString()],
+        ["Failed", failed.length.toLocaleString()]
       ],
       summary: failed.length
-        ? `Fix ${failed.map((tool) => tool.name).join(", ")} first; each link opens that tool's report.`
+        ? `Fix ${failed.map(tool => tool.name).join(", ")} first; each link opens that tool's report.`
         : "Every tool passed.",
-      view: `<section class="section" aria-labelledby="tools-title"><h2 class="ds-section-title" id="tools-title">Tools</h2><div class="table-wrap"><table class="ds-table"><thead><tr><th scope="col">Tool</th><th scope="col">Result</th><th scope="col" class="cell-number">Duration</th><th scope="col">Outcome</th></tr></thead><tbody>${rows}</tbody></table></div></section>`,
+      view: `<section class="section" aria-labelledby="tools-title"><h2 class="ds-section-title" id="tools-title">Tools</h2><div class="table-wrap"><table class="ds-table"><thead><tr><th scope="col">Tool</th><th scope="col">Result</th><th scope="col" class="cell-number">Duration</th><th scope="col">Outcome</th></tr></thead><tbody>${rows}</tbody></table></div></section>`
     };
   };
   /**
@@ -1180,39 +1175,39 @@ class ExactusReport {
   static frontend = data => {
     const runs = ExactusReport.array(data.flows).map(ExactusReport.object);
     const evidence = ExactusReport.array(data.evidence).map(
-      ExactusReport.object,
+      ExactusReport.object
     );
     const screenshots = evidence.filter(item => item.type === "screenshot");
     const steps = runs.flatMap(run =>
-      ExactusReport.array(run.action_records),
+      ExactusReport.array(run.action_records)
     );
     const artifactRoot = String(data.artifact_root || "../ARTIFACTS/RUN");
     const view = runs
       .map(run => {
         const records = ExactusReport.array(run.action_records).map(
-          ExactusReport.object,
+          ExactusReport.object
         );
         return `<section class="section"><h2>${ExactusReport.escape(run.name || run.flow_id)} <small>${ExactusReport.escape(run.status)}</small></h2><p>${run.action_id ? `Action ${ExactusReport.escape(run.action_id)} · ` : ""}Flow ${ExactusReport.escape(run.flow_id)} · Run ${ExactusReport.escape(run.run_id)}${run.width ? ` · ${ExactusReport.escape(run.width)} × ${ExactusReport.escape(run.height)} · ${ExactusReport.escape(run.theme || "")}` : ""}</p>${run.error ? `<p>${ExactusReport.escape(run.error)}</p>` : ""}${records
-          .map((record) => {
-            const images = screenshots.filter((item) =>
+          .map(record => {
+            const images = screenshots.filter(item =>
               ExactusReport.array(record.screenshot_artifact_ids).includes(
-                item.artifact_id,
-              ),
+                item.artifact_id
+              )
             );
             return `<details class="flow-step"${record.status === "failed" ? " open" : ""}><summary>${ExactusReport.escape(record.label || record.event_id)} · ${ExactusReport.escape(record.kind)} · ${ExactusReport.escape(record.status)}</summary><p>${ExactusReport.escape(record.started_ms)}–${ExactusReport.escape(record.finished_ms)} ms · ${ExactusReport.escape(record.flow_id)}/${ExactusReport.escape(record.event_id)}</p>${record.script ? `<h3>JavaScript call</h3><pre>${ExactusReport.escape(record.script)}</pre><h3>Response</h3><pre>${ExactusReport.escape(JSON.stringify(record.response, null, 2))}</pre>` : ""}${
               ExactusReport.array(record.assertions).length
                 ? `<h3>Evaluations and assertions</h3>${ExactusReport.array(
-                    record.assertions,
+                    record.assertions
                   )
                     .map(ExactusReport.object)
                     .map(
                       check =>
-                        `<p><strong>${ExactusReport.escape(check.outcome)}</strong> · ${ExactusReport.escape(check.assertion_id)}<br>${ExactusReport.escape(check.details)}${check.actual !== null && check.actual !== undefined ? `<br>Actual: ${ExactusReport.escape(check.actual)}` : ""}</p>`,
+                        `<p><strong>${ExactusReport.escape(check.outcome)}</strong> · ${ExactusReport.escape(check.assertion_id)}<br>${ExactusReport.escape(check.details)}${check.actual !== null && check.actual !== undefined ? `<br>Actual: ${ExactusReport.escape(check.actual)}` : ""}</p>`
                     )
                     .join("")}`
                 : ""
             }${record.error ? `<p>${ExactusReport.escape(record.error)}</p>` : ""}${images
-              .map((image) => {
+              .map(image => {
                 const filename =
                   String(image.path || "")
                     .split(/[\\/]/)
@@ -1227,7 +1222,7 @@ class ExactusReport {
               .join("")}</details>`;
           })
           .join(
-            "",
+            ""
           )}${ExactusReport.array(run.diagnostics).length ? `<details><summary>Browser diagnostics (${ExactusReport.array(run.diagnostics).length})</summary><pre>${ExactusReport.escape(JSON.stringify(run.diagnostics, null, 2))}</pre></details>` : ""}</section>`;
       })
       .join("");
@@ -1236,23 +1231,23 @@ class ExactusReport {
         ["Workflow runs", String(runs.length)],
         ["Actions", String(steps.length)],
         ["Screenshots", String(screenshots.length)],
-        ["Findings", String(ExactusReport.array(data.findings).length)],
+        ["Findings", String(ExactusReport.array(data.findings).length)]
       ],
       summary:
         "Execution evidence grouped by workflow run and action. Screenshots follow each flow's capture policy.",
       view: `${
         data.actions
           ? `<section class="section"><h2>Tool sequence</h2>${ExactusReport.array(
-              data.actions,
+              data.actions
             )
               .map(ExactusReport.object)
               .map(
-                (action) =>
-                  `<p><strong>${ExactusReport.escape(action.id)}</strong> · ${ExactusReport.escape(action.tool)} · ${ExactusReport.escape(action.status)}</p>`,
+                action =>
+                  `<p><strong>${ExactusReport.escape(action.id)}</strong> · ${ExactusReport.escape(action.tool)} · ${ExactusReport.escape(action.status)}</p>`
               )
               .join("")}</section>`
           : ""
-      }${data.discovery_diagnostics ? `<section class="section"><h2>Discovery diagnostics</h2><pre>${ExactusReport.escape(JSON.stringify(data.discovery_diagnostics, null, 2))}</pre></section>` : ""}${view}${ExactusReport.array(data.server_diagnostics).length ? `<section class="section"><h2>Server diagnostics</h2><pre>${ExactusReport.escape(JSON.stringify(data.server_diagnostics, null, 2))}</pre></section>` : ""}`,
+      }${data.discovery_diagnostics ? `<section class="section"><h2>Discovery diagnostics</h2><pre>${ExactusReport.escape(JSON.stringify(data.discovery_diagnostics, null, 2))}</pre></section>` : ""}${view}${ExactusReport.array(data.server_diagnostics).length ? `<section class="section"><h2>Server diagnostics</h2><pre>${ExactusReport.escape(JSON.stringify(data.server_diagnostics, null, 2))}</pre></section>` : ""}`
     };
   };
   /**
@@ -1273,7 +1268,7 @@ class ExactusReport {
     "severity_levels",
     "source_label",
     "summary",
-    "tool",
+    "tool"
   ];
   /**
    * Normalized finding keys shown in a finding's header; every other key
@@ -1291,13 +1286,13 @@ class ExactusReport {
     "rule",
     "severity",
     "source",
-    "title",
+    "title"
   ];
   /**
    * @param {unknown} value Possibly an object.
    * @returns {Record<string, unknown>} The object as a generic record.
    */
-  static record = (value) =>
+  static record = value =>
     value && typeof value === "object" && !Array.isArray(value)
       ? /** @type {Record<string, unknown>} */ (value)
       : {};
@@ -1305,7 +1300,7 @@ class ExactusReport {
    * @param {unknown} value View-model value.
    * @returns {boolean} Whether the value is absent or blank.
    */
-  static blank = (value) =>
+  static blank = value =>
     value === null || value === undefined || value === "";
   /**
    * @param {unknown} value One view-model value.
@@ -1313,26 +1308,21 @@ class ExactusReport {
    * @returns {string} Display HTML for the value.
    */
   static cell = (value, linkLocal = true) => {
-    if (ExactusReport.blank(value)) {
+    if (ExactusReport.blank(value))
       return '<span class="ds-muted">N/A</span>';
-    }
-    if (typeof value === "boolean") {
+    if (typeof value === "boolean")
       return value ? "Yes" : "No";
-    }
-    if (typeof value === "number") {
+    if (typeof value === "number")
       return ExactusReport.escape(value.toLocaleString());
-    }
-    if (Array.isArray(value)) {
+    if (Array.isArray(value))
       return value
         .map(
-          (item) =>
-            `<code>${ExactusReport.escape(typeof item === "object" ? JSON.stringify(item) : item)}</code>`,
+          item =>
+            `<code>${ExactusReport.escape(typeof item === "object" ? JSON.stringify(item) : item)}</code>`
         )
         .join(" ");
-    }
-    if (typeof value === "object") {
+    if (typeof value === "object")
       return `<code>${ExactusReport.escape(JSON.stringify(value))}</code>`;
-    }
     const href = ExactusReport.localLinks[String(value)];
     return linkLocal && typeof href === "string"
       ? ExactusReport.link(String(value), href)
@@ -1342,10 +1332,9 @@ class ExactusReport {
    * @param {unknown} value One view-model value.
    * @returns {string} Plain text used to sort a table column.
    */
-  static sortText = (value) => {
-    if (ExactusReport.blank(value)) {
+  static sortText = value => {
+    if (ExactusReport.blank(value))
       return "";
-    }
     return typeof value === "object" ? JSON.stringify(value) : String(value);
   };
   /**
@@ -1357,7 +1346,7 @@ class ExactusReport {
     `<div class="table-wrap"><table class="ds-table kv-table" aria-label="${ExactusReport.escape(label)}"><tbody>${pairs
       .map(
         ([key, value]) =>
-          `<tr><th scope="row">${ExactusReport.escape(key)}</th><td>${value}</td></tr>`,
+          `<tr><th scope="row">${ExactusReport.escape(key)}</th><td>${value}</td></tr>`
       )
       .join("")}</tbody></table></div>`;
   /**
@@ -1381,7 +1370,7 @@ class ExactusReport {
     "category",
     "reason",
     "metric",
-    "value",
+    "value"
   ];
   /**
    * Order table columns: identifying columns first, then the mapping's
@@ -1396,7 +1385,7 @@ class ExactusReport {
      * @param {string} column Row key.
      * @returns {number} Sort rank of the column.
      */
-    const rank = (column) => {
+    const rank = column => {
       const leading = ExactusReport.LEADING_COLUMNS.indexOf(column);
       if (leading >= 0) return leading;
       const mapped = order.indexOf(column);
@@ -1408,15 +1397,15 @@ class ExactusReport {
     return [...columns].sort(
       (left, right) =>
         rank(left) - rank(right) ||
-        columns.indexOf(left) - columns.indexOf(right),
+        columns.indexOf(left) - columns.indexOf(right)
     );
   };
   /**
    * @param {Record<string, unknown>} row Table row.
    * @returns {string} Id of the finding a row reports, or nothing.
    */
-  static rowFinding = (row) => {
-    const { finding } = row;
+  static rowFinding = row => {
+    const {finding} = row;
     return typeof finding === "string" ? finding : "";
   };
   /**
@@ -1436,19 +1425,19 @@ class ExactusReport {
   static recordTable = (label, rows, linkOf, order, linkColumn = null) => {
     const records = rows.map(ExactusReport.record);
     const columns = ExactusReport.orderColumns(
-      [...new Set(records.flatMap((row) => Object.keys(row)))],
-      ExactusReport.array(order).map(String),
+      [...new Set(records.flatMap(row => Object.keys(row)))],
+      ExactusReport.array(order).map(String)
     );
-    const numeric = columns.map((column) =>
+    const numeric = columns.map(column =>
       records.every(
-        (row) =>
-          ExactusReport.blank(row[column]) || typeof row[column] === "number",
-      ),
+        row =>
+          ExactusReport.blank(row[column]) || typeof row[column] === "number"
+      )
     );
     const head = columns
       .map(
         (column, index) =>
-          `<th scope="col"${numeric[index] ? ' class="cell-number"' : ""}><button class="sort-button" type="button" data-sort-column="${index}" data-numeric="${numeric[index] === true}">${ExactusReport.escape(ExactusReport.humanize(column))}</button></th>`,
+          `<th scope="col"${numeric[index] ? ' class="cell-number"' : ""}><button class="sort-button" type="button" data-sort-column="${index}" data-numeric="${numeric[index] === true}">${ExactusReport.escape(ExactusReport.humanize(column))}</button></th>`
       )
       .join("");
     const prefix = `row-${ExactusReport.slug(label)}`;
@@ -1460,13 +1449,11 @@ class ExactusReport {
           const linked =
             linkColumn === null ? index === 0 : column === linkColumn;
           let href = linked && linkOf ? linkOf(row) : "";
-          const { report } = row;
-          if (index === 0 && !href && typeof report === "string") {
+          const {report} = row;
+          if (index === 0 && !href && typeof report === "string")
             href = `../${report}/result_web/index.html`;
-          }
-          if (index === 0 && finding) {
+          if (index === 0 && finding)
             href = `#${ExactusReport.findingAnchor(finding)}`;
-          }
           const content = href
             ? `<a href="${ExactusReport.escape(href)}"${finding ? ` data-finding-link="${ExactusReport.escape(finding)}"` : ""}>${ExactusReport.cell(value, false)}</a>`
             : ExactusReport.cell(value, linkColumn === null || linked);
@@ -1484,7 +1471,7 @@ class ExactusReport {
    * Sort a record table by one column; a repeated press reverses it.
    * @param {Element} button Pressed column-heading button.
    */
-  static sortBy = (button) => {
+  static sortBy = button => {
     const header = button.closest("th");
     const table = button.closest("table");
     const body = table?.querySelector("tbody");
@@ -1492,22 +1479,21 @@ class ExactusReport {
     const column = Number(button.getAttribute("data-sort-column") ?? 0);
     const numeric = button.getAttribute("data-numeric") === "true";
     const ascending = header.getAttribute("aria-sort") !== "ascending";
-    for (const other of table.querySelectorAll("th[aria-sort]")) {
+    for (const other of table.querySelectorAll("th[aria-sort]"))
       other.removeAttribute("aria-sort");
-    }
     header.setAttribute("aria-sort", ascending ? "ascending" : "descending");
     /**
      * Read the selected cell's normalized sort text.
      * @param {Element} row Table row.
      * @returns {string} Sort text of the row's cell in the column.
      */
-    const key = (row) => row.children[column]?.getAttribute("data-sort") ?? "";
+    const key = row => row.children[column]?.getAttribute("data-sort") ?? "";
     /**
      * Convert the selected cell to a number, sorting blanks first.
      * @param {Element} row Table row.
      * @returns {number} Numeric sort value; blanks sort first.
      */
-    const amount = (row) =>
+    const amount = row =>
       key(row) === "" ? Number.NEGATIVE_INFINITY : Number(key(row));
     const rows = [...body.querySelectorAll("tr")].sort((left, right) => {
       const order = numeric
@@ -1515,7 +1501,7 @@ class ExactusReport {
           Number(amount(left) < amount(right))
         : key(left).localeCompare(key(right), undefined, {
             numeric: true,
-            sensitivity: "base",
+            sensitivity: "base"
           });
       return ascending ? order : -order;
     });
@@ -1525,17 +1511,17 @@ class ExactusReport {
    * @param {string} title Section heading.
    * @returns {string} Fragment identifier of the section.
    */
-  static sectionId = (title) => `view-${ExactusReport.slug(title)}`;
+  static sectionId = title => `view-${ExactusReport.slug(title)}`;
   /**
    * @param {string} id Finding identifier.
    * @returns {string} Fragment identifier of the finding.
    */
-  static findingAnchor = (id) => `finding-${ExactusReport.slug(id)}`;
+  static findingAnchor = id => `finding-${ExactusReport.slug(id)}`;
   /**
    * @param {string} what Block the tool did not report.
    * @returns {string} Not-available note markup.
    */
-  static notReported = (what) =>
+  static notReported = what =>
     `<p class="ds-supporting">N/A — the tool reported no ${ExactusReport.escape(what)}.</p>`;
   /**
    * Render a composed gate's part gates (``gate.parts``: name to
@@ -1545,32 +1531,32 @@ class ExactusReport {
    * @param {Json} model View model.
    * @returns {string} Part-gate cards markup, or nothing without parts.
    */
-  static gateParts = (model) => {
+  static gateParts = model => {
     const parts = Object.entries(
-      ExactusReport.record(ExactusReport.object(model.gate).parts),
+      ExactusReport.record(ExactusReport.object(model.gate).parts)
     )
       .map(
         /**
          * @param {[string, unknown]} entry Part name and gate.
          * @returns {[string, Json]} Part name and gate object.
          */
-        ([name, part]) => [name, ExactusReport.object(part)],
+        ([name, part]) => [name, ExactusReport.object(part)]
       )
       .sort(
         ([left, first], [right, second]) =>
           Number(first.position ?? 0) - Number(second.position ?? 0) ||
-          left.localeCompare(right),
+          left.localeCompare(right)
       );
     if (!parts.length) return "";
     const findings = ExactusReport.array(model.findings).map(
-      ExactusReport.object,
+      ExactusReport.object
     );
-    const sources = new Set(findings.map((item) => String(item.source ?? "")));
+    const sources = new Set(findings.map(item => String(item.source ?? "")));
     const cards = parts.map(([name, part]) => {
       const status = String(part.status ?? "ERROR").toUpperCase();
       const label = String(part.label ?? ExactusReport.humanize(name));
       const count = findings.filter(
-        (item) => String(item.source ?? "") === label,
+        item => String(item.source ?? "") === label
       ).length;
       const target =
         sources.size > 1
@@ -1587,30 +1573,29 @@ class ExactusReport {
    * @param {Json} model View model.
    * @returns {string} Gate banner markup.
    */
-  static gateSection = (model) => {
+  static gateSection = model => {
     const gate = ExactusReport.object(model.gate);
     const status = String(gate.status ?? "ERROR").toUpperCase();
     const blocking = ExactusReport.array(model.blocking).map(
-      ExactusReport.object,
+      ExactusReport.object
     );
     let detail = '<p class="ds-supporting">No blocking findings.</p>';
-    if (model.findings === null || model.findings === undefined) {
+    if (model.findings === null || model.findings === undefined)
       detail = ExactusReport.notReported("findings list");
-    } else if (blocking.length) {
+     else if (blocking.length)
       detail = `<p class="label-title">Blocking findings</p><ul class="gate-list">${blocking
         .map(
           item =>
-            `<li><a href="#${ExactusReport.findingAnchor(String(item.id ?? ""))}">${ExactusReport.escape(item.id)}</a> ${ExactusReport.inline(String(item.title ?? ""))}</li>`,
+            `<li><a href="#${ExactusReport.findingAnchor(String(item.id ?? ""))}">${ExactusReport.escape(item.id)}</a> ${ExactusReport.inline(String(item.title ?? ""))}</li>`
         )
         .join("")}</ul>`;
-    }
     return `<div class="gate" data-gate="${ExactusReport.escape(status.toLowerCase())}"><p class="gate-title">${ExactusReport.statusBadge(status)}<span class="gate-reason">${ExactusReport.escape(gate.reason ?? "")}</span></p>${ExactusReport.gateParts(model)}${detail}</div>`;
   };
   /**
    * @param {Json} summary Summary block.
    * @returns {string} One-sentence summary of what the run checked.
    */
-  static summarySentence = (summary) => {
+  static summarySentence = summary => {
     const total = Number(summary.findings_total ?? 0);
     return `${ExactusReport.plural(total, "finding")} across ${Number(summary.targets_analyzed ?? 0).toLocaleString()} of ${Number(summary.targets_eligible ?? 0).toLocaleString()} eligible targets.`;
   };
@@ -1629,7 +1614,7 @@ class ExactusReport {
    * @param {Json} model View model.
    * @returns {string} "What was checked" markup: totals, severities, scope.
    */
-  static checkedSection = (model) => {
+  static checkedSection = model => {
     const summary = ExactusReport.object(model.summary);
     const severity = ExactusReport.record(summary.severity);
     const levels = ExactusReport.array(model.severity_levels).map(String);
@@ -1679,7 +1664,7 @@ class ExactusReport {
     if (!lines.length) return "";
     const target = Number(excerpt.line ?? 0);
     const widest = Math.max(
-      ...lines.map((line) => Math.abs(Number(line.n ?? 0) - target)),
+      ...lines.map(line => Math.abs(Number(line.n ?? 0) - target))
     );
     const language = String(excerpt.language ?? "text");
     const controls =
@@ -1732,14 +1717,13 @@ class ExactusReport {
    * stays on the button).
    * @param {Element} root Rendered report view.
    */
-  static bindSnippets = (root) => {
-    for (const viewer of root.querySelectorAll(".snippet-view")) {
+  static bindSnippets = root => {
+    for (const viewer of root.querySelectorAll(".snippet-view"))
       ExactusReport.snippetContext(
         viewer,
-        Number(viewer.getAttribute("data-snippet-context")),
+        Number(viewer.getAttribute("data-snippet-context"))
       );
-    }
-    root.addEventListener("click", (event) => {
+    root.addEventListener("click", event => {
       const button =
         event.target instanceof Element
           ? event.target.closest("[data-snippet-step]")
@@ -1750,7 +1734,7 @@ class ExactusReport {
       ExactusReport.snippetContext(
         viewer,
         Number(viewer.getAttribute("data-snippet-context")) +
-          Number(button.getAttribute("data-snippet-step")),
+          Number(button.getAttribute("data-snippet-step"))
       );
     });
   };
@@ -1758,17 +1742,17 @@ class ExactusReport {
    * @param {Json} finding View-model finding.
    * @returns {string} Details disclosure for the tool-specific fields.
    */
-  static findingExtras = (finding) => {
+  static findingExtras = finding => {
     const duplicates = [
       String(finding.path ?? ""),
       String(finding.rule ?? ""),
-      String(finding.source ?? ""),
+      String(finding.source ?? "")
     ];
     const extras = Object.entries(finding).filter(
       ([key, value]) =>
         !ExactusReport.FINDING_KEYS.includes(key) &&
         !ExactusReport.blank(value) &&
-        !(typeof value === "string" && duplicates.includes(value)),
+        !(typeof value === "string" && duplicates.includes(value))
     );
     if (!extras.length) return "";
     const rows = extras
@@ -1796,7 +1780,7 @@ class ExactusReport {
     const title = String(finding.title ?? "");
     const message = String(finding.message ?? "");
     const text = [id, title, finding.path, rule, source, message]
-      .map((part) => String(part ?? ""))
+      .map(part => String(part ?? ""))
       .join(" ")
       .toLowerCase();
     const blocking =
@@ -1820,19 +1804,18 @@ class ExactusReport {
    * @param {string} noun Singular English noun.
    * @returns {string} Its plural ("category" → "categories").
    */
-  static pluralNoun = (noun) =>
+  static pluralNoun = noun =>
     /[^aeiou]y$/.test(noun) ? `${noun.slice(0, -1)}ies` : `${noun}s`;
   /**
    * @param {string[]} values One facet value of every finding.
    * @returns {[string, number][]} Distinct values (first-seen order) with
    *   their counts.
    */
-  static tally = (values) => {
+  static tally = values => {
     /** @type {Map<string, number>} */
     const counts = new Map();
-    for (const value of values) {
+    for (const value of values)
       counts.set(value, (counts.get(value) ?? 0) + 1);
-    }
     return [...counts.entries()];
   };
   /**
@@ -1847,7 +1830,7 @@ class ExactusReport {
     `<div class="select-filter"><label class="ds-label" for="${id}">${ExactusReport.escape(label)}</label><select class="ds-select" id="${id}"><option value="">All ${ExactusReport.escape(noun)} (${total})</option>${values
       .map(
         ([value, count]) =>
-          `<option value="${ExactusReport.escape(value)}">${ExactusReport.escape(value)} (${count})</option>`,
+          `<option value="${ExactusReport.escape(value)}">${ExactusReport.escape(value)} (${count})</option>`
       )
       .join("")}</select></div>`;
   /**
@@ -1859,16 +1842,15 @@ class ExactusReport {
    * @returns {string} Findings list markup.
    */
   static findingList = (findings, sources, base) => {
-    if (sources.length < 2) {
+    if (sources.length < 2)
       return `<ol class="findings-list">${findings
         .map(item => ExactusReport.viewFinding(item, base, 3))
         .join("")}</ol>`;
-    }
     return sources
       .map(([source]) => {
         const id = `findings-group-${ExactusReport.slug(source)}`;
         const items = findings.filter(
-          (item) => String(item.source ?? "") === source,
+          item => String(item.source ?? "") === source
         );
         return `<section class="finding-group" data-group="${ExactusReport.escape(source)}" aria-labelledby="${id}"><h3 class="group-title" id="${id}">${ExactusReport.escape(source)} <span class="group-count ds-supporting">${ExactusReport.plural(items.length, "finding")}</span></h3><ol class="findings-list">${items
           .map(item => ExactusReport.viewFinding(item, base, 4))
@@ -1882,36 +1864,34 @@ class ExactusReport {
    * @returns {string} Findings toolbar and list markup.
    */
   static viewFindings = (model, base) => {
-    if (model.findings === null || model.findings === undefined) {
+    if (model.findings === null || model.findings === undefined)
       return ExactusReport.notReported("findings list");
-    }
     const findings = ExactusReport.array(model.findings).map(
-      ExactusReport.object,
+      ExactusReport.object
     );
-    if (!findings.length) {
+    if (!findings.length)
       return '<p class="ds-supporting">No findings.</p>';
-    }
     const levels = ExactusReport.array(model.severity_levels).map(String);
     const severities = ExactusReport.tally(
-      findings.map((item) => String(item.severity ?? "").toLowerCase()),
+      findings.map(item => String(item.severity ?? "").toLowerCase())
     ).sort(
       ([left], [right]) =>
         (levels.indexOf(left) + 1 || levels.length + 1) -
           (levels.indexOf(right) + 1 || levels.length + 1) ||
-        left.localeCompare(right),
+        left.localeCompare(right)
     );
     const rules = ExactusReport.tally(
-      findings.map((item) => String(item.rule ?? "")),
+      findings.map(item => String(item.rule ?? ""))
     ).sort(([left], [right]) => left.localeCompare(right));
     const sources = ExactusReport.tally(
-      findings.map((item) => String(item.source ?? "")),
+      findings.map(item => String(item.source ?? ""))
     ).filter(([source]) => source);
     const chips = [
       `<button class="ds-chip" type="button" data-view-severity="" aria-pressed="true">All <span class="chip-count">${findings.length}</span></button>`,
       ...severities.map(
         ([severity, count]) =>
-          `<button class="ds-chip" type="button" data-view-severity="${ExactusReport.escape(severity)}" aria-pressed="false">${ExactusReport.escape(ExactusReport.humanize(severity || "unknown"))} <span class="chip-count">${count}</span></button>`,
-      ),
+          `<button class="ds-chip" type="button" data-view-severity="${ExactusReport.escape(severity)}" aria-pressed="false">${ExactusReport.escape(ExactusReport.humanize(severity || "unknown"))} <span class="chip-count">${count}</span></button>`
+      )
     ].join("");
     const sourceFilter =
       sources.length > 1
@@ -1919,10 +1899,10 @@ class ExactusReport {
             "findings-source",
             String(model.source_label ?? "Source"),
             ExactusReport.pluralNoun(
-              String(model.source_label ?? "source").toLowerCase(),
+              String(model.source_label ?? "source").toLowerCase()
             ),
             sources,
-            findings.length,
+            findings.length
           )
         : "";
     return `<div class="toolbar"><div class="search"><label class="ds-label" for="findings-search">Search findings</label><input class="ds-input" id="findings-search" type="search" autocomplete="off" placeholder="ID, title, path or message"></div>${sourceFilter}${ExactusReport.filterSelect("findings-rule", "Rule", "rules", rules, findings.length)}<div class="filters" role="group" aria-label="Severity">${chips}</div></div><p class="ds-supporting result-count" role="status" id="findings-count"></p><div class="empty-filter" id="findings-empty" hidden><p class="ds-supporting" id="findings-empty-text"></p><button class="ds-btn ds-btn-outline ds-btn-sm" type="button" id="findings-clear">Clear filters</button></div><div class="findings-body" id="findings-list">${ExactusReport.findingList(findings, sources, base)}</div>`;
@@ -1931,7 +1911,7 @@ class ExactusReport {
    * @param {Json} model View model.
    * @returns {string} Identity key-value table markup.
    */
-  static identitySection = (model) => {
+  static identitySection = model => {
     const tool = ExactusReport.object(model.tool);
     const run = ExactusReport.object(model.run);
     return ExactusReport.keyValues("Identity", [
@@ -1939,9 +1919,9 @@ class ExactusReport {
         "Tool",
         ExactusReport.escape(
           [tool.name, tool.version]
-            .filter((part) => !ExactusReport.blank(part))
-            .join(" "),
-        ) || ExactusReport.cell(null),
+            .filter(part => !ExactusReport.blank(part))
+            .join(" ")
+        ) || ExactusReport.cell(null)
       ],
       ["Run ID", ExactusReport.cell(run.id)],
       ["Pipeline run", ExactusReport.cell(run.pipeline_id)],
@@ -1951,16 +1931,16 @@ class ExactusReport {
       ["Started", ExactusReport.cell(run.started_at_human ?? run.started_at)],
       [
         "Finished",
-        ExactusReport.cell(run.finished_at_human ?? run.finished_at),
+        ExactusReport.cell(run.finished_at_human ?? run.finished_at)
       ],
-      ["Duration", ExactusReport.cell(run.duration_human)],
+      ["Duration", ExactusReport.cell(run.duration_human)]
     ]);
   };
   /**
    * @param {Json} model View model.
    * @returns {string} Invocation and environment markup.
    */
-  static setupSection = (model) => {
+  static setupSection = model => {
     const invocation = ExactusReport.object(model.invocation);
     const environment = ExactusReport.object(model.environment);
     const variables = ExactusReport.array(environment.variables);
@@ -1971,22 +1951,22 @@ class ExactusReport {
         : ExactusReport.notReported("command")
     }${ExactusReport.keyValues("Invocation", [
       ["Working directory", ExactusReport.cell(invocation.cwd)],
-      ["Arguments", ExactusReport.cell(invocation.arguments)],
+      ["Arguments", ExactusReport.cell(invocation.arguments)]
     ])}<h3 class="subsection-title">Environment</h3>${ExactusReport.keyValues(
       "Environment",
       [
         ["Operating system", ExactusReport.cell(environment.os)],
         ["Python", ExactusReport.cell(environment.python)],
         ["Node", ExactusReport.cell(environment.node)],
-        ["CPU count", ExactusReport.cell(environment.cpu_count)],
-      ],
+        ["CPU count", ExactusReport.cell(environment.cpu_count)]
+      ]
     )}${
       variables.length
         ? ExactusReport.recordTable(
             "Environment variables",
             variables,
             null,
-            [],
+            []
           )
         : '<p class="ds-supporting">No allowlisted environment variables are set.</p>'
     }`;
@@ -1998,29 +1978,25 @@ class ExactusReport {
    * @returns {string} Generic rendering of one extension block.
    */
   static extensionBlock = (title, value, order) => {
-    if (ExactusReport.blank(value)) {
+    if (ExactusReport.blank(value))
       return ExactusReport.notReported(title.toLowerCase());
-    }
     if (Array.isArray(value)) {
-      if (!value.length) {
+      if (!value.length)
         return '<p class="ds-supporting">None reported.</p>';
-      }
-      if (value.every((item) => item && typeof item === "object")) {
+      if (value.every(item => item && typeof item === "object"))
         return ExactusReport.recordTable(title, value, null, order);
-      }
-      return value.every((item) => typeof item === "string" && /\s/.test(item))
+      return value.every(item => typeof item === "string" && /\s/.test(item))
         ? `<ul class="note-list">${value.map(item => `<li>${ExactusReport.inline(String(item))}</li>`).join("")}</ul>`
         : ExactusReport.globList(value, "None reported.");
     }
-    if (typeof value === "object") {
+    if (typeof value === "object")
       return ExactusReport.keyValues(
         title,
         Object.entries(ExactusReport.record(value)).map(([key, item]) => [
           ExactusReport.humanize(key),
-          ExactusReport.cell(item),
-        ]),
+          ExactusReport.cell(item)
+        ])
       );
-    }
     return `<p>${ExactusReport.cell(value)}</p>`;
   };
   /**
@@ -2029,7 +2005,7 @@ class ExactusReport {
    * @param {Json} data Report payload holding the view model.
    * @returns {{title: string, body: string}[]} Ordered sections.
    */
-  static viewSections = (data) => {
+  static viewSections = data => {
     const model = ExactusReport.object(data.view);
     const base = String(data.project_href ?? "");
     const record = ExactusReport.record(data.view);
@@ -2038,10 +2014,10 @@ class ExactusReport {
      * @param {string} key View-model key.
      * @returns {number} Mapping position of the key; unknown keys last.
      */
-    const position = (key) =>
+    const position = key =>
       sequence.includes(key) ? sequence.indexOf(key) : sequence.length;
     let toolKeys = Object.keys(record)
-      .filter((key) => !ExactusReport.BASE_VIEW_KEYS.includes(key))
+      .filter(key => !ExactusReport.BASE_VIEW_KEYS.includes(key))
       .sort((left, right) => position(left) - position(right));
     let blocks = record;
     if (!toolKeys.length) {
@@ -2053,25 +2029,25 @@ class ExactusReport {
     return [
       {
         title: "Gate",
-        body: ExactusReport.gateSection(model),
+        body: ExactusReport.gateSection(model)
       },
       {
         title: "What was checked",
-        body: ExactusReport.checkedSection(model),
+        body: ExactusReport.checkedSection(model)
       },
       ...(ExactusReport.comparisonSection(model)
         ? [
             {
               title: "Change since previous report",
-              body: ExactusReport.comparisonSection(model),
-            },
+              body: ExactusReport.comparisonSection(model)
+            }
           ]
         : []),
       {
         title: "Findings",
-        body: ExactusReport.viewFindings(model, base),
+        body: ExactusReport.viewFindings(model, base)
       },
-      ...toolKeys.map((key) => ({
+      ...toolKeys.map(key => ({
         title:
           key === "workflow_rows"
             ? "Workflows and actions"
@@ -2081,14 +2057,14 @@ class ExactusReport {
             ? ExactusReport.frontend({
                 flows: ExactusReport.array(blocks[key]),
                 evidence: ExactusReport.array(
-                  ExactusReport.object(blocks).screenshots,
-                ),
+                  ExactusReport.object(blocks).screenshots
+                )
               }).view
             : ExactusReport.extensionBlock(
                 ExactusReport.humanize(key),
                 blocks[key],
-                order[key],
-              ),
+                order[key]
+              )
       })),
       {
         title: "Artifacts",
@@ -2096,9 +2072,9 @@ class ExactusReport {
           ? ExactusReport.recordTable(
               "Artifacts",
               artifacts,
-              (row) => {
+              row => {
                 const path = ExactusReport.sortText(
-                  ExactusReport.object(row).path,
+                  ExactusReport.object(row).path
                 );
                 const verified = ExactusReport.localLinks[path];
                 if (typeof verified === "string")
@@ -2108,33 +2084,33 @@ class ExactusReport {
                   : `../${path.split("/").map(encodeURIComponent).join("/")}`;
               },
               ExactusReport.object(data.view_columns).artifacts,
-              "path",
+              "path"
             )
-          : '<p class="ds-supporting">No auxiliary artifacts.</p>',
+          : '<p class="ds-supporting">No auxiliary artifacts.</p>'
       },
       {
         title: "Identity",
-        body: ExactusReport.identitySection(model),
+        body: ExactusReport.identitySection(model)
       },
       {
         title: "Setup",
-        body: ExactusReport.setupSection(model),
-      },
+        body: ExactusReport.setupSection(model)
+      }
     ];
   };
   /**
    * @param {{title: string, body: string}[]} sections Ordered sections.
    * @returns {string} Section navigation plus section cards markup.
    */
-  static viewMarkup = (sections) => {
+  static viewMarkup = sections => {
     const links = sections
       .map(
-        (section) =>
-          `<li><a class="ds-chip" href="#${ExactusReport.sectionId(section.title)}">${ExactusReport.escape(section.title)}</a></li>`,
+        section =>
+          `<li><a class="ds-chip" href="#${ExactusReport.sectionId(section.title)}">${ExactusReport.escape(section.title)}</a></li>`
       )
       .join("");
     const cards = sections
-      .map((section) => {
+      .map(section => {
         const id = ExactusReport.sectionId(section.title);
         return `<section class="section ds-card view-card" id="${id}" aria-labelledby="${id}-title"><h2 class="ds-section-title" id="${id}-title">${ExactusReport.escape(section.title)}</h2>${section.body}</section>`;
       })
@@ -2154,9 +2130,8 @@ class ExactusReport {
     const item = root.querySelector(`#${ExactusReport.findingAnchor(id)}`);
     if (!(item instanceof HTMLElement)) return false;
     const clear = root.querySelector("#findings-clear");
-    if (item.hidden && clear instanceof HTMLElement) {
+    if (item.hidden && clear instanceof HTMLElement)
       clear.dispatchEvent(new CustomEvent("reset-filters"));
-    }
     for (const other of root.querySelectorAll(".vfinding.is-selected")) {
       other.classList.remove("is-selected");
       other.querySelector(".finding-return")?.remove();
@@ -2174,10 +2149,10 @@ class ExactusReport {
       block: "start",
       behavior: matchMedia("(prefers-reduced-motion: no-preference)").matches
         ? "smooth"
-        : "auto",
+        : "auto"
     });
     item.focus({
-      preventScroll: true,
+      preventScroll: true
     });
     return true;
   };
@@ -2187,8 +2162,8 @@ class ExactusReport {
    * link.
    * @param {Element} root Rendered report view.
    */
-  static bindFindingLinks = (root) => {
-    root.addEventListener("click", (event) => {
+  static bindFindingLinks = root => {
+    root.addEventListener("click", event => {
       const target = event.target instanceof Element ? event.target : null;
       if (!target) return;
       const back = target.closest(".finding-return");
@@ -2198,18 +2173,17 @@ class ExactusReport {
         event.preventDefault();
         history.pushState(null, "", back.hash);
         row.scrollIntoView({
-          block: "center",
+          block: "center"
         });
         row.focus({
-          preventScroll: true,
+          preventScroll: true
         });
         return;
       }
       const link = target.closest('a[href^="#finding-"]');
       const row = target.closest("tr[data-finding-row]");
-      if (!link && (!row || target.closest("a, button, input, select"))) {
+      if (!link && (!row || target.closest("a, button, input, select")))
         return;
-      }
       const href = link?.getAttribute("href") ?? "";
       const id =
         row?.getAttribute("data-finding-row") ??
@@ -2230,8 +2204,8 @@ class ExactusReport {
    * Wire table sorting and the findings search, rule and severity filters.
    * @param {Element} root Rendered report view.
    */
-  static bindView = (root) => {
-    root.addEventListener("click", (event) => {
+  static bindView = root => {
+    root.addEventListener("click", event => {
       const button =
         event.target instanceof Element
           ? event.target.closest(".sort-button")
@@ -2265,7 +2239,7 @@ class ExactusReport {
     )
       return;
     const filter = {
-      severity: "",
+      severity: ""
     };
     /** Show the findings matching the search, rule and severity filters. */
     const update = () => {
@@ -2284,21 +2258,20 @@ class ExactusReport {
       }
       for (const group of groups) {
         const members = [...group.querySelectorAll(".vfinding")];
-        const visible = members.filter((item) => !item.hasAttribute("hidden"));
+        const visible = members.filter(item => !item.hasAttribute("hidden"));
         group.toggleAttribute("hidden", !visible.length);
         const tally = group.querySelector(".group-count");
-        if (tally) {
+        if (tally)
           tally.textContent =
             visible.length === members.length
               ? ExactusReport.plural(members.length, "finding")
               : `${visible.length.toLocaleString()} of ${ExactusReport.plural(members.length, "finding")}`;
-        }
       }
       const active = [
         filter.severity ? `severity “${filter.severity}”` : "",
         sourceValue() ? `${sourceName} “${sourceValue()}”` : "",
         rule.value ? `rule “${rule.value}”` : "",
-        query ? `text “${query}”` : "",
+        query ? `text “${query}”` : ""
       ].filter(Boolean);
       count.textContent =
         shown === items.length
@@ -2307,27 +2280,24 @@ class ExactusReport {
       empty.hidden = shown > 0;
       emptyText.textContent = `No findings match ${active.join(" and ")}.`;
     };
-    for (const chip of chips) {
+    for (const chip of chips)
       chip.addEventListener("click", () => {
         filter.severity = chip.getAttribute("data-view-severity") ?? "";
-        for (const other of chips) {
+        for (const other of chips)
           other.setAttribute("aria-pressed", String(other === chip));
-        }
         update();
       });
-    }
     /** Reset every findings filter and show all findings. */
     const reset = () => {
       search.value = "";
       rule.value = "";
       if (source instanceof HTMLSelectElement) source.value = "";
       filter.severity = "";
-      for (const chip of chips) {
+      for (const chip of chips)
         chip.setAttribute(
           "aria-pressed",
-          String(chip.getAttribute("data-view-severity") === ""),
+          String(chip.getAttribute("data-view-severity") === "")
         );
-      }
       update();
     };
     clear.addEventListener("click", () => {
@@ -2352,7 +2322,7 @@ class ExactusReport {
     const summary = ExactusReport.object(model.summary);
     const findings = ExactusReport.array(model.findings);
     parts.status.innerHTML = ExactusReport.statusBadge(
-      run.status ?? data.status,
+      run.status ?? data.status
     );
     parts.resume.textContent = Object.keys(summary).length
       ? ExactusReport.summarySentence(summary)
@@ -2364,12 +2334,12 @@ class ExactusReport {
         "Targets analyzed",
         Object.keys(summary).length
           ? `${Number(summary.targets_analyzed ?? 0).toLocaleString()} of ${Number(summary.targets_eligible ?? 0).toLocaleString()}`
-          : "N/A",
+          : "N/A"
       ],
-      ["Duration", String(run.duration_human ?? "N/A")],
+      ["Duration", String(run.duration_human ?? "N/A")]
     ]);
     parts.view.innerHTML = ExactusReport.viewMarkup(
-      ExactusReport.viewSections(data),
+      ExactusReport.viewSections(data)
     );
     ExactusReport.bindView(parts.view);
     ExactusReport.bindSnippets(parts.view);
@@ -2377,15 +2347,14 @@ class ExactusReport {
     const target = hash.startsWith("finding-")
       ? parts.view.querySelector(`#${CSS.escape(hash)} .finding-id`)
       : null;
-    if (target?.textContent) {
+    if (target?.textContent)
       ExactusReport.revealFinding(parts.view, target.textContent, null);
-    }
   };
   /**
    * @param {Json} data Report payload.
    * @returns {[string, string][]} Run context pairs.
    */
-  static context = (data) => {
+  static context = data => {
     const fingerprint = ExactusReport.object(data.fingerprint);
     /** @type {[string, unknown][]} */
     const pairs = [
@@ -2397,7 +2366,7 @@ class ExactusReport {
         "Duration",
         data.duration_seconds === undefined
           ? undefined
-          : `${Number(data.duration_seconds).toFixed(2)} s`,
+          : `${Number(data.duration_seconds).toFixed(2)} s`
       ],
       ["Run", data.run_id],
       ["Pipeline run", data.pipeline_run_id],
@@ -2407,16 +2376,16 @@ class ExactusReport {
          * @param {[string, unknown]} entry Fingerprint entry.
          * @returns {[string, unknown]} Labelled entry.
          */
-        ([key, value]) => [ExactusReport.humanize(key), value],
-      ),
+        ([key, value]) => [ExactusReport.humanize(key), value]
+      )
     ];
     return pairs
       .filter(
-        ([, value]) => value !== undefined && value !== null && value !== "",
+        ([, value]) => value !== undefined && value !== null && value !== ""
       )
       .map(([label, value]) => [
         label,
-        typeof value === "object" ? JSON.stringify(value) : String(value),
+        typeof value === "object" ? JSON.stringify(value) : String(value)
       ]);
   };
   static init = () => {
@@ -2438,10 +2407,10 @@ class ExactusReport {
     )
       return;
     const data = ExactusReport.object(
-      Reflect.get(globalThis, "__REPORT_DATA__"),
+      Reflect.get(globalThis, "__REPORT_DATA__")
     );
     ExactusReport.localLinks = ExactusReport.object(
-      Reflect.get(data, "local_links"),
+      Reflect.get(data, "local_links")
     );
     if (!Object.keys(data).length) {
       view.innerHTML =
@@ -2452,13 +2421,13 @@ class ExactusReport {
     document.title = String(data.title ?? "Exactus report");
     title.textContent = document.title;
     status.innerHTML = ExactusReport.statusBadge(
-      data.status ?? (data.passed ? "PASS" : "FAIL"),
+      data.status ?? (data.passed ? "PASS" : "FAIL")
     );
     markdown.innerHTML = ExactusReport.markdown(String(data.markdown ?? ""));
     context.innerHTML = ExactusReport.context(data)
       .map(
         ([label, value]) =>
-          `<dt>${ExactusReport.escape(label)}</dt><dd>${ExactusReport.escape(value)}</dd>`,
+          `<dt>${ExactusReport.escape(label)}</dt><dd>${ExactusReport.escape(value)}</dd>`
       )
       .join("");
     if (Object.keys(ExactusReport.object(data.view)).length) {
@@ -2466,7 +2435,7 @@ class ExactusReport {
         view,
         status,
         resume,
-        metrics,
+        metrics
       });
       return;
     }
@@ -2488,19 +2457,18 @@ class ExactusReport {
       view.innerHTML = `${comparison ? `<section class="section" aria-labelledby="comparison-title"><h2 class="ds-section-title" id="comparison-title">Change since previous report</h2>${comparison}</section>` : ""}${result.view}`;
       if (coverage) ExactusReport.bindCoverage(data);
       for (const fill of view.querySelectorAll(
-        ".ds-progress-bar[data-percent]",
-      )) {
+        ".ds-progress-bar[data-percent]"
+      ))
         fill.setAttribute(
           "style",
-          `width:${fill.getAttribute("data-percent")}%`,
+          `width:${fill.getAttribute("data-percent")}%`
         );
-      }
       return;
     }
     const rows = ExactusReport.findings(data);
-    const files = new Set(rows.map((row) => row.file)).size;
+    const files = new Set(rows.map(row => row.file)).size;
     metrics.innerHTML = ExactusReport.metrics(
-      ExactusReport.findingMetrics(data, rows),
+      ExactusReport.findingMetrics(data, rows)
     );
     resume.textContent = rows.length
       ? `${ExactusReport.plural(rows.length, "finding")} in ${ExactusReport.plural(files, "file")}; files with the most errors come first.`

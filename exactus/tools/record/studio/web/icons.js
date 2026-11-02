@@ -14,7 +14,7 @@
  * it enters the page and again whenever its `data-icon` changes, so code that
  * swaps an icon only has to change that attribute.
  */
-import { ICONS } from "./icon-set.js";
+import {ICONS} from "./icon-set.js";
 const SVG_NS = "http://www.w3.org/2000/svg";
 const SELECTOR = "svg.studio-icon[data-icon]";
 /** What each painted icon currently shows, so a repaint happens only on change.
@@ -63,7 +63,7 @@ export const kindOf = button => {
     node instanceof Element
       ? !node.matches("svg.studio-icon, .sr-only") &&
         Boolean(node.textContent?.trim())
-      : node.nodeType === Node.TEXT_NODE && Boolean(node.textContent?.trim()),
+      : node.nodeType === Node.TEXT_NODE && Boolean(node.textContent?.trim())
   );
   return labelled ? "icon-text" : "icon";
 };
@@ -112,7 +112,7 @@ export const watchIcons = (root = document) => {
   paintWithin(root);
   classifyWithin(root);
   new MutationObserver(records => {
-    for (const record of records) {
+    for (const record of records)
       if (record.type === "attributes")
         paintWithin(record.target.parentNode ?? root);
       else if (record.type === "characterData") reclassify(record.target);
@@ -125,12 +125,11 @@ export const watchIcons = (root = document) => {
           }
         });
       }
-    }
   }).observe(root, {
     childList: true,
     subtree: true,
     characterData: true,
     attributes: true,
-    attributeFilter: ["data-icon"],
+    attributeFilter: ["data-icon"]
   });
 };

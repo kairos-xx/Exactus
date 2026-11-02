@@ -107,9 +107,9 @@ export const askInputs = (labels, inputs = []) =>
        */
       const read = controls =>
         Object.fromEntries(
-          [...controls].map(([name, control]) => [name, control.value]),
+          [...controls].map(([name, control]) => [name, control.value])
         );
-      const answers = { ask: read(asked), flow: read(flowControls) };
+      const answers = {ask: read(asked), flow: read(flowControls)};
       dialog.remove();
       resolve(cancelled ? null : answers);
     });

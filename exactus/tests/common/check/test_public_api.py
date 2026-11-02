@@ -8,7 +8,9 @@ from inspect import signature
 from typing import TYPE_CHECKING, Final, cast, final
 
 from exactus.tests.common.support import expect_equal, expect_true
-from exactus.tools.common.catalog import Constants as _GroupFinalConstants
+from exactus.tools.common.catalog import (
+    GroupFinalConstants as _GroupFinalConstants,
+)
 from exactus.tools.common.catalog import ToolSpec
 
 if TYPE_CHECKING:

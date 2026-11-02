@@ -429,7 +429,16 @@ class PipelineActivity:
                     "id": item.name,
                     "state": item.status,
                     "completed": int(
-                        item.status not in {"WAITING", "RUNNING"},
+                        item.status
+                        not in {
+                            "WAITING",
+                            "RUNNING",
+                            "PAUSED",
+                            "WAIT",
+                            "HELD",
+                            "RUN",
+                            "REDO",
+                        },
                     ),
                     "total": 1,
                     "fraction": item.progress,

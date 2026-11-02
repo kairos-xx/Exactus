@@ -39,8 +39,7 @@ def main() -> None:
         "**Other contributing properties:**",
         "```css",
     )
-    missing: list[str] = [token for token in required if token not in markdown]
-    if missing:
+    if missing := [token for token in required if token not in markdown]:
         msg = f"report.md is missing required sections: {missing}"
         raise RuntimeError(msg)
     if (

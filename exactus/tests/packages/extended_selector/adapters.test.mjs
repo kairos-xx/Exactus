@@ -4,7 +4,7 @@ import process from "node:process";
 import test from "node:test";
 import {fileURLToPath} from "node:url";
 import {
-	bestLocalSelector,
+	bestLocalSelector
 } from "../../../packages/extended_selector/editor/selector-adapters.js";
 /**
  * One captured ``bestSelector`` invocation.
@@ -26,12 +26,12 @@ const recordingEngine = () => {
 		engine: {
 			bestSelector: (
 				/** @type {unknown} */ targets,
-				/** @type {any} */ options,
+				/** @type {any} */ options
 			) => {
 				calls.push({targets, options});
 				return {strategy: "recorded", selector: ".card"};
-			},
-		},
+			}
+		}
 	};
 };
 test("verify.mjs resolves every bundled selector library", () => {
@@ -39,16 +39,16 @@ test("verify.mjs resolves every bundled selector library", () => {
 		fileURLToPath(
 			new URL(
 				"../../../packages/extended_selector/verify.mjs",
-				import.meta.url,
-			),
-		),
+				import.meta.url
+			)
+		)
 	], {encoding: "utf8"});
 	assert.deepEqual(output.split("\n").filter(Boolean).sort(), [
 		"adapter: OK",
 		"engine: OK",
 		"finder: OK",
 		"generator: OK",
-		"optimal: OK",
+		"optimal: OK"
 	]);
 });
 test("bestLocalSelector delegates to the engine with merged options", () => {
@@ -56,7 +56,7 @@ test("bestLocalSelector delegates to the engine with merged options", () => {
 	const result = bestLocalSelector(
 		/** @type {any} */ (engine),
 		[],
-		/** @type {any} */ ({extra: true}),
+		/** @type {any} */ ({extra: true})
 	);
 	assert.deepEqual(result, {strategy: "recorded", selector: ".card"});
 	assert.equal(calls.length, 1);
@@ -80,13 +80,12 @@ test("bestLocalSelector injects working generator callbacks", () => {
 		() => options.optimal.getMultiSelector([element]),
 		() => options.optimal.optimize(".card"),
 		() => options.finder(element, {}),
-		() => options.finder(element, {root: {nodeType: 1}}),
-	]) {
+		() => options.finder(element, {root: {nodeType: 1}})
+	])
 		try {
 			invoke();
 		} catch {
 			// The bundled libraries reject non-DOM stand-ins; the adapter's
 			// call-through wiring is what this test exercises.
 		}
-	}
 });

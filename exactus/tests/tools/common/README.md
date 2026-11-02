@@ -61,6 +61,7 @@ Tests of `exactus/tools/common` leaf primitives and shared templates.
 - [`test_models_api.py`](test_models_api.py) — Result models, progress documents, the process API, and runtime.
 - [`test_output_tree.py`](test_output_tree.py) — Every tool run leaves ``@activity.json``, ``stderr.log``/``stdout.log``.
 - [`test_pipeline_output.py`](test_pipeline_output.py) — Pipeline output lives under ``EXACTUS_RESULTS/PIPELINES/``.
+- [`test_pipeline_scope.py`](test_pipeline_scope.py) — Scope a joined pipeline reset to the tools a request asks to rerun.
 - [`test_pipeline_supervisor.py`](test_pipeline_supervisor.py) — Verify transactional pipeline ownership and observer generations.
 - [`test_process_control.py`](test_process_control.py) — Process-tree control and JSON state primitives.
 - [`test_progress_ownership.py`](test_progress_ownership.py) — Keep terminal progress tied to the invocation being displayed.

@@ -1,7 +1,7 @@
 /** The top bar: control routing, menus, keyboard, fit tiers and the saved pill. */
 import assert from "node:assert/strict";
 import test from "node:test";
-import { modulePage, WEB } from "./module-page.mjs";
+import {modulePage, WEB} from "./module-page.mjs";
 const HARNESS = "/exactus/tests/tools/record/js/project-harness.js";
 /** Build a bar over a fake action set inside the page and run a scenario.
  * @param {import("node:test").TestContext} t Test context.
@@ -13,9 +13,9 @@ const inBar = async (t, scenario) => {
   let outcome;
   await modulePage(t, async page => {
     await page.evaluate(
-      async (/** @type {{web:string,harness:string}} */ { web, harness }) => {
-        const { ProjectBar } = await import(`${web}/project-bar.js`);
-        const { summary, settle } = await import(harness);
+      async (/** @type {{web:string,harness:string}} */ {web, harness}) => {
+        const {ProjectBar} = await import(`${web}/project-bar.js`);
+        const {summary, settle} = await import(harness);
         const root = document.createElement("header");
         root.innerHTML = `<div class="brand" style="width:100px">B</div>
           <span id="project-name"></span>
@@ -30,9 +30,9 @@ const inBar = async (t, scenario) => {
               "commands",
               "overflow",
               "project",
-              "nothing",
+              "nothing"
             ]
-              .map((name) => `<button data-bar="${name}">${name}</button>`)
+              .map(name => `<button data-bar="${name}">${name}</button>`)
               .join("")}
           </div>`;
         document.body.append(root);
@@ -41,8 +41,8 @@ const inBar = async (t, scenario) => {
           dirty: false,
           name: "Alpha",
           slug: "alpha",
-          projects: [summary({}), summary({ slug: "beta", name: "Beta" })],
-          recents: ["alpha", "beta"],
+          projects: [summary({}), summary({slug: "beta", name: "Beta"})],
+          recents: ["alpha", "beta"]
         };
         const actions = {
           create: () => log.push("create"),
@@ -55,16 +55,16 @@ const inBar = async (t, scenario) => {
           open: (/** @type {string} */ slug) => log.push(`open:${slug}`),
           dirty: () => state.dirty,
           name: () => state.name,
-          project: () => ({ slug: state.slug }),
+          project: () => ({slug: state.slug}),
           library: () => ({
             projects: state.projects,
             recents: state.recents,
-            tags: [],
-          }),
+            tags: []
+          })
         };
         const host = {
           commands: () => log.push("commands"),
-          projectView: () => log.push("projectView"),
+          projectView: () => log.push("projectView")
         };
         const bar = new ProjectBar(root, actions, host);
         /** @type {any} */ (globalThis).env = {
@@ -73,13 +73,13 @@ const inBar = async (t, scenario) => {
           log,
           state,
           actions,
-          settle,
+          settle
         };
       },
-      { web: WEB, harness: HARNESS },
+      {web: WEB, harness: HARNESS}
     );
     outcome = await page.evaluate(
-      `(async () => { const env = globalThis.env; ${scenario} })()`,
+      `(async () => { const env = globalThis.env; ${scenario} })()`
     );
   });
   return outcome;
@@ -90,7 +90,7 @@ test("each control reaches its action and unknown names do nothing", async t => 
     `for (const n of ["new","save","open","export","commands","project","nothing"])
        env.root.querySelector('[data-bar="'+n+'"]').click();
      env.root.click();
-     return env.log;`,
+     return env.log;`
   );
   assert.deepEqual(log, [
     "create",
@@ -98,7 +98,7 @@ test("each control reaches its action and unknown names do nothing", async t => 
     "gallery",
     "export",
     "commands",
-    "projectView",
+    "projectView"
   ]);
 });
 test("the open arrow lists recents with the open one disabled and runs a choice", async t => {
@@ -109,18 +109,18 @@ test("the open arrow lists recents with the open one disabled and runs a choice"
      const lines = [...menu.querySelectorAll("button")].map((b) => [b.textContent.trim(), b.disabled]);
      const expanded = env.root.querySelector('[data-bar="open-menu"]').getAttribute("aria-expanded");
      [...menu.querySelectorAll("button")].find((b) => b.textContent.includes("Beta")).click();
-     return { lines, expanded, gone: document.querySelector(".bar-menu") === null, log: env.log };`,
+     return { lines, expanded, gone: document.querySelector(".bar-menu") === null, log: env.log };`
   );
   assert.equal(out.expanded, "true");
   assert.deepEqual(out.log, ["open:beta"]);
   assert.equal(out.gone, true);
   assert.ok(
-    out.lines.some((/** @type {any[]} */ l) => l[0].includes("Alpha") && l[1]),
+    out.lines.some((/** @type {any[]} */ l) => l[0].includes("Alpha") && l[1])
   );
   assert.ok(
     out.lines.some((/** @type {any[]} */ l) =>
-      l[0].includes("Open project gallery"),
-    ),
+      l[0].includes("Open project gallery")
+    )
   );
 });
 test("every menu item runs its action", async t => {
@@ -136,7 +136,7 @@ test("every menu item runs its action", async t => {
        env.root.querySelector('[data-bar="overflow"]').click();
        [...document.querySelectorAll(".bar-menu button")].find((b) => b.textContent.includes(n)).click();
      }
-     return env.log;`,
+     return env.log;`
   );
   assert.deepEqual(log, [
     "gallery",
@@ -148,7 +148,7 @@ test("every menu item runs its action", async t => {
     "import:true",
     "demo",
     "export",
-    "commands",
+    "commands"
   ]);
 });
 test("no recent projects shows one disabled line", async t => {
@@ -157,10 +157,10 @@ test("no recent projects shows one disabled line", async t => {
     `env.state.recents = [];
      env.state.projects = [];
      env.root.querySelector('[data-bar="open-menu"]').click();
-     return [...document.querySelectorAll(".bar-menu button")].map((b) => [b.textContent.trim(), b.disabled]);`,
+     return [...document.querySelectorAll(".bar-menu button")].map((b) => [b.textContent.trim(), b.disabled]);`
   );
   assert.ok(
-    out.some((/** @type {any[]} */ l) => l[0] === "No recent projects" && l[1]),
+    out.some((/** @type {any[]} */ l) => l[0] === "No recent projects" && l[1])
   );
 });
 test("the menu toggles, closes outside, on resize and with the keyboard", async t => {
@@ -195,7 +195,7 @@ test("the menu toggles, closes outside, on resize and with the keyboard", async 
      key("Tab"); seen.push(open());
      trigger.click();
      key("Escape"); seen.push(open());
-     return { seen, order, refocused: document.activeElement === trigger };`,
+     return { seen, order, refocused: document.activeElement === trigger };`
   );
   assert.deepEqual(out.seen, [
     true,
@@ -205,7 +205,7 @@ test("the menu toggles, closes outside, on resize and with the keyboard", async 
     true,
     false,
     false,
-    false,
+    false
   ]);
   assert.equal(out.order[0], out.order[2]);
   assert.notEqual(out.order[0], out.order[1]);
@@ -223,19 +223,19 @@ test("render shows the name and saved state and updates the title", async t => {
      env.bar.render();
      return { saved, dirty: [document.title, env.root.querySelector("#project-save-state").dataset.state,
        env.root.querySelector("#project-save-state").title,
-       env.root.querySelector(".save-text").textContent] };`,
+       env.root.querySelector(".save-text").textContent] };`
   );
   assert.deepEqual(out.saved, [
     "Alpha · Flow Studio",
     "Alpha",
     "saved",
-    "Saved",
+    "Saved"
   ]);
   assert.deepEqual(out.dirty, [
     "● Alpha · Flow Studio",
     "dirty",
     "There are changes that are not saved",
-    "Unsaved changes",
+    "Unsaved changes"
   ]);
 });
 test("fit chooses full, icons or menu by the room available", async t => {
@@ -252,7 +252,7 @@ test("fit chooses full, icons or menu by the room available", async t => {
      document.body.append(empty);
      const { ProjectBar } = await import("${WEB}/project-bar.js");
      new ProjectBar(empty, env.actions, { commands() {}, projectView() {} });
-     return { tiers, bare: empty.getAttribute("data-tier") };`,
+     return { tiers, bare: empty.getAttribute("data-tier") };`
   );
   assert.equal(out.tiers[0], "full");
   assert.equal(out.tiers[2], "menu");

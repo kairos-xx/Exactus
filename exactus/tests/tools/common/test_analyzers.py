@@ -11,7 +11,9 @@ from typing import TYPE_CHECKING, Final, final
 import pytest
 
 from exactus.tests.common.support import expect_in, expect_true
-from exactus.tools.common.catalog import Constants as _GroupFinalConstants
+from exactus.tools.common.catalog import (
+    GroupFinalConstants as _GroupFinalConstants,
+)
 from exactus.tools.common.catalog import ToolSpec
 
 if TYPE_CHECKING:

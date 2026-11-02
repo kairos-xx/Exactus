@@ -627,8 +627,7 @@ class Text:
             repl=" ",
             string=name.replace("_", " ").strip("_"),
         )
-        words: list[str] = list(map(str.lower, filter(None, spaced.split())))
-        return words
+        return list(map(str.lower, filter(None, spaced.split())))
 
     @staticmethod
     def line_column(source: str, offset: int) -> tuple[int, int]:

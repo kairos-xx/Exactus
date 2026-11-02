@@ -1,18 +1,18 @@
 /* global process, require */
 "use strict";
 const fs = require("node:fs");
-const { createRequire } = require("node:module");
+const {createRequire} = require("node:module");
 const input = JSON.parse(fs.readFileSync(0, "utf8"));
 const source = fs.readFileSync(input.file, "utf8");
 const espree = createRequire(input.file)(input.espree);
 const options = {
   comment: true,
-  ecmaFeatures: { jsx: true },
+  ecmaFeatures: {jsx: true},
   ecmaVersion: "latest",
   loc: true,
   range: true,
   sourceType: "module",
-  tokens: true,
+  tokens: true
 };
 /**
  * Parse the source as a module, falling back to script mode.
@@ -23,7 +23,7 @@ const parse = () => {
     return espree.parse(source, options);
   } catch (moduleError) {
     try {
-      return espree.parse(source, { ...options, sourceType: "script" });
+      return espree.parse(source, {...options, sourceType: "script"});
     } catch {
       throw moduleError;
     }
@@ -40,7 +40,7 @@ const categories = new Map([
   ["private_static_accessor", 5],
   ["private_static_method", 6],
   ["private_accessor", 7],
-  ["private_method", 8],
+  ["private_method", 8]
 ]);
 /**
  * Return the member key name, preserving private `#` prefixes.
@@ -179,7 +179,7 @@ const organize = () => {
     /** @type {Array<*>} */
     (classNode.body.body).forEach((node, index) => {
       if (node.type === "MethodDefinition" && !node.computed) {
-        run.push({ node, index, start: leadingStart(node) });
+        run.push({node, index, start: leadingStart(node)});
         return;
       }
       flush();
@@ -197,8 +197,8 @@ const organize = () => {
       classes_seen: classesSeen,
       lines_moved: linesMoved,
       methods_moved: methodsMoved,
-      methods_seen: methodsSeen,
-    },
+      methods_seen: methodsSeen
+    }
   };
 };
 const ignoredKeys = new Set([
@@ -208,7 +208,7 @@ const ignoredKeys = new Set([
   "parent",
   "range",
   "start",
-  "tokens",
+  "tokens"
 ]);
 /**
  * Return whether node.
@@ -228,7 +228,7 @@ const children = node =>
         ? value.filter(isNode)
         : isNode(value)
           ? [value]
-          : [],
+          : []
     );
 /**
  * Return key name.
@@ -326,7 +326,7 @@ const usesReceiver = fn =>
   containsDirectSemanticUse(
     fn,
     /** @param {*} node */
-    node => node.type === "ThisExpression" || node.type === "Super",
+    node => node.type === "ThisExpression" || node.type === "Super"
   );
 /**
  * Handle uses arguments.
@@ -336,7 +336,7 @@ const usesArguments = fn =>
   containsDirectSemanticUse(
     fn,
     /** @param {*} node */
-    node => node.type === "Identifier" && node.name === "arguments",
+    node => node.type === "Identifier" && node.name === "arguments"
   );
 /**
  * Handle uses new target.
@@ -349,7 +349,7 @@ const usesNewTarget = fn =>
     node =>
       node.type === "MetaProperty" &&
       node.meta?.name === "new" &&
-      node.property?.name === "target",
+      node.property?.name === "target"
   );
 /**
  * Return whether yield.
@@ -359,7 +359,7 @@ const hasYield = fn =>
   containsDirectSemanticUse(
     fn,
     /** @param {*} node */
-    node => node.type === "YieldExpression",
+    node => node.type === "YieldExpression"
   );
 /**
  * Handle source text.
@@ -462,7 +462,7 @@ const makeBlock = value => {
     name,
     ownerClass = null,
     isStatic = false,
-    methodKind = null,
+    methodKind = null
   } = value;
   const arrowCurrent = fn.type === "ArrowFunctionExpression";
   const receiver = usesReceiver(fn);
@@ -520,7 +520,7 @@ const makeBlock = value => {
     static_eligible: staticEligible,
     uses_arguments: argumentsUse,
     uses_new_target: newTargetUse,
-    uses_this_or_super: receiver,
+    uses_this_or_super: receiver
   };
 };
 /** @type {Array<*>} */
@@ -547,8 +547,8 @@ const walk = (node, parent = null) => {
         ownerClass: classStack.at(-1) ?? null,
         isStatic: Boolean(node.static),
         methodKind: node.kind ?? "method",
-        parent,
-      }),
+        parent
+      })
     );
   else if (
     node.type === "PropertyDefinition" &&
@@ -565,8 +565,8 @@ const walk = (node, parent = null) => {
         ownerClass: classStack.at(-1) ?? null,
         isStatic: Boolean(node.static),
         methodKind: "field",
-        parent,
-      }),
+        parent
+      })
     );
   else if (node.type === "FunctionDeclaration")
     blocks.push(
@@ -575,8 +575,8 @@ const walk = (node, parent = null) => {
         fn: node,
         kind: "function_declaration",
         name: inferredName(node, parent),
-        parent,
-      }),
+        parent
+      })
     );
   else if (
     node.type === "FunctionExpression" &&
@@ -590,8 +590,8 @@ const walk = (node, parent = null) => {
         fn: node,
         kind: "function_expression",
         name: inferredName(node, parent),
-        parent,
-      }),
+        parent
+      })
     );
   else if (node.type === "Property" && node.method && node.kind === "init")
     blocks.push(
@@ -601,8 +601,8 @@ const walk = (node, parent = null) => {
         kind: "object_method",
         name: keyName(node.key, node.computed),
         methodKind: "method",
-        parent,
-      }),
+        parent
+      })
     );
   else if (
     node.type === "ArrowFunctionExpression" &&
@@ -614,8 +614,8 @@ const walk = (node, parent = null) => {
         fn: node,
         kind: "arrow_function",
         name: inferredName(node, parent),
-        parent,
-      }),
+        parent
+      })
     );
   children(node).forEach(child => {
     walk(child, node);
@@ -632,7 +632,7 @@ const analyze = () => {
     (left, right) =>
       left.line_start - right.line_start ||
       left.column_start - right.column_start ||
-      left.line_end - right.line_end,
+      left.line_end - right.line_end
   );
   return blocks;
 };
@@ -719,7 +719,7 @@ const methodText = (node, fn) => {
 const edit = (node, replacement) => ({
   end: node.range[1],
   replacement,
-  start: node.range[0],
+  start: node.range[0]
 });
 /**
  * Return an edit converting a function to an arrow function.
@@ -747,7 +747,7 @@ const toArrowEdit = (node, parent, automatic = false) => {
     return edit(
       node,
       `${node.static || !receiver ? "static " : ""}` +
-        `${keyName(node.key, node.computed)} = ${arrowText(fn)};`,
+        `${keyName(node.key, node.computed)} = ${arrowText(fn)};`
     );
   }
   if (
@@ -766,7 +766,7 @@ const toArrowEdit = (node, parent, automatic = false) => {
     return edit(
       node,
       `${node.static ? "static " : ""}` +
-        `${keyName(node.key, node.computed)} = ${arrowText(fn)};`,
+        `${keyName(node.key, node.computed)} = ${arrowText(fn)};`
     );
   }
   if (node.type === "FunctionDeclaration" && node.id) {
@@ -880,7 +880,7 @@ const applyEdits = edits =>
   edits
     .sort(
       /** @param {*} left @param {*} right */ (left, right) =>
-        right.start - left.start,
+        right.start - left.start
     )
     .reduce(
       /** @param {string} text @param {*} current */
@@ -888,7 +888,7 @@ const applyEdits = edits =>
         text.slice(0, current.start) +
         current.replacement +
         text.slice(current.end),
-      source,
+      source
     );
 if (input.action === "convert") {
   if (
@@ -903,8 +903,8 @@ if (input.action === "convert") {
     JSON.stringify({
       changed: converted !== source,
       source: converted,
-      transformations: edits.length,
-    }),
+      transformations: edits.length
+    })
   );
 } else if (input.action === "analyze")
   process.stdout.write(JSON.stringify(analyze()));

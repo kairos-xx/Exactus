@@ -48,71 +48,71 @@ export const OPERATORS = Object.freeze([
     kind: "compare",
     left: ["number", "string", "boolean", "any"],
     ordered: false,
-    detail: "Is equal to",
+    detail: "Is equal to"
   },
   {
     symbol: "!=",
     kind: "compare",
     left: ["number", "string", "boolean", "any"],
     ordered: false,
-    detail: "Is not equal to",
+    detail: "Is not equal to"
   },
   {
     symbol: ">",
     kind: "compare",
     left: ["number", "string"],
     ordered: true,
-    detail: "Is greater than",
+    detail: "Is greater than"
   },
   {
     symbol: ">=",
     kind: "compare",
     left: ["number", "string"],
     ordered: true,
-    detail: "Is at least",
+    detail: "Is at least"
   },
   {
     symbol: "<",
     kind: "compare",
     left: ["number", "string"],
     ordered: true,
-    detail: "Is less than",
+    detail: "Is less than"
   },
   {
     symbol: "<=",
     kind: "compare",
     left: ["number", "string"],
     ordered: true,
-    detail: "Is at most",
+    detail: "Is at most"
   },
   {
     symbol: "in",
     kind: "membership",
     left: ["string"],
     ordered: false,
-    detail: "The text is part of another text",
+    detail: "The text is part of another text"
   },
   {
     symbol: "not in",
     kind: "membership",
     left: ["string"],
     ordered: false,
-    detail: "The text is not part of another text",
+    detail: "The text is not part of another text"
   },
   {
     symbol: "and",
     kind: "logic",
     left: ["boolean", "number", "string", "any"],
     ordered: false,
-    detail: "Both sides must hold",
+    detail: "Both sides must hold"
   },
   {
     symbol: "or",
     kind: "logic",
     left: ["boolean", "number", "string", "any"],
     ordered: false,
-    detail: "Either side may hold",
-  },
+    detail: "Either side may hold"
+  }
 ]);
 /**
  * @typedef {object} FunctionInfo
@@ -129,20 +129,20 @@ export const FUNCTIONS = Object.freeze([
     name: "exists",
     args: ["any"],
     labels: ["value"],
-    detail: "True when the value is set",
+    detail: "True when the value is set"
   },
   {
     name: "contains",
     args: ["string", "string"],
     labels: ["text", "part"],
-    detail: "True when the first text contains the second",
+    detail: "True when the first text contains the second"
   },
   {
     name: "matches",
     args: ["string", "string"],
     labels: ["text", "pattern"],
-    detail: "True when the text matches the pattern",
-  },
+    detail: "True when the text matches the pattern"
+  }
 ]);
 /** The literal names and what each is.
  * @type {Readonly<Record<string, Semantic>>}
@@ -150,7 +150,7 @@ export const FUNCTIONS = Object.freeze([
 export const LITERALS = Object.freeze({
   True: "boolean",
   False: "boolean",
-  None: "none",
+  None: "none"
 });
 /** Plain-language names for the types, for messages. */
 const TYPE_WORDS = Object.freeze({
@@ -158,7 +158,7 @@ const TYPE_WORDS = Object.freeze({
   number: "a number",
   string: "text",
   none: "nothing",
-  any: "a value",
+  any: "a value"
 });
 /** Words people reach for from other languages, and what to write instead.
  * @type {Readonly<Record<string, string>>}
@@ -174,7 +174,7 @@ const ALIASES = Object.freeze({
   none: "None",
   AND: "and",
   OR: "or",
-  NOT: "not",
+  NOT: "not"
 });
 /** Map a server value type to what a condition can tell about it.
  * @param {string} valueType
@@ -219,7 +219,7 @@ export const tokenize = (text, terms = []) => {
         kind: "unknown",
         text: word,
         start: at,
-        end: at + word.length,
+        end: at + word.length
       };
       const term = byName.get(word);
       if (term) {
@@ -243,7 +243,7 @@ export const tokenize = (text, terms = []) => {
         text: found[0],
         start: at,
         end: at + found[0].length,
-        semantic: "number",
+        semantic: "number"
       });
       at += found[0].length;
     } else if (char === '"' || char === "'") {
@@ -258,7 +258,7 @@ export const tokenize = (text, terms = []) => {
         text: text.slice(at, end),
         start: at,
         end,
-        semantic: "string",
+        semantic: "string"
       };
       if (!closed) token.note = "This text is missing its closing quote.";
       tokens.push(token);
@@ -268,14 +268,14 @@ export const tokenize = (text, terms = []) => {
         kind: "compare",
         text: found[0],
         start: at,
-        end: at + found[0].length,
+        end: at + found[0].length
       });
       at += found[0].length;
     } else if (char === "(" || char === ")") {
-      tokens.push({ kind: "paren", text: char, start: at, end: at + 1 });
+      tokens.push({kind: "paren", text: char, start: at, end: at + 1});
       at += 1;
     } else if (char === ",") {
-      tokens.push({ kind: "comma", text: char, start: at, end: at + 1 });
+      tokens.push({kind: "comma", text: char, start: at, end: at + 1});
       at += 1;
     } else {
       const word = /^(?:&&|\|\||[=!&|]+|\S)/.exec(rest)?.[0] ?? char;
@@ -284,7 +284,7 @@ export const tokenize = (text, terms = []) => {
         kind: "unknown",
         text: word,
         start: at,
-        end: at + word.length,
+        end: at + word.length
       };
       const alias = ALIASES[word];
       if (alias) token.note = `Write ${alias} instead.`;
@@ -301,7 +301,7 @@ export const tokenize = (text, terms = []) => {
  */
 const distance = (left, right) => {
   /** @type {number[]} */
-  let row = Array.from({ length: right.length + 1 }, (_, index) => index);
+  let row = Array.from({length: right.length + 1}, (_, index) => index);
   for (let i = 1; i <= left.length; i += 1) {
     const next = [i];
     for (let j = 1; j <= right.length; j += 1)
@@ -310,8 +310,8 @@ const distance = (left, right) => {
           (next[j - 1] ?? 0) + 1,
           (row[j] ?? 0) + 1,
           (row[j - 1] ?? 0) +
-            (left.charAt(i - 1) === right.charAt(j - 1) ? 0 : 1),
-        ),
+            (left.charAt(i - 1) === right.charAt(j - 1) ? 0 : 1)
+        )
       );
     row = next;
   }
@@ -369,7 +369,7 @@ export const analyse = (text, terms, selectors = []) => {
    */
   const report = (token, message, level = "error") => {
     const start = token ? token.start : text.length;
-    issues.push({ start, end: token ? token.end : start, message, level });
+    issues.push({start, end: token ? token.end : start, message, level});
   };
   /** Return the current token. */
   const peek = () => tokens[at];
@@ -380,14 +380,14 @@ export const analyse = (text, terms, selectors = []) => {
    */
   const isText = wanted =>
     peek()?.text === wanted && peek()?.kind !== "string";
-  for (const token of tokens) {
+  for (const token of tokens)
     if (token.note) report(token, token.note);
     else if (token.kind === "unknown" && !token.note) {
       const word = token.text;
       if (/^[A-Za-z_]/.test(word)) {
         const missing =
           /^sel_([A-Za-z][A-Za-z0-9_]*?)_(?:count|exists|visible|text|enabled)$/.exec(
-            word,
+            word
           );
         const name = missing?.[1] ?? "";
         if (name && !selectors.includes(name))
@@ -396,12 +396,11 @@ export const analyse = (text, terms, selectors = []) => {
           const near = closest(word, terms);
           report(
             token,
-            `${word} is not a name a condition can use.${near ? ` Did you mean ${near}?` : ""}`,
+            `${word} is not a name a condition can use.${near ? ` Did you mean ${near}?` : ""}`
           );
         }
       } else report(token, `${word} is not allowed in a condition.`);
     }
-  }
   /**
    * Create a missing-value tree node.
    * @param {string} label Missing-value label.
@@ -414,7 +413,7 @@ export const analyse = (text, terms, selectors = []) => {
       start: where,
       end: where,
       semantic: "any",
-      label,
+      label
     };
   };
   /** The grammar, one rule per precedence level. The rules call each other,
@@ -427,7 +426,7 @@ export const analyse = (text, terms, selectors = []) => {
     not: () => missing("value"),
     compare: () => missing("value"),
     primary: () => missing("value"),
-    call: () => missing("value"),
+    call: () => missing("value")
   };
   /**
    * Join two tree nodes with a named operator.
@@ -443,7 +442,7 @@ export const analyse = (text, terms, selectors = []) => {
     semantic: "boolean",
     left,
     name,
-    right,
+    right
   });
   rules.or = () => {
     let node = rules.and();
@@ -474,7 +473,7 @@ export const analyse = (text, terms, selectors = []) => {
         end: Math.max(operand.end, name.end),
         semantic: "boolean",
         name,
-        operand,
+        operand
       };
     }
     return rules.compare();
@@ -500,7 +499,7 @@ export const analyse = (text, terms, selectors = []) => {
           kind: "membership",
           text: "not in",
           start: token.start,
-          end: inside.end,
+          end: inside.end
         };
         at += 1;
       } else break;
@@ -514,7 +513,7 @@ export const analyse = (text, terms, selectors = []) => {
         if (left === "boolean" || there === "boolean")
           report(
             name,
-            `${symbol} compares numbers or text, not ${TYPE_WORDS.boolean}.`,
+            `${symbol} compares numbers or text, not ${TYPE_WORDS.boolean}.`
           );
         else if (
           !compatible(left, there) ||
@@ -523,7 +522,7 @@ export const analyse = (text, terms, selectors = []) => {
         )
           report(
             name,
-            `Compare numbers with numbers and text with text; this compares ${TYPE_WORDS[left]} with ${TYPE_WORDS[there]}.`,
+            `Compare numbers with numbers and text with text; this compares ${TYPE_WORDS[left]} with ${TYPE_WORDS[there]}.`
           );
       } else if (info?.kind === "membership") {
         if (
@@ -539,7 +538,7 @@ export const analyse = (text, terms, selectors = []) => {
         report(
           name,
           `${TYPE_WORDS[left]} is never equal to ${TYPE_WORDS[there]}.`,
-          "warning",
+          "warning"
         );
       node = join(node, name, right);
       if (!rightToken) break;
@@ -563,7 +562,7 @@ export const analyse = (text, terms, selectors = []) => {
         start: token.start,
         end: token.end,
         semantic: token.semantic ?? "any",
-        token,
+        token
       };
     }
     if (
@@ -577,7 +576,7 @@ export const analyse = (text, terms, selectors = []) => {
         start: token.start,
         end: token.end,
         semantic: token.semantic ?? "any",
-        token,
+        token
       };
     }
     if (token.kind === "function") return rules.call(token);
@@ -594,7 +593,7 @@ export const analyse = (text, terms, selectors = []) => {
         start: token.start,
         end,
         semantic: operand.semantic,
-        operand,
+        operand
       };
     }
     if (token.kind === "unknown") {
@@ -604,7 +603,7 @@ export const analyse = (text, terms, selectors = []) => {
         start: token.start,
         end: token.end,
         semantic: "any",
-        token,
+        token
       };
     }
     report(token, `${token.text} cannot start a value here.`);
@@ -622,12 +621,12 @@ export const analyse = (text, terms, selectors = []) => {
       semantic: "boolean",
       name: token,
       args: [],
-      close: token.end,
+      close: token.end
     };
     if (!isText("(")) {
       report(
         token,
-        `${token.text} is called with parentheses, like ${token.text}(…).`,
+        `${token.text} is called with parentheses, like ${token.text}(…).`
       );
       node.close = token.end;
       return node;
@@ -653,7 +652,7 @@ export const analyse = (text, terms, selectors = []) => {
       if (node.args.length !== info.args.length)
         report(
           token,
-          `${info.name}() takes ${info.args.length} ${info.args.length === 1 ? "value" : "values"}, not ${node.args.length}.`,
+          `${info.name}() takes ${info.args.length} ${info.args.length === 1 ? "value" : "values"}, not ${node.args.length}.`
         );
       else
         info.args.forEach((wanted, index) => {
@@ -661,7 +660,7 @@ export const analyse = (text, terms, selectors = []) => {
           if (wanted === "string" && !compatible("string", got))
             report(
               token,
-              `Value ${index + 1} of ${info.name}() must be text, not ${TYPE_WORDS[got]}.`,
+              `Value ${index + 1} of ${info.name}() must be text, not ${TYPE_WORDS[got]}.`
             );
         });
       // A call short of arguments shows what each missing one is for.
@@ -673,7 +672,7 @@ export const analyse = (text, terms, selectors = []) => {
           end: where,
           semantic: info.args[index] ?? "any",
           label: info.labels[index] ?? "value",
-          lead: index > 0 ? ", " : "",
+          lead: index > 0 ? ", " : ""
         });
       }
     }
@@ -692,7 +691,7 @@ export const analyse = (text, terms, selectors = []) => {
       if (extra.kind !== "unknown")
         report(
           extra,
-          `${extra.text} does not fit here. Join conditions with and, or.`,
+          `${extra.text} does not fit here. Join conditions with and, or.`
         );
     } else if (semantic !== "boolean" && semantic !== "any") {
       const only =
@@ -701,11 +700,11 @@ export const analyse = (text, terms, selectors = []) => {
           : "";
       report(
         tokens[0],
-        `This gives ${TYPE_WORDS[semantic]}, not true or false.${only}`,
+        `This gives ${TYPE_WORDS[semantic]}, not true or false.${only}`
       );
     }
   }
-  return { tokens, issues, semantic, tree };
+  return {tokens, issues, semantic, tree};
 };
 /**
  * @typedef {object} Guidance What may come next at the caret.
@@ -736,7 +735,7 @@ export const guide = (before, terms) => {
       operand = false;
       left = "boolean";
     } else if (token.kind === "paren" && token.text === "(") {
-      stack.push({ call: callName || null, index: 0 });
+      stack.push({call: callName || null, index: 0});
       callName = "";
       operand = true;
       pending = null;
@@ -773,7 +772,7 @@ export const guide = (before, terms) => {
     left,
     closable: stack.length > 0,
     pending,
-    call: top?.call ? { name: top.call, index: top.index } : null,
+    call: top?.call ? {name: top.call, index: top.index} : null
   };
 };
 /**
@@ -794,20 +793,20 @@ export const suggestNext = (before, fragment, terms) => {
   /** @type {Suggestion[]} */
   const options = [];
   if (state.position === "call")
-    options.push({ text: "(", kind: "paren", detail: "Open the call" });
+    options.push({text: "(", kind: "paren", detail: "Open the call"});
   else if (state.position === "operator") {
     for (const info of OPERATORS)
       if (info.left.includes(state.left) || state.left === "any")
         options.push({
           text: info.symbol,
           kind: info.kind === "logic" ? "logic" : info.kind,
-          detail: info.detail,
+          detail: info.detail
         });
     if (state.closable)
       options.push({
         text: ")",
         kind: "paren",
-        detail: "Close the group or call",
+        detail: "Close the group or call"
       });
     if (
       state.call &&
@@ -816,7 +815,7 @@ export const suggestNext = (before, fragment, terms) => {
           .length ?? 1) -
           1
     )
-      options.push({ text: ",", kind: "comma", detail: "Next value" });
+      options.push({text: ",", kind: "comma", detail: "Next value"});
   } else {
     const wantedType = state.pending
       ? state.pending.kind === "membership"
@@ -837,16 +836,16 @@ export const suggestNext = (before, fragment, terms) => {
         text: term.name,
         kind: term.kind,
         detail: term.detail,
-        type: TYPE_WORDS[semantic],
+        type: TYPE_WORDS[semantic]
       });
     }
     if (!state.pending) {
-      options.push({ text: "not", kind: "logic", detail: "The opposite" });
+      options.push({text: "not", kind: "logic", detail: "The opposite"});
       for (const info of FUNCTIONS)
         options.push({
           text: info.name,
           kind: "function",
-          detail: info.detail,
+          detail: info.detail
         });
     }
     if (!ordered && (wantedType === "boolean" || wantedType === "any"))
@@ -854,18 +853,18 @@ export const suggestNext = (before, fragment, terms) => {
         options.push({
           text: literal,
           kind: "literal",
-          detail: "A fixed true or false",
+          detail: "A fixed true or false"
         });
   }
   const wanted = fragment.toLowerCase();
   const starts = options.filter(item =>
-    item.text.toLowerCase().startsWith(wanted),
+    item.text.toLowerCase().startsWith(wanted)
   );
   if (!wanted) return starts;
   const inside = options.filter(
     item =>
       !item.text.toLowerCase().startsWith(wanted) &&
-      item.text.toLowerCase().includes(wanted),
+      item.text.toLowerCase().includes(wanted)
   );
   return [...starts, ...inside].filter(item => item.text !== fragment);
 };

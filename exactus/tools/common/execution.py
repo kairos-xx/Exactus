@@ -6,6 +6,8 @@ from __future__ import annotations
 from collections import deque
 from contextlib import contextmanager, suppress
 from dataclasses import dataclass, replace
+from datetime import UTC, datetime, timedelta
+from importlib import import_module
 from json import JSONDecodeError, dumps, loads
 from logging import Logger, getLogger
 from os import (
@@ -27,9 +29,9 @@ from signal import Handlers, Signals, signal
 from stat import S_IRWXU, S_ISREG
 from sys import argv, stderr, stdout
 from threading import Event, Lock, Thread, current_thread, main_thread
-from time import monotonic
+from time import monotonic, sleep
 from traceback import format_exc
-from types import FrameType, TracebackType
+from types import FrameType, ModuleType, TracebackType
 from typing import TYPE_CHECKING, Final, Self, cast
 from typing import final as _group_final_final
 
@@ -43,7 +45,9 @@ from exactus.tools.common.activity import (
     ActivityProgress,
     ActivityTables,
 )
-from exactus.tools.common.catalog import Constants as _GroupFinalConstants
+from exactus.tools.common.catalog import (
+    GroupFinalConstants as _GroupFinalConstants,
+)
 from exactus.tools.common.cli import consume
 from exactus.tools.common.collect_files import collect_report_files, requested
 from exactus.tools.common.config import (
@@ -63,6 +67,7 @@ from exactus.tools.common.process_control import (
     exit_if_replaced,
     new_run_id,
     pause_tree,
+    process_exists,
     resume_tree,
     terminate_tree,
 )
@@ -349,31 +354,127 @@ def _report_output(*, analyzer: str) -> Path:
     return output
 
 
-def _terminate_live_run(*, output: Path) -> None:
-    """Terminate a live run recorded in ``ARTIFACTS/@activity.json``.
+def _running_pid(*, document: ActivityDocument | None) -> int | None:
+    """Return the live process id of a running activity document.
+
+    Args:
+        document: Decoded ``@activity.json`` document, when readable.
+
+    Returns:
+        The heartbeat pid while its process is still alive and still
+        beating, or ``None`` when the document is missing, terminal,
+        malformed, stale, or owned by a dead process.
+
+    """
+    if document is None or document.status != "RUNNING":
+        return None
+    pid: int | None = document.heartbeat.pid
+    if (
+        not isinstance(pid, int)
+        or isinstance(pid, bool)
+        or pid <= 0
+        or not process_exists(pid=pid)
+    ):
+        return None
+    last_beat: str | None = document.heartbeat.last_beat
+    try:
+        beat: datetime = (
+            datetime.fromisoformat(last_beat)
+            if last_beat is not None
+            else datetime.fromtimestamp(0, tz=UTC)
+        )
+    except ValueError:
+        return None
+    grace: float = max(30.0, document.heartbeat.interval_seconds * 3)
+    fresh: bool = datetime.now(tz=UTC) - beat <= timedelta(seconds=grace)
+    return pid if fresh else None
+
+
+def _observe_live_run(*, output: Path) -> None:
+    """Wait out a live run recorded in ``ARTIFACTS/@activity.json``.
+
+    An orphaned ``RUNNING`` heartbeat whose process is gone returns
+    immediately; a genuinely live run is observed until it reaches a
+    terminal state instead of being killed.
 
     Args:
         output: Analyzer report directory.
 
     """
-    document: ActivityDocument | None = ActivityFile.read(
-        path=_activity_path(output=output),
-    )
-    if document is None:
-        return
-    pid: int | None = document.heartbeat.pid
-    if document.status == "RUNNING" and pid is not None:
-        terminate_tree(pid=pid, replaced=True)
+    path: Path = _activity_path(output=output)
+    while _running_pid(document=ActivityFile.read(path=path)) is not None:
+        sleep(1.0)
 
 
-def _claim_run(
+def _observe_tool_run(
     *,
     analyzer: str,
     output: Path,
     run_id: str,
     pipeline_run_id: str | None,
-) -> RunRegistry:
-    """Register this run and terminate every live conflicting run.
+) -> ToolRunResult | None:
+    """Wait for a conflicting live run and adopt its report.
+
+    Args:
+        analyzer: Stable exactus analyzer name.
+        output: Conflicting run's report directory.
+        run_id: Conflicting run identifier.
+        pipeline_run_id: Conflicting run's owning pipeline, when any.
+
+    Returns:
+        The adopted result when the observed run wrote a report, or
+        ``None`` so the caller can run the tool itself.
+
+    """
+    activity: Path = _activity_path(output=output)
+    while _running_pid(document=ActivityFile.read(path=activity)) is not None:
+        sleep(1.0)
+    result_path: Path = output / "result.json"
+    try:
+        value: JsonValue = cast(
+            typ="JsonValue",
+            val=loads(s=result_path.read_text(encoding="utf-8")),
+        )
+    except (OSError, JSONDecodeError, UnicodeDecodeError):
+        return None
+    if not isinstance(value, dict):
+        return None
+    status: JsonValue = value.get("status", "FAIL")
+    passed: bool = status == "PASS"
+    duration: JsonValue = value.get(
+        "duration_seconds",
+        value.get("elapsed_seconds"),
+    )
+    return ToolRunResult(
+        tool=analyzer,
+        run_id=run_id,
+        pipeline_run_id=pipeline_run_id,
+        status=str(object=status),
+        passed=passed,
+        exit_code=0 if passed else 1,
+        duration_seconds=(
+            float(duration) if isinstance(duration, int | float) else 0.0
+        ),
+        resume=str(object=value.get("resume", "")),
+        report=output / "result.md",
+        report_json=result_path,
+        report_web=output / "result_web" / "index.html",
+    )
+
+
+def _join_or_reset_conflicts(
+    *,
+    analyzer: str,
+    output: Path,
+    run_id: str,
+    pipeline_run_id: str | None,
+) -> RunRegistry | ToolRunResult:
+    """Register this run and join or reset every live conflicting run.
+
+    Conflicting workers reachable through pmanager receive a reset and
+    restart in place; every live conflict is then observed to a terminal
+    state and its report adopted. Termination stays a last resort for
+    conflicts that neither reset nor produce a report.
 
     Args:
         analyzer: Stable exactus analyzer name.
@@ -382,7 +483,8 @@ def _claim_run(
         pipeline_run_id: Owning pipeline run identifier, when any.
 
     Returns:
-        The shared registry this run was recorded in.
+        The shared registry to proceed with this run, or an adopted
+        ``ToolRunResult`` when an observed run settles the work.
 
     """
     registry: RunRegistry = RunRegistry.for_output(output=output)
@@ -398,11 +500,40 @@ def _claim_run(
         ),
     )
     if conflicts is None:
-        _terminate_live_run(output=output)
+        _observe_live_run(output=output)
         return registry
+    tool_worker: ModuleType = import_module(
+        name="exactus.tools.common.tool_worker",
+    )
+    root: Path = (
+        Path(environment).resolve()
+        if (environment := environ.get("EXACTUS_ROOT"))
+        else Path.cwd()
+    )
     conflict: RunRecord
     for conflict in conflicts:
-        terminate_tree(pid=conflict.pid, replaced=True)
+        owner: str = conflict.pipeline_run_id or conflict.run_id
+        descriptor: Descriptor | None = Discovery.find(
+            name=conflict.identifier,
+            context=tool_worker.tool_context(root=root, owner=owner),
+        )
+        if descriptor is not None:
+            _ = tool_worker.reset_worker(descriptor=descriptor)
+        observed: ToolRunResult | None = _observe_tool_run(
+            analyzer=analyzer,
+            output=Path(conflict.output),
+            run_id=conflict.run_id,
+            pipeline_run_id=conflict.pipeline_run_id,
+        )
+        if observed is not None:
+            registry.finish(
+                run_id=run_id,
+                status="DONE",
+                elapsed_seconds=0.0,
+            )
+            return observed
+        if process_exists(pid=conflict.pid):
+            terminate_tree(pid=conflict.pid, replaced=True)
     return registry
 
 
@@ -640,6 +771,25 @@ def _heartbeat(*, context: _RunContext) -> None:
         _ = context.stop.wait(
             timeout=ExactusEntrypointTables.heartbeat_seconds,
         )
+
+
+def _start_heartbeat(*, context: _RunContext) -> Thread:
+    """Start the heartbeat daemon thread for one run.
+
+    Args:
+        context: Shared run state for heartbeat and signal helpers.
+
+    Returns:
+        Started daemon thread, joined during shutdown.
+
+    """
+    heartbeat: Thread = Thread(
+        target=_heartbeat,
+        kwargs={"context": context},
+        daemon=True,
+    )
+    heartbeat.start()
+    return heartbeat
 
 
 def _report_snapshot(*, output: Path) -> dict[Path, tuple[int, int]]:
@@ -1393,7 +1543,7 @@ def _stamp_json(
     *,
     path: Path,
     analyzer: str,
-    status: int,
+    result: str,
     elapsed_seconds: float,
     fallback: str,
 ) -> str:
@@ -1402,7 +1552,8 @@ def _stamp_json(
     Args:
         path: Analyzer JSON report path.
         analyzer: Stable analyzer identifier.
-        status: Analyzer process exit status.
+        result: Canonical verdict such as ``PASS``, ``FAIL``, ``ERROR``
+            or ``INTERRUPT``.
         elapsed_seconds: Tool wall-clock duration.
         fallback: Resume text used when the report supplies none.
 
@@ -1421,12 +1572,11 @@ def _stamp_json(
         return fallback
     if not isinstance(payload, dict):
         return fallback
-    result: str = "PASS" if status == 0 else "FAIL"
     payload["tool"] = analyzer
     payload["run_id"] = environ.get("EXACTUS_RUN_ID")
     payload["pipeline_run_id"] = environ.get("EXACTUS_PIPELINE_RUN_ID")
     payload["status"] = result
-    payload["passed"] = status == 0
+    payload["passed"] = result == "PASS"
     payload["duration_seconds"] = round(number=elapsed_seconds, ndigits=3)
     previous_duration: float | None = previous_report_duration(path=path)
     if previous_duration is not None:
@@ -1590,11 +1740,17 @@ def _stamp_result(
         Tool-provided or generated resume text.
 
     """
-    result: str = "PASS" if status == 0 else "FAIL"
+    result: str = (
+        "INTERRUPT"
+        if facts is not None and facts.status == "INTERRUPT"
+        else "PASS"
+        if status == 0
+        else "FAIL"
+    )
     resume: str = _stamp_json(
         path=output / "result.json",
         analyzer=analyzer,
-        status=status,
+        result=result,
         elapsed_seconds=elapsed_seconds,
         fallback=f"{result}: analyzer completed with exit status {status}.",
     )
@@ -2146,14 +2302,20 @@ def execute_exactus(
         if ids.pipeline_run_id is not None
         else environ.get("EXACTUS_PIPELINE_RUN_ID")
     )
-    registry: RunRegistry = _claim_run(
+    registry: RunRegistry | ToolRunResult = _join_or_reset_conflicts(
         analyzer=analyzer,
         output=resolved_output,
         run_id=run_id,
         pipeline_run_id=pipeline_run_id,
     )
-    environ["EXACTUS_RUN_ID"] = run_id
-    environ[RegistryTables.env_path] = str(object=registry.path)
+    if isinstance(registry, ToolRunResult):
+        return registry
+    environ.update(
+        {
+            "EXACTUS_RUN_ID": run_id,
+            RegistryTables.env_path: str(object=registry.path),
+        },
+    )
     _ = clear_conflict_copies(root=_sync_cleanup_root(output=resolved_output))
     capture_previous_reports(output=resolved_output)
     _prepare_output(output=resolved_output, run_id=run_id)
@@ -2181,12 +2343,7 @@ def execute_exactus(
     )
     context.log.record(message=f"started: {title}")
     _begin_tool_progress(analyzer=analyzer, title=title)
-    heartbeat: Thread = Thread(
-        target=_heartbeat,
-        kwargs={"context": context},
-        daemon=True,
-    )
-    heartbeat.start()
+    heartbeat: Thread = _start_heartbeat(context=context)
     previous_handlers: dict[Signals, SignalHandler] = (
         _install_terminate_handlers(
             context=context,
@@ -2255,6 +2412,13 @@ def execute_exactus(
         ),
     )
     _organize_artifacts(analyzer=analyzer, output=resolved_output)
+    verdict: str = (
+        "INTERRUPT"
+        if context.interrupted.is_set()
+        else "PASS"
+        if status == 0
+        else "FAIL"
+    )
     resume: str = _stamp_result(
         output=resolved_output,
         analyzer=analyzer,
@@ -2264,7 +2428,7 @@ def execute_exactus(
             analyzer=analyzer,
             title=title,
             status=(
-                "ERROR" if not reported else "PASS" if status == 0 else "FAIL"
+                verdict if reported or verdict == "INTERRUPT" else "ERROR"
             ),
             exit_code=status,
             error=error
@@ -2291,8 +2455,8 @@ def execute_exactus(
         tool=analyzer,
         run_id=context.run_id,
         pipeline_run_id=context.pipeline_run_id,
-        status="PASS" if status == 0 else "FAIL",
-        passed=status == 0,
+        status=verdict,
+        passed=verdict == "PASS",
         exit_code=status,
         duration_seconds=elapsed_seconds,
         resume=resume,

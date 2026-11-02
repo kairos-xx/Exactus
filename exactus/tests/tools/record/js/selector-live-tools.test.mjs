@@ -1,7 +1,7 @@
 /** The shared Pick/Highlight/strategy row every selector editing surface mounts. */
 import assert from "node:assert/strict";
 import test from "node:test";
-import { modulePage, WEB } from "./module-page.mjs";
+import {modulePage, WEB} from "./module-page.mjs";
 /** Run a scenario in a blank page with the live-tools module loaded as `tools`.
  * @param {import("node:test").TestContext} t Test context.
  * @param {string} body Async function body receiving `tools`.
@@ -19,7 +19,7 @@ const inTools = async (t, body) => {
       const state = () => {
         /** @type {any[]} */
         const calls = [];
-        const box = { value: "" };
+        const box = {value: ""};
         return {
           value: box,
           calls,
@@ -29,14 +29,14 @@ const inTools = async (t, body) => {
             setValue: next => {
               box.value = next;
               calls.push(["set", next]);
-            },
-          },
+            }
+          }
         };
       };
-      /** @type {any} */ (globalThis).env = { tools, state };
+      /** @type {any} */ (globalThis).env = {tools, state};
     }, WEB);
     outcome = await page.evaluate(
-      `(async () => { const { tools, state } = globalThis.env; ${body} })()`,
+      `(async () => { const { tools, state } = globalThis.env; ${body} })()`
     );
   });
   return outcome;
@@ -66,7 +66,7 @@ test("pick builds strategy choices and applies the single-match one", async t =>
        selected: strategy.value,
        value: s.value.value,
        count: document.querySelector(".selector-live-count").textContent,
-     };`,
+     };`
   );
   assert.deepEqual(out.labels, ["Pick on page", "Highlight on page"]);
   assert.deepEqual(out.disabled, [false, false]);
@@ -89,7 +89,7 @@ test("pick without alternatives hides the chooser and writes the selector", asyn
      pickedApply({ selector: "#one", matches: 1 });
      const strategy = document.querySelector(".selector-live-strategy");
      return { hidden: strategy.hidden, value: s.value.value,
-       count: document.querySelector(".selector-live-count").textContent };`,
+       count: document.querySelector(".selector-live-count").textContent };`
   );
   assert.equal(out.hidden, true);
   assert.equal(out.value, "#one");
@@ -115,7 +115,7 @@ test("choosing another strategy writes it and reports its matches", async t => {
      strategy.dispatchEvent(new Event("change"));
      return { value: s.value.value,
        count: document.querySelector(".selector-live-count").textContent,
-       calls: s.calls };`,
+       calls: s.calls };`
   );
   assert.equal(out.value, "div");
   assert.equal(out.count, "4 matches");
@@ -139,7 +139,7 @@ test("highlight reports the count and an empty value clears instead", async t =>
      s.value.value = "   ";
      highlight.click();
      return { checked, cleared: count.textContent,
-       empty: count.hasAttribute("data-empty"), calls: s.calls };`,
+       empty: count.hasAttribute("data-empty"), calls: s.calls };`
   );
   assert.equal(out.checked, "2 matches");
   assert.equal(out.cleared, "0 matches");
@@ -154,7 +154,7 @@ test("missing handlers leave both buttons disabled", async t => {
      document.body.replaceChildren(view.element);
      const buttons = [...document.querySelectorAll(".selector-live-actions button")];
      return { disabled: buttons.map(b => b.disabled),
-       count: document.querySelector(".selector-live-count").textContent };`,
+       count: document.querySelector(".selector-live-count").textContent };`
   );
   assert.deepEqual(out.disabled, [true, true]);
   assert.equal(out.count, "5 matches");
@@ -171,12 +171,12 @@ test("setCount words counts and empty states", async t => {
        view.setCount(value);
        seen.push([count.textContent, count.hasAttribute("data-empty")]);
      }
-     return seen;`,
+     return seen;`
   );
   assert.deepEqual(out, [
     ["Not checked", true],
     ["0 matches", false],
     ["1 match", false],
-    ["3 matches", false],
+    ["3 matches", false]
   ]);
 });

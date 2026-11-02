@@ -1,16 +1,16 @@
 /* global process */
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
-import { mkdtempSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
-import { join } from "node:path";
-import { fileURLToPath } from "node:url";
+import {spawnSync} from "node:child_process";
+import {mkdtempSync, writeFileSync} from "node:fs";
+import {tmpdir} from "node:os";
+import {join} from "node:path";
+import {fileURLToPath} from "node:url";
 import test from "node:test";
 const analyzer = fileURLToPath(
   new URL(
     "../../../../packages/organize/js/class_organizer.js",
-    import.meta.url,
-  ),
+    import.meta.url
+  )
 );
 const espree = fileURLToPath(new URL("./fake_espree.cjs", import.meta.url));
 /**
@@ -29,8 +29,8 @@ const execute = (source, extra = {}) => {
       action: "analyze",
       file,
       espree,
-      ...extra,
-    }),
+      ...extra
+    })
   });
 };
 /**
@@ -45,13 +45,13 @@ const output = result => {
 test("analyzes declarations, methods, arrows and class ownership", () => {
   const result = output(
     execute(
-      `/*SCENARIO_ANALYZE*/\nfunction free(x) { return x; }\nclass Demo { method(y) { return y; } }\nconst arrow = z => z;`,
-    ),
+      `/*SCENARIO_ANALYZE*/\nfunction free(x) { return x; }\nclass Demo { method(y) { return y; } }\nconst arrow = z => z;`
+    )
   );
   assert.equal(result.length, 3);
   assert.deepEqual(
     result.map(/** @param {*} item */ item => item.kind),
-    ["function_declaration", "method", "arrow_function"],
+    ["function_declaration", "method", "arrow_function"]
   );
   assert.equal(result[1].class_name, "Demo");
   assert.equal(result[1].recommendation, "make static arrow");
@@ -62,8 +62,8 @@ test("converts compact arrows including object returns and static methods", () =
   const result = output(
     execute(source, {
       action: "convert",
-      direction: "to_arrow",
-    }),
+      direction: "to_arrow"
+    })
   );
   assert.equal(result.transformations, 3);
   assert.match(result.source, /const double = x => x \* 2;/);
@@ -84,8 +84,8 @@ test("reports semantic blockers and leaves blocked methods unchanged", () => {
   const converted = output(
     execute(source, {
       action: "convert",
-      direction: "to_arrow",
-    }),
+      direction: "to_arrow"
+    })
   );
   assert.equal(converted.changed, false);
   assert.equal(converted.transformations, 0);
@@ -95,13 +95,13 @@ test("converts arrows back to ordinary function and static method notation", () 
   const result = output(
     execute(source, {
       action: "convert",
-      direction: "from_arrow",
-    }),
+      direction: "from_arrow"
+    })
   );
   assert.equal(result.transformations, 2);
   assert.match(
     result.source,
-    /const inc = function\(x\) \{ return x \+ 1; \};/,
+    /const inc = function\(x\) \{ return x \+ 1; \};/
   );
   assert.match(result.source, /static twice\(x\) \{ return x \* 2; \}/);
 });
@@ -112,7 +112,7 @@ test("falls back from module to script parsing", () => {
 test("rejects unsupported conversion directions", () => {
   const result = execute("/*SCENARIO_SCRIPT_FALLBACK*/", {
     action: "convert",
-    direction: "sideways",
+    direction: "sideways"
   });
   assert.notEqual(result.status, 0);
   assert.match(result.stderr, /Unsupported conversion direction/);
@@ -122,20 +122,20 @@ test("covers function expressions, class fields, static methods and object metho
   const analysis = output(execute(source));
   assert.deepEqual(
     analysis.map(/** @param {*} item */ item => item.kind),
-    ["function_expression", "class_field", "method", "object_method"],
+    ["function_expression", "class_field", "method", "object_method"]
   );
   assert.equal(analysis[0].name, "work");
   assert.equal(analysis[2].recommendation, "use static arrow");
   const converted = output(
     execute(source, {
       action: "convert",
-      direction: "to_arrow",
-    }),
+      direction: "to_arrow"
+    })
   );
   assert.equal(converted.transformations, 4);
   assert.match(
     converted.source,
-    /target\.work = async a => \{ const q = 1; return q; \}/,
+    /target\.work = async a => \{ const q = 1; return q; \}/
   );
   assert.match(converted.source, /field = v => v;/);
   assert.match(converted.source, /static ready = \(\) => 1;/);
@@ -146,8 +146,8 @@ test("does not reverse lexical arrows that use this", () => {
   const result = output(
     execute(source, {
       action: "convert",
-      direction: "from_arrow",
-    }),
+      direction: "from_arrow"
+    })
   );
   assert.equal(result.transformations, 0);
   assert.equal(result.changed, false);
@@ -167,15 +167,15 @@ test("distinguishes nested ordinary and lexical receiver ownership", () => {
       .map(
         /** @param {*} item */ item => [
           `${item.name}:${item.method_kind}`,
-          item,
-        ],
-      ),
+          item
+        ]
+      )
   );
   assert.equal(byName["nestedRegular:method"].uses_this_or_super, false);
   assert.equal(byName["nestedRegular:method"].static_eligible, true);
   assert.equal(
     byName["nestedRegular:method"].recommendation,
-    "make static arrow",
+    "make static arrow"
   );
   assert.equal(byName["nestedArrow:method"].uses_this_or_super, true);
   assert.equal(byName["nestedArrow:method"].static_eligible, false);
@@ -188,27 +188,27 @@ test("distinguishes nested ordinary and lexical receiver ownership", () => {
 test("classifies accessors constructors and generators as non-arrow callables", () => {
   const source = `/*SCENARIO_DEEP_METHODS*/\nclass Deep { nestedRegular() { function inner() { return this.x; } return 1; } nestedArrow() { const inner = () => this.x; return inner(); } receiver() { return this.x; } static utility(x) { return x; } plain(x) { return x; } async load(x) { return x; } get value() { return this.x; } set value(v) { this.x = v; } constructor() { this.x = 1; } *items() { yield 1; } }`;
   const methods = output(execute(source)).filter(
-    /** @param {*} item */ item => item.kind === "method",
+    /** @param {*} item */ item => item.kind === "method"
   );
   const getter = methods.find(
-    /** @param {*} item */ item => item.method_kind === "get",
+    /** @param {*} item */ item => item.method_kind === "get"
   );
   const setter = methods.find(
-    /** @param {*} item */ item => item.method_kind === "set",
+    /** @param {*} item */ item => item.method_kind === "set"
   );
   const constructor = methods.find(
-    /** @param {*} item */ item => item.method_kind === "constructor",
+    /** @param {*} item */ item => item.method_kind === "constructor"
   );
   const generator = methods.find(
-    /** @param {*} item */ item => item.name === "items",
+    /** @param {*} item */ item => item.name === "items"
   );
   assert.deepEqual(getter.arrow_blockers.sort(), [
     "dynamic this/super",
-    "getter",
+    "getter"
   ]);
   assert.deepEqual(setter.arrow_blockers.sort(), [
     "dynamic this/super",
-    "setter",
+    "setter"
   ]);
   assert.ok(constructor.arrow_blockers.includes("constructor"));
   assert.ok(generator.arrow_blockers.includes("generator/yield"));
@@ -221,8 +221,8 @@ test("automatic normalization follows static and arrow conventions", () => {
   const result = output(
     execute(source, {
       action: "convert",
-      direction: "normalize",
-    }),
+      direction: "normalize"
+    })
   );
   assert.equal(result.transformations, 1);
   assert.match(result.source, /nestedRegular\(\) \{/);
@@ -242,8 +242,8 @@ test("normalization applies compact parameter conventions", () => {
   const result = output(
     execute(source, {
       action: "convert",
-      direction: "normalize",
-    }),
+      direction: "normalize"
+    })
   );
   assert.equal(result.transformations, 0);
   assert.equal(result.source, source);
@@ -253,8 +253,8 @@ test("normalization is idempotent for already-arrow callables", () => {
   const result = output(
     execute(source, {
       action: "convert",
-      direction: "normalize",
-    }),
+      direction: "normalize"
+    })
   );
   assert.equal(result.transformations, 0);
   assert.equal(result.changed, false);
@@ -265,7 +265,7 @@ test("blocks receiver-free functions whose ordinary identity is observable", () 
   const analysis = output(execute(source));
   /** @type {*} */
   const byName = Object.fromEntries(
-    analysis.map(/** @param {*} item */ item => [item.name, item]),
+    analysis.map(/** @param {*} item */ item => [item.name, item])
   );
   assert.ok(byName.hoisted.arrow_blockers.includes("declaration hoisting"));
   assert.ok(byName.Ctor.arrow_blockers.includes("constructible/new"));
@@ -282,8 +282,8 @@ test("normalization converts only the semantically safe receiver-free function",
   const result = output(
     execute(source, {
       action: "convert",
-      direction: "normalize",
-    }),
+      direction: "normalize"
+    })
   );
   assert.equal(result.transformations, 1);
   assert.match(result.source, /const safe = \(\) => 1;/);
@@ -300,7 +300,7 @@ test("never converts lexical arrows to ordinary functions when lexical bindings 
   const analysis = output(execute(source));
   /** @type {*} */
   const byName = Object.fromEntries(
-    analysis.map(/** @param {*} item */ item => [item.name, item]),
+    analysis.map(/** @param {*} item */ item => [item.name, item])
   );
   assert.equal(byName.lexicalThis.uses_this_or_super, true);
   assert.equal(byName.lexicalArgs.uses_arguments, true);
@@ -308,8 +308,8 @@ test("never converts lexical arrows to ordinary functions when lexical bindings 
   const result = output(
     execute(source, {
       action: "convert",
-      direction: "from_arrow",
-    }),
+      direction: "from_arrow"
+    })
   );
   assert.equal(result.transformations, 1);
   assert.match(result.source, /const lexicalThis = \(\) => this\.x;/);
@@ -317,14 +317,14 @@ test("never converts lexical arrows to ordinary functions when lexical bindings 
   assert.match(result.source, /const lexicalTarget = \(\) => new\.target;/);
   assert.match(
     result.source,
-    /const safeArrow = function\(\) \{ return 1; \};/,
+    /const safeArrow = function\(\) \{ return 1; \};/
   );
 });
 test("receiver-free arguments method becomes static but never arrow", () => {
   const source = `/*SCENARIO_METHOD_FRINGE*/\nclass Fringe { argsOnly() { return arguments.length; } targetOnly() { return new.target; } *gen() { yield 1; } constructor() { return 1; } get value() { return 1; } set value(v) { cache = v; } plain() { return 1; } }`;
   const methods = output(execute(source));
   const argsOnly = methods.find(
-    /** @param {*} item */ item => item.name === "argsOnly",
+    /** @param {*} item */ item => item.name === "argsOnly"
   );
   assert.equal(argsOnly.uses_this_or_super, false);
   assert.equal(argsOnly.static_eligible, true);
@@ -333,8 +333,8 @@ test("receiver-free arguments method becomes static but never arrow", () => {
   const normalized = output(
     execute(source, {
       action: "convert",
-      direction: "normalize",
-    }),
+      direction: "normalize"
+    })
   );
   assert.match(normalized.source, /class Fringe \{ argsOnly\(\)/);
   assert.doesNotMatch(normalized.source, /static argsOnly\s*=/);
@@ -342,7 +342,7 @@ test("receiver-free arguments method becomes static but never arrow", () => {
 test("receiver-free new.target method becomes static but remains ordinary", () => {
   const source = `/*SCENARIO_METHOD_FRINGE*/\nclass Fringe { argsOnly() { return arguments.length; } targetOnly() { return new.target; } *gen() { yield 1; } constructor() { return 1; } get value() { return 1; } set value(v) { cache = v; } plain() { return 1; } }`;
   const target = output(execute(source)).find(
-    /** @param {*} item */ item => item.name === "targetOnly",
+    /** @param {*} item */ item => item.name === "targetOnly"
   );
   assert.equal(target.static_eligible, true);
   assert.ok(target.arrow_blockers.includes("new.target"));
@@ -350,8 +350,8 @@ test("receiver-free new.target method becomes static but remains ordinary", () =
   const normalized = output(
     execute(source, {
       action: "convert",
-      direction: "normalize",
-    }),
+      direction: "normalize"
+    })
   );
   assert.match(normalized.source, /targetOnly\(\)/);
   assert.doesNotMatch(normalized.source, /static targetOnly/);
@@ -359,15 +359,15 @@ test("receiver-free new.target method becomes static but remains ordinary", () =
 test("receiver-free generator becomes static generator but never arrow", () => {
   const source = `/*SCENARIO_METHOD_FRINGE*/\nclass Fringe { argsOnly() { return arguments.length; } targetOnly() { return new.target; } *gen() { yield 1; } constructor() { return 1; } get value() { return 1; } set value(v) { cache = v; } plain() { return 1; } }`;
   const generator = output(execute(source)).find(
-    /** @param {*} item */ item => item.name === "gen",
+    /** @param {*} item */ item => item.name === "gen"
   );
   assert.equal(generator.static_eligible, true);
   assert.ok(generator.arrow_blockers.includes("generator/yield"));
   const normalized = output(
     execute(source, {
       action: "convert",
-      direction: "normalize",
-    }),
+      direction: "normalize"
+    })
   );
   assert.match(normalized.source, /\*gen\(\)/);
   assert.doesNotMatch(normalized.source, /static \*gen/);
@@ -376,13 +376,13 @@ test("receiver-free constructor and accessors are never promoted to static", () 
   const source = `/*SCENARIO_METHOD_FRINGE*/\nclass Fringe { argsOnly() { return arguments.length; } targetOnly() { return new.target; } *gen() { yield 1; } constructor() { return 1; } get value() { return 1; } set value(v) { cache = v; } plain() { return 1; } }`;
   const methods = output(execute(source));
   const constructor = methods.find(
-    /** @param {*} item */ item => item.method_kind === "constructor",
+    /** @param {*} item */ item => item.method_kind === "constructor"
   );
   const getter = methods.find(
-    /** @param {*} item */ item => item.method_kind === "get",
+    /** @param {*} item */ item => item.method_kind === "get"
   );
   const setter = methods.find(
-    /** @param {*} item */ item => item.method_kind === "set",
+    /** @param {*} item */ item => item.method_kind === "set"
   );
   assert.equal(constructor.static_eligible, false);
   assert.equal(getter.static_eligible, false);
@@ -390,21 +390,21 @@ test("receiver-free constructor and accessors are never promoted to static", () 
   const normalized = output(
     execute(source, {
       action: "convert",
-      direction: "normalize",
-    }),
+      direction: "normalize"
+    })
   );
   assert.match(normalized.source, /constructor\(\)/);
   assert.match(normalized.source, /get value\(\)/);
   assert.match(normalized.source, /set value\(v\)/);
   assert.doesNotMatch(
     normalized.source,
-    /static constructor|static get value|static set value/,
+    /static constructor|static get value|static set value/
   );
 });
 test("receiver-free ordinary method still follows static arrow convention", () => {
   const source = `/*SCENARIO_METHOD_FRINGE*/\nclass Fringe { argsOnly() { return arguments.length; } targetOnly() { return new.target; } *gen() { yield 1; } constructor() { return 1; } get value() { return 1; } set value(v) { cache = v; } plain() { return 1; } }`;
   const plain = output(execute(source)).find(
-    /** @param {*} item */ item => item.name === "plain",
+    /** @param {*} item */ item => item.name === "plain"
   );
   assert.equal(plain.static_eligible, true);
   assert.equal(plain.arrow_eligible, true);
@@ -412,8 +412,8 @@ test("receiver-free ordinary method still follows static arrow convention", () =
   const normalized = output(
     execute(source, {
       action: "convert",
-      direction: "normalize",
-    }),
+      direction: "normalize"
+    })
   );
   assert.match(normalized.source, /plain\(\)/);
   assert.doesNotMatch(normalized.source, /static plain/);
@@ -423,8 +423,8 @@ test("forced to-arrow refuses hoisted constructor prototype and named-expression
   const result = output(
     execute(source, {
       action: "convert",
-      direction: "to_arrow",
-    }),
+      direction: "to_arrow"
+    })
   );
   assert.equal(result.transformations, 1);
   assert.match(result.source, /const safe = \(\) => 1;/);
@@ -438,8 +438,8 @@ test("lexical this arrow remains arrow under forced reverse conversion", () => {
   const result = output(
     execute(source, {
       action: "convert",
-      direction: "from_arrow",
-    }),
+      direction: "from_arrow"
+    })
   );
   assert.match(result.source, /lexicalThis = \(\) => this\.x/);
 });
@@ -448,8 +448,8 @@ test("lexical arguments arrow remains arrow under forced reverse conversion", ()
   const result = output(
     execute(source, {
       action: "convert",
-      direction: "from_arrow",
-    }),
+      direction: "from_arrow"
+    })
   );
   assert.match(result.source, /lexicalArgs = \(\) => arguments\[0\]/);
 });
@@ -458,8 +458,8 @@ test("lexical new.target arrow remains arrow under forced reverse conversion", (
   const result = output(
     execute(source, {
       action: "convert",
-      direction: "from_arrow",
-    }),
+      direction: "from_arrow"
+    })
   );
   assert.match(result.source, /lexicalTarget = \(\) => new\.target/);
 });

@@ -1,7 +1,7 @@
 /** Last-run causes: worst status, summaries, fact rows and the rendered list. */
 import assert from "node:assert/strict";
 import test from "node:test";
-import { modulePage, WEB } from "./module-page.mjs";
+import {modulePage, WEB} from "./module-page.mjs";
 /** Run a scenario in a blank page with the run-cause module loaded as `cause`.
  * @param {import("node:test").TestContext} t Test context.
  * @param {string} body Async function body receiving `cause`.
@@ -13,10 +13,10 @@ const inCause = async (t, body) => {
   await modulePage(t, async page => {
     await page.evaluate(async (/** @type {string} */ web) => {
       const cause = await import(`${web}/run-cause.js`);
-      /** @type {any} */ (globalThis).env = { cause };
+      /** @type {any} */ (globalThis).env = {cause};
     }, WEB);
     outcome = await page.evaluate(
-      `(async () => { const { cause } = globalThis.env; ${body} })()`,
+      `(async () => { const { cause } = globalThis.env; ${body} })()`
     );
   });
   return outcome;
@@ -31,7 +31,7 @@ test("worstStatus ranks failure above everything else", async t => {
        skipped: status("skipped", "succeeded"),
        ok: status("succeeded"),
        none: cause.worstStatus([]),
-     };`,
+     };`
   );
   assert.equal(out.mixed, "warning");
   assert.equal(out.failed, "failed");
@@ -49,7 +49,7 @@ test("causeSummary prefers a phase prefix that the message lacks", async t => {
        phase: cause.causeSummary({ cause: { phase: "timeout" } }),
        unknown: cause.causeSummary({ cause: { phase: "weird" } }),
        empty: cause.causeSummary({}),
-     };`,
+     };`
   );
   assert.equal(out.joined, "Selector: nothing matched");
   assert.equal(out.repeats, "Match count differed");
@@ -74,7 +74,7 @@ test("causeFacts keeps only the facts a cause carries", async t => {
        playwright_error: "locator strictness",
      });
      const sparse = cause.causeFacts({});
-     return { facts, sparse };`,
+     return { facts, sparse };`
   );
   assert.deepEqual(out.facts, [
     ["Phase", "Match count"],
@@ -85,7 +85,7 @@ test("causeFacts keeps only the facts a cause carries", async t => {
     ["Waited", "1500 ms"],
     ["Match 2 failed", "[a], [b]"],
     ["text changed", '"a" to "b"'],
-    ["Browser said", "locator strictness"],
+    ["Browser said", "locator strictness"]
   ]);
   assert.deepEqual(out.sparse, []);
 });
@@ -116,7 +116,7 @@ test("renderLastRun hides an empty target and renders records", async t => {
        lines: [...items[0].querySelectorAll(".last-run-line")].map(
          line => [line.className, line.textContent]),
        second: items[1].querySelectorAll(".last-run-facts, .last-run-line").length,
-     };`,
+     };`
   );
   assert.equal(out.empty, true);
   assert.equal(out.shown, true);
@@ -125,10 +125,10 @@ test("renderLastRun hides an empty target and renders records", async t => {
   assert.equal(out.summary, "Check: check failed");
   assert.deepEqual(out.facts, [
     "Phase",
-    "Expected and found",
+    "Expected and found"
   ]);
   assert.deepEqual(out.lines, [
-    ["last-run-line error", "kept line"],
+    ["last-run-line error", "kept line"]
   ]);
   assert.equal(out.second, 0);
 });

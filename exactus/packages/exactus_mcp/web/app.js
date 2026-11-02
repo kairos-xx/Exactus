@@ -77,10 +77,10 @@ const renderActivity = value => {
       textCell(
         "duration_ms" in event && event.duration_ms !== null
           ? `${String(event.duration_ms)} ms`
-          : "In progress",
+          : "In progress"
       ),
       textCell(JSON.stringify(request)),
-      textCell(JSON.stringify(response)),
+      textCell(JSON.stringify(response))
     );
     activityRows.append(row);
   });
@@ -93,7 +93,7 @@ const renderActivity = value => {
  */
 const loadActivity = async () => {
   const response = await fetch("/api/activity", {
-    headers: { Accept: "application/json" },
+    headers: {Accept: "application/json"}
   });
   if (!response.ok)
     throw new Error(`Activity request failed: ${response.status}`);
@@ -108,7 +108,7 @@ const loadActivity = async () => {
  */
 const loadStatus = async () => {
   const response = await fetch("/api/status", {
-    headers: { Accept: "application/json" },
+    headers: {Accept: "application/json"}
   });
   if (!response.ok)
     throw new Error(`Status request failed: ${response.status}`);

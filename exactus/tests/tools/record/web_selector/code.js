@@ -4,12 +4,12 @@ const placeBoxes = () => {
     document.querySelectorAll("[data-left]")
   );
   for (const element of boxes) {
-    const { left, top, width, height } = element.dataset;
+    const {left, top, width, height} = element.dataset;
     Object.assign(element.style, {
       left: `${left}px`,
       top: `${top}px`,
       width: `${width}px`,
-      height: `${height}px`,
+      height: `${height}px`
     });
   }
 };
@@ -18,7 +18,7 @@ const attachHosts = () => {
   for (const id of ["host", "host2"]) {
     const host = /** @type {HTMLElement} */ (document.getElementById(id));
     host.attachShadow({
-      mode: "open",
+      mode: "open"
     }).innerHTML = '<section><button class="inner">Go</button></section>';
   }
 };

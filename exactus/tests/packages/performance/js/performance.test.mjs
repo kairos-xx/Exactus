@@ -88,7 +88,7 @@ class FakeElement {
 			 * @param {string} name Class name.
 			 * @returns {boolean} Presence flag.
 			 */
-			contains: name => names.has(name),
+			contains: name => names.has(name)
 		};
 	}
 	/**
@@ -414,7 +414,7 @@ const buildDocument = () => {
 	const chart = el("detail-chart");
 	shell.append(chart);
 	const ids = new Map();
-	["status", "theme", "drillbar", "detail-tooltip", "global-timeline", "zoom-in", "zoom-out", "pan-left", "pan-right", "reset-view", "zoom-label", "kpi-wall", "kpi-runtime", "kpi-events", "kpi-rate", "kpi-gap", "kpi-gap-tool", "kpi-slowest", "kpi-slowest-time", "tool-list", "tool-kicker", "tool-name", "tool-summary", "gap-list", "gap-total", "prefix-list", "stage-list", "event-count", "event-list", "cursor-readout", "cursor-rate", "cursor-gap", "cursor-position", "cursor-nearby", "inspect-index", "inspect-elapsed", "inspect-time", "inspect-message", "kpi-silent", "kpi-silent-note", "kpi-hot", "kpi-hot-note", "actor-list", "actor-total", "template-list", "slow-list", "share-chart", "worker-chart", "worker-list", "inspect-thread", "inspect-cost", "graph-chart", "graph-overview", "graph-scroll", "graph-crumbs", "graph-up", "graph-in", "graph-color", "graph-tooltip", "graph-node", "graph-measures", "graph-children", "cpu-chart", "mem-chart", "io-chart", "resource-tooltip", "res-cpu-mean", "res-cpu-peak", "res-rss-peak", "res-read", "res-write", "res-procs", "resource-actors", "resource-note", "bottlenecks-view", "stages-view", "events-view", "hotspots-view", "workers-view", "graph-view", "resources-view", ].forEach(id => {
+	["status", "theme", "drillbar", "detail-tooltip", "global-timeline", "zoom-in", "zoom-out", "pan-left", "pan-right", "reset-view", "zoom-label", "kpi-wall", "kpi-runtime", "kpi-events", "kpi-rate", "kpi-gap", "kpi-gap-tool", "kpi-slowest", "kpi-slowest-time", "tool-list", "tool-kicker", "tool-name", "tool-summary", "gap-list", "gap-total", "prefix-list", "stage-list", "event-count", "event-list", "cursor-readout", "cursor-rate", "cursor-gap", "cursor-position", "cursor-nearby", "inspect-index", "inspect-elapsed", "inspect-time", "inspect-message", "kpi-silent", "kpi-silent-note", "kpi-hot", "kpi-hot-note", "actor-list", "actor-total", "template-list", "slow-list", "share-chart", "worker-chart", "worker-list", "inspect-thread", "inspect-cost", "graph-chart", "graph-overview", "graph-scroll", "graph-crumbs", "graph-up", "graph-in", "graph-color", "graph-tooltip", "graph-node", "graph-measures", "graph-children", "cpu-chart", "mem-chart", "io-chart", "resource-tooltip", "res-cpu-mean", "res-cpu-peak", "res-rss-peak", "res-read", "res-write", "res-procs", "resource-actors", "resource-note", "bottlenecks-view", "stages-view", "events-view", "hotspots-view", "workers-view", "graph-view", "resources-view"].forEach(id => {
 		ids.set(id, el(id));
 	});
 	ids.set("detail-chart", chart);
@@ -463,14 +463,14 @@ const buildDocument = () => {
 };
 /** Steps payload exercising every render lane. */
 const RICH = {
-	gamma: ["2024-01-01T00:00:00.000Z +0.000s tool: start", "2024-01-01T00:00:00.100Z +0.100s lint: /src/a.py — 3 files @thread=Pool_1", "2024-01-01T00:00:00.200Z +0.200s lint: /src/b.py — 5 files @thread=Pool_2", "2024-01-01T00:00:02.200Z +2.200s lint: /src/c.py — 7 files @thread=Pool_1", "2024-01-01T00:00:02.300Z +2.300s exec: ruff — exit 0 in 1.250s", "2024-01-01T00:00:02.400Z +2.400s stage: build @span=1", "2024-01-01T00:00:03.400Z +3.400s stage: build — done @span=1 @dur=1.000s", "2024-01-01T00:00:03.500Z +3.500s tool: done", ],
+	gamma: ["2024-01-01T00:00:00.000Z +0.000s tool: start", "2024-01-01T00:00:00.100Z +0.100s lint: /src/a.py — 3 files @thread=Pool_1", "2024-01-01T00:00:00.200Z +0.200s lint: /src/b.py — 5 files @thread=Pool_2", "2024-01-01T00:00:02.200Z +2.200s lint: /src/c.py — 7 files @thread=Pool_1", "2024-01-01T00:00:02.300Z +2.300s exec: ruff — exit 0 in 1.250s", "2024-01-01T00:00:02.400Z +2.400s stage: build @span=1", "2024-01-01T00:00:03.400Z +3.400s stage: build — done @span=1 @dur=1.000s", "2024-01-01T00:00:03.500Z +3.500s tool: done"]
 };
 const SAMPLED = {
-	delta: ["2024-01-01T00:00:00.000Z +0.000s tool: start", "2024-01-01T00:00:00.500Z +0.500s ~sample cpu=80.0 rss=120.0 threads=4 procs=2 read=1.00 write=0.50 ioscope=proc", "2024-01-01T00:00:00.600Z +0.600s stage: build", "2024-01-01T00:00:00.700Z +0.700s   step: compile", "2024-01-01T00:00:01.900Z +1.900s   step: link", "2024-01-01T00:00:02.100Z +2.100s ~sample cpu=10.0 rss=300.0 threads=2 procs=1 read=0.00 write=2.00 ioscope=proc", "2024-01-01T00:00:02.600Z +2.600s stage: report", "2024-01-01T00:00:03.000Z +3.000s tool: done", ],
+	delta: ["2024-01-01T00:00:00.000Z +0.000s tool: start", "2024-01-01T00:00:00.500Z +0.500s ~sample cpu=80.0 rss=120.0 threads=4 procs=2 read=1.00 write=0.50 ioscope=proc", "2024-01-01T00:00:00.600Z +0.600s stage: build", "2024-01-01T00:00:00.700Z +0.700s   step: compile", "2024-01-01T00:00:01.900Z +1.900s   step: link", "2024-01-01T00:00:02.100Z +2.100s ~sample cpu=10.0 rss=300.0 threads=2 procs=1 read=0.00 write=2.00 ioscope=proc", "2024-01-01T00:00:02.600Z +2.600s stage: report", "2024-01-01T00:00:03.000Z +3.000s tool: done"]
 };
 const TRACE = {
-	alpha: ["2024-01-01T00:00:00.000Z +0.000s stage: boot", "2024-01-01T00:00:00.400Z +0.400s tool: ruff — lint files", "2024-01-01T00:00:01.000Z +1.000s stage: analyze", "2024-01-01T00:00:01.300Z +1.300s tool: ruff — fix files", "2024-01-01T00:00:01.900Z +1.900s tool: pytest — run tests", "2024-01-01T00:00:02.000Z +2.000s done: complete", ],
-	beta: ["2024-01-01T00:00:00.100Z +0.000s stage: setup", "2024-01-01T00:00:01.100Z +1.000s tool: node — build", "2024-01-01T00:00:02.100Z +2.000s done: complete", "unparsed trailing line", ],
+	alpha: ["2024-01-01T00:00:00.000Z +0.000s stage: boot", "2024-01-01T00:00:00.400Z +0.400s tool: ruff — lint files", "2024-01-01T00:00:01.000Z +1.000s stage: analyze", "2024-01-01T00:00:01.300Z +1.300s tool: ruff — fix files", "2024-01-01T00:00:01.900Z +1.900s tool: pytest — run tests", "2024-01-01T00:00:02.000Z +2.000s done: complete"],
+	beta: ["2024-01-01T00:00:00.100Z +0.000s stage: setup", "2024-01-01T00:00:01.100Z +1.000s tool: node — build", "2024-01-01T00:00:02.100Z +2.000s done: complete", "unparsed trailing line"]
 };
 /**
  * Load `code.js` fresh against a new fake browser environment.
@@ -496,7 +496,7 @@ const loadDashboard = async (payload, embedded = undefined) => {
 			windowListeners.set(type, [...(windowListeners.get(type) ?? []), listener]);
 		},
 		listeners: windowListeners,
-		__PERFORMANCE_STEPS__: embedded,
+		__PERFORMANCE_STEPS__: embedded
 	};
 	Object.assign(globalThis, {
 		document,
@@ -505,16 +505,16 @@ const loadDashboard = async (payload, embedded = undefined) => {
 			/**
 			 * @returns {string} Stub color value.
 			 */
-			getPropertyValue: () => "#ffffff",
+			getPropertyValue: () => "#ffffff"
 		}),
 		fetch: () => {
 			if (payload instanceof Error) return Promise.reject(payload);
 			return Promise.resolve({
 				ok: payload !== null,
 				status: payload === null ? 500 : 200,
-				json: () => Promise.resolve(payload ?? {}),
+				json: () => Promise.resolve(payload ?? {})
 			});
-		},
+		}
 	});
 	delete require.cache[CODE_PATH];
 	require(CODE_PATH);

@@ -1,30 +1,30 @@
-import { DockGrid } from "./dock-grid.js";
-import { askInputs, askLabels } from "./ask-inputs.js";
-import { buildCard, cardSpec, guardParts, producedVariables, producersOf, renderSentence } from "./action-card.js";
-import { flowInputsField } from "./flow-inputs.js";
-import { openFloatingPanel, openTokenEditor } from "./token-editor.js";
-import { variableInspector } from "./variable-inspector.js";
-import { AnalogClock } from "../../../../packages/widgets/widget_clock/index.js";
-import { StudioTransport } from "./transport.js";
-import { LiveTarget } from "./live-target.js";
-import { SettingsSurface } from "./settings.js";
-import { iconElement, iconMarkup, watchIcons } from "./icons.js";
-import { DISMISSED_KEY, renderWelcome, shouldWelcome } from "./welcome.js";
-import { ProjectActions } from "./project-actions.js";
-import { ProjectBar } from "./project-bar.js";
-import { ProjectSection } from "./project-section.js";
-import { renderFlowList } from "./flow-list.js";
-import { attachConditionField } from "./condition-field.js";
-import { selectorLiveTools } from "./selector-live-tools.js";
-import { bindSelectorReference } from "./selector-reference-field.js";
-import { renderLastRun, worstStatus, causeSummary } from "./run-cause.js";
+import {DockGrid} from "./dock-grid.js";
+import {askInputs, askLabels} from "./ask-inputs.js";
+import {buildCard, cardSpec, guardParts, producedVariables, producersOf, renderSentence} from "./action-card.js";
+import {flowInputsField} from "./flow-inputs.js";
+import {openFloatingPanel, openTokenEditor} from "./token-editor.js";
+import {variableInspector} from "./variable-inspector.js";
+import {AnalogClock} from "../../../../packages/widgets/widget_clock/index.js";
+import {StudioTransport} from "./transport.js";
+import {LiveTarget} from "./live-target.js";
+import {SettingsSurface} from "./settings.js";
+import {iconElement, iconMarkup, watchIcons} from "./icons.js";
+import {DISMISSED_KEY, renderWelcome, shouldWelcome} from "./welcome.js";
+import {ProjectActions} from "./project-actions.js";
+import {ProjectBar} from "./project-bar.js";
+import {ProjectSection} from "./project-section.js";
+import {renderFlowList} from "./flow-list.js";
+import {attachConditionField} from "./condition-field.js";
+import {selectorLiveTools} from "./selector-live-tools.js";
+import {bindSelectorReference} from "./selector-reference-field.js";
+import {renderLastRun, worstStatus, causeSummary} from "./run-cause.js";
 import {
   renderSeen,
   renderSelectorList,
   renderTestResult,
-  selectorInspector,
+  selectorInspector
 } from "./selectors-panel.js";
-import { groupCaptures, pairFor } from "./compare-pairs.js";
+import {groupCaptures, pairFor} from "./compare-pairs.js";
 import {
   ACTION_DRAG_TYPE,
   actionCommand,
@@ -34,15 +34,15 @@ import {
   definitionForEvent,
   editsInRow,
   renderActionCatalog,
-  ACTION_PREFS_EVENT,
+  ACTION_PREFS_EVENT
 } from "./action-library.js";
-import { conditionWidget } from "./javascript-action-widget.js";
+import {conditionWidget} from "./javascript-action-widget.js";
 import {
   graphNodes,
   graphLinks,
   graphBounds,
   graphSvg,
-  graphConnectionInspector,
+  graphConnectionInspector
 } from "./graph-surface.js";
 /** @typedef {{id:string,label:string,start_ms:number}} EditorRecording */
 /** @typedef {{id:string,name:string,device_modes?:string[],task_description?:string,expected_behavior?:string,capture_record_images?:boolean,capture_play_images?:boolean,events?:EditorEvent[],recordings?:EditorRecording[],parameters?:import("./flow-inputs.js").FlowInput[],outputs?:unknown[]}} EditorFlow */
@@ -67,14 +67,14 @@ export class EditorApp {
    * @type {Readonly<Record<string,{width:number,height:number}>>}
    */
   static panelMinimums = Object.freeze({
-    workspace: { width: 160, height: 120 },
-    actions: { width: 260, height: 180 },
-    steps: { width: 260, height: 160 },
-    composition: { width: 280, height: 180 },
-    target: { width: 240, height: 120 },
-    properties: { width: 240, height: 140 },
-    timeline: { width: 360, height: 120 },
-    runs: { width: 240, height: 120 },
+    workspace: {width: 160, height: 120},
+    actions: {width: 260, height: 180},
+    steps: {width: 260, height: 160},
+    composition: {width: 280, height: 180},
+    target: {width: 240, height: 120},
+    properties: {width: 240, height: 140},
+    timeline: {width: 360, height: 120},
+    runs: {width: 240, height: 120}
   });
   /** @type {DockGrid} */
   dock;
@@ -205,7 +205,7 @@ export class EditorApp {
       separatorWidth: 32,
       dotSize: 96,
       digitInset: 0,
-      padding: 0,
+      padding: 0
     });
     this.updateTimelineClock(null);
     const timelineObserver = new ResizeObserver(this.updateTimelineCursor);
@@ -225,7 +225,7 @@ export class EditorApp {
       minimums: EditorApp.panelMinimums,
       onStatus: message => {
         EditorApp.element("status").textContent = message;
-      },
+      }
     });
     this.bind();
     this.command("workspace.snapshot");
@@ -271,7 +271,7 @@ export class EditorApp {
     "viewport.preset": "Viewport changed",
     "workspace.open": "Project opened",
     "workspace.save": "Project saved",
-    "workspace.snapshot": "Project loaded",
+    "workspace.snapshot": "Project loaded"
   });
   /** @param {string} command
    * @returns {string}
@@ -307,8 +307,8 @@ export class EditorApp {
           "<": "&lt;",
           ">": "&gt;",
           '"': "&quot;",
-          "'": "&#39;",
-        })[char] ?? char,
+          "'": "&#39;"
+        })[char] ?? char
     );
   /** @param {string} name
    * @returns {string}
@@ -334,7 +334,7 @@ export class EditorApp {
       "studio.panel-layout",
       "studio.panel-groups",
       "studio.dock-sizes",
-      "studio.split-sizes",
+      "studio.split-sizes"
     ]) {
       const value = localStorage.getItem(key);
       if (value) localStorage.setItem(`${key}.before-${contract}`, value);
@@ -436,7 +436,7 @@ export class EditorApp {
           : state === "pausing"
             ? "Pausing…"
             : "Pause",
-      pauseIcon: running && state === "paused" ? "player-play" : "player-pause",
+      pauseIcon: running && state === "paused" ? "player-play" : "player-pause"
     };
   };
   /** Show the Pause and Step controls of the timeline for the run state.
@@ -481,7 +481,7 @@ export class EditorApp {
     }
     if (event.kind === "extract_value")
       return (
-        { checked: "Boolean", int: "Number", float: "Number", count: "Number" }[
+        {checked: "Boolean", int: "Number", float: "Number", count: "Number"}[
           String(spec.extract)
         ] ?? "Text"
       );
@@ -491,7 +491,7 @@ export class EditorApp {
           boolean: "Boolean",
           integer: "Number",
           float: "Number",
-          json: "Dictionary",
+          json: "Dictionary"
         }[String(spec.value_type)] ?? "Text"
       );
     return "Any";
@@ -505,11 +505,11 @@ export class EditorApp {
     ...(flow?.parameters ?? []).map(input => ({
       name: input.name,
       type:
-        { integer: "Number", float: "Number", boolean: "Boolean", json: "Dictionary" }[
+        {integer: "Number", float: "Number", boolean: "Boolean", json: "Dictionary"}[
           input.value_type
         ] ?? "Text",
       icon: "download",
-      tone: "silver",
+      tone: "silver"
     })),
     ...(flow?.events ?? []).flatMap(event => {
       const spec = cardSpec(event);
@@ -517,9 +517,9 @@ export class EditorApp {
         name: output.name,
         type: output.type === "Any" ? EditorApp.variableType(event) : output.type,
         icon: spec.icon,
-        tone: spec.tone,
+        tone: spec.tone
       }));
-    }),
+    })
   ];
   /** Variables a step reads that neither the flow's inputs nor an earlier
    * step provide.
@@ -533,7 +533,7 @@ export class EditorApp {
       ...inputs,
       ...events
         .slice(0, index)
-        .flatMap(event => producedVariables(event).map(output => output.name)),
+        .flatMap(event => producedVariables(event).map(output => output.name))
     ]);
     const source = /** @type {any} */ (events[index]);
     const text = [source.url, source.selector, source.payload, source.when_expression]
@@ -573,7 +573,7 @@ export class EditorApp {
    */
   visibleRecordings() {
     return (this.activeFlow()?.recordings ?? []).filter(
-      group => group.label !== "Action chain",
+      group => group.label !== "Action chain"
     );
   }
   /** Return the currently active flow, falling back to the first flow.
@@ -604,7 +604,7 @@ export class EditorApp {
           msg.payload.error || `Test ${msg.payload.status}`;
         EditorApp.element("status").setAttribute(
           "data-state",
-          msg.payload.status || "failed",
+          msg.payload.status || "failed"
         );
       }
       return;
@@ -659,7 +659,7 @@ export class EditorApp {
       : "Target closed";
     EditorApp.element("browser-status").setAttribute(
       "data-state",
-      connected ? "succeeded" : "disconnected",
+      connected ? "succeeded" : "disconnected"
     );
     document
       .querySelectorAll('[data-cmd="recorder.record"]')
@@ -705,7 +705,7 @@ export class EditorApp {
       return {
         node,
         top: node.scrollTop,
-        left: node.scrollLeft,
+        left: node.scrollLeft
       };
     });
     this.renderFlows();
@@ -716,7 +716,7 @@ export class EditorApp {
     this.renderRuns();
     this.renderEditEvidence();
     this.renderWorkspaceSurface();
-    positions.forEach(({ node, top, left }) => {
+    positions.forEach(({node, top, left}) => {
       node.scrollTop = top;
       node.scrollLeft = left;
     });
@@ -724,13 +724,13 @@ export class EditorApp {
     if (!target && step)
       target =
         document.querySelector(
-          `.data-table [data-step="${CSS.escape(step)}"]`,
+          `.data-table [data-step="${CSS.escape(step)}"]`
         ) || document.querySelector(`[data-step="${CSS.escape(step)}"]`);
     if (!target && id.startsWith("step-"))
       target = document.querySelector(".data-table [data-step]");
     if (target instanceof HTMLElement && target !== active)
       target.focus({
-        preventScroll: true,
+        preventScroll: true
       });
   }
   /** Render the workspace flow list into the flows panel.
@@ -742,7 +742,7 @@ export class EditorApp {
       this.workspace?.flows ?? [],
       this.activeFlowId,
       id => this.selectGraphFlow(id),
-      (id, anchor) => this.openFlowMenu(anchor, id),
+      (id, anchor) => this.openFlowMenu(anchor, id)
     );
     this.renderSelectors();
     this.refreshSelectorSeen();
@@ -753,7 +753,7 @@ export class EditorApp {
   refreshSelectorSeen() {
     const area = document.querySelector("#inspector .selector-seen");
     const selector = this.selectors().find(
-      item => item.selector_id === this.selectedSelectorId,
+      item => item.selector_id === this.selectedSelectorId
     );
     if (area instanceof HTMLElement && selector)
       renderSeen(area, selector, this.snapshot?.target_url ?? "");
@@ -777,7 +777,7 @@ export class EditorApp {
     const show = shouldWelcome(
       /** @type {any} */ (this.snapshot),
       this.workspaceView,
-      wasDismissed(),
+      wasDismissed()
     );
     if (show)
       renderWelcome(root, {
@@ -791,7 +791,7 @@ export class EditorApp {
             // Without session storage the screen simply returns on reload.
           }
           this.renderWelcomeScreen();
-        },
+        }
       });
     root.hidden = !show;
     document
@@ -806,7 +806,7 @@ export class EditorApp {
   conditionSource() {
     return {
       terms: () => this.snapshot?.condition_vocabulary ?? [],
-      selectors: () => this.selectors().map(item => item.name),
+      selectors: () => this.selectors().map(item => item.name)
     };
   }
   /** The project's stored selectors.
@@ -826,7 +826,7 @@ export class EditorApp {
       this.selectors(),
       this.snapshot?.selector_usage ?? {},
       this.selectedSelectorId,
-      id => this.selectSelector(id),
+      id => this.selectSelector(id)
     );
   }
   /** Open a selector in the inspector.
@@ -845,7 +845,7 @@ export class EditorApp {
     this.renderSelectors();
     this.renderTable();
     this.renderInspector();
-    this.dock.openWindow("properties", { x: 1080, y: 96, w: 344, h: 660 });
+    this.dock.openWindow("properties", {x: 1080, y: 96, w: 344, h: 660});
   }
   /** Load the formula editor and the engine once; null when they cannot load.
    * @returns {Promise<{Engine:any,Editor:any}|null>}
@@ -865,7 +865,7 @@ export class EditorApp {
       "env/colorScheme": "dark",
       "env/locale": navigator.language,
       "env/reducedMotion": window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-      "target/url": snapshot?.target_url ?? "",
+      "target/url": snapshot?.target_url ?? ""
     };
     if (viewport) {
       values["device/width"] = viewport.width;
@@ -884,13 +884,13 @@ export class EditorApp {
       "device/height": "num",
       "device/scale": "num",
       "device/touch": "bool",
-      "env/reducedMotion": "bool",
+      "env/reducedMotion": "bool"
     });
     const environment = Object.entries(values).map(([path, value]) => ({
       path,
       scope: /** @type {"env"} */ ("env"),
       type: kinds[path] ?? "text",
-      value,
+      value
     }));
     const outputs = (this.snapshot?.condition_vocabulary ?? [])
       .filter(term => term.kind === "output")
@@ -900,7 +900,7 @@ export class EditorApp {
         type: /** @type {"num"|"bool"|"text"} */ (
           term.value_type === "boolean" ? "bool" : ["integer", "float"].includes(term.value_type) ? "num" : "text"
         ),
-        detail: term.detail,
+        detail: term.detail
       }));
     return [...environment, ...outputs];
   }
@@ -911,10 +911,10 @@ export class EditorApp {
   statsSelector(expression) {
     const run = () =>
       new Promise((resolve, reject) => {
-        this.testSelector({ selector_id: "", expression, expected_count: null, checks: [] }, result => {
+        this.testSelector({selector_id: "", expression, expected_count: null, checks: []}, result => {
           const reply = /** @type {any} */ (result)?.stats;
           if (reply?.ok) resolve(reply.stats);
-          else reject(Object.assign(new Error(reply?.message || /** @type {any} */ (result)?.error || "Not available"), { code: reply?.code ?? null }));
+          else reject(Object.assign(new Error(reply?.message || /** @type {any} */ (result)?.error || "Not available"), {code: reply?.code ?? null}));
         }, true);
       });
     const next = this.statsQueue.then(run, run);
@@ -931,11 +931,11 @@ export class EditorApp {
         this.liveTarget?.startPicking();
       },
       onHighlight: (/** @type {string} */ expression, /** @type {any} */ done) =>
-        this.testSelector({ selector_id: "", expression, expected_count: null, checks: [] }, done),
+        this.testSelector({selector_id: "", expression, expected_count: null, checks: []}, done),
       onClear: () => LiveTarget.clearMatches(),
       onStats: (/** @type {string} */ expression) => this.statsSelector(expression),
       variables: () => this.selectorVariables(),
-      saved: () => this.selectors().map(item => ({ name: item.name })),
+      saved: () => this.selectors().map(item => ({name: item.name}))
     };
   }
   /** Add the shared page tools beside a selector control's editing surface.
@@ -951,12 +951,12 @@ export class EditorApp {
       getValue: () => carrier.value,
       setValue: value => {
         carrier.value = value;
-        carrier.dispatchEvent(new Event("input", { bubbles: true }));
-        carrier.dispatchEvent(new Event("change", { bubbles: true }));
+        carrier.dispatchEvent(new Event("input", {bubbles: true}));
+        carrier.dispatchEvent(new Event("change", {bubbles: true}));
       },
       onPick: options.onPick,
       onHighlight: options.onHighlight,
-      onClear: options.onClear,
+      onClear: options.onClear
     });
     live.element.setAttribute("aria-label", `${label} page tools`);
     const anchor =
@@ -970,11 +970,11 @@ export class EditorApp {
   loadSelectorLibrary() {
     this.selectorLibrary ??= Promise.all([
       import(String("/studio/packages/extended_selector/editor/extended-selector.js")),
-      import(String("/studio/packages/widgets/widget_selector/extended-selector-editor.js")),
+      import(String("/studio/packages/widgets/widget_selector/extended-selector-editor.js"))
     ])
       .then(([engine, editor]) => ({
         Engine: engine.default,
-        Editor: editor.ExtendedSelectorEditor,
+        Editor: editor.ExtendedSelectorEditor
       }))
       .catch(() => null);
     return this.selectorLibrary;
@@ -998,7 +998,7 @@ export class EditorApp {
     this.selectedSelectorId = "";
     this.inspectorKey = "";
     if (flowId !== this.activeFlowId)
-      await this.command("flow.select", { flow_id: flowId });
+      await this.command("flow.select", {flow_id: flowId});
     this.setSelection([eventId], eventId);
     this.renderSelectors();
   }
@@ -1056,7 +1056,7 @@ export class EditorApp {
       variables: () => this.selectorVariables(),
       onDelete: () => this.deleteSelector(selector),
       onOpenAction: (flowId, eventId) =>
-        this.openSelectorAction(flowId, eventId),
+        this.openSelectorAction(flowId, eventId)
     });
     target.replaceChildren(built.fragment);
     target.scrollTop = 0;
@@ -1085,7 +1085,7 @@ export class EditorApp {
           url: "",
           matches: [],
           expression: "",
-          selector_id: null,
+          selector_id: null
         });
       return;
     }
@@ -1102,7 +1102,7 @@ export class EditorApp {
         expression: values.expression,
         expected_count: values.expected_count ?? "any",
         checks: values.checks,
-        variables: this.environmentValues(),
+        variables: this.environmentValues()
       });
     } catch (error) {
       this.selectorTesting = false;
@@ -1164,7 +1164,7 @@ export class EditorApp {
     }
     await this.command("selector.save", {
       ...values,
-      selector_id: existing?.selector_id ?? "",
+      selector_id: existing?.selector_id ?? ""
     });
     const saved = this.selectors().find(item => item.name === values.name);
     this.selectedSelectorId = saved?.selector_id ?? this.selectedSelectorId;
@@ -1181,7 +1181,7 @@ export class EditorApp {
     let name = `${values.name || "selector"}_copy`;
     for (let n = 2; taken.has(name); n += 1)
       name = `${values.name || "selector"}_copy${n}`;
-    await this.command("selector.save", { ...values, name, selector_id: "" });
+    await this.command("selector.save", {...values, name, selector_id: ""});
     const saved = this.selectors().find(item => item.name === name);
     if (saved) this.selectSelector(saved.selector_id);
   }
@@ -1198,7 +1198,7 @@ export class EditorApp {
     }
     const use = this.snapshot?.selector_usage?.[selector.selector_id];
     const inUse = Boolean(
-      use?.actions?.length || use?.selectors?.length || use?.conditions,
+      use?.actions?.length || use?.selectors?.length || use?.conditions
     );
     const approved = await EditorApp.confirmDelete({
       title: `Delete ${selector.name}?`,
@@ -1206,14 +1206,14 @@ export class EditorApp {
         ? "Actions that use it will fail until you pick another selector."
         : "Nothing uses it.",
       keep: "Keep selector",
-      remove: "Delete selector",
+      remove: "Delete selector"
     });
     if (!approved) return;
     this.selectedSelectorId = "";
     LiveTarget.clearMatches();
     await this.command("selector.delete", {
       selector_id: selector.selector_id,
-      force: inUse,
+      force: inUse
     });
     this.renderSelectors();
     this.renderSelectorEditor();
@@ -1230,8 +1230,8 @@ export class EditorApp {
         "trash",
         only ? "Delete flow (a project needs one)" : "Delete flow",
         only,
-        () => this.deleteFlow(id),
-      ],
+        () => this.deleteFlow(id)
+      ]
     ]);
   }
   /** Ask once, then remove a flow with its steps, screenshots and connections.
@@ -1245,12 +1245,12 @@ export class EditorApp {
       title: `Delete ${flow.name}?`,
       body: "This also removes its steps, screenshots and connections.",
       keep: "Keep flow",
-      remove: "Delete flow",
+      remove: "Delete flow"
     });
     if (!approved) return;
     this.selectedGraphEdge = "";
     this.inspectorKey = "";
-    await this.command("flow.delete", { flow_id: id });
+    await this.command("flow.delete", {flow_id: id});
   }
   /** Render the graph visualization for the active flow.
    * @returns {void}
@@ -1264,7 +1264,7 @@ export class EditorApp {
     let positions = {};
     try {
       positions = JSON.parse(
-        localStorage.getItem("studio.graph-nodes") || "{}",
+        localStorage.getItem("studio.graph-nodes") || "{}"
       );
       if (!positions || typeof positions !== "object") positions = {};
     } catch {
@@ -1274,7 +1274,7 @@ export class EditorApp {
     EditorApp.element("flow-summary").textContent =
       `${flows.length} flows · ${edges.length} connections`;
     EditorApp.element("graph").replaceChildren(
-      graphNodes(flows, flow?.id ?? null, positions, edges),
+      graphNodes(flows, flow?.id ?? null, positions, edges)
     );
     window.requestAnimationFrame(() => this.renderConnections());
     EditorApp.element("graph")
@@ -1299,7 +1299,7 @@ export class EditorApp {
     this.selectedGraphEdge = "";
     this.selectedSelectorId = "";
     this.inspectorKey = "";
-    this.command("flow.select", { flow_id: id });
+    this.command("flow.select", {flow_id: id});
   }
   /** Create a transition using the chosen source and target flows.
    * @param {string} source
@@ -1315,7 +1315,7 @@ export class EditorApp {
     }
     if (
       (this.workspace?.edges ?? []).some(
-        edge => edge.source === source && edge.target === target,
+        edge => edge.source === source && edge.target === target
       )
     ) {
       EditorApp.element("status").textContent =
@@ -1331,7 +1331,7 @@ export class EditorApp {
       source,
       target,
       mode: "always",
-      condition_expression: "",
+      condition_expression: ""
     });
     const flows = this.workspace?.flows ?? [];
     const sourceName = flows.find(flow => flow.id === source)?.name || source;
@@ -1372,7 +1372,7 @@ export class EditorApp {
     const preview = (clientX, clientY) => {
       if (!this.graphConnectionSource) return;
       const output = canvas.querySelector(
-        `[data-graph-output="${CSS.escape(this.graphConnectionSource)}"]`,
+        `[data-graph-output="${CSS.escape(this.graphConnectionSource)}"]`
       );
       if (!(output instanceof HTMLElement)) return;
       const canvasRect = canvas.getBoundingClientRect();
@@ -1389,12 +1389,12 @@ export class EditorApp {
         "aria-hidden": "true",
         width: String(canvas.scrollWidth),
         height: String(canvas.scrollHeight),
-        viewBox: `0 0 ${canvas.scrollWidth} ${canvas.scrollHeight}`,
+        viewBox: `0 0 ${canvas.scrollWidth} ${canvas.scrollHeight}`
       });
       svg.append(
         graphSvg("path", {
-          d: `M ${x1} ${y1} C ${mid} ${y1}, ${x2 - Math.max(24, Math.abs(x2 - x1) / 3)} ${y2}, ${x2} ${y2}`,
-        }),
+          d: `M ${x1} ${y1} C ${mid} ${y1}, ${x2 - Math.max(24, Math.abs(x2 - x1) / 3)} ${y2}, ${x2} ${y2}`
+        })
       );
       canvas.prepend(svg);
     };
@@ -1435,7 +1435,7 @@ export class EditorApp {
           skipClick = true;
           this.connectFlows(
             this.graphConnectionSource,
-            drop.getAttribute("data-graph-input") || "",
+            drop.getAttribute("data-graph-input") || ""
           );
         } else {
           graph.removeAttribute("data-connecting");
@@ -1453,7 +1453,7 @@ export class EditorApp {
         }
         this.connectFlows(
           this.graphConnectionSource,
-          node.getAttribute("data-graph-input") || "",
+          node.getAttribute("data-graph-input") || ""
         );
       });
     });
@@ -1498,7 +1498,7 @@ export class EditorApp {
             flowNode.setAttribute("data-suppress-select", "true");
             window.setTimeout(
               () => flowNode.removeAttribute("data-suppress-select"),
-              400,
+              400
             );
           }
           /** @type {Record<string, {x:number,y:number}>} */
@@ -1513,7 +1513,7 @@ export class EditorApp {
           })();
           positions[flowNode.getAttribute("data-node-flow") || ""] = {
             x: Math.round(flowNode.offsetLeft),
-            y: Math.round(flowNode.offsetTop),
+            y: Math.round(flowNode.offsetTop)
           };
           localStorage.setItem("studio.graph-nodes", JSON.stringify(positions));
           EditorApp.element("status").textContent = "Flow position saved";
@@ -1580,7 +1580,7 @@ export class EditorApp {
           node.setAttribute("aria-pressed", String(active));
         });
         this.renderInspector();
-      },
+      }
     );
   }
   /** Fit all nodes, including saved positions, inside the visible canvas.
@@ -1600,8 +1600,8 @@ export class EditorApp {
       Math.min(
         1,
         (graph.clientWidth - 24) / Math.max(1, bounds.width),
-        (graph.clientHeight - 24) / Math.max(1, bounds.height),
-      ),
+        (graph.clientHeight - 24) / Math.max(1, bounds.height)
+      )
     );
     graph.scrollLeft = 0;
     graph.scrollTop = 0;
@@ -1613,11 +1613,11 @@ export class EditorApp {
   setGraphZoom(value) {
     this.graphZoom = Math.min(
       1.5,
-      Math.max(0.1, Math.round(value * 100) / 100),
+      Math.max(0.1, Math.round(value * 100) / 100)
     );
     EditorApp.element("graph").style.setProperty(
       "--dynamic-graph-zoom",
-      String(this.graphZoom),
+      String(this.graphZoom)
     );
     EditorApp.element("graph-zoom-label").textContent =
       `${Math.round(this.graphZoom * 100)}%`;
@@ -1640,7 +1640,7 @@ export class EditorApp {
     const recordingLists = new Map();
     for (const group of this.visibleRecordings()) {
       const children = events.filter(
-        event => event.recording_group_id === group.id,
+        event => event.recording_group_id === group.id
       );
       const section = document.createElement("details");
       section.className = "recording-group";
@@ -1653,7 +1653,7 @@ export class EditorApp {
       const timing = document.createElement("small");
       const end = Math.max(
         group.start_ms,
-        ...children.map(event => event.elapsed_ms ?? group.start_ms),
+        ...children.map(event => event.elapsed_ms ?? group.start_ms)
       );
       const recordingSnapshot =
         /** @type {EditorSnapshot & {recording_session_id?:string|null}} */ (
@@ -1684,7 +1684,7 @@ export class EditorApp {
       more.innerHTML = EditorApp.icon("dots");
       const earliest = Math.min(
         group.start_ms,
-        ...children.map(event => event.elapsed_ms ?? group.start_ms),
+        ...children.map(event => event.elapsed_ms ?? group.start_ms)
       );
       const openMenu = () => {
         if (capturing) return;
@@ -1693,7 +1693,7 @@ export class EditorApp {
             "keyboard",
             "Rename",
             false,
-            () => this.renameRecording(summary, group),
+            () => this.renameRecording(summary, group)
           ],
           [
             "arrow-right",
@@ -1702,8 +1702,8 @@ export class EditorApp {
             () =>
               this.command("recording.retime", {
                 recording_id: group.id,
-                delta_ms: "1000",
-              }),
+                delta_ms: "1000"
+              })
           ],
           [
             "arrow-left",
@@ -1712,8 +1712,8 @@ export class EditorApp {
             () =>
               this.command("recording.retime", {
                 recording_id: group.id,
-                delta_ms: "-1000",
-              }),
+                delta_ms: "-1000"
+              })
           ],
           [
             "trash",
@@ -1725,12 +1725,12 @@ export class EditorApp {
                   title: `Delete ${group.label}?`,
                   body: `This removes its ${children.length} ${children.length === 1 ? "action" : "actions"} and their screenshots.`,
                   keep: "Keep recording",
-                  remove: "Delete recording",
+                  remove: "Delete recording"
                 })
               )
-                this.command("recording.delete", { recording_id: group.id });
-            },
-          ],
+                this.command("recording.delete", {recording_id: group.id});
+            }
+          ]
         ]);
       };
       more.addEventListener("click", click => {
@@ -1795,12 +1795,12 @@ export class EditorApp {
       const missing = EditorApp.missingVariables(
         events,
         index,
-        (this.activeFlow()?.parameters ?? []).map(input => input.name),
+        (this.activeFlow()?.parameters ?? []).map(input => input.name)
       );
       const producers = producersOf(events.slice(0, index));
       for (const input of this.activeFlow()?.parameters ?? [])
-        producers.set(input.name, { icon: "download", tone: "silver" });
-      const card = buildCard(event, { producers });
+        producers.set(input.name, {icon: "download", tone: "silver"});
+      const card = buildCard(event, {producers});
       row.setAttribute("data-tone", card.tone);
       if (event.when_expression) row.setAttribute("data-nested", "true");
       row.title = card.sentence.textContent ?? EditorApp.eventTitle(event);
@@ -1831,12 +1831,12 @@ export class EditorApp {
       // A step that failed or only warned in the latest run says so in the
       // slot the check count uses, so the row grid stays the same.
       const outcome = (this.workspace?.runs?.[0]?.action_records ?? []).filter(
-        (/** @type {any} */ record) => record.event_id === event.id,
+        (/** @type {any} */ record) => record.event_id === event.id
       );
       const worst = worstStatus(outcome);
       if (worst === "failed" || worst === "warning") {
         const hit = outcome.find(
-          (/** @type {any} */ record) => record.status === worst,
+          (/** @type {any} */ record) => record.status === worst
         );
         checks.textContent = worst === "failed" ? "Failed" : "Warning";
         checks.setAttribute("data-state", worst);
@@ -1936,8 +1936,8 @@ export class EditorApp {
     tile.setAttribute("data-tone", "silver");
     tile.append(iconElement("arrows-join"));
     const sentence = renderSentence(
-      expression ? guardParts(expression) : [{ kind: "text", text: word }],
-      { producers },
+      expression ? guardParts(expression) : [{kind: "text", text: word}],
+      {producers}
     );
     const content = document.createElement("span");
     content.className = "edit-step-text";
@@ -1978,8 +1978,8 @@ export class EditorApp {
     const base = /^([^.[|]+)/.exec(token)?.[1] ?? token;
     const flow = this.activeFlow();
     const known = EditorApp.variableSources({
-      ...(flow ?? { id: "", name: "" }),
-      events: (flow?.events ?? []).slice(0, index),
+      ...(flow ?? {id: "", name: ""}),
+      events: (flow?.events ?? []).slice(0, index)
     }).find(item => item.name === base);
     /** Write a changed value back to the action.
      * @param {string} value
@@ -1994,10 +1994,10 @@ export class EditorApp {
         output_variable: event.output_variable ?? "",
         ...(event.payload === null || event.payload === undefined
           ? {}
-          : { payload: event.payload }),
+          : {payload: event.payload}),
         ...(json
-          ? { payload: JSON.stringify({ ...spec, [json]: value }) }
-          : { [field]: value }),
+          ? {payload: JSON.stringify({...spec, [json]: value})}
+          : {[field]: value})
       });
     };
     /** Replace the clicked pill's token in the value.
@@ -2021,8 +2021,8 @@ export class EditorApp {
         onReveal: name => {
           close();
           this.revealVariable(name);
-        },
-      }),
+        }
+      })
     );
   }
   /** Open the in-place editor for one token of an action card.
@@ -2051,8 +2051,8 @@ export class EditorApp {
       value: current,
       code: chip.getAttribute("data-editor") === "code",
       variables: EditorApp.variableSources({
-        ...(flow ?? { id: "", name: "" }),
-        events: (flow?.events ?? []).slice(0, index),
+        ...(flow ?? {id: "", name: ""}),
+        events: (flow?.events ?? []).slice(0, index)
       }),
       onCommit: value => {
         const retitled =
@@ -2069,12 +2069,12 @@ export class EditorApp {
           output_variable: event.output_variable ?? "",
           ...(event.payload === null || event.payload === undefined
             ? {}
-            : { payload: event.payload }),
+            : {payload: event.payload}),
           ...(json
-            ? { payload: JSON.stringify({ ...spec, [json]: value }) }
-            : { [field]: value }),
+            ? {payload: JSON.stringify({...spec, [json]: value})}
+            : {[field]: value})
         });
-      },
+      }
     });
   }
   /** Rename a recording parent in place; Enter saves and Escape cancels.
@@ -2103,7 +2103,7 @@ export class EditorApp {
           "A recording needs a name. The previous name was kept.";
         return;
       }
-      this.command("recording.rename", { recording_id: group.id, label: name });
+      this.command("recording.rename", {recording_id: group.id, label: name});
     };
     // Typing inside a summary must not toggle the disclosure.
     for (const type of ["click", "keyup"])
@@ -2136,13 +2136,13 @@ export class EditorApp {
         "arrow-up",
         "Move up",
         index === 0,
-        () => this.command("event.move", { event_id: id, offset: "-1" }),
+        () => this.command("event.move", {event_id: id, offset: "-1"})
       ],
       [
         "arrow-down",
         "Move down",
         index === count - 1,
-        () => this.command("event.move", { event_id: id, offset: "1" }),
+        () => this.command("event.move", {event_id: id, offset: "1"})
       ],
       [
         "trash",
@@ -2150,9 +2150,9 @@ export class EditorApp {
         false,
         async () => {
           if (await EditorApp.confirmDelete())
-            this.command("event.delete", { event_id: id });
-        },
-      ],
+            this.command("event.delete", {event_id: id});
+        }
+      ]
     ]);
   }
   /** Show a keyboard-operable menu next to its trigger.
@@ -2181,7 +2181,7 @@ export class EditorApp {
         menu.remove();
         document.removeEventListener("pointerdown", listeners.outside, true);
         document.removeEventListener("keydown", listeners.escape, true);
-      },
+      }
     };
     items.forEach(([glyph, label, disabled, run]) => {
       const item = document.createElement("button");
@@ -2193,7 +2193,7 @@ export class EditorApp {
       item.addEventListener("click", () => {
         listeners.close();
         Promise.resolve(/** @type {() => unknown} */ (run)()).catch(
-          () => undefined,
+          () => undefined
         );
       });
       menu.append(item);
@@ -2208,7 +2208,7 @@ export class EditorApp {
     if (first instanceof HTMLElement) first.focus();
   };
   static tickSteps = [
-    100, 200, 500, 1000, 2000, 5000, 10000, 15000, 30000, 60000, 120000, 300000,
+    100, 200, 500, 1000, 2000, 5000, 10000, 15000, 30000, 60000, 120000, 300000
   ];
   static minTickRem = 5;
   static zoomMin = 0.5;
@@ -2219,7 +2219,7 @@ export class EditorApp {
    */
   static tickFor = zoom =>
     EditorApp.tickSteps.find(
-      milliseconds => milliseconds / 1000 * zoom >= EditorApp.minTickRem,
+      milliseconds => milliseconds / 1000 * zoom >= EditorApp.minTickRem
     ) ??
     EditorApp.tickSteps.at(-1) ??
     300000;
@@ -2280,7 +2280,7 @@ export class EditorApp {
         : timeline.clientWidth / 2;
     this.timelineZoom = Math.min(
       EditorApp.zoomMax,
-      Math.max(EditorApp.zoomMin, zoom),
+      Math.max(EditorApp.zoomMin, zoom)
     );
     this.timelineTick = EditorApp.tickFor(this.timelineZoom);
     this.timelineScale = this.timelineTick / 1000 * this.timelineZoom;
@@ -2308,12 +2308,12 @@ export class EditorApp {
       EditorApp.zoomMax,
       Math.max(
         EditorApp.zoomMin,
-        seconds > 0 ? (room - clipRem) / seconds : 24,
-      ),
+        seconds > 0 ? (room - clipRem) / seconds : 24
+      )
     );
     this.setTimelineZoom(
       zoom,
-      startMs + (seconds * 1000 + clipRem / zoom * 1000) / 2,
+      startMs + (seconds * 1000 + clipRem / zoom * 1000) / 2
     );
   }
   /** Replace the selection and refresh everything that shows it.
@@ -2351,7 +2351,7 @@ export class EditorApp {
     this.syncExpandedRow();
     document.querySelectorAll("[data-step]").forEach(item => {
       const selected = this.selectedEventIds.has(
-        item.getAttribute("data-step") ?? "",
+        item.getAttribute("data-step") ?? ""
       );
       item.classList.toggle("selected", selected);
       item.setAttribute("aria-pressed", String(selected));
@@ -2361,7 +2361,7 @@ export class EditorApp {
       fit.disabled = this.selectedEventIds.size === 0;
     this.updateFlowBar();
     const primary = this.activeFlow()?.events?.find(
-      event => event.id === this._primary,
+      event => event.id === this._primary
     );
     this.updateTimelineClock(primary ? (primary.elapsed_ms ?? 0) : null);
     this.renderInspector();
@@ -2403,7 +2403,7 @@ export class EditorApp {
         selector_id: saved?.selector_id ?? "",
         expression,
         expected_count: saved?.expected_count ?? "any",
-        checks: saved?.checks ?? [],
+        checks: saved?.checks ?? []
       });
     } catch (error) {
       this.actionHighlightKey = "";
@@ -2435,7 +2435,7 @@ export class EditorApp {
       const box = timeline.getBoundingClientRect();
       return {
         x: event.clientX - box.left + timeline.scrollLeft,
-        y: event.clientY - box.top + timeline.scrollTop,
+        y: event.clientY - box.top + timeline.scrollTop
       };
     };
     const from = space(down);
@@ -2450,7 +2450,7 @@ export class EditorApp {
           left: rect.left - box.left + timeline.scrollLeft,
           right: rect.right - box.left + timeline.scrollLeft,
           top: rect.top - box.top + timeline.scrollTop,
-          bottom: rect.bottom - box.top + timeline.scrollTop,
+          bottom: rect.bottom - box.top + timeline.scrollTop
         };
       });
     const band = document.createElement("div");
@@ -2487,14 +2487,14 @@ export class EditorApp {
           left: `${x}px`,
           top: `${y}px`,
           width: `${width}px`,
-          height: `${height}px`,
+          height: `${height}px`
         });
         hits = targets.filter(
           item =>
             item.left < x + width &&
             item.right > x &&
             item.top < y + height &&
-            item.bottom > y,
+            item.bottom > y
         );
         for (const item of targets)
           item.clip.classList.toggle("is-marquee-hit", hits.includes(item));
@@ -2520,9 +2520,9 @@ export class EditorApp {
         const earliest = [...hits].sort((a, b) => a.left - b.left)[0]?.id;
         this.setSelection(
           [...base, ...hits.map(item => item.id)],
-          earliest ?? base.at(-1),
+          earliest ?? base.at(-1)
         );
-      },
+      }
     };
     timeline.setPointerCapture(down.pointerId);
     timeline.addEventListener("pointermove", gesture.move);
@@ -2535,7 +2535,7 @@ export class EditorApp {
   bindSteps(target) {
     target.querySelectorAll("[data-step]").forEach(node => {
       const activeStep = this.selectedEventIds.has(
-        node.getAttribute("data-step") ?? "",
+        node.getAttribute("data-step") ?? ""
       );
       node.classList.toggle("selected", activeStep);
       node.setAttribute("aria-pressed", String(activeStep));
@@ -2550,7 +2550,7 @@ export class EditorApp {
             event.preventDefault();
             this.command("event.move", {
               event_id: node.getAttribute("data-step") ?? "",
-              offset: event.key === "ArrowUp" ? "-1" : "1",
+              offset: event.key === "ArrowUp" ? "-1" : "1"
             });
             return;
           }
@@ -2581,7 +2581,7 @@ export class EditorApp {
         if (!(menu instanceof MouseEvent) || !menu.ctrlKey) return;
         menu.preventDefault();
         node.dispatchEvent(
-          new MouseEvent("click", { bubbles: true, ctrlKey: true }),
+          new MouseEvent("click", {bubbles: true, ctrlKey: true})
         );
       });
       node.addEventListener("click", click => {
@@ -2599,7 +2599,7 @@ export class EditorApp {
             const range = events.slice(Math.min(a, b), Math.max(a, b) + 1);
             this.setSelection(
               range.map(event => event.id),
-              id,
+              id
             );
             return;
           }
@@ -2637,8 +2637,8 @@ export class EditorApp {
       drop: (row, index) =>
         this.command("event.reorder", {
           event_id: row.getAttribute("data-step") || "",
-          index: String(index),
-        }),
+          index: String(index)
+        })
     });
   }
   /** Drag any list row with one look: lifted row, drop line, Escape cancels.
@@ -2651,7 +2651,7 @@ export class EditorApp {
   bindRowDrag(list, selector, options) {
     const rows = () =>
       Array.from(list.querySelectorAll(selector)).filter(
-        item => item instanceof HTMLElement,
+        item => item instanceof HTMLElement
       );
     rows().forEach(row => {
       row.addEventListener("pointerdown", down => {
@@ -2719,7 +2719,7 @@ export class EditorApp {
             this.suppressClickUntil = performance.now() + 300;
             if (!cancelled && dropIndex >= 0 && dropIndex !== current)
               options.drop(row, dropIndex);
-          },
+          }
         };
         row.setPointerCapture(down.pointerId);
         row.addEventListener("pointermove", drag.move);
@@ -2763,9 +2763,9 @@ export class EditorApp {
           elapsed_ms: String(
             Math.max(
               0,
-              start + (key.key === "ArrowRight" ? 1 : -1) * quantum(),
-            ),
-          ),
+              start + (key.key === "ArrowRight" ? 1 : -1) * quantum()
+            )
+          )
         });
       });
       clip.addEventListener("pointerdown", down => {
@@ -2789,7 +2789,7 @@ export class EditorApp {
               item instanceof HTMLElement &&
               this.selectedEventIds.has(item.getAttribute("data-step") ?? "")
                 ? [item]
-                : [],
+                : []
             )
           : [clip];
         const starts = new Map(
@@ -2798,9 +2798,9 @@ export class EditorApp {
             return [
               id,
               this.activeFlow()?.events?.find(event => event.id === id)
-                ?.elapsed_ms ?? 0,
+                ?.elapsed_ms ?? 0
             ];
-          }),
+          })
         );
         const earliest = Math.min(...starts.values());
         const line = document.createElement("span");
@@ -2823,9 +2823,9 @@ export class EditorApp {
             // No clip of the group may be pushed before time zero.
             delta = Math.max(
               snap(
-                start + dx / rem / this.timelineScale * this.timelineTick,
+                start + dx / rem / this.timelineScale * this.timelineTick
               ) - start,
-              -earliest,
+              -earliest
             );
             target = start + delta;
             const shift =
@@ -2866,11 +2866,11 @@ export class EditorApp {
                 await pending;
                 await this.command("event.retime", {
                   event_id: id,
-                  elapsed_ms: String(Math.max(0, from + delta)),
+                  elapsed_ms: String(Math.max(0, from + delta))
                 });
-              }, Promise.resolve()),
+              }, Promise.resolve())
             ).catch(() => undefined);
-          },
+          }
         };
         clip.setPointerCapture(down.pointerId);
         clip.addEventListener("pointermove", drag.move);
@@ -2897,7 +2897,7 @@ export class EditorApp {
       this.workspaceView === "graph"
         ? this.workspace?.edges?.find(
             item =>
-              `${item.source}:${item.target}` === this.selectedGraphEdge,
+              `${item.source}:${item.target}` === this.selectedGraphEdge
           )
         : undefined;
     if (edge) {
@@ -2913,7 +2913,7 @@ export class EditorApp {
             mode: edge.mode || "always",
             condition_expression: edge.condition_expression || "",
             priority: edge.priority ?? 0,
-            max_traversals: edge.max_traversals ?? 1,
+            max_traversals: edge.max_traversals ?? 1
           });
         },
         async value => {
@@ -2921,14 +2921,14 @@ export class EditorApp {
           if (index < 0) throw new Error("This connection no longer exists.");
           const snapshot = await this.call("edge.update", {
             index: String(index),
-            ...value,
+            ...value
           });
           this.applySnapshot(snapshot);
-        },
+        }
       );
       target.replaceChildren(inspector);
       const condition = inspector.querySelector(
-        '[name="condition_expression"]',
+        '[name="condition_expression"]'
       );
       if (condition instanceof HTMLInputElement)
         attachConditionField(condition, this.conditionSource());
@@ -2949,7 +2949,7 @@ export class EditorApp {
     this.inspectorKey = key;
     if (event) {
       target.replaceChildren(
-        EditorApp.template("edit-step-inspector-template"),
+        EditorApp.template("edit-step-inspector-template")
       );
       target
         .querySelector("[data-inspector-icon]")
@@ -2964,7 +2964,7 @@ export class EditorApp {
         "label",
         "selector",
         "url",
-        "payload",
+        "payload"
       ])) {
         const input = target.querySelector(`#step-form [name="${name}"]`);
         if (
@@ -2990,7 +2990,7 @@ export class EditorApp {
                 "fill",
                 "keystroke",
                 "javascript",
-                "wait",
+                "wait"
               ].includes(event.kind) && !event.payload;
         }
       }
@@ -3008,11 +3008,11 @@ export class EditorApp {
             ...flow,
             events: (flow.events ?? []).slice(
               0,
-              (flow.events ?? []).indexOf(event),
-            ),
+              (flow.events ?? []).indexOf(event)
+            )
           }),
           selectorTools: this.actionSelectorTools(),
-          event,
+          event
         });
         actionFields.hidden = false;
       }
@@ -3038,7 +3038,7 @@ export class EditorApp {
       this.populateStepTargeting(
         target,
         event,
-        definition?.fields.some(item => item.type === "selector") ?? false,
+        definition?.fields.some(item => item.type === "selector") ?? false
       );
       // A single-line action's own settings ride inside the form in
       // #action-fields, so one save configures the action and its targeting
@@ -3057,29 +3057,29 @@ export class EditorApp {
               url: event.url ?? "",
               ...(event.payload === null || event.payload === undefined
                 ? {}
-                : { payload: event.payload }),
+                : {payload: event.payload})
             }
           : {
               event_id: event.id,
-              payload: event.payload || "",
+              payload: event.payload || ""
             },
         data => {
           if (!(configures && stepForm instanceof HTMLFormElement))
             return EditorApp.stepPayload(data);
-          const merged = { ...data, ...actionCommand(stepForm, definition) };
+          const merged = {...data, ...actionCommand(stepForm, definition)};
           // The workbench FormData reads checkboxes as "on"; keep the booleans.
           for (const input of stepForm.querySelectorAll('input[type="checkbox"]'))
             if (input instanceof HTMLInputElement)
               merged[input.name] = input.checked;
           return EditorApp.stepPayload(merged);
-        },
+        }
       );
       this.bindStepTargeting(target, event);
       const assertSelector = target.querySelector(
-        '#assert-form select[name="target_selector_id"]',
+        '#assert-form select[name="target_selector_id"]'
       );
       const assertInline = target.querySelector(
-        '#assert-form input[name="target"]',
+        '#assert-form input[name="target"]'
       );
       const assertAdd = target.querySelector("[data-add-check-selector]");
       if (
@@ -3091,34 +3091,34 @@ export class EditorApp {
           inline: assertInline,
           selectors: this.selectors(),
           add: assertAdd instanceof HTMLElement ? assertAdd : null,
-          onAdd: () => this.selectSelector("new"),
+          onAdd: () => this.selectSelector("new")
         });
       if (assertInline instanceof HTMLInputElement) this.mountSelectorWidget(assertInline, "Expression");
       this.bindForm(
         "assert-form",
         "event.assert",
-        { event_id: event.id },
-        ({ target_selector_id: reference, target: expression, ...rest }) => ({
+        {event_id: event.id},
+        ({target_selector_id: reference, target: expression, ...rest}) => ({
           ...rest,
           selector_id: reference,
           target: reference ? "" : expression,
-          target_selector_id: undefined,
-        }),
+          target_selector_id: undefined
+        })
       );
       target.querySelectorAll("[data-remove-check]").forEach(node => {
         node.addEventListener("click", () => {
           this.command("event.assert.remove", {
             event_id: event.id,
-            assertion_id: node.getAttribute("data-remove-check") || "",
+            assertion_id: node.getAttribute("data-remove-check") || ""
           });
         });
       });
       const checkKind = target.querySelector('select[name="kind"]');
       const checkTarget = target.querySelector(
-        '#assert-form input[name="target"]',
+        '#assert-form input[name="target"]'
       );
       const checkExpected = target.querySelector(
-        '#assert-form input[name="expected"]',
+        '#assert-form input[name="expected"]'
       );
       const updateCheckFields = () => {
         if (
@@ -3146,24 +3146,24 @@ export class EditorApp {
       up.addEventListener("click", () =>
         this.command("event.move", {
           event_id: event.id,
-          offset: "-1",
-        }),
+          offset: "-1"
+        })
       );
       EditorApp.element("step-down").addEventListener("click", () =>
         this.command("event.move", {
           event_id: event.id,
-          offset: "1",
-        }),
+          offset: "1"
+        })
       );
       EditorApp.element("step-delete").addEventListener("click", async () => {
         if (await EditorApp.confirmDelete())
           this.command("event.delete", {
-            event_id: event.id,
+            event_id: event.id
           });
       });
     } else {
       target.replaceChildren(
-        EditorApp.template("edit-flow-inspector-template"),
+        EditorApp.template("edit-flow-inspector-template")
       );
       const summary = target.querySelector("[data-flow-summary]");
       if (summary)
@@ -3171,7 +3171,7 @@ export class EditorApp {
       for (const name of /** @type {const} */ ([
         "name",
         "task_description",
-        "expected_behavior",
+        "expected_behavior"
       ])) {
         const input = target.querySelector(`[name="${name}"]`);
         if (
@@ -3182,7 +3182,7 @@ export class EditorApp {
       }
       for (const name of /** @type {const} */ ([
         "capture_record_images",
-        "capture_play_images",
+        "capture_play_images"
       ])) {
         const input = target.querySelector(`[name="${name}"]`);
         if (input instanceof HTMLInputElement)
@@ -3214,7 +3214,7 @@ export class EditorApp {
         };
         scope.replaceChildren(
           choice("shared", "Shared across profiles"),
-          ...profiles.map(profile => choice(profile.id, profile.name)),
+          ...profiles.map(profile => choice(profile.id, profile.name))
         );
         scope.addEventListener("change", changeEvent => {
           const changed = changeEvent.target;
@@ -3238,12 +3238,12 @@ export class EditorApp {
         const payload = {
           ...data,
           device_scopes: scopes.length ? scopes : ["shared"],
-          parameters: inputsField.read(),
+          parameters: inputsField.read()
         };
         return Object.fromEntries(
           Object.entries(payload).filter(
-            ([name]) => !name.startsWith("device_scope__"),
-          ),
+            ([name]) => !name.startsWith("device_scope__")
+          )
         );
       });
       const remove = target.querySelector("#flow-delete");
@@ -3264,7 +3264,7 @@ export class EditorApp {
     const shot = (this.workspace?.screenshots || []).find(
       item =>
         item.flow_id === this.activeFlowId &&
-        (!this.selectedEventId || item.event_id === this.selectedEventId),
+        (!this.selectedEventId || item.event_id === this.selectedEventId)
     );
     target.replaceChildren();
     if (shot) {
@@ -3283,8 +3283,8 @@ export class EditorApp {
       title: "Delete this step?",
       body: "This also removes screenshots attached to this step.",
       keep: "Keep step",
-      remove: "Delete step",
-    },
+      remove: "Delete step"
+    }
   ) => {
     const trigger = document.activeElement;
     const dialog = document.createElement("dialog");
@@ -3314,7 +3314,7 @@ export class EditorApp {
       if (event.key !== "Tab") return;
       const buttons = Array.from(dialog.querySelectorAll("button"));
       const index = buttons.findIndex(
-        button => button === document.activeElement,
+        button => button === document.activeElement
       );
       const next =
         buttons[
@@ -3334,13 +3334,13 @@ export class EditorApp {
           dialog.remove();
           if (trigger instanceof HTMLElement && trigger.isConnected)
             trigger.focus({
-              preventScroll: true,
+              preventScroll: true
             });
           resolve(approved);
         },
         {
-          once: true,
-        },
+          once: true
+        }
       );
       dialog.showModal();
     });
@@ -3386,10 +3386,10 @@ export class EditorApp {
           const value = dialog.returnValue;
           dialog.remove();
           if (trigger instanceof HTMLElement && trigger.isConnected)
-            trigger.focus({ preventScroll: true });
+            trigger.focus({preventScroll: true});
           resolve(value === "update" || value === "copy" ? value : "cancel");
         },
-        { once: true },
+        {once: true}
       );
       dialog.showModal();
     });
@@ -3406,7 +3406,7 @@ export class EditorApp {
     if (!(form instanceof HTMLFormElement)) return;
     const draftKey = `${this.activeFlow()?.id || ""}:${extra.event_id || "settings"}:${id}`;
     const controls = Array.from(
-      form.querySelectorAll("input, select, textarea"),
+      form.querySelectorAll("input, select, textarea")
     );
     const restored = this.inspectorDrafts.get(draftKey);
     for (const input of controls) {
@@ -3443,7 +3443,7 @@ export class EditorApp {
     /** @returns {Record<string,string|boolean>}
      */
     const values = () => {
-      const data = { ...extra };
+      const data = {...extra};
       new FormData(form).forEach((value, key) => {
         data[key] = String(value);
       });
@@ -3465,7 +3465,7 @@ export class EditorApp {
       try {
         const result = await this.call(
           command,
-          transform ? transform(values()) : values(),
+          transform ? transform(values()) : values()
         );
         this.inspectorDrafts.delete(draftKey);
         state.hidden = true;
@@ -3493,18 +3493,18 @@ export class EditorApp {
   applyPickedSelector(selector) {
     // An action's settings show the selector in a rich editor that owns the text.
     const editor = document.querySelector(
-      '#step-form #action-fields .variable-field:has([name="selector"]) .variable-editor, .edit-step-detail-form .variable-field:has([name="selector"]) .variable-editor',
+      '#step-form #action-fields .variable-field:has([name="selector"]) .variable-editor, .edit-step-detail-form .variable-field:has([name="selector"]) .variable-editor'
     );
     if (this.selectedEventId && editor instanceof HTMLElement) {
       editor.textContent = selector;
-      editor.dispatchEvent(new Event("input", { bubbles: true }));
+      editor.dispatchEvent(new Event("input", {bubbles: true}));
       editor.focus();
       EditorApp.element("status").textContent =
         "Selector placed in the selected step. Save the step to keep it.";
       return true;
     }
     const field = document.querySelector(
-      '#step-form [name="selector"], .edit-step-detail-form [name="selector"]',
+      '#step-form [name="selector"], .edit-step-detail-form [name="selector"]'
     );
     if (
       !this.selectedEventId ||
@@ -3515,7 +3515,7 @@ export class EditorApp {
       return false;
     field.value = selector;
     // The form's input listener stores the whole draft, including other fields.
-    field.dispatchEvent(new Event("input", { bubbles: true }));
+    field.dispatchEvent(new Event("input", {bubbles: true}));
     field.focus();
     EditorApp.element("status").textContent =
       "Selector placed in the selected step. Save the step to keep it.";
@@ -3530,7 +3530,7 @@ export class EditorApp {
     const failedIds = new Set(
       (latestRun?.action_records ?? [])
         .filter(record => record.status === "failed")
-        .map(record => record.event_id),
+        .map(record => record.event_id)
     );
     const groups = [
       "navigation",
@@ -3540,12 +3540,12 @@ export class EditorApp {
       "screenshots",
       "network",
       "timing",
-      "diagnostics",
+      "diagnostics"
     ];
     const present = new Set(events.map(event => event.id));
     if ([...this.selectedEventIds].some(id => !present.has(id))) {
       this.selectedEventIds = new Set(
-        [...this.selectedEventIds].filter(id => present.has(id)),
+        [...this.selectedEventIds].filter(id => present.has(id))
       );
       if (!present.has(this._primary))
         this._primary = [...this.selectedEventIds].at(-1) ?? "";
@@ -3561,7 +3561,7 @@ export class EditorApp {
     // Lane height lives in CSS (--dynamic-lane-h), so a short panel can shrink it.
     target.setAttribute(
       "data-lanes",
-      this.workspaceView === "edit" ? "compact" : "roomy",
+      this.workspaceView === "edit" ? "compact" : "roomy"
     );
     // The ruler always fills the panel, but never forces it wider: a fixed
     // minimum of ticks would make "fit" impossible at fine tick intervals.
@@ -3579,17 +3579,17 @@ export class EditorApp {
       ...events.map(event => (event.elapsed_ms || 0) + clipMs),
       (this.timelineMarker || 0) + interval,
       // The playhead is always reachable, however far the view is zoomed in.
-      (this.timelineCursorMs || 0) + interval,
+      (this.timelineCursorMs || 0) + interval
     );
     const count = Math.floor(duration / interval);
     target.style.setProperty(
       "--dynamic-timeline-duration",
-      `${(duration / interval) * scale}rem`,
+      `${(duration / interval) * scale}rem`
     );
     const selected = events.find(event => event.id === this.selectedEventId);
     const failedEvent = events.find(event => failedIds.has(event.id));
     const executed = events.find(
-      event => event.id === latestRun?.action_records?.at(-1)?.event_id,
+      event => event.id === latestRun?.action_records?.at(-1)?.event_id
     );
     const playheadTime =
       latestRun?.status === "running"
@@ -3605,7 +3605,7 @@ export class EditorApp {
         ? (playheadTime ?? 0)
         : this.timelineStopped
           ? null
-          : (playheadTime ?? null),
+          : (playheadTime ?? null)
     );
     /** @param {number} milliseconds
      * @returns {string}
@@ -3618,9 +3618,9 @@ export class EditorApp {
         ? ""
         : `<span class="timeline-marker" style="left:${position(this.timelineMarker)}"><small>${EditorApp.timecode(this.timelineMarker)}</small></span>`;
     const ruler = `<div class="timeline-ruler"><div class="ruler-label">Time, ${EditorApp.tickLabel(interval)} / tick</div><div class="ruler-ticks">${Array.from(
-      { length: count + 1 },
+      {length: count + 1},
       (_, index) =>
-        `<span style="left:${index * scale}rem">${EditorApp.tickLabel(index * interval)}</span>`,
+        `<span style="left:${index * scale}rem">${EditorApp.tickLabel(index * interval)}</span>`
     ).join("")}${playhead}${marker}</div></div>`;
     const lanes = groups
       .map(layer => {
@@ -3634,7 +3634,7 @@ export class EditorApp {
             if (
               event.recording_group_id &&
               this.visibleRecordings().some(
-                group => group.id === event.recording_group_id,
+                group => group.id === event.recording_group_id
               )
             )
               return false;
@@ -3655,7 +3655,7 @@ export class EditorApp {
     const firstLane = target.children[1] ?? null;
     for (const group of this.visibleRecordings()) {
       const children = events.filter(
-        event => event.recording_group_id === group.id,
+        event => event.recording_group_id === group.id
       );
       const track = document.createElement("div");
       track.className = "track recording-track";
@@ -3672,8 +3672,8 @@ export class EditorApp {
       const end = Math.max(
         group.start_ms + interval,
         ...children.map(
-          event => (event.elapsed_ms ?? group.start_ms) + interval,
-        ),
+          event => (event.elapsed_ms ?? group.start_ms) + interval
+        )
       );
       band.style.width = position(end - group.start_ms);
       /** @type {number[]} */
@@ -3698,7 +3698,7 @@ export class EditorApp {
         clip.style.left = `${left}rem`;
         clip.style.setProperty(
           "--dynamic-clip-top",
-          `calc(${row} * var(--dynamic-lane-h) + 0.25rem)`,
+          `calc(${row} * var(--dynamic-lane-h) + 0.25rem)`
         );
         band.append(clip);
       }
@@ -3736,9 +3736,9 @@ export class EditorApp {
                 Math.min(
                   duration,
                   this.timelineCursorMs +
-                    (key.key === "ArrowRight" ? step : -step),
-                ),
-              ),
+                    (key.key === "ArrowRight" ? step : -step)
+                )
+              )
       );
       const box = cursor.getBoundingClientRect();
       const viewport = target.getBoundingClientRect();
@@ -3780,7 +3780,7 @@ export class EditorApp {
     cursor.setAttribute("aria-valuenow", String(this.timelineCursorMs));
     cursor.setAttribute(
       "aria-valuetext",
-      EditorApp.timecode(this.timelineCursorMs),
+      EditorApp.timecode(this.timelineCursorMs)
     );
   };
   /** Scrub without changing actions; keep scrolling while held near either edge.
@@ -3802,7 +3802,7 @@ export class EditorApp {
     const maximum = Number(
       timeline
         .querySelector(".timeline-cursor")
-        ?.getAttribute("aria-valuemax") ?? 0,
+        ?.getAttribute("aria-valuemax") ?? 0
     );
     const rem =
       Number.parseFloat(getComputedStyle(document.documentElement).fontSize) ||
@@ -3822,10 +3822,10 @@ export class EditorApp {
               (pointerX - ruler.getBoundingClientRect().left) /
                 rem /
                 this.timelineScale *
-                this.timelineTick,
-            ),
-          ),
-        ),
+                this.timelineTick
+            )
+          )
+        )
       );
     const scroll = () => {
       const box = timeline.getBoundingClientRect();
@@ -3858,7 +3858,7 @@ export class EditorApp {
       /** @param {KeyboardEvent} key */
       escape: key => {
         if (key.key === "Escape") gesture.cancel();
-      },
+      }
     };
     timeline.addEventListener("pointermove", gesture.move);
     timeline.addEventListener("pointerup", gesture.finish);
@@ -3895,7 +3895,7 @@ export class EditorApp {
     screenshots: "Screenshots",
     network: "Network",
     timing: "Timing",
-    diagnostics: "Diagnostics",
+    diagnostics: "Diagnostics"
   };
   timelineStopped = true;
   /** Update only the display; playback remains owned by Studio.
@@ -3911,7 +3911,7 @@ export class EditorApp {
     if (milliseconds === null) this.timelineClock.clear();
     else
       this.timelineClock.setTime(
-        Math.max(0, Math.min(359999999, milliseconds)),
+        Math.max(0, Math.min(359999999, milliseconds))
       );
     EditorApp.element("timecode").title =
       milliseconds === null
@@ -3929,7 +3929,7 @@ export class EditorApp {
     "input_text",
     "select_option",
     "note",
-    "snapshot",
+    "snapshot"
   ]);
   /** Kinds that act on an element, so they can use a selector and targeting. */
   static TARGETED_KINDS = Object.freeze([
@@ -3946,7 +3946,7 @@ export class EditorApp {
     "input_text",
     "javascript",
     "snapshot",
-    "note",
+    "note"
   ]);
   /** Turn the flat step form into the command the server expects.
    * @param {Record<string,string|boolean|undefined>} data
@@ -3965,7 +3965,7 @@ export class EditorApp {
       pace_delay = "",
       pace_until = "",
       after_delay = "",
-      after_until = "",
+      after_until = ""
     } = data;
     const targeted = Boolean(selector_id || text(selector));
     const all = targeted && targets === "all";
@@ -3976,7 +3976,7 @@ export class EditorApp {
             delay_ms: number(delay),
             until: text(until) || null,
             poll_ms: 100,
-            timeout_ms: 5000,
+            timeout_ms: 5000
           }
         : null;
     const payload = /** @type {Record<string, unknown>} */ ({
@@ -3985,13 +3985,13 @@ export class EditorApp {
       run_mode: all ? run_mode : "sequential",
       pace_between: all ? pace(pace_delay, pace_until) : null,
       pace: pace(after_delay, after_until),
-      selector: selector_id ? "" : selector,
+      selector: selector_id ? "" : selector
     });
     for (const key of [
       "pace_delay",
       "pace_until",
       "after_delay",
-      "after_until",
+      "after_until"
     ])
       delete payload[key];
     return payload;
@@ -4020,8 +4020,8 @@ export class EditorApp {
         "position_action",
         "x",
         "y",
-        "share_session_cookies",
-      ].map(name => anyEvent[name] ?? null),
+        "share_session_cookies"
+      ].map(name => anyEvent[name] ?? null)
     );
     const kept = this.actionEditors.get(event.id);
     if (kept?.key === key) return kept.node;
@@ -4035,7 +4035,7 @@ export class EditorApp {
     slot.className = "action-settings";
     const earlier = {
       ...flow,
-      events: (flow.events ?? []).slice(0, (flow.events ?? []).indexOf(event)),
+      events: (flow.events ?? []).slice(0, (flow.events ?? []).indexOf(event))
     };
     configureActionForm({
       fields: slot,
@@ -4043,7 +4043,7 @@ export class EditorApp {
       snapshot: this.snapshot,
       variables: EditorApp.variableSources(earlier),
       selectorTools: this.actionSelectorTools(),
-      event,
+      event
     });
     const apply = document.createElement("button");
     apply.type = "submit";
@@ -4067,14 +4067,14 @@ export class EditorApp {
       try {
         await this.command("event.configure", {
           event_id: event.id,
-          ...actionCommand(form, definition),
+          ...actionCommand(form, definition)
         });
       } finally {
         apply.disabled = false;
       }
     });
     section.append(form);
-    this.actionEditors.set(event.id, { key, node: section });
+    this.actionEditors.set(event.id, {key, node: section});
     return section;
   }
   /** Put the cursor in the first control of an action's in-row editor.
@@ -4084,9 +4084,9 @@ export class EditorApp {
   static focusActionEditor = eventId => {
     window.requestAnimationFrame(() => {
       const first = document.querySelector(
-        `[data-detail="${CSS.escape(eventId)}"] :is(input, textarea, select, [contenteditable="true"])`,
+        `[data-detail="${CSS.escape(eventId)}"] :is(input, textarea, select, [contenteditable="true"])`
       );
-      if (first instanceof HTMLElement) first.focus({ preventScroll: true });
+      if (first instanceof HTMLElement) first.focus({preventScroll: true});
     });
   };
   /** Show the "Run only if" condition of an action in Properties.
@@ -4110,10 +4110,10 @@ export class EditorApp {
         source: event.when_expression ?? "",
         variables: EditorApp.variableSources({
           ...flow,
-          events: (flow.events ?? []).slice(0, (flow.events ?? []).indexOf(event)),
+          events: (flow.events ?? []).slice(0, (flow.events ?? []).indexOf(event))
         }),
-        snapshot: this.snapshot,
-      }),
+        snapshot: this.snapshot
+      })
     );
   }
   /** Fill the target, policy and last-run parts of the step form.
@@ -4134,7 +4134,7 @@ export class EditorApp {
         select: ref,
         inline,
         selectors: this.selectors(),
-        selected: event.selector_id || "",
+        selected: event.selector_id || ""
       });
     if (!owned && inline instanceof HTMLInputElement) this.mountSelectorWidget(inline, "Expression");
     /** @param {string} name @param {string} value */
@@ -4150,14 +4150,14 @@ export class EditorApp {
     set("run_mode", event.run_mode || "sequential");
     set(
       "pace_delay",
-      event.pace_between?.delay_ms ? String(event.pace_between.delay_ms) : "",
+      event.pace_between?.delay_ms ? String(event.pace_between.delay_ms) : ""
     );
     set("pace_until", event.pace_between?.until || "");
     set(
       "after_delay",
       event.contract?.pace?.delay_ms
         ? String(event.contract.pace.delay_ms)
-        : "",
+        : ""
     );
     set("after_until", event.contract?.pace?.until || "");
     const keep = field("continue_on_failure");
@@ -4168,7 +4168,7 @@ export class EditorApp {
       sandbox.checked = Boolean(event.sandbox);
     const latest = this.workspace?.runs?.[0];
     const records = (latest?.action_records ?? []).filter(
-      (/** @type {any} */ record) => record.event_id === event.id,
+      (/** @type {any} */ record) => record.event_id === event.id
     );
     const section = form.querySelector("[data-field=last-run]");
     if (section instanceof HTMLElement) renderLastRun(section, records);
@@ -4220,7 +4220,7 @@ export class EditorApp {
         ["run", targeted && hasTarget && all],
         ["pause", targeted && hasTarget && all],
         ["pause-until", targeted && hasTarget && all],
-        ["sandbox", event.kind === "javascript"],
+        ["sandbox", event.kind === "javascript"]
       ])) {
         const node = wrap(name);
         if (node instanceof HTMLElement) node.hidden = !visible;
@@ -4238,13 +4238,13 @@ export class EditorApp {
         save.hidden = !targeted || Boolean(chosen);
       if (warning instanceof HTMLElement) {
         const stored = this.selectors().find(
-          item => item.selector_id === chosen,
+          item => item.selector_id === chosen
         );
         const page = this.snapshot?.target_url ?? "";
         const unseen =
           stored &&
           !stored.validated_on.some(
-            (/** @type {any} */ seen) => seen.url === page,
+            (/** @type {any} */ seen) => seen.url === page
           );
         warning.hidden = !unseen;
         warning.textContent = unseen
@@ -4257,7 +4257,7 @@ export class EditorApp {
     refresh();
     if (save instanceof HTMLButtonElement)
       save.addEventListener("click", () =>
-        this.saveInlineAsSelector(event, inline),
+        this.saveInlineAsSelector(event, inline)
       );
   }
   /** Turn a step's inline selector into a stored selector and open it to refine.
@@ -4293,7 +4293,7 @@ export class EditorApp {
       name,
       expression,
       expected_count: "any",
-      checks: [],
+      checks: []
     });
     const saved = this.selectors().find(item => item.name === name);
     if (!saved) return;
@@ -4303,7 +4303,7 @@ export class EditorApp {
       selector: "",
       payload: event.payload ?? "",
       url: event.url ?? "",
-      selector_id: saved.selector_id,
+      selector_id: saved.selector_id
     });
     this.selectSelector(saved.selector_id);
   }
@@ -4322,7 +4322,7 @@ export class EditorApp {
     const count = this.selectedStepIds().length;
     for (const [id, verb] of /** @type {[string, string][]} */ ([
       ["step-duplicate", "Duplicate"],
-      ["step-remove", "Remove"],
+      ["step-remove", "Remove"]
     ])) {
       const button = document.getElementById(id);
       if (!(button instanceof HTMLButtonElement)) continue;
@@ -4338,12 +4338,12 @@ export class EditorApp {
    */
   async duplicateSelected() {
     const before = new Set(
-      (this.activeFlow()?.events ?? []).map(event => event.id),
+      (this.activeFlow()?.events ?? []).map(event => event.id)
     );
     await this.selectedStepIds().reduce(
       (pending, id) =>
-        pending.then(() => this.command("event.duplicate", { event_id: id })),
-      Promise.resolve(),
+        pending.then(() => this.command("event.duplicate", {event_id: id})),
+      Promise.resolve()
     );
     const copies = (this.activeFlow()?.events ?? [])
       .map(event => event.id)
@@ -4363,13 +4363,13 @@ export class EditorApp {
             title: `Delete ${ids.length} steps?`,
             body: "This also removes screenshots attached to these steps.",
             keep: "Keep steps",
-            remove: `Delete ${ids.length} steps`,
+            remove: `Delete ${ids.length} steps`
           }
-        : undefined,
+        : undefined
     );
     if (!approved) return;
     await Promise.all(
-      ids.map(id => this.command("event.delete", { event_id: id })),
+      ids.map(id => this.command("event.delete", {event_id: id}))
     );
     this.setSelection([]);
   }
@@ -4377,7 +4377,7 @@ export class EditorApp {
    * @returns {void}
    */
   openActionLibrary() {
-    this.dock.openWindow("actions", { x: 16, y: 80, w: 720, h: 760 });
+    this.dock.openWindow("actions", {x: 16, y: 80, w: 720, h: 760});
   }
   /** The tools a selector control needs inside an action's settings.
    * @returns {{mount: (carrier: HTMLInputElement|HTMLTextAreaElement, label: string) => unknown, onPick: (apply: (element: any) => void) => void, onHighlight: (expression: string, done: (result: any) => void) => void}}
@@ -4394,8 +4394,8 @@ export class EditorApp {
           selector_id: "",
           expression,
           expected_count: null,
-          checks: [],
-        }, done),
+          checks: []
+        }, done)
     };
   }
   /** Add an action to the flow with its default settings and select it.
@@ -4423,9 +4423,9 @@ export class EditorApp {
         ...defaultActionCommand({
           kind,
           snapshot: this.snapshot,
-          variables: EditorApp.variableSources(flow),
+          variables: EditorApp.variableSources(flow)
         }),
-        ...settings,
+        ...settings
       });
       this.inspectorKey = "";
       this.applySnapshot(result);
@@ -4436,7 +4436,7 @@ export class EditorApp {
     const added = this.activeFlow()?.events?.find(item => !before.has(item.id));
     if (!added) return;
     this.setSelection([added.id], added.id);
-    this.dock.openWindow("properties", { x: 1080, y: 96, w: 344, h: 660 });
+    this.dock.openWindow("properties", {x: 1080, y: 96, w: 344, h: 660});
     if (this.dock.mobile)
       document.querySelector('[data-panel-id="actions"]')?.removeAttribute("data-open");
     else this.dock.collapse("actions");
@@ -4454,7 +4454,7 @@ export class EditorApp {
         return;
       }
       const first = document.querySelector("#step-form #action-fields input, #step-form #action-fields textarea, #step-form #action-fields select");
-      if (first instanceof HTMLElement) first.focus({ preventScroll: true });
+      if (first instanceof HTMLElement) first.focus({preventScroll: true});
     });
   }
   /** Make the selected action, or the last one, run only when a condition holds.
@@ -4480,17 +4480,17 @@ export class EditorApp {
       payload: target.payload ?? "",
       url: target.url ?? "",
       selector_id: target.selector_id ?? "",
-      when_expression: target.when_expression || DEFAULT_GUARD,
+      when_expression: target.when_expression || DEFAULT_GUARD
     });
     this.setSelection([target.id], target.id);
-    this.dock.openWindow("properties", { x: 1080, y: 96, w: 344, h: 660 });
+    this.dock.openWindow("properties", {x: 1080, y: 96, w: 344, h: 660});
     if (this.dock.mobile)
       document.querySelector('[data-panel-id="actions"]')?.removeAttribute("data-open");
     else this.dock.collapse("actions");
     window.requestAnimationFrame(() =>
       document
         .querySelector('#step-form [data-field="guard"]')
-        ?.scrollIntoView({ block: "nearest" }),
+        ?.scrollIntoView({block: "nearest"})
     );
     status.textContent = "Condition added. Edit it under Run only if in Properties.";
   }
@@ -4515,7 +4515,7 @@ export class EditorApp {
       .filter(entry => entry.source === "snippet")
       .map(
         entry =>
-          `<small class="run-line" data-level="${escape(entry.level)}">${escape(entry.message)}</small>`,
+          `<small class="run-line" data-level="${escape(entry.level)}">${escape(entry.message)}</small>`
       )
       .join("");
     const response =
@@ -4535,21 +4535,21 @@ export class EditorApp {
           .reverse()
           .map(
             (run, index) =>
-              `<div class="run-item"><strong title="${EditorApp.escape(run.id)}">Run ${runs.length - index}</strong><span class="run-status" data-state="${EditorApp.escape(run.status)}">${run.status === "succeeded" ? EditorApp.icon("check") : ""}${EditorApp.escape(run.status)}</span><small>${EditorApp.escape(this.workspace?.flows?.find((flow) => flow.id === (run.current_flow_id || run.initial_flow_id))?.name || "Flow")}</small><small>${EditorApp.escape(run.device_mode)}</small>${(run.action_records ?? []).map((record) => this.runActionHtml(record)).join("")}</div>`,
+              `<div class="run-item"><strong title="${EditorApp.escape(run.id)}">Run ${runs.length - index}</strong><span class="run-status" data-state="${EditorApp.escape(run.status)}">${run.status === "succeeded" ? EditorApp.icon("check") : ""}${EditorApp.escape(run.status)}</span><small>${EditorApp.escape(this.workspace?.flows?.find(flow => flow.id === (run.current_flow_id || run.initial_flow_id))?.name || "Flow")}</small><small>${EditorApp.escape(run.device_mode)}</small>${(run.action_records ?? []).map(record => this.runActionHtml(record)).join("")}</div>`
           )
           .join("")
       : `<div class="run-item"><strong>No runs yet</strong><small>Execution telemetry appears here.</small></div>`;
     const shots = (this.workspace?.screenshots ?? []).filter(
-      shot => shot.flow_id === this.activeFlow()?.id,
+      shot => shot.flow_id === this.activeFlow()?.id
     );
     EditorApp.element("runs").insertAdjacentHTML(
       "beforeend",
       shots
         .map(
           shot =>
-            `<figure class="shot"><button class="shot-open" data-shot="${EditorApp.escape(shot.id)}" aria-label="Open ${EditorApp.escape(shot.phase)} screenshot"><img src="${EditorApp.escape(shot.path)}" alt="${EditorApp.escape(shot.phase)} screenshot for step ${EditorApp.escape(shot.event_id)}" loading="lazy"></button><figcaption>${EditorApp.escape(shot.phase)}, ${shot.width}×${shot.height} px</figcaption></figure>`,
+            `<figure class="shot"><button class="shot-open" data-shot="${EditorApp.escape(shot.id)}" aria-label="Open ${EditorApp.escape(shot.phase)} screenshot"><img src="${EditorApp.escape(shot.path)}" alt="${EditorApp.escape(shot.phase)} screenshot for step ${EditorApp.escape(shot.event_id)}" loading="lazy"></button><figcaption>${EditorApp.escape(shot.phase)}, ${shot.width}×${shot.height} px</figcaption></figure>`
         )
-        .join(""),
+        .join("")
     );
     EditorApp.element("runs")
       .querySelectorAll("[data-shot]")
@@ -4565,7 +4565,7 @@ export class EditorApp {
           const id = node.getAttribute("data-shot") || "";
           try {
             await this.call("screenshot.open", {
-              artifact_id: id,
+              artifact_id: id
             });
             const image = EditorApp.element("screenshot-preview");
             const link = EditorApp.element("screenshot-download");
@@ -4605,7 +4605,7 @@ export class EditorApp {
           payload = {
             ...(payload ?? {}),
             inputs: answers.ask,
-            flow_inputs: answers.flow,
+            flow_inputs: answers.flow
           };
         }
       }
@@ -4632,19 +4632,19 @@ export class EditorApp {
       id,
       command: name,
       revision: this.revision,
-      payload,
+      payload
     };
     return new Promise((resolve, reject) => {
       const timer = window.setTimeout(() => {
         this.pending.delete(id);
         reject(
-          new Error("Editor did not respond. Reopen Flow Studio and retry."),
+          new Error("Editor did not respond. Reopen Flow Studio and retry.")
         );
       }, 10000);
       this.pending.set(id, {
         resolve,
         reject,
-        timer,
+        timer
       });
       this.transport.postMessage(JSON.stringify(msg));
     });
@@ -4660,8 +4660,8 @@ export class EditorApp {
         "close",
         () => resolve(dialog.returnValue === "replace"),
         {
-          once: true,
-        },
+          once: true
+        }
       );
       dialog.showModal();
     });
@@ -4674,7 +4674,7 @@ export class EditorApp {
     debug: "play",
     profiles: "settings",
     recovery: "settings",
-    controls: "settings",
+    controls: "settings"
   });
   /** Map any view name, current or retired, onto a view that exists.
    * @param {string} view
@@ -4708,19 +4708,19 @@ export class EditorApp {
     if (workspaceSelect instanceof HTMLSelectElement)
       workspaceSelect.value = EditorApp.tabOf(view);
     const mobilePrimary = document.querySelector(
-      '.mobile-panel-tabs [data-mobile-panel="steps"]',
+      '.mobile-panel-tabs [data-mobile-panel="steps"]'
     );
     if (mobilePrimary instanceof HTMLButtonElement) {
       mobilePrimary.textContent = view === "graph" ? "Graph" : "Steps";
       if (view === "graph") mobilePrimary.click();
     }
     const mobileBrowser = document.querySelector(
-      '.mobile-panel-tabs [data-mobile-panel="browser"]',
+      '.mobile-panel-tabs [data-mobile-panel="browser"]'
     );
     if (mobileBrowser instanceof HTMLButtonElement)
       mobileBrowser.hidden = view === "graph";
     const mobileRuns = document.querySelector(
-      '.mobile-panel-tabs [data-mobile-panel="runs"]',
+      '.mobile-panel-tabs [data-mobile-panel="runs"]'
     );
     if (mobileRuns instanceof HTMLButtonElement)
       mobileRuns.hidden = view === "graph";
@@ -4737,7 +4737,7 @@ export class EditorApp {
     this.dock.render(view);
     if (destination instanceof HTMLElement) {
       destination.setAttribute("tabindex", "-1");
-      destination.focus({ preventScroll: true });
+      destination.focus({preventScroll: true});
     }
     this.renderInspector();
     window.requestAnimationFrame(() => this.renderConnections());
@@ -4777,25 +4777,25 @@ export class EditorApp {
     const groups = groupCaptures(
       shots,
       this.workspace?.flows ?? [],
-      EditorApp.eventTitle,
+      EditorApp.eventTitle
     );
     const {
       group: pairGroup,
       expected,
-      actual,
+      actual
     } = pairFor(groups, this.compareKey);
     const title = {
       play: "Play",
       compare: "Compare screenshots",
       crawl: "Discover flows",
-      settings: "Settings",
+      settings: "Settings"
     }[this.workspaceView];
     const description = {
       play: "Run a flow or the whole graph, and inspect what each action did.",
       compare: "Compare captured screenshots before approving a baseline.",
       crawl: "Discover flows and add them to this project.",
       settings:
-        "The project's details, the target application, browser profiles and recovery.",
+        "The project's details, the target application, browser profiles and recovery."
     }[this.workspaceView];
     EditorApp.element("workspace-surface-kicker").textContent =
       flow?.name ?? "No active flow";
@@ -4813,7 +4813,7 @@ export class EditorApp {
           ? ""
           : "Open the browser first.";
     const connected = (this.workspace?.edges ?? []).some(
-      edge => edge.source === flow?.id,
+      edge => edge.source === flow?.id
     );
     const graphBlocked =
       runBlocked || (connected ? "" : "This flow has no outgoing connections.");
@@ -4822,7 +4822,7 @@ export class EditorApp {
       /** @type {string} */ hint,
       /** @type {string} */ blocked,
       /** @type {string} */ icon,
-      /** @type {string} */ label,
+      /** @type {string} */ label
     ) =>
       `<button${scope === "flow" ? ' class="accent"' : ""} data-surface-command="run.play" data-surface-scope="${scope}" title="${EditorApp.escape(blocked || hint)}"${blocked ? " disabled" : ""}>${EditorApp.icon(icon)}${label}</button>`;
     const controls = EditorApp.runControls(this.snapshot);
@@ -4834,14 +4834,14 @@ export class EditorApp {
     const surfaceActions =
       {
         play: playActions,
-        compare: `<button data-compare-decision="reject" ${expected ? "" : "disabled"}>Reject change</button><button class="accent" data-compare-decision="review" ${expected ? "" : "disabled"}>Review baseline</button>`,
+        compare: `<button data-compare-decision="reject" ${expected ? "" : "disabled"}>Reject change</button><button class="accent" data-compare-decision="review" ${expected ? "" : "disabled"}>Review baseline</button>`
       }[this.workspaceView] || "";
     actions.innerHTML = `${surfaceActions}${back}`;
     if (this.workspaceView === "settings") {
       this.settings?.render(
         /** @type {Parameters<SettingsSurface["render"]>[0]} */ (
           /** @type {unknown} */ (this.snapshot)
-        ),
+        )
       );
       return;
     }
@@ -4849,7 +4849,7 @@ export class EditorApp {
       ? events
           .map(
             (event, index) =>
-              `<button type="button" class="surface-row ${event.id === this.selectedEventId ? "selected" : ""}" data-surface-event="${EditorApp.escape(event.id)}"><span class="surface-index">${String(index + 1).padStart(2, "0")}</span>${EditorApp.icon(EditorApp.eventIcon(event))}<strong>${EditorApp.escape(EditorApp.eventTitle(event))}</strong><small>${EditorApp.escape(EditorApp.eventDetail(event))}</small></button>`,
+              `<button type="button" class="surface-row ${event.id === this.selectedEventId ? "selected" : ""}" data-surface-event="${EditorApp.escape(event.id)}"><span class="surface-index">${String(index + 1).padStart(2, "0")}</span>${EditorApp.icon(EditorApp.eventIcon(event))}<strong>${EditorApp.escape(EditorApp.eventTitle(event))}</strong><small>${EditorApp.escape(EditorApp.eventDetail(event))}</small></button>`
           )
           .join("")
       : '<p class="surface-empty">No actions yet. Record the target or insert an action.</p>';
@@ -4866,21 +4866,21 @@ export class EditorApp {
         : eventRows;
       const failed = records.find(record => record.status === "failed");
       const selected = events.find(
-        event => event.id === this.selectedEventId,
+        event => event.id === this.selectedEventId
       );
       const evidence = selected
         ? [...shots]
             .reverse()
             .find(
               shot =>
-                shot.flow_id === flow?.id && shot.event_id === selected.id,
+                shot.flow_id === flow?.id && shot.event_id === selected.id
             )
         : undefined;
       const evidenceView =
         selected && evidence
           ? `<figure class="evidence-shot"><img src="${EditorApp.escape(evidence.path)}" alt="Page after ${EditorApp.escape(EditorApp.eventTitle(selected))}"><figcaption>After ${EditorApp.escape(EditorApp.eventTitle(selected))} · ${evidence.width}×${evidence.height}</figcaption></figure>`
           : `<div class="target-stage-placeholder">${EditorApp.icon("device-imac")}<strong>${failed ? "Failure evidence available" : selected ? "No screenshot for this action" : "Run a flow to collect evidence"}</strong><p>${EditorApp.escape(EditorApp.headline(failed?.error) || (selected ? "Turn on screenshots while testing in Flow settings." : "Select an action to see the page after it ran."))}</p></div>`;
-      content.innerHTML = `<div class="surface-grid surface-grid-debug"><section class="surface-card"><header><h3>Actions</h3><span>${latestRun ? `Run ${EditorApp.escape(latestRun.id)}` : "No run selected"}</span></header><div class="surface-list">${debugRows}</div></section><section class="surface-card surface-evidence"><header><h3>Target evidence</h3><span>${EditorApp.escape(latestRun?.device_mode || this.snapshot?.device_mode || "desktop")}</span></header>${evidenceView}</section><section class="surface-card"><header><h3>Variables</h3><span>Current revision ${this.revision}</span></header><pre class="surface-code">${EditorApp.escape(JSON.stringify(records.find((record) => record.response !== undefined)?.response ?? { profile: latestRun?.device_mode || this.snapshot?.device_mode || "desktop", flow: flow?.name || null }, null, 2))}</pre></section><section class="surface-card surface-console"><header><h3>Assertions and console</h3><span>${failed ? "Failure selected" : "No failure selected"}</span></header><div class="console-detail"><strong>${EditorApp.escape(failed?.error || "No failed assertion in the selected run.")}</strong><small>Seeking evidence does not restore browser state.</small></div></section></div>`;
+      content.innerHTML = `<div class="surface-grid surface-grid-debug"><section class="surface-card"><header><h3>Actions</h3><span>${latestRun ? `Run ${EditorApp.escape(latestRun.id)}` : "No run selected"}</span></header><div class="surface-list">${debugRows}</div></section><section class="surface-card surface-evidence"><header><h3>Target evidence</h3><span>${EditorApp.escape(latestRun?.device_mode || this.snapshot?.device_mode || "desktop")}</span></header>${evidenceView}</section><section class="surface-card"><header><h3>Variables</h3><span>Current revision ${this.revision}</span></header><pre class="surface-code">${EditorApp.escape(JSON.stringify(records.find(record => record.response !== undefined)?.response ?? {profile: latestRun?.device_mode || this.snapshot?.device_mode || "desktop", flow: flow?.name || null}, null, 2))}</pre></section><section class="surface-card surface-console"><header><h3>Assertions and console</h3><span>${failed ? "Failure selected" : "No failure selected"}</span></header><div class="console-detail"><strong>${EditorApp.escape(failed?.error || "No failed assertion in the selected run.")}</strong><small>Seeking evidence does not restore browser state.</small></div></section></div>`;
     } else if (this.workspaceView === "compare") {
       /** @param {EditorScreenshot|undefined} shot
        * @param {string} label
@@ -4890,7 +4890,7 @@ export class EditorApp {
         shot
           ? `<button class="compare-image" data-surface-shot="${EditorApp.escape(shot.id)}"><span>${label}</span><img src="${EditorApp.escape(shot.path)}" alt="${label} screenshot"></button>`
           : `<div class="compare-empty"><strong>${label}</strong><span>${label === "Expected baseline" ? "Run this step again to compare" : "No capture available"}</span></div>`;
-      content.innerHTML = `<div class="surface-grid surface-grid-compare"><section class="surface-card"><header><h3>Captures</h3><span>${groups.length} steps · ${shots.length} captures</span></header><div class="surface-list">${groups.map((item) => `<button class="surface-row surface-row-capture ${item.key === pairGroup?.key ? "selected" : ""}" data-compare-key="${EditorApp.escape(item.key)}">${EditorApp.icon("camera")}<strong>${EditorApp.escape(item.label)}</strong><small>${EditorApp.escape(item.flowName)} · ${item.shots.length} ${item.shots.length === 1 ? "capture" : "captures"}</small></button>`).join("") || '<p class="surface-empty">Run with screenshots enabled to create comparison evidence.</p>'}</div></section><section class="surface-card compare-stage"><header><div class="surface-tabs"><button class="${this.compareMode === "side" ? "active" : ""}" data-compare-mode="side">Side by side</button><button class="${this.compareMode === "overlay" ? "active" : ""}" data-compare-mode="overlay">Overlay</button><button class="${this.compareMode === "difference" ? "active" : ""}" data-compare-mode="difference">Difference</button><button class="${this.compareMode === "wipe" ? "active" : ""}" data-compare-mode="wipe">Wipe</button></div></header><div class="compare-pair" data-mode="${this.compareMode}">${image(expected, "Expected baseline")}${image(actual, "Actual run")}</div></section><section class="surface-card"><header><h3>Comparison settings</h3><span>${this.compareDecision ? "Decision selected" : "Manual review"}</span></header><dl class="surface-properties"><div><dt>Profile</dt><dd>${EditorApp.escape(latestRun?.device_mode || "Not selected")}</dd></div><div><dt>Threshold</dt><dd>0.50%</dd></div><div><dt>Captured size</dt><dd>${actual ? `${actual.width}×${actual.height}` : "—"}</dd></div><div><dt>Result</dt><dd>${this.compareDecision === "review" ? "Ready for baseline review" : this.compareDecision === "reject" ? "Change rejected" : actual ? "Needs review" : "No comparison"}</dd></div></dl><p class="surface-note">Baselines change only after approval.</p></section></div>`;
+      content.innerHTML = `<div class="surface-grid surface-grid-compare"><section class="surface-card"><header><h3>Captures</h3><span>${groups.length} steps · ${shots.length} captures</span></header><div class="surface-list">${groups.map(item => `<button class="surface-row surface-row-capture ${item.key === pairGroup?.key ? "selected" : ""}" data-compare-key="${EditorApp.escape(item.key)}">${EditorApp.icon("camera")}<strong>${EditorApp.escape(item.label)}</strong><small>${EditorApp.escape(item.flowName)} · ${item.shots.length} ${item.shots.length === 1 ? "capture" : "captures"}</small></button>`).join("") || '<p class="surface-empty">Run with screenshots enabled to create comparison evidence.</p>'}</div></section><section class="surface-card compare-stage"><header><div class="surface-tabs"><button class="${this.compareMode === "side" ? "active" : ""}" data-compare-mode="side">Side by side</button><button class="${this.compareMode === "overlay" ? "active" : ""}" data-compare-mode="overlay">Overlay</button><button class="${this.compareMode === "difference" ? "active" : ""}" data-compare-mode="difference">Difference</button><button class="${this.compareMode === "wipe" ? "active" : ""}" data-compare-mode="wipe">Wipe</button></div></header><div class="compare-pair" data-mode="${this.compareMode}">${image(expected, "Expected baseline")}${image(actual, "Actual run")}</div></section><section class="surface-card"><header><h3>Comparison settings</h3><span>${this.compareDecision ? "Decision selected" : "Manual review"}</span></header><dl class="surface-properties"><div><dt>Profile</dt><dd>${EditorApp.escape(latestRun?.device_mode || "Not selected")}</dd></div><div><dt>Threshold</dt><dd>0.50%</dd></div><div><dt>Captured size</dt><dd>${actual ? `${actual.width}×${actual.height}` : "—"}</dd></div><div><dt>Result</dt><dd>${this.compareDecision === "review" ? "Ready for baseline review" : this.compareDecision === "reject" ? "Change rejected" : actual ? "Needs review" : "No comparison"}</dd></div></dl><p class="surface-note">Baselines change only after approval.</p></section></div>`;
     } else if (this.workspaceView === "crawl") {
       const address = this.snapshot?.target_address;
       content.innerHTML = `<form id="surface-crawl-form" class="surface-grid surface-grid-crawl"><section class="surface-card crawl-main"><header><h3>Discover flows</h3><span>${address ? EditorApp.escape(address) : "Set the target in Settings"}</span></header><div class="surface-form-grid"><label>Limit to elements<input name="selector" placeholder="All interactive elements" spellcheck="false"></label><label>Maximum depth<input name="max_depth" type="number" min="1" max="10" value="3"></label><label>State limit<input name="max_states" type="number" min="1" max="200" value="20"></label></div><fieldset><legend>Interactions</legend><label class="check"><input name="follow_links" type="checkbox" checked>Visit links</label><label class="check"><input name="click_controls" type="checkbox" checked>Click controls</label><label class="check"><input name="capture_ui_changes" type="checkbox" checked>UI-change screenshots</label></fieldset><footer><button type="button" data-surface-command="crawl.cancel">Cancel</button><button type="button" data-surface-command="actions.recipe">Actions recipe…</button><a class="export-button" href="/reports/actions/result_web/index.html" target="_blank" rel="noopener">Open Actions report</a><button class="accent" type="submit" ${address ? "" : 'disabled title="Set the target in Settings first."'}>Discover flows</button></footer></section><section class="surface-card"><header><h3>Generated Studio project</h3><span>Editable output</span></header><div class="surface-list">${eventRows}</div><p class="surface-note">Discovery output opens as a standard project with portable flows, profiles, and screenshot assets.</p></section></form>`;
@@ -4900,7 +4900,7 @@ export class EditorApp {
    * @param {EditorSnapshot} snapshot
    * @returns {void}
    */
-  static renderBrowserBar = (snapshot) => {
+  static renderBrowserBar = snapshot => {
     const select = EditorApp.element("device");
     const profiles =
       /** @type {Array<{id:string,name:string,width:number,height:number}>} */ (
@@ -4912,7 +4912,7 @@ export class EditorApp {
       const wanted = JSON.stringify([profiles, custom]);
       if (select.getAttribute("data-options") !== wanted) {
         select.replaceChildren(
-          ...profiles.map((profile) => {
+          ...profiles.map(profile => {
             const option = document.createElement("option");
             option.value = profile.id;
             option.textContent = profile.name;
@@ -4922,10 +4922,10 @@ export class EditorApp {
             ? [
                 Object.assign(document.createElement("option"), {
                   value: "custom",
-                  textContent: "Custom size",
-                }),
+                  textContent: "Custom size"
+                })
               ]
-            : []),
+            : [])
         );
         select.setAttribute("data-options", wanted);
       }
@@ -4956,7 +4956,7 @@ export class EditorApp {
           ? "service"
           : address === "about:blank" || address === undefined
             ? "address"
-            : "",
+            : ""
       );
     toggle?.classList.toggle("accent", !live && address !== null);
     EditorApp.element("browser-address-text").textContent =
@@ -4993,31 +4993,31 @@ export class EditorApp {
    */
   revealVariable(name) {
     const source = (this.activeFlow()?.events ?? []).find(
-      item => producedVariables(item).some(output => output.name === name),
+      item => producedVariables(item).some(output => output.name === name)
     );
     const row = source
       ? document.querySelector(`[data-step="${CSS.escape(source.id)}"]`)
       : null;
-    row?.scrollIntoView({ block: "center" });
-    if (row instanceof HTMLElement) row.focus({ preventScroll: true });
+    row?.scrollIntoView({block: "center"});
+    if (row instanceof HTMLElement) row.focus({preventScroll: true});
   }
   /** @returns {void}
    */
   bind() {
     document.addEventListener("variable-reveal", event =>
-      this.revealVariable(/** @type {CustomEvent} */ (event).detail?.name),
+      this.revealVariable(/** @type {CustomEvent} */ (event).detail?.name)
     );
     this.projects = new ProjectActions({
       call: (name, payload) => this.call(name, payload),
-      apply: (result) => {
+      apply: result => {
         this.inspectorKey = "";
         this.applySnapshot(/** @type {EditorSnapshot} */ (result));
       },
-      say: (text) => {
+      say: text => {
         EditorApp.element("status").textContent = text;
       },
       state: () => /** @type {any} */ (this.snapshot),
-      showView: (view) => this.setWorkspaceView(view),
+      showView: view => this.setWorkspaceView(view)
     });
     const topbar = document.querySelector(".topbar");
     if (topbar instanceof HTMLElement)
@@ -5027,30 +5027,30 @@ export class EditorApp {
           this.setWorkspaceView("settings");
           document
             .getElementById("settings-project")
-            ?.scrollIntoView({ block: "start" });
-        },
+            ?.scrollIntoView({block: "start"});
+        }
       });
     this.projectSection = new ProjectSection(this.projects);
     this.settings = new SettingsSurface(
       EditorApp.element("workspace-surface-content"),
       {
         call: (name, payload) => this.call(name, payload),
-        apply: (result) => {
+        apply: result => {
           this.inspectorKey = "";
           this.applySnapshot(/** @type {EditorSnapshot} */ (result));
         },
-        say: (text) => {
+        say: text => {
           EditorApp.element("status").textContent = text;
         },
-        confirm: (copy) => EditorApp.confirmDelete(copy),
-        projectSection: () => this.projectSection?.section() ?? null,
-      },
+        confirm: copy => EditorApp.confirmDelete(copy),
+        projectSection: () => this.projectSection?.section() ?? null
+      }
     );
     const liveTarget = EditorApp.element("live-target-image");
     if (liveTarget instanceof HTMLImageElement)
       this.liveTarget = new LiveTarget(
         liveTarget,
-        async (payload) => {
+        async payload => {
           try {
             const snapshot = await this.call("browser.input", payload);
             this.revision = snapshot.revision ?? this.revision;
@@ -5059,32 +5059,32 @@ export class EditorApp {
               error instanceof Error ? error.message : String(error);
           }
         },
-        () => this.snapshot?.viewport ?? { width: 1440, height: 900 },
+        () => this.snapshot?.viewport ?? {width: 1440, height: 900},
         () =>
           Boolean(
             this.snapshot?.workspace?.profiles?.find(
-              profile => profile.id === this.snapshot?.device_mode,
-            )?.touch,
+              profile => profile.id === this.snapshot?.device_mode
+            )?.touch
           ),
         element => {
           const sink = this.selectorPickSink;
           this.selectorPickSink = null;
           sink?.(/** @type {any} */ (element));
-        },
+        }
       );
     EditorApp.element("live-target-use").addEventListener("click", () => {
       const selector = EditorApp.element("live-target-selector");
       if (!(selector instanceof HTMLInputElement) || !selector.value) return;
       this.liveTarget?.maximize(false);
       if (this.applyPickedSelector(selector.value)) return;
-      this.insertAction("pointer", { selector: selector.value });
+      this.insertAction("pointer", {selector: selector.value});
     });
     EditorApp.element("browser-crawl").addEventListener("click", () =>
-      this.setWorkspaceView("crawl"),
+      this.setWorkspaceView("crawl")
     );
     document.addEventListener(
       "selectstart",
-      (event) => {
+      event => {
         const node = event.target;
         const element =
           node instanceof Element
@@ -5093,14 +5093,14 @@ export class EditorApp {
               ? node.parentElement
               : null;
         const editable = element?.closest(
-          "input, textarea, [contenteditable='true'], pre, code, .runs-content, .selectable",
+          "input, textarea, [contenteditable='true'], pre, code, .runs-content, .selectable"
         );
         const dragging = document.body.matches(
-          ".panel-dock-dragging, .step-dragging, .clip-dragging",
+          ".panel-dock-dragging, .step-dragging, .clip-dragging"
         );
         if (!editable || dragging) event.preventDefault();
       },
-      true,
+      true
     );
     this.dock.render(this.workspaceView);
     this.dock.syncSizes();
@@ -5127,30 +5127,30 @@ export class EditorApp {
                     {
                       width: 390,
                       height: 844,
-                      theme: "light",
+                      theme: "light"
                     },
                     {
                       width: 1440,
                       height: 900,
-                      theme: "dark",
-                    },
+                      theme: "dark"
+                    }
                   ],
                   max_depth: 2,
-                  max_states: 5,
-                },
+                  max_states: 5
+                }
               },
               {
                 id: "verify",
                 tool: "frontend.run",
                 arguments: {
                   projects: "$discover.projects",
-                  server_log: "$discover.server_log",
-                },
-              },
-            ],
+                  server_log: "$discover.server_log"
+                }
+              }
+            ]
           },
           null,
-          2,
+          2
         );
     EditorApp.element("actions-close").addEventListener("click", () => {
       if (actionsDialog instanceof HTMLDialogElement) actionsDialog.close();
@@ -5174,8 +5174,8 @@ export class EditorApp {
       const link = document.createElement("a");
       const url = URL.createObjectURL(
         new Blob([actionsSource.value], {
-          type: "application/json",
-        }),
+          type: "application/json"
+        })
       );
       link.href = url;
       link.download = "actions.json";
@@ -5184,7 +5184,7 @@ export class EditorApp {
     });
     EditorApp.element("actions-form").addEventListener(
       "submit",
-      async (event) => {
+      async event => {
         event.preventDefault();
         if (!(actionsSource instanceof HTMLTextAreaElement)) return;
         try {
@@ -5201,9 +5201,9 @@ export class EditorApp {
               : "Check the recipe and retry.";
           actionsSource.focus();
         }
-      },
+      }
     );
-    window.addEventListener("beforeunload", (event) => {
+    window.addEventListener("beforeunload", event => {
       if (this.dirty) {
         event.preventDefault();
         event.returnValue = "";
@@ -5213,29 +5213,29 @@ export class EditorApp {
       const dialog = EditorApp.element("screenshot-dialog");
       if (dialog instanceof HTMLDialogElement) dialog.close();
     });
-    EditorApp.element("screenshot-zoom").addEventListener("input", (event) => {
+    EditorApp.element("screenshot-zoom").addEventListener("input", event => {
       if (event.target instanceof HTMLInputElement)
         EditorApp.element("screenshot-preview").style.setProperty(
           "--dynamic-screenshot-width",
-          `${event.target.value}%`,
+          `${event.target.value}%`
         );
     });
     window.addEventListener("resize", () => this.renderConnections());
     EditorApp.element("add-action").addEventListener("click", () =>
-      this.openActionLibrary(),
+      this.openActionLibrary()
     );
     EditorApp.element("selector-new").addEventListener("click", () =>
-      this.selectSelector("new"),
+      this.selectSelector("new")
     );
     EditorApp.element("step-duplicate").addEventListener("click", () =>
-      this.duplicateSelected(),
+      this.duplicateSelected()
     );
     EditorApp.element("step-remove").addEventListener("click", () =>
-      this.removeSelected(),
+      this.removeSelected()
     );
     const drawCatalog = () => {
       renderActionCatalog(EditorApp.element("action-catalog"), kind =>
-        this.insertAction(kind),
+        this.insertAction(kind)
       );
       // Keep the current search applied after the palette is redrawn.
       EditorApp.element("action-search").dispatchEvent(new Event("input"));
@@ -5277,19 +5277,19 @@ export class EditorApp {
         if (group instanceof HTMLElement) group.hidden = visible === 0;
       });
     });
-    EditorApp.element("timeline-zoom").addEventListener("input", (event) => {
+    EditorApp.element("timeline-zoom").addEventListener("input", event => {
       if (!(event.target instanceof HTMLInputElement)) return;
       this.setTimelineZoom(
-        EditorApp.zoomFromSlider(Number(event.target.value)),
+        EditorApp.zoomFromSlider(Number(event.target.value))
       );
     });
-    document.querySelectorAll("[data-timeline-tool]").forEach((node) => {
+    document.querySelectorAll("[data-timeline-tool]").forEach(node => {
       node.addEventListener("click", () => {
         this.timelineTool =
           node.getAttribute("data-timeline-tool") === "marker"
             ? "marker"
             : "select";
-        document.querySelectorAll("[data-timeline-tool]").forEach((tool) => {
+        document.querySelectorAll("[data-timeline-tool]").forEach(tool => {
           tool.classList.toggle("active", tool === node);
         });
         EditorApp.element("status").textContent =
@@ -5298,7 +5298,7 @@ export class EditorApp {
             : "Timeline selection tool active.";
       });
     });
-    EditorApp.element("timeline-snap").addEventListener("click", (event) => {
+    EditorApp.element("timeline-snap").addEventListener("click", event => {
       if (!(event.currentTarget instanceof HTMLButtonElement)) return;
       const pressed =
         event.currentTarget.getAttribute("aria-pressed") !== "true";
@@ -5306,7 +5306,7 @@ export class EditorApp {
       event.currentTarget.classList.toggle("active", pressed);
       this.timelineSnap = pressed;
     });
-    EditorApp.element("timeline").addEventListener("click", (event) => {
+    EditorApp.element("timeline").addEventListener("click", event => {
       if (
         this.timelineTool !== "marker" ||
         !(event.target instanceof Element) ||
@@ -5317,7 +5317,7 @@ export class EditorApp {
       if (!(ruler instanceof HTMLElement)) return;
       const rem =
         Number.parseFloat(
-          getComputedStyle(document.documentElement).fontSize,
+          getComputedStyle(document.documentElement).fontSize
         ) || 16;
       const raw =
         ((event.clientX - ruler.getBoundingClientRect().left) /
@@ -5333,29 +5333,29 @@ export class EditorApp {
     });
     EditorApp.element("timeline").addEventListener(
       "pointerdown",
-      this.beginTimelineScrub,
+      this.beginTimelineScrub
     );
     EditorApp.element("timeline").addEventListener(
       "scroll",
       this.updateTimelineCursor,
-      { passive: true },
+      {passive: true}
     );
     EditorApp.element("timeline-fit-all").addEventListener("click", () => {
       const events = this.activeFlow()?.events ?? [];
       this.fitTimeline(
         0,
-        Math.max(0, ...events.map((event) => event.elapsed_ms ?? 0)),
+        Math.max(0, ...events.map(event => event.elapsed_ms ?? 0))
       );
       EditorApp.element("timeline").scrollLeft = 0;
     });
     EditorApp.element("timeline-rewind").addEventListener("click", () => {
       const first = document.querySelector(
-        ".edit-step-row, #timeline .clip[data-step]",
+        ".edit-step-row, #timeline .clip[data-step]"
       );
       if (first instanceof HTMLElement) first.click();
     });
     EditorApp.element("timeline-play").addEventListener("click", () =>
-      this.command("run.play", { scope: "flow" }),
+      this.command("run.play", {scope: "flow"})
     );
     EditorApp.element("timeline-stop").addEventListener("click", () => {
       this.updateTimelineClock(null);
@@ -5365,15 +5365,15 @@ export class EditorApp {
       this.command(
         this.snapshot?.run_control?.state === "paused"
           ? "run.resume"
-          : "run.pause",
-      ),
+          : "run.pause"
+      )
     );
     EditorApp.element("timeline-step").addEventListener("click", () =>
-      this.command("run.step", { scope: "flow" }),
+      this.command("run.step", {scope: "flow"})
     );
     [
       ["timeline-zoom-out", -1],
-      ["timeline-zoom-in", 1],
+      ["timeline-zoom-in", 1]
     ].forEach(([id, direction]) => {
       EditorApp.element(String(id)).addEventListener("click", () => {
         const slider = EditorApp.element("timeline-zoom");
@@ -5384,33 +5384,33 @@ export class EditorApp {
               Number(slider.max),
               Math.max(
                 Number(slider.min),
-                Number(slider.value) + Number(direction) * 5,
-              ),
-            ),
-          ),
+                Number(slider.value) + Number(direction) * 5
+              )
+            )
+          )
         );
       });
     });
     EditorApp.element("timeline-fit-selection").addEventListener(
       "click",
       () => {
-        const chosen = (this.activeFlow()?.events ?? []).filter((event) =>
-          this.selectedEventIds.has(event.id),
+        const chosen = (this.activeFlow()?.events ?? []).filter(event =>
+          this.selectedEventIds.has(event.id)
         );
         if (!chosen.length) return;
-        const times = chosen.map((event) => event.elapsed_ms ?? 0);
+        const times = chosen.map(event => event.elapsed_ms ?? 0);
         this.fitTimeline(Math.min(...times), Math.max(...times));
-      },
+      }
     );
     EditorApp.element("timeline").addEventListener(
       "pointerdown",
-      this.beginMarquee,
+      this.beginMarquee
     );
-    EditorApp.element("timeline").addEventListener("keydown", (key) => {
+    EditorApp.element("timeline").addEventListener("keydown", key => {
       if ((key.ctrlKey || key.metaKey) && key.key.toLowerCase() === "a") {
         key.preventDefault();
         this.setSelection(
-          (this.activeFlow()?.events ?? []).map((event) => event.id),
+          (this.activeFlow()?.events ?? []).map(event => event.id)
         );
       }
     });
@@ -5419,15 +5419,15 @@ export class EditorApp {
      * @returns {void}
      */
     EditorApp.element("graph-zoom-out").addEventListener("click", () =>
-      this.setGraphZoom(this.graphZoom - 0.1),
+      this.setGraphZoom(this.graphZoom - 0.1)
     );
     EditorApp.element("graph-zoom-in").addEventListener("click", () =>
-      this.setGraphZoom(this.graphZoom + 0.1),
+      this.setGraphZoom(this.graphZoom + 0.1)
     );
     EditorApp.element("graph-fit").addEventListener("click", () =>
-      this.fitGraph(),
+      this.fitGraph()
     );
-    EditorApp.element("graph").addEventListener("keydown", (event) => {
+    EditorApp.element("graph").addEventListener("keydown", event => {
       if (event.key !== "Escape") return;
       this.graphConnectionSource = "";
       const graph = EditorApp.element("graph");
@@ -5443,13 +5443,13 @@ export class EditorApp {
     }).observe(EditorApp.element("graph"));
     document
       .querySelectorAll(".mobile-panel-tabs [data-mobile-panel]")
-      .forEach((node) => {
+      .forEach(node => {
         node.addEventListener("click", () => {
           const panel = node.getAttribute("data-mobile-panel") || "steps";
           EditorApp.element("app").setAttribute("data-mobile-panel", panel);
           document
             .querySelectorAll(".mobile-panel-tabs [data-mobile-panel]")
-            .forEach((item) => {
+            .forEach(item => {
               const active = item.getAttribute("data-mobile-panel") === panel;
               item.classList.toggle("active", active);
               item.setAttribute("aria-pressed", String(active));
@@ -5460,13 +5460,13 @@ export class EditorApp {
               : panel === "runs"
                 ? document.querySelector(".runs")
                 : document.querySelector(
-                    this.workspaceView === "graph" ? ".graph" : ".table-panel",
+                    this.workspaceView === "graph" ? ".graph" : ".table-panel"
                   );
           if (destination instanceof HTMLElement)
-            destination.focus({ preventScroll: true });
+            destination.focus({preventScroll: true});
         });
       });
-    document.querySelectorAll("[data-workspace-view]").forEach((node) => {
+    document.querySelectorAll("[data-workspace-view]").forEach(node => {
       node.addEventListener("click", () => {
         const view = node.getAttribute("data-workspace-view") || "edit";
         this.setWorkspaceView(view);
@@ -5478,7 +5478,7 @@ export class EditorApp {
         this.setWorkspaceView(workspaceSelect.value || "edit");
     });
     const workspaceSurface = EditorApp.element("workspace-surface");
-    workspaceSurface.addEventListener("click", async (event) => {
+    workspaceSurface.addEventListener("click", async event => {
       if (!(event.target instanceof Element)) return;
       const compareButton = event.target.closest("[data-compare-mode]");
       if (compareButton) {
@@ -5508,7 +5508,7 @@ export class EditorApp {
       const returnButton = event.target.closest("[data-workspace-return]");
       if (returnButton) {
         this.setWorkspaceView(
-          returnButton.getAttribute("data-workspace-return") || "edit",
+          returnButton.getAttribute("data-workspace-return") || "edit"
         );
         return;
       }
@@ -5520,18 +5520,18 @@ export class EditorApp {
         else if (command === "actions.recipe") {
           const dialog = EditorApp.element("actions-dialog");
           if (dialog instanceof HTMLDialogElement) dialog.showModal();
-        } else if (command === "workspace.open") {
+        } else if (command === "workspace.open") 
           this.projects?.gallery();
-        } else if (command) {
+         else if (command) {
           const scope = commandButton.getAttribute("data-surface-scope");
-          this.command(command, scope ? { scope } : {});
+          this.command(command, scope ? {scope} : {});
         }
         return;
       }
       const profileButton = event.target.closest("[data-surface-profile]");
       if (profileButton) {
         this.command("viewport.preset", {
-          mode: profileButton.getAttribute("data-surface-profile") || "desktop",
+          mode: profileButton.getAttribute("data-surface-profile") || "desktop"
         });
         return;
       }
@@ -5559,10 +5559,10 @@ export class EditorApp {
         // The server checks the file still exists; the snapshot already holds
         // the path it is served from, so the reply does not need to repeat it.
         const result = await this.call("screenshot.open", {
-          artifact_id: shotId,
+          artifact_id: shotId
         });
         const path =
-          this.workspace?.screenshots?.find((shot) => shot.id === shotId)
+          this.workspace?.screenshots?.find(shot => shot.id === shotId)
             ?.path ?? result.path;
         const image = EditorApp.element("screenshot-preview");
         const link = EditorApp.element("screenshot-download");
@@ -5579,7 +5579,7 @@ export class EditorApp {
         }
       }
     });
-    workspaceSurface.addEventListener("submit", async (event) => {
+    workspaceSurface.addEventListener("submit", async event => {
       if (!(event.target instanceof HTMLFormElement)) return;
       if (event.target.id !== "surface-crawl-form") return;
       event.preventDefault();
@@ -5593,7 +5593,7 @@ export class EditorApp {
         max_states: String(data.get("max_states") || "20"),
         follow_links: data.has("follow_links"),
         click_controls: data.has("click_controls"),
-        capture_ui_changes: data.has("capture_ui_changes"),
+        capture_ui_changes: data.has("capture_ui_changes")
       });
     });
     const commandSearch = EditorApp.element("command-search");
@@ -5602,12 +5602,12 @@ export class EditorApp {
         commandSearch instanceof HTMLInputElement
           ? commandSearch.value.trim().toLowerCase()
           : "";
-      document.querySelectorAll("[data-palette-command]").forEach((item) => {
+      document.querySelectorAll("[data-palette-command]").forEach(item => {
         if (item instanceof HTMLElement)
           item.hidden = !item.textContent?.toLowerCase().includes(query);
       });
     });
-    document.querySelectorAll("[data-palette-command]").forEach((node) => {
+    document.querySelectorAll("[data-palette-command]").forEach(node => {
       node.addEventListener("click", () => {
         const action = node.getAttribute("data-palette-command") || "";
         const dialog = EditorApp.element("command-palette");
@@ -5615,7 +5615,7 @@ export class EditorApp {
         if (action === "run") this.command("run.play");
         else if (action === "record") this.command("recorder.record");
         else if (action === "screenshot")
-          this.command("event.add", { kind: "screenshot" });
+          this.command("event.add", {kind: "screenshot"});
         else if (action === "save") this.projects?.save();
         else if (action === "new-project") this.projects?.create();
         else if (action === "open-gallery") this.projects?.gallery();
@@ -5623,13 +5623,13 @@ export class EditorApp {
         else this.setWorkspaceView(action);
       });
     });
-    window.addEventListener("keydown", (event) => {
+    window.addEventListener("keydown", event => {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
         event.preventDefault();
         EditorApp.openCommandPalette();
       }
     });
-    document.querySelectorAll("[data-cmd]").forEach((node) => {
+    document.querySelectorAll("[data-cmd]").forEach(node => {
       node.addEventListener("click", async () => {
         const commandName = node.getAttribute("data-cmd");
         if (commandName) await this.command(commandName);
@@ -5639,15 +5639,15 @@ export class EditorApp {
       const device = EditorApp.element("device");
       if (device instanceof HTMLSelectElement)
         this.command("viewport.preset", {
-          mode: device.value,
+          mode: device.value
         });
     });
     EditorApp.element("browser-profiles").addEventListener("click", () =>
-      this.setWorkspaceView("settings"),
+      this.setWorkspaceView("settings")
     );
     EditorApp.element("browser-toggle").addEventListener("click", () => {
       const live = ["ready", "opening"].includes(
-        this.snapshot?.target_state ?? "",
+        this.snapshot?.target_state ?? ""
       );
       // Closing is a choice; do not reopen it behind the user's back.
       this.userClosedBrowser = live;

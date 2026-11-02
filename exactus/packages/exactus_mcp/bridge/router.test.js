@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { Router } from "./worker.js";
+import {Router} from "./worker.js";
 /** In-memory Worker KV namespace used by the router tests. */
 class MemoryKV {
   /** Create an empty in-memory KV namespace. */
@@ -38,30 +38,30 @@ class MemoryKV {
 /** Build isolated Worker bindings.
  * @returns {{ROUTING: MemoryKV, CONTROL_SECRET: string, OAUTH_LOGIN_SECRET: string}} Worker bindings.
  */
-const env = () => ({ ROUTING: new MemoryKV(), CONTROL_SECRET: "fixture-secret", OAUTH_LOGIN_SECRET: "oauth-secret" });
+const env = () => ({ROUTING: new MemoryKV(), CONTROL_SECRET: "fixture-secret", OAUTH_LOGIN_SECRET: "oauth-secret"});
 test("control endpoint authenticates and stores only Quick Tunnel origins", async () => {
   const bindings = env();
   const unauthorized = await Router.fetch(
-    new Request("https://router.workers.dev/_control/backend", { method: "POST" }),
-    bindings,
+    new Request("https://router.workers.dev/_control/backend", {method: "POST"}),
+    bindings
   );
   assert.equal(unauthorized.status, 401);
   const invalid = await Router.fetch(
     new Request("https://router.workers.dev/_control/backend", {
       method: "POST",
-      headers: { Authorization: "Bearer fixture-secret" },
-      body: JSON.stringify({ url: "https://example.com" }),
+      headers: {Authorization: "Bearer fixture-secret"},
+      body: JSON.stringify({url: "https://example.com"})
     }),
-    bindings,
+    bindings
   );
   assert.equal(invalid.status, 400);
   const valid = await Router.fetch(
     new Request("https://router.workers.dev/_control/backend", {
       method: "POST",
-      headers: { Authorization: "Bearer fixture-secret" },
-      body: JSON.stringify({ url: "https://calm-river.trycloudflare.com" }),
+      headers: {Authorization: "Bearer fixture-secret"},
+      body: JSON.stringify({url: "https://calm-river.trycloudflare.com"})
     }),
-    bindings,
+    bindings
   );
   assert.equal(valid.status, 200);
   assert.equal(bindings.ROUTING.value, "https://calm-river.trycloudflare.com");
@@ -69,7 +69,7 @@ test("control endpoint authenticates and stores only Quick Tunnel origins", asyn
 test("proxy returns 503 before a backend is published", async () => {
   const response = await Router.fetch(
     new Request("https://router.workers.dev/healthz"),
-    env(),
+    env()
   );
   assert.equal(response.status, 503);
 });
@@ -93,8 +93,8 @@ test("MCP endpoint challenges unauthenticated requests with resource metadata", 
 test("dynamic registration accepts ChatGPT HTTPS callbacks", async () => {
   const response = await Router.fetch(new Request("https://router.workers.dev/oauth/register", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ redirect_uris: ["https://chatgpt.com/connector_platform_oauth_redirect"] }),
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({redirect_uris: ["https://chatgpt.com/connector_platform_oauth_redirect"]})
   }), env());
   assert.equal(response.status, 201);
   const body = /** @type {{client_id:string, token_endpoint_auth_method:string}} */ (await response.json());

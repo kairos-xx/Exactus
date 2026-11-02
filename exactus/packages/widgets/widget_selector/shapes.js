@@ -7,7 +7,7 @@ export const SHAPE = Object.freeze({
   horn: 5.8,
   cap: 15,
   gap: 3,
-  descendantGap: 9,
+  descendantGap: 9
 });
 /** Horns of an open shape: the concave notch is cut between them. */
 export const HORN_PATH = "M0 0H5.8C3.5 2 0 5.7 0 10C0 14.3 2.4 18 5.8 20H0Z";
@@ -47,7 +47,7 @@ const svg = (className, viewBox, d) => {
  * Build one shape.
  * @returns {HTMLElement} The shape element.
  */
-export const buildShape = (/** @type {{type:"open"|"leaf"|"close"|"slot", kind:string, label?:string, editable?:boolean, title?:string}} */ { type, kind, label = "", editable = false, title = "" }) => {
+export const buildShape = (/** @type {{type:"open"|"leaf"|"close"|"slot", kind:string, label?:string, editable?:boolean, title?:string}} */ {type, kind, label = "", editable = false, title = ""}) => {
   const shape = document.createElement("span");
   shape.className = "ese-shape";
   shape.setAttribute("data-type", type);

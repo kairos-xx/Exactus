@@ -1,14 +1,14 @@
 /** The Expression view: shapes plus one inline draft input at the caret. */
-import { createMenu } from "./mention-menu.js";
-import { buildShape, joinOf } from "./shapes.js";
-import { enclosing, matchingClose, slotsOf, tokenize } from "./selector-tree.js";
+import {createMenu} from "./mention-menu.js";
+import {buildShape, joinOf} from "./shapes.js";
+import {enclosing, matchingClose, slotsOf, tokenize} from "./selector-tree.js";
 /** @typedef {import("./selector-tree.js").Token} Token */
 const COMMIT_END = /[,)>+~ ]$/;
 /**
  * Create the view.
  * @returns {{surface:HTMLElement, menu:object, getText:()=>string, setText:Function, setDiagnostics:Function, focus:()=>void, getCaret:()=>number, setCaret:Function}} The expression view API.
  */
-export const createExpressionView = (/** @type {{host:HTMLElement, signatures:Record<string, any>, onChange:(text:string)=>void, suggestions:(ctx:{draft:string, role:string, scope:string})=>{title:string, items:import("./suggest.js").Item[]}|null, label:string}} */ { host, signatures, onChange, suggestions, label }) => {
+export const createExpressionView = (/** @type {{host:HTMLElement, signatures:Record<string, any>, onChange:(text:string)=>void, suggestions:(ctx:{draft:string, role:string, scope:string})=>{title:string, items:import("./suggest.js").Item[]}|null, label:string}} */ {host, signatures, onChange, suggestions, label}) => {
   const surface = document.createElement("div");
   surface.className = "ese-surface";
   surface.setAttribute("role", "group");
@@ -59,7 +59,7 @@ export const createExpressionView = (/** @type {{host:HTMLElement, signatures:Re
     const seq = [];
     tokens.forEach((token, i) => {
       for (const gap of slots.filter(slot => slot.before === i))
-        seq.push({ at: gap.start, build: () => append(buildShape({ type: "slot", kind: "slot", label: gap.role }), "slot") });
+        seq.push({at: gap.start, build: () => append(buildShape({type: "slot", kind: "slot", label: gap.role}), "slot")});
       seq.push({
         at: token.start,
         build: () => {
@@ -79,17 +79,17 @@ export const createExpressionView = (/** @type {{host:HTMLElement, signatures:Re
             return;
           }
           const type = token.type === "draft" ? "leaf" : token.type;
-          const shape = buildShape({ type, kind: token.kind, label: type === "close" ? "" : token.label, editable: Boolean(token.editable), title: token.kind });
+          const shape = buildShape({type, kind: token.kind, label: type === "close" ? "" : token.label, editable: Boolean(token.editable), title: token.kind});
           shape.setAttribute("data-start", String(token.start));
           shape.setAttribute("data-end", String(token.end));
           const problem = problems.find(p => p.offset < token.end && p.offset + p.length > token.start);
           if (problem) shape.setAttribute("data-problem", problem.severity);
           append(shape, type);
-        },
+        }
       });
     });
     for (const gap of slots.filter(slot => slot.before >= tokens.length))
-      seq.push({ at: gap.start, build: () => append(buildShape({ type: "slot", kind: "slot", label: gap.role }), "slot") });
+      seq.push({at: gap.start, build: () => append(buildShape({type: "slot", kind: "slot", label: gap.role}), "slot")});
     for (const item of seq) {
       if (!placed && item.at >= caret) placeDraft();
       item.build();
@@ -135,7 +135,7 @@ export const createExpressionView = (/** @type {{host:HTMLElement, signatures:Re
     }
     set(before + lead + piece + text.slice(caret), caret + lead.length + piece.length + back);
   };
-  const menu = createMenu({ host, onChoose: item => commit(item.insert ?? item.label, item.adjust ?? 0) });
+  const menu = createMenu({host, onChoose: item => commit(item.insert ?? item.label, item.adjust ?? 0)});
   /** Anchor the menu under the draft input, kept inside the field. */
   const placeMenu = () => {
     if (!draftInput || !menu.isOpen()) return;
@@ -163,7 +163,7 @@ export const createExpressionView = (/** @type {{host:HTMLElement, signatures:Re
       const first = tokens.slice(frame.openIndex + 1).find(t => t.type === "leaf" && ["tag", "class", "id"].includes(t.kind));
       return first?.text ?? "";
     })();
-    const found = draftInput ? suggestions({ draft: draftInput.value, role, scope }) : null;
+    const found = draftInput ? suggestions({draft: draftInput.value, role, scope}) : null;
     if (!found) menu.close();
     else {
       menu.open(found.title, found.items, draftInput?.value.startsWith("@") ? draftInput.value.slice(1) : "");
@@ -311,7 +311,7 @@ export const createExpressionView = (/** @type {{host:HTMLElement, signatures:Re
       const dx = event.clientX < rect.left ? rect.left - event.clientX : event.clientX > rect.right ? event.clientX - rect.right : 0;
       const distance = dy * 1000 + dx;
       if (distance < bestDistance) {
-        best = { mark: /** @type {HTMLElement} */ (mark), rect };
+        best = {mark: /** @type {HTMLElement} */ (mark), rect};
         bestDistance = distance;
       }
     }
@@ -320,7 +320,7 @@ export const createExpressionView = (/** @type {{host:HTMLElement, signatures:Re
       caret = Number(
         event.clientX < best.rect.left + best.rect.width / 2
           ? best.mark.getAttribute("data-start")
-          : best.mark.getAttribute("data-end"),
+          : best.mark.getAttribute("data-end")
       );
     render(true);
   };
@@ -356,6 +356,6 @@ export const createExpressionView = (/** @type {{host:HTMLElement, signatures:Re
     setCaret: at => {
       caret = Math.max(0, Math.min(at, text.length));
       render();
-    },
+    }
   };
 };

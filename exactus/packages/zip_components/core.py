@@ -44,7 +44,9 @@ from zipfile import ZIP_DEFLATED, ZipFile
 from exactus.packages.argument_parser import ExactusArgumentParser
 from exactus.packages.tree import human_size as _human_size
 from exactus.packages.tree import render_tree as _render_tree
-from exactus.tools.common.catalog import Constants as _CatalogConstants
+from exactus.tools.common.catalog import (
+    GroupFinalConstants as _CatalogConstants,
+)
 from exactus.tools.common.config import (
     discovery_from_environment,
     reports_directory,
@@ -79,7 +81,7 @@ class Constants:
         skipped_suffixes: Grouped module constant.
         skipped_names: Grouped module constant.
         shared_paths: Grouped module constant.
-        exactus_paths: Grouped module constant.
+        tools_paths: Grouped module constant.
         package_paths: Grouped module constant.
         bundles_folder: Grouped module constant.
         project_excluded_directories: Grouped module constant.
@@ -105,15 +107,15 @@ class Constants:
         "exactus/tests/conftest.py",
         "exactus/tests/common",
     )
-    exactus_paths: Final[tuple[str, ...]] = (
+    tools_paths: Final[tuple[str, ...]] = (
         "exactus/__init__.py",
         "exactus/__main__.py",
         "exactus/tools/__init__.py",
-        "exactus/tests/exactus/__init__.py",
-        "exactus/tests/exactus/tools/__init__.py",
-        "exactus/tests/exactus/tools/README.md",
-        "exactus/docs/exactus/tools/DOCS.md",
-        "exactus/docs/exactus/tools/README.md",
+        "exactus/tests/__init__.py",
+        "exactus/tests/tools/__init__.py",
+        "exactus/tests/tools/README.md",
+        "exactus/docs/tools/DOCS.md",
+        "exactus/docs/tools/README.md",
     )
     package_paths: Final[tuple[str, ...]] = (
         "exactus/packages/__init__.py",
@@ -125,7 +127,7 @@ class Constants:
         "exactus/docs/packages/DOCS.md",
         "exactus/docs/packages/README.md",
     )
-    bundles_folder: Final[str] = "zip-components"
+    bundles_folder: Final[Path] = Path("artifacts", "zip-components")
     project_excluded_directories: Final[frozenset[str]] = frozenset(
         {
             "__pycache__",
@@ -133,7 +135,7 @@ class Constants:
             "dist",
             "bin",
             "EXACTUS_RESULTS_RELEASE",
-            "packages",
+            "artifacts",
             "node_modules",
             "exactus.egg-info",
         },
@@ -142,7 +144,7 @@ class Constants:
     project_build_bundle: Final[Path] = Path("build", "exactus", "bundle")
     project_archive: Final[str] = "exactus-release.zip"
     folder_readme: Final[str] = (
-        "# `zip-components/`\n"
+        "# `artifacts/zip-components/`\n"
         "\n"
         "Archives produced by `exactus.packages.zip_components` "
         "(`python exactus/packages/zip_components …`).\n"
@@ -161,12 +163,12 @@ class Selection:
     """Component names bundled by kind.
 
     Attributes:
-        exactus: ``exactus/tools/<name>`` components.
+        tools: ``exactus/tools/<name>`` components.
         packages: ``exactus/packages/<name>`` components.
 
     """
 
-    exactus: tuple[str, ...]
+    tools: tuple[str, ...]
     packages: tuple[str, ...]
 
 
@@ -219,7 +221,7 @@ def _expand_names(
 
     Args:
         root: Repository root.
-        kind: ``"exactus"`` or ``"packages"``.
+        kind: ``"tools"`` or ``"packages"``.
         names: Requested names; ``all`` or ``*`` selects every
             available component of that kind.
 
@@ -232,7 +234,7 @@ def _expand_names(
         return _unique(names=normalized)
     available: Selection = available_components(root=root)
     pool: tuple[str, ...] = (
-        available.exactus if kind == "exactus" else available.packages
+        available.tools if kind == "tools" else available.packages
     )
     return _unique(
         names=(*[name for name in normalized if name != "all"], *pool),
@@ -244,14 +246,14 @@ def _component_source(root: Path, kind: str, name: str) -> Path:
 
     Args:
         root: Repository root.
-        kind: ``"exactus"`` or ``"packages"``.
+        kind: ``"tools"`` or ``"packages"``.
         name: Component name.
 
     Returns:
         The component source directory.
 
     """
-    if kind == "exactus":
+    if kind == "tools":
         return root / "exactus" / "tools" / name
     return root / "exactus" / "packages" / name
 
@@ -265,7 +267,7 @@ def _component_directories(
 
     Args:
         root: Repository root.
-        kind: ``"exactus"`` or ``"packages"``.
+        kind: ``"tools"`` or ``"packages"``.
         name: Component name.
 
     Returns:
@@ -273,8 +275,8 @@ def _component_directories(
 
     """
     tests: Path = (
-        root / "exactus" / "tests" / "exactus" / "tools" / name
-        if kind == "exactus"
+        root / "exactus" / "tests" / "tools" / name
+        if kind == "tools"
         else root / "exactus" / "tests" / "packages" / name
     )
     candidates: tuple[Path, ...] = (
@@ -315,7 +317,7 @@ def _scan_imports(source: Path) -> set[tuple[str, str]]:
         match: Match[str] | None = static or dynamic
         if match is None:
             continue
-        kind: str = "exactus" if match.group(1) == "tools" else "packages"
+        kind: str = "tools" if match.group(1) == "tools" else "packages"
         found.add((kind, match.group(2)))
     return found
 
@@ -323,14 +325,14 @@ def _scan_imports(source: Path) -> set[tuple[str, str]]:
 def discover_components(
     *,
     root: Path,
-    exactus: Sequence[str] = (),
+    tools: Sequence[str] = (),
     packages: Sequence[str] = (),
 ) -> Selection:
     """Expand a selection with every transitively imported component.
 
     Args:
         root: Repository root.
-        exactus: Requested ``exactus/tools/<name>`` components.
+        tools: Requested ``exactus/tools/<name>`` components.
         packages: Requested ``exactus/packages/<name>`` components.
 
     Returns:
@@ -338,13 +340,13 @@ def discover_components(
 
     """
     selected: dict[str, list[str]] = {
-        "exactus": list(_unique(names=exactus)),
+        "tools": list(_unique(names=tools)),
         "packages": list(_unique(names=packages)),
     }
     pending: list[tuple[str, str]] = [
         *zip(
-            ["exactus"] * len(selected["exactus"]),
-            selected["exactus"],
+            ["tools"] * len(selected["tools"]),
+            selected["tools"],
             strict=True,
         ),
         *zip(
@@ -387,7 +389,7 @@ def discover_components(
                         depth=2,
                     )
     return Selection(
-        exactus=tuple(selected["exactus"]),
+        tools=tuple(selected["tools"]),
         packages=tuple(selected["packages"]),
     )
 
@@ -428,7 +430,7 @@ def available_components(*, root: Path) -> Selection:
         )
 
     return Selection(
-        exactus=tuple(
+        tools=tuple(
             sorted(
                 tool.identifier
                 for tool in _CatalogConstants.exactus_catalog.tools()
@@ -508,18 +510,18 @@ def collect_files(*, root: Path, selection: Selection) -> tuple[str, ...]:
     """
     members: set[str] = set()
     roots: list[str] = list(Constants.shared_paths)
-    if selection.exactus:
-        roots.extend(Constants.exactus_paths)
+    if selection.tools:
+        roots.extend(Constants.tools_paths)
     if selection.packages:
         roots.extend(Constants.package_paths)
     name: str
-    roots.extend(_results_directories(root=root, names=selection.exactus))
-    for name in selection.exactus:
+    roots.extend(_results_directories(root=root, names=selection.tools))
+    for name in selection.tools:
         roots.extend(
             (
                 f"exactus/tools/{name}",
-                f"exactus/tests/exactus/tools/{name}",
-                f"exactus/docs/exactus/tools/{name}",
+                f"exactus/tests/tools/{name}",
+                f"exactus/docs/tools/{name}",
             ),
         )
     for name in selection.packages:
@@ -540,13 +542,13 @@ def collect_files(*, root: Path, selection: Selection) -> tuple[str, ...]:
 
 def bundle_name(
     *,
-    exactus: Sequence[str] = (),
+    tools: Sequence[str] = (),
     packages: Sequence[str] = (),
 ) -> str:
     """Return the archive name derived from the requested components.
 
     Args:
-        exactus: Requested exactus tool names.
+        tools: Requested tool names.
         packages: Requested packages package names.
 
     Returns:
@@ -554,14 +556,14 @@ def bundle_name(
 
     """
     parts: list[str] = []
-    exactus_names: tuple[str, ...] = _unique(
-        names=["all" if name == "*" else name for name in exactus],
+    tools_names: tuple[str, ...] = _unique(
+        names=["all" if name == "*" else name for name in tools],
     )
     package_names: tuple[str, ...] = _unique(
         names=["all" if name == "*" else name for name in packages],
     )
-    if exactus_names:
-        parts.append("_".join(("exactus", *exactus_names)))
+    if tools_names:
+        parts.append("_".join(("tools", *tools_names)))
     if package_names:
         parts.append("_".join(("packages", *package_names)))
     return f"{'_'.join(parts)}.zip"
@@ -589,17 +591,19 @@ def _bundle_readme(
 
     """
     discovered: list[str] = [
-        f"exactus.{entry}"
-        for entry in selection.exactus
-        if entry not in requested.exactus
+        f"exactus.tools.{entry}"
+        for entry in selection.tools
+        if entry not in requested.tools
     ] + [
         f"exactus.packages.{entry}"
         for entry in selection.packages
         if entry not in requested.packages
     ]
     requested_lines: str = "".join(
-        f"- `exactus.{entry}`\n" for entry in requested.exactus
-    ) + "".join(f"- `packages.{entry}`\n" for entry in requested.packages)
+        f"- `exactus.tools.{entry}`\n" for entry in requested.tools
+    ) + "".join(
+        f"- `exactus.packages.{entry}`\n" for entry in requested.packages
+    )
     return (
         f"# `{name.removesuffix('.zip')}/`\n"
         "\n"
@@ -632,7 +636,7 @@ def _bundle_readme(
 def create_bundle(
     *,
     root: Path,
-    exactus: Sequence[str] = (),
+    tools: Sequence[str] = (),
     packages: Sequence[str] = (),
     output: Path | None = None,
     output_folder: Path | None = None,
@@ -641,30 +645,30 @@ def create_bundle(
 
     Args:
         root: Repository root.
-        exactus: Requested ``exactus/tools/<name>`` components; ``all``
+        tools: Requested ``exactus/tools/<name>`` components; ``all``
             or ``*`` selects every tool in the catalog.
         packages: Requested ``exactus/packages/<name>`` components; ``all`` or
             ``*`` selects every packages package.
         output: Explicit archive path; writes a bare zip, bypassing the
             scaffolded bundle layout.
         output_folder: Directory holding the bundle folder; defaults to
-            ``<root>/zip-components``.
+            ``<root>/artifacts/zip-components``.
 
     Returns:
         The written archive path, its members and the full selection.
 
     """
     selection: Selection = Selection(
-        exactus=_expand_names(root=root, kind="exactus", names=exactus),
+        tools=_expand_names(root=root, kind="tools", names=tools),
         packages=_expand_names(root=root, kind="packages", names=packages),
     )
     discovered: Selection = discover_components(
         root=root,
-        exactus=selection.exactus,
+        tools=selection.tools,
         packages=selection.packages,
     )
     files: tuple[str, ...] = collect_files(root=root, selection=discovered)
-    name: str = bundle_name(exactus=exactus, packages=packages)
+    name: str = bundle_name(tools=tools, packages=packages)
     bundle_dir: Path | None = None
     if output is not None:
         destination: Path = output
@@ -821,7 +825,7 @@ def create_project_archive(
     return BundleResult(
         path=destination,
         files=tuple(arcname for _, arcname in members),
-        selection=Selection(exactus=(), packages=()),
+        selection=Selection(tools=(), packages=()),
     )
 
 
@@ -830,7 +834,7 @@ def _project_release(
     parser: ArgumentParser,
     options: Namespace,
     root: Path,
-    exactus: Sequence[str],
+    tools: Sequence[str],
     packages: Sequence[str],
 ) -> int:
     """Write the whole-project release archive for ``--project``.
@@ -839,14 +843,14 @@ def _project_release(
         parser: Command-line parser used to report option conflicts.
         options: Parsed command-line arguments.
         root: Project root to archive.
-        exactus: Requested exactus tool names (must be empty).
+        tools: Requested exactus tool names (must be empty).
         packages: Requested packages names (must be empty).
 
     Returns:
         ``0`` when the archive was written.
 
     """
-    if exactus or packages:
+    if tools or packages:
         parser.error(
             message="--project cannot be combined with component selections",
         )
@@ -902,7 +906,7 @@ def main(*, arguments: Sequence[str] | None = None) -> int:
     )
     parser.add_argument(
         "--tools",
-        dest="exactus",
+        dest="tools",
         nargs="+",
         default=(),
         metavar="TOOL",
@@ -939,7 +943,7 @@ def main(*, arguments: Sequence[str] | None = None) -> int:
         metavar="DIR",
         help=(
             "Directory holding the bundle folder "
-            "(defaults to <root>/zip-components)."
+            "(defaults to <root>/artifacts/zip-components)."
         ),
     )
     parser.add_argument(
@@ -974,14 +978,14 @@ def main(*, arguments: Sequence[str] | None = None) -> int:
         args=list(arguments) if arguments is not None else None,
     )
     positionals: tuple[str, ...] = tuple(options.names)
-    exactus: tuple[str, ...] = tuple(options.exactus)
+    tools: tuple[str, ...] = tuple(options.tools)
     packages: tuple[str, ...] = (*positionals, *options.packages)
     if any(token in {"*", "all"} for token in positionals) and not any(
-        token in {"*", "all"} for token in exactus
+        token in {"*", "all"} for token in tools
     ):
-        exactus = (*exactus, "all")
+        tools = (*tools, "all")
     if (
-        not exactus
+        not tools
         and (not packages)
         and not options.listing
         and not options.project
@@ -998,17 +1002,17 @@ def main(*, arguments: Sequence[str] | None = None) -> int:
             parser=parser,
             options=options,
             root=root,
-            exactus=exactus,
+            tools=tools,
             packages=packages,
         )
     if options.listing:
         selection: Selection = (
             discover_components(
                 root=root,
-                exactus=_expand_names(
+                tools=_expand_names(
                     root=root,
-                    kind="exactus",
-                    names=exactus,
+                    kind="tools",
+                    names=tools,
                 ),
                 packages=_expand_names(
                     root=root,
@@ -1016,14 +1020,14 @@ def main(*, arguments: Sequence[str] | None = None) -> int:
                     names=packages,
                 ),
             )
-            if exactus or packages
+            if tools or packages
             else available_components(root=root)
         )
         _listed: int = stdout.write(
             dumps(
                 obj={
                     "packages": sorted(selection.packages),
-                    "exactus": sorted(selection.exactus),
+                    "tools": sorted(selection.tools),
                 },
                 indent=2,
             )
@@ -1032,26 +1036,26 @@ def main(*, arguments: Sequence[str] | None = None) -> int:
         return 0
     kind: str
     names: tuple[str, ...]
-    for kind, names in (("exactus", exactus), ("packages", packages)):
+    for kind, names in (("tools", tools), ("packages", packages)):
         name: str
         for name in _expand_names(root=root, kind=kind, names=names):
             if not _component_source(root=root, kind=kind, name=name).is_dir():
                 parser.error(message=f"unknown {kind} component: {name}")
     result: BundleResult = create_bundle(
         root=root,
-        exactus=exactus,
+        tools=tools,
         packages=packages,
         output=options.output,
         output_folder=options.output_folder,
     )
     requested: Selection = Selection(
-        exactus=_expand_names(root=root, kind="exactus", names=exactus),
+        tools=_expand_names(root=root, kind="tools", names=tools),
         packages=_expand_names(root=root, kind="packages", names=packages),
     )
     discovered: list[str] = [
-        f"exactus.{name}"
-        for name in result.selection.exactus
-        if name not in requested.exactus
+        f"exactus.tools.{name}"
+        for name in result.selection.tools
+        if name not in requested.tools
     ] + [
         f"exactus.packages.{name}"
         for name in result.selection.packages

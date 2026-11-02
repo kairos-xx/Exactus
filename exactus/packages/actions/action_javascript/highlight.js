@@ -4,7 +4,7 @@
 const KEYWORDS = new Set([
   "async", "await", "break", "case", "catch", "class", "const", "continue", "debugger", "default", "delete", "do",
   "else", "export", "extends", "finally", "for", "function", "if", "import", "in", "instanceof", "let", "new",
-  "of", "return", "static", "super", "switch", "this", "throw", "try", "typeof", "var", "void", "while", "yield",
+  "of", "return", "static", "super", "switch", "this", "throw", "try", "typeof", "var", "void", "while", "yield"
 ]);
 const LITERALS = new Set(["true", "false", "null", "undefined", "NaN", "Infinity"]);
 const NAMES = new Set(["exactus", "console"]);
@@ -16,7 +16,7 @@ const PATTERNS = Object.freeze([
   ["number", /0[xX][\da-fA-F_]+n?|0[bB][01_]+n?|0[oO][0-7_]+n?|(?:\d[\d_]*\.?[\d_]*|\.\d[\d_]*)(?:[eE][+-]?\d+)?n?/y],
   ["text", /[A-Za-z_$][\w$]*/y],
   ["space", /\s+/y],
-  ["punct", /[^\sA-Za-z0-9_$"'`]/y],
+  ["punct", /[^\sA-Za-z0-9_$"'`]/y]
 ]);
 
 /**
@@ -38,13 +38,13 @@ export const tokenize = source => {
       /** @type {TokenType} */
       let kind = type;
       if (type === "text") kind = KEYWORDS.has(text) ? "keyword" : LITERALS.has(text) ? "literal" : NAMES.has(text) ? "name" : "text";
-      tokens.push({ type: kind, text });
+      tokens.push({type: kind, text});
       index += text.length;
       matched = true;
       break;
     }
     if (!matched) {
-      tokens.push({ type: "text", text: source.charAt(index) });
+      tokens.push({type: "text", text: source.charAt(index)});
       index += 1;
     }
   }
@@ -63,7 +63,7 @@ export const tokenizeLines = source => {
     const pieces = token.text.split("\n");
     pieces.forEach((piece, position) => {
       if (position > 0) lines.push([]);
-      if (piece !== "") lines.at(-1)?.push({ type: token.type, text: piece });
+      if (piece !== "") lines.at(-1)?.push({type: token.type, text: piece});
     });
   }
   return lines;

@@ -41,7 +41,7 @@ test("tokenizer round-trips source and classifies the pieces", async t => {
 				lines: tokenizeLines(source).length,
 				kinds: [kind("const"), kind("0x1F"), kind("1_000n"), kind("// note"), kind('"a\\"b"'), kind(`\`t \${n}\``), kind("true"), kind("null"), kind("exactus"), kind("n")],
 				unterminated: tokenize('x = "open').at(-1)?.type,
-				blockSplit: tokenizeLines("/* a\nb */")[1]?.[0]?.type,
+				blockSplit: tokenizeLines("/* a\nb */")[1]?.[0]?.type
 			};
 		}, LIBRARY);
 		assert.equal(result.roundTrip, true);
@@ -83,7 +83,7 @@ test("worker executor returns values, maps errors to lines and ends runaway code
 				}, {
 					onEntry: ( /** @type {any} */ entry) => entries.push(entry),
 					onClear: () => (cleared += 1)
-				}, );
+				} );
 				if (extra.cancelAfter) setTimeout(handle.cancel, extra.cancelAfter);
 				const outcome = await handle.promise;
 				return {
@@ -172,7 +172,7 @@ test("worker executor returns values, maps errors to lines and ends runaway code
 				flood: [flood.entries.length, flood.entries.at(-1)?.level],
 				circular: [circular.outcome.status, circular.outcome.jsonSafe, circular.outcome.json],
 				midLine: [plain(midLine.outcome.value), midLine.entries.length],
-				midError: [midError.outcome.status, midError.outcome.error.location],
+				midError: [midError.outcome.status, midError.outcome.error.location]
 			};
 		}, "/exactus/packages/actions/action_javascript/executor.js");
 		assert.deepEqual(result.expression, ["ok", 3, "3", true]);
@@ -343,7 +343,7 @@ test("editor keys indent, split braces, comment and run", async t => {
 				tab,
 				ran: document.querySelector(".jr-result-body")?.textContent,
 				carrier: /** @type {HTMLTextAreaElement} */ (document.querySelector('[data-component="snippet"]')).value,
-				gutter: document.querySelectorAll(".jr-num").length,
+				gutter: document.querySelectorAll(".jr-num").length
 			};
 		});
 		assert.deepEqual(result.bracket, ["if (a) {\n  ", 11]);
@@ -438,7 +438,7 @@ test("runner accepts an injected executor and keeps the carrier in sync", async 
 						}),
 						cancel: () => {}
 					};
-				},
+				}
 			});
 			runner.on("run", ( /** @type {any} */ detail) => events.push(`run:${detail.code}`));
 			runner.on("result", ( /** @type {any} */ detail) => events.push(`result:${detail.status}:${detail.saveAs}:${detail.json}`));

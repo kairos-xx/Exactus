@@ -54,7 +54,7 @@ test("describer, formatter and recorder keep their contracts", async t => {
 				get: () => {
 					getterRan = true;
 					return 1;
-				},
+				}
 			});
 			const tree = describe(cyclic);
 			check(tree.entries.some(( /** @type {any} */ entry) => entry.k === "self" && entry.v.circular), "cycles are marked circular");

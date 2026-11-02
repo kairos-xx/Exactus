@@ -1,6 +1,6 @@
 /** JavaScript authoring workbench: a runnable snippet editor plus a runtime-value catalog. */
-import { mountRunner } from "../../../../packages/actions/action_javascript/index.js";
-import { variableName } from "./variable-mention-field.js";
+import {mountRunner} from "../../../../packages/actions/action_javascript/index.js";
+import {variableName} from "./variable-mention-field.js";
 /** @typedef {import("./variable-mention-field.js").VariableSource} VariableSource */
 /**
  * @typedef {object} RuntimeSymbol
@@ -37,7 +37,7 @@ const runtimeSymbols = (snapshot, variables) => {
   const project = snapshot?.project ?? {};
   const viewport = snapshot?.viewport ?? {};
   const activeFlow = (snapshot?.workspace?.flows ?? []).find(
-    (/** @type {{id?:string}} */ flow) => flow.id === snapshot?.active_flow_id,
+    (/** @type {{id?:string}} */ flow) => flow.id === snapshot?.active_flow_id
   );
   /** @type {RuntimeSymbol[]} */
   const system = [
@@ -47,7 +47,7 @@ const runtimeSymbols = (snapshot, variables) => {
       type: "URL",
       description: "Actual page URL immediately before this action runs.",
       insertText: "exactus.page.url",
-      preview: text(snapshot?.target_url) || "Runtime only",
+      preview: text(snapshot?.target_url) || "Runtime only"
     },
     {
       category: "Page & frame",
@@ -55,7 +55,7 @@ const runtimeSymbols = (snapshot, variables) => {
       type: "string",
       description: "Current document title in the bound page.",
       insertText: "exactus.page.title",
-      availability: "Runtime only",
+      availability: "Runtime only"
     },
     {
       category: "Project & context",
@@ -63,7 +63,7 @@ const runtimeSymbols = (snapshot, variables) => {
       type: "string",
       description: "Stable project slug without a local filesystem path.",
       insertText: "exactus.project.id",
-      preview: text(project.slug),
+      preview: text(project.slug)
     },
     {
       category: "Project & context",
@@ -71,7 +71,7 @@ const runtimeSymbols = (snapshot, variables) => {
       type: "string",
       description: "Project display name frozen for this run.",
       insertText: "exactus.project.name",
-      preview: text(project.name),
+      preview: text(project.name)
     },
     {
       category: "Project & context",
@@ -79,7 +79,7 @@ const runtimeSymbols = (snapshot, variables) => {
       type: "URL",
       description: "Base URL supplied by the selected project context.",
       insertText: "exactus.context.baseUrl",
-      preview: text(project.base_url),
+      preview: text(project.base_url)
     },
     {
       category: "Flow",
@@ -87,7 +87,7 @@ const runtimeSymbols = (snapshot, variables) => {
       type: "string",
       description: "Reusable flow identity for this invocation.",
       insertText: "exactus.flow.id",
-      preview: text(snapshot?.active_flow_id),
+      preview: text(snapshot?.active_flow_id)
     },
     {
       category: "Flow",
@@ -95,7 +95,7 @@ const runtimeSymbols = (snapshot, variables) => {
       type: "string",
       description: "Flow display name frozen for this invocation.",
       insertText: "exactus.flow.name",
-      preview: text(activeFlow?.name),
+      preview: text(activeFlow?.name)
     },
     {
       category: "Run & action",
@@ -103,7 +103,7 @@ const runtimeSymbols = (snapshot, variables) => {
       type: "string",
       description: "Current run identity.",
       insertText: "exactus.run.id",
-      preview: text(snapshot?.execution_run_id) || "Created on run",
+      preview: text(snapshot?.execution_run_id) || "Created on run"
     },
     {
       category: "Run & action",
@@ -111,7 +111,7 @@ const runtimeSymbols = (snapshot, variables) => {
       type: "string",
       description: "Stable action identity for the current attempt.",
       insertText: "exactus.action.id",
-      availability: "Created after saving",
+      availability: "Created after saving"
     },
     {
       category: "Device",
@@ -119,7 +119,7 @@ const runtimeSymbols = (snapshot, variables) => {
       type: "string",
       description: "Project-owned device profile selected for this run.",
       insertText: "exactus.device.profileId",
-      preview: text(snapshot?.device_mode),
+      preview: text(snapshot?.device_mode)
     },
     {
       category: "Device",
@@ -127,7 +127,7 @@ const runtimeSymbols = (snapshot, variables) => {
       type: "integer",
       description: "Effective viewport width after earlier device actions.",
       insertText: "exactus.device.viewport.width",
-      preview: viewport.width === undefined ? "Runtime only" : String(viewport.width),
+      preview: viewport.width === undefined ? "Runtime only" : String(viewport.width)
     },
     {
       category: "Device",
@@ -135,7 +135,7 @@ const runtimeSymbols = (snapshot, variables) => {
       type: "integer",
       description: "Effective viewport height after earlier device actions.",
       insertText: "exactus.device.viewport.height",
-      preview: viewport.height === undefined ? "Runtime only" : String(viewport.height),
+      preview: viewport.height === undefined ? "Runtime only" : String(viewport.height)
     },
     {
       category: "Targets & selectors",
@@ -143,29 +143,29 @@ const runtimeSymbols = (snapshot, variables) => {
       type: "Element | null",
       description: "Current matched element in the isolated page world.",
       insertText: "exactus.target",
-      availability: "When the action has a target",
+      availability: "When the action has a target"
     },
     {
       category: "Targets & selectors",
       path: "exactus.selectors.queryOne(sourceOrId)",
       type: "function",
       description: "Query one element with the shared Extended Selector engine.",
-      insertText: "exactus.selectors.queryOne(\"selector\")",
+      insertText: "exactus.selectors.queryOne(\"selector\")"
     },
     {
       category: "Logs & evidence",
       path: "exactus.log(...values)",
       type: "function",
       description: "Write a structured line to this action attempt.",
-      insertText: "exactus.log()",
+      insertText: "exactus.log()"
     },
     {
       category: "Logs & evidence",
       path: "exactus.assert(condition, message)",
       type: "function",
       description: "Fail this action unless the condition is truthy.",
-      insertText: "exactus.assert(condition, \"Expected condition\")",
-    },
+      insertText: "exactus.assert(condition, \"Expected condition\")"
+    }
   ];
   const user = variables.map(source => {
     const name = variableName(source);
@@ -176,7 +176,7 @@ const runtimeSymbols = (snapshot, variables) => {
       type: typeName,
       description: "Value produced by an earlier reachable action.",
       insertText: `exactus.vars.get(${JSON.stringify(name)})`,
-      availability: "Available now",
+      availability: "Available now"
     };
   });
   return [...user, ...system];
@@ -229,12 +229,12 @@ const previewContext = snapshot => {
   const project = snapshot?.project ?? {};
   const flowId = text(snapshot?.active_flow_id);
   const flow = (snapshot?.workspace?.flows ?? []).find(
-    (/** @type {{id?:string}} */ item) => item.id === flowId,
+    (/** @type {{id?:string}} */ item) => item.id === flowId
   );
   return {
-    project: { id: text(project.slug), name: text(project.name) },
-    context: { baseUrl: text(project.base_url) },
-    flow: { id: flowId, name: text(flow?.name) },
+    project: {id: text(project.slug), name: text(project.name)},
+    context: {baseUrl: text(project.base_url)},
+    flow: {id: flowId, name: text(flow?.name)}
   };
 };
 /** Create a runnable code editor with a runtime-value catalog.
@@ -242,7 +242,7 @@ const previewContext = snapshot => {
  * @returns {HTMLElement}
  */
 export const javascriptActionWidget = options => {
-  const { source, sourceLabel, variables, snapshot, outputName, runnable = true, name = "payload" } = options;
+  const {source, sourceLabel, variables, snapshot, outputName, runnable = true, name = "payload"} = options;
   const root = make("div", "javascript-action-widget");
   const tabs = make("div", "javascript-tabs");
   tabs.setAttribute("role", "tablist");
@@ -265,9 +265,9 @@ export const javascriptActionWidget = options => {
     variables: variables.map(item => ({
       name: variableName(item),
       value: undefined,
-      type: typeof item === "string" ? "value" : (item.type ?? "value"),
+      type: typeof item === "string" ? "value" : (item.type ?? "value")
     })),
-    ...(outputName === null ? {} : { outputName }),
+    ...(outputName === null ? {} : {outputName})
   });
   const valuesTools = make("div", "javascript-values-tools");
   const search = make("input");
@@ -286,7 +286,7 @@ export const javascriptActionWidget = options => {
     const shown = symbols.filter(symbol =>
       `${symbol.category} ${symbol.path} ${symbol.type} ${symbol.description}`
         .toLowerCase()
-        .includes(query),
+        .includes(query)
     );
     count.value = `${shown.length} values`;
     const groups = new Map();
@@ -315,7 +315,7 @@ export const javascriptActionWidget = options => {
         insert.setAttribute("aria-label", `Insert ${symbol.path}`);
         insert.addEventListener("click", () => {
           tabs.querySelector('[aria-controls="javascript-panel-code"]')?.dispatchEvent(
-            new MouseEvent("click", { bubbles: true }),
+            new MouseEvent("click", {bubbles: true})
           );
           runner.editor.insert(symbol.insertText);
           runner.editor.focus();
@@ -340,7 +340,7 @@ export const javascriptActionWidget = options => {
  * @returns {HTMLElement}
  */
 export const conditionWidget = options => {
-  const { source, variables, snapshot } = options;
+  const {source, variables, snapshot} = options;
   const root = make("div", "javascript-action-widget");
   const carrier = make("textarea");
   carrier.value = source;
@@ -357,8 +357,8 @@ export const conditionWidget = options => {
     variables: variables.map(item => ({
       name: variableName(item),
       value: undefined,
-      type: typeof item === "string" ? "value" : (item.type ?? "value"),
-    })),
+      type: typeof item === "string" ? "value" : (item.type ?? "value")
+    }))
   });
   return root;
 };

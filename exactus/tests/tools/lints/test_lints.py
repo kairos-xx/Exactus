@@ -6,6 +6,10 @@ from __future__ import annotations
 from ast import literal_eval, parse
 from io import StringIO
 from itertools import pairwise
+from json import loads
+from os import environ
+from shutil import which
+from subprocess import run
 from textwrap import dedent
 from typing import TYPE_CHECKING, Final, cast, final
 
@@ -17,6 +21,7 @@ from exactus.packages.organize import (
 )
 from exactus.packages.steps import step_log
 from exactus.tests.common.support import (
+    dig,
     expect_equal,
     expect_false,
     expect_in,
@@ -55,6 +60,7 @@ class Constants:
 if TYPE_CHECKING:
     from argparse import Namespace
     from pathlib import Path
+    from subprocess import CompletedProcess
 
 
 def test_weighted_progress_keeps_activity_monotonic(
@@ -907,3 +913,146 @@ def test_uppercase_globals_exempt_generic_binders(tmp_path: Path) -> None:
         condition=all("`MUT" in message for message in messages),
         message="A generic binder or lowercase global was flagged.",
     )
+
+
+def test_eslint_template_declares_stylistic_rules() -> None:
+    """The fallback eslint config loads @stylistic optionally."""
+    config: str = template_resource(name="eslint.config.mjs").read_text(
+        encoding="utf-8",
+    )
+    for needle in (
+        "createRequire",
+        "@stylistic/eslint-plugin",
+        '"arrow-body-style": ["error", "as-needed"]',
+        'curly: ["error", "multi"]',
+        '"@stylistic/arrow-parens": ["error", "as-needed"]',
+        '"@stylistic/comma-dangle": ["error", "never"]',
+        '"@stylistic/quote-props": ["error", "as-needed"]',
+        '"@stylistic/object-curly-spacing": ["error", "never"]',
+        '"@stylistic/array-bracket-spacing": ["error", "never"]',
+        '"@stylistic/semi": ["error", "always"]',
+    ):
+        expect_true(condition=needle in config, message=needle)
+
+
+def test_eslint_fix_compacts_javascript(tmp_path: Path) -> None:
+    """The clean pass compacts verbose JavaScript via ``eslint --fix``.
+
+    Args:
+        tmp_path: Pytest temporary directory.
+
+    """
+    root: Path = tmp_path / "proj"
+    root.mkdir()
+    target: Path = root / "app.js"
+    _ = target.write_text(
+        data=dedent(
+            text="""\
+                const double = (x) => {
+                    return x * 2;
+                };
+                const items = [ 1, 2, ];
+                if (double) {
+                    console.log(items.map((item) => {
+                        return item;
+                    }));
+                }
+                """,
+        ),
+        encoding="utf-8",
+    )
+    status: int = _run(project=root, out=tmp_path / "out")
+    expect_in(member=status, container={0, 1})
+    healed: str = target.read_text(encoding="utf-8")
+    expect_true(condition="x => x * 2" in healed)
+    expect_true(condition="items.map(item => item)" in healed)
+    expect_true(condition="[1, 2]" in healed)
+    expect_false(condition="(x)" in healed)
+
+
+def test_eslint_fix_preserves_mandatory_syntax(tmp_path: Path) -> None:
+    """``eslint --fix`` keeps syntax required for validity.
+
+    Args:
+        tmp_path: Pytest temporary directory.
+
+    """
+    root: Path = tmp_path / "proj"
+    root.mkdir()
+    target: Path = root / "app.js"
+    _ = target.write_text(
+        data=dedent(
+            text="""\
+                const getObject = () => ({value: 1});
+                const used = getObject();
+                if (used) {
+                    let scoped = used.value;
+                    scoped += 1;
+                }
+                """,
+        ),
+        encoding="utf-8",
+    )
+    status: int = _run(project=root, out=tmp_path / "out")
+    expect_in(member=status, container={0, 1})
+    healed: str = target.read_text(encoding="utf-8")
+    expect_true(
+        condition="() => ({value: 1})" in healed,
+        message="Object-returning arrow lost its parentheses.",
+    )
+    expect_true(
+        condition="let scoped" in healed
+        and "{" in healed.split(sep="if (used)")[1],
+        message="Lexical declaration lost its mandatory braces.",
+    )
+
+
+@pytest.mark.skipif(which(cmd="node") is None, reason="node not installed")
+def test_eslint_template_degrades_without_plugin(tmp_path: Path) -> None:
+    """A missing @stylistic plugin yields a core-only config, not a crash.
+
+    Args:
+        tmp_path: Pytest temporary directory.
+
+    """
+    _ = (tmp_path / "eslint.config.mjs").write_text(
+        data=template_resource(name="eslint.config.mjs").read_text(
+            encoding="utf-8",
+        ),
+        encoding="utf-8",
+    )
+    probe: Path = tmp_path / "probe.mjs"
+    _ = probe.write_text(
+        data=(
+            dedent(
+                text="""\
+    import cfg from './eslint.config.mjs';
+    const rules = cfg[1].rules ?? {};
+    const plugins = cfg[1].plugins ?? {};
+    const stylistic = Object.keys(rules).filter(
+        (rule) => rule.startsWith('@stylistic/'));
+    console.log(JSON.stringify({
+        plugins: Object.keys(plugins),
+        arrow: rules['arrow-body-style'],
+        stylistic: stylistic,
+    }));""",
+            )
+        ),
+        encoding="utf-8",
+    )
+    completed: CompletedProcess[str] = run(
+        args=("node", str(object=probe)),
+        cwd=tmp_path,
+        check=False,
+        capture_output=True,
+        text=True,
+        env={"PATH": environ.get("PATH", default=""), "NODE_PATH": ""},
+    )
+    expect_equal(actual=completed.returncode, expected=0)
+    data: object = loads(s=completed.stdout)
+    expect_equal(actual=dig(document=data, path=("plugins",)), expected=[])
+    expect_equal(
+        actual=dig(document=data, path=("arrow",)),
+        expected=["error", "as-needed"],
+    )
+    expect_equal(actual=dig(document=data, path=("stylistic",)), expected=[])

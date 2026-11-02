@@ -39,7 +39,7 @@ export class ExtendedSelector extends EventTarget {
     "nearest_above",
     "nearest_below",
     "nearest_left",
-    "nearest_right",
+    "nearest_right"
   ]);
   static ORDERING_OPERATORS = Object.freeze([
     "sort",
@@ -47,7 +47,7 @@ export class ExtendedSelector extends EventTarget {
     "nearest_above",
     "nearest_below",
     "nearest_left",
-    "nearest_right",
+    "nearest_right"
   ]);
   /**
    * Operator signatures: argument counts, the role each argument plays and
@@ -100,7 +100,7 @@ export class ExtendedSelector extends EventTarget {
       ["nearest_below", 2, 3, ["base", "reference", "limit"], ["selector", "selector", "number"], undefined, "The nearest base element below the reference."],
       ["nearest_left", 2, 3, ["base", "reference", "limit"], ["selector", "selector", "number"], undefined, "The nearest base element left of the reference."],
       ["nearest_right", 2, 3, ["base", "reference", "limit"], ["selector", "selector", "number"], undefined, "The nearest base element right of the reference."],
-      ["media", 1, 1, ["query"], ["string"], undefined, "Elements only when the media query matches."],
+      ["media", 1, 1, ["query"], ["string"], undefined, "Elements only when the media query matches."]
     ]);
     return Object.freeze(
       Object.fromEntries(
@@ -112,11 +112,11 @@ export class ExtendedSelector extends EventTarget {
             roles,
             optionalFrom: min,
             kinds,
-            ...(variadicRole ? { variadicRole } : {}),
-            summary,
-          }),
-        ]),
-      ),
+            ...(variadicRole ? {variadicRole} : {}),
+            summary
+          })
+        ])
+      )
     );
   })();
   static CAPABILITIES = Object.freeze({
@@ -127,7 +127,7 @@ export class ExtendedSelector extends EventTarget {
       "nearest_above",
       "nearest_below",
       "nearest_left",
-      "nearest_right",
+      "nearest_right"
     ]),
     comparators: Object.freeze([
       "=",
@@ -140,7 +140,7 @@ export class ExtendedSelector extends EventTarget {
       "$=",
       "*=",
       "~=",
-      "~~",
+      "~~"
     ]),
     boolean: Object.freeze(["and", "or", "not", "nand", "nor", "xor", "xnor"]),
     structural: Object.freeze([
@@ -159,7 +159,7 @@ export class ExtendedSelector extends EventTarget {
       "after",
       "any",
       "all",
-      "none",
+      "none"
     ]),
     spatial: Object.freeze([
       "left_of",
@@ -170,7 +170,7 @@ export class ExtendedSelector extends EventTarget {
       "inside",
       "near",
       "aligned_left",
-      "aligned_center_x",
+      "aligned_center_x"
     ]),
     dom: Object.freeze(["shadow", "slot", "pseudo"]),
     generators: Object.freeze([
@@ -179,18 +179,18 @@ export class ExtendedSelector extends EventTarget {
       "optimal-select",
       "optimal-select.optimize",
       "@medv/finder",
-      "native",
+      "native"
     ]),
     namespaces: Object.freeze(["attr:", "prop:", "data:", "aria:"]),
     cssPseudoClasses: Object.freeze(
       ":is :where :not :has :nth-child :nth-last-child :nth-of-type :nth-last-of-type :first-child :last-child :only-child :first-of-type :last-of-type :only-of-type :empty :root :scope :hover :active :focus :focus-visible :focus-within :target :target-within :visited :link :any-link :local-link :checked :indeterminate :default :disabled :enabled :read-only :read-write :placeholder-shown :required :optional :valid :invalid :in-range :out-of-range :user-valid :user-invalid :blank :autofill :playing :paused :seeking :buffering :stalled :muted :volume-locked :fullscreen :modal :popover-open :picture-in-picture :open :closed :defined :dir :lang :state :host :host-context".split(
-        " ",
-      ),
+        " "
+      )
     ),
     cssPseudoElements: Object.freeze(
       "::before ::after ::first-line ::first-letter ::marker ::placeholder ::selection ::backdrop ::file-selector-button ::cue ::slotted ::part ::highlight ::target-text ::spelling-error ::grammar-error".split(
-        " ",
-      ),
+        " "
+      )
     ),
     predicateTypes: Object.freeze({
       ...Object.fromEntries(
@@ -201,8 +201,8 @@ export class ExtendedSelector extends EventTarget {
           "normalizedText",
           "value",
           "role",
-          "accessible_name",
-        ].map(name => [name, "text"]),
+          "accessible_name"
+        ].map(name => [name, "text"])
       ),
       ...Object.fromEntries(
         [
@@ -219,8 +219,8 @@ export class ExtendedSelector extends EventTarget {
           "scrollable",
           "in_viewport",
           "above_viewport",
-          "below_viewport",
-        ].map(name => [name, "boolean"]),
+          "below_viewport"
+        ].map(name => [name, "boolean"])
       ),
       ...Object.fromEntries(
         [
@@ -256,9 +256,9 @@ export class ExtendedSelector extends EventTarget {
           "scroll_x_max",
           "scroll_y_max",
           "scroll_x_percent",
-          "scroll_y_percent",
-        ].map(name => [name, "number"]),
-      ),
+          "scroll_y_percent"
+        ].map(name => [name, "number"])
+      )
     }),
     referenceGeometry: Object.freeze([
       "left",
@@ -281,8 +281,8 @@ export class ExtendedSelector extends EventTarget {
       "intersection",
       "inside",
       "contains_geometry",
-      "z_ref",
-    ]),
+      "z_ref"
+    ])
   });
   /**
    * @param {Document | Element} [root]
@@ -296,7 +296,7 @@ export class ExtendedSelector extends EventTarget {
       deduplicate: true,
       sortDocumentOrder: true,
       deep: false,
-      ...options,
+      ...options
     });
     this.predicates = /** @type {Map<string, PredicateResolver>} */ (new Map());
     this.operators = /** @type {Map<string, OperatorHandler>} */ (new Map());
@@ -404,7 +404,7 @@ export class ExtendedSelector extends EventTarget {
     /** @type {(node: Document | Element | ShadowRoot) => Element[]} */
     const walk = node =>
       [...node.querySelectorAll("*")].flatMap(element =>
-        element.shadowRoot ? [element, ...walk(element.shadowRoot)] : [element],
+        element.shadowRoot ? [element, ...walk(element.shadowRoot)] : [element]
       );
     return [...own, ...walk(scope)];
   }
@@ -420,7 +420,7 @@ export class ExtendedSelector extends EventTarget {
     let found = /** @type {Element[]} */ ([]);
     for (const step of chain.split(" >> ")) {
       found = [
-        ...new Set(scopes.flatMap(scope => this.deepQueryAll(step, scope))),
+        ...new Set(scopes.flatMap(scope => this.deepQueryAll(step, scope)))
       ];
       scopes = found;
     }
@@ -438,7 +438,7 @@ export class ExtendedSelector extends EventTarget {
     const ast =
       typeof expression === "string"
         ? this.parse(
-            ExtendedSelector.resolveVariables(expression, options.variables),
+            ExtendedSelector.resolveVariables(expression, options.variables)
           )
         : expression;
     const deep = options.deep ?? this.options.deep;
@@ -450,12 +450,12 @@ export class ExtendedSelector extends EventTarget {
       // Elements in different shadow trees have no document order between
       // them, so a deep query keeps the order of its own tree walk.
       const position = new Map(
-        universe.map((element, index) => [element, index]),
+        universe.map((element, index) => [element, index])
       );
       elements.sort((a, b) =>
         deep && position.has(a) && position.has(b)
           ? (position.get(a) ?? 0) - (position.get(b) ?? 0)
-          : ExtendedSelector.documentOrder(a, b),
+          : ExtendedSelector.documentOrder(a, b)
       );
     }
     elements.forEach(element => {
@@ -468,9 +468,9 @@ export class ExtendedSelector extends EventTarget {
           ast,
           elements,
           count: elements.length,
-          duration: performance.now() - started,
-        },
-      }),
+          duration: performance.now() - started
+        }
+      })
     );
     return elements;
   }
@@ -484,15 +484,15 @@ export class ExtendedSelector extends EventTarget {
     const found = [...root.querySelectorAll(selector)];
     const hosts = [
       ...(root instanceof Element ? [root] : []),
-      ...root.querySelectorAll("*"),
+      ...root.querySelectorAll("*")
     ].filter(element => element.shadowRoot);
     for (const host of hosts)
       found.push(
         ...ExtendedSelector.deepQueryAll(
           selector,
           /** @type {ShadowRoot} */
-          (host.shadowRoot),
-        ),
+          (host.shadowRoot)
+        )
       );
     return [...new Set(found)];
   };
@@ -519,7 +519,7 @@ export class ExtendedSelector extends EventTarget {
         get: () => element.getAttribute("extended-selector"),
         set: name => {
           ExtendedSelector.claim(element, name);
-        },
+        }
       });
     return /** @type {Element & {register: string | null}} */ (element);
   };
@@ -531,7 +531,7 @@ export class ExtendedSelector extends EventTarget {
    * @param {{replace?: boolean}} [options] replace moves the name from its holder.
    * @returns {Element}
    */
-  static register = (element, name, { replace = false } = {}) => {
+  static register = (element, name, {replace = false} = {}) => {
     ExtendedSelector.decorate(element);
     ExtendedSelector.claim(element, name, replace);
     return element;
@@ -552,15 +552,15 @@ export class ExtendedSelector extends EventTarget {
     }
     if (!/^[A-Za-z][\w-]*$/.test(wanted))
       throw new SyntaxError(
-        `Invalid register name "${wanted}": use letters, digits, "_" or "-", starting with a letter.`,
+        `Invalid register name "${wanted}": use letters, digits, "_" or "-", starting with a letter.`
       );
     const holder = ExtendedSelector.deepQueryAll(
       `[extended-selector="${wanted}"]`,
-      element.ownerDocument,
+      element.ownerDocument
     ).find(other => other !== element);
     if (holder && !replace)
       throw new Error(
-        `Register name "${wanted}" is already used by another element.`,
+        `Register name "${wanted}" is already used by another element.`
       );
     holder?.removeAttribute("extended-selector");
     element.setAttribute("extended-selector", wanted);
@@ -615,7 +615,7 @@ export class ExtendedSelector extends EventTarget {
         if (expression === undefined) return whole;
         if (this.resolving.has(name))
           throw new SyntaxError(
-            `Selector "${name}" refers to itself (${[...this.resolving, name].join(" -> ")}).`,
+            `Selector "${name}" refers to itself (${[...this.resolving, name].join(" -> ")}).`
           );
         this.resolving.add(name);
         try {
@@ -623,13 +623,13 @@ export class ExtendedSelector extends EventTarget {
           if (!matches.length) return ":not(*)";
           const css = this.bestSelector(matches, {
             engines: ["native"],
-            includeCandidates: false,
+            includeCandidates: false
           }).selector;
           return `:is(${css})`;
         } finally {
           this.resolving.delete(name);
         }
-      },
+      }
     );
   }
   /**
@@ -671,7 +671,7 @@ export class ExtendedSelector extends EventTarget {
    */
   matches(element, expression) {
     return this.evaluateAst(this.parse(expression), [element]).includes(
-      element,
+      element
     );
   }
   /**
@@ -694,7 +694,7 @@ export class ExtendedSelector extends EventTarget {
     return {
       offset,
       line: lines.length,
-      column: (lines.at(-1)?.length ?? 0) + 1,
+      column: (lines.at(-1)?.length ?? 0) + 1
     };
   };
   /**
@@ -712,7 +712,7 @@ export class ExtendedSelector extends EventTarget {
     offset = 0,
     length = 1,
     code = "syntax",
-    extra = {},
+    extra = {}
   ) => {
     const position = ExtendedSelector.position(expression, offset);
     return {
@@ -723,8 +723,8 @@ export class ExtendedSelector extends EventTarget {
       lineText: expression.split("\n")[position.line - 1] ?? "",
       pointer: `${" ".repeat(Math.max(0, position.column - 1))}${"^".repeat(Math.max(1, length))}`,
       severity: extra.severity ?? "error",
-      ...(extra.suggestion ? { suggestion: extra.suggestion } : {}),
-      ...(extra.role ? { role: extra.role } : {}),
+      ...(extra.suggestion ? {suggestion: extra.suggestion} : {}),
+      ...(extra.role ? {role: extra.role} : {})
     };
   };
   /**
@@ -737,7 +737,7 @@ export class ExtendedSelector extends EventTarget {
   static nearestName = (name, names) => {
     /** @param {string} a @param {string} b */
     const distance = (a, b) => {
-      let row = Array.from({ length: b.length + 1 }, (_, i) => i);
+      let row = Array.from({length: b.length + 1}, (_, i) => i);
       for (let i = 1; i <= a.length; i += 1) {
         const next = [i];
         for (let j = 1; j <= b.length; j += 1)
@@ -745,8 +745,8 @@ export class ExtendedSelector extends EventTarget {
             Math.min(
               (next[j - 1] ?? 0) + 1,
               (row[j] ?? 0) + 1,
-              (row[j - 1] ?? 0) + (a[i - 1] === b[j - 1] ? 0 : 1),
-            ),
+              (row[j - 1] ?? 0) + (a[i - 1] === b[j - 1] ? 0 : 1)
+            )
           );
         row = next;
       }
@@ -776,20 +776,20 @@ export class ExtendedSelector extends EventTarget {
     message,
     offset = 0,
     length = 1,
-    code = "syntax",
+    code = "syntax"
   ) => {
     const diagnostic = ExtendedSelector.diagnostic(
       expression,
       message,
       offset,
       length,
-      code,
+      code
     );
     const error = new SyntaxError(
-      `${message} at ${diagnostic.line}:${diagnostic.column}\n${diagnostic.lineText}\n${diagnostic.pointer}`,
+      `${message} at ${diagnostic.line}:${diagnostic.column}\n${diagnostic.lineText}\n${diagnostic.pointer}`
     );
     Object.assign(error, {
-      diagnostic,
+      diagnostic
     });
     return /** @type {SyntaxError & {diagnostic: SelectorDiagnostic}} */ (
       error
@@ -821,9 +821,9 @@ export class ExtendedSelector extends EventTarget {
       found.push({
         path,
         frozen: eq >= 0,
-        ...(eq >= 0 && value !== undefined ? { value } : {}),
+        ...(eq >= 0 && value !== undefined ? {value} : {}),
         offset: match.index ?? 0,
-        length: match[0].length,
+        length: match[0].length
       });
     }
     return found;
@@ -877,7 +877,7 @@ export class ExtendedSelector extends EventTarget {
     out += source.slice(cursor);
     return {
       text: values === null ? out : out.replace(/\\\{\{/g, "{{"),
-      missing,
+      missing
     };
   };
   /**
@@ -890,10 +890,10 @@ export class ExtendedSelector extends EventTarget {
    */
   static resolveVariables = (expression, variables = {}) => {
     if (!expression.includes("{{")) return expression;
-    const { text, missing } = ExtendedSelector.substitute(expression, variables);
+    const {text, missing} = ExtendedSelector.substitute(expression, variables);
     if (missing.length)
       throw Object.assign(new Error(`No value for {{${missing[0]}}}.`), {
-        code: "missing-variable",
+        code: "missing-variable"
       });
     return text;
   };
@@ -906,7 +906,7 @@ export class ExtendedSelector extends EventTarget {
    */
   lint(expression, options = {}) {
     if (typeof expression === "string" && expression.includes("{{")) {
-      const { text } = ExtendedSelector.substitute(expression, null);
+      const {text} = ExtendedSelector.substitute(expression, null);
       if (text !== expression) return this.lint(text, options);
     }
     const diagnostics = /** @type {SelectorDiagnostic[]} */ ([]);
@@ -917,8 +917,8 @@ export class ExtendedSelector extends EventTarget {
           "Expression must be a string.",
           0,
           1,
-          "type",
-        ),
+          "type"
+        )
       ];
     if (!expression.trim())
       return [
@@ -927,15 +927,15 @@ export class ExtendedSelector extends EventTarget {
           "Expression must not be empty.",
           0,
           1,
-          "empty",
-        ),
+          "empty"
+        )
       ];
     const stack =
       /** @type {{char: string, index: number, quote?: boolean}[]} */
       ([]);
     const pairs = /** @type {Record<string, string>} */ ({
       ")": "(",
-      "]": "[",
+      "]": "["
     });
     let quote = "";
     let escaped = false;
@@ -955,14 +955,14 @@ export class ExtendedSelector extends EventTarget {
         stack.push({
           char,
           index,
-          quote: true,
+          quote: true
         });
         continue;
       }
       if (char === "(" || char === "[")
         stack.push({
           char,
-          index,
+          index
         });
       else if (char in pairs) {
         const top = stack.at(-1);
@@ -973,8 +973,8 @@ export class ExtendedSelector extends EventTarget {
               `Unexpected "${char}".`,
               index,
               1,
-              "unexpected-close",
-            ),
+              "unexpected-close"
+            )
           );
           break;
         }
@@ -990,10 +990,10 @@ export class ExtendedSelector extends EventTarget {
           item?.index ?? expression.length - 1,
           Math.max(
             1,
-            expression.length - (item?.index ?? expression.length - 1),
+            expression.length - (item?.index ?? expression.length - 1)
           ),
-          "unterminated-string",
-        ),
+          "unterminated-string"
+        )
       );
     } else if (stack.length) {
       const item = stack.at(-1);
@@ -1004,8 +1004,8 @@ export class ExtendedSelector extends EventTarget {
             `Unclosed "${item.char}".`,
             item.index,
             1,
-            "unclosed-delimiter",
-          ),
+            "unclosed-delimiter"
+          )
         );
     }
     if (diagnostics.length) return diagnostics;
@@ -1028,24 +1028,24 @@ export class ExtendedSelector extends EventTarget {
                       ? match
                       : offset === ExtendedSelector.subjectStart(whole)
                         ? "*"
-                        : "",
-                ) || "*",
+                        : ""
+                ) || "*"
               );
           } catch (error) {
             const base = Math.max(0, expression.indexOf(atom));
             const known = new Set(
               [
                 ...ExtendedSelector.CAPABILITIES.cssPseudoClasses,
-                ...ExtendedSelector.CAPABILITIES.cssPseudoElements,
-              ].map(name => name.toLowerCase()),
+                ...ExtendedSelector.CAPABILITIES.cssPseudoElements
+              ].map(name => name.toLowerCase())
             );
             const unknown = [...atom.matchAll(/::?[a-zA-Z][\w-]*/g)].find(
-              match => !known.has(match[0].toLowerCase()),
+              match => !known.has(match[0].toLowerCase())
             );
             const nearest = unknown
               ? ExtendedSelector.nearestName(
                   unknown[0].toLowerCase(),
-                  [...known].filter(name => name.startsWith("::") === unknown[0].startsWith("::")),
+                  [...known].filter(name => name.startsWith("::") === unknown[0].startsWith("::"))
                 )
               : undefined;
             diagnostics.push(
@@ -1061,18 +1061,18 @@ export class ExtendedSelector extends EventTarget {
                           suggestion: {
                             offset: base + (unknown.index ?? 0),
                             length: unknown[0].length,
-                            text: nearest,
-                          },
+                            text: nearest
+                          }
                         }
-                      : {},
+                      : {}
                   )
                 : ExtendedSelector.diagnostic(
                     expression,
                     `Invalid CSS atom: ${error instanceof Error ? error.message : String(error)}`,
                     base,
                     Math.max(1, atom.length),
-                    "invalid-css",
-                  ),
+                    "invalid-css"
+                  )
             );
             return;
           }
@@ -1092,8 +1092,8 @@ export class ExtendedSelector extends EventTarget {
                     at,
                     match[0].length,
                     "pseudo-element-unmatchable",
-                    { severity: "warning" },
-                  ),
+                    {severity: "warning"}
+                  )
                 );
               else if (name === ":visited")
                 diagnostics.push(
@@ -1103,8 +1103,8 @@ export class ExtendedSelector extends EventTarget {
                     at,
                     match[0].length,
                     "visited-unmatchable",
-                    { severity: "warning" },
-                  ),
+                    {severity: "warning"}
+                  )
                 );
             }
           }
@@ -1125,19 +1125,19 @@ export class ExtendedSelector extends EventTarget {
               (() => {
                 const near = ExtendedSelector.nearestName(node.name, [
                   ...Object.keys(ExtendedSelector.SIGNATURES),
-                  ...this.operators.keys(),
+                  ...this.operators.keys()
                 ]);
                 return near
                   ? {
                       suggestion: {
                         offset: Math.max(0, expression.indexOf(`${node.name}(`)),
                         length: node.name.length,
-                        text: near,
-                      },
+                        text: near
+                      }
                     }
                   : {};
-              })(),
-            ),
+              })()
+            )
           );
           return;
         }
@@ -1151,14 +1151,14 @@ export class ExtendedSelector extends EventTarget {
               Math.max(0, expression.indexOf(`${node.name}(`)),
               node.name.length,
               "arity",
-              argCount < arity[0] && role !== undefined ? { role } : {},
-            ),
+              argCount < arity[0] && role !== undefined ? {role} : {}
+            )
           );
         }
         if (node.name === "media") {
           const query = (node.rawArgs?.[0] ?? "").replace(
             /^(["'])([\s\S]*)\1$/,
-            "$2",
+            "$2"
           );
           if (
             matchMedia(query).media === "not all" &&
@@ -1170,8 +1170,8 @@ export class ExtendedSelector extends EventTarget {
                 `Invalid media query: ${query}`,
                 Math.max(0, expression.indexOf("media(")),
                 5,
-                "invalid-media",
-              ),
+                "invalid-media"
+              )
             );
           return;
         }
@@ -1191,8 +1191,8 @@ export class ExtendedSelector extends EventTarget {
                 error instanceof Error ? error.message : String(error),
                 Math.max(0, expression.indexOf("sort(")),
                 4,
-                "sort-keys",
-              ),
+                "sort-keys"
+              )
             );
             return;
           }
@@ -1207,8 +1207,8 @@ export class ExtendedSelector extends EventTarget {
           error instanceof Error ? error.message : String(error),
           0,
           Math.max(1, expression.length),
-          "parse",
-        ),
+          "parse"
+        )
       );
     }
     return diagnostics;
@@ -1236,10 +1236,10 @@ export class ExtendedSelector extends EventTarget {
         first.message,
         first.offset,
         first.length,
-        first.code,
+        first.code
       );
       Object.assign(error, {
-        diagnostics,
+        diagnostics
       });
       throw error;
     }
@@ -1261,8 +1261,8 @@ export class ExtendedSelector extends EventTarget {
       (options = {}) => this.query(ast, options),
       {
         ast,
-        expression,
-      },
+        expression
+      }
     );
   }
   /**
@@ -1278,13 +1278,13 @@ export class ExtendedSelector extends EventTarget {
           valid: false,
           ast: null,
           error: /** @type {SelectorDiagnostic} */ (diagnostics[0]).message,
-          diagnostics,
+          diagnostics
         }
       : {
           valid: true,
           ast: this.parseExtended(expression),
           error: null,
-          diagnostics: [],
+          diagnostics: []
         };
   }
   /**
@@ -1298,12 +1298,12 @@ export class ExtendedSelector extends EventTarget {
   stats(expression, options = {}) {
     const started = performance.now();
     const ast = this.parse(
-      ExtendedSelector.resolveVariables(expression, options.variables),
+      ExtendedSelector.resolveVariables(expression, options.variables)
     );
     const limit = options.limit ?? 5000;
     const full = this.universe(
       options.root ?? this.root,
-      options.deep ?? this.options.deep,
+      options.deep ?? this.options.deep
     );
     const truncated = full.length > limit;
     const universe = truncated ? full.slice(0, limit) : full;
@@ -1333,7 +1333,7 @@ export class ExtendedSelector extends EventTarget {
         path,
         label: node.type === "call" ? `${node.name}(` : atom,
         kind,
-        count: new Set(this.evaluateAst(node, universe)).size,
+        count: new Set(this.evaluateAst(node, universe)).size
       });
       if (node.type === "call")
         node.args.forEach((child, index) => {
@@ -1360,9 +1360,9 @@ export class ExtendedSelector extends EventTarget {
             text: (/** @type {HTMLElement} */ (head).innerText ?? head.textContent ?? "")
               .replace(/\s+/g, " ")
               .trim()
-              .slice(0, 80),
+              .slice(0, 80)
           }
-        : null,
+        : null
     };
   }
   /**
@@ -1380,7 +1380,7 @@ export class ExtendedSelector extends EventTarget {
       ast,
       count: elements.length,
       elements,
-      summary: `${elements.length} element${elements.length === 1 ? "" : "s"} matched`,
+      summary: `${elements.length} element${elements.length === 1 ? "" : "s"} matched`
     };
   }
   /**
@@ -1419,7 +1419,7 @@ export class ExtendedSelector extends EventTarget {
   static wildcardRegex = pattern =>
     new RegExp(
       `^${pattern.replace(/[.+?^${}()|[\]\\]/g, "\\$&").replaceAll("*", ".*")}$`,
-      "s",
+      "s"
     );
   /**
    * @param {string} value
@@ -1454,8 +1454,8 @@ export class ExtendedSelector extends EventTarget {
             .slice(0, 3)
             .reduce(
               (sum, value, index) => sum + (value - (right[index] ?? 0)) ** 2,
-              0,
-            ),
+              0
+            )
         ) /
           Math.sqrt(3 * 255 ** 2) >=
       similarity
@@ -1478,7 +1478,7 @@ export class ExtendedSelector extends EventTarget {
       Math.max(a.left, b.left) +
         Math.max(1, Math.min(a.right, b.right) - Math.max(a.left, b.left)) / 2,
       Math.max(a.top, b.top) +
-        Math.max(1, Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top)) / 2,
+        Math.max(1, Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top)) / 2
     );
     const ai = stack.indexOf(element);
     const bi = stack.indexOf(reference);
@@ -1512,7 +1512,7 @@ export class ExtendedSelector extends EventTarget {
         threshold > 1
       )
         throw new SyntaxError(
-          'Fuzzy comparison expects ~~"text",<similarity 0..1>.',
+          'Fuzzy comparison expects ~~"text",<similarity 0..1>.'
         );
       return ExtendedSelector.stringSimilarity(value, wanted) >= threshold;
     }
@@ -1523,7 +1523,7 @@ export class ExtendedSelector extends EventTarget {
           return new RegExp(regex[1] ?? "", regex[2] ?? "").test(value);
         } catch (error) {
           throw new SyntaxError(
-            `Invalid regular expression: ${error instanceof Error ? error.message : String(error)}`,
+            `Invalid regular expression: ${error instanceof Error ? error.message : String(error)}`
           );
         }
 
@@ -1537,7 +1537,7 @@ export class ExtendedSelector extends EventTarget {
         similarity > 1
       )
         throw new SyntaxError(
-          "~= expects /regex/flags or <color>,<similarity 0..1>.",
+          "~= expects /regex/flags or <color>,<similarity 0..1>."
         );
       return ExtendedSelector.colorSimilarity(value, color, similarity);
     }
@@ -1588,9 +1588,9 @@ export class ExtendedSelector extends EventTarget {
     if (!left.length || !right.length) return 0;
     let previous = Array.from(
       {
-        length: right.length + 1,
+        length: right.length + 1
       },
-      (_, index) => index,
+      (_, index) => index
     );
     [...left].forEach((a, row) => {
       const current = [row + 1];
@@ -1599,8 +1599,8 @@ export class ExtendedSelector extends EventTarget {
           Math.min(
             (current[column] ?? 0) + 1,
             (previous[column + 1] ?? 0) + 1,
-            (previous[column] ?? 0) + Number(a !== b),
-          ),
+            (previous[column] ?? 0) + Number(a !== b)
+          )
         );
       });
       previous = current;
@@ -1637,11 +1637,11 @@ export class ExtendedSelector extends EventTarget {
       gap_bottom: a.top - b.bottom,
       overlap_x: Math.max(
         0,
-        Math.min(a.right, b.right) - Math.max(a.left, b.left),
+        Math.min(a.right, b.right) - Math.max(a.left, b.left)
       ),
       overlap_y: Math.max(
         0,
-        Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top),
+        Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top)
       ),
       width_ratio: a.width / Math.max(b.width, 1) * 100,
       height_ratio: a.height / Math.max(b.height, 1) * 100,
@@ -1649,17 +1649,17 @@ export class ExtendedSelector extends EventTarget {
       y_percent: (a.top - b.top) / Math.max(b.height, 1) * 100,
       distance: Math.hypot(
         (a.left + a.right - b.left - b.right) / 2,
-        (a.top + a.bottom - b.top - b.bottom) / 2,
+        (a.top + a.bottom - b.top - b.bottom) / 2
       ),
       intersection:
         a.width * a.height
           ? (Math.max(
               0,
-              Math.min(a.right, b.right) - Math.max(a.left, b.left),
+              Math.min(a.right, b.right) - Math.max(a.left, b.left)
             ) *
               Math.max(
                 0,
-                Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top),
+                Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top)
               ) /
               (a.width * a.height)) *
             100
@@ -1668,14 +1668,14 @@ export class ExtendedSelector extends EventTarget {
         a.left >= b.left &&
           a.right <= b.right &&
           a.top >= b.top &&
-          a.bottom <= b.bottom,
+          a.bottom <= b.bottom
       ),
       contains_geometry: Number(
         b.left >= a.left &&
           b.right <= a.right &&
           b.top >= a.top &&
-          b.bottom <= a.bottom,
-      ),
+          b.bottom <= a.bottom
+      )
     };
   };
   /**
@@ -1706,7 +1706,7 @@ export class ExtendedSelector extends EventTarget {
     }
     try {
       return [...this.root.querySelectorAll(token)].filter(
-        node => node !== element,
+        node => node !== element
       );
     } catch {
       throw new SyntaxError(`Invalid reference selector: ${token}`);
@@ -1730,7 +1730,7 @@ export class ExtendedSelector extends EventTarget {
           return ExtendedSelector.compareValue(
             ExtendedSelector.stacking(element, reference),
             operator,
-            expected,
+            expected
           );
         const geometry = ExtendedSelector.geometry(element, reference);
         const property =
@@ -1741,7 +1741,7 @@ export class ExtendedSelector extends EventTarget {
             x: "left",
             y: "top",
             cx: "center_x",
-            cy: "center_y",
+            cy: "center_y"
           })[key] ?? key;
         if (!(property in geometry))
           throw new SyntaxError(`Unknown geometry property: ${key}`);
@@ -1757,7 +1757,7 @@ export class ExtendedSelector extends EventTarget {
                     "x_percent",
                     "y_percent",
                     "width_ratio",
-                    "height_ratio",
+                    "height_ratio"
                   ].includes(property)
                   ? ExtendedSelector.unitValue(
                       expected,
@@ -1767,15 +1767,15 @@ export class ExtendedSelector extends EventTarget {
                         "center_x",
                         "gap_left",
                         "gap_right",
-                        "overlap_x",
+                        "overlap_x"
                       ].includes(property)
                         ? reference.getBoundingClientRect().width
-                        : reference.getBoundingClientRect().height,
+                        : reference.getBoundingClientRect().height
                     )
-                  : Number.parseFloat(expected),
-              ),
+                  : Number.parseFloat(expected)
+              )
         );
-      },
+      }
     );
   }
   /**
@@ -1791,8 +1791,8 @@ export class ExtendedSelector extends EventTarget {
       return String(
         resolver(element, {
           engine: this,
-          key,
-        }),
+          key
+        })
       );
     const rect = element.getBoundingClientRect();
     const style = getComputedStyle(element);
@@ -1802,11 +1802,11 @@ export class ExtendedSelector extends EventTarget {
       rect.width * rect.height
         ? (Math.max(
             0,
-            Math.min(rect.right, innerWidth) - Math.max(rect.left, 0),
+            Math.min(rect.right, innerWidth) - Math.max(rect.left, 0)
           ) *
             Math.max(
               0,
-              Math.min(rect.bottom, viewportHeight) - Math.max(rect.top, 0),
+              Math.min(rect.bottom, viewportHeight) - Math.max(rect.top, 0)
             )) /
           (rect.width * rect.height)
         : 0;
@@ -1836,7 +1836,7 @@ export class ExtendedSelector extends EventTarget {
           INPUT: "textbox",
           SELECT: "combobox",
           TEXTAREA: "textbox",
-          IMG: "img",
+          IMG: "img"
         })[element.tagName] ||
         "",
       accessible_name:
@@ -1855,10 +1855,10 @@ export class ExtendedSelector extends EventTarget {
           style.visibility !== "hidden" &&
           Number.parseFloat(style.opacity || "1") > 0 &&
           rect.width > 0 &&
-          rect.height > 0,
+          rect.height > 0
       ),
       rendered: String(
-        rect.width > 0 && rect.height > 0 && style.display !== "none",
+        rect.width > 0 && rect.height > 0 && style.display !== "none"
       ),
       enabled: String(!("disabled" in element) || !element.disabled),
       disabled: String("disabled" in element && Boolean(element.disabled)),
@@ -1868,17 +1868,17 @@ export class ExtendedSelector extends EventTarget {
       editable: String(
         /** @type {HTMLElement} */
         (element).isContentEditable ||
-          ["INPUT", "TEXTAREA"].includes(element.tagName),
+          ["INPUT", "TEXTAREA"].includes(element.tagName)
       ),
       clickable: String(
         element.matches(
-          "button,a[href],input,select,textarea,[role=button],[onclick]",
-        ) || style.cursor === "pointer",
+          "button,a[href],input,select,textarea,[role=button],[onclick]"
+        ) || style.cursor === "pointer"
       ),
       draggable: String(/** @type {HTMLElement} */ (element).draggable),
       scrollable: String(
         element.scrollHeight > element.clientHeight ||
-          element.scrollWidth > element.clientWidth,
+          element.scrollWidth > element.clientWidth
       ),
       in_viewport: String(viewportRatio > 0),
       viewport_ratio: String(viewportRatio),
@@ -1906,7 +1906,7 @@ export class ExtendedSelector extends EventTarget {
           ? [...parent.children]
               .filter(node => node.tagName === element.tagName)
               .indexOf(element) + 1
-          : 1,
+          : 1
       ),
       depth: String(
         (() => {
@@ -1918,13 +1918,13 @@ export class ExtendedSelector extends EventTarget {
           )
             d += 1;
           return d;
-        })(),
+        })()
       ),
       text_nodes: String(
         [...element.childNodes].filter(
           node =>
-            node.nodeType === Node.TEXT_NODE && node.textContent?.trim(),
-        ).length,
+            node.nodeType === Node.TEXT_NODE && node.textContent?.trim()
+        ).length
       ),
       scrollLeft: `${element.scrollLeft}px`,
       scrollTop: `${element.scrollTop}px`,
@@ -1937,13 +1937,13 @@ export class ExtendedSelector extends EventTarget {
       scroll_x_max: `${Math.max(0, element.scrollWidth - element.clientWidth)}px`,
       scroll_y_max: `${Math.max(0, element.scrollHeight - element.clientHeight)}px`,
       scroll_x_percent: `${element.scrollWidth > element.clientWidth ? (element.scrollLeft / (element.scrollWidth - element.clientWidth)) * 100 : 0}%`,
-      scroll_y_percent: `${element.scrollHeight > element.clientHeight ? (element.scrollTop / (element.scrollHeight - element.clientHeight)) * 100 : 0}%`,
+      scroll_y_percent: `${element.scrollHeight > element.clientHeight ? (element.scrollTop / (element.scrollHeight - element.clientHeight)) * 100 : 0}%`
     });
     if (key in values) return values[key] ?? "";
     if (element.hasAttribute(key)) return element.getAttribute(key) ?? "";
     return style
       .getPropertyValue(
-        key.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`),
+        key.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`)
       )
       .trim();
   }
@@ -1959,7 +1959,7 @@ export class ExtendedSelector extends EventTarget {
     const bracket = body.match(/^\[([^\]]+)\]$/);
     return {
       descending,
-      name: bracket ? `attr:${(bracket[1] ?? "").trim()}` : body,
+      name: bracket ? `attr:${(bracket[1] ?? "").trim()}` : body
     };
   };
   /**
@@ -1980,18 +1980,18 @@ export class ExtendedSelector extends EventTarget {
     const tokens = raw.slice(referenceForm ? 2 : 1);
     if (!tokens.length)
       throw new SyntaxError(
-        "sort() needs at least one key after the reference.",
+        "sort() needs at least one key after the reference."
       );
     for (const token of tokens)
       if (!shape.test(token.trim()))
         throw new SyntaxError(`Invalid sort key "${token.trim()}".`);
     if (!referenceForm && tokens.some(isGeometry))
       throw new SyntaxError(
-        "Geometry sort keys need a reference: sort(base, reference, key, ...).",
+        "Geometry sort keys need a reference: sort(base, reference, key, ...)."
       );
     return {
       referenceForm,
-      keys: tokens.map(ExtendedSelector.sortKey),
+      keys: tokens.map(ExtendedSelector.sortKey)
     };
   };
   /**
@@ -2006,8 +2006,8 @@ export class ExtendedSelector extends EventTarget {
     const geometry = new Map(
       unique.map(element => [
         element,
-        reference ? ExtendedSelector.geometry(element, reference) : null,
-      ]),
+        reference ? ExtendedSelector.geometry(element, reference) : null
+      ])
     );
     /** @type {(element: Element, name: string) => string | number} */
     const read = (element, name) => {
@@ -2020,7 +2020,7 @@ export class ExtendedSelector extends EventTarget {
       .sort(ExtendedSelector.documentOrder)
       .map((element, index) => ({
         element,
-        index,
+        index
       }))
       .sort((a, b) => {
         for (const key of keys) {
@@ -2035,13 +2035,13 @@ export class ExtendedSelector extends EventTarget {
             Number.isFinite(x) && Number.isFinite(y)
               ? x - y
               : String(left).localeCompare(String(right), undefined, {
-                  numeric: true,
+                  numeric: true
                 });
           if (order) return key.descending ? -order : order;
         }
         return a.index - b.index;
       })
-      .map(({ element }) => element);
+      .map(({element}) => element);
   }
   /**
    * Offset where the last compound selector (the subject) starts.
@@ -2127,10 +2127,10 @@ export class ExtendedSelector extends EventTarget {
               key,
               reference: reference.trim(),
               operator,
-              expected: raw.trim().replace(/^(["'])(.*)\1$/, "$2"),
+              expected: raw.trim().replace(/^(["'])(.*)\1$/, "$2")
             });
             return lead ? "*" : "";
-          },
+          }
         )
         .replace(
           /\[([\w:-]+)\s*(~~|~=|\^=|\$=|\*=|<=|>=|!=|=|<|>)\s*("(?:\\.|[^"])*"|'(?:\\.|[^'])*'|[^\]]+)\]/g,
@@ -2147,10 +2147,10 @@ export class ExtendedSelector extends EventTarget {
             predicates.push({
               key,
               operator,
-              expected: raw.trim().replace(/^(["'])(.*)\1$/, "$2"),
+              expected: raw.trim().replace(/^(["'])(.*)\1$/, "$2")
             });
             return lead ? "*" : "";
-          },
+          }
         )
         .trim() || "*";
     /** @type {Element[]} */
@@ -2162,14 +2162,14 @@ export class ExtendedSelector extends EventTarget {
     }
     return base.filter(
       element =>
-        predicates.every(({ key, operator, expected }) => {
+        predicates.every(({key, operator, expected}) => {
           if (key === "z_ref") {
             const parent = element.parentElement;
             return parent
               ? ExtendedSelector.compareValue(
                   ExtendedSelector.stacking(element, parent),
                   operator,
-                  expected,
+                  expected
                 )
               : false;
           }
@@ -2188,21 +2188,21 @@ export class ExtendedSelector extends EventTarget {
                   ? (pixels /
                       Math.max(horizontal ? box.width : box.height, 1)) *
                       100
-                  : pixels,
+                  : pixels
               ),
               operator,
-              String(Number.parseFloat(expected)),
+              String(Number.parseFloat(expected))
             );
           }
           return ExtendedSelector.compareValue(
             this.predicateValue(element, key),
             operator,
-            expected,
+            expected
           );
         }) &&
-        references.every(({ key, reference, operator, expected }) =>
-          this.referencePredicate(element, key, reference, operator, expected),
-        ),
+        references.every(({key, reference, operator, expected}) =>
+          this.referencePredicate(element, key, reference, operator, expected)
+        )
     );
   }
   /**
@@ -2217,7 +2217,7 @@ export class ExtendedSelector extends EventTarget {
       return {
         type: "call",
         name: "not",
-        args: [this.parseExtended(value.slice(2, -1))],
+        args: [this.parseExtended(value.slice(2, -1))]
       };
     const call = value.match(/^([a-z_][\w-]*)\((.*)\)$/is);
     return call
@@ -2225,13 +2225,13 @@ export class ExtendedSelector extends EventTarget {
           type: "call",
           name: (call[1] ?? "").toLowerCase(),
           args: ExtendedSelector.splitTopLevel(call[2] ?? "").map(arg =>
-            this.parseExtended(arg),
+            this.parseExtended(arg)
           ),
-          rawArgs: ExtendedSelector.splitTopLevel(call[2] ?? ""),
+          rawArgs: ExtendedSelector.splitTopLevel(call[2] ?? "")
         }
       : {
           type: "atom",
-          value,
+          value
         };
   }
   /**
@@ -2254,7 +2254,7 @@ export class ExtendedSelector extends EventTarget {
         node,
         universe,
         args,
-        raw,
+        raw
       });
     /**
      * @param {number} index
@@ -2283,7 +2283,7 @@ export class ExtendedSelector extends EventTarget {
         "nearest_above",
         "nearest_below",
         "nearest_left",
-        "nearest_right",
+        "nearest_right"
       ].includes(op)
     ) {
       if (args.length < 2 || args.length > 3)
@@ -2295,7 +2295,7 @@ export class ExtendedSelector extends EventTarget {
         nearest_above: "gap_top",
         nearest_below: "gap_bottom",
         nearest_left: "gap_left",
-        nearest_right: "gap_right",
+        nearest_right: "gap_right"
       })[op];
       // Overlap within the tolerance counts as touching (gap 0); real gaps
       // rank by size, then by center distance, then by document order.
@@ -2306,37 +2306,37 @@ export class ExtendedSelector extends EventTarget {
         .sort(ExtendedSelector.documentOrder)
         .map((element, index) => {
           const geometry = ExtendedSelector.geometry(element, reference);
-          const { distance = 0 } = geometry;
+          const {distance = 0} = geometry;
           return {
             element,
             index,
             geometry,
-            distance,
+            distance
           };
         })
-        .filter(({ geometry }) => !gap || (geometry[gap] ?? 0) >= -limit)
+        .filter(({geometry}) => !gap || (geometry[gap] ?? 0) >= -limit)
         .sort(
           (a, b) =>
             gapOf(a.geometry) - gapOf(b.geometry) ||
             a.distance - b.distance ||
-            a.index - b.index,
+            a.index - b.index
         )
-        .map(({ element }) => element);
+        .map(({element}) => element);
     }
     if (op === "apply") {
       if (args.length !== 2)
         throw new SyntaxError("apply(base,expr) requires two expressions.");
       return evalArg(1, [
         ...new Set(
-          evalArg(0).flatMap(base => [base, ...base.querySelectorAll("*")]),
-        ),
+          evalArg(0).flatMap(base => [base, ...base.querySelectorAll("*")])
+        )
       ]);
     }
     if (op === "has") {
       if (args.length !== 2)
         throw new SyntaxError("has(base,condition) requires two expressions.");
       return evalArg(0).filter(
-        base => evalArg(1, [...base.querySelectorAll("*")]).length,
+        base => evalArg(1, [...base.querySelectorAll("*")]).length
       );
     }
     if (
@@ -2347,12 +2347,12 @@ export class ExtendedSelector extends EventTarget {
         "next",
         "parent",
         "ancestor",
-        "closest",
+        "closest"
       ].includes(op)
     ) {
       if (args.length !== 2)
         throw new SyntaxError(
-          `${op}(base,condition) requires two expressions.`,
+          `${op}(base,condition) requires two expressions.`
         );
       return evalArg(0).filter(base => {
         let candidates = /** @type {Element[]} */ ([]);
@@ -2381,17 +2381,17 @@ export class ExtendedSelector extends EventTarget {
         }
         return op === "closest"
           ? candidates.some(candidate =>
-              evalArg(1, [candidate]).includes(candidate),
+              evalArg(1, [candidate]).includes(candidate)
             )
           : candidates.some(candidate =>
-              evalArg(1, [candidate]).includes(candidate),
+              evalArg(1, [candidate]).includes(candidate)
             );
       });
     }
     if (op === "children") {
       if (args.length < 2)
         throw new SyntaxError(
-          "children(base,c1,c2,...) requires child conditions.",
+          "children(base,c1,c2,...) requires child conditions."
         );
       return evalArg(0).filter(
         base =>
@@ -2402,13 +2402,13 @@ export class ExtendedSelector extends EventTarget {
               child !== undefined &&
               this.evaluateAst(condition, [child]).includes(child)
             );
-          }),
+          })
       );
     }
     if (op === "child") {
       if (args.length !== 3)
         throw new SyntaxError(
-          "child(base,index,condition) requires three arguments.",
+          "child(base,index,condition) requires three arguments."
         );
       const index = Number.parseInt(raw[1] ?? "", 10);
       return evalArg(0).filter(base => {
@@ -2418,7 +2418,7 @@ export class ExtendedSelector extends EventTarget {
           index > 0 &&
           child !== undefined &&
           this.evaluateAst(/** @type {AstNode} */ (args[2]), [child]).includes(
-            child,
+            child
           )
         );
       });
@@ -2426,20 +2426,20 @@ export class ExtendedSelector extends EventTarget {
     if (["before", "after"].includes(op)) {
       if (args.length !== 2)
         throw new SyntaxError(
-          `${op}(base,reference) requires two expressions.`,
+          `${op}(base,reference) requires two expressions.`
         );
       return evalArg(0).filter(base =>
         evalArg(1).some(ref =>
           op === "before"
             ? Boolean(
                 base.compareDocumentPosition(ref) &
-                Node.DOCUMENT_POSITION_FOLLOWING,
+                Node.DOCUMENT_POSITION_FOLLOWING
               )
             : Boolean(
                 base.compareDocumentPosition(ref) &
-                Node.DOCUMENT_POSITION_PRECEDING,
-              ),
-        ),
+                Node.DOCUMENT_POSITION_PRECEDING
+              )
+        )
       );
     }
     if (
@@ -2452,7 +2452,7 @@ export class ExtendedSelector extends EventTarget {
         "inside",
         "near",
         "aligned_left",
-        "aligned_center_x",
+        "aligned_center_x"
       ].includes(op)
     ) {
       if (args.length < 2 || args.length > 3)
@@ -2481,20 +2481,20 @@ export class ExtendedSelector extends EventTarget {
                       : op === "near"
                         ? Math.hypot(
                             (a.left + a.right - b.left - b.right) / 2,
-                            (a.top + a.bottom - b.top - b.bottom) / 2,
+                            (a.top + a.bottom - b.top - b.bottom) / 2
                           ) <= limit
                         : op === "aligned_left"
                           ? Math.abs(a.left - b.left) <= limit
                           : Math.abs(
-                              (a.left + a.right - b.left - b.right) / 2,
+                              (a.left + a.right - b.left - b.right) / 2
                             ) <= limit;
-        }),
+        })
       );
     }
     if (["any", "all", "none"].includes(op)) {
       if (args.length !== 3)
         throw new SyntaxError(
-          `${op}(base,relation,condition) requires three arguments.`,
+          `${op}(base,relation,condition) requires three arguments.`
         );
       const relation = (raw[1] ?? "").trim().toLowerCase();
       return evalArg(0).filter(base => {
@@ -2510,8 +2510,8 @@ export class ExtendedSelector extends EventTarget {
                 : [];
         const hits = candidates.filter(candidate =>
           this.evaluateAst(/** @type {AstNode} */ (args[2]), [
-            candidate,
-          ]).includes(candidate),
+            candidate
+          ]).includes(candidate)
         ).length;
         return op === "any"
           ? hits > 0
@@ -2523,23 +2523,23 @@ export class ExtendedSelector extends EventTarget {
     if (op === "count") {
       if (args.length !== 6)
         throw new SyntaxError(
-          "count(base,relation,condition,operator,value,mode) requires six arguments; mode is reserved and use any.",
+          "count(base,relation,condition,operator,value,mode) requires six arguments; mode is reserved and use any."
         );
       throw new SyntaxError(
-        "Use count predicates such as [children>=2], or any/all/none for relational counts.",
+        "Use count predicates such as [children>=2], or any/all/none for relational counts."
       );
     }
     if (op === "shadow") {
       if (args.length !== 2)
         throw new SyntaxError(
-          "shadow(base,condition) requires two expressions.",
+          "shadow(base,condition) requires two expressions."
         );
       return evalArg(0).flatMap(base =>
         base.shadowRoot
           ? this.evaluateAst(/** @type {AstNode} */ (args[1]), [
-              ...base.shadowRoot.querySelectorAll("*"),
+              ...base.shadowRoot.querySelectorAll("*")
             ])
-          : [],
+          : []
       );
     }
     if (op === "slot") {
@@ -2551,16 +2551,16 @@ export class ExtendedSelector extends EventTarget {
               /** @type {AstNode} */
               (args[1]),
               base.assignedElements({
-                flatten: true,
-              }),
+                flatten: true
+              })
             )
-          : [],
+          : []
       );
     }
     if (op === "pseudo") {
       if (raw.length !== 3)
         throw new SyntaxError(
-          "pseudo(base,before|after,condition) requires three arguments.",
+          "pseudo(base,before|after,condition) requires three arguments."
         );
       return evalArg(0).filter(base => {
         const match = (raw[2] ?? "")
@@ -2571,12 +2571,12 @@ export class ExtendedSelector extends EventTarget {
           ExtendedSelector.compareValue(
             getComputedStyle(
               base,
-              `::${(raw[1] ?? "").trim().replace(/^::?/, "")}`,
+              `::${(raw[1] ?? "").trim().replace(/^::?/, "")}`
             )
               .getPropertyValue(match[1] ?? "")
               .trim(),
             match[2] ?? "",
-            (match[3] ?? "").trim().replace(/^(["'])(.*)\1$/, "$2"),
+            (match[3] ?? "").trim().replace(/^(["'])(.*)\1$/, "$2")
           )
         );
       });
@@ -2594,7 +2594,7 @@ export class ExtendedSelector extends EventTarget {
     return universe.filter(element => {
       const hits = sets.reduce(
         (total, set) => total + Number(set.has(element)),
-        0,
+        0
       );
       return op === "and"
         ? hits === sets.length
@@ -2618,7 +2618,7 @@ export class ExtendedSelector extends EventTarget {
    */
   evaluateExtended(
     expression,
-    universe = [...this.root.querySelectorAll("*")],
+    universe = [...this.root.querySelectorAll("*")]
   ) {
     return this.evaluateAst(this.parseExtended(expression), universe);
   }
@@ -2674,8 +2674,8 @@ export class ExtendedSelector extends EventTarget {
           []
         ).length,
         (stripped.match(/(^|[\s>+~,])(?:[a-z][\w-]*|\*)/gi) ?? []).filter(
-          item => !item.trim().endsWith("*"),
-        ).length,
+          item => !item.trim().endsWith("*")
+        ).length
       ];
     };
     /**
@@ -2705,7 +2705,7 @@ export class ExtendedSelector extends EventTarget {
       if (
         !candidates.some(
           candidate =>
-            candidate.engine === engine && candidate.selector === normalized,
+            candidate.engine === engine && candidate.selector === normalized
         )
       )
         candidates.push({
@@ -2715,7 +2715,7 @@ export class ExtendedSelector extends EventTarget {
           fragility: fragility(normalized),
           length: normalized.length,
           exact: true,
-          unique: targets.length === 1,
+          unique: targets.length === 1
         });
     };
     /**
@@ -2725,14 +2725,14 @@ export class ExtendedSelector extends EventTarget {
     const attr = value =>
       `"${String(value).replaceAll("\\", "\\\\").replaceAll('"', '\\"')}"`;
     const registered = targets.map(element =>
-      element.getAttribute("extended-selector"),
+      element.getAttribute("extended-selector")
     );
     if (registered.every(Boolean))
       add(
         "register",
         targets
           .map((_, index) => `[extended-selector=${attr(registered[index])}]`)
-          .join(","),
+          .join(",")
       );
     /**
      * @param {Element} element
@@ -2750,7 +2750,7 @@ export class ExtendedSelector extends EventTarget {
         "data-test",
         "data-qa",
         "name",
-        "aria-label",
+        "aria-label"
       ]) {
         const value = element.getAttribute(name);
         if (value) {
@@ -2773,11 +2773,11 @@ export class ExtendedSelector extends EventTarget {
         const parent = node.parentElement;
         const siblings = parent
           ? [...parent.children].filter(
-              item => item.localName === node.localName,
+              item => item.localName === node.localName
             )
           : [];
         path.unshift(
-          `${node.localName}${siblings.length > 1 ? `:nth-of-type(${siblings.indexOf(node) + 1})` : ""}`,
+          `${node.localName}${siblings.length > 1 ? `:nth-of-type(${siblings.indexOf(node) + 1})` : ""}`
         );
         const selector = path.join(" > ");
         if (unique(selector)) return selector;
@@ -2811,7 +2811,7 @@ export class ExtendedSelector extends EventTarget {
       "generator",
       "optimal",
       "finder",
-      "native",
+      "native"
     ];
     engines.forEach(engine => {
       try {
@@ -2822,9 +2822,9 @@ export class ExtendedSelector extends EventTarget {
               targets
                 .map(
                   (_, index) =>
-                    `[extended-selector=${attr(registered[index])}]`,
+                    `[extended-selector=${attr(registered[index])}]`
                 )
-                .join(","),
+                .join(",")
             );
         } else if (engine === "generator" && options.generator)
           add(
@@ -2834,19 +2834,19 @@ export class ExtendedSelector extends EventTarget {
                 ? /** @type {Element} */ (targets[0])
                 : targets,
               {
-                root,
-              },
-            ),
+                root
+              }
+            )
           );
         else if (engine === "optimal" && options.optimal) {
           const api = options.optimal;
           const selector =
             targets.length === 1
               ? api.getSingleSelector?.(/** @type {Element} */ (targets[0]), {
-                  root,
+                  root
                 })
               : api.getMultiSelector?.(targets, {
-                  root,
+                  root
                 });
           add(engine, selector);
           if (selector && api.optimize)
@@ -2858,10 +2858,10 @@ export class ExtendedSelector extends EventTarget {
             targets
               .map(element =>
                 finder(element, {
-                  root,
-                }),
+                  root
+                })
               )
-              .join(","),
+              .join(",")
           );
         } else if (engine === "native")
           add(engine, targets.map(native).join(","));
@@ -2879,11 +2879,11 @@ export class ExtendedSelector extends EventTarget {
         a.fragility - b.fragility ||
         a.length - b.length ||
         a.selector.localeCompare(b.selector) ||
-        a.engine.localeCompare(b.engine),
+        a.engine.localeCompare(b.engine)
     );
     return {
       .../** @type {SelectorCandidate} */ (candidates[0]),
-      candidates: options.includeCandidates === false ? [] : candidates,
+      candidates: options.includeCandidates === false ? [] : candidates
     };
   }
   /** Alias for bestSelector().

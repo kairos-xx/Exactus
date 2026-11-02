@@ -4,7 +4,7 @@ import test from "node:test";
 import {
   analyse,
   suggestNext,
-  tokenize,
+  tokenize
 } from "../../../../tools/record/studio/web/condition-language.js";
 /** @type {ConditionTerm[]} */
 const terms = [
@@ -12,16 +12,16 @@ const terms = [
     name: "flow_succeeded",
     kind: "system",
     value_type: "boolean",
-    detail: "ok",
+    detail: "ok"
   },
-  { name: "sel_card_count", kind: "probe", value_type: "integer", detail: "n" },
-  { name: "sel_card_text", kind: "probe", value_type: "string", detail: "t" },
+  {name: "sel_card_count", kind: "probe", value_type: "integer", detail: "n"},
+  {name: "sel_card_text", kind: "probe", value_type: "string", detail: "t"},
   {
     name: "sel_card_exists",
     kind: "probe",
     value_type: "boolean",
-    detail: "e",
-  },
+    detail: "e"
+  }
 ];
 /** Issue messages produced for a condition text.
  * @param {string} text Condition source.
@@ -32,7 +32,7 @@ const messages = text =>
 test("each word gets the kind that colours it", () => {
   const kinds = tokenize(
     'flow_succeeded and sel_card_count >= 3 or contains(sel_card_text, "x")',
-    terms,
+    terms
   ).map(token => token.kind);
   assert.deepEqual(kinds, [
     "system",
@@ -46,14 +46,14 @@ test("each word gets the kind that colours it", () => {
     "probe",
     "comma",
     "string",
-    "paren",
+    "paren"
   ]);
 });
 test("valid conditions have no issues", () => {
   assert.deepEqual(messages("flow_succeeded and sel_card_count >= 3"), []);
   assert.deepEqual(
     messages("not sel_card_exists or sel_card_text in 'abc'"),
-    [],
+    []
   );
 });
 test("the checks follow what the evaluator rejects", () => {
@@ -63,11 +63,11 @@ test("the checks follow what the evaluator rejects", () => {
   assert.match(messages("contains(sel_card_text)")[0] ?? "", /takes 2 values/);
   assert.match(
     messages("sel_ghost_count > 1")[0] ?? "",
-    /no selector named "ghost"/,
+    /no selector named "ghost"/
   );
   assert.match(
     messages("flow_succeded")[0] ?? "",
-    /Did you mean flow_succeeded/,
+    /Did you mean flow_succeeded/
   );
   assert.match(messages("a && b")[1] ?? "", /Write and instead/);
 });

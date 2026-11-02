@@ -1,5 +1,5 @@
 /** Host side of snippet execution: one disposable Worker per run. */
-import { buildWorkerSource } from "./worker_source.js";
+import {buildWorkerSource} from "./worker_source.js";
 /** @typedef {import("../../widgets/widget_console/describe.js").Descriptor} Descriptor */
 /** @typedef {import("../../widgets/widget_console/console_view.js").EntryInput} EntryInput */
 /**
@@ -45,14 +45,14 @@ export class WorkerExecutor {
    */
   static run = (request, handlers) => {
     const started = performance.now();
-    const url = URL.createObjectURL(new Blob([buildWorkerSource()], { type: "text/javascript" }));
+    const url = URL.createObjectURL(new Blob([buildWorkerSource()], {type: "text/javascript"}));
     const worker = new Worker(url);
     /** @type {()=>void} */
     let cancel = () => {};
     /** @type {Promise<RunResult>} */
     const promise = new Promise(resolve => {
       /** @type {{settled:boolean, timer:ReturnType<typeof setTimeout>|undefined}} */
-      const state = { settled: false, timer: undefined };
+      const state = {settled: false, timer: undefined};
       /** @param {RunResult} result Final result. */
       const finish = result => {
         if (state.settled) return;
@@ -62,12 +62,12 @@ export class WorkerExecutor {
         URL.revokeObjectURL(url);
         resolve(result);
       };
-      state.timer = setTimeout(() => finish({ status: "timeout", durationMs: performance.now() - started }), request.timeoutMs);
+      state.timer = setTimeout(() => finish({status: "timeout", durationMs: performance.now() - started}), request.timeoutMs);
       const cancelRun = () => {
-        finish({ status: "cancelled", durationMs: performance.now() - started });
+        finish({status: "cancelled", durationMs: performance.now() - started});
       };
       cancel = cancelRun;
-      worker.onmessage = ({ data }) => {
+      worker.onmessage = ({data}) => {
         if (data.type === "entry") handlers.onEntry(data.entry);
         else if (data.type === "clear") handlers.onClear();
         else if (data.type === "done") finish(data.result);
@@ -77,11 +77,11 @@ export class WorkerExecutor {
         finish({
           status: "error",
           durationMs: performance.now() - started,
-          error: { name: "Error", message: event.message || "The snippet crashed the worker.", stack: "", location: null },
+          error: {name: "Error", message: event.message || "The snippet crashed the worker.", stack: "", location: null}
         });
       };
-      worker.postMessage({ code: request.code, mode: request.mode, variables: request.variables, context: request.context });
+      worker.postMessage({code: request.code, mode: request.mode, variables: request.variables, context: request.context});
     });
-    return { promise, cancel: () => cancel() };
+    return {promise, cancel: () => cancel()};
   };
 }

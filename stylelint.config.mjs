@@ -9,7 +9,7 @@ export default {
     "**/.cache/**",
     "**/.venv/**",
     "**/.history/**",
-    "exactus/bundle/**",
+    "exactus/bundle/**"
   ],
   reportDescriptionlessDisables: true,
   reportInvalidScopeDisables: true,
@@ -52,7 +52,7 @@ export default {
     "selector-anb-no-unmatchable": true,
     "selector-pseudo-class-no-unknown": true,
     "selector-pseudo-element-no-unknown": true,
-    "selector-type-no-unknown": [true, { ignore: ["custom-elements"] }],
+    "selector-type-no-unknown": [true, {ignore: ["custom-elements"]}],
     "string-no-newline": true,
     "unit-no-unknown": true,
     "declaration-no-important": true,
@@ -66,6 +66,6 @@ export default {
     "color-function-notation": "modern",
     "hue-degree-notation": "angle",
     "media-feature-range-notation": "context",
-    "selector-not-notation": "complex",
-  },
+    "selector-not-notation": "complex"
+  }
 };

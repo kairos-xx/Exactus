@@ -245,8 +245,7 @@ def _notes(*, fields: Mapping[str, JsonValue]) -> tuple[str, ...]:
             percent: str = _text(value=totals.get("percent_covered_display"))
             if percent:
                 notes.append(f"Total coverage {percent}%")
-    failed: int = len(_failed_tests(fields=fields))
-    if failed:
+    if failed := len(_failed_tests(fields=fields)):
         notes.append(f"{failed} failed test(s)")
     gates: JsonValue | None = fields.get("gates")
     if isinstance(gates, dict):

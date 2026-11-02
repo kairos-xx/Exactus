@@ -13,7 +13,7 @@ const placeBoxes = () => {
 			left: `${left}px`,
 			top: `${top}px`,
 			width: `${width}px`,
-			height: `${height}px`,
+			height: `${height}px`
 		});
 	}
 };

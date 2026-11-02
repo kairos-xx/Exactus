@@ -1,5 +1,18 @@
 // Generic strict ESLint v9+ flat configuration for JavaScript.
-// Self-contained: uses only ESLint core rules and standard platform globals.
+// Core rules are self-contained; @stylistic/* rules activate only when
+// @stylistic/eslint-plugin resolves. createRequire honors NODE_PATH, which
+// the bundled toolchain points at js/node_modules; global installs are
+// reached through NODE_PATH or a project-local node_modules.
+import {createRequire} from "node:module";
+const require = createRequire(import.meta.url);
+const stylisticPackage = "@stylistic/eslint-plugin";
+let stylistic = null;
+try {
+  const plugin = require(stylisticPackage);
+  stylistic = plugin?.default ?? plugin;
+} catch {
+  // Optional plugin — core rules below still apply without it.
+}
 export default [
   {
     ignores: [
@@ -9,13 +22,14 @@ export default [
       "**/build/**",
       "**/coverage/**",
       "**/.cache/**",
-      "**/.git/**",
-    ],
+      "**/.git/**"
+    ]
   },
   {
     // The console frontend is built from build-free ES modules loaded with
     // <script type="module">; modules are the project default.
     files: ["**/*.js", "**/*.mjs", "**/*.cjs"],
+    plugins: stylistic === null ? {} : {"@stylistic": stylistic},
     languageOptions: {
       ecmaVersion: "latest",
       sourceType: "module",
@@ -249,8 +263,8 @@ export default [
         removeEventListener: "readonly",
         dispatchEvent: "readonly",
         createObjectURL: "readonly",
-        revokeObjectURL: "readonly",
-      },
+        revokeObjectURL: "readonly"
+      }
     },
     rules: {
       "no-unused-vars": [
@@ -259,8 +273,8 @@ export default [
           vars: "all",
           args: "after-used",
           ignoreRestSiblings: true,
-          caughtErrors: "all",
-        },
+          caughtErrors: "all"
+        }
       ],
       "no-undef": "error",
       "no-redeclare": "error",
@@ -275,8 +289,8 @@ export default [
           functions: true,
           variables: true,
           classes: true,
-          allowNamedExports: false,
-        },
+          allowNamedExports: false
+        }
       ],
       "no-constant-condition": "error",
       "no-debugger": "error",
@@ -287,6 +301,7 @@ export default [
       "no-with": "error",
       "no-var": "error",
       "prefer-const": "error",
+      "object-shorthand": ["error", "always"],
       "prefer-arrow-callback": "error",
       "no-duplicate-imports": "error",
       "no-useless-constructor": "error",
@@ -352,8 +367,8 @@ export default [
         "error",
         "always",
         {
-          null: "ignore",
-        },
+          null: "ignore"
+        }
       ],
       "prefer-template": "error",
       "prefer-spread": "error",
@@ -374,8 +389,8 @@ export default [
       "array-callback-return": [
         "error",
         {
-          checkForEach: true,
-        },
+          checkForEach: true
+        }
       ],
       "block-scoped-var": "error",
       "consistent-return": "error",
@@ -386,16 +401,16 @@ export default [
       "getter-return": [
         "error",
         {
-          allowImplicit: false,
-        },
+          allowImplicit: false
+        }
       ],
       "grouped-accessor-pairs": ["error", "getBeforeSet"],
       "logical-assignment-operators": [
         "error",
         "always",
         {
-          enforceForIfStatements: true,
-        },
+          enforceForIfStatements: true
+        }
       ],
       "no-await-in-loop": "error",
       "no-caller": "error",
@@ -405,8 +420,8 @@ export default [
       "no-else-return": [
         "error",
         {
-          allowElseIf: false,
-        },
+          allowElseIf: false
+        }
       ],
       "no-extra-bind": "error",
       "no-extra-boolean-cast": "error",
@@ -426,8 +441,8 @@ export default [
         "error",
         {
           terms: ["todo", "fixme", "xxx"],
-          location: "anywhere",
-        },
+          location: "anywhere"
+        }
       ],
       "no-weak-map": "off",
       "no-constant-binary-expression": "error",
@@ -437,18 +452,31 @@ export default [
       "prefer-promise-reject-errors": [
         "error",
         {
-          allowEmptyReject: false,
-        },
+          allowEmptyReject: false
+        }
       ],
       "prefer-regex-literals": [
         "error",
         {
-          disallowRedundantWrapping: true,
-        },
+          disallowRedundantWrapping: true
+        }
       ],
       radix: "error",
       "require-atomic-updates": "error",
       "symbol-description": "error",
-    },
-  },
+      "arrow-body-style": ["error", "as-needed"],
+      curly: ["error", "multi"],
+      ...stylistic === null
+        ? {}
+        : {
+            "@stylistic/arrow-parens": ["error", "as-needed"],
+            "@stylistic/no-extra-parens": ["error", "all", {nestedBinaryExpressions: false}],
+            "@stylistic/comma-dangle": ["error", "never"],
+            "@stylistic/quote-props": ["error", "as-needed"],
+            "@stylistic/object-curly-spacing": ["error", "never"],
+            "@stylistic/array-bracket-spacing": ["error", "never"],
+            "@stylistic/semi": ["error", "always"]
+          }
+    }
+  }
 ];

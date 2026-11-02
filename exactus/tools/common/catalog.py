@@ -409,7 +409,7 @@ def _tool(
 
 
 @final
-class Constants:
+class GroupFinalConstants:
     """Group module-level constants.
 
     Attributes:
@@ -501,6 +501,6 @@ def validate_scripts(*, root: Path) -> tuple[str, ...]:
     """
     return tuple(
         tool.identifier
-        for tool in Constants.exactus_catalog.tools()
+        for tool in GroupFinalConstants.exactus_catalog.tools()
         if not (root / tool.script).is_file()
     )

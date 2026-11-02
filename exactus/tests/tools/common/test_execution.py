@@ -33,6 +33,7 @@ from exactus.tools.common.activity import (
     ActivityHeartbeat,
     ActivityLog,
 )
+from exactus.tools.common.envelope import RunFacts
 from exactus.tools.common.models import ToolRequest, ToolRunResult
 from exactus.tools.common.registry import RunClaim, RunRecord, RunRegistry
 from exactus.tools.common.stderr_capture import StderrRecorder
@@ -759,34 +760,35 @@ def test_report_snapshot_and_emitted(tmp_path: Path) -> None:
     )
 
 
-def test_terminate_live_run_ignores_missing_or_finished(
+def test_observe_live_run_ignores_missing_or_finished(
     tmp_path: Path,
 ) -> None:
-    """Only RUNNING activity documents with integer pids are acted upon.
+    """Only RUNNING activity documents with live pids are waited upon.
 
     Args:
         tmp_path: Per-test temporary directory.
 
     """
-    private_call(owner=ent, name="_terminate_live_run", output=tmp_path)
+    private_call(owner=ent, name="_observe_live_run", output=tmp_path)
     _write_activity(output=tmp_path, status="DONE", pid=1)
-    private_call(owner=ent, name="_terminate_live_run", output=tmp_path)
+    private_call(owner=ent, name="_observe_live_run", output=tmp_path)
     _write_activity(output=tmp_path, status="RUNNING")
-    private_call(owner=ent, name="_terminate_live_run", output=tmp_path)
+    private_call(owner=ent, name="_observe_live_run", output=tmp_path)
     pulse: Path = tmp_path / "ARTIFACTS" / "@activity.json"
     for payload in (
         {"status": "RUNNING", "heartbeat": {"pid": True}},
         {"status": "RUNNING", "pid": 1},
+        {"status": "RUNNING", "heartbeat": {"pid": 999_999_999}},
     ):
         pulse.write_text(data=dumps(obj=payload))
-        private_call(owner=ent, name="_terminate_live_run", output=tmp_path)
+        private_call(owner=ent, name="_observe_live_run", output=tmp_path)
 
 
-def test_conflicting_run_is_terminated(
+def test_conflicting_run_is_joined_then_terminated(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    """Live runs conflicting on the output directory are terminated.
+    """An unobservable live conflict stays a last-resort termination.
 
     Args:
         tmp_path: Per-test temporary directory.
@@ -825,7 +827,7 @@ def test_conflicting_run_is_terminated(
     )
     _ = private_call(
         owner=ent,
-        name="_claim_run",
+        name="_join_or_reset_conflicts",
         analyzer="demo",
         output=out,
         run_id="a" * 32,
@@ -834,11 +836,11 @@ def test_conflicting_run_is_terminated(
     expect_equal(actual=killed, expected=[getppid()])
 
 
-def test_registry_unavailable_falls_back_to_activity(
+def test_registry_unavailable_observes_stale_activity(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    """Without a registry ``@activity.json`` names the process to stop.
+    """A stale RUNNING heartbeat with a dead pid blocks no successor.
 
     Args:
         tmp_path: Per-test temporary directory.
@@ -866,16 +868,16 @@ def test_registry_unavailable_falls_back_to_activity(
         value=str(object=blocker / "runs.db"),
     )
     out: Path = tmp_path / "out"
-    _write_activity(output=out, status="RUNNING", pid=4242)
+    _write_activity(output=out, status="RUNNING", pid=999_999_999)
     _ = private_call(
         owner=ent,
-        name="_claim_run",
+        name="_join_or_reset_conflicts",
         analyzer="demo",
         output=out,
         run_id="a" * 32,
         pipeline_run_id=None,
     )
-    expect_equal(actual=killed, expected=[4242])
+    expect_equal(actual=killed, expected=[])
 
 
 def test_fallback_markdown_truncates_and_lists(tmp_path: Path) -> None:
@@ -921,6 +923,53 @@ def test_fallback_markdown_truncates_and_lists(tmp_path: Path) -> None:
     text: str = (out / "result.md").read_text()
     expect_in(member="boom", container=text)
     expect_in(member="data.json", container=text)
+
+
+def test_stamp_result_prefers_facts_verdict(tmp_path: Path) -> None:
+    """Interrupted zero-exit runs stamp INTERRUPT, never PASS.
+
+    Args:
+        tmp_path: Per-test temporary directory.
+
+    """
+    out: Path = tmp_path / "out"
+    out.mkdir()
+    (out / "result.json").write_text(data="{}")
+    for facts_status, status, passed in (
+        ("INTERRUPT", "INTERRUPT", False),
+        ("ERROR", "PASS", True),
+        ("PASS", "PASS", True),
+    ):
+        _ = private_call(
+            owner=ent,
+            name="_stamp_result",
+            output=out,
+            analyzer="demo",
+            status=0,
+            elapsed_seconds=1.0,
+            facts=RunFacts(
+                analyzer="demo",
+                title="Demo",
+                status=facts_status,
+                exit_code=0,
+                error="the tool exited without writing a report",
+                started_at=None,
+                finished_at="2026-10-03T09:00:00+00:00",
+                duration_seconds=1.0,
+                run_id=None,
+                pipeline_run_id=None,
+                command="exactus --tool demo",
+                cwd=str(object=tmp_path),
+                arguments=(),
+                output=out,
+            ),
+        )
+        payload: dict[str, JsonValue | bool] = cast(
+            typ="dict[str, JsonValue | bool]",
+            val=loads(s=(out / "result.json").read_text()),
+        )
+        expect_equal(actual=payload["status"], expected=status)
+        expect_equal(actual=payload["passed"], expected=passed)
 
 
 def test_stream_capture_failure_is_tolerated(

@@ -10,9 +10,9 @@
  */
 args => {
   const Engine = /** @type {any} */ (globalThis).__EXACTUS_ES__;
-  const engine = new Engine(document, { deep: true });
+  const engine = new Engine(document, {deep: true});
   /** @type {ResolveResult} */
-  const out = { count: 0, matches: [], error: null, definitionErrors: [] };
+  const out = {count: 0, matches: [], error: null, definitionErrors: []};
   /** First line of an error message.
    * @param {unknown} error Caught value.
    * @returns {string}
@@ -41,7 +41,7 @@ args => {
     "type",
     "href",
     "data-testid",
-    "aria-label",
+    "aria-label"
   ];
   elements.forEach((element, index) => {
     const box = element.getBoundingClientRect();
@@ -51,7 +51,7 @@ args => {
       index,
       css: null,
       cssError: null,
-      rect: { x: box.x, y: box.y, width: box.width, height: box.height },
+      rect: {x: box.x, y: box.y, width: box.width, height: box.height},
       evidence: {
         tag: element.localName,
         role: engine.predicateValue(element, "role"),
@@ -61,17 +61,17 @@ args => {
         attributes: Object.fromEntries(
           attributes
             .filter(name => element.hasAttribute(name))
-            .map(name => [name, element.getAttribute(name)]),
-        ),
+            .map(name => [name, element.getAttribute(name)])
+        )
       },
-      failed: [],
+      failed: []
     };
     if (args.compile)
       try {
         match.css = engine.bestSelector(element, {
           engines: ["native"],
           deep: true,
-          includeCandidates: false,
+          includeCandidates: false
         }).selector;
       } catch (error) {
         match.cssError = firstLine(error);

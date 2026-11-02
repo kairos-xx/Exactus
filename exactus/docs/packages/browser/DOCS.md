@@ -217,9 +217,10 @@ Unified lifecycle monitoring for Playwright Chromium and native Chrome.
 
 Open a URL in the managed browser and wait until the user closes it.
 
-- `class BrowserSession` — A visible browser window owned by the calling script.
-  - `__init__(self) -> None` — Create an idle session; no browser exists until ``open``.
+- `class BrowserSession` — A managed browser owned by the calling script.
+  - `__init__(self, *, headless: bool=False) -> None` — Create an idle session; no browser exists until ``open``.
   - `open(self, *, url: str) -> None` — Launch the managed browser on a URL.
+  - `wait_ready(self, *, timeout: float | None=None) -> bool` — Wait until the browser finished loading the initial page.
   - `wait_closed(self, *, timeout: float | None=None) -> bool` — Wait for the independently running browser worker to finish.
   - `close(self) -> None` — Release the browser; safe after the user already closed it.
 

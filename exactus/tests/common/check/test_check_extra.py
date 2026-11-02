@@ -26,7 +26,9 @@ from exactus.tests.common.support import (
     require_type,
     set_private,
 )
-from exactus.tools.common.catalog import Constants as CatalogConstants
+from exactus.tools.common.catalog import (
+    GroupFinalConstants as CatalogConstants,
+)
 from exactus.tools.common.catalog import PipelineSpec
 from exactus.tools.common.registry import RunClaim, RunRegistry
 

@@ -208,6 +208,7 @@ def _bundled_pyz(*, monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> Path:
     zipped.writestr(zinfo_or_arcname="__main__.py", data="")
     zipped.close()
     monkeypatch.setattr(target=check, name="argv", value=[str(object=archive)])
+    monkeypatch.setattr(target=Check, name="root", value=tmp_path)
 
     def noop() -> None:
         """Ignore the startup side effect."""
@@ -717,6 +718,105 @@ def test_kill_all_dispatches_scanner(monkeypatch: pytest.MonkeyPatch) -> None:
     )
     expect_equal(actual=main(arguments=["--kill-all"]), expected=0)
     expect_equal(actual=main(arguments=["--kill_all"]), expected=0)
+    expect_equal(actual=len(calls), expected=2)
+
+
+def test_status_prints_project_runs_json(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """``--status`` prints the live-run dicts as JSON and exits.
+
+    Args:
+        monkeypatch: Pytest patching helper.
+
+    """
+    seen: list[tuple[str, ...]] = []
+
+    def fake_status(*, names: tuple[str, ...]) -> list[dict[str, object]]:
+        """Record requested name filters.
+
+        Args:
+            names: ``--status`` operands.
+
+        Returns:
+            Fake live-run rows.
+
+        """
+        seen.append(names)
+        return [{"identifier": "lints", "status": "RUNNING"}]
+
+    monkeypatch.setattr(
+        target=Check,
+        name="_status",
+        value=staticmethod(fake_status),
+    )
+    expect_equal(actual=main(arguments=["--status"]), expected=0)
+    expect_equal(actual=main(arguments=["--status", "lints"]), expected=0)
+    expect_equal(actual=seen, expected=[(), ("lints",)])
+
+
+def test_status_unknown_name_is_usage_error(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """``--status bogus`` reports the operand through the parser.
+
+    Args:
+        monkeypatch: Pytest patching helper.
+
+    """
+
+    def fake_status(*, names: tuple[str, ...]) -> list[dict[str, object]]:
+        """Reject every operand like the real resolver.
+
+        Args:
+            names: ``--status`` operands.
+
+        Returns:
+            Fake live-run rows.
+
+        Raises:
+            ValueError: Always, mirroring an unresolvable name.
+
+        """
+        msg: str = f"--status requires a tool, got: {names[0]}"
+        raise ValueError(msg)
+
+    monkeypatch.setattr(
+        target=Check,
+        name="_status",
+        value=staticmethod(fake_status),
+    )
+    expect_equal(actual=main(arguments=["--status", "bogus"]), expected=2)
+
+
+def test_status_all_prints_systems_json(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """``--status-all`` and ``--status_all`` print systems as JSON.
+
+    Args:
+        monkeypatch: Pytest patching helper.
+
+    """
+    calls: list[bool] = []
+
+    def fake_status_all() -> list[dict[str, object]]:
+        """Record each global scan.
+
+        Returns:
+            Fake system rows.
+
+        """
+        calls.append(True)
+        return [{"root_pid": 7, "run_id": "run-abc", "runs": []}]
+
+    monkeypatch.setattr(
+        target=Check,
+        name="_status_all",
+        value=staticmethod(fake_status_all),
+    )
+    expect_equal(actual=main(arguments=["--status-all"]), expected=0)
+    expect_equal(actual=main(arguments=["--status_all"]), expected=0)
     expect_equal(actual=len(calls), expected=2)
 
 

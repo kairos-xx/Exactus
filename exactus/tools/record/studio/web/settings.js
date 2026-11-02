@@ -15,7 +15,7 @@
 import {
   ACTION_GROUPS,
   loadActionPrefs,
-  saveActionPrefs,
+  saveActionPrefs
 } from "./action-library.js";
 /** Greatest common divisor of two positive integers.
  * @param {number} a
@@ -84,7 +84,7 @@ export const issuesFor = (draft, fields) => {
     height: draft.height,
     scale: draft.scale,
     screen_width: draft.screen_width,
-    screen_height: draft.screen_height,
+    screen_height: draft.screen_height
   };
   for (const field of fields) {
     if (!["length", "number"].includes(field.kind)) continue;
@@ -137,12 +137,12 @@ export const splitCommand = text => {
   let quote = null;
   for (let index = 0; index < text.length; index += 1) {
     const char = text.charAt(index);
-    if (quote) {
+    if (quote)
       if (char === quote) quote = null;
       else if (char === "\\" && quote === '"' && index + 1 < text.length)
         current += text.charAt(index += 1);
       else current += char;
-    } else if (char === '"' || char === "'") {
+     else if (char === '"' || char === "'") {
       quote = char;
       started = true;
     } else if (char === "\\" && index + 1 < text.length) {
@@ -170,7 +170,7 @@ export const joinCommand = args =>
     .map(arg =>
       arg === "" || /[\s"'\\]/.test(arg)
         ? `"${arg.replace(/(["\\])/g, "\\$1")}"`
-        : arg,
+        : arg
     )
     .join(" ");
 /** Say in a sentence what a probe of the address found.
@@ -186,7 +186,7 @@ export const describeCheck = check => {
     case "reachable":
       return `Reachable. The page answered ${check.status ?? ""} ${check.reason ?? ""}.${owner}`.replace(
         /\s+\./g,
-        ".",
+        "."
       );
     case "open":
       return "Something is listening there (HTTPS is not checked).";
@@ -212,7 +212,7 @@ export const describeService = service => {
       return "Starting… waiting for it to serve a page.";
     case "running": {
       const others = (service.candidates ?? []).filter(
-        item => item.port !== service.port,
+        item => item.port !== service.port
       );
       return `Running at ${service.url ?? ""}${service.pid ? ` (process ${service.pid})` : ""}.${
         others.length
@@ -322,7 +322,7 @@ export class SettingsSurface {
       this.targetSection(),
       this.profileSection(),
       this.actionPaletteSection(),
-      this.recoverySection(),
+      this.recoverySection()
     );
   }
   /** Whether the id names a stored profile or the new-profile draft.
@@ -358,7 +358,7 @@ export class SettingsSurface {
         command: [],
         cwd: "",
         service_port: null,
-        path: "/",
+        path: "/"
       }
     );
   }
@@ -387,7 +387,7 @@ export class SettingsSurface {
         auto instanceof HTMLInputElement && auto.value === "manual"
           ? parsePort(value("service-port"))
           : null,
-      path: value("path").trim() || "/",
+      path: value("path").trim() || "/"
     };
   };
   /** Card that owns the target service: address, port, and start/stop.
@@ -399,7 +399,7 @@ export class SettingsSurface {
       el("form", {
         class: "profile-form target-form",
         novalidate: true,
-        "aria-label": "Target settings",
+        "aria-label": "Target settings"
       })
     );
     /** @param {string} value
@@ -412,14 +412,14 @@ export class SettingsSurface {
         type: "radio",
         name: "mode",
         value,
-        ...(draft.mode === value ? { checked: true } : {}),
+        ...(draft.mode === value ? {checked: true} : {})
       });
       input.addEventListener("change", () => this.targetChanged(form));
       return el(
         "label",
-        { class: "target-mode" },
+        {class: "target-mode"},
         input,
-        el("span", {}, el("strong", {}, label), el("small", {}, note)),
+        el("span", {}, el("strong", {}, label), el("small", {}, note))
       );
     };
     const urlGroup = SettingsSurface.group(
@@ -429,7 +429,7 @@ export class SettingsSurface {
         "Address",
         draft.url,
         "localhost or https://staging.example.com",
-        form,
+        form
       ),
       this.plain(
         "port",
@@ -437,13 +437,13 @@ export class SettingsSurface {
         draft.port === null ? "" : String(draft.port),
         "80",
         form,
-        "numeric",
+        "numeric"
       ),
       el(
         "p",
-        { class: "field-note" },
-        "Empty uses 80 for http and 443 for https.",
-      ),
+        {class: "field-note"},
+        "Empty uses 80 for http and 443 for https."
+      )
     );
     urlGroup.setAttribute("data-mode-group", "url");
     const manual = draft.service_port !== null;
@@ -451,13 +451,13 @@ export class SettingsSurface {
       type: "radio",
       name: "service-port-mode",
       value: "auto",
-      ...(manual ? {} : { checked: true }),
+      ...(manual ? {} : {checked: true})
     });
     const portManual = el("input", {
       type: "radio",
       name: "service-port-mode",
       value: "manual",
-      ...(manual ? { checked: true } : {}),
+      ...(manual ? {checked: true} : {})
     });
     for (const radio of [portAuto, portManual])
       radio.addEventListener("change", () => this.targetChanged(form));
@@ -468,24 +468,24 @@ export class SettingsSurface {
         "Command",
         joinCommand(draft.command),
         "npm run dev",
-        form,
+        form
       ),
       this.plain("cwd", "Working folder", draft.cwd, "Project folder", form),
       this.plain("path", "Page to open", draft.path, "/", form),
       el(
         "div",
-        { class: "settings-field", "data-field": "service-port" },
-        el("span", { class: "field-label" }, "Port"),
+        {class: "settings-field", "data-field": "service-port"},
+        el("span", {class: "field-label"}, "Port"),
         el(
           "span",
-          { class: "field-control target-port" },
+          {class: "field-control target-port"},
           el(
             "label",
-            { class: "inline-choice" },
+            {class: "inline-choice"},
             portAuto,
-            "Detect it automatically",
+            "Detect it automatically"
           ),
-          el("label", { class: "inline-choice" }, portManual, "Use port"),
+          el("label", {class: "inline-choice"}, portManual, "Use port"),
           this.plain(
             "service-port",
             "",
@@ -493,27 +493,27 @@ export class SettingsSurface {
             "5173",
             form,
             "numeric",
-            true,
-          ),
-        ),
+            true
+          )
+        )
       ),
-      el("p", { class: "target-notice", "data-target-notice": true }),
+      el("p", {class: "target-notice", "data-target-notice": true})
     );
     serviceGroup.setAttribute("data-mode-group", "service");
     const start = el(
       "button",
-      { type: "button", class: "accent", "data-target-start": true },
-      "Start service",
+      {type: "button", class: "accent", "data-target-start": true},
+      "Start service"
     );
     const stop = el(
       "button",
-      { type: "button", "data-target-stop": true },
-      "Stop",
+      {type: "button", "data-target-stop": true},
+      "Stop"
     );
     const check = el(
       "button",
-      { type: "button", "data-target-check": true },
-      "Check address",
+      {type: "button", "data-target-check": true},
+      "Check address"
     );
     start.addEventListener("click", () => {
       this.startService(form).catch(() => undefined);
@@ -530,44 +530,44 @@ export class SettingsSurface {
       this.saveTarget(form).catch(() => undefined);
     });
     const save = () =>
-      el("button", { type: "submit", "data-target-save": true }, "Save target");
+      el("button", {type: "submit", "data-target-save": true}, "Save target");
     form.append(
       el(
         "fieldset",
-        { class: "settings-group target-modes" },
+        {class: "settings-group target-modes"},
         el("legend", {}, "How to reach the application"),
         mode("url", "Open an address", "It is already running."),
         mode(
           "service",
           "Start a service",
-          "Studio runs a command and finds the port.",
-        ),
+          "Studio runs a command and finds the port."
+        )
       ),
       urlGroup,
       serviceGroup,
       el(
         "div",
-        { class: "settings-actions" },
+        {class: "settings-actions"},
         el(
           "div",
-          { class: "settings-actions-main", "data-mode-group": "url" },
+          {class: "settings-actions-main", "data-mode-group": "url"},
           save(),
-          check,
+          check
         ),
         el(
           "div",
-          { class: "settings-actions-main", "data-mode-group": "service" },
+          {class: "settings-actions-main", "data-mode-group": "service"},
           start,
           stop,
-          save(),
+          save()
         ),
         el("output", {
           class: "settings-status",
           role: "status",
           "aria-live": "polite",
-          "data-target-status": true,
-        }),
-      ),
+          "data-target-status": true
+        })
+      )
     );
     this.syncTargetForm(form);
     return el(
@@ -575,28 +575,28 @@ export class SettingsSurface {
       {
         class: "settings-section",
         id: "settings-target",
-        "aria-labelledby": "settings-target-title",
+        "aria-labelledby": "settings-target-title"
       },
       el(
         "header",
         {},
-        el("h3", { id: "settings-target-title" }, "Target"),
+        el("h3", {id: "settings-target-title"}, "Target"),
         el(
           "p",
-          { class: "settings-intro" },
-          "Where Studio finds the application to record and test.",
+          {class: "settings-intro"},
+          "Where Studio finds the application to record and test."
         ),
         ...(this.suggested
           ? [
               el(
                 "p",
-                { class: "field-note" },
-                "Suggested: the bundled demo. Nothing is saved until you press Start or Save.",
-              ),
+                {class: "field-note"},
+                "Suggested: the bundled demo. Nothing is saved until you press Start or Save."
+              )
             ]
-          : []),
+          : [])
       ),
-      form,
+      form
     );
   }
   /** A labelled text field read back by `readTarget`.
@@ -617,7 +617,7 @@ export class SettingsSurface {
       placeholder,
       autocomplete: "off",
       spellcheck: "false",
-      ...(inputmode ? { inputmode } : {}),
+      ...(inputmode ? {inputmode} : {})
     });
     input.addEventListener("blur", () => {
       this.touched.add(name);
@@ -654,10 +654,10 @@ export class SettingsSurface {
     for (const group of form.querySelectorAll("[data-mode-group]"))
       group.toggleAttribute(
         "hidden",
-        (group.getAttribute("data-mode-group") === "service") !== service,
+        (group.getAttribute("data-mode-group") === "service") !== service
       );
     const manual = form.querySelector(
-      'input[name="service-port-mode"]:checked',
+      'input[name="service-port-mode"]:checked'
     );
     const port = form.elements.namedItem("service-port");
     if (port instanceof HTMLInputElement)
@@ -672,7 +672,7 @@ export class SettingsSurface {
       notice.replaceChildren(
         "Studio runs this on your computer, in your project folder: ",
         el("code", {}, text || "(enter a command)"),
-        ", only when you press Start service.",
+        ", only when you press Start service."
       );
     }
     this.refreshTarget(form);
@@ -746,12 +746,12 @@ export class SettingsSurface {
     } catch (error) {
       this.targetMessage(
         form,
-        error instanceof Error ? error.message : String(error),
+        error instanceof Error ? error.message : String(error)
       );
       return false;
     }
     try {
-      this.host.apply(await this.host.call("target.save", { target }));
+      this.host.apply(await this.host.call("target.save", {target}));
       this.targetDraft = null;
       this.suggested = false;
       this.targetMessage(form, "Target saved.");
@@ -771,11 +771,11 @@ export class SettingsSurface {
   async startService(form) {
     if (!await this.saveTarget(form)) return;
     try {
-      this.host.apply(await this.host.call("target.start", { open: true }));
+      this.host.apply(await this.host.call("target.start", {open: true}));
     } catch (error) {
       this.targetMessage(
         form,
-        error instanceof Error ? error.message : String(error),
+        error instanceof Error ? error.message : String(error)
       );
     }
   }
@@ -794,7 +794,7 @@ export class SettingsSurface {
     } catch (error) {
       this.targetMessage(
         form,
-        error instanceof Error ? error.message : String(error),
+        error instanceof Error ? error.message : String(error)
       );
     }
   }
@@ -802,13 +802,13 @@ export class SettingsSurface {
    * @returns {HTMLElement}
    */
   profileSection() {
-    const heading = el("h3", { id: "settings-profiles-title" }, "Profiles");
+    const heading = el("h3", {id: "settings-profiles-title"}, "Profiles");
     const intro = el(
       "p",
-      { class: "settings-intro" },
-      "Browser conditions to record and test under.",
+      {class: "settings-intro"},
+      "Browser conditions to record and test under."
     );
-    const list = el("ul", { class: "profile-list", "aria-label": "Profiles" });
+    const list = el("ul", {class: "profile-list", "aria-label": "Profiles"});
     for (const profile of this.profiles) {
       const dirty = this.drafts.has(profile.id);
       const active = this.snapshot?.device_mode === profile.id;
@@ -818,20 +818,20 @@ export class SettingsSurface {
           type: "button",
           class: "profile-item",
           "aria-current": String(this.selected === profile.id),
-          "data-profile": profile.id,
+          "data-profile": profile.id
         },
         el("strong", {}, profile.name),
         el("small", {}, summary(profile)),
-        ...(active ? [el("span", { class: "profile-badge" }, "In use")] : []),
-        ...(dirty ? [el("span", { class: "profile-badge" }, "Unsaved")] : []),
+        ...(active ? [el("span", {class: "profile-badge"}, "In use")] : []),
+        ...(dirty ? [el("span", {class: "profile-badge"}, "Unsaved")] : [])
       );
       button.addEventListener("click", () => this.select(profile.id));
       list.append(el("li", {}, button));
     }
     const add = el(
       "button",
-      { type: "button", class: "profile-add", "data-profile-new": true },
-      "New profile",
+      {type: "button", class: "profile-add", "data-profile-new": true},
+      "New profile"
     );
     add.addEventListener("click", () => this.create());
     const draft = this.current();
@@ -840,17 +840,17 @@ export class SettingsSurface {
       {
         class: "settings-section",
         id: "settings-profiles",
-        "aria-labelledby": "settings-profiles-title",
+        "aria-labelledby": "settings-profiles-title"
       },
       el("header", {}, heading, intro),
       el(
         "div",
-        { class: "settings-split" },
-        el("div", { class: "profile-nav" }, list, add),
+        {class: "settings-split"},
+        el("div", {class: "profile-nav"}, list, add),
         draft
           ? this.form(draft)
-          : el("p", { class: "surface-empty" }, "Create a profile to begin."),
-      ),
+          : el("p", {class: "surface-empty"}, "Create a profile to begin.")
+      )
     );
   }
   /** Choose which profile the editor shows.
@@ -873,7 +873,7 @@ export class SettingsSurface {
       screen_height: null,
       touch: false,
       mobile: false,
-      media: {},
+      media: {}
     });
     this.selected = "";
     this.touched.clear();
@@ -900,7 +900,7 @@ export class SettingsSurface {
       el("form", {
         class: "profile-form",
         novalidate: true,
-        "aria-label": "Profile settings",
+        "aria-label": "Profile settings"
       })
     );
     /** Remember a change and refresh dependent values without redrawing. */
@@ -912,22 +912,22 @@ export class SettingsSurface {
       SettingsSurface.group(
         "Identity",
         this.text(form, draft, "name", "Name", change, {
-          placeholder: "Phone, tablet, dark desktop…",
+          placeholder: "Phone, tablet, dark desktop…"
         }),
         el(
           "p",
-          { class: "field-note" },
+          {class: "field-note"},
           isNew
             ? "The ID is made from the name when you save."
-            : `ID: ${draft.id}`,
-        ),
+            : `ID: ${draft.id}`
+        )
       ),
       SettingsSurface.group(
         "Window",
         this.length(form, draft, "width", change),
         this.length(form, draft, "height", change),
         SettingsSurface.ratio(draft, change),
-        SettingsSurface.orientation(draft, change),
+        SettingsSurface.orientation(draft, change)
       ),
       SettingsSurface.group(
         "Device",
@@ -941,7 +941,7 @@ export class SettingsSurface {
         this.toggle("mobile", draft.mobile, checked => {
           draft.mobile = checked;
           change();
-        }),
+        })
       ),
       SettingsSurface.group(
         "Appearance and accessibility",
@@ -956,12 +956,12 @@ export class SettingsSurface {
                 else draft.media[field.id] = value;
                 change();
               },
-              true,
-            ),
+              true
+            )
           ),
-        this.unsupported(),
+        this.unsupported()
       ),
-      this.actions(draft, isNew),
+      this.actions(draft, isNew)
     );
     form.addEventListener("submit", event => {
       event.preventDefault();
@@ -977,15 +977,15 @@ export class SettingsSurface {
     const names = this.snapshot?.profile_schema?.unsupported ?? [];
     return el(
       "details",
-      { class: "settings-unsupported" },
+      {class: "settings-unsupported"},
       el("summary", {}, "Not available in the test browser"),
       el(
         "p",
         {},
         "Chromium accepts these media features but ignores them, so a test could not rely on them: ",
         names.join(", "),
-        ".",
-      ),
+        "."
+      )
     );
   }
   /** @param {string} title
@@ -995,9 +995,9 @@ export class SettingsSurface {
   static group = (title, ...fields) =>
     el(
       "fieldset",
-      { class: "settings-group" },
+      {class: "settings-group"},
       el("legend", {}, title),
-      ...fields,
+      ...fields
     );
   /** Wrap a control with its label, unit and an error slot.
    * @param {string} id
@@ -1010,21 +1010,21 @@ export class SettingsSurface {
     const error = el("small", {
       class: "field-error",
       id: `err-${id}`,
-      role: "alert",
+      role: "alert"
     });
     control.setAttribute("aria-describedby", `err-${id}`);
     control.id = `field-${id}`;
     return el(
       "div",
-      { class: "settings-field", "data-field": id },
-      el("label", { for: `field-${id}` }, label),
+      {class: "settings-field", "data-field": id},
+      el("label", {for: `field-${id}`}, label),
       el(
         "span",
-        { class: "field-control" },
+        {class: "field-control"},
         control,
-        ...(unit ? [el("span", { class: "field-unit" }, unit)] : []),
+        ...(unit ? [el("span", {class: "field-unit"}, unit)] : [])
       ),
-      error,
+      error
     );
   };
   /** A labelled text field bound to a draft value.
@@ -1043,7 +1043,7 @@ export class SettingsSurface {
       value: draft[id],
       autocomplete: "off",
       spellcheck: "false",
-      ...(options.placeholder ? { placeholder: options.placeholder } : {}),
+      ...(options.placeholder ? {placeholder: options.placeholder} : {})
     });
     input.addEventListener("input", () => {
       draft[id] = /** @type {HTMLInputElement} */ (input).value;
@@ -1071,7 +1071,7 @@ export class SettingsSurface {
       name: id,
       autocomplete: "off",
       value: value === null ? "" : String(value),
-      placeholder: spec?.optional ? "Same as window" : "",
+      placeholder: spec?.optional ? "Same as window" : ""
     });
     input.addEventListener("input", () => {
       const text = /** @type {HTMLInputElement} */ (input).value;
@@ -1101,7 +1101,7 @@ export class SettingsSurface {
       inputmode: "decimal",
       name: id,
       autocomplete: "off",
-      value: String(draft[id]),
+      value: String(draft[id])
     });
     input.addEventListener("input", () => {
       draft[id] = parseNumber(/** @type {HTMLInputElement} */ (input).value);
@@ -1126,7 +1126,7 @@ export class SettingsSurface {
       name: "ratio-n",
       autocomplete: "off",
       "aria-label": "Aspect ratio width",
-      value: String(n),
+      value: String(n)
     });
     const right = el("input", {
       type: "text",
@@ -1134,14 +1134,14 @@ export class SettingsSurface {
       name: "ratio-d",
       autocomplete: "off",
       "aria-label": "Aspect ratio height",
-      value: String(d),
+      value: String(d)
     });
     const apply = () => {
       const numerator = parseNumber(
-        /** @type {HTMLInputElement} */ (left).value,
+        /** @type {HTMLInputElement} */ (left).value
       );
       const denominator = parseNumber(
-        /** @type {HTMLInputElement} */ (right).value,
+        /** @type {HTMLInputElement} */ (right).value
       );
       if (!Number.isInteger(numerator) || !Number.isInteger(denominator))
         return;
@@ -1153,17 +1153,17 @@ export class SettingsSurface {
     right.addEventListener("input", apply);
     const group = el(
       "span",
-      { class: "ratio-pair", role: "group", "aria-labelledby": "label-ratio" },
+      {class: "ratio-pair", role: "group", "aria-labelledby": "label-ratio"},
       left,
-      el("span", { "aria-hidden": "true" }, ":"),
-      right,
+      el("span", {"aria-hidden": "true"}, ":"),
+      right
     );
     const wrapper = el(
       "div",
-      { class: "settings-field", "data-field": "aspect-ratio" },
-      el("span", { class: "field-label", id: "label-ratio" }, "Aspect ratio"),
-      el("span", { class: "field-control" }, group),
-      el("small", { class: "field-note" }, "Changing it adjusts the height."),
+      {class: "settings-field", "data-field": "aspect-ratio"},
+      el("span", {class: "field-label", id: "label-ratio"}, "Aspect ratio"),
+      el("span", {class: "field-control"}, group),
+      el("small", {class: "field-note"}, "Changing it adjusts the height.")
     );
     return wrapper;
   };
@@ -1175,9 +1175,9 @@ export class SettingsSurface {
   static orientation = (draft, change) => {
     const select = el(
       "select",
-      { name: "orientation" },
-      el("option", { value: "landscape" }, "Landscape"),
-      el("option", { value: "portrait" }, "Portrait"),
+      {name: "orientation"},
+      el("option", {value: "landscape"}, "Landscape"),
+      el("option", {value: "portrait"}, "Portrait")
     );
     /** @type {HTMLSelectElement} */ (select).value =
       draft.width >= draft.height ? "landscape" : "portrait";
@@ -1201,17 +1201,17 @@ export class SettingsSurface {
   choice(id, value, onChange, optional = false) {
     const spec = this.fields.find(field => field.id === id);
     const options = (spec?.options ?? []).map(option =>
-      el("option", { value: option }, option.replace(/-/g, " ")),
+      el("option", {value: option}, option.replace(/-/g, " "))
     );
     const select = el(
       "select",
-      { name: id },
-      ...(optional ? [el("option", { value: "" }, "Browser default")] : []),
-      ...options,
+      {name: id},
+      ...(optional ? [el("option", {value: ""}, "Browser default")] : []),
+      ...options
     );
     /** @type {HTMLSelectElement} */ (select).value = value;
     select.addEventListener("change", () =>
-      onChange(/** @type {HTMLSelectElement} */ (select).value),
+      onChange(/** @type {HTMLSelectElement} */ (select).value)
     );
     return SettingsSurface.field(id, spec?.label ?? id, select);
   }
@@ -1226,15 +1226,15 @@ export class SettingsSurface {
     const input = el("input", {
       type: "checkbox",
       name: id,
-      ...(checked ? { checked: true } : {}),
+      ...(checked ? {checked: true} : {})
     });
     input.addEventListener("change", () =>
-      onChange(/** @type {HTMLInputElement} */ (input).checked),
+      onChange(/** @type {HTMLInputElement} */ (input).checked)
     );
     return el(
       "div",
-      { class: "settings-field settings-toggle", "data-field": id },
-      el("label", {}, input, spec?.label ?? id),
+      {class: "settings-field settings-toggle", "data-field": id},
+      el("label", {}, input, spec?.label ?? id)
     );
   }
   /** Save and delete buttons for the profile form.
@@ -1245,18 +1245,18 @@ export class SettingsSurface {
   actions(draft, isNew) {
     const save = el(
       "button",
-      { type: "submit", class: "accent", "data-profile-save": true },
-      isNew ? "Create profile" : "Save profile",
+      {type: "submit", class: "accent", "data-profile-save": true},
+      isNew ? "Create profile" : "Save profile"
     );
     const dirty = this.drafts.has(this.selected ?? "");
     const inUse = (this.snapshot?.workspace?.flows ?? []).filter(flow =>
-      flow.device_modes?.includes(draft.id),
+      flow.device_modes?.includes(draft.id)
     );
     const only = this.profiles.length <= 1;
     const use = el(
       "button",
-      { type: "button", "data-profile-use": true },
-      "Use in browser",
+      {type: "button", "data-profile-use": true},
+      "Use in browser"
     );
     if (isNew || dirty) {
       use.setAttribute("disabled", "");
@@ -1265,21 +1265,21 @@ export class SettingsSurface {
     use.addEventListener("click", () => {
       this.run(
         "viewport.preset",
-        { mode: draft.id },
-        "Showing the target with this profile.",
+        {mode: draft.id},
+        "Showing the target with this profile."
       ).catch(() => undefined);
     });
     const remove = el(
       "button",
-      { type: "button", class: "link-danger", "data-profile-delete": true },
-      "Delete profile",
+      {type: "button", class: "link-danger", "data-profile-delete": true},
+      "Delete profile"
     );
     const reason = isNew
       ? "This profile is not saved yet."
       : only
         ? "A project needs at least one profile."
         : inUse.length
-          ? `${inUse.map((flow) => flow.name).join(", ")} ${inUse.length === 1 ? "is" : "are"} scoped to it.`
+          ? `${inUse.map(flow => flow.name).join(", ")} ${inUse.length === 1 ? "is" : "are"} scoped to it.`
           : "";
     if (reason) {
       remove.setAttribute("disabled", "");
@@ -1290,28 +1290,28 @@ export class SettingsSurface {
         title: `Delete ${draft.name}?`,
         body: "Flows keep working under their other profiles.",
         keep: "Keep profile",
-        remove: "Delete profile",
+        remove: "Delete profile"
       });
       if (!approved) return;
       this.drafts.delete(draft.id);
       this.selected = null;
       await this.run(
         "profile.delete",
-        { profile_id: draft.id },
-        "Profile deleted.",
+        {profile_id: draft.id},
+        "Profile deleted."
       );
     });
     return el(
       "div",
-      { class: "settings-actions" },
-      el("div", { class: "settings-actions-main" }, save, use),
+      {class: "settings-actions"},
+      el("div", {class: "settings-actions-main"}, save, use),
       el("output", {
         class: "settings-status",
         role: "status",
-        "aria-live": "polite",
+        "aria-live": "polite"
       }),
-      ...(reason ? [el("small", { class: "field-note" }, reason)] : []),
-      remove,
+      ...(reason ? [el("small", {class: "field-note"}, reason)] : []),
+      remove
     );
   }
   /** Show errors for fields the user has left, and update linked values.
@@ -1327,10 +1327,10 @@ export class SettingsSurface {
       const error = field.querySelector(".field-error");
       if (error) error.textContent = shown;
       const control = field.querySelector("input, select");
-      if (control instanceof HTMLElement) {
+      if (control instanceof HTMLElement) 
         if (shown) control.setAttribute("aria-invalid", "true");
         else control.removeAttribute("aria-invalid");
-      }
+      
     }
     // Keep linked displays in step with the width and height being typed.
     const [n, d] = reduceRatio(draft.width, draft.height);
@@ -1346,12 +1346,12 @@ export class SettingsSurface {
     SettingsSurface.setIfIdle(
       form,
       "height",
-      Number.isFinite(draft.height) ? String(draft.height) : undefined,
+      Number.isFinite(draft.height) ? String(draft.height) : undefined
     );
     SettingsSurface.setIfIdle(
       form,
       "width",
-      Number.isFinite(draft.width) ? String(draft.width) : undefined,
+      Number.isFinite(draft.width) ? String(draft.width) : undefined
     );
   }
   /** Update an input unless the user is typing in it.
@@ -1384,7 +1384,7 @@ export class SettingsSurface {
     const first = Object.keys(issues)[0];
     if (first) {
       const control = form.querySelector(
-        `[data-field="${first}"] input, [data-field="${first}"] select`,
+        `[data-field="${first}"] input, [data-field="${first}"] select`
       );
       if (control instanceof HTMLElement) control.focus();
       SettingsSurface.status(form, "Fix the highlighted fields.");
@@ -1393,14 +1393,14 @@ export class SettingsSurface {
     const id = isNew
       ? slugify(
           draft.name,
-          this.profiles.map(profile => profile.id),
+          this.profiles.map(profile => profile.id)
         )
       : draft.id;
     const button = form.querySelector("[data-profile-save]");
     if (button instanceof HTMLButtonElement) button.disabled = true;
     try {
       const result = await this.host.call("profile.save", {
-        profile: { ...draft, id, name: draft.name.trim() },
+        profile: {...draft, id, name: draft.name.trim()}
       });
       this.drafts.delete(this.selected ?? "");
       this.selected = id;
@@ -1454,7 +1454,7 @@ export class SettingsSurface {
     const toggleIn = (set, id, on) => {
       if (on) set.add(id);
       else set.delete(id);
-      saveActionPrefs({ hidden: [...hidden], pinned: [...pinned] });
+      saveActionPrefs({hidden: [...hidden], pinned: [...pinned]});
     };
     /** Build one labelled preference checkbox.
      * @param {string} label
@@ -1465,37 +1465,37 @@ export class SettingsSurface {
     const checkbox = (label, checked, change) => {
       const input = el("input", {
         type: "checkbox",
-        ...(checked ? { checked: true } : {}),
+        ...(checked ? {checked: true} : {})
       });
       input.addEventListener("change", () =>
-        change(/** @type {HTMLInputElement} */ (input).checked),
+        change(/** @type {HTMLInputElement} */ (input).checked)
       );
-      return el("label", { class: "action-pref" }, input, label);
+      return el("label", {class: "action-pref"}, input, label);
     };
     const groups = ACTION_GROUPS.map(group =>
       el(
         "fieldset",
-        { class: "settings-group" },
+        {class: "settings-group"},
         el("legend", {}, group.name),
         ...group.actions.map(action => {
           const show = checkbox("Show", !hidden.has(action.id), (/** @type {boolean} */ on) =>
-            toggleIn(hidden, action.id, !on),
+            toggleIn(hidden, action.id, !on)
           );
           const pin = checkbox("Pin to top", pinned.has(action.id), (/** @type {boolean} */ on) =>
-            toggleIn(pinned, action.id, on),
+            toggleIn(pinned, action.id, on)
           );
           return el(
             "div",
-            { class: "settings-field", "data-field": `action-${action.id}` },
+            {class: "settings-field", "data-field": `action-${action.id}`},
             el("span", {}, action.label),
-            el("span", { class: "field-control action-pref-row" }, show, pin),
+            el("span", {class: "field-control action-pref-row"}, show, pin)
           );
-        }),
-      ),
+        })
+      )
     );
-    const reset = el("button", { type: "button" }, "Show all actions");
+    const reset = el("button", {type: "button"}, "Show all actions");
     reset.addEventListener("click", () => {
-      saveActionPrefs({ hidden: [], pinned: [] });
+      saveActionPrefs({hidden: [], pinned: []});
       this.redraw();
     });
     return el(
@@ -1503,20 +1503,20 @@ export class SettingsSurface {
       {
         class: "settings-section",
         id: "settings-actions-palette",
-        "aria-labelledby": "settings-actions-palette-title",
+        "aria-labelledby": "settings-actions-palette-title"
       },
       el(
         "header",
         {},
-        el("h3", { id: "settings-actions-palette-title" }, "Actions palette"),
+        el("h3", {id: "settings-actions-palette-title"}, "Actions palette"),
         el(
           "p",
-          { class: "settings-intro" },
-          "Hide actions you never use and pin the ones you reach for most. This applies to this browser only.",
-        ),
+          {class: "settings-intro"},
+          "Hide actions you never use and pin the ones you reach for most. This applies to this browser only."
+        )
       ),
       ...groups,
-      el("div", { class: "settings-actions-main" }, reset),
+      el("div", {class: "settings-actions-main"}, reset)
     );
   }
   /** Card offering recovery of unsaved project work.
@@ -1529,30 +1529,30 @@ export class SettingsSurface {
       {
         class: "export-button",
         href: "/api/export",
-        download: "workspace-copy.pwflow.json",
+        download: "workspace-copy.pwflow.json"
       },
-      "Save a copy",
+      "Save a copy"
     );
     return el(
       "section",
       {
         class: "settings-section",
         id: "settings-recovery",
-        "aria-labelledby": "settings-recovery-title",
+        "aria-labelledby": "settings-recovery-title"
       },
       el(
         "header",
         {},
-        el("h3", { id: "settings-recovery-title" }, "Recovery"),
+        el("h3", {id: "settings-recovery-title"}, "Recovery"),
         el(
           "p",
-          { class: "settings-intro" },
+          {class: "settings-intro"},
           dirty
             ? "Unsaved changes are kept in recovery, so a crash does not lose them."
-            : "Everything is saved. If the file changes on disk, your version waits here.",
-        ),
+            : "Everything is saved. If the file changes on disk, your version waits here."
+        )
       ),
-      el("div", { class: "settings-actions-main" }, copy),
+      el("div", {class: "settings-actions-main"}, copy)
     );
   }
 }

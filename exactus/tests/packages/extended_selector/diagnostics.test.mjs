@@ -21,7 +21,7 @@ const open = async (page, url) => {
 const lintAll = (page, expression) => page.evaluate(
 	( /** @type {string} */ text) => globalThis.engine.lint(text, {
 		warnings: true
-	}), expression, );
+	}), expression );
 test("an unknown pseudo-class is narrowed to its token with a suggestion", t => browserTest(t, async (page, url) => {
 	await open(page, url);
 	const found = await lintAll(page, "button:hovr");
@@ -33,7 +33,7 @@ test("an unknown pseudo-class is narrowed to its token with a suggestion", t => 
 	assert.deepEqual(found[0].suggestion, {
 		offset: 6,
 		length: 5,
-		text: ":hover",
+		text: ":hover"
 	});
 }));
 test("pseudo-elements and :visited are warnings, not errors", t => browserTest(t, async (page, url) => {
@@ -48,7 +48,7 @@ test("pseudo-elements and :visited are warnings, not errors", t => browserTest(t
 	assert.equal(visited[0].severity, "warning");
 	const plain = await page.evaluate(() => [
 		globalThis.engine.lint("a::before"),
-		globalThis.engine.lint(":visited"),
+		globalThis.engine.lint(":visited")
 	]);
 	assert.deepEqual(plain, [
 		[],

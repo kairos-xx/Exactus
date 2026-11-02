@@ -7,9 +7,9 @@ verify HTTP endpoints, and resolve local listener ownership.
 
 | Path | Description |
 |---|---|
-| `http_process/process.py` | `HttpProcess` orchestrator, `Listener`/`HttpServer`/`ProcessInfo` dataclasses, bind-scope and IP-family classification. |
-| `http_process/__main__.py` | `http-process` CLI: inspect an IP/port or run a process and discover HTTP. |
-| `http_process/examples/` | Runnable example servers. |
+| `process.py` | `HttpProcess` orchestrator, `Listener`/`HttpServer`/`ProcessInfo` dataclasses, bind-scope and IP-family classification. |
+| `__main__.py` | `http-process` CLI: inspect an IP/port or run a process and discover HTTP. |
+| `examples/` | Runnable example servers. |
 | `pyproject.toml` | Standalone package metadata; declares `psutil>=7.0`. |
 
 ## Behavior

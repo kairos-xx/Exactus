@@ -1,10 +1,10 @@
 # Unified Pipeline
 
-**Run time:** 31 October 2026, 05:11:05 UTC
+**Run time:** 02 November 2026, 05:30:00 UTC
 
 ## Change since previous report
 
-Previous run completed in **48.530s**.
+Previous run completed in **45.676s**.
 
 | Findings | Current | Previous | Delta | Added | Resolved | Unchanged |
 |---|---:|---:|---:|---:|---:|---:|
@@ -56,8 +56,8 @@ Previous run completed in **48.530s**.
 
 
 - Status: **PASS**
-- Run UUID: `2c65e21142f34f8db22b09b30d9044d1`
-- Duration: 48.533s
+- Run UUID: `a02e863bdc214c449643475edb79e655`
+- Duration: 54.541s
 - Tools: 6
 - Passed: 6
 - Failed: 0
@@ -66,12 +66,12 @@ Previous run completed in **48.530s**.
 
 | Tool | Status | Time | Findings | Headline |
 | --- | --- | ---: | ---: | --- |
-| `lints` | **PASS** | 9.4s | 0 | PASS: analyzer completed with exit status 0. |
-| `coverage_tests` | **PASS** | 10.8s | 0 | Total coverage 100%; Total gate 90.0%; Per-file gate 80.0%: 0 file(s) below |
+| `lints` | **PASS** | 7.7s | 0 | PASS: analyzer completed with exit status 0. |
+| `coverage_tests` | **PASS** | 12.7s | 0 | Total coverage 100%; Total gate 90.0%; Per-file gate 80.0%: 0 file(s) below |
 | `docs` | **PASS** | 0.8s | 0 | PASS: analyzer completed with exit status 0. |
-| `kwargs_typehints` | **PASS** | 2.1s | 0 | PASS: analyzer completed with exit status 0. |
-| `readme` | **PASS** | 0.8s | 0 | PASS: analyzer completed with exit status 0. |
-| `performance` | **PASS** | 1.0s | 0 | 7 runs profiled — slowest self_test 603.2s |
+| `kwargs_typehints` | **PASS** | 2.7s | 0 | PASS: analyzer completed with exit status 0. |
+| `readme` | **PASS** | 0.7s | 0 | PASS: analyzer completed with exit status 0. |
+| `performance` | **PASS** | 1.1s | 0 | 7 runs profiled — slowest self_test 603.2s |
 ## Passing tools
 
 - `lints`
@@ -83,9 +83,9 @@ Previous run completed in **48.530s**.
 
 ## Tool resumes
 
-- `lints`: **PASS** (9.358s) — PASS: analyzer completed with exit status 0. [markdown](../../LINTS/result.md) · [json](../../LINTS/result.json) · [web](../../LINTS/result_web/index.html)
-- `coverage_tests`: **PASS** (10.814s) — PASS: 2 of 2 tests passed; 1 JavaScript test file passed; Total 100.0% meets the 90.0% minimum; every file meets 80.0% [markdown](../../COVERAGE_TESTS/result.md) · [json](../../COVERAGE_TESTS/result.json) · [web](../../COVERAGE_TESTS/result_web/index.html)
-- `docs`: **PASS** (0.831s) — PASS: analyzer completed with exit status 0. [markdown](../../DOCS/result.md) · [json](../../DOCS/result.json) · [web](../../DOCS/result_web/index.html)
-- `kwargs_typehints`: **PASS** (2.093s) — PASS: analyzer completed with exit status 0. [markdown](../../KWARGS_TYPEHINTS/result.md) · [json](../../KWARGS_TYPEHINTS/result.json) · [web](../../KWARGS_TYPEHINTS/result_web/index.html)
-- `readme`: **PASS** (0.809s) — PASS: analyzer completed with exit status 0. [markdown](../../README/result.md) · [json](../../README/result.json) · [web](../../README/result_web/index.html)
-- `performance`: **PASS** (0.979s) — 7 runs profiled — slowest self_test 603.2s [markdown](../../PERFORMANCE/result.md) · [json](../../PERFORMANCE/result.json) · [web](../../PERFORMANCE/result_web/index.html)
+- `lints`: **PASS** (7.692s) — PASS: analyzer completed with exit status 0. [markdown](../../LINTS/result.md) · [json](../../LINTS/result.json) · [web](../../LINTS/result_web/index.html)
+- `coverage_tests`: **PASS** (12.728s) — PASS: 2 of 2 tests passed; 1 JavaScript test file passed; Total 100.0% meets the 90.0% minimum; every file meets 80.0% [markdown](../../COVERAGE_TESTS/result.md) · [json](../../COVERAGE_TESTS/result.json) · [web](../../COVERAGE_TESTS/result_web/index.html)
+- `docs`: **PASS** (0.842s) — PASS: analyzer completed with exit status 0. [markdown](../../DOCS/result.md) · [json](../../DOCS/result.json) · [web](../../DOCS/result_web/index.html)
+- `kwargs_typehints`: **PASS** (2.671s) — PASS: analyzer completed with exit status 0. [markdown](../../KWARGS_TYPEHINTS/result.md) · [json](../../KWARGS_TYPEHINTS/result.json) · [web](../../KWARGS_TYPEHINTS/result_web/index.html)
+- `readme`: **PASS** (0.665s) — PASS: analyzer completed with exit status 0. [markdown](../../README/result.md) · [json](../../README/result.json) · [web](../../README/result_web/index.html)
+- `performance`: **PASS** (1.120s) — 7 runs profiled — slowest self_test 603.2s [markdown](../../PERFORMANCE/result.md) · [json](../../PERFORMANCE/result.json) · [web](../../PERFORMANCE/result_web/index.html)

@@ -14,8 +14,8 @@ export const bindSelectorReference = options => {
   options.select.replaceChildren(
     new Option("New expression", ""),
     ...options.selectors.map(
-      selector => new Option(selector.name, selector.selector_id),
-    ),
+      selector => new Option(selector.name, selector.selector_id)
+    )
   );
   if (
     options.selected &&

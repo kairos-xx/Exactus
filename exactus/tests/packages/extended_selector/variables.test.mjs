@@ -38,7 +38,7 @@ test("substitute renders typed values by position", t => browserTest(t, async (p
 			missing: E.substitute("[width >= {{x}}]", {}),
 			open: E.substitute('[innerText="a {{ b"]', {
 				b: 1
-			}),
+			})
 		};
 	});
 	assert.deepEqual(r.number, {
@@ -55,19 +55,19 @@ test("substitute renders typed values by position", t => browserTest(t, async (p
 }));
 test("variables lists live and frozen occurrences and skips escapes", t => browserTest(t, async (page, url) => {
 	await open(page, url);
-	const list = await page.evaluate(() => globalThis.ExtendedSelector.variables('[a={{p/q}}][b={{w=390}}]["\\{{no}}"]{{ open', ), );
+	const list = await page.evaluate(() => globalThis.ExtendedSelector.variables('[a={{p/q}}][b={{w=390}}]["\\{{no}}"]{{ open' ) );
 	assert.deepEqual(list.map(( /** @type {any} */ v) => [v.path, v.frozen, v.value]),
 		[
 			["p/q", false, undefined],
-			["w", true, 390],
-		], );
+			["w", true, 390]
+		] );
 }));
 test("lint treats variables as placeholders and keeps offsets", t => browserTest(t, async (page, url) => {
 	await open(page, url);
 	const r = await page.evaluate(() => ({
 		ok: globalThis.engine.lint("[width >= {{device/width}}]"),
 		bad: globalThis.engine.lint("[width >= {{device/width}"),
-		offset: globalThis.engine.lint("has(.a, {{x}}.b")[0]?.offset,
+		offset: globalThis.engine.lint("has(.a, {{x}}.b")[0]?.offset
 	}));
 	assert.deepEqual(r.ok, []);
 	assert.equal(r.bad[0].offset, 0);

@@ -4,7 +4,7 @@
  * Create the suggestion menu bound to a host element.
  * @returns {{element:HTMLElement, isOpen:()=>boolean, open:Function, close:Function, key:Function}} The menu API.
  */
-export const createMenu = (/** @type {{host:HTMLElement, onChoose:(item:Item)=>void}} */ { host, onChoose }) => {
+export const createMenu = (/** @type {{host:HTMLElement, onChoose:(item:Item)=>void}} */ {host, onChoose}) => {
   const root = document.createElement("div");
   root.className = "ese-menu";
   root.setAttribute("role", "listbox");
@@ -22,8 +22,8 @@ export const createMenu = (/** @type {{host:HTMLElement, onChoose:(item:Item)=>v
    */
   const rows = () =>
     items.flatMap(item => [
-      { item, depth: 0 },
-      ...(item.branch && expanded.has(item.label) ? (item.children ?? []).map(child => ({ item: child, depth: 1 })) : []),
+      {item, depth: 0},
+      ...(item.branch && expanded.has(item.label) ? (item.children ?? []).map(child => ({item: child, depth: 1})) : [])
     ]);
   /** Repaint the menu rows. */
   const paint = () => {
@@ -32,7 +32,7 @@ export const createMenu = (/** @type {{host:HTMLElement, onChoose:(item:Item)=>v
     heading.className = "ese-menu-title";
     heading.textContent = title;
     root.append(heading);
-    rows().forEach(({ item, depth }, position) => {
+    rows().forEach(({item, depth}, position) => {
       const row = document.createElement("div");
       row.className = `ese-item${item.branch ? " ese-branch" : ""}`;
       row.setAttribute("role", "option");
@@ -51,7 +51,7 @@ export const createMenu = (/** @type {{host:HTMLElement, onChoose:(item:Item)=>v
       }
       root.append(row);
     });
-    root.querySelector('[aria-selected="true"]')?.scrollIntoView({ block: "nearest" });
+    root.querySelector('[aria-selected="true"]')?.scrollIntoView({block: "nearest"});
   };
   /** Hide the menu. */
   const close = () => {
@@ -134,6 +134,6 @@ export const createMenu = (/** @type {{host:HTMLElement, onChoose:(item:Item)=>v
         return true;
       }
       return false;
-    },
+    }
   };
 };

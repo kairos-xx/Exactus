@@ -12,7 +12,9 @@ from pathlib import Path, PurePath
 from sys import executable
 from typing import TYPE_CHECKING, Final, Literal, Protocol, cast, final
 
-from exactus.tools.common.catalog import Constants as CatalogConstants
+from exactus.tools.common.catalog import (
+    GroupFinalConstants as CatalogConstants,
+)
 from exactus.tools.common.catalog import ToolSpec
 from exactus.tools.common.config import (
     discovery_from_environment,

@@ -1,6 +1,6 @@
 /** Studio's binding to the expression widget: it maps Studio's data and
  * transport onto the widget's options and contains no widget UI. */
-import { selectorLiveTools } from "./selector-live-tools.js";
+import {selectorLiveTools} from "./selector-live-tools.js";
 /** @typedef {object} ExpressionFieldOptions
  * @property {string} label Visible field label.
  * @property {HTMLTextAreaElement|HTMLInputElement} textarea Stored form control (the value carrier).
@@ -25,7 +25,7 @@ import { selectorLiveTools } from "./selector-live-tools.js";
  * @returns {object}
  */
 export const widgetHost = options => ({
-  ...(options.onStats ? { stats: options.onStats } : {}),
+  ...(options.onStats ? {stats: options.onStats} : {})
 });
 /** Mount the widget on a form control and keep the form contract.
  * @param {ExpressionFieldOptions} options
@@ -44,32 +44,32 @@ export const selectorExpressionField = options => {
   const setValue = value => {
     if (editor) editor.value = value;
     else options.textarea.value = value;
-    options.textarea.dispatchEvent(new Event("input", { bubbles: true }));
-    options.textarea.dispatchEvent(new Event("change", { bubbles: true }));
+    options.textarea.dispatchEvent(new Event("input", {bubbles: true}));
+    options.textarea.dispatchEvent(new Event("change", {bubbles: true}));
   };
   if (options.onPick || options.onHighlight) {
     const live = selectorLiveTools({
       getValue: () => options.textarea.value,
       setValue,
-      ...(options.onPick ? { onPick: options.onPick } : {}),
-      ...(options.onHighlight ? { onHighlight: options.onHighlight } : {}),
-      ...(options.onClear ? { onClear: options.onClear } : {}),
-      matchCount: options.matchCount,
+      ...(options.onPick ? {onPick: options.onPick} : {}),
+      ...(options.onHighlight ? {onHighlight: options.onHighlight} : {}),
+      ...(options.onClear ? {onClear: options.onClear} : {}),
+      matchCount: options.matchCount
     });
     field.append(live.element);
   }
-  if (!options.Editor || !options.engine) return { field, editor: null };
+  if (!options.Editor || !options.engine) return {field, editor: null};
   editor = new options.Editor(options.textarea, {
     engine: options.engine,
     selectors: options.selectors,
     label: options.label,
     theme: "dark",
-    ...(options.multiple !== undefined ? { multiple: options.multiple } : {}),
-    ...(options.startAsText !== undefined ? { startAsText: options.startAsText } : {}),
-    ...(options.variables ? { variables: options.variables } : {}),
-    ...(options.saved ? { saved: options.saved } : {}),
-    ...(options.expected ? { expected: options.expected } : {}),
-    host: widgetHost(options),
+    ...(options.multiple !== undefined ? {multiple: options.multiple} : {}),
+    ...(options.startAsText !== undefined ? {startAsText: options.startAsText} : {}),
+    ...(options.variables ? {variables: options.variables} : {}),
+    ...(options.saved ? {saved: options.saved} : {}),
+    ...(options.expected ? {expected: options.expected} : {}),
+    host: widgetHost(options)
   });
   const surface =
     options.textarea.nextElementSibling instanceof HTMLElement
@@ -125,5 +125,5 @@ export const selectorExpressionField = options => {
     });
   field.append(toggle, diagnostic);
   setMode(!options.textarea.value.trim());
-  return { field, editor };
+  return {field, editor};
 };

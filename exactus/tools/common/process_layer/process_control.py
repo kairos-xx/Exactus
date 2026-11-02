@@ -690,16 +690,40 @@ def _exactus_candidates(
         try:
             process: Process = Process(pid=pid)
             name: str = process.name().lower()
-            command: str = " ".join(process.cmdline()).lower()
-            if (
-                "python" in name
-                or constants.application in name
-                or constants.application in command
-            ):
-                filtered[pid] = ports
         except (OSError, Error):
             continue
+        if (
+            "python" in name
+            or constants.application in name
+            or _command_mentions(process=process, constants=constants)
+        ):
+            filtered[pid] = ports
     return filtered
+
+
+def _command_mentions(
+    *,
+    process: Process,
+    constants: ProcessConstants,
+) -> bool:
+    """Report whether a process command line names the application.
+
+    The command line is the least reliable identity source: reading it
+    can fail transiently, so a failure means "unknown", never a veto.
+
+    Args:
+        process: Process whose command line is inspected.
+        constants: Process-control configuration.
+
+    Returns:
+        Whether the command line mentions the application.
+
+    """
+    try:
+        command: str = " ".join(process.cmdline()).lower()
+    except (OSError, Error):
+        return False
+    return constants.application in command
 
 
 def _scan(

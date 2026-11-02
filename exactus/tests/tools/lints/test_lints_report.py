@@ -373,8 +373,8 @@ def _model(*, path: Path) -> dict[str, JsonValue]:
         The decoded object.
 
     """
-    loaded: JsonValue = cast(
-        typ="JsonValue",
+    loaded: JsonValue | None = cast(
+        typ="JsonValue | None",
         val=loads(s=path.read_text(encoding="utf-8")),
     )
     if not isinstance(loaded, dict):

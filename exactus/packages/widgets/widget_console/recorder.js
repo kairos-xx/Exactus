@@ -3,7 +3,7 @@
  * The class source is embedded verbatim in sandbox workers next to
  * `Describer`, so it may reference only itself and `Describer`.
  */
-import { Describer } from "./describe.js";
+import {Describer} from "./describe.js";
 /** @typedef {import("./console_view.js").EntryInput} EntryInput */
 /**
  * @typedef {object} Sink
@@ -43,7 +43,7 @@ export class ConsoleRecorder {
   /** @type {readonly string[]} */
   static NAMES = Object.freeze([
     "log", "info", "warn", "error", "debug", "trace", "assert", "clear", "count", "countReset",
-    "time", "timeLog", "timeEnd", "group", "groupCollapsed", "groupEnd", "table", "dir", "dirxml",
+    "time", "timeLog", "timeEnd", "group", "groupCollapsed", "groupEnd", "table", "dir", "dirxml"
   ]);
   /** @type {Sink} */
   sink;
@@ -71,7 +71,7 @@ export class ConsoleRecorder {
    */
   emit(level, kind, args) {
     /** @type {EntryInput} */
-    const entry = { level, kind, parts: args.map(arg => Describer.describe(arg)), time: Date.now(), depth: this.depth };
+    const entry = {level, kind, parts: args.map(arg => Describer.describe(arg)), time: Date.now(), depth: this.depth};
     const source = this.locate?.(new Error().stack ?? "");
     if (source) entry.source = source;
     this.sink.append(entry);
@@ -115,7 +115,7 @@ export class ConsoleRecorder {
       groupEnd: () => {
         this.depth = Math.max(0, this.depth - 1);
       },
-      table: data => this.emit("log", "table", [data]),
+      table: data => this.emit("log", "table", [data])
     };
   }
   /**

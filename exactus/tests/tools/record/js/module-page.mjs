@@ -1,5 +1,5 @@
 /** Run browser assertions against Studio modules on a blank page, with no editor. */
-import { browserTest } from "../../../common/browser.mjs";
+import {browserTest} from "../../../common/browser.mjs";
 /** Where the Studio's web modules are served from. */
 export const WEB = "/exactus/tools/record/studio/web";
 /** Open the blank page, then run a test body against it.

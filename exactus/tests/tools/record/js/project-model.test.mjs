@@ -6,7 +6,7 @@ import {
   emptyFilter,
   filterProjects,
   nameIssue,
-  parseTags,
+  parseTags
 } from "../../../../tools/record/studio/web/project-model.js";
 const now = Date.parse("2026-10-09T12:00:00Z");
 /** A project summary with any field overridden.
@@ -27,7 +27,7 @@ const project = extra => ({
   runs: 0,
   base_url: "",
   legacy: false,
-  ...extra,
+  ...extra
 });
 const projects = [
   project({
@@ -36,21 +36,21 @@ const projects = [
     tags: ["web", "smoke"],
     author: "Ana",
     last_run_at: "2026-10-08T10:00:00",
-    modified_at: "2026-10-08T10:00:00",
+    modified_at: "2026-10-08T10:00:00"
   }),
   project({
     slug: "b",
     name: "Admin panel",
     tags: ["web"],
     base_url: "http://localhost:3000",
-    modified_at: "2026-09-01T00:00:00",
+    modified_at: "2026-09-01T00:00:00"
   }),
   project({
     slug: "c",
     name: "Demo",
     tags: ["demo"],
-    modified_at: "2026-10-09T09:00:00",
-  }),
+    modified_at: "2026-10-09T09:00:00"
+  })
 ];
 test("names must be present and unique, ignoring case and the project's own name", () => {
   assert.match(nameIssue("  ", projects), /name/);
@@ -69,20 +69,20 @@ test("search matches any field; advanced criteria narrow it", () => {
    */
   const check = (change, slugs) =>
     assert.deepEqual(
-      filterProjects(projects, { ...emptyFilter(), ...change }, now).map(
-        item => item.slug,
+      filterProjects(projects, {...emptyFilter(), ...change}, now).map(
+        item => item.slug
       ),
-      slugs,
+      slugs
     );
   check({}, ["c", "a", "b"]);
-  check({ query: "localhost" }, ["b"]);
-  check({ query: "ana smoke" }, ["a"]);
-  check({ tags: ["web"] }, ["a", "b"]);
-  check({ tags: ["web", "smoke"], tagMatch: "all" }, ["a"]);
-  check({ tags: ["demo", "smoke"], tagMatch: "any" }, ["c", "a"]);
-  check({ modifiedWithin: 7 }, ["c", "a"]);
-  check({ runs: "yes" }, ["a"]);
-  check({ runs: "no", sort: "name" }, ["b", "c"]);
+  check({query: "localhost"}, ["b"]);
+  check({query: "ana smoke"}, ["a"]);
+  check({tags: ["web"]}, ["a", "b"]);
+  check({tags: ["web", "smoke"], tagMatch: "all"}, ["a"]);
+  check({tags: ["demo", "smoke"], tagMatch: "any"}, ["c", "a"]);
+  check({modifiedWithin: 7}, ["c", "a"]);
+  check({runs: "yes"}, ["a"]);
+  check({runs: "no", sort: "name"}, ["b", "c"]);
 });
 test("times read the way a person says them", () => {
   assert.equal(ago("", now), "never");

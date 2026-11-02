@@ -700,8 +700,7 @@ class ReportBundle:
                 has the wrong JSON type, or a finding lacks a key.
 
         """
-        missing: list[str] = sorted(required - frozenset(payload))
-        if missing:
+        if missing := sorted(required - frozenset(payload)):
             msg: str = f"report payload missing blocks: {missing}"
             raise ValueError(msg)
         name: str

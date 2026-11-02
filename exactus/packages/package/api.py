@@ -267,6 +267,7 @@ def package(*, config: PackageConfig, root: Path) -> StageResult:
     output: Path = (
         config.output
         or root
+        / "artifacts"
         / "packages"
         / f"{datetime.now().astimezone():%d%m%Y%H%M%S}"
         / f"{root.name}.zip"
@@ -298,14 +299,14 @@ def package(*, config: PackageConfig, root: Path) -> StageResult:
             ),
             encoding="utf-8",
         )
-        packages: Path = root / "packages"
+        packages: Path = root / "artifacts" / "packages"
         folders: list[str] = sorted(
             entry.name for entry in packages.iterdir() if entry.is_dir()
         )
         listing: str = "".join(f"- `{name}/`\n" for name in folders)
         _ = (packages / "README.md").write_text(
             data=(
-                "# `packages/`\n\n            Generated archive "
+                "# `artifacts/packages/`\n\n            Generated archive "
                 "directory.\n\n            ## Subdirectories\n\n            "
             )
             + listing,

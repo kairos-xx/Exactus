@@ -36,8 +36,8 @@ class LifecycleTarget extends EventTarget {
 	 */
 	emit(type, detail) {
 		return this.dispatchEvent(new CustomEvent(type, {
-			detail,
-		}), );
+			detail
+		}) );
 	}
 }
 /**
@@ -53,7 +53,7 @@ const testCloseMetadata = () => {
 	const page = Object.freeze({
 		identity: 17,
 		title: "Example",
-		url: "https://example.com/final",
+		url: "https://example.com/final"
 	});
 	target.addEventListener("pageclose", event => {
 		/** @type {CustomEvent<PageMetadata>} */
@@ -79,8 +79,8 @@ const testListenerOrder = () => {
 		calls.push("second");
 	});
 	assert.equal(target.emit("disconnect", {
-		pid: 42,
-	}), true, );
+		pid: 42
+	}), true );
 	assert.deepEqual(calls, ["first", "second"]);
 };
 /**
@@ -103,10 +103,10 @@ const testListenerRemoval = () => {
 	target.addEventListener("processexit", callback);
 	target.removeEventListener("processexit", callback);
 	assert.equal(target.emit("processexit", {
-		exitCode: 0,
-	}), true, );
+		exitCode: 0
+	}), true );
 	assert.deepEqual(calls, []);
 };
-test("browser lifecycle events carry independent close metadata", testCloseMetadata, );
-test("multiple lifecycle listeners receive the same event in order", testListenerOrder, );
+test("browser lifecycle events carry independent close metadata", testCloseMetadata );
+test("multiple lifecycle listeners receive the same event in order", testListenerOrder );
 test("removed lifecycle listeners are not called", testListenerRemoval);

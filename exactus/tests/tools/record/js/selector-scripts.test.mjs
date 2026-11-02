@@ -1,7 +1,7 @@
 /** Exercise the selector resolver and sandbox page scripts directly. */
 import assert from "node:assert/strict";
 import test from "node:test";
-import { browserTest } from "../../../common/browser.mjs";
+import {browserTest} from "../../../common/browser.mjs";
 const RECORD = "/exactus/tools/record";
 /** Load a function-expression page script with an attributable source URL.
  * @param {any} page Browser page.
@@ -15,7 +15,7 @@ const load = async (page, url, name) => {
   const response = await fetch(sourceUrl);
   const source = (await response.text()).replace(/;\s*$/, "");
   await page.addScriptTag({
-    content: `globalThis.${name} = ${source};\n//# sourceURL=${sourceUrl}`,
+    content: `globalThis.${name} = ${source};\n//# sourceURL=${sourceUrl}`
   });
 };
 test("selector resolver reports evidence, definitions, checks and CSS", async t => {
@@ -55,7 +55,7 @@ test("selector resolver reports evidence, definitions, checks and CSS", async t 
           const values = /** @type {Record<"role"|"visible"|"enabled", string>} */ ({
             role: element === first ? "button" : "textbox",
             visible: "true",
-            enabled: element === first ? "true" : "false",
+            enabled: element === first ? "true" : "false"
           });
           return values[property];
         }
@@ -66,7 +66,7 @@ test("selector resolver reports evidence, definitions, checks and CSS", async t 
          */
         bestSelector(element) {
           if (element === second) throw new Error("no selector\ndetail");
-          return { selector: "#save" };
+          return {selector: "#save"};
         }
         /** Evaluate one synthetic element check.
          * @param {Element} element Fixture element.
@@ -81,16 +81,16 @@ test("selector resolver reports evidence, definitions, checks and CSS", async t 
       }
       Object.defineProperty(globalThis, "__EXACTUS_ES__", {
         value: Engine,
-        configurable: true,
+        configurable: true
       });
       const resolve = /** @type {Function} */ (
         Reflect.get(globalThis, "selector_resolve")
       );
       return resolve({
         expression: ".target",
-        definitions: { valid: ".target", broken: "bad(" },
+        definitions: {valid: ".target", broken: "bad("},
         checks: ["passes", "fails", "throws"],
-        compile: true,
+        compile: true
       });
     });
     assert.equal(result.count, 2);
@@ -101,7 +101,7 @@ test("selector resolver reports evidence, definitions, checks and CSS", async t 
     assert.equal(result.matches[0].evidence.attributes["aria-label"], "Save");
     assert.deepEqual(result.matches[0].failed, [
       "fails",
-      "throws (invalid check)",
+      "throws (invalid check)"
     ]);
     assert.equal(result.matches[1].css, null);
     assert.equal(result.matches[1].cssError, "no selector");
@@ -128,7 +128,7 @@ test("selector resolver returns query errors and can skip CSS compilation", asyn
       }
       Object.defineProperty(globalThis, "__EXACTUS_ES__", {
         value: Engine,
-        configurable: true,
+        configurable: true
       });
       const resolve = /** @type {Function} */ (
         Reflect.get(globalThis, "selector_resolve")
@@ -138,14 +138,14 @@ test("selector resolver returns query errors and can skip CSS compilation", asyn
           expression: "bad",
           definitions: {},
           checks: [],
-          compile: true,
+          compile: true
         }),
         empty: resolve({
           expression: "none",
           definitions: {},
           checks: [],
-          compile: false,
-        }),
+          compile: false
+        })
       };
     });
     assert.equal(result.failed.error, "bad query");
@@ -195,7 +195,7 @@ test("selector sandbox exposes targets, facades, variables and streams", async t
       }
       Object.defineProperty(globalThis, "__EXACTUS_ES__", {
         value: Engine,
-        configurable: true,
+        configurable: true
       });
       const sandbox = /** @type {Function} */ (
         Reflect.get(globalThis, "selector_sandbox")
@@ -207,7 +207,7 @@ test("selector sandbox exposes targets, facades, variables and streams", async t
           "return [document.querySelector('named').id, " +
           "document.querySelectorAll('named').length, window === self, " +
           "globalThis === window, __EXACTUS_FLOW__.logs.length]",
-        definitions: { valid: ".x", broken: "bad(" },
+        definitions: {valid: ".x", broken: "bad("},
         vars: {},
         logs: [],
         warnings: [],
@@ -218,11 +218,11 @@ test("selector sandbox exposes targets, facades, variables and streams", async t
         flowName: "Flow",
         actionKind: "javascript",
         actionLabel: "Script",
-        project: { id: "project-1", name: "Project", revision: "1" },
-        context: { id: "context-1", name: "Context", baseUrl: "", origin: "" },
+        project: {id: "project-1", name: "Project", revision: "1"},
+        context: {id: "context-1", name: "Context", baseUrl: "", origin: ""},
         targets: ["#first", "#second"],
         indices: [0, 1],
-        count: 2,
+        count: 2
       });
     });
     assert.equal(result.results.length, 2);
@@ -250,7 +250,7 @@ test("selector sandbox handles expressions, assertions and compile errors", asyn
       }
       Object.defineProperty(globalThis, "__EXACTUS_ES__", {
         value: Engine,
-        configurable: true,
+        configurable: true
       });
       const sandbox = /** @type {Function} */ (
         Reflect.get(globalThis, "selector_sandbox")
@@ -267,38 +267,38 @@ test("selector sandbox handles expressions, assertions and compile errors", asyn
         flowName: "Flow",
         actionKind: "javascript",
         actionLabel: "Script",
-        project: { id: "project-1", name: "Project", revision: "1" },
-        context: { id: "context-1", name: "Context", baseUrl: "", origin: "" },
+        project: {id: "project-1", name: "Project", revision: "1"},
+        context: {id: "context-1", name: "Context", baseUrl: "", origin: ""},
         targets: [],
         indices: [0],
-        count: 1,
+        count: 1
       };
       return {
         expression: await sandbox({
           ...context,
-          script: "({answer: 42})",
+          script: "({answer: 42})"
         }),
         assertion: await sandbox({
           ...context,
-          script: "__EXACTUS_FLOW__.assert(false, 'expected failure')",
+          script: "__EXACTUS_FLOW__.assert(false, 'expected failure')"
         }),
         compile: await sandbox({
           ...context,
           script: ")",
-          indices: [2, 3],
-        }),
+          indices: [2, 3]
+        })
       };
     });
-    assert.deepEqual(result.expression.results[0].value, { answer: 42 });
+    assert.deepEqual(result.expression.results[0].value, {answer: 42});
     assert.equal(result.assertion.results[0].error, "expected failure");
     assert.deepEqual(
       result.compile.results.map((/** @type {{index:number}} */ item) => item.index),
-      [2, 3],
+      [2, 3]
     );
     assert.ok(
       result.compile.results.every(
-        (/** @type {{error:string}} */ item) => item.error.length > 0,
-      ),
+        (/** @type {{error:string}} */ item) => item.error.length > 0
+      )
     );
   });
 });
@@ -331,7 +331,7 @@ test("selector sandbox exposes the exactus facade and edge cases", async t => {
       }
       Object.defineProperty(globalThis, "__EXACTUS_ES__", {
         value: Engine,
-        configurable: true,
+        configurable: true
       });
       const sandbox = /** @type {Function} */ (
         Reflect.get(globalThis, "selector_sandbox")
@@ -348,11 +348,11 @@ test("selector sandbox exposes the exactus facade and edge cases", async t => {
         flowName: "Flow",
         actionKind: "javascript",
         actionLabel: "Script",
-        project: { id: "project-1", name: "Project", revision: "1" },
-        context: { id: "context-1", name: "Context", baseUrl: "", origin: "" },
+        project: {id: "project-1", name: "Project", revision: "1"},
+        context: {id: "context-1", name: "Context", baseUrl: "", origin: ""},
         targets: [],
         indices: [0],
-        count: 1,
+        count: 1
       };
       return {
         facade: await sandbox({
@@ -373,16 +373,16 @@ test("selector sandbox exposes the exactus facade and edge cases", async t => {
             "exactus.flow.name, exactus.action.kind, " +
             "exactus.project.id, exactus.context.id, " +
             "exactus.selectors.query('named').length, " +
-            "exactus.selectors.queryOne('named') === null]",
+            "exactus.selectors.queryOne('named') === null]"
         }),
         invoked: await sandbox({
           ...context,
-          script: "() => ({coarse: true, dpr: 3})",
+          script: "() => ({coarse: true, dpr: 3})"
         }),
         unserializable: await sandbox({
           ...context,
-          script: "Symbol('mark')",
-        }),
+          script: "Symbol('mark')"
+        })
       };
     });
     assert.deepEqual(result.facade.results[0].value, [
@@ -398,15 +398,15 @@ test("selector sandbox exposes the exactus facade and edge cases", async t => {
       "project-1",
       "context-1",
       0,
-      true,
+      true
     ]);
-    assert.deepEqual(result.facade.vars, { seen: 7 });
+    assert.deepEqual(result.facade.vars, {seen: 7});
     assert.equal(result.facade.results[0].out[0].level, "warn");
     assert.equal(result.facade.results[0].out[1].level, "error");
     assert.equal(result.facade.results[0].out[2].message, "[object Object]");
     assert.deepEqual(result.invoked.results[0].value, {
       coarse: true,
-      dpr: 3,
+      dpr: 3
     });
     assert.equal(result.unserializable.results[0].value, "Symbol(mark)");
   });

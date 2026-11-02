@@ -13,7 +13,7 @@ import {
   reduceRatio,
   slugify,
   splitCommand,
-  summary,
+  summary
 } from "../../../../tools/record/studio/web/settings.js";
 /** The catalog fields the validator needs, shaped like the backend's. */
 const fields = [
@@ -23,7 +23,7 @@ const fields = [
     kind: "length",
     unit: "px",
     min: 160,
-    max: 8192,
+    max: 8192
   },
   {
     id: "height",
@@ -31,7 +31,7 @@ const fields = [
     kind: "length",
     unit: "px",
     min: 160,
-    max: 8192,
+    max: 8192
   },
   {
     id: "scale",
@@ -39,7 +39,7 @@ const fields = [
     kind: "number",
     unit: "dppx",
     min: 0.5,
-    max: 4,
+    max: 4
   },
   {
     id: "screen_width",
@@ -48,7 +48,7 @@ const fields = [
     unit: "px",
     min: 160,
     max: 8192,
-    optional: true,
+    optional: true
   },
   {
     id: "screen_height",
@@ -57,8 +57,8 @@ const fields = [
     unit: "px",
     min: 160,
     max: 8192,
-    optional: true,
-  },
+    optional: true
+  }
 ];
 /** A valid profile to change one field of at a time. */
 const profile = () => ({
@@ -71,14 +71,14 @@ const profile = () => ({
   screen_height: null,
   touch: true,
   mobile: true,
-  media: { "prefers-color-scheme": "dark" },
+  media: {"prefers-color-scheme": "dark"}
 });
 test("commands split like a shell and survive a round trip", () => {
   assert.deepEqual(splitCommand("npm run dev"), ["npm", "run", "dev"]);
   assert.deepEqual(splitCommand('node "my app/server.js" --name="a b"'), [
     "node",
     "my app/server.js",
-    "--name=a b",
+    "--name=a b"
   ]);
   assert.deepEqual(splitCommand("echo it\\'s"), ["echo", "it's"]);
   assert.deepEqual(splitCommand("a   b"), ["a", "b"]);
@@ -89,7 +89,7 @@ test("commands split like a shell and survive a round trip", () => {
     ["a b", "c"],
     ['q"uote', "x"],
     ["", "y"],
-    ["back\\slash"],
+    ["back\\slash"]
   ])
     assert.deepEqual(splitCommand(joinCommand(args)), args);
 });
@@ -126,58 +126,58 @@ test("typed numbers are read without blocking what the user typed", () => {
 test("a profile is validated against the catalog, one message per field", () => {
   assert.deepEqual(issuesFor(profile(), fields), {});
   assert.match(
-    issuesFor({ ...profile(), name: " " }, fields).name ?? "",
-    /name/,
+    issuesFor({...profile(), name: " "}, fields).name ?? "",
+    /name/
   );
   assert.match(
-    issuesFor({ ...profile(), width: 10 }, fields).width ?? "",
-    /160 to 8192 px/,
+    issuesFor({...profile(), width: 10}, fields).width ?? "",
+    /160 to 8192 px/
   );
   assert.match(
-    issuesFor({ ...profile(), height: Number.NaN }, fields).height ?? "",
-    /must be a number/,
+    issuesFor({...profile(), height: Number.NaN}, fields).height ?? "",
+    /must be a number/
   );
   assert.match(
-    issuesFor({ ...profile(), width: 400.5 }, fields).width ?? "",
-    /whole number/,
+    issuesFor({...profile(), width: 400.5}, fields).width ?? "",
+    /whole number/
   );
   assert.match(
-    issuesFor({ ...profile(), scale: 9 }, fields).scale ?? "",
-    /0.5 to 4 dppx/,
+    issuesFor({...profile(), scale: 9}, fields).scale ?? "",
+    /0.5 to 4 dppx/
   );
   // The device screen is both sizes or neither.
   assert.match(
-    issuesFor({ ...profile(), screen_width: 800 }, fields).screen_height ?? "",
-    /both/,
+    issuesFor({...profile(), screen_width: 800}, fields).screen_height ?? "",
+    /both/
   );
   assert.deepEqual(
-    issuesFor({ ...profile(), screen_width: 800, screen_height: 600 }, fields),
-    {},
+    issuesFor({...profile(), screen_width: 800, screen_height: 600}, fields),
+    {}
   );
 });
 test("summaries and status sentences say what matters", () => {
   assert.equal(summary(profile()), "390 × 844 · 3× · touch · dark");
   assert.equal(
-    summary({ ...profile(), scale: 1, touch: false, media: {} }),
-    "390 × 844",
+    summary({...profile(), scale: 1, touch: false, media: {}}),
+    "390 × 844"
   );
   assert.match(
     describeCheck({
       state: "reachable",
       status: 200,
       reason: "OK",
-      process: { pid: 7, name: "python" },
+      process: {pid: 7, name: "python"}
     }),
-    /Reachable.*200 OK.*python \(process 7\)/,
+    /Reachable.*200 OK.*python \(process 7\)/
   );
-  assert.match(describeCheck({ state: "unreachable" }), /Nothing is listening/);
+  assert.match(describeCheck({state: "unreachable"}), /Nothing is listening/);
   assert.match(
-    describeCheck({ state: "unresolved", error: "No host x." }),
-    /No host x/,
+    describeCheck({state: "unresolved", error: "No host x."}),
+    /No host x/
   );
   assert.equal(describeCheck(null), "");
   assert.equal(describeService(undefined), "Not started.");
-  assert.match(describeService({ state: "starting" }), /Starting/);
+  assert.match(describeService({state: "starting"}), /Starting/);
   assert.match(
     describeService({
       state: "running",
@@ -185,14 +185,14 @@ test("summaries and status sentences say what matters", () => {
       port: 5173,
       pid: 9,
       candidates: [
-        { url: "a", port: 5173, status: 200 },
-        { url: "b", port: 24678, status: 200 },
-      ],
+        {url: "a", port: 5173, status: 200},
+        {url: "b", port: 24678, status: 200}
+      ]
     }),
-    /Running at http:\/\/127\.0\.0\.1:5173 \(process 9\)\. Also listening on 24678/,
+    /Running at http:\/\/127\.0\.0\.1:5173 \(process 9\)\. Also listening on 24678/
   );
   assert.equal(
-    describeService({ state: "failed", error: "No such program." }),
-    "No such program.",
+    describeService({state: "failed", error: "No such program."}),
+    "No such program."
   );
 });

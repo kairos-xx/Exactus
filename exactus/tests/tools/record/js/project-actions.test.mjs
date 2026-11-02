@@ -1,28 +1,28 @@
 /** Project actions and the dialogs they open: save, leave, create, import and the gallery. */
 import assert from "node:assert/strict";
 import test from "node:test";
-import { modulePage, WEB } from "./module-page.mjs";
+import {modulePage, WEB} from "./module-page.mjs";
 const HARNESS = "/exactus/tests/tools/record/js/project-harness.js";
 test("save reports success and failure in one voice", async t => {
   await modulePage(t, async page => {
     const outcome = await page.evaluate(
-      async (/** @type {{web:string,harness:string}} */ { web, harness }) => {
-        const { ProjectActions } = await import(`${web}/project-actions.js`);
-        const { makeHost } = await import(harness);
+      async (/** @type {{web:string,harness:string}} */ {web, harness}) => {
+        const {ProjectActions} = await import(`${web}/project-actions.js`);
+        const {makeHost} = await import(harness);
         const ok = makeHost();
         const actions = new ProjectActions(ok.host);
         await actions.save();
-        const bad = makeHost({ failing: ["workspace.save"] });
+        const bad = makeHost({failing: ["workspace.save"]});
         await new ProjectActions(bad.host).save();
         return {
           calls: ok.calls.map((/** @type {any[]} */ c) => c[0]),
           said: ok.said,
           failed: bad.said,
           name: actions.name(),
-          dirty: actions.dirty(),
+          dirty: actions.dirty()
         };
       },
-      { web: WEB, harness: HARNESS },
+      {web: WEB, harness: HARNESS}
     );
     assert.deepEqual(outcome.calls, ["workspace.save"]);
     assert.deepEqual(outcome.said, ["Saved “Alpha”."]);
@@ -34,24 +34,24 @@ test("save reports success and failure in one voice", async t => {
 test("an empty host shows an untitled project and an empty library", async t => {
   await modulePage(t, async page => {
     const outcome = await page.evaluate(
-      async (/** @type {{web:string}} */ { web }) => {
-        const { ProjectActions } = await import(`${web}/project-actions.js`);
+      async (/** @type {{web:string}} */ {web}) => {
+        const {ProjectActions} = await import(`${web}/project-actions.js`);
         const actions = new ProjectActions({
           call: async () => null,
           apply: () => undefined,
           say: () => undefined,
           state: () => null,
-          showView: () => undefined,
+          showView: () => undefined
         });
         return {
           name: actions.name(),
           projects: actions.library().projects.length,
           project: actions.project(),
           exportUrl: ProjectActions.exportUrl(),
-          exportOne: ProjectActions.exportUrl("a b"),
+          exportOne: ProjectActions.exportUrl("a b")
         };
       },
-      { web: WEB },
+      {web: WEB}
     );
     assert.equal(outcome.name, "Untitled project");
     assert.equal(outcome.projects, 0);
@@ -63,9 +63,9 @@ test("an empty host shows an untitled project and an empty library", async t => 
 test("leaving unsaved changes asks to save, discard or cancel", async t => {
   await modulePage(t, async page => {
     const outcome = await page.evaluate(
-      async (/** @type {{web:string,harness:string}} */ { web, harness }) => {
-        const { ProjectActions } = await import(`${web}/project-actions.js`);
-        const { makeHost, openDialog, press, settle } = await import(harness);
+      async (/** @type {{web:string,harness:string}} */ {web, harness}) => {
+        const {ProjectActions} = await import(`${web}/project-actions.js`);
+        const {makeHost, openDialog, press, settle} = await import(harness);
         /** Run one leave attempt and answer the dialog.
          * @param {string} choice Button label to press.
          * @returns {Promise<object>} The dialog title and what the host saw.
@@ -79,24 +79,24 @@ test("leaving unsaved changes asks to save, discard or cancel", async t => {
           const title = openDialog()?.querySelector("h2")?.textContent;
           press(openDialog(), choice);
           await pending;
-          return { title, calls: env.calls, said: env.said };
+          return {title, calls: env.calls, said: env.said};
         };
         const discard = await attempt("Discard changes");
         const save = await attempt("Save and continue");
         const cancel = await attempt("Cancel");
         const same = makeHost();
         await new ProjectActions(same.host).open("alpha");
-        return { discard, save, cancel, same: same.calls };
+        return {discard, save, cancel, same: same.calls};
       },
-      { web: WEB, harness: HARNESS },
+      {web: WEB, harness: HARNESS}
     );
     assert.match(outcome.discard.title, /Unsaved changes in “Alpha”/);
     assert.deepEqual(outcome.discard.calls, [
-      ["project.open", { slug: "beta", replace: true }],
+      ["project.open", {slug: "beta", replace: true}]
     ]);
     assert.deepEqual(
       outcome.save.calls.map((/** @type {any[]} */ c) => c[0]),
-      ["workspace.save", "project.open"],
+      ["workspace.save", "project.open"]
     );
     assert.deepEqual(outcome.cancel.calls, []);
     assert.deepEqual(outcome.same, []);
@@ -105,10 +105,10 @@ test("leaving unsaved changes asks to save, discard or cancel", async t => {
 test("a failed save keeps the person in the open project", async t => {
   await modulePage(t, async page => {
     const outcome = await page.evaluate(
-      async (/** @type {{web:string,harness:string}} */ { web, harness }) => {
-        const { ProjectActions } = await import(`${web}/project-actions.js`);
-        const { makeHost, press, openDialog, settle } = await import(harness);
-        const env = makeHost({ failing: ["workspace.save"] });
+      async (/** @type {{web:string,harness:string}} */ {web, harness}) => {
+        const {ProjectActions} = await import(`${web}/project-actions.js`);
+        const {makeHost, press, openDialog, settle} = await import(harness);
+        const env = makeHost({failing: ["workspace.save"]});
         env.state.dirty = true;
         const actions = new ProjectActions(env.host);
         const pending = actions.openDemo();
@@ -117,10 +117,10 @@ test("a failed save keeps the person in the open project", async t => {
         await pending;
         return {
           calls: env.calls.map((/** @type {any[]} */ c) => c[0]),
-          said: env.said,
+          said: env.said
         };
       },
-      { web: WEB, harness: HARNESS },
+      {web: WEB, harness: HARNESS}
     );
     assert.deepEqual(outcome.calls, ["workspace.save"]);
     assert.deepEqual(outcome.said, ["workspace.save failed"]);
@@ -129,9 +129,9 @@ test("a failed save keeps the person in the open project", async t => {
 test("duplicate, delete and demo send their commands and report them", async t => {
   await modulePage(t, async page => {
     const outcome = await page.evaluate(
-      async (/** @type {{web:string,harness:string}} */ { web, harness }) => {
-        const { ProjectActions } = await import(`${web}/project-actions.js`);
-        const { makeHost } = await import(harness);
+      async (/** @type {{web:string,harness:string}} */ {web, harness}) => {
+        const {ProjectActions} = await import(`${web}/project-actions.js`);
+        const {makeHost} = await import(harness);
         const env = makeHost();
         const actions = new ProjectActions(env.host);
         await actions.duplicate("beta", "Beta copy");
@@ -140,20 +140,20 @@ test("duplicate, delete and demo send their commands and report them", async t =
         return {
           calls: env.calls,
           said: env.said,
-          applied: env.applied.length,
+          applied: env.applied.length
         };
       },
-      { web: WEB, harness: HARNESS },
+      {web: WEB, harness: HARNESS}
     );
     assert.deepEqual(outcome.calls, [
-      ["project.duplicate", { slug: "beta", name: "Beta copy" }],
-      ["project.delete", { slug: "beta" }],
-      ["demo.open", { replace: false, project: true }],
+      ["project.duplicate", {slug: "beta", name: "Beta copy"}],
+      ["project.delete", {slug: "beta"}],
+      ["demo.open", {replace: false, project: true}]
     ]);
     assert.deepEqual(outcome.said, [
       "Duplicated as “Beta copy”.",
       "Project deleted.",
-      "Demo flow ready. Run it from Play.",
+      "Demo flow ready. Run it from Play."
     ]);
     assert.equal(outcome.applied, 3);
   });
@@ -161,9 +161,9 @@ test("duplicate, delete and demo send their commands and report them", async t =
 test("the new project dialog checks the name, creates and reports errors", async t => {
   await modulePage(t, async page => {
     const outcome = await page.evaluate(
-      async (/** @type {{web:string,harness:string}} */ { web, harness }) => {
-        const { ProjectActions } = await import(`${web}/project-actions.js`);
-        const { makeHost, openDialog, type, settle } = await import(harness);
+      async (/** @type {{web:string,harness:string}} */ {web, harness}) => {
+        const {ProjectActions} = await import(`${web}/project-actions.js`);
+        const {makeHost, openDialog, type, settle} = await import(harness);
         const env = makeHost();
         const actions = new ProjectActions(env.host);
         const pending = actions.create();
@@ -190,10 +190,10 @@ test("the new project dialog checks the name, creates and reports errors", async
           calls: env.calls,
           views: env.views,
           said: env.said,
-          open: openDialog() === null,
+          open: openDialog() === null
         };
       },
-      { web: WEB, harness: HARNESS },
+      {web: WEB, harness: HARNESS}
     );
     assert.equal(outcome.initialDisabled, true);
     assert.match(outcome.duplicate, /already|use/i);
@@ -208,9 +208,9 @@ test("the new project dialog checks the name, creates and reports errors", async
           tags: ["web", "new"],
           author: "Cy",
           version: "0.2.0",
-          replace: false,
-        },
-      ],
+          replace: false
+        }
+      ]
     ]);
     assert.deepEqual(outcome.views, ["edit"]);
     assert.deepEqual(outcome.said, ["Created “Gamma”."]);
@@ -220,15 +220,15 @@ test("the new project dialog checks the name, creates and reports errors", async
 test("the new project dialog shows a failure, stays open and can be cancelled", async t => {
   await modulePage(t, async page => {
     const outcome = await page.evaluate(
-      async (/** @type {{web:string,harness:string}} */ { web, harness }) => {
-        const { ProjectDialogs } = await import(`${web}/project-dialogs.js`);
-        const { makeHost, openDialog, press, type, settle } = await import(
+      async (/** @type {{web:string,harness:string}} */ {web, harness}) => {
+        const {ProjectDialogs} = await import(`${web}/project-dialogs.js`);
+        const {makeHost, openDialog, press, type, settle} = await import(
           harness
         );
         const env = makeHost();
         const dialogs = new ProjectDialogs({
           library: () => env.state.library,
-          project: () => env.state.project,
+          project: () => env.state.project
         });
         let attempts = 0;
         const pending = dialogs.newProject(async () => {
@@ -257,10 +257,10 @@ test("the new project dialog shows a failure, stays open and can be cancelled", 
           error,
           attempts,
           stillOpen,
-          closed: openDialog() === null,
+          closed: openDialog() === null
         };
       },
-      { web: WEB, harness: HARNESS },
+      {web: WEB, harness: HARNESS}
     );
     assert.equal(outcome.emptyBlocked, true);
     assert.equal(outcome.error, "Disk is full");
@@ -272,9 +272,9 @@ test("the new project dialog shows a failure, stays open and can be cancelled", 
 test("create stays open when leaving unsaved changes is cancelled", async t => {
   await modulePage(t, async page => {
     const outcome = await page.evaluate(
-      async (/** @type {{web:string,harness:string}} */ { web, harness }) => {
-        const { ProjectActions } = await import(`${web}/project-actions.js`);
-        const { makeHost, openDialog, press, type, settle } = await import(
+      async (/** @type {{web:string,harness:string}} */ {web, harness}) => {
+        const {ProjectActions} = await import(`${web}/project-actions.js`);
+        const {makeHost, openDialog, press, type, settle} = await import(
           harness
         );
         const env = makeHost();
@@ -292,9 +292,9 @@ test("create stays open when leaving unsaved changes is cancelled", async t => {
           document.querySelector("dialog.new-project[open]") !== null;
         press(document.querySelector("dialog.new-project[open]"), "Cancel");
         await pending;
-        return { calls: env.calls, stillForm };
+        return {calls: env.calls, stillForm};
       },
-      { web: WEB, harness: HARNESS },
+      {web: WEB, harness: HARNESS}
     );
     assert.deepEqual(outcome.calls, []);
     assert.equal(outcome.stillForm, true);
@@ -303,9 +303,9 @@ test("create stays open when leaving unsaved changes is cancelled", async t => {
 test("import reads a project file, rejects other files and ignores a cancelled choice", async t => {
   await modulePage(t, async page => {
     const outcome = await page.evaluate(
-      async (/** @type {{web:string,harness:string}} */ { web, harness }) => {
-        const { ProjectActions } = await import(`${web}/project-actions.js`);
-        const { makeHost } = await import(harness);
+      async (/** @type {{web:string,harness:string}} */ {web, harness}) => {
+        const {ProjectActions} = await import(`${web}/project-actions.js`);
+        const {makeHost} = await import(harness);
         const env = makeHost();
         const actions = new ProjectActions(env.host);
         /** @type {File|null} */
@@ -316,28 +316,28 @@ test("import reads a project file, rejects other files and ignores a cancelled c
         await actions.importFile(true);
         chosen = null;
         await actions.importFile(true);
-        return { calls: env.calls, said: env.said };
+        return {calls: env.calls, said: env.said};
       },
-      { web: WEB, harness: HARNESS },
+      {web: WEB, harness: HARNESS}
     );
     assert.deepEqual(outcome.calls, [
       [
         "project.import",
-        { workspace: { flows: [] }, open: false, replace: false },
-      ],
+        {workspace: {flows: []}, open: false, replace: false}
+      ]
     ]);
     assert.deepEqual(outcome.said, [
       "Imported “mine.json”.",
-      "That file is not a project export.",
+      "That file is not a project export."
     ]);
   });
 });
 test("the file picker wires one hidden input and resolves on change or cancel", async t => {
   await modulePage(t, async page => {
     const outcome = await page.evaluate(
-      async (/** @type {{web:string,harness:string}} */ { web, harness }) => {
-        const { ProjectActions } = await import(`${web}/project-actions.js`);
-        const { makeHost } = await import(harness);
+      async (/** @type {{web:string,harness:string}} */ {web, harness}) => {
+        const {ProjectActions} = await import(`${web}/project-actions.js`);
+        const {makeHost} = await import(harness);
         const actions = new ProjectActions(makeHost().host);
         /** @type {HTMLInputElement|null} */
         let seen = null;
@@ -357,10 +357,10 @@ test("the file picker wires one hidden input and resolves on change or cancel", 
           cancelled: await first,
           changed: await second,
           inputs: document.querySelectorAll('input[type="file"]').length,
-          hidden: input.hidden,
+          hidden: input.hidden
         };
       },
-      { web: WEB, harness: HARNESS },
+      {web: WEB, harness: HARNESS}
     );
     assert.equal(outcome.cancelled, null);
     assert.equal(outcome.changed, null);
@@ -371,9 +371,9 @@ test("the file picker wires one hidden input and resolves on change or cancel", 
 test("export downloads the open project by its folder name", async t => {
   await modulePage(t, async page => {
     const outcome = await page.evaluate(
-      async (/** @type {{web:string,harness:string}} */ { web, harness }) => {
-        const { ProjectActions } = await import(`${web}/project-actions.js`);
-        const { makeHost } = await import(harness);
+      async (/** @type {{web:string,harness:string}} */ {web, harness}) => {
+        const {ProjectActions} = await import(`${web}/project-actions.js`);
+        const {makeHost} = await import(harness);
         const env = makeHost();
         env.state.project.slug = "@legacy";
         const actions = new ProjectActions(env.host);
@@ -383,7 +383,7 @@ test("export downloads the open project by its folder name", async t => {
         HTMLAnchorElement.prototype.click = function () {
           clicks.push({
             href: String(this.getAttribute("href")),
-            download: this.download,
+            download: this.download
           });
         };
         actions.exportOpen();
@@ -392,11 +392,11 @@ test("export downloads the open project by its folder name", async t => {
         HTMLAnchorElement.prototype.click = click;
         return clicks;
       },
-      { web: WEB, harness: HARNESS },
+      {web: WEB, harness: HARNESS}
     );
     assert.deepEqual(outcome, [
-      { href: "/api/export", download: "legacy.pwflow.json" },
-      { href: "/api/export", download: "project.pwflow.json" },
+      {href: "/api/export", download: "legacy.pwflow.json"},
+      {href: "/api/export", download: "project.pwflow.json"}
     ]);
   });
 });
