@@ -1,14 +1,14 @@
 # Unified Pipeline
 
-**Run time:** 04 November 2026, 07:55:58 UTC
+**Run time:** 04 November 2026, 12:37:03 UTC
 
 ## Change since previous report
 
-Previous run completed in **32.158s**.
+Previous run completed in **66.158s**.
 
 | Findings | Current | Previous | Delta | Added | Resolved | Unchanged |
 |---|---:|---:|---:|---:|---:|---:|
-| Overall | 0 | 4 | -4 | 0 | 4 | 0 |
+| Overall | 0 | 0 | 0 | 0 | 0 | 0 |
 
 ### Category findings
 
@@ -52,13 +52,12 @@ Previous run completed in **32.158s**.
 | readme / RDM001 | Missing README.md | 0 | 0 | 0 |
 | readme / RDM002 | Undocumented subdirectory | 0 | 0 | 0 |
 | readme / RDM003 | Undocumented file | 0 | 0 | 0 |
-| self_test / self_test-tool | self_test-tool | 0 | 4 | -4 |
 
 
 
 - Status: **PASS**
-- Run UUID: `514ec66fc2624d32b23c563ae81bb010`
-- Duration: 64.392s
+- Run UUID: `aa9f5f9f35a74d85857a1b2dfecca441`
+- Duration: 48.024s
 - Tools: 6
 - Passed: 6
 - Failed: 0
@@ -67,12 +66,12 @@ Previous run completed in **32.158s**.
 
 | Tool | Status | Time | Findings | Headline |
 | --- | --- | ---: | ---: | --- |
-| `lints` | **PASS** | 16.7s | 0 | PASS: analyzer completed with exit status 0. |
-| `coverage_tests` | **PASS** | 9.9s | 0 | Total coverage 100%; Total gate 90.0%; Per-file gate 80.0%: 0 file(s) below |
-| `docs` | **PASS** | 2.1s | 0 | PASS: analyzer completed with exit status 0. |
-| `kwargs_typehints` | **PASS** | 3.9s | 0 | PASS: analyzer completed with exit status 0. |
-| `readme` | **PASS** | 0.8s | 0 | PASS: analyzer completed with exit status 0. |
-| `performance` | **PASS** | 1.4s | 0 | 7 runs profiled — slowest self_test 603.2s |
+| `lints` | **PASS** | 11.4s | 0 | PASS: analyzer completed with exit status 0. |
+| `coverage_tests` | **PASS** | 6.6s | 0 | Total coverage 100%; Total gate 90.0%; Per-file gate 80.0%: 0 file(s) below |
+| `docs` | **PASS** | 1.0s | 0 | PASS: analyzer completed with exit status 0. |
+| `kwargs_typehints` | **PASS** | 3.1s | 0 | PASS: analyzer completed with exit status 0. |
+| `readme` | **PASS** | 0.7s | 0 | PASS: analyzer completed with exit status 0. |
+| `performance` | **PASS** | 1.1s | 0 | 6 runs profiled — slowest lints 11.4s |
 ## Passing tools
 
 - `lints`
@@ -84,9 +83,9 @@ Previous run completed in **32.158s**.
 
 ## Tool resumes
 
-- `lints`: **PASS** (16.702s) — PASS: analyzer completed with exit status 0. [markdown](../../LINTS/result.md) · [json](../../LINTS/result.json) · [web](../../LINTS/result_web/index.html)
-- `coverage_tests`: **PASS** (9.884s) — PASS: 2 of 2 tests passed; Total 100.0% meets the 90.0% minimum; every file meets 80.0% [markdown](../../COVERAGE_TESTS/result.md) · [json](../../COVERAGE_TESTS/result.json) · [web](../../COVERAGE_TESTS/result_web/index.html)
-- `docs`: **PASS** (2.063s) — PASS: analyzer completed with exit status 0. [markdown](../../DOCS/result.md) · [json](../../DOCS/result.json) · [web](../../DOCS/result_web/index.html)
-- `kwargs_typehints`: **PASS** (3.858s) — PASS: analyzer completed with exit status 0. [markdown](../../KWARGS_TYPEHINTS/result.md) · [json](../../KWARGS_TYPEHINTS/result.json) · [web](../../KWARGS_TYPEHINTS/result_web/index.html)
-- `readme`: **PASS** (0.827s) — PASS: analyzer completed with exit status 0. [markdown](../../README/result.md) · [json](../../README/result.json) · [web](../../README/result_web/index.html)
-- `performance`: **PASS** (1.370s) — 7 runs profiled — slowest self_test 603.2s [markdown](../../PERFORMANCE/result.md) · [json](../../PERFORMANCE/result.json) · [web](../../PERFORMANCE/result_web/index.html)
+- `lints`: **PASS** (11.381s) — PASS: analyzer completed with exit status 0. [markdown](../../LINTS/result.md) · [json](../../LINTS/result.json) · [web](../../LINTS/result_web/index.html)
+- `coverage_tests`: **PASS** (6.568s) — PASS: 2 of 2 tests passed; Total 100.0% meets the 90.0% minimum; every file meets 80.0% [markdown](../../COVERAGE_TESTS/result.md) · [json](../../COVERAGE_TESTS/result.json) · [web](../../COVERAGE_TESTS/result_web/index.html)
+- `docs`: **PASS** (0.998s) — PASS: analyzer completed with exit status 0. [markdown](../../DOCS/result.md) · [json](../../DOCS/result.json) · [web](../../DOCS/result_web/index.html)
+- `kwargs_typehints`: **PASS** (3.101s) — PASS: analyzer completed with exit status 0. [markdown](../../KWARGS_TYPEHINTS/result.md) · [json](../../KWARGS_TYPEHINTS/result.json) · [web](../../KWARGS_TYPEHINTS/result_web/index.html)
+- `readme`: **PASS** (0.732s) — PASS: analyzer completed with exit status 0. [markdown](../../README/result.md) · [json](../../README/result.json) · [web](../../README/result_web/index.html)
+- `performance`: **PASS** (1.078s) — 6 runs profiled — slowest lints 11.4s [markdown](../../PERFORMANCE/result.md) · [json](../../PERFORMANCE/result.json) · [web](../../PERFORMANCE/result_web/index.html)

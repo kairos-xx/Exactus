@@ -97,13 +97,26 @@ def test_pipeline_environment_removes_only_run_scoped_state(
         value=MagicMock(
             return_value={
                 "EXACTUS_RUN_ID": "outer",
+                "EXACTUS_EXPLICIT_ARGUMENTS": "[]",
+                "EXACTUS_REPORT_OUTPUT": "/live/results/SELF_TEST",
+                "EXACTUS_PROJECT_ROOT": "/live",
+                "EXACTUS_PMANAGER_WORKER": "1",
+                "EXACTUS_ACTION__REPORT": "{}",
                 "EXACTUS_PROJECT_PYTHON": "/python",
                 "PATH": "/bin",
             },
         ),
     )
     environment: dict[str, str] = self_test.pipeline_env()
-    expect_equal(actual="EXACTUS_RUN_ID" in environment, expected=False)
+    for name in (
+        "EXACTUS_RUN_ID",
+        "EXACTUS_EXPLICIT_ARGUMENTS",
+        "EXACTUS_REPORT_OUTPUT",
+        "EXACTUS_PROJECT_ROOT",
+        "EXACTUS_PMANAGER_WORKER",
+        "EXACTUS_ACTION__REPORT",
+    ):
+        expect_equal(actual=name in environment, expected=False)
     expect_equal(
         actual=environment["EXACTUS_PROJECT_PYTHON"],
         expected="/python",

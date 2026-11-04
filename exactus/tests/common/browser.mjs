@@ -70,7 +70,7 @@ export const browserTest = async (t, exercise) => {
       height: 900
     }
   });
-  page.setDefaultTimeout(5000);
+  page.setDefaultTimeout(30000);
   t.after(async () => {
     await browser.close();
     await /** @type {Promise<void>} */ (

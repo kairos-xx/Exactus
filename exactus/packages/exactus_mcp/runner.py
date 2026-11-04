@@ -7,7 +7,7 @@ from asyncio import Lock, create_subprocess_exec, to_thread, wait_for
 from asyncio.subprocess import PIPE, STDOUT, Process
 from dataclasses import dataclass
 from json import JSONDecodeError, loads
-from os import environ, pathsep
+from os import pathsep
 from pathlib import Path, PurePath
 from sys import executable
 from typing import TYPE_CHECKING, Final, Literal, Protocol, cast, final
@@ -21,6 +21,7 @@ from exactus.tools.common.config import (
     reports_anchor,
     reports_directory,
 )
+from exactus.tools.common.run_environment import sanitized_environ
 
 if TYPE_CHECKING:
     from exactus.packages.server.json_types import JsonValue
@@ -316,7 +317,7 @@ class ExactusCommandRunner:
             Completed check result.
 
         """
-        process_environment: dict[str, str] = dict(environ)
+        process_environment: dict[str, str] = sanitized_environ()
         process_environment["PATH"] = (
             f"{Path(executable).parent}{pathsep}"
             f"{process_environment.get("PATH", "")}"

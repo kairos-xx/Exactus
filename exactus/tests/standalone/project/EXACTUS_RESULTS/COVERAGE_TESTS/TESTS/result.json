@@ -12,7 +12,7 @@
   "analyzer": "tests",
   "comparison": {
     "available": true,
-    "previous_generated_at": "2026-11-04T07:28:52.887781+00:00",
+    "previous_generated_at": "2026-11-04T11:56:00.053108+00:00",
     "previous_run_id": null,
     "previous_status": "PASS",
     "previous_duration_seconds": null,
@@ -31,15 +31,15 @@
   "failed_tests": [],
   "findings": [],
   "fingerprint": {
-    "commit": "68b43a4bd4691257a6e48e3cb87a96edf2139868",
-    "tree": "8037996a0c49bff489a24efc566e2091d89e425b",
+    "commit": "ce47630806edce94544dfaacf41b56473c05c3f7",
+    "tree": "c1f5559cd1439149d0c11b1e214b6b7d96a57f7a",
     "dirty": true,
     "python": "3.13.9",
     "ruff": "ruff 0.12.0",
     "basedpyright": "basedpyright 1.40.2"
   },
-  "generated_at": "2026-11-04T07:55:30.248489+00:00",
-  "generated_at_human": "04 November 2026, 07:55:30 UTC",
+  "generated_at": "2026-11-04T12:36:39.493004+00:00",
+  "generated_at_human": "04 November 2026, 12:36:39 UTC",
   "groups": [
     {
       "group": "tests",
@@ -58,8 +58,8 @@
     "json": "result.json",
     "web": "result_web"
   },
-  "run_at": "2026-11-04T07:55:30.248489+00:00",
-  "run_at_human": "04 November 2026, 07:55:30 UTC",
+  "run_at": "2026-11-04T12:36:39.493004+00:00",
+  "run_at_human": "04 November 2026, 12:36:39 UTC",
   "schema": "project-exactus-report/v1",
   "sections": [
     {

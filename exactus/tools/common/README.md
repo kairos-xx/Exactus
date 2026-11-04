@@ -105,6 +105,18 @@ item.; `RunDocument` — Serialize one canonical run document.;
 `utc_now()` — Return the current UTC instant in ISO 8601.
 
 
+#### `run_environment.py`
+
+Run-scoped environment boundary for nested exactus executions. A live
+run exports its coordination context — registry path, report output,
+run identifiers, roots — which an independent nested invocation must
+never inherit, or it would claim, reset, or clear the parent's live
+report tree. Public API: `run_scoped()` — Report whether one
+environment variable carries run-scoped state.;
+`sanitized_environ()` — Return an environment minus every run-scoped
+variable.
+
+
 #### `digest.py`
 
 Summarize tool reports into failure digests for aggregate reports. Public API: `digest_report()` — Summarize one tool report.; `render_failure()` — Render one failing tool as Markdown.; `digest_data()` — Convert a digest to JSON-ready data.; `ToolDigest` — A tool report summarized for an aggregate report.; `FindingLine` — One finding reduced to what a reader needs.
@@ -163,6 +175,7 @@ Markdown report template, partials, base mapping and examples
 - [`registry.py`](registry.py) — Cross-process exactus run registry backed by an embedded database.
 - [`report_comparison.py`](report_comparison.py) — Compare normalized exactus findings with the preceding report bundle.
 - [`report_time.py`](report_time.py) — Format recorded report times without changing their machine values.
+- [`run_environment.py`](run_environment.py) — Run-scoped environment boundary for nested Exactus executions.
 - [`runtime.py`](runtime.py) — Shared exactus runtime state, progress, and summary protocol.
 - [`snippets.py`](snippets.py) — Capture numbered source excerpts around report findings.
 - [`source_cache.py`](source_cache.py) — Own content-identified source and AST reuse within one lint run.

@@ -4,40 +4,40 @@
     "dropped": 0,
     "events": [
       {
-        "at": "2026-11-04T07:55:49.875347+00:00",
+        "at": "2026-11-04T12:36:48.852530+00:00",
         "level": "info",
         "message": "started: Readme"
       },
       {
-        "at": "2026-11-04T07:55:49.876945+00:00",
+        "at": "2026-11-04T12:36:48.853701+00:00",
         "level": "info",
         "message": "step: starting (Readme)"
       },
       {
-        "at": "2026-11-04T07:55:50.845720+00:00",
+        "at": "2026-11-04T12:36:49.734788+00:00",
         "level": "info",
-        "message": "finished: DONE (exit status 0) in 0.970s"
+        "message": "finished: DONE (exit status 0) in 0.882s"
       }
     ],
     "limit": 50
   },
-  "elapsed_seconds": 0.971,
+  "elapsed_seconds": 0.882,
   "extra": {
     "exit_code": 0,
-    "previous_duration_seconds": 0.742
+    "previous_duration_seconds": 1.126
   },
-  "finished_at": "2026-11-04T07:55:50.845762+00:00",
+  "finished_at": "2026-11-04T12:36:49.734852+00:00",
   "heartbeat": {
     "alive": false,
     "interval_seconds": 1.0,
-    "last_beat": "2026-11-04T07:55:50.845766+00:00",
+    "last_beat": "2026-11-04T12:36:49.734857+00:00",
     "phase": "finished",
-    "pid": 30972
+    "pid": 59601
   },
   "items": [],
   "kind": "tool",
   "name": "readme",
-  "pipeline_run_id": "514ec66fc2624d32b23c563ae81bb010",
+  "pipeline_run_id": "aa9f5f9f35a74d85857a1b2dfecca441",
   "progress": {
     "completed": 4,
     "current": "Readme",
@@ -71,9 +71,9 @@
     "step": "complete",
     "total": 4
   },
-  "run_id": "514ec66fc2624d32b23c563ae81bb010:readme",
+  "run_id": "aa9f5f9f35a74d85857a1b2dfecca441:readme",
   "schema": "exactus/activity/v1",
-  "started_at": "2026-11-04T07:55:49.875243+00:00",
+  "started_at": "2026-11-04T12:36:48.852366+00:00",
   "status": "DONE",
-  "updated_at": "2026-11-04T07:55:50.845766+00:00"
+  "updated_at": "2026-11-04T12:36:49.734857+00:00"
 }

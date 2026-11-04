@@ -8,11 +8,11 @@
   },
   "summary": {
     "timing": {
-      "date_time": "04/11/2026 07:55:08",
-      "finished_date_time": "04/11/2026 07:55:15",
+      "date_time": "04/11/2026 12:36:25",
+      "finished_date_time": "04/11/2026 12:36:29",
       "timezone": "WET",
-      "duration_seconds": 6.655217,
-      "duration_human": "00:00:06.655217"
+      "duration_seconds": 4.473163,
+      "duration_human": "00:00:04.473163"
     },
     "host": {
       "hostname": "Mac",
@@ -96,9 +96,9 @@
   },
   "all_lints": {
     "schema_version": 2,
-    "generated_at": "2026-11-04T07:55:13.546762+00:00",
-    "started_at": "2026-11-04T07:55:09.889513+00:00",
-    "duration_seconds": 3.657152,
+    "generated_at": "2026-11-04T12:36:28.332799+00:00",
+    "started_at": "2026-11-04T12:36:26.124680+00:00",
+    "duration_seconds": 2.208087,
     "root": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
     "ok": true,
     "summary": {
@@ -117,7 +117,7 @@
       "ruff": {
         "name": "ruff",
         "status": "passed",
-        "duration_seconds": 0.093502,
+        "duration_seconds": 0.071641,
         "total_files": 6,
         "completed_files": 6,
         "files_with_issues": 0,
@@ -137,7 +137,7 @@
       "ruff_docs": {
         "name": "ruff_docs",
         "status": "passed",
-        "duration_seconds": 0.093502,
+        "duration_seconds": 0.071641,
         "total_files": 6,
         "completed_files": 6,
         "files_with_issues": 0,
@@ -147,7 +147,7 @@
       "basedpyright": {
         "name": "basedpyright",
         "status": "passed",
-        "duration_seconds": 2.830421,
+        "duration_seconds": 1.661184,
         "total_files": 6,
         "completed_files": 6,
         "files_with_issues": 0,
@@ -157,7 +157,7 @@
       "pyrefly": {
         "name": "pyrefly",
         "status": "passed",
-        "duration_seconds": 0.585864,
+        "duration_seconds": 0.390393,
         "total_files": 6,
         "completed_files": 6,
         "files_with_issues": 0,
@@ -167,7 +167,7 @@
       "eslint": {
         "name": "eslint",
         "status": "passed",
-        "duration_seconds": 1.834442,
+        "duration_seconds": 1.150793,
         "total_files": 4,
         "completed_files": 4,
         "files_with_issues": 0,
@@ -177,7 +177,7 @@
       "stylelint": {
         "name": "stylelint",
         "status": "passed",
-        "duration_seconds": 1.70532,
+        "duration_seconds": 1.200203,
         "total_files": 1,
         "completed_files": 1,
         "files_with_issues": 0,
@@ -187,7 +187,7 @@
       "htmlint": {
         "name": "htmlint",
         "status": "passed",
-        "duration_seconds": 0.114452,
+        "duration_seconds": 0.187376,
         "total_files": 1,
         "completed_files": 1,
         "files_with_issues": 0,
@@ -197,7 +197,7 @@
       "typescript": {
         "name": "typescript",
         "status": "passed",
-        "duration_seconds": 3.560066,
+        "duration_seconds": 2.145754,
         "total_files": 4,
         "completed_files": 4,
         "files_with_issues": 0,
@@ -212,7 +212,7 @@
     {
       "name": "@activity.json",
       "path": "ARTIFACTS/@activity.json",
-      "bytes": 2687
+      "bytes": 2797
     },
     {
       "name": "README.md",
@@ -232,15 +232,15 @@
     {
       "name": "steps.txt",
       "path": "ARTIFACTS/steps.txt",
-      "bytes": 69873
+      "bytes": 69010
     }
   ],
   "comparison": {
     "available": true,
-    "previous_generated_at": "2026-11-04T07:41:46.650072+00:00",
-    "previous_run_id": "c2bc048217764aa1b3ca6f8f148320ea",
+    "previous_generated_at": "2026-11-04T11:55:43.411354+00:00",
+    "previous_run_id": "4f11bb392321406fba06a95f800a8d2a:lints",
     "previous_status": "PASS",
-    "previous_duration_seconds": 4.262,
+    "previous_duration_seconds": 17.682,
     "current_total": 0,
     "previous_total": 0,
     "delta": 0,
@@ -303,7 +303,7 @@
       }
     ]
   },
-  "duration_seconds": 16.702,
+  "duration_seconds": 11.381,
   "environment": {
     "os": "Darwin 25.3.0",
     "python": "3.13.9",
@@ -316,7 +316,7 @@
       },
       {
         "name": "EXACTUS_PIPELINE_RUN_ID",
-        "value": "514ec66fc2624d32b23c563ae81bb010"
+        "value": "aa9f5f9f35a74d85857a1b2dfecca441"
       },
       {
         "name": "EXACTUS_REGISTRY",
@@ -328,7 +328,7 @@
       },
       {
         "name": "EXACTUS_RUN_ID",
-        "value": "514ec66fc2624d32b23c563ae81bb010:lints"
+        "value": "aa9f5f9f35a74d85857a1b2dfecca441:lints"
       },
       {
         "name": "EXACTUS_TOOL",
@@ -336,11 +336,7 @@
       },
       {
         "name": "LANG",
-        "value": "en_US.UTF-8"
-      },
-      {
-        "name": "TERM",
-        "value": "xterm-256color"
+        "value": "C.UTF-8"
       }
     ]
   },
@@ -365,7 +361,7 @@
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 0.001703375019133091
+          "duration_seconds": 0.0012783330166712403
         },
         {
           "linter": "custom_shebang",
@@ -377,7 +373,7 @@
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 0.010653958015609533
+          "duration_seconds": 0.003667250042781234
         },
         {
           "linter": "custom_python",
@@ -401,7 +397,7 @@
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 0.00015295797493308783
+          "duration_seconds": 5.5917014833539724e-05
         },
         {
           "linter": "custom_javascript",
@@ -425,7 +421,7 @@
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 0.00028266600565984845
+          "duration_seconds": 0.0002464170102030039
         },
         {
           "linter": "custom_javascript_notation",
@@ -437,7 +433,7 @@
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 2.3042026441544294e-05
+          "duration_seconds": 3.6999990697950125e-05
         },
         {
           "linter": "custom_css",
@@ -449,7 +445,7 @@
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 0.004
+          "duration_seconds": 0.003
         },
         {
           "linter": "custom_html",
@@ -473,7 +469,7 @@
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 0.093502
+          "duration_seconds": 0.071641
         },
         {
           "linter": "ruff_docs",
@@ -485,7 +481,7 @@
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 0.093502
+          "duration_seconds": 0.071641
         },
         {
           "linter": "basedpyright",
@@ -497,7 +493,7 @@
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 2.830421
+          "duration_seconds": 1.661184
         },
         {
           "linter": "pyrefly",
@@ -509,7 +505,7 @@
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 0.364
+          "duration_seconds": 0.276
         },
         {
           "linter": "eslint",
@@ -521,7 +517,7 @@
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 1.834442
+          "duration_seconds": 1.150793
         },
         {
           "linter": "typescript",
@@ -533,7 +529,7 @@
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 3.560066
+          "duration_seconds": 2.145754
         },
         {
           "linter": "stylelint",
@@ -545,7 +541,7 @@
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 1.70532
+          "duration_seconds": 1.200203
         },
         {
           "linter": "htmlhint",
@@ -557,7 +553,7 @@
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 0.114452
+          "duration_seconds": 0.187376
         }
       ],
       "top_rules": [],
@@ -611,8 +607,8 @@
   },
   "findings": [],
   "fingerprint": {
-    "commit": "68b43a4bd4691257a6e48e3cb87a96edf2139868",
-    "tree": "8037996a0c49bff489a24efc566e2091d89e425b",
+    "commit": "ce47630806edce94544dfaacf41b56473c05c3f7",
+    "tree": "c1f5559cd1439149d0c11b1e214b6b7d96a57f7a",
     "dirty": true,
     "python": "3.13.9",
     "ruff": "ruff 0.12.0",
@@ -622,8 +618,8 @@
     "status": "PASS",
     "reason": "No blocking findings"
   },
-  "generated_at": "2026-11-04T07:55:15.275888+00:00",
-  "generated_at_human": "04 November 2026, 07:55:15 UTC",
+  "generated_at": "2026-11-04T12:36:29.837674+00:00",
+  "generated_at_human": "04 November 2026, 12:36:29 UTC",
   "group_final": {
     "files": 6,
     "planned": 0,
@@ -632,16 +628,16 @@
     "dry_run": true
   },
   "invocation": {
-    "command": "/Users/joaolopes/Exactus/bin/release/exactus_macos_arm64/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=52908 --orchestrator-control-token=[redacted] --orchestrator-worker-port=52902 --orchestrator-worker-token=[redacted] '--orchestrator-call={\"args\":[],\"kwargs\":{\"request\":{\"identifier\":\"lints\",\"module\":\"exactus.tools.lints.main\",\"output\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/LINTS\",\"arguments\":[],\"explicit_arguments\":[],\"run_id\":\"514ec66fc2624d32b23c563ae81bb010:lints\",\"pipeline_run_id\":\"514ec66fc2624d32b23c563ae81bb010\",\"project_root\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\"}}}'",
+    "command": "/Users/joaolopes/Exactus/bin/release/exactus_macos_arm64/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=57183 --orchestrator-control-token=[redacted] --orchestrator-worker-port=57173 --orchestrator-worker-token=[redacted] '--orchestrator-call={\"args\":[],\"kwargs\":{\"request\":{\"identifier\":\"lints\",\"module\":\"exactus.tools.lints.main\",\"output\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/LINTS\",\"arguments\":[],\"explicit_arguments\":[],\"run_id\":\"aa9f5f9f35a74d85857a1b2dfecca441:lints\",\"pipeline_run_id\":\"aa9f5f9f35a74d85857a1b2dfecca441\",\"project_root\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\"}}}'",
     "cwd": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
     "arguments": [
       "exactus.tools.common.tool_worker",
       "ExactusTool",
-      "--orchestrator-control-port=52908",
+      "--orchestrator-control-port=57183",
       "--orchestrator-control-token=[redacted]",
-      "--orchestrator-worker-port=52902",
+      "--orchestrator-worker-port=57173",
       "--orchestrator-worker-token=[redacted]",
-      "--orchestrator-call={\"args\":[],\"kwargs\":{\"request\":{\"identifier\":\"lints\",\"module\":\"exactus.tools.lints.main\",\"output\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/LINTS\",\"arguments\":[],\"explicit_arguments\":[],\"run_id\":\"514ec66fc2624d32b23c563ae81bb010:lints\",\"pipeline_run_id\":\"514ec66fc2624d32b23c563ae81bb010\",\"project_root\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\"}}}"
+      "--orchestrator-call={\"args\":[],\"kwargs\":{\"request\":{\"identifier\":\"lints\",\"module\":\"exactus.tools.lints.main\",\"output\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/LINTS\",\"arguments\":[],\"explicit_arguments\":[],\"run_id\":\"aa9f5f9f35a74d85857a1b2dfecca441:lints\",\"pipeline_run_id\":\"aa9f5f9f35a74d85857a1b2dfecca441\",\"project_root\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\"}}}"
     ]
   },
   "organize": {
@@ -658,8 +654,8 @@
     "dry_run": true
   },
   "passed": true,
-  "pipeline_run_id": "514ec66fc2624d32b23c563ae81bb010",
-  "previous_duration_seconds": 4.262,
+  "pipeline_run_id": "aa9f5f9f35a74d85857a1b2dfecca441",
+  "previous_duration_seconds": 17.682,
   "project_href": "../../..",
   "project_root": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
   "report_bundle": {
@@ -669,22 +665,22 @@
   },
   "resume": "PASS: analyzer completed with exit status 0.",
   "run": {
-    "id": "514ec66fc2624d32b23c563ae81bb010:lints",
-    "pipeline_id": "514ec66fc2624d32b23c563ae81bb010",
+    "id": "aa9f5f9f35a74d85857a1b2dfecca441:lints",
+    "pipeline_id": "aa9f5f9f35a74d85857a1b2dfecca441",
     "status": "PASS",
     "exit_code": 0,
-    "started_at": "2026-11-04T07:55:00.217730+00:00",
-    "finished_at": "2026-11-04T07:55:16.921858+00:00",
-    "at_human": "04 November 2026, 07:55:00 UTC",
-    "started_at_human": "04 November 2026, 07:55:00 UTC",
-    "finished_at_human": "04 November 2026, 07:55:16 UTC",
-    "duration_seconds": 16.702,
-    "duration_human": "16.7 s",
+    "started_at": "2026-11-04T12:36:19.565434+00:00",
+    "finished_at": "2026-11-04T12:36:30.950103+00:00",
+    "at_human": "04 November 2026, 12:36:19 UTC",
+    "started_at_human": "04 November 2026, 12:36:19 UTC",
+    "finished_at_human": "04 November 2026, 12:36:30 UTC",
+    "duration_seconds": 11.381,
+    "duration_human": "11.4 s",
     "error": null
   },
-  "run_at": "2026-11-04T07:55:00.217730+00:00",
-  "run_at_human": "04 November 2026, 07:55:00 UTC",
-  "run_id": "514ec66fc2624d32b23c563ae81bb010:lints",
+  "run_at": "2026-11-04T12:36:19.565434+00:00",
+  "run_at_human": "04 November 2026, 12:36:19 UTC",
+  "run_id": "aa9f5f9f35a74d85857a1b2dfecca441:lints",
   "schema": "project-exactus-report/v1",
   "scope": {
     "include": [
@@ -800,7 +796,7 @@
       "count": 0,
       "version": "built-in",
       "files": 6,
-      "duration_seconds": 0.010653958015609533,
+      "duration_seconds": 0.003667250042781234,
       "findings": [],
       "healed": [],
       "skipped_files": []
@@ -819,7 +815,7 @@
       "count": 0,
       "version": "built-in",
       "files": 2,
-      "duration_seconds": 0.00028266600565984845,
+      "duration_seconds": 0.0002464170102030039,
       "findings": [],
       "healed": []
     },
@@ -828,7 +824,7 @@
       "count": 0,
       "version": "built-in",
       "files": 2,
-      "duration_seconds": 2.3042026441544294e-05,
+      "duration_seconds": 3.6999990697950125e-05,
       "findings": [],
       "healed": []
     },
@@ -848,7 +844,7 @@
       "stderr": "",
       "count": 0,
       "findings": [],
-      "duration_seconds": 0.004
+      "duration_seconds": 0.003
     },
     "custom_html": {
       "tool": "custom_html",
@@ -965,7 +961,7 @@
       "findings": [],
       "skipped": false,
       "skipped_files": [],
-      "duration_seconds": 0.093502,
+      "duration_seconds": 0.071641,
       "files_checked": 6,
       "version": "0.15.22"
     },
@@ -1080,7 +1076,7 @@
       "findings": [],
       "skipped": false,
       "skipped_files": [],
-      "duration_seconds": 0.093502,
+      "duration_seconds": 0.071641,
       "files_checked": 6,
       "version": "0.15.22"
     },
@@ -1127,7 +1123,7 @@
       "findings": [],
       "skipped": false,
       "skipped_files": [],
-      "duration_seconds": 2.830421,
+      "duration_seconds": 1.661184,
       "files_checked": 6,
       "version": "1.40.2"
     },
@@ -1153,7 +1149,7 @@
       "count": 0,
       "findings": [],
       "skipped_files": [],
-      "duration_seconds": 0.364,
+      "duration_seconds": 0.276,
       "version": "0.63.0"
     },
     "eslint": {
@@ -1208,7 +1204,7 @@
       "findings": [],
       "skipped": false,
       "skipped_files": [],
-      "duration_seconds": 1.834442,
+      "duration_seconds": 1.150793,
       "files_checked": 4,
       "version": "10.14.0"
     },
@@ -1238,7 +1234,7 @@
       "findings": [],
       "skipped": false,
       "skipped_files": [],
-      "duration_seconds": 1.70532,
+      "duration_seconds": 1.200203,
       "files_checked": 1,
       "version": "17.16.0"
     },
@@ -1264,7 +1260,7 @@
       "findings": [],
       "skipped": false,
       "skipped_files": [],
-      "duration_seconds": 0.114452,
+      "duration_seconds": 0.187376,
       "files_checked": 1,
       "version": "1.9.2"
     },
@@ -1276,7 +1272,7 @@
         "--pretty",
         "false",
         "--project",
-        "/Users/joaolopes/Exactus/exactus/tests/standalone/project/.exactus-typescript-29140.json"
+        "/Users/joaolopes/Exactus/exactus/tests/standalone/project/.exactus-typescript-58424.json"
       ],
       "commands": [
         [
@@ -1285,7 +1281,7 @@
           "--pretty",
           "false",
           "--project",
-          "/Users/joaolopes/Exactus/exactus/tests/standalone/project/.exactus-typescript-29140.json"
+          "/Users/joaolopes/Exactus/exactus/tests/standalone/project/.exactus-typescript-58424.json"
         ]
       ],
       "files": [
@@ -1301,7 +1297,7 @@
       "findings": [],
       "skipped": false,
       "skipped_files": [],
-      "duration_seconds": 3.560066,
+      "duration_seconds": 2.145754,
       "files_checked": 4,
       "version": "6.0.3"
     },
@@ -1310,7 +1306,7 @@
       "count": 0,
       "version": "built-in",
       "files": 6,
-      "duration_seconds": 0.00015295797493308783,
+      "duration_seconds": 5.5917014833539724e-05,
       "findings": [],
       "healed": [],
       "skipped_files": []
@@ -1320,7 +1316,7 @@
       "count": 0,
       "version": "built-in",
       "files": 6,
-      "duration_seconds": 0.001703375019133091,
+      "duration_seconds": 0.0012783330166712403,
       "findings": [],
       "skipped_files": []
     }

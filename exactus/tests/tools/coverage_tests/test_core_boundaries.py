@@ -336,14 +336,27 @@ def test_child_environment_drops_live_coordination(
 
     """
     values: dict[str, str] = {
+        "EXACTUS_ACTION__WRITE": "{}",
+        "EXACTUS_COLLECT_FILES": "1",
+        "EXACTUS_COMPARISON_BASELINE": "/live/baseline",
         "EXACTUS_CONFIG": "/live/pyproject.toml",
+        "EXACTUS_EXPLICIT_ARGUMENTS": "[]",
+        "EXACTUS_HOST": "127.0.0.1",
         "EXACTUS_ORCHESTRATED": "1",
         "EXACTUS_PIPELINE_RUN_ID": "pipeline",
+        "EXACTUS_PMANAGER_WORKER": "1",
+        "EXACTUS_PORT": "8080",
+        "EXACTUS_PROJECT_ROOT": "/live/project",
+        "EXACTUS_RECORD_ROOT": "/live/recordings",
         "EXACTUS_REGISTRY": "/live/runs.db",
         "EXACTUS_REPORTS_ROOT": "/live/results",
+        "EXACTUS_REPORT_OUTPUT": "/live/results/COVERAGE_TESTS",
+        "EXACTUS_RESULTS": "/live/results",
+        "EXACTUS_RESULTS_RELEASE": "/live/release",
         "EXACTUS_ROOT": "/live/project",
         "EXACTUS_RUN_ID": "coverage",
         "EXACTUS_TOOL": "coverage_tests",
+        "EXACTUS_TOOLS_PAYLOAD__LINTS": "{}",
     }
     name: str
     value: str

@@ -18,6 +18,5 @@ No direct files besides this README.
 - [`PERFORMANCE/`](PERFORMANCE/README.md) — Provide code js content.
 - [`PIPELINES/`](PIPELINES/README.md) — Provide @activity json content.
 - [`README/`](README/README.md) — Provide result json content.
-- [`SELF_TEST/`](SELF_TEST/README.md) — Provide result json content.
 
 <!-- exactus:inventory:end -->

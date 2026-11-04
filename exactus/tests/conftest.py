@@ -18,6 +18,7 @@ import pytest
 
 from exactus.__main__ import Check
 from exactus.tests.common.support import private, require_type, set_private
+from exactus.tools.common.run_environment import run_scoped
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Iterator
@@ -70,15 +71,14 @@ def isolated_tool_environment(monkeypatch: pytest.MonkeyPatch) -> None:
         monkeypatch: Restore inherited values and direct tool exports.
 
     """
-    for name in (
-        "EXACTUS_CONFIG",
-        "EXACTUS_EXPLICIT_ARGUMENTS",
-        "EXACTUS_ORCHESTRATED",
-        "EXACTUS_REPORTS_ROOT",
-        "EXACTUS_ROOT",
-    ):
-        monkeypatch.setenv(name=name, value="")
-        monkeypatch.delenv(name=name)
+    # A live outer ``exactus`` run exports its coordination context —
+    # registry path, report output, run identity, roots — into every
+    # spawned process. Dropping the full run-scoped contract keeps
+    # in-process tool invocations from resolving, claiming, or wiping
+    # the outer run's live report tree.
+    for name in tuple(environ):
+        if run_scoped(name=name):
+            monkeypatch.delenv(name=name, raising=False)
 
 
 @pytest.fixture
@@ -347,7 +347,9 @@ def isolated_check(
     ).clear()
     for sig, handler in handlers.items():
         _ = signal(signalnum=sig, handler=handler)
-    _ = environ.pop("EXACTUS_ROOT", None)
+    for name in tuple(environ):
+        if run_scoped(name=name):
+            _ = environ.pop(name, None)
 
 
 @pytest.fixture

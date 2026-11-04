@@ -63,6 +63,12 @@ from exactus.tools.common.cli import (
 )
 from exactus.tools.common.config import resolve_arguments
 from exactus.tools.common.execution import run_exactus
+from exactus.tools.common.run_environment import (
+    Constants as RunEnvironmentConstants,
+)
+from exactus.tools.common.run_environment import (
+    run_scoped,
+)
 from exactus.tools.common.runtime import (
     Progress,
     emit_progress,
@@ -197,33 +203,9 @@ class Constants:
     gated_reports: Final[frozenset[str]] = frozenset(
         {"FRONTEND", "RECORD", "VISUAL_CAUSE"},
     )
-    run_scoped_env: Final[frozenset[str]] = frozenset(
-        {
-            "EXACTUS_COLLECT_FILES",
-            "EXACTUS_COMPARISON_BASELINE",
-            "EXACTUS_CONFIG",
-            "EXACTUS_HOST",
-            "EXACTUS_ORCHESTRATED",
-            "EXACTUS_PIPELINE_RUN_ID",
-            "EXACTUS_PMANAGER_WORKER",
-            "EXACTUS_PORT",
-            "EXACTUS_PROJECT_ROOT",
-            "EXACTUS_RECORD_ROOT",
-            "EXACTUS_REGISTRY",
-            "EXACTUS_REPORTS_ROOT",
-            "EXACTUS_REPORT_OUTPUT",
-            "EXACTUS_RESULTS",
-            "EXACTUS_RESULTS_RELEASE",
-            "EXACTUS_ROOT",
-            "EXACTUS_RUN_ID",
-            "EXACTUS_TOOL",
-        },
-    )
+    run_scoped_env: Final[frozenset[str]] = RunEnvironmentConstants.variables
     run_scoped_prefixes: Final[tuple[str, ...]] = (
-        "EXACTUS_ACTION__",
-        "EXACTUS_ES__",
-        "EXACTUS_RECORDER_FLUSH__",
-        "EXACTUS_TOOLS_PAYLOAD__",
+        RunEnvironmentConstants.prefixes
     )
     fixture: Final[dict[str, str]] = {
         "pyproject.toml": dedent(
@@ -619,12 +601,9 @@ def pipeline_env() -> dict[str, str]:
 
     """
     env: dict[str, str] = dict(subprocess_env() or environ)
-    for name in Constants.run_scoped_env:
-        _ = env.pop(name, None)
-    for name in tuple(env):
-        if name.startswith(Constants.run_scoped_prefixes):
-            _ = env.pop(name, None)
-    return env
+    return {
+        key: value for key, value in env.items() if not run_scoped(name=key)
+    }
 
 
 def describe_command(

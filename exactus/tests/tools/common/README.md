@@ -70,8 +70,10 @@ Tests of `exactus/tools/common` leaf primitives and shared templates.
 - [`test_report_comparison.py`](test_report_comparison.py) — Exercise baseline retention and per-section report comparisons.
 - [`test_report_templates.py`](test_report_templates.py) — The shipped report templates render goldens and reach the bundle.
 - [`test_report_time.py`](test_report_time.py) — Verify readable report timestamps and recorded-time precedence.
+- [`test_run_environment.py`](test_run_environment.py) — Exercise the canonical run-scoped environment boundary.
 - [`test_snippets.py`](test_snippets.py) — Bounded, root-confined source excerpts around finding lines.
 - [`test_source_cache.py`](test_source_cache.py) — Verify cache ownership, content refresh and mutable-tree isolation.
+- [`test_source_transaction.py`](test_source_transaction.py) — Exercise source transaction conflict detection and recovery boundaries.
 - [`test_sprint.py`](test_sprint.py) — Flushed printing helpers and the ``DEBUG.txt`` capture directives.
 - [`test_stderr_capture.py`](test_stderr_capture.py) — Standard-error capture: line counts, levels and the mirror.
 - [`test_terminal.py`](test_terminal.py) — ANSI terminal rendering, progress painting, and cursor probing.

@@ -75,6 +75,12 @@ from exactus.tools.common.cli import (
 )
 from exactus.tools.common.path_filters import default_excluded_dirs, glob_match
 from exactus.tools.common.process_control import read_json, write_json
+from exactus.tools.common.run_environment import (
+    Constants as RunEnvironmentConstants,
+)
+from exactus.tools.common.run_environment import (
+    sanitized_environ,
+)
 from exactus.tools.common.runtime import (
     Progress,
     emit_progress,
@@ -145,19 +151,7 @@ class Constants:
             "wait",
         },
     )
-    child_env_drop: Final[frozenset[str]] = frozenset(
-        {
-            "EXACTUS_CONFIG",
-            "EXACTUS_EXPLICIT_ARGUMENTS",
-            "EXACTUS_ORCHESTRATED",
-            "EXACTUS_PIPELINE_RUN_ID",
-            "EXACTUS_REGISTRY",
-            "EXACTUS_REPORTS_ROOT",
-            "EXACTUS_ROOT",
-            "EXACTUS_RUN_ID",
-            "EXACTUS_TOOL",
-        },
-    )
+    child_env_drop: Final[frozenset[str]] = RunEnvironmentConstants.variables
 
 
 @dataclass(frozen=True)
@@ -348,11 +342,7 @@ def _child_environ(
         The resulting value.
 
     """
-    environment: dict[str, str] = {
-        key: value
-        for key, value in environ.items()
-        if key not in Constants.child_env_drop
-    }
+    environment: dict[str, str] = sanitized_environ()
     if overrides:
         environment.update(overrides)
     return environment

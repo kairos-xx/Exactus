@@ -13,7 +13,7 @@
   "pytest_shards": 1,
   "test_execution": {
     "status": 0,
-    "duration_seconds": 4.057,
+    "duration_seconds": 2.54,
     "tests": [
       {
         "shard": 0,
@@ -56,5 +56,5 @@
     "warnings": []
   },
   "coverage_file": "coverage_raw_py.json",
-  "coverage_sha256": "88e70b32128ab57d1da88b631405a5f6d6afef164d3bb8b9bcf5488561ab865b"
+  "coverage_sha256": "5e078aee68993cd8fa96a8d36a40ae793264a71ffe21fa8a41f68a3a5af95321"
 }
