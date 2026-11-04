@@ -122,9 +122,11 @@ class ShebangUpdater:
         except (OSError, UnicodeError):
             return False
         stdout.write(
-            f"{path.relative_to(self._settings.root)}\n  "
-            f"{first_line.decode(errors='replace').rstrip()}\n  "
-            f"-> {self._settings.shebang.decode()}\n",
+            f"""\
+{path.relative_to(self._settings.root)}
+  {first_line.decode(errors="replace").rstrip()}
+  -> {self._settings.shebang.decode()}
+""",
         )
         return True
 
@@ -134,7 +136,10 @@ def main() -> None:
     root: Path = Path.cwd().resolve()
     updated: int = ShebangUpdater(settings=Settings(root=root)).run()
     stdout.write(
-        f"\nUpdated {updated} {('file' if updated == 1 else 'files')}.\n",
+        f"""\
+
+Updated {updated} {("file" if updated == 1 else "files")}.
+""",
     )
 
 

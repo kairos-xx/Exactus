@@ -28,7 +28,11 @@ def test_readme_directory_exactus_flags_undocumented_entries(
         tmp_path: Per-test temporary directory.
 
     """
-    _ = (tmp_path / "README.md").write_text(data="# dir\n")
+    _ = (tmp_path / "README.md").write_text(
+        data="""\
+# dir
+""",
+    )
     _ = (tmp_path / "module.py").write_text(data="")
     (tmp_path / "pkg").mkdir()
     findings: object = private_call(
@@ -60,16 +64,32 @@ def test_readme_exactus_repairs_missing_inventories(tmp_path: Path) -> None:
         data=(
             dedent(
                 text=(
-                    "    # Docs\n    \n    ## Files\n    \n    - `existing"
-                    ".md` — Existing.\n    \n    ## Subdirectories\n    \n"
-                    "    - `existing/` — Existing.\n    \n    ## Usage\n  "
-                    "  \n    Keep this last.\n    "
+                    """\
+    # Docs
+
+    ## Files
+
+    - `existing.md` — Existing.
+
+    ## Subdirectories
+
+    - `existing/` — Existing.
+
+    ## Usage
+
+    Keep this last.
+    """
                 ),
             )
         ),
         encoding="utf-8",
     )
-    _ = (docs / "topic.md").write_text(data="topic\n", encoding="utf-8")
+    _ = (docs / "topic.md").write_text(
+        data="""\
+topic
+""",
+        encoding="utf-8",
+    )
     _ = (guide / "example.py").write_text(data="", encoding="utf-8")
     result: readme_core.ReadmeExactusResult = readme_core.readme(
         inputs=readme_core.ReadmeExactusInput(

@@ -96,10 +96,14 @@ def test_mirror_records_and_forwards_sys_stderr(
     with StderrMirror(directory=tmp_path / "ARTIFACTS") as mirror:
         late: TextIO = current_stderr()
         expect_false(condition=late is terminal)
-        _ = late.write("warning: first\n")
+        _ = late.write("""\
+warning: first
+""")
         _ = late.write("second")
     expect_true(condition=current_stderr() is terminal)
-    _ = late.write("after exit\n")
+    _ = late.write("""\
+after exit
+""")
     expect_equal(actual=mirror.recorder.lines, expected=2)
     expect_equal(
         actual=mirror.recorder.levels,
@@ -107,10 +111,15 @@ def test_mirror_records_and_forwards_sys_stderr(
     )
     expect_equal(
         actual=(tmp_path / "ARTIFACTS" / "stderr.log").read_text(),
-        expected="warning: first\nsecond",
+        expected="""\
+warning: first
+second""",
     )
     expect_false(condition=(tmp_path / "ARTIFACTS" / "stderr.json").exists())
     expect_equal(
         actual=terminal.getvalue(),
-        expected="warning: first\nsecondafter exit\n",
+        expected="""\
+warning: first
+secondafter exit
+""",
     )

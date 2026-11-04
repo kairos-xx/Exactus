@@ -301,4 +301,11 @@ def _readme(*, members: Mapping[str, Path], missing: Sequence[str]) -> str:
     if missing:
         lines.append(f"- Reported but not found on disk: {len(missing)}")
         lines.extend(f"  - `{label}`" for label in missing)
-    return "\n".join(lines) + "\n"
+    return (
+        """\
+
+""".join(lines)
+        + """\
+
+"""
+    )

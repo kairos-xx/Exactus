@@ -4,7 +4,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
   "analyzer": "tests-tests",
   "comparison": {
     "available": true,
-    "previous_generated_at": "2026-11-02T06:18:51.017761+00:00",
+    "previous_generated_at": "2026-11-04T07:28:53.428573+00:00",
     "previous_run_id": null,
     "previous_status": "PASS",
     "previous_duration_seconds": null,
@@ -22,15 +22,15 @@ window.__REPORT_DATA__ = JSON.parse(`{
   },
   "findings": [],
   "fingerprint": {
-    "commit": "8acd5332d8bb9132a3f9464fe58d265059b6ef39",
-    "tree": "894ba3dd961790939accb258297593340dbeb862",
+    "commit": "68b43a4bd4691257a6e48e3cb87a96edf2139868",
+    "tree": "8037996a0c49bff489a24efc566e2091d89e425b",
     "dirty": true,
     "python": "3.13.9",
     "ruff": "ruff 0.12.0",
     "basedpyright": "basedpyright 1.40.2"
   },
-  "generated_at": "2026-11-02T06:48:36.524647+00:00",
-  "generated_at_human": "02 November 2026, 06:48:36 UTC",
+  "generated_at": "2026-11-04T07:55:31.457288+00:00",
+  "generated_at_human": "04 November 2026, 07:55:31 UTC",
   "local_links": {
     "tests/test_calc.py": "../../../../tests/test_calc.py",
     "/Users/joaolopes/Exactus/exactus/tests/standalone/project": "../../../..",
@@ -38,7 +38,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
     "result.md": "result.md",
     "result.json": "result.json"
   },
-  "markdown": "# tests Test Analyzer\\n\\n**Run time:** 02 November 2026, 06:48:36 UTC\\n\\n## Change since previous report\\n\\n| Findings | Current | Previous | Delta | Added | Resolved | Unchanged |\\n|---|---:|---:|---:|---:|---:|---:|\\n| Overall | 0 | 0 | 0 | 0 | 0 | 0 |\\n\\n\\n\\n- Status: **PASS**\\n- Execution: shared with COVERAGE (no duplicate pytest run)\\n- Matching test files: **1**\\n- Tests run: **2**\\n\\n## Test files\\n\\n### [\`tests/test_calc.py\`](../../../../tests/test_calc.py) — 2 tests\\n\\n| Test | Outcome |\\n| --- | --- |\\n| \`test_add_sums_operands\` | PASSED |\\n| \`test_is_even_flags_parity\` | PASSED |\\n",
+  "markdown": "# tests Test Analyzer\\n\\n**Run time:** 04 November 2026, 07:55:31 UTC\\n\\n## Change since previous report\\n\\n| Findings | Current | Previous | Delta | Added | Resolved | Unchanged |\\n|---|---:|---:|---:|---:|---:|---:|\\n| Overall | 0 | 0 | 0 | 0 | 0 | 0 |\\n\\n\\n\\n- Status: **PASS**\\n- Execution: shared with COVERAGE (no duplicate pytest run)\\n- Matching test files: **1**\\n- Tests run: **2**\\n\\n## Test files\\n\\n### [\`tests/test_calc.py\`](../../../../tests/test_calc.py) — 2 tests\\n\\n| Test | Outcome |\\n| --- | --- |\\n| \`test_add_sums_operands\` | PASSED |\\n| \`test_is_even_flags_parity\` | PASSED |\\n",
   "passed": true,
   "project_href": "../../../../..",
   "project_root": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
@@ -47,8 +47,8 @@ window.__REPORT_DATA__ = JSON.parse(`{
     "json": "result.json",
     "web": "result_web"
   },
-  "run_at": "2026-11-02T06:48:36.524647+00:00",
-  "run_at_human": "02 November 2026, 06:48:36 UTC",
+  "run_at": "2026-11-04T07:55:31.457288+00:00",
+  "run_at_human": "04 November 2026, 07:55:31 UTC",
   "schema": "project-exactus-report/v1",
   "sections": [
     {
@@ -72,7 +72,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
   "shared_execution_status": 0,
   "test_execution": {
     "status": 0,
-    "duration_seconds": 3.008,
+    "duration_seconds": 4.057,
     "tests": [
       {
         "shard": 0,

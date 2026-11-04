@@ -185,31 +185,43 @@ class Constants:
     ]
     form_html: Final[str] = dedent(
         text=(
-            '    <!doctype html><html lang="en"><body>\n    <input id="name" p'
-            'laceholder="Name" aria-label="Name" data-testid="name">\n    <lab'
-            'el>Agree <input id="agree" type="checkbox"></label>\n    <select '
-            'id="pick">\n    <option value="a">A</option><option value="b">B</'
-            'option>\n    </select>\n    <div id="rich" contenteditable="true"'
-            '>x</div>\n    <button id="go" role="button">Go</button>\n    <div'
-            ' id="a" draggable="true"\n    style="width:50px;height:50px;backg'
-            'round:#ccc">a</div>\n    <div id="b" style="width:50px;height:50p'
-            'x;background:#999">b</div>\n    <div id="tall" style="height:3000'
-            'px"></div>\n    <script>document.getElementById("go").onclick = ('
-            ') => alert("hi");</script>\n    </body></html>'
+            """\
+    <!doctype html><html lang="en"><body>
+    <input id="name" placeholder="Name" aria-label="Name" \
+data-testid="name">
+    <label>Agree <input id="agree" type="checkbox"></label>
+    <select id="pick">
+    <option value="a">A</option><option value="b">B</option>
+    </select>
+    <div id="rich" contenteditable="true">x</div>
+    <button id="go" role="button">Go</button>
+    <div id="a" draggable="true"
+    style="width:50px;height:50px;background:#ccc">a</div>
+    <div id="b" style="width:50px;height:50px;background:#999">b</div>
+    <div id="tall" style="height:3000px"></div>
+    <script>document.getElementById("go").onclick = () => alert("hi");\
+</script>
+    </body></html>"""
         ),
     )
     hover_html: Final[str] = dedent(
         text=(
-            '    <!doctype html><html lang="en"><body>\n    <header><h1>Title<'
-            '/h1><p>plain paragraph</p></header>\n    <button id="tip">Tip</bu'
-            'tton>\n    <div id="inline" onmouseover="void 0">inline</div>\n  '
-            '  <div id="menu" style="width:80px;height:30px">Menu</div>\n    <'
-            'div id="pop" hidden>popup</div>\n    <script>\n      document.get'
-            'ElementById("tip").addEventListener("mouseenter", () => {});\n   '
-            '   document.addEventListener("mouseover", (event) => {\n        i'
-            'f (event.target.id === "menu")\n          document.getElementById'
-            '("pop").hidden = false;\n      });\n    </script>\n    </body></h'
-            "tml>"
+            """\
+    <!doctype html><html lang="en"><body>
+    <header><h1>Title</h1><p>plain paragraph</p></header>
+    <button id="tip">Tip</button>
+    <div id="inline" onmouseover="void 0">inline</div>
+    <div id="menu" style="width:80px;height:30px">Menu</div>
+    <div id="pop" hidden>popup</div>
+    <script>
+      document.getElementById("tip").addEventListener("mouseenter", () => {});\
+
+      document.addEventListener("mouseover", (event) => {
+        if (event.target.id === "menu")
+          document.getElementById("pop").hidden = false;
+      });
+    </script>
+    </body></html>"""
         ),
     )
 

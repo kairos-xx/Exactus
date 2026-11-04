@@ -1,6 +1,6 @@
 # Combined Coverage Exactus
 
-**Run time:** 02 November 2026, 06:48:51 UTC
+**Run time:** 04 November 2026, 07:55:33 UTC
 
 ## Change since previous report
 
@@ -22,9 +22,6 @@
 - Reachable local targets: **2**
 - Ignored non-local imports: **2**
 - Unreached source files: **1**
-- JavaScript files measured: **1**
-- JavaScript line coverage: **100.0%**
-- JavaScript unreached sources: **0**
 
 ## File coverage
 
@@ -52,9 +49,3 @@ These files were not reached during measurement and are excluded from the percen
 
 - `__future__`
 - `typing`
-
-## JavaScript coverage
-
-| File | Lines | Missing | Coverage |
-| --- | ---: | ---: | ---: |
-| [`web/code.js`](../../../web/code.js) | 21 | 0 | 100.00% |

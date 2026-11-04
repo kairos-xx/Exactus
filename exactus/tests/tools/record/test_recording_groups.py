@@ -253,11 +253,21 @@ def test_capture_clock_pause_resume_and_owner(
     worker: ManagedBrowserWorker = ManagedBrowserWorker(output=tmp_path)
     messages: list[Event] = []
     worker.emit = messages.append
+
+    def evaluate(**kwargs: object) -> None:
+        """Stub function to capture call boundaries without side effects.
+
+        Args:
+            kwargs: Captured page evaluation keyword arguments.
+
+        """
+        _ = kwargs
+
     page: Page = cast(
         typ="Page",
         val=SimpleNamespace(
             url="http://localhost/",
-            evaluate=lambda **_: None,
+            evaluate=evaluate,
         ),
     )
     command: Event = {

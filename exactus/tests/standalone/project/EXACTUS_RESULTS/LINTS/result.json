@@ -4,15 +4,15 @@
   "tool": {
     "name": "lints",
     "display_name": "Lint Exactus",
-    "version": "0.6.1"
+    "version": "0.7.1"
   },
   "summary": {
     "timing": {
-      "date_time": "02/11/2026 06:48:00",
-      "finished_date_time": "02/11/2026 06:48:20",
+      "date_time": "04/11/2026 07:55:08",
+      "finished_date_time": "04/11/2026 07:55:15",
       "timezone": "WET",
-      "duration_seconds": 19.735807,
-      "duration_human": "00:00:19.735807"
+      "duration_seconds": 6.655217,
+      "duration_human": "00:00:06.655217"
     },
     "host": {
       "hostname": "Mac",
@@ -30,13 +30,20 @@
       "ignore_patterns": [
         ".*/**",
         "**/.*/**",
+        "**/__pycache__/**",
+        "**/build/**",
+        "**/coverage_report/**",
+        "**/dist/**",
+        "**/env/**",
+        "**/htmlcov/**",
+        "**/mutants/**",
+        "**/node_modules/**",
+        "**/site-packages/**",
+        "**/venv/**",
+        "*.egg-info/**",
+        "*.dist-info/**",
         "EXACTUS_RESULTS/**",
         "**/EXACTUS_RESULTS/**",
-        "node_modules/**",
-        "build/**",
-        "dist/**",
-        "*.egg-info/**",
-        "**/__pycache__/**",
         "EXACTUS_RESULTS",
         "EXACTUS_RESULTS/**"
       ],
@@ -89,9 +96,9 @@
   },
   "all_lints": {
     "schema_version": 2,
-    "generated_at": "2026-11-02T06:48:16.607075+00:00",
-    "started_at": "2026-11-02T06:48:07.708713+00:00",
-    "duration_seconds": 8.898269,
+    "generated_at": "2026-11-04T07:55:13.546762+00:00",
+    "started_at": "2026-11-04T07:55:09.889513+00:00",
+    "duration_seconds": 3.657152,
     "root": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
     "ok": true,
     "summary": {
@@ -110,7 +117,7 @@
       "ruff": {
         "name": "ruff",
         "status": "passed",
-        "duration_seconds": 1.098206,
+        "duration_seconds": 0.093502,
         "total_files": 6,
         "completed_files": 6,
         "files_with_issues": 0,
@@ -130,7 +137,7 @@
       "ruff_docs": {
         "name": "ruff_docs",
         "status": "passed",
-        "duration_seconds": 1.098206,
+        "duration_seconds": 0.093502,
         "total_files": 6,
         "completed_files": 6,
         "files_with_issues": 0,
@@ -140,7 +147,7 @@
       "basedpyright": {
         "name": "basedpyright",
         "status": "passed",
-        "duration_seconds": 3.577051,
+        "duration_seconds": 2.830421,
         "total_files": 6,
         "completed_files": 6,
         "files_with_issues": 0,
@@ -150,7 +157,7 @@
       "pyrefly": {
         "name": "pyrefly",
         "status": "passed",
-        "duration_seconds": 1.306892,
+        "duration_seconds": 0.585864,
         "total_files": 6,
         "completed_files": 6,
         "files_with_issues": 0,
@@ -160,7 +167,7 @@
       "eslint": {
         "name": "eslint",
         "status": "passed",
-        "duration_seconds": 1.732924,
+        "duration_seconds": 1.834442,
         "total_files": 4,
         "completed_files": 4,
         "files_with_issues": 0,
@@ -170,7 +177,7 @@
       "stylelint": {
         "name": "stylelint",
         "status": "passed",
-        "duration_seconds": 1.965407,
+        "duration_seconds": 1.70532,
         "total_files": 1,
         "completed_files": 1,
         "files_with_issues": 0,
@@ -180,7 +187,7 @@
       "htmlint": {
         "name": "htmlint",
         "status": "passed",
-        "duration_seconds": 0.377548,
+        "duration_seconds": 0.114452,
         "total_files": 1,
         "completed_files": 1,
         "files_with_issues": 0,
@@ -190,7 +197,7 @@
       "typescript": {
         "name": "typescript",
         "status": "passed",
-        "duration_seconds": 8.842184,
+        "duration_seconds": 3.560066,
         "total_files": 4,
         "completed_files": 4,
         "files_with_issues": 0,
@@ -205,7 +212,7 @@
     {
       "name": "@activity.json",
       "path": "ARTIFACTS/@activity.json",
-      "bytes": 2491
+      "bytes": 2687
     },
     {
       "name": "README.md",
@@ -220,20 +227,20 @@
     {
       "name": "stdout.log",
       "path": "ARTIFACTS/stdout.log",
-      "bytes": 343
+      "bytes": 433
     },
     {
       "name": "steps.txt",
       "path": "ARTIFACTS/steps.txt",
-      "bytes": 39938
+      "bytes": 69873
     }
   ],
   "comparison": {
     "available": true,
-    "previous_generated_at": "2026-11-02T06:18:20.830105+00:00",
-    "previous_run_id": "ca892f99f2a643d3be26908062de1af7:lints",
+    "previous_generated_at": "2026-11-04T07:41:46.650072+00:00",
+    "previous_run_id": "c2bc048217764aa1b3ca6f8f148320ea",
     "previous_status": "PASS",
-    "previous_duration_seconds": 16.607,
+    "previous_duration_seconds": 4.262,
     "current_total": 0,
     "previous_total": 0,
     "delta": 0,
@@ -296,7 +303,7 @@
       }
     ]
   },
-  "duration_seconds": 21.234,
+  "duration_seconds": 16.702,
   "environment": {
     "os": "Darwin 25.3.0",
     "python": "3.13.9",
@@ -309,7 +316,7 @@
       },
       {
         "name": "EXACTUS_PIPELINE_RUN_ID",
-        "value": "7906d1edd1a543c7894fd4387463792d"
+        "value": "514ec66fc2624d32b23c563ae81bb010"
       },
       {
         "name": "EXACTUS_REGISTRY",
@@ -321,7 +328,7 @@
       },
       {
         "name": "EXACTUS_RUN_ID",
-        "value": "7906d1edd1a543c7894fd4387463792d:lints"
+        "value": "514ec66fc2624d32b23c563ae81bb010:lints"
       },
       {
         "name": "EXACTUS_TOOL",
@@ -329,7 +336,11 @@
       },
       {
         "name": "LANG",
-        "value": "C.UTF-8"
+        "value": "en_US.UTF-8"
+      },
+      {
+        "name": "TERM",
+        "value": "xterm-256color"
       }
     ]
   },
@@ -354,7 +365,7 @@
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 0.00444291700841859
+          "duration_seconds": 0.001703375019133091
         },
         {
           "linter": "custom_shebang",
@@ -366,7 +377,7 @@
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 0.00567395897815004
+          "duration_seconds": 0.010653958015609533
         },
         {
           "linter": "custom_python",
@@ -378,7 +389,7 @@
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 0.144
+          "duration_seconds": 0.006
         },
         {
           "linter": "custom_python_long_lines",
@@ -390,7 +401,7 @@
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 0.00010141701204702258
+          "duration_seconds": 0.00015295797493308783
         },
         {
           "linter": "custom_javascript",
@@ -402,7 +413,7 @@
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 0.001
+          "duration_seconds": 0.0
         },
         {
           "linter": "custom_javascript_delimiters",
@@ -414,7 +425,7 @@
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 0.03589370800182223
+          "duration_seconds": 0.00028266600565984845
         },
         {
           "linter": "custom_javascript_notation",
@@ -426,7 +437,7 @@
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 0.23515995795605704
+          "duration_seconds": 2.3042026441544294e-05
         },
         {
           "linter": "custom_css",
@@ -438,7 +449,7 @@
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 0.002
+          "duration_seconds": 0.004
         },
         {
           "linter": "custom_html",
@@ -455,26 +466,26 @@
         {
           "linter": "ruff",
           "status": "ran",
-          "version": "0.12.0",
+          "version": "0.15.22",
           "files": 6,
           "findings": 0,
           "errors": 0,
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 1.098206
+          "duration_seconds": 0.093502
         },
         {
           "linter": "ruff_docs",
           "status": "ran",
-          "version": "0.12.0",
+          "version": "0.15.22",
           "files": 6,
           "findings": 0,
           "errors": 0,
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 1.098206
+          "duration_seconds": 0.093502
         },
         {
           "linter": "basedpyright",
@@ -486,7 +497,7 @@
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 3.577051
+          "duration_seconds": 2.830421
         },
         {
           "linter": "pyrefly",
@@ -498,7 +509,7 @@
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 0.459
+          "duration_seconds": 0.364
         },
         {
           "linter": "eslint",
@@ -510,7 +521,7 @@
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 1.732924
+          "duration_seconds": 1.834442
         },
         {
           "linter": "typescript",
@@ -522,7 +533,7 @@
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 8.842184
+          "duration_seconds": 3.560066
         },
         {
           "linter": "stylelint",
@@ -534,7 +545,7 @@
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 1.965407
+          "duration_seconds": 1.70532
         },
         {
           "linter": "htmlhint",
@@ -546,7 +557,7 @@
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 0.377548
+          "duration_seconds": 0.114452
         }
       ],
       "top_rules": [],
@@ -600,8 +611,8 @@
   },
   "findings": [],
   "fingerprint": {
-    "commit": "8acd5332d8bb9132a3f9464fe58d265059b6ef39",
-    "tree": "894ba3dd961790939accb258297593340dbeb862",
+    "commit": "68b43a4bd4691257a6e48e3cb87a96edf2139868",
+    "tree": "8037996a0c49bff489a24efc566e2091d89e425b",
     "dirty": true,
     "python": "3.13.9",
     "ruff": "ruff 0.12.0",
@@ -611,26 +622,26 @@
     "status": "PASS",
     "reason": "No blocking findings"
   },
-  "generated_at": "2026-11-02T06:48:20.561043+00:00",
-  "generated_at_human": "02 November 2026, 06:48:20 UTC",
+  "generated_at": "2026-11-04T07:55:15.275888+00:00",
+  "generated_at_human": "04 November 2026, 07:55:15 UTC",
   "group_final": {
     "files": 6,
     "planned": 0,
     "constants": 0,
     "changed": 0,
-    "dry_run": false
+    "dry_run": true
   },
   "invocation": {
-    "command": "/Users/joaolopes/Exactus/bin/release/exactus_macos_arm64/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=53746 --orchestrator-control-token=[redacted] --orchestrator-worker-port=53705 --orchestrator-worker-token=[redacted] '--orchestrator-call={\"args\":[],\"kwargs\":{\"request\":{\"identifier\":\"lints\",\"module\":\"exactus.tools.lints.main\",\"output\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/LINTS\",\"arguments\":[],\"run_id\":\"7906d1edd1a543c7894fd4387463792d:lints\",\"pipeline_run_id\":\"7906d1edd1a543c7894fd4387463792d\",\"project_root\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\"}}}'",
+    "command": "/Users/joaolopes/Exactus/bin/release/exactus_macos_arm64/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=52908 --orchestrator-control-token=[redacted] --orchestrator-worker-port=52902 --orchestrator-worker-token=[redacted] '--orchestrator-call={\"args\":[],\"kwargs\":{\"request\":{\"identifier\":\"lints\",\"module\":\"exactus.tools.lints.main\",\"output\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/LINTS\",\"arguments\":[],\"explicit_arguments\":[],\"run_id\":\"514ec66fc2624d32b23c563ae81bb010:lints\",\"pipeline_run_id\":\"514ec66fc2624d32b23c563ae81bb010\",\"project_root\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\"}}}'",
     "cwd": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
     "arguments": [
       "exactus.tools.common.tool_worker",
       "ExactusTool",
-      "--orchestrator-control-port=53746",
+      "--orchestrator-control-port=52908",
       "--orchestrator-control-token=[redacted]",
-      "--orchestrator-worker-port=53705",
+      "--orchestrator-worker-port=52902",
       "--orchestrator-worker-token=[redacted]",
-      "--orchestrator-call={\"args\":[],\"kwargs\":{\"request\":{\"identifier\":\"lints\",\"module\":\"exactus.tools.lints.main\",\"output\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/LINTS\",\"arguments\":[],\"run_id\":\"7906d1edd1a543c7894fd4387463792d:lints\",\"pipeline_run_id\":\"7906d1edd1a543c7894fd4387463792d\",\"project_root\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\"}}}"
+      "--orchestrator-call={\"args\":[],\"kwargs\":{\"request\":{\"identifier\":\"lints\",\"module\":\"exactus.tools.lints.main\",\"output\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/LINTS\",\"arguments\":[],\"explicit_arguments\":[],\"run_id\":\"514ec66fc2624d32b23c563ae81bb010:lints\",\"pipeline_run_id\":\"514ec66fc2624d32b23c563ae81bb010\",\"project_root\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\"}}}"
     ]
   },
   "organize": {
@@ -644,11 +655,11 @@
     "methods_seen": 0,
     "methods_moved": 0,
     "lines_moved": 0,
-    "dry_run": false
+    "dry_run": true
   },
   "passed": true,
-  "pipeline_run_id": "7906d1edd1a543c7894fd4387463792d",
-  "previous_duration_seconds": 16.607,
+  "pipeline_run_id": "514ec66fc2624d32b23c563ae81bb010",
+  "previous_duration_seconds": 4.262,
   "project_href": "../../..",
   "project_root": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
   "report_bundle": {
@@ -658,22 +669,22 @@
   },
   "resume": "PASS: analyzer completed with exit status 0.",
   "run": {
-    "id": "7906d1edd1a543c7894fd4387463792d:lints",
-    "pipeline_id": "7906d1edd1a543c7894fd4387463792d",
+    "id": "514ec66fc2624d32b23c563ae81bb010:lints",
+    "pipeline_id": "514ec66fc2624d32b23c563ae81bb010",
     "status": "PASS",
     "exit_code": 0,
-    "started_at": "2026-11-02T06:48:00.728979+00:00",
-    "finished_at": "2026-11-02T06:48:21.967382+00:00",
-    "at_human": "02 November 2026, 06:48:00 UTC",
-    "started_at_human": "02 November 2026, 06:48:00 UTC",
-    "finished_at_human": "02 November 2026, 06:48:21 UTC",
-    "duration_seconds": 21.234,
-    "duration_human": "21.2 s",
+    "started_at": "2026-11-04T07:55:00.217730+00:00",
+    "finished_at": "2026-11-04T07:55:16.921858+00:00",
+    "at_human": "04 November 2026, 07:55:00 UTC",
+    "started_at_human": "04 November 2026, 07:55:00 UTC",
+    "finished_at_human": "04 November 2026, 07:55:16 UTC",
+    "duration_seconds": 16.702,
+    "duration_human": "16.7 s",
     "error": null
   },
-  "run_at": "2026-11-02T06:48:00.728979+00:00",
-  "run_at_human": "02 November 2026, 06:48:00 UTC",
-  "run_id": "7906d1edd1a543c7894fd4387463792d:lints",
+  "run_at": "2026-11-04T07:55:00.217730+00:00",
+  "run_at_human": "04 November 2026, 07:55:00 UTC",
+  "run_id": "514ec66fc2624d32b23c563ae81bb010:lints",
   "schema": "project-exactus-report/v1",
   "scope": {
     "include": [
@@ -682,13 +693,20 @@
     "exclude": [
       ".*/**",
       "**/.*/**",
+      "**/__pycache__/**",
+      "**/build/**",
+      "**/coverage_report/**",
+      "**/dist/**",
+      "**/env/**",
+      "**/htmlcov/**",
+      "**/mutants/**",
+      "**/node_modules/**",
+      "**/site-packages/**",
+      "**/venv/**",
+      "*.egg-info/**",
+      "*.dist-info/**",
       "EXACTUS_RESULTS/**",
       "**/EXACTUS_RESULTS/**",
-      "node_modules/**",
-      "build/**",
-      "dist/**",
-      "*.egg-info/**",
-      "**/__pycache__/**",
       "EXACTUS_RESULTS",
       "EXACTUS_RESULTS/**"
     ],
@@ -782,7 +800,7 @@
       "count": 0,
       "version": "built-in",
       "files": 6,
-      "duration_seconds": 0.00567395897815004,
+      "duration_seconds": 0.010653958015609533,
       "findings": [],
       "healed": [],
       "skipped_files": []
@@ -794,14 +812,14 @@
       "stderr": "",
       "count": 0,
       "findings": [],
-      "duration_seconds": 0.144
+      "duration_seconds": 0.006
     },
     "custom_javascript_delimiters": {
       "returncode": 0,
       "count": 0,
       "version": "built-in",
       "files": 2,
-      "duration_seconds": 0.03589370800182223,
+      "duration_seconds": 0.00028266600565984845,
       "findings": [],
       "healed": []
     },
@@ -810,7 +828,7 @@
       "count": 0,
       "version": "built-in",
       "files": 2,
-      "duration_seconds": 0.23515995795605704,
+      "duration_seconds": 2.3042026441544294e-05,
       "findings": [],
       "healed": []
     },
@@ -821,7 +839,7 @@
       "stderr": "",
       "count": 0,
       "findings": [],
-      "duration_seconds": 0.001
+      "duration_seconds": 0.0
     },
     "custom_css": {
       "tool": "custom_css",
@@ -830,7 +848,7 @@
       "stderr": "",
       "count": 0,
       "findings": [],
-      "duration_seconds": 0.002
+      "duration_seconds": 0.004
     },
     "custom_html": {
       "tool": "custom_html",
@@ -848,12 +866,13 @@
       "version": "built-in",
       "findings": [],
       "proposals": 0,
+      "skipped": 0,
       "healed": 0
     },
     "ruff": {
       "tool": "ruff",
       "command": [
-        "/opt/anaconda3/bin/ruff",
+        "/Users/joaolopes/Exactus/.venv/bin/ruff",
         "check",
         "--select",
         "ALL",
@@ -865,7 +884,7 @@
       ],
       "commands": [
         [
-          "/opt/anaconda3/bin/ruff",
+          "/Users/joaolopes/Exactus/.venv/bin/ruff",
           "check",
           "--select",
           "ALL",
@@ -876,7 +895,7 @@
           "__init__.py"
         ],
         [
-          "/opt/anaconda3/bin/ruff",
+          "/Users/joaolopes/Exactus/.venv/bin/ruff",
           "check",
           "--select",
           "ALL",
@@ -887,7 +906,7 @@
           "conftest.py"
         ],
         [
-          "/opt/anaconda3/bin/ruff",
+          "/Users/joaolopes/Exactus/.venv/bin/ruff",
           "check",
           "--select",
           "ALL",
@@ -898,7 +917,7 @@
           "python/__init__.py"
         ],
         [
-          "/opt/anaconda3/bin/ruff",
+          "/Users/joaolopes/Exactus/.venv/bin/ruff",
           "check",
           "--select",
           "ALL",
@@ -909,7 +928,7 @@
           "python/calc.py"
         ],
         [
-          "/opt/anaconda3/bin/ruff",
+          "/Users/joaolopes/Exactus/.venv/bin/ruff",
           "check",
           "--select",
           "ALL",
@@ -920,7 +939,7 @@
           "tests/__init__.py"
         ],
         [
-          "/opt/anaconda3/bin/ruff",
+          "/Users/joaolopes/Exactus/.venv/bin/ruff",
           "check",
           "--select",
           "ALL",
@@ -946,9 +965,9 @@
       "findings": [],
       "skipped": false,
       "skipped_files": [],
-      "duration_seconds": 1.098206,
+      "duration_seconds": 0.093502,
       "files_checked": 6,
-      "version": "0.12.0"
+      "version": "0.15.22"
     },
     "refurb": {
       "tool": "refurb",
@@ -968,7 +987,7 @@
     "ruff_docs": {
       "tool": "ruff_docs",
       "command": [
-        "/opt/anaconda3/bin/ruff",
+        "/Users/joaolopes/Exactus/.venv/bin/ruff",
         "check",
         "--select",
         "ALL",
@@ -980,7 +999,7 @@
       ],
       "commands": [
         [
-          "/opt/anaconda3/bin/ruff",
+          "/Users/joaolopes/Exactus/.venv/bin/ruff",
           "check",
           "--select",
           "ALL",
@@ -991,7 +1010,7 @@
           "__init__.py"
         ],
         [
-          "/opt/anaconda3/bin/ruff",
+          "/Users/joaolopes/Exactus/.venv/bin/ruff",
           "check",
           "--select",
           "ALL",
@@ -1002,7 +1021,7 @@
           "conftest.py"
         ],
         [
-          "/opt/anaconda3/bin/ruff",
+          "/Users/joaolopes/Exactus/.venv/bin/ruff",
           "check",
           "--select",
           "ALL",
@@ -1013,7 +1032,7 @@
           "python/__init__.py"
         ],
         [
-          "/opt/anaconda3/bin/ruff",
+          "/Users/joaolopes/Exactus/.venv/bin/ruff",
           "check",
           "--select",
           "ALL",
@@ -1024,7 +1043,7 @@
           "python/calc.py"
         ],
         [
-          "/opt/anaconda3/bin/ruff",
+          "/Users/joaolopes/Exactus/.venv/bin/ruff",
           "check",
           "--select",
           "ALL",
@@ -1035,7 +1054,7 @@
           "tests/__init__.py"
         ],
         [
-          "/opt/anaconda3/bin/ruff",
+          "/Users/joaolopes/Exactus/.venv/bin/ruff",
           "check",
           "--select",
           "ALL",
@@ -1061,33 +1080,33 @@
       "findings": [],
       "skipped": false,
       "skipped_files": [],
-      "duration_seconds": 1.098206,
+      "duration_seconds": 0.093502,
       "files_checked": 6,
-      "version": "0.12.0"
+      "version": "0.15.22"
     },
     "basedpyright": {
       "tool": "basedpyright",
       "command": [
-        "/opt/anaconda3/bin/basedpyright",
+        "/Users/joaolopes/Exactus/.venv/bin/basedpyright",
         "__init__.py",
         "--outputjson",
         "conftest.py"
       ],
       "commands": [
         [
-          "/opt/anaconda3/bin/basedpyright",
+          "/Users/joaolopes/Exactus/.venv/bin/basedpyright",
           "__init__.py",
           "--outputjson",
           "conftest.py"
         ],
         [
-          "/opt/anaconda3/bin/basedpyright",
+          "/Users/joaolopes/Exactus/.venv/bin/basedpyright",
           "python/__init__.py",
           "--outputjson",
           "python/calc.py"
         ],
         [
-          "/opt/anaconda3/bin/basedpyright",
+          "/Users/joaolopes/Exactus/.venv/bin/basedpyright",
           "tests/__init__.py",
           "--outputjson",
           "tests/test_calc.py"
@@ -1108,7 +1127,7 @@
       "findings": [],
       "skipped": false,
       "skipped_files": [],
-      "duration_seconds": 3.577051,
+      "duration_seconds": 2.830421,
       "files_checked": 6,
       "version": "1.40.2"
     },
@@ -1134,7 +1153,7 @@
       "count": 0,
       "findings": [],
       "skipped_files": [],
-      "duration_seconds": 0.459,
+      "duration_seconds": 0.364,
       "version": "0.63.0"
     },
     "eslint": {
@@ -1189,7 +1208,7 @@
       "findings": [],
       "skipped": false,
       "skipped_files": [],
-      "duration_seconds": 1.732924,
+      "duration_seconds": 1.834442,
       "files_checked": 4,
       "version": "10.14.0"
     },
@@ -1219,7 +1238,7 @@
       "findings": [],
       "skipped": false,
       "skipped_files": [],
-      "duration_seconds": 1.965407,
+      "duration_seconds": 1.70532,
       "files_checked": 1,
       "version": "17.16.0"
     },
@@ -1245,7 +1264,7 @@
       "findings": [],
       "skipped": false,
       "skipped_files": [],
-      "duration_seconds": 0.377548,
+      "duration_seconds": 0.114452,
       "files_checked": 1,
       "version": "1.9.2"
     },
@@ -1257,7 +1276,7 @@
         "--pretty",
         "false",
         "--project",
-        "/Users/joaolopes/Exactus/exactus/tests/standalone/project/jsconfig.json"
+        "/Users/joaolopes/Exactus/exactus/tests/standalone/project/.exactus-typescript-29140.json"
       ],
       "commands": [
         [
@@ -1266,7 +1285,7 @@
           "--pretty",
           "false",
           "--project",
-          "/Users/joaolopes/Exactus/exactus/tests/standalone/project/jsconfig.json"
+          "/Users/joaolopes/Exactus/exactus/tests/standalone/project/.exactus-typescript-29140.json"
         ]
       ],
       "files": [
@@ -1282,7 +1301,7 @@
       "findings": [],
       "skipped": false,
       "skipped_files": [],
-      "duration_seconds": 8.842184,
+      "duration_seconds": 3.560066,
       "files_checked": 4,
       "version": "6.0.3"
     },
@@ -1291,7 +1310,7 @@
       "count": 0,
       "version": "built-in",
       "files": 6,
-      "duration_seconds": 0.00010141701204702258,
+      "duration_seconds": 0.00015295797493308783,
       "findings": [],
       "healed": [],
       "skipped_files": []
@@ -1301,10 +1320,83 @@
       "count": 0,
       "version": "built-in",
       "files": 6,
-      "duration_seconds": 0.00444291700841859,
+      "duration_seconds": 0.001703375019133091,
       "findings": [],
       "skipped_files": []
     }
+  },
+  "transaction": {
+    "state": "committed",
+    "files": 6,
+    "stages": [
+      {
+        "name": "lints:group-final",
+        "paths": []
+      },
+      {
+        "name": "lints:organize",
+        "paths": []
+      },
+      {
+        "name": "lints:clean",
+        "paths": [
+          "conftest.py",
+          "python/calc.py",
+          "tests/test_calc.py"
+        ]
+      },
+      {
+        "name": "lints:convention-fixes",
+        "paths": []
+      },
+      {
+        "name": "lints:python-simplify",
+        "paths": []
+      },
+      {
+        "name": "lints:external-fixes",
+        "paths": [
+          "conftest.py",
+          "python/calc.py",
+          "tests/test_calc.py"
+        ]
+      },
+      {
+        "name": "lints:inference",
+        "paths": [
+          "__init__.py",
+          "conftest.py",
+          "python/__init__.py",
+          "python/calc.py",
+          "tests/__init__.py",
+          "tests/test_calc.py"
+        ]
+      },
+      {
+        "name": "lints:group-final",
+        "paths": []
+      },
+      {
+        "name": "lints:organize",
+        "paths": []
+      },
+      {
+        "name": "lints:convention-fixes",
+        "paths": []
+      },
+      {
+        "name": "lints:python-simplify",
+        "paths": []
+      },
+      {
+        "name": "lints:external-fixes",
+        "paths": []
+      },
+      {
+        "name": "lints:inference",
+        "paths": []
+      }
+    ]
   },
   "version": 1,
   "web": {

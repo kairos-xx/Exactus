@@ -10,6 +10,7 @@ from pathlib import Path
 from shutil import rmtree
 from sys import path as sys_path
 from tempfile import gettempdir
+from urllib.parse import quote
 
 if __package__ in {None, ""}:
     sys_path.append(str(object=Path(__file__).resolve().parents[4]))
@@ -87,6 +88,29 @@ def main() -> None:
             ),
         ).run()
         validate_demo_results()
+        for directory, _directories, _files in output.walk(top_down=False):
+            entries: list[str] = []
+            for entry in sorted(directory.iterdir()):
+                if entry.name == "README.md":
+                    continue
+                suffix: str = "/" if entry.is_dir() else ""
+                entries.append(
+                    f"- [`{entry.name}{suffix}`]"
+                    f"({quote(string=entry.name)}{suffix})",
+                )
+            _ = (directory / "README.md").write_text(
+                data="""\
+# Generated visual-cause evidence
+
+"""
+                + """\
+
+""".join(entries)
+                + """\
+
+""",
+                encoding="utf-8",
+            )
     finally:
         if not reused:
             terminate_tree(pid=pid)

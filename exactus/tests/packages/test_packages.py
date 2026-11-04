@@ -173,8 +173,10 @@ def test_packages_runs_every_example_without_errors() -> None:
     expect_true(
         condition=completed.returncode == 0,
         message=(
-            f"exit={completed.returncode}\n"
-            f"{completed.stdout[-2000:]}\n{completed.stderr[-1000:]}"
+            f"""\
+exit={completed.returncode}
+{completed.stdout[-2000:]}
+{completed.stderr[-1000:]}"""
         ),
     )
     expect_in(member="0 failed", container=completed.stdout)
@@ -279,7 +281,12 @@ def test_show_prints_status_and_failure_tail(
     buffer: StringIO = StringIO()
     monkeypatch.setattr(target=runner, name="stdout", value=buffer)
     ok_log: Path = tmp_path / "ok.log"
-    ok_log.write_text(data="quiet\n", encoding="utf-8")
+    ok_log.write_text(
+        data="""\
+quiet
+""",
+        encoding="utf-8",
+    )
     runner.show(
         report=runner.Report(
             example=_example(name="demo"),
@@ -293,7 +300,12 @@ def test_show_prints_status_and_failure_tail(
     expect_in(member="demo", container=buffer.getvalue())
     expect_in(member="ok", container=buffer.getvalue())
     fail_log: Path = tmp_path / "fail.log"
-    fail_log.write_text(data="boom\n", encoding="utf-8")
+    fail_log.write_text(
+        data="""\
+boom
+""",
+        encoding="utf-8",
+    )
     runner.show(
         report=runner.Report(
             example=_example(name="demo"),
@@ -337,7 +349,12 @@ def test_main_runs_stubbed_examples(
     buffer: StringIO = StringIO()
     monkeypatch.setattr(target=runner, name="stdout", value=buffer)
     log: Path = tmp_path / "demo.log"
-    log.write_text(data="output\n", encoding="utf-8")
+    log.write_text(
+        data="""\
+output
+""",
+        encoding="utf-8",
+    )
 
     def discover_stub() -> tuple[runner.Example, ...]:
         """Return two synthetic examples.

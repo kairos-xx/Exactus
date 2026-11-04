@@ -3,6 +3,7 @@
 Acquisition is deliberately outside this module. Catalogs describe logical
 component trees; packs contain objects with exact component membership.
 """
+
 from __future__ import annotations
 
 from collections import defaultdict
@@ -56,6 +57,8 @@ ZstdOptions: type[ZstdOptionsType] = portable.ZstdOptions
 if TYPE_CHECKING:
     from collections.abc import Callable, Iterator
 type Json = None | bool | int | float | str | list[Json] | dict[str, Json]
+
+
 @final
 class Constants:
     """Group module-level constants.
@@ -84,8 +87,12 @@ class Constants:
         )
         for byte in range(256)
     )
+
+
 class FormatError(ValueError):
     """Invalid or corrupted partitioned filesystem data."""
+
+
 class Entry(TypedDict):
     """Portable recipe entry; unused fields are absent.
 
@@ -107,6 +114,8 @@ class Entry(TypedDict):
     sha256: NotRequired[str]
     chunks: NotRequired[list[str]]
     target: NotRequired[str]
+
+
 class Recipe(TypedDict):
     """One immutable logical component and its acquisition metadata.
 
@@ -126,6 +135,8 @@ class Recipe(TypedDict):
     tree_sha256: str
     recipe_sha256: str
     logical_bytes: int
+
+
 class ObjectRecord(TypedDict):
     """Unique chunk location and exact component membership.
 
@@ -139,6 +150,8 @@ class ObjectRecord(TypedDict):
     size: int
     members: list[str]
     pack: str
+
+
 class PackRecord(TypedDict):
     """Deterministic shard and compressed transport identity.
 
@@ -160,6 +173,8 @@ class PackRecord(TypedDict):
     membership_sha256: str
     shard: str
     objects: list[str]
+
+
 class Catalog(TypedDict):
     """Versioned canonical distribution identity.
 
@@ -185,6 +200,8 @@ class Catalog(TypedDict):
     objects: dict[str, ObjectRecord]
     packs: dict[str, PackRecord]
     root_sha256: str
+
+
 @dataclass(frozen=True, slots=True)
 class ChunkingConfig:
     """Versioned Gear CDC parameters and whole-small-file policy.
@@ -201,6 +218,7 @@ class ChunkingConfig:
     target_bytes: int = 262144
     maximum_bytes: int = 1048576
     small_file_bytes: int = 65536
+
     def document(self) -> dict[str, Json]:
         """Return the canonical, fingerprintable policy.
 
@@ -215,6 +233,7 @@ class ChunkingConfig:
             "maximum_bytes": self.maximum_bytes,
             "small_file_bytes": self.small_file_bytes,
         }
+
     def chunks(self, source: BinaryIO, size: int) -> Iterator[bytes]:
         """Yield bounded chunks, resynchronizing after inserted content.
 
@@ -246,6 +265,7 @@ class ChunkingConfig:
                     rolling = 0
         if chunk:
             yield bytes(chunk)
+
     def __post_init__(self) -> None:
         """Reject impossible boundaries and non-power-of-two targets.
 
@@ -264,6 +284,8 @@ class ChunkingConfig:
         ):
             msg: str = "Invalid chunking configuration"
             raise FormatError(msg)
+
+
 def canonical(value: Json) -> bytes:
     """Encode portable JSON without timestamps or incidental whitespace.
 
@@ -282,6 +304,8 @@ def canonical(value: Json) -> bytes:
         ensure_ascii=False,
         allow_nan=False,
     ).encode(encoding="utf-8")
+
+
 def identity(value: Json) -> str:
     """Hash a canonical logical identity.
 
@@ -294,6 +318,8 @@ def identity(value: Json) -> str:
 
     """
     return sha256(data=canonical(value=value)).hexdigest()
+
+
 def hash_file(path: Path) -> str:
     """Hash a large file with bounded memory.
 
@@ -310,6 +336,8 @@ def hash_file(path: Path) -> str:
         for block in iter(lambda: source.read(Constants.block), b""):
             digest.update(block)
     return digest.hexdigest()
+
+
 def atomic_bytes(path: Path, data: bytes) -> None:
     """Publish bytes using a unique sibling and atomic replacement.
 
@@ -328,6 +356,8 @@ def atomic_bytes(path: Path, data: bytes) -> None:
         temporary.replace(target=path)
     finally:
         temporary.unlink(missing_ok=True)
+
+
 def safe_path(value: str) -> PurePosixPath:
     """Reject traversal, aliases, drive paths, backslashes, and NULs.
 
@@ -355,6 +385,8 @@ def safe_path(value: str) -> PurePosixPath:
         msg: str = f"Unsafe path: {value!r}"
         raise FormatError(msg)
     return path
+
+
 def component_name(value: str) -> str:
     """Validate a single portable component identifier.
 
@@ -373,6 +405,8 @@ def component_name(value: str) -> str:
         msg: str = f"Unsafe component name: {value!r}"
         raise FormatError(msg)
     return value
+
+
 def destination(root: Path, relative: str) -> Path:
     """Resolve a destination without traversing symlink parents.
 
@@ -399,6 +433,8 @@ def destination(root: Path, relative: str) -> Path:
             msg = f"Symlink destination parent: {parent}"
             raise FormatError(msg)
     return path
+
+
 def tree_identity(entries: list[Entry]) -> str:
     """Hash portable tree structure independently of chunk boundaries.
 
@@ -416,6 +452,8 @@ def tree_identity(entries: list[Entry]) -> str:
         record.pop("chunks", None)
         structure.append(record)
     return identity(value=structure)
+
+
 def recipe_identity(recipe: Recipe) -> str:
     """Hash all recipe data except its self hash.
 
@@ -430,6 +468,8 @@ def recipe_identity(recipe: Recipe) -> str:
     body: dict[str, Json] = cast(typ="dict[str, Json]", val=dict(recipe))
     body.pop("recipe_sha256", None)
     return identity(value=body)
+
+
 class ObjectStore:
     """Disk-backed verified chunks, atomically created under SHA-256."""
 
@@ -443,6 +483,7 @@ class ObjectStore:
         self.root = root
         self.created = 0
         self.reused = 0
+
     def path(self, digest: str) -> Path:
         """Return a safe address after validating its hash syntax.
 
@@ -456,6 +497,7 @@ class ObjectStore:
         """
         _digest(value=digest)
         return destination(root=self.root, relative=f"{digest[:2]}/{digest}")
+
     def valid(self, digest: str, size: int | None = None) -> bool:
         """Verify cached content before reusing it.
 
@@ -474,6 +516,7 @@ class ObjectStore:
             and (size is None or path.stat().st_size == size)
             and (hash_file(path=path) == digest)
         )
+
     def put(self, data: bytes) -> str:
         """Store one bounded chunk; repair corrupt disposable caches.
 
@@ -492,6 +535,8 @@ class ObjectStore:
             atomic_bytes(path=self.path(digest=digest), data=data)
             self.created += 1
         return digest
+
+
 class RecipeScanner:
     """Scan deterministic trees while writing streaming CDC objects."""
 
@@ -512,6 +557,7 @@ class RecipeScanner:
         self.objects = objects
         self.chunking = chunking or ChunkingConfig()
         self.progress = progress
+
     def scan(self, root: Path, name: str, metadata: dict[str, Json]) -> Recipe:
         """Preserve dirs, modes, links, and full hashes without large reads.
 
@@ -588,6 +634,7 @@ class RecipeScanner:
         }
         recipe["recipe_sha256"] = recipe_identity(recipe=recipe)
         return recipe
+
     def _regular_file(
         self,
         path: Path,
@@ -640,6 +687,8 @@ class RecipeScanner:
             "sha256": digest.hexdigest(),
             "chunks": chunks,
         }
+
+
 def memberships(recipes: dict[str, Recipe]) -> dict[str, list[str]]:
     """Compute exact content references, independently of dependencies.
 
@@ -658,6 +707,8 @@ def memberships(recipes: dict[str, Recipe]) -> dict[str, list[str]]:
                 members: set[str] = refs[digest]
                 members.add(name)
     return {digest: sorted(names) for digest, names in sorted(refs.items())}
+
+
 def shards(
     objects: list[str],
     sizes: dict[str, int],
@@ -697,6 +748,8 @@ def shards(
             target=target,
             prefix=group,
         )
+
+
 def pack_identity(
     members: list[str],
     prefix: str,
@@ -727,6 +780,8 @@ def pack_identity(
             },
         ),
     )
+
+
 def _read_exact(source: ZstdType, size: int) -> bytes:
     """Read one bounded field, rejecting truncation and absurd lengths.
 
@@ -753,6 +808,8 @@ def _read_exact(source: ZstdType, size: int) -> bytes:
             raise FormatError(msg)
         data.extend(block)
     return bytes(data)
+
+
 class PackCodec:
     """Deterministic framed Zstandard packs; no host tar metadata."""
 
@@ -802,6 +859,7 @@ class PackCodec:
             temporary.replace(target=path)
         finally:
             temporary.unlink(missing_ok=True)
+
     @staticmethod
     def decode(
         path: Path,
@@ -857,6 +915,8 @@ class PackCodec:
         if seen != sorted(expected):
             msg = "Missing or unsorted pack objects"
             raise FormatError(msg)
+
+
 def _json(data: bytes) -> Json:
     """Read JSON as untrusted typed data.
 
@@ -876,6 +936,8 @@ def _json(data: bytes) -> Json:
     except ValueError as exc:
         msg: str = "Invalid JSON"
         raise FormatError(msg) from exc
+
+
 def _mapping(value: Json) -> dict[str, Json]:
     """Require a JSON object.
 
@@ -894,6 +956,8 @@ def _mapping(value: Json) -> dict[str, Json]:
         msg: str = "Expected JSON object"
         raise FormatError(msg)
     return value
+
+
 def _string(value: Json) -> str:
     """Require a JSON string.
 
@@ -912,6 +976,8 @@ def _string(value: Json) -> str:
         msg: str = "Expected string"
         raise FormatError(msg)
     return value
+
+
 def _integer(value: Json) -> int:
     """Require a nonnegative integer, excluding bool.
 
@@ -930,6 +996,8 @@ def _integer(value: Json) -> int:
         msg: str = "Expected nonnegative integer"
         raise FormatError(msg)
     return value
+
+
 def _strings(value: Json) -> list[str]:
     """Require an ordered string array.
 
@@ -948,6 +1016,8 @@ def _strings(value: Json) -> list[str]:
         msg: str = "Expected string array"
         raise FormatError(msg)
     return [_string(value=item) for item in value]
+
+
 def _digest(value: str) -> str:
     """Require a lowercase SHA-256 digest.
 
@@ -966,6 +1036,8 @@ def _digest(value: str) -> str:
         msg: str = "Invalid SHA-256 address"
         raise FormatError(msg)
     return value
+
+
 def _validate_entry(entry: Entry, entries: dict[str, Entry]) -> int:
     """Validate one typed recipe entry and return its logical bytes.
 
@@ -1007,6 +1079,8 @@ def _validate_entry(entry: Entry, entries: dict[str, Entry]) -> int:
         msg = "Unknown recipe entry type"
         raise FormatError(msg)
     return 0
+
+
 def validate_recipe(recipe: Recipe) -> None:
     """Validate identity, entry paths, types, and safe link topology.
 
@@ -1051,6 +1125,8 @@ def validate_recipe(recipe: Recipe) -> None:
     if logical != recipe["logical_bytes"]:
         msg = "Logical byte count mismatch"
         raise FormatError(msg)
+
+
 def load_recipe(value: Json) -> Recipe:
     """Parse and validate a cached or distributed recipe.
 
@@ -1101,6 +1177,8 @@ def load_recipe(value: Json) -> Recipe:
     }
     validate_recipe(recipe=recipe)
     return recipe
+
+
 def catalog_identity(catalog: Catalog) -> str:
     """Hash the full catalog body excluding its self hash.
 
@@ -1115,6 +1193,8 @@ def catalog_identity(catalog: Catalog) -> str:
     body: dict[str, Json] = cast(typ="dict[str, Json]", val=dict(catalog))
     body.pop("root_sha256", None)
     return identity(value=body)
+
+
 def _load_objects(
     raw: dict[str, Json],
     config: ChunkingConfig,
@@ -1145,6 +1225,8 @@ def _load_objects(
             msg: str = "Object exceeds chunk size policy"
             raise FormatError(msg)
     return objects
+
+
 def _load_packs(
     raw: dict[str, Json],
     objects: dict[str, ObjectRecord],
@@ -1231,6 +1313,8 @@ def _load_packs(
         msg = "Unpacked catalog objects"
         raise FormatError(msg)
     return packs
+
+
 def _validate_file_sizes(
     recipes: dict[str, Recipe],
     objects: dict[str, ObjectRecord],
@@ -1253,6 +1337,8 @@ def _validate_file_sizes(
             ) != entry.get("size", 0):
                 msg: str = "File chunk sizes mismatch"
                 raise FormatError(msg)
+
+
 def _dependency_closure(
     recipes: dict[str, Recipe],
     name: str,
@@ -1288,6 +1374,8 @@ def _dependency_closure(
             ),
         )
     return result
+
+
 def _link_target(
     name: str,
     relative: str,
@@ -1325,6 +1413,8 @@ def _link_target(
     if not parts or (allowed is not None and parts[0] not in allowed):
         msg = "Link target is not a component dependency"
         raise FormatError(msg)
+
+
 def _validate_links(recipe: Recipe) -> None:
     """Reject escaping links even for directly supplied recipes.
 
@@ -1340,6 +1430,8 @@ def _validate_links(recipe: Recipe) -> None:
                 target=entry.get("target", ""),
                 allowed=None,
             )
+
+
 def _validate_metadata(recipes: dict[str, Recipe]) -> None:
     """Validate dependency closure, environment paths, and tool targets.
 
@@ -1384,6 +1476,8 @@ def _validate_metadata(recipes: dict[str, Recipe]) -> None:
         )
         for tool, value in tools.items():
             _validate_tool(tool=tool, spec=_mapping(value=value), seen=seen)
+
+
 def _validate_tool(tool: str, spec: dict[str, Json], seen: set[str]) -> None:
     """Validate the original four dispatch kinds without allowing paths out.
 
@@ -1421,6 +1515,8 @@ def _validate_tool(tool: str, spec: dict[str, Json], seen: set[str]) -> None:
         raise FormatError(msg)
     if "module" in spec:
         _string(value=spec["module"])
+
+
 def load_catalog(path: Path) -> Catalog:
     """Validate schema, integrity hierarchy, membership, and all paths.
 
@@ -1492,6 +1588,8 @@ def load_catalog(path: Path) -> Catalog:
         msg = "Noncanonical catalog fields"
         raise FormatError(msg)
     return catalog
+
+
 class PartitionStore:
     """Build, verify, and recover canonical packs from persistent caches."""
 
@@ -1512,6 +1610,7 @@ class PartitionStore:
         self.objects = ObjectStore(root=cache / "objects")
         self.packs_built = 0
         self.packs_reused = 0
+
     @staticmethod
     def verify(
         catalog: Catalog,
@@ -1546,6 +1645,7 @@ class PartitionStore:
                 },
                 store=store,
             )
+
     def build(
         self,
         recipes: dict[str, Recipe],
@@ -1662,6 +1762,7 @@ class PartitionStore:
         )
         _ = load_catalog(path=output / "catalog.json")
         return catalog
+
     def recover(
         self,
         catalog: Catalog,
@@ -1706,6 +1807,8 @@ class PartitionStore:
                 },
                 store=self.objects,
             )
+
+
 class Materializer:
     """Safely reconstruct immutable files with exact-file hardlink reuse."""
 
@@ -1718,6 +1821,7 @@ class Materializer:
         """
         self.store = store
         self.files: dict[tuple[str, int], Path] = {}
+
     def materialize(self, recipe: Recipe, root: Path) -> None:
         """Create dirs/files/hardlinks first, symlinks last; verify output.
 
@@ -1757,6 +1861,7 @@ class Materializer:
                 mode=entry["mode"],
             )
         verify_tree(recipe=recipe, root=root)
+
     def _file(self, entry: Entry, root: Path) -> None:
         """Write a verified file or hardlink a compatible duplicate.
 
@@ -1808,6 +1913,8 @@ class Materializer:
                 raise FormatError(msg)
             path.chmod(mode=entry["mode"])
         self.files[key] = path
+
+
 def verify_tree(
     recipe: Recipe,
     root: Path,
@@ -1846,6 +1953,8 @@ def verify_tree(
         raise FormatError(msg)
     for entry in recipe["entries"]:
         _verify_tree_entry(entry=entry, root=root, contents=contents)
+
+
 def _verify_tree_entry(entry: Entry, root: Path, *, contents: bool) -> None:
     """Verify one reconstructed entry without following unexpected links.
 
@@ -1888,6 +1997,8 @@ def _verify_tree_entry(entry: Entry, root: Path, *, contents: bool) -> None:
     if kind != "symlink" and S_IMODE(info.st_mode) != entry["mode"]:
         msg = "Materialized mode mismatch"
         raise FormatError(msg)
+
+
 def write_delta(
     baseline: Catalog,
     current: Catalog,
@@ -1946,6 +2057,8 @@ def write_delta(
         manifest["update_bytes"] = total
     atomic_bytes(path=output / "update.json", data=data)
     return manifest
+
+
 def apply_delta(root: Path, update: Path) -> Catalog:
     """Verify an update fully, install immutable packs, switch catalog last.
 
@@ -2050,6 +2163,8 @@ def apply_delta(root: Path, update: Path) -> Catalog:
         data=canonical(value=cast(typ="Json", val=current)),
     )
     return current
+
+
 def rollback(root: Path, digest: str) -> Catalog:
     """Restore a retained catalog after verifying all reachable packs.
 
@@ -2074,6 +2189,8 @@ def rollback(root: Path, digest: str) -> Catalog:
         data=canonical(value=cast(typ="Json", val=catalog)),
     )
     return catalog
+
+
 def garbage_collect(
     root: Path,
     retained: list[Catalog],
@@ -2102,6 +2219,8 @@ def garbage_collect(
             if not dry_run:
                 path.unlink()
     return removed
+
+
 def deep_verify(catalog: Catalog, root: Path) -> None:
     """Reconstruct every tree in disposable scratch storage.
 
@@ -2120,6 +2239,8 @@ def deep_verify(catalog: Catalog, root: Path) -> None:
                 recipe=recipe,
                 root=base / "components" / name,
             )
+
+
 def apply_update(root: Path, artifact: Path) -> Catalog:
     """Apply a directory or safely streamed ZIP update artifact.
 
@@ -2138,6 +2259,8 @@ def apply_update(root: Path, artifact: Path) -> Catalog:
         folder: Path = Path(temporary)
         _extract_update(artifact=artifact, folder=folder)
         return apply_delta(root=root, update=folder)
+
+
 def _extract_update(artifact: Path, folder: Path) -> None:
     """Reject ZIP traversal, symlink entries, duplicates, and excess files.
 

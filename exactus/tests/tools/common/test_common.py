@@ -46,7 +46,9 @@ class Constants:
 
     """
 
-    launcher_body: Final[str] = "# Partitioned filesystem tool launcher\n"
+    launcher_body: Final[str] = """\
+# Partitioned filesystem tool launcher
+"""
 
 
 def test_map_lanes_and_misc() -> None:
@@ -223,7 +225,12 @@ def test_is_reports_tree(tmp_path: Path) -> None:
     expect_false(condition=cm.is_reports_tree(directory=bundle))
     _ = (bundle / "result.json").write_text(data="{}", encoding="utf-8")
     expect_false(condition=cm.is_reports_tree(directory=bundle))
-    _ = (bundle / "result.md").write_text(data="# Lints\n", encoding="utf-8")
+    _ = (bundle / "result.md").write_text(
+        data="""\
+# Lints
+""",
+        encoding="utf-8",
+    )
     expect_true(condition=cm.is_reports_tree(directory=bundle))
     running: Path = tmp_path / "out" / "DOCS"
     (running / "ARTIFACTS").mkdir(parents=True)
@@ -265,7 +272,12 @@ def test_executable_candidate(tmp_path: Path) -> None:
 
     """
     script: Path = tmp_path / "tool"
-    script.write_text(data="#!/bin/sh\n", encoding="utf-8")
+    script.write_text(
+        data="""\
+#!/bin/sh
+""",
+        encoding="utf-8",
+    )
     script.chmod(mode=420)
     expect_equal(
         actual=private_call(
@@ -336,7 +348,12 @@ def test_toolchain_resolution(
     """
     name: str = cm.ExactusCommonTables.LINTER_TOOLCHAIN
     tool: Path = tmp_path / "custom"
-    tool.write_text(data="#!/bin/sh\n", encoding="utf-8")
+    tool.write_text(
+        data="""\
+#!/bin/sh
+""",
+        encoding="utf-8",
+    )
     tool.chmod(mode=493)
     monkeypatch.setattr(
         target=cm,
@@ -377,7 +394,12 @@ def test_toolchain_resolution(
         expected=tool,
     )
     local: Path = tmp_path / name
-    local.write_text(data="#!/bin/sh\n", encoding="utf-8")
+    local.write_text(
+        data="""\
+#!/bin/sh
+""",
+        encoding="utf-8",
+    )
     local.chmod(mode=493)
     expect_equal(
         actual=cm.resolve_linter_toolchain(root=tmp_path),
@@ -505,7 +527,11 @@ def _bundle(root: Path, body: str = Constants.launcher_body) -> Path:
     )
     stage: Path = root / "staged"
     (stage / "python").mkdir(parents=True)
-    (stage / "python" / "module.py").write_text(data="VALUE = 1\n")
+    (stage / "python" / "module.py").write_text(
+        data="""\
+VALUE = 1
+""",
+    )
     store: PartitionStore = PartitionStore(cache=root / "build-cache")
     recipe: Recipe = RecipeScanner(objects=store.objects).scan(
         root=stage,
@@ -635,15 +661,18 @@ def test_activate_requires_python_dir(
     expect_false(condition=cm.activate_exactus_tool_bundle(root=tmp_path))
 
 
+@pytest.mark.parametrize("browser_override", [None, "existing-browsers"])
 def test_activate_exposes_chromium_browsers(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
+    browser_override: str | None,
 ) -> None:
     """Browser activation exposes bundled Chromium paths to child processes.
 
     Args:
         tmp_path: Per-test temporary directory.
         monkeypatch: Pytest patching helper.
+        browser_override: Explicit browser cache preserved during activation.
 
     """
     python: Path = tmp_path / "python-tools" / "python"
@@ -652,6 +681,10 @@ def test_activate_exposes_chromium_browsers(
         directory.mkdir(parents=True)
     for name in ("LD_LIBRARY_PATH", "PLAYWRIGHT_BROWSERS_PATH", "PYTHONPATH"):
         monkeypatch.setenv(name=name, value=cm.environ.get(name, ""))
+    monkeypatch.setenv(
+        name="PLAYWRIGHT_BROWSERS_PATH",
+        value=browser_override or "",
+    )
     monkeypatch.setattr(
         target=cm,
         name="exactus_bundle_cache",
@@ -662,7 +695,7 @@ def test_activate_exposes_chromium_browsers(
         expect_true(condition=cm.activate_exactus_tool_bundle(root=tmp_path))
         expect_equal(
             actual=cm.environ["PLAYWRIGHT_BROWSERS_PATH"],
-            expected=str(object=browsers),
+            expected=browser_override or str(object=browsers),
         )
     finally:
         sys_path[:] = saved_path

@@ -239,7 +239,15 @@ class ExactusTerminal:
             stream: Destination when no block is live (default stdout).
 
         """
-        line: str = text if text.endswith("\n") else f"{text}\n"
+        line: str = (
+            text
+            if text.endswith("""\
+
+""")
+            else f"""\
+{text}
+"""
+        )
         with Constants.live_lock:
             if cls._rendered_lines is None:
                 target: TextIO = stream or stdout
@@ -325,7 +333,7 @@ class ExactusTerminal:
         )
         lines: list[str] = [
             f"{Constants.bold}{Constants.cyan}{title}{Constants.reset}",
-            f"  {Constants.bold}{'GLOBAL':<29}{Constants.reset} [{
+            f"  {Constants.bold}{"GLOBAL":<29}{Constants.reset} [{
                 cls._bar(
                     fraction=global_fraction,
                     markers=global_marks,
@@ -509,14 +517,21 @@ class ExactusTerminal:
         overall: str = "PASS" if rows and failed == 0 else "FAIL"
         heading: str = cls._fit(value=title, width=width)
         sprint(
-            f"{Constants.bold}{Constants.cyan}{heading}{Constants.reset}\n"
-            f"{Constants.dim}{rule}{Constants.reset}\n"
-            f"Result  {cls._status(value=overall)}    "
-            f"Tools  {len(rows)}    Passed  {passed}    Failed  {failed}\n",
+            f"""\
+{Constants.bold}{Constants.cyan}{heading}{Constants.reset}
+{Constants.dim}{rule}{Constants.reset}
+Result  {cls._status(value=overall)}    Tools  {len(rows)}    Passed  \
+{passed}    Failed  {failed}
+""",
             end="",
         )
         if rows:
-            sprint(f"{Constants.dim}{rule}{Constants.reset}\n", end="")
+            sprint(
+                f"""\
+{Constants.dim}{rule}{Constants.reset}
+""",
+                end="",
+            )
             name_width: int = min(
                 28,
                 max(12, *(len(row.tool) for row in rows)),
@@ -524,21 +539,18 @@ class ExactusTerminal:
             for row in rows:
                 fitted: str = cls._fit(value=row.tool, width=name_width)
                 sprint(
-                    f"{fitted:<{name_width}}  "
-                    f"{cls._status(value=row.status):<20}  "
-                    f"{row.duration_seconds:>9.3f}s\n",
+                    f"""\
+{fitted:<{name_width}}  {cls._status(value=row.status):<20}  \
+{row.duration_seconds:>9.3f}s
+""",
                     end="",
                 )
             sprint(
                 (
-                    f"{Constants.dim}"
-                    f"{rule}"
-                    f"{Constants.reset}"
-                    f"\n"
-                    f"{Constants.bold}"
-                    f"Resumes"
-                    f"{Constants.reset}"
-                    f"\n"
+                    f"""\
+{Constants.dim}{rule}{Constants.reset}
+{Constants.bold}Resumes{Constants.reset}
+"""
                 ),
                 end="",
             )
@@ -554,21 +566,36 @@ class ExactusTerminal:
                         }{Constants.reset}",
                         end="",
                     )
-                sprint("\n", end="")
+                sprint(
+                    """\
+
+""",
+                    end="",
+                )
                 if row.status.rstrip("*") != "PASS" and row.resume.strip():
                     for line in row.resume.strip().splitlines():
                         resume: str = cls._fit(value=line, width=width - 4)
                         sprint(
-                            f"    {Constants.dim}{resume}{Constants.reset}\n",
+                            f"""\
+    {Constants.dim}{resume}{Constants.reset}
+""",
                             end="",
                         )
                 if row.report:
                     report: str = cls._fit(value=row.report, width=width - 2)
                     sprint(
-                        f"  {Constants.dim}{report}{Constants.reset}\n\n",
+                        f"""\
+  {Constants.dim}{report}{Constants.reset}
+
+""",
                         end="",
                     )
-        sprint(f"{Constants.dim}{rule}{Constants.reset}\n", end="")
+        sprint(
+            f"""\
+{Constants.dim}{rule}{Constants.reset}
+""",
+            end="",
+        )
 
     @staticmethod
     def restore_cursor() -> None:
@@ -655,7 +682,7 @@ class ExactusTerminal:
             out.append(value[index])
             shown += 1
             index += 1
-        return f"{''.join(out)}…{Constants.reset}"
+        return f"{"".join(out)}…{Constants.reset}"
 
     @classmethod
     def _rows(cls, *, frame: tuple[str, ...], columns: int) -> int:
@@ -711,7 +738,12 @@ class ExactusTerminal:
         parts.append(above)
         if frame:
             parts.append(Constants.hide_cursor)
-            parts.extend(f"{line}\n" for line in frame)
+            parts.extend(
+                f"""\
+{line}
+"""
+                for line in frame
+            )
         else:
             parts.append(Constants.show_cursor)
         parts.append(Constants.sync_end)
@@ -950,7 +982,7 @@ class ExactusTerminal:
         filled: int = round(number=clamped * bar_width)
         if not markers:
             empty: str = "░" * (bar_width - filled)
-            return f"{'█' * filled}{Constants.dim}{empty}{Constants.reset}"
+            return f"{"█" * filled}{Constants.dim}{empty}{Constants.reset}"
         parts: list[str] = []
         for index in range(bar_width):
             if index in markers:
@@ -959,7 +991,7 @@ class ExactusTerminal:
                 parts.append("█")
             else:
                 parts.append(f"{Constants.dim}░")
-        return f"{''.join(parts)}{Constants.reset}"
+        return f"{"".join(parts)}{Constants.reset}"
 
     @staticmethod
     def _segmented_bar(
@@ -1008,7 +1040,7 @@ class ExactusTerminal:
                     parts.append("█")
                 else:
                     parts.append(f"{Constants.dim}░")
-        return f"{''.join(parts)}{Constants.reset}"
+        return f"{"".join(parts)}{Constants.reset}"
 
 
 def dsr_reply() -> bool:

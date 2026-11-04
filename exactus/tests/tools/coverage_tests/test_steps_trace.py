@@ -62,7 +62,12 @@ def test_meaningful_bridge_traces(tmp_path: Path) -> None:
 
     """
     source: Path = tmp_path / "mod.py"
-    source.write_text(data="value = 1\n", encoding="utf-8")
+    source.write_text(
+        data="""\
+value = 1
+""",
+        encoding="utf-8",
+    )
     destination: Path = tmp_path / "steps.txt"
     with step_log(path=destination):
         analyze_unreached(
@@ -84,7 +89,12 @@ def test_meaningful_mode_off_traces(tmp_path: Path) -> None:
 
     """
     source: Path = tmp_path / "mod.py"
-    source.write_text(data="value = 1\n", encoding="utf-8")
+    source.write_text(
+        data="""\
+value = 1
+""",
+        encoding="utf-8",
+    )
     destination: Path = tmp_path / "steps.txt"
     with step_log(path=destination):
         analyze_unreached(
@@ -107,7 +117,13 @@ def test_packaged_meaningful_traces_lifecycle(tmp_path: Path) -> None:
 
     """
     source: Path = tmp_path / "target.py"
-    source.write_text(data="def run():\n    return 42\n", encoding="utf-8")
+    source.write_text(
+        data="""\
+def run():
+    return 42
+""",
+        encoding="utf-8",
+    )
     destination: Path = tmp_path / "steps.txt"
     with step_log(path=destination):
         Meaningful().analyze(paths=(source,))
@@ -129,7 +145,12 @@ def test_main_writes_steps_artifact(tmp_path: Path) -> None:
     """
     project: Path = tmp_path / "empty"
     project.mkdir()
-    (project / "a.py").write_text(data="x = 1\n", encoding="utf-8")
+    (project / "a.py").write_text(
+        data="""\
+x = 1
+""",
+        encoding="utf-8",
+    )
     out: Path = tmp_path / "out"
     _ = main(arguments=(str(object=project), "-o", str(object=out)))
     destination: Path = out / "ARTIFACTS" / "steps.txt"
@@ -148,12 +169,20 @@ def test_write_false_suppresses_steps_artifact(tmp_path: Path) -> None:
 
     """
     _ = (tmp_path / "pyproject.toml").write_text(
-        data="[tool.steps]\nwrite = false\n",
+        data="""\
+[tool.steps]
+write = false
+""",
         encoding="utf-8",
     )
     project: Path = tmp_path / "empty"
     project.mkdir()
-    (project / "a.py").write_text(data="x = 1\n", encoding="utf-8")
+    (project / "a.py").write_text(
+        data="""\
+x = 1
+""",
+        encoding="utf-8",
+    )
     out: Path = tmp_path / "out"
     _ = main(arguments=(str(object=project), "-o", str(object=out)))
     expect_false(condition=(out / "ARTIFACTS" / "steps.txt").exists())

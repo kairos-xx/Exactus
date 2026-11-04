@@ -179,10 +179,14 @@ class PatcherCli:
         package_root: Path = Path(__file__).resolve().parents[3]
         main: str = dedent(
             text=(
-                '    """Executable entry point for exactus.packages.patcher.""'
-                '"\n    from sys import argv\n    from exactus.packages.patche'
-                'r.cli import main\n    \n    if __name__ == "__main__":\n    '
-                "    raise SystemExit(main(arguments=tuple(argv[1:])))\n    "
+                """\
+    \"""Executable entry point for exactus.packages.patcher.\"""
+    from sys import argv
+    from exactus.packages.patcher.cli import main
+
+    if __name__ == "__main__":
+        raise SystemExit(main(arguments=tuple(argv[1:])))
+    """
             ),
         )
         packages_root: Path = package_root / "exactus" / "packages"
@@ -263,84 +267,108 @@ class PatcherCli:
             epilog=(
                 dedent(
                     text=(
-                        "    SOURCE TYPES\n      --a and --b independently"
-                        " accept:\n        * a project directory\n        "
-                        "* a normal ZIP snapshot\n        * a patch PYZ pr"
-                        "oduced by this package\n    \n    ROOT SEMANTICS"
-                        "\n      --project-root is the destination root em"
-                        "bedded into generated update\n      PYZs.\n      "
-                        "A relative project root is resolved against the c"
-                        "urrent working directory.\n    \n      Generated "
-                        "update PYZs accept their own --root override. For"
-                        " example:\n    \n          /home/user/Downloads/u"
-                        "pdate.pyz --root .\n    \n      patches the direc"
-                        "tory in which that command was invoked, NOT the d"
-                        "irectory\n      containing update.pyz.\n    \n   "
-                        " READ-ONLY DIFF\n      patcher --a OLD --b NEW --"
-                        "diff\n    \n      Prints a conventional unified d"
-                        "iff and exits without creating or applying\n     "
-                        " a patch. ANSI syntax highlighting is available f"
-                        "or JS, CSS, HTML, Python,\n      JSON, TOML and X"
-                        "ML. Use --no-color for plain output.\n    \n    B"
-                        "UILD A DELTA\n      patcher --a OLD --b NEW --pro"
-                        "ject-root PROJECT --output update.pyz\n    \n    "
-                        "  Only additions, modifications, removals, moves "
-                        "and metadata transitions\n      needed to transfo"
-                        "rm A into B are stored. By default the patch is r"
-                        "eversible.\n    \n    BUILD THE PATCHER CLI BINAR"
-                        "Y\n      patcher --project-root PROJECT --bin\n  "
-                        "  \n      creates PROJECT/bin/patcher.pyz. The di"
-                        "rectory may be supplied directly:\n    \n        "
-                        "  patcher --project-root PROJECT --bin tools\n   "
-                        "       patcher --project-root PROJECT --bin /opt/"
-                        "tools\n    \n      --bin-dir remains available wi"
-                        "th bare --bin:\n    \n          patcher --project"
-                        "-root PROJECT --bin --bin-dir tools\n    \n      "
-                        "Relative --bin-dir values are relative to --proje"
-                        "ct-root. Absolute values\n      remain absolute. "
-                        "The resulting patcher.pyz contains everything req"
-                        "uired to\n      invoke this builder CLI with Pyth"
-                        "on's standard library.\n    \n    FILTERING\n    "
-                        "  --include and --exclude may be repeated. Filter"
-                        "s are applied while\n      normalizing both A and"
-                        " B. Quote shell wildcards when necessary.\n    \n"
-                        "    MOVES AND REVERSIBILITY\n      Move detection"
-                        " is enabled by default and avoids storing unchang"
-                        "ed moved\n      content redundantly. Reversible p"
-                        "atches retain before-state blobs so an\n      inv"
-                        "erse patch can be produced without the original A"
-                        " snapshot.\n    \n    GENERATED UPDATE PYZ COMMAN"
-                        "DS\n      An update PYZ is a separate runtime and"
-                        " supports:\n        --root PATH       override em"
-                        "bedded destination root\n        --dry-run       "
-                        "  report operations without mutation\n        --v"
-                        "erify          validate destination preconditions"
-                        " only\n        --list            list delta opera"
-                        "tions\n        --info            print formatted "
-                        "manifest information\n        --json            p"
-                        "rint compact machine-readable manifest JSON\n    "
-                        "    --diff            print a read-only unified c"
-                        "ontent diff\n        --no-color        disable AN"
-                        "SI diff colors\n        --diff-context N  configu"
-                        "re unified-diff context lines\n        --force   "
-                        "        ignore precondition conflicts\n        --"
-                        "conflict POLICY abort|overwrite|skip|backup\n    "
-                        "\n    PYTHON API\n      Every builder CLI capabil"
-                        "ity has a direct API equivalent:\n    \n         "
-                        " PatcherCli.build_delta(...)\n          PatcherCl"
-                        "i.build_binary(...)\n          PyzProjectPatch.de"
-                        "lta(...).build(...)\n          patch.inverse()\n "
-                        "         patch.compose(next_patch=...)\n    \n   "
-                        "   Advanced build settings are represented by Del"
-                        "taBuildOptions.\n    \n    EXAMPLES\n      python"
-                        " -m exactus.packages.patcher --a old --b new --pr"
-                        "oject-root .\n      -o update.pyz\n      python -"
-                        "m exactus.packages.patcher --a old --b new --diff"
-                        "\n      python -m exactus.packages.patcher --proj"
-                        "ect-root . --bin\n      python -m exactus.package"
-                        "s.patcher --project-root . --bin tools\n      ./b"
-                        "in/patcher.pyz --a old.zip --b new.zip --project-"
-                        "root . -o update.pyz\n    "
+                        """\
+    SOURCE TYPES
+      --a and --b independently accept:
+        * a project directory
+        * a normal ZIP snapshot
+        * a patch PYZ produced by this package
+
+    ROOT SEMANTICS
+      --project-root is the destination root embedded into generated update
+      PYZs.
+      A relative project root is resolved against the current working \
+directory.
+
+      Generated update PYZs accept their own --root override. For example:
+
+          /home/user/Downloads/update.pyz --root .
+
+      patches the directory in which that command was invoked, NOT the \
+directory
+      containing update.pyz.
+
+    READ-ONLY DIFF
+      patcher --a OLD --b NEW --diff
+
+      Prints a conventional unified diff and exits without creating or \
+applying
+      a patch. ANSI syntax highlighting is available for JS, CSS, HTML, \
+Python,
+      JSON, TOML and XML. Use --no-color for plain output.
+
+    BUILD A DELTA
+      patcher --a OLD --b NEW --project-root PROJECT --output update.pyz
+
+      Only additions, modifications, removals, moves and metadata \
+transitions
+      needed to transform A into B are stored. By default the patch is \
+reversible.
+
+    BUILD THE PATCHER CLI BINARY
+      patcher --project-root PROJECT --bin
+
+      creates PROJECT/bin/patcher.pyz. The directory may be supplied \
+directly:
+
+          patcher --project-root PROJECT --bin tools
+          patcher --project-root PROJECT --bin /opt/tools
+
+      --bin-dir remains available with bare --bin:
+
+          patcher --project-root PROJECT --bin --bin-dir tools
+
+      Relative --bin-dir values are relative to --project-root. Absolute \
+values
+      remain absolute. The resulting patcher.pyz contains everything required \
+to
+      invoke this builder CLI with Python's standard library.
+
+    FILTERING
+      --include and --exclude may be repeated. Filters are applied while
+      normalizing both A and B. Quote shell wildcards when necessary.
+
+    MOVES AND REVERSIBILITY
+      Move detection is enabled by default and avoids storing unchanged \
+moved
+      content redundantly. Reversible patches retain before-state blobs so \
+an
+      inverse patch can be produced without the original A snapshot.
+
+    GENERATED UPDATE PYZ COMMANDS
+      An update PYZ is a separate runtime and supports:
+        --root PATH       override embedded destination root
+        --dry-run         report operations without mutation
+        --verify          validate destination preconditions only
+        --list            list delta operations
+        --info            print formatted manifest information
+        --json            print compact machine-readable manifest JSON
+        --diff            print a read-only unified content diff
+        --no-color        disable ANSI diff colors
+        --diff-context N  configure unified-diff context lines
+        --force           ignore precondition conflicts
+        --conflict POLICY abort|overwrite|skip|backup
+
+    PYTHON API
+      Every builder CLI capability has a direct API equivalent:
+
+          PatcherCli.build_delta(...)
+          PatcherCli.build_binary(...)
+          PyzProjectPatch.delta(...).build(...)
+          patch.inverse()
+          patch.compose(next_patch=...)
+
+      Advanced build settings are represented by DeltaBuildOptions.
+
+    EXAMPLES
+      python -m exactus.packages.patcher --a old --b new --project-root .
+      -o update.pyz
+      python -m exactus.packages.patcher --a old --b new --diff
+      python -m exactus.packages.patcher --project-root . --bin
+      python -m exactus.packages.patcher --project-root . --bin tools
+      ./bin/patcher.pyz --a old.zip --b new.zip --project-root . -o \
+update.pyz
+    """
                     ),
                 )
             ),
@@ -513,7 +541,9 @@ class PatcherCli:
             project_root=root,
             bin_dir=bin_dir,
         )
-        _ = sys.stdout.write(f"{destination}\n")
+        _ = sys.stdout.write(f"""\
+{destination}
+""")
         _ = sys.stdout.flush()
         return 0
 
@@ -546,7 +576,9 @@ class PatcherCli:
             output=output,
             options=options,
         )
-        _ = sys.stdout.write(f"{destination}\n")
+        _ = sys.stdout.write(f"""\
+{destination}
+""")
         _ = sys.stdout.flush()
         return 0
 

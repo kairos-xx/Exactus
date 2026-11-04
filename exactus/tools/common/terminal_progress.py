@@ -382,7 +382,15 @@ class TerminalProgress:
         self._write(text="\r\x1b[K")
         if self._last_rendered:
             self._write(text=self._last_rendered)
-        self._write(text="\x1b[?25h\n" if self._hide_cursor else "\n")
+        self._write(
+            text="""\
+\x1b[?25h
+"""
+            if self._hide_cursor
+            else """\
+
+""",
+        )
 
     def __enter__(self) -> Self:
         """Start rendering when entering a context manager.

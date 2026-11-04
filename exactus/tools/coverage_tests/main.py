@@ -16,7 +16,7 @@ from typing import TYPE_CHECKING, NoReturn, Self, cast
 if __package__ in (None, ""):
     sys_path.insert(0, str(object=Path(__file__).resolve().parents[3]))
 from exactus.packages.project_python import auto as _project_python_auto
-from exactus.tools.common.config import resolve_arguments
+from exactus.tools.common.config import ConfigResolver, resolve_arguments
 from exactus.tools.common.execution import run_exactus
 from exactus.tools.common.sprint import sprint
 from exactus.tools.coverage_tests.arguments import (
@@ -315,7 +315,10 @@ def _validate(*, options: Namespace, output_dir: Path) -> int:
     evidence: Path = CoverageTestsLayout(root=output_dir).coverage_artifacts
     evidence.mkdir(parents=True, exist_ok=True)
     _ = (evidence / CoverageCoreDefaults.validation_name).write_text(
-        data=dumps(obj=result, indent=2, sort_keys=True) + "\n",
+        data=dumps(obj=result, indent=2, sort_keys=True)
+        + """\
+
+""",
         encoding="utf-8",
     )
     return code
@@ -422,6 +425,9 @@ def main(*, arguments: tuple[str, ...] | None = None) -> int:
         measure_js=not cast(typ="bool", val=options.no_js_coverage),
         jobs=cast(typ="int | None", val=options.jobs) or cpu_count() or 1,
         shard_by=cast(typ="str", val=options.shard_by),
+        collect_cache=not options.no_collect_cache,
+        fail_first=options.fail_first,
+        incremental=options.incremental,
         context_lines=max(0, cast(typ="int", val=options.context_lines)),
         per_file_minimum=cast(
             typ="float | None",
@@ -474,9 +480,12 @@ def main(*, arguments: tuple[str, ...] | None = None) -> int:
             ),
         ),
     )
+    resolver: ConfigResolver = ConfigResolver(root=root)
     runner: CombinedCoverageRunner = CombinedCoverageRunner(
         config=config,
         test_filter=lambda path: match_path(
+            resolver=resolver,
+            tool="coverage_tests",
             path=path,
             root=root,
             includes=includes,

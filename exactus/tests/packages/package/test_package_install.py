@@ -471,7 +471,12 @@ def test_running_archive_ignores_source_entries(
 
     """
     script: Path = tmp_path / "runner.py"
-    _ = script.write_text(data="print(1)\n", encoding="utf-8")
+    _ = script.write_text(
+        data="""\
+print(1)
+""",
+        encoding="utf-8",
+    )
     monkeypatch.setattr(
         target=install,
         name="argv",
@@ -549,7 +554,9 @@ def test_build_release_produces_full_directory(
         target.parent.mkdir(parents=True, exist_ok=True)
         _ = target.write_bytes(data=b"pyz")
         _ = (target.parent / "MANIFEST.md").write_text(
-            data="# manifest\n",
+            data="""\
+# manifest
+""",
             encoding="utf-8",
         )
 
@@ -1395,6 +1402,27 @@ def test_install_system_dispatches_windows(
     _ = binary.write_bytes(data=b"pyz")
     monkeypatch.setattr(target=Constants, name="bin_dir", value=tmp_path)
     seen: list[Path] = []
+
+    def fake_bundle_stale(*, bundle: Path, exactus_dir: Path) -> bool:
+        """Keep this dispatch test independent of real archive rebuilding.
+
+        Args:
+            bundle: Fixture archive considered for reuse.
+            exactus_dir: Source tree checked for freshness.
+
+        Returns:
+            False because the fixture represents a current release.
+
+        """
+        expect_equal(actual=bundle, expected=binary)
+        expect_equal(actual=exactus_dir, expected=Constants.root / "exactus")
+        return False
+
+    monkeypatch.setattr(
+        target=install,
+        name="bundle_stale",
+        value=fake_bundle_stale,
+    )
 
     def fake_install(*, source: Path) -> Path:
         """Record the Windows install target.

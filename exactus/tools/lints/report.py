@@ -358,7 +358,7 @@ def _skipped(
                         value=str(object=skip.get("file", "")),
                         root=root,
                     ),
-                    "reason": f"{name}: {skip.get('reason', '')}",
+                    "reason": f"{name}: {skip.get("reason", "")}",
                 },
             )
     return rows

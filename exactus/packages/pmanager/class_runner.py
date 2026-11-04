@@ -208,7 +208,14 @@ def _broadcast_sender(
                 timeout=1.0,
                 address=("127.0.0.1", port),
             ) as connection:
-                connection.sendall((dumps(obj=request) + "\n").encode())
+                connection.sendall(
+                    (
+                        dumps(obj=request)
+                        + """\
+
+"""
+                    ).encode(),
+                )
                 data: bytes = connection.recv(1048576)
             response: ModelValue = loads(
                 s=data.split(sep=b"\n", maxsplit=1)[0].decode(),
@@ -245,7 +252,14 @@ def _event_receiver(instance: ProcessClass, port: int, token: str) -> None:
                 timeout=1.0,
                 address=("127.0.0.1", port),
             ) as connection:
-                connection.sendall((dumps(obj=request) + "\n").encode())
+                connection.sendall(
+                    (
+                        dumps(obj=request)
+                        + """\
+
+"""
+                    ).encode(),
+                )
                 data: bytes = connection.recv(1048576)
             response: ModelValue = loads(
                 s=data.split(sep=b"\n", maxsplit=1)[0].decode(),

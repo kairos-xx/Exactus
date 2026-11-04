@@ -108,8 +108,10 @@ def test_restyles_every_casing(tmp_path: Path) -> None:
             "mod.txt": (
                 dedent(
                     text=(
-                        "    abc_cde ABC_CDE abc-cde AbcCde abcCde abccde "
-                        "abc.cde\n    # Abc Cde ABC CDE abc cde\n    "
+                        """\
+    abc_cde ABC_CDE abc-cde AbcCde abcCde abccde abc.cde
+    # Abc Cde ABC CDE abc cde
+    """
                     ),
                 )
             ),
@@ -126,8 +128,10 @@ def test_restyles_every_casing(tmp_path: Path) -> None:
         expected=(
             dedent(
                 text=(
-                    "    foo_bar FOO_BAR foo-bar FooBar fooBar foobar foo."
-                    "bar\n    # Foo Bar FOO BAR foo bar\n    "
+                    """\
+    foo_bar FOO_BAR foo-bar FooBar fooBar foobar foo.bar
+    # Foo Bar FOO BAR foo bar
+    """
                 ),
             )
         ),
@@ -143,14 +147,24 @@ def test_markdown_heading_and_inline_code(tmp_path: Path) -> None:
     """
     root: Path = _project(
         tmp_path=tmp_path,
-        files={"README.md": "# abc_cde\n\nUse `abc_cde` and abc_cde.\n"},
+        files={
+            "README.md": """\
+# abc_cde
+
+Use `abc_cde` and abc_cde.
+""",
+        },
     )
     expect_equal(actual=_rename(root=root), expected=0)
     expect_equal(
         actual=(tmp_path / Constants.new / "README.md").read_text(
             encoding="utf-8",
         ),
-        expected="# Foo Bar\n\nUse `foo_bar` and foo_bar.\n",
+        expected="""\
+# Foo Bar
+
+Use `foo_bar` and foo_bar.
+""",
     )
 
 
@@ -164,11 +178,17 @@ def test_single_word_name_follows_file_kind(tmp_path: Path) -> None:
     root: Path = tmp_path / "exactus"
     root.mkdir()
     _ = (root / "code.py").write_text(
-        data="import exactus\nclass Exactus: ...\nEXACTUS = 1\n",
+        data="""\
+import exactus
+class Exactus: ...
+EXACTUS = 1
+""",
         encoding="utf-8",
     )
     _ = (root / "doc.md").write_text(
-        data="The exactus tool. Exactus it.\n",
+        data="""\
+The exactus tool. Exactus it.
+""",
         encoding="utf-8",
     )
     status: int = main(
@@ -178,11 +198,17 @@ def test_single_word_name_follows_file_kind(tmp_path: Path) -> None:
     moved: Path = tmp_path / Constants.new
     expect_equal(
         actual=(moved / "code.py").read_text(encoding="utf-8"),
-        expected="import foo_bar\nclass FooBar: ...\nFOO_BAR = 1\n",
+        expected="""\
+import foo_bar
+class FooBar: ...
+FOO_BAR = 1
+""",
     )
     expect_equal(
         actual=(moved / "doc.md").read_text(encoding="utf-8"),
-        expected="The foo bar tool. Foo Bar it.\n",
+        expected="""\
+The foo bar tool. Foo Bar it.
+""",
     )
 
 
@@ -220,7 +246,10 @@ def test_absolute_paths(tmp_path: Path) -> None:
     root: Path = _project(tmp_path=tmp_path, files={"keep": ""})
     inside: str = f"{root}/src/x.py"
     _ = (root / "notes.cfg").write_text(
-        data=f"inside={inside}\nouter={external}\n",
+        data=f"""\
+inside={inside}
+outer={external}
+""",
         encoding="utf-8",
     )
     expect_equal(actual=_rename(root=root), expected=0)
@@ -241,7 +270,10 @@ def test_shebang_binary_and_symlink_untouched(tmp_path: Path) -> None:
     root: Path = _project(
         tmp_path=tmp_path,
         files={
-            "run": "#!/usr/bin/env abc_cde\nprint('abc_cde')\n",
+            "run": """\
+#!/usr/bin/env abc_cde
+print('abc_cde')
+""",
             "blob.bin": b"\x00abc_cde\x00",
         },
     )
@@ -250,7 +282,10 @@ def test_shebang_binary_and_symlink_untouched(tmp_path: Path) -> None:
     moved: Path = tmp_path / Constants.new
     expect_equal(
         actual=(moved / "run").read_text(encoding="utf-8"),
-        expected="#!/usr/bin/env abc_cde\nprint('foo_bar')\n",
+        expected="""\
+#!/usr/bin/env abc_cde
+print('foo_bar')
+""",
     )
     expect_equal(
         actual=(moved / "blob.bin").read_bytes(),
@@ -269,8 +304,12 @@ def test_renames_files_and_directories(tmp_path: Path) -> None:
     root: Path = _project(
         tmp_path=tmp_path,
         files={
-            "abc_cde/abc_cde.py": "x = 1\n",
-            "exactus/docs/AbcCde.md": "y\n",
+            "abc_cde/abc_cde.py": """\
+x = 1
+""",
+            "exactus/docs/AbcCde.md": """\
+y
+""",
         },
     )
     expect_equal(actual=_rename(root=root), expected=0)
@@ -289,17 +328,27 @@ def test_pyproject_name_is_detected(tmp_path: Path) -> None:
     root: Path = tmp_path / "checkout"
     root.mkdir()
     _ = (root / "pyproject.toml").write_text(
-        data='[project]\nname = "abc-cde"\n',
+        data="""\
+[project]
+name = "abc-cde"
+""",
         encoding="utf-8",
     )
-    _ = (root / "a.py").write_text(data="import abc_cde\n", encoding="utf-8")
+    _ = (root / "a.py").write_text(
+        data="""\
+import abc_cde
+""",
+        encoding="utf-8",
+    )
     status: int = main(
         arguments=[str(object=root), "--name", Constants.new, "--yes"],
     )
     expect_equal(actual=status, expected=0)
     expect_equal(
         actual=(tmp_path / Constants.new / "a.py").read_text(encoding="utf-8"),
-        expected="import foo_bar\n",
+        expected="""\
+import foo_bar
+""",
     )
     expect_in(
         member='name = "foo-bar"',
@@ -320,11 +369,20 @@ def test_dry_run_and_confirmation(
         monkeypatch: Pytest patching helper.
 
     """
-    root: Path = _project(tmp_path=tmp_path, files={"a.py": "abc_cde\n"})
+    root: Path = _project(
+        tmp_path=tmp_path,
+        files={
+            "a.py": """\
+abc_cde
+""",
+        },
+    )
     expect_equal(actual=_rename(root=root, extra=("--dry-run",)), expected=0)
     expect_equal(
         actual=(root / "a.py").read_text(encoding="utf-8"),
-        expected="abc_cde\n",
+        expected="""\
+abc_cde
+""",
     )
     monkeypatch.setattr(target=stdin, name="isatty", value=lambda: False)
     status: int = main(arguments=[str(object=root), "--name", Constants.new])
@@ -342,19 +400,34 @@ def test_collisions_stop_before_any_change(tmp_path: Path) -> None:
     root: Path = _project(
         tmp_path=tmp_path,
         files={
-            "abc_cde.txt": "a\n",
-            "foo_bar.txt": "b\n",
-            "m.py": "abc_cde\n",
+            "abc_cde.txt": """\
+a
+""",
+            "foo_bar.txt": """\
+b
+""",
+            "m.py": """\
+abc_cde
+""",
         },
     )
     expect_equal(actual=_rename(root=root), expected=1)
     expect_equal(
         actual=(root / "m.py").read_text(encoding="utf-8"),
-        expected="abc_cde\n",
+        expected="""\
+abc_cde
+""",
     )
     (tmp_path / Constants.new).mkdir()
     clash: int = _rename(
-        root=_project(tmp_path=tmp_path / "x", files={"b.py": "abc_cde\n"}),
+        root=_project(
+            tmp_path=tmp_path / "x",
+            files={
+                "b.py": """\
+abc_cde
+""",
+            },
+        ),
     )
     expect_equal(actual=clash, expected=0)
 
@@ -366,12 +439,21 @@ def test_existing_root_target_is_refused(tmp_path: Path) -> None:
         tmp_path: Per-test temporary directory.
 
     """
-    root: Path = _project(tmp_path=tmp_path, files={"a.py": "abc_cde\n"})
+    root: Path = _project(
+        tmp_path=tmp_path,
+        files={
+            "a.py": """\
+abc_cde
+""",
+        },
+    )
     (tmp_path / Constants.new).mkdir()
     expect_equal(actual=_rename(root=root), expected=1)
     expect_equal(
         actual=(root / "a.py").read_text(encoding="utf-8"),
-        expected="abc_cde\n",
+        expected="""\
+abc_cde
+""",
     )
 
 
@@ -388,7 +470,14 @@ def test_rolls_back_when_a_step_fails(
     """
     root: Path = _project(
         tmp_path=tmp_path,
-        files={"a.py": "abc_cde\n", "abc_cde.txt": "x\n"},
+        files={
+            "a.py": """\
+abc_cde
+""",
+            "abc_cde.txt": """\
+x
+""",
+        },
     )
     real: Callable[..., None] = move
 
@@ -412,7 +501,9 @@ def test_rolls_back_when_a_step_fails(
     expect_equal(actual=_rename(root=root), expected=1)
     expect_equal(
         actual=(root / "a.py").read_text(encoding="utf-8"),
-        expected="abc_cde\n",
+        expected="""\
+abc_cde
+""",
     )
     expect_true(condition=(root / "abc_cde.txt").is_file())
 
@@ -424,7 +515,14 @@ def test_invalid_and_identical_names(tmp_path: Path) -> None:
         tmp_path: Per-test temporary directory.
 
     """
-    root: Path = _project(tmp_path=tmp_path, files={"a.py": "abc_cde\n"})
+    root: Path = _project(
+        tmp_path=tmp_path,
+        files={
+            "a.py": """\
+abc_cde
+""",
+        },
+    )
     for name in ("9lives", "a/b", "", Constants.old, "AbcCde"):
         status: int = main(
             arguments=[str(object=root), "--name", name, "--yes"],
@@ -440,15 +538,28 @@ def test_loose_boundary_reaches_inside_identifiers(tmp_path: Path) -> None:
         tmp_path: Per-test temporary directory.
 
     """
-    root: Path = _project(tmp_path=tmp_path, files={"a.py": "abc_cde_core\n"})
+    root: Path = _project(
+        tmp_path=tmp_path,
+        files={
+            "a.py": """\
+abc_cde_core
+""",
+        },
+    )
     expect_equal(actual=_rename(root=root), expected=0)
     expect_equal(
         actual=(tmp_path / Constants.new / "a.py").read_text(encoding="utf-8"),
-        expected="abc_cde_core\n",
+        expected="""\
+abc_cde_core
+""",
     )
     second: Path = _project(
         tmp_path=tmp_path / "two",
-        files={"a.py": "abc_cde_core\n"},
+        files={
+            "a.py": """\
+abc_cde_core
+""",
+        },
     )
     expect_equal(
         actual=_rename(root=second, extra=("--boundary", "loose")),
@@ -458,7 +569,9 @@ def test_loose_boundary_reaches_inside_identifiers(tmp_path: Path) -> None:
         actual=(tmp_path / "two" / Constants.new / "a.py").read_text(
             encoding="utf-8",
         ),
-        expected="foo_bar_core\n",
+        expected="""\
+foo_bar_core
+""",
     )
 
 
@@ -473,9 +586,15 @@ def test_gitignored_files_are_left_alone(tmp_path: Path) -> None:
     root: Path = _project(
         tmp_path=tmp_path,
         files={
-            ".gitignore": "ignored.txt\n",
-            "kept.txt": "abc_cde\n",
-            "ignored.txt": "abc_cde\n",
+            ".gitignore": """\
+ignored.txt
+""",
+            "kept.txt": """\
+abc_cde
+""",
+            "ignored.txt": """\
+abc_cde
+""",
         },
     )
     _ = run(args=["git", "init", "-q", str(object=root)], check=True)
@@ -483,11 +602,15 @@ def test_gitignored_files_are_left_alone(tmp_path: Path) -> None:
     moved: Path = tmp_path / Constants.new
     expect_equal(
         actual=(moved / "kept.txt").read_text(encoding="utf-8"),
-        expected="foo_bar\n",
+        expected="""\
+foo_bar
+""",
     )
     expect_equal(
         actual=(moved / "ignored.txt").read_text(encoding="utf-8"),
-        expected="abc_cde\n",
+        expected="""\
+abc_cde
+""",
     )
 
 
@@ -508,7 +631,12 @@ def test_mixed_case_spellings_are_reported(
     monkeypatch.setattr(target=Constants.rp, name="stderr", value=err)
     root: Path = _project(
         tmp_path=tmp_path,
-        files={"a.py": "abc_cde = 1\nclass Abc_Cde: ...\n"},
+        files={
+            "a.py": """\
+abc_cde = 1
+class Abc_Cde: ...
+""",
+        },
     )
     expect_equal(actual=_dry(root=root), expected=0)
     expect_in(member="a.py:2", container=err.getvalue())
@@ -528,9 +656,13 @@ def test_abbreviations_are_exact_and_opt_in(tmp_path: Path) -> None:
             "a.txt": (
                 dedent(
                     text=(
-                        "    AT = 1\n    started_at = 2\n    look at this"
-                        "\n    AT_HOME = 3\n    exactus-tools exactus_tool"
-                        "s EXACTUS_TOOLS\n    "
+                        """\
+    AT = 1
+    started_at = 2
+    look at this
+    AT_HOME = 3
+    exactus-tools exactus_tools EXACTUS_TOOLS
+    """
                     ),
                 )
             ),
@@ -556,8 +688,13 @@ def test_abbreviations_are_exact_and_opt_in(tmp_path: Path) -> None:
         expected=(
             dedent(
                 text=(
-                    "    FB = 1\n    started_at = 2\n    look at this\n   "
-                    " AT_HOME = 3\n    foo-bar foo_bar FOO_BAR\n    "
+                    """\
+    FB = 1
+    started_at = 2
+    look at this
+    AT_HOME = 3
+    foo-bar foo_bar FOO_BAR
+    """
                 ),
             )
         ),
@@ -571,7 +708,14 @@ def test_short_lowercase_abbreviation_needs_consent(tmp_path: Path) -> None:
         tmp_path: Per-test temporary directory.
 
     """
-    root: Path = _project(tmp_path=tmp_path, files={"a.py": "x_at = at\n"})
+    root: Path = _project(
+        tmp_path=tmp_path,
+        files={
+            "a.py": """\
+x_at = at
+""",
+        },
+    )
     refused: int = main(
         arguments=[
             str(object=root),
@@ -585,7 +729,9 @@ def test_short_lowercase_abbreviation_needs_consent(tmp_path: Path) -> None:
     expect_equal(actual=refused, expected=1)
     expect_equal(
         actual=(root / "a.py").read_text(encoding="utf-8"),
-        expected="x_at = at\n",
+        expected="""\
+x_at = at
+""",
     )
     allowed: int = main(
         arguments=[
@@ -601,7 +747,9 @@ def test_short_lowercase_abbreviation_needs_consent(tmp_path: Path) -> None:
     expect_equal(actual=allowed, expected=0)
     expect_equal(
         actual=(tmp_path / Constants.new / "a.py").read_text(encoding="utf-8"),
-        expected="x_at = fb\n",
+        expected="""\
+x_at = fb
+""",
     )
 
 
@@ -655,7 +803,11 @@ def _github_project(*, tmp_path: Path) -> Path:
     """
     root: Path = _project(
         tmp_path=tmp_path,
-        files={"README.md": "Clone https://github.com/me/abc_cde.git\n"},
+        files={
+            "README.md": """\
+Clone https://github.com/me/abc_cde.git
+""",
+        },
     )
     _ = run(args=["git", "init", "-q", str(object=root)], check=True)
     _ = run(
@@ -738,7 +890,9 @@ def test_github_rename_updates_repo_remote_and_urls(
     )
     expect_equal(
         actual=(moved / "README.md").read_text(encoding="utf-8"),
-        expected="Clone https://github.com/me/foo_bar.git\n",
+        expected="""\
+Clone https://github.com/me/foo_bar.git
+""",
     )
 
 
@@ -764,7 +918,9 @@ def test_github_failure_rolls_back_local_changes(
     expect_true(condition=root.is_dir())
     expect_equal(
         actual=(root / "README.md").read_text(encoding="utf-8"),
-        expected="Clone https://github.com/me/abc_cde.git\n",
+        expected="""\
+Clone https://github.com/me/abc_cde.git
+""",
     )
     expect_equal(
         actual=_origin(root=root),
@@ -779,11 +935,20 @@ def test_github_needs_a_github_remote(tmp_path: Path) -> None:
         tmp_path: Per-test temporary directory.
 
     """
-    root: Path = _project(tmp_path=tmp_path, files={"a.py": "abc_cde\n"})
+    root: Path = _project(
+        tmp_path=tmp_path,
+        files={
+            "a.py": """\
+abc_cde
+""",
+        },
+    )
     expect_equal(actual=_rename(root=root, extra=("--github",)), expected=1)
     expect_equal(
         actual=(root / "a.py").read_text(encoding="utf-8"),
-        expected="abc_cde\n",
+        expected="""\
+abc_cde
+""",
     )
 
 
@@ -872,7 +1037,14 @@ class FakeTerminal:
 
         """
         self.asked += 1
-        return self.answers.pop(0) + "\n" if self.answers else ""
+        return (
+            self.answers.pop(0)
+            + """\
+
+"""
+            if self.answers
+            else ""
+        )
 
 
 def _interactive(
@@ -1050,9 +1222,14 @@ def test_dotted_python_attribute_vs_string(tmp_path: Path) -> None:
     """
     source: str = dedent(
         text=(
-            "    value = abc.cde\n    obj.abc.cde = 1\n    # see abc.cde\n    "
-            'logger = getLogger("abc.cde")\n    """Docs for abc.cde."""\n    l'
-            'abel = f"abc.cde {value}"\n    '
+            """\
+    value = abc.cde
+    obj.abc.cde = 1
+    # see abc.cde
+    logger = getLogger("abc.cde")
+    \"""Docs for abc.cde.\"""
+    label = f"abc.cde {value}"
+    """
         ),
     )
     expect_equal(
@@ -1060,10 +1237,14 @@ def test_dotted_python_attribute_vs_string(tmp_path: Path) -> None:
         expected=(
             dedent(
                 text=(
-                    "    value = abc.cde\n    obj.abc.cde = 1\n    # see f"
-                    'oo.bar\n    logger = getLogger("foo.bar")\n    """Doc'
-                    's for foo.bar."""\n    label = f"abc.cde {value}"\n  '
-                    "  "
+                    """\
+    value = abc.cde
+    obj.abc.cde = 1
+    # see foo.bar
+    logger = getLogger("foo.bar")
+    \"""Docs for foo.bar.\"""
+    label = f"abc.cde {value}"
+    """
                 ),
             )
         ),
@@ -1079,8 +1260,12 @@ def test_dotted_javascript_and_css(tmp_path: Path) -> None:
     """
     script: str = dedent(
         text=(
-            "    const v = abc.cde;\n    // abc.cde note\n    const t = 'abc.c"
-            "de';\n    const u = `x ${abc.cde} abc.cde`;\n    "
+            """\
+    const v = abc.cde;
+    // abc.cde note
+    const t = 'abc.cde';
+    const u = `x ${abc.cde} abc.cde`;
+    """
         ),
     )
     expect_equal(
@@ -1088,21 +1273,30 @@ def test_dotted_javascript_and_css(tmp_path: Path) -> None:
         expected=(
             dedent(
                 text=(
-                    "    const v = abc.cde;\n    // foo.bar note\n    cons"
-                    "t t = 'foo.bar';\n    const u = `x ${abc.cde} abc.cde"
-                    "`;\n    "
+                    """\
+    const v = abc.cde;
+    // foo.bar note
+    const t = 'foo.bar';
+    const u = `x ${abc.cde} abc.cde`;
+    """
                 ),
             )
         ),
     )
-    styles: str = "abc.cde { color: red }\n/* abc.cde */\n"
+    styles: str = """\
+abc.cde { color: red }
+/* abc.cde */
+"""
     expect_equal(
         actual=_dotted(
             tmp_path=tmp_path / "css",
             name="a.css",
             content=styles,
         ),
-        expected="abc.cde { color: red }\n/* foo.bar */\n",
+        expected="""\
+abc.cde { color: red }
+/* foo.bar */
+""",
     )
 
 
@@ -1119,10 +1313,14 @@ def test_dotted_markdown_and_chains(
     """
     err: StringIO = StringIO()
     monkeypatch.setattr(target=Constants.rp, name="stderr", value=err)
-    text: str = "Use abc.cde here, `abc.cde` there, and abc.cde.json too.\n"
+    text: str = """\
+Use abc.cde here, `abc.cde` there, and abc.cde.json too.
+"""
     expect_equal(
         actual=_dotted(tmp_path=tmp_path, name="a.md", content=text),
-        expected="Use foo.bar here, `abc.cde` there, and foo.bar.json too.\n",
+        expected="""\
+Use foo.bar here, `abc.cde` there, and foo.bar.json too.
+""",
     )
     expect_in(
         member="guarded: dotted code reference",
@@ -1141,13 +1339,19 @@ def test_dotted_import_paths_that_exist_are_kept(tmp_path: Path) -> None:
         tmp_path=tmp_path,
         files={
             "abc/cde/__init__.py": "",
-            "m.py": 'import abc.cde\nname = "abc.cde"\n',
+            "m.py": """\
+import abc.cde
+name = "abc.cde"
+""",
         },
     )
     expect_equal(actual=_rename(root=root), expected=0)
     expect_equal(
         actual=(tmp_path / Constants.new / "m.py").read_text(encoding="utf-8"),
-        expected='import abc.cde\nname = "abc.cde"\n',
+        expected="""\
+import abc.cde
+name = "abc.cde"
+""",
     )
 
 
@@ -1158,23 +1362,38 @@ def test_dotted_modes_override_detection(tmp_path: Path) -> None:
         tmp_path: Per-test temporary directory.
 
     """
-    root: Path = _project(tmp_path=tmp_path, files={"a.py": "x = abc.cde\n"})
+    root: Path = _project(
+        tmp_path=tmp_path,
+        files={
+            "a.py": """\
+x = abc.cde
+""",
+        },
+    )
     expect_equal(
         actual=_rename(root=root, extra=("--dotted-code",)),
         expected=0,
     )
     expect_equal(
         actual=(tmp_path / Constants.new / "a.py").read_text(encoding="utf-8"),
-        expected="x = foo.bar\n",
+        expected="""\
+x = foo.bar
+""",
     )
     second: Path = _project(
         tmp_path=tmp_path / "two",
-        files={"a.py": '"abc.cde"\n'},
+        files={
+            "a.py": """\
+"abc.cde"
+""",
+        },
     )
     expect_equal(actual=_rename(root=second, extra=()), expected=0)
     expect_equal(
         actual=(tmp_path / "two" / Constants.new / "a.py").read_text(
             encoding="utf-8",
         ),
-        expected='"abc.cde"\n',
+        expected="""\
+"abc.cde"
+""",
     )

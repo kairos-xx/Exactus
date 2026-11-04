@@ -41,13 +41,29 @@ class Constants:
     """
 
     marker: Final[str] = "# " + "noqa"
-    util: Final[str] = (
-        '"""Helpers."""\n\nfrom pathlib import Path\n\nimport os '
-        f' {marker}\n\n\ndef size(path: Path) -> int:\n    """Return the'
-        " size.\n\n    Args:\n        path: File.\n\n    Returns:\n       "
-        ' Bytes.\n    """\n    return path.stat().st_size\n\n\ndef'
-        " helper():\n    return 1\n"
-    )
+    util: Final[str] = f"""\
+\"""Helpers.\"""
+
+from pathlib import Path
+
+import os  {marker}
+
+
+def size(path: Path) -> int:
+    \"""Return the size.
+
+    Args:
+        path: File.
+
+    Returns:
+        Bytes.
+    \"""
+    return path.stat().st_size
+
+
+def helper():
+    return 1
+"""
 
 
 @pytest.fixture(autouse=True)
@@ -79,7 +95,12 @@ def _project(*, root: Path) -> None:
         encoding="utf-8",
     )
     script: Path = root / "pkg" / "run.py"
-    _ = script.write_text(data='x = 1\n"""Not a shebang."""\n')
+    _ = script.write_text(
+        data="""\
+x = 1
+\"""Not a shebang.\"""
+""",
+    )
     script.chmod(mode=493)
 
 
@@ -220,7 +241,12 @@ def test_exec_excerpt_follows_context_lines(tmp_path: Path) -> None:
         expected=dig(document=finding, path=("excerpt",)),
     )
     expect_in(
-        member='~~~python\n    1>| x = 1\n    2 | """Not a shebang."""\n~~~\n',
+        member="""\
+~~~python
+    1>| x = 1
+    2 | \"""Not a shebang.\"""
+~~~
+""",
         container=markdown,
     )
 
@@ -279,7 +305,9 @@ def test_lints_and_docs_excerpts_use_default_context(tmp_path: Path) -> None:
         expected=(2, 8, 3),
     )
     expect_in(
-        member=f"    5>| import os  {Constants.marker}\n",
+        member=f"""\
+    5>| import os  {Constants.marker}
+""",
         container=compliance_md,
     )
     expect_in(
@@ -302,7 +330,12 @@ def test_lints_and_docs_excerpts_use_default_context(tmp_path: Path) -> None:
         actual=dig(document=missing, path=("excerpt", "line")),
         expected=dig(document=missing, path=("line",)),
     )
-    expect_in(member="   20>| def helper():\n", container=docs_md)
+    expect_in(
+        member="""\
+   20>| def helper():
+""",
+        container=docs_md,
+    )
 
 
 def test_readme_findings_without_lines_get_no_excerpt(tmp_path: Path) -> None:
@@ -314,7 +347,11 @@ def test_readme_findings_without_lines_get_no_excerpt(tmp_path: Path) -> None:
     """
     root: Path = tmp_path / "project"
     (root / "src" / "pkg").mkdir(parents=True)
-    _ = (root / "src" / "pkg" / "mod.py").write_text(data="x = 1\n")
+    _ = (root / "src" / "pkg" / "mod.py").write_text(
+        data="""\
+x = 1
+""",
+    )
     result: dict[str, JsonValue]
     markdown: str
     result, _, markdown = _run(

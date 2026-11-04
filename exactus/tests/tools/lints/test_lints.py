@@ -115,11 +115,36 @@ def test_conventions_progress_is_uniform_and_monotonic(
 
     """
     for name, source in (
-        ("a.py", "x = 1\n"),
-        ("b.py", "y = 2\n"),
-        ("app.js", "const f = x => x;\n"),
-        ("site.css", "a { display: flex; }\n"),
-        ("index.html", "<html></html>\n"),
+        (
+            "a.py",
+            """\
+x = 1
+""",
+        ),
+        (
+            "b.py",
+            """\
+y = 2
+""",
+        ),
+        (
+            "app.js",
+            """\
+const f = x => x;
+""",
+        ),
+        (
+            "site.css",
+            """\
+a { display: flex; }
+""",
+        ),
+        (
+            "index.html",
+            """\
+<html></html>
+""",
+        ),
     ):
         _ = (tmp_path / name).write_text(data=source, encoding="utf-8")
     fractions: list[float] = []
@@ -471,8 +496,20 @@ def test_run_organize_traces_each_file_state(tmp_path: Path) -> None:
         ),
         encoding="utf-8",
     )
-    _ = unchanged.write_text(data="class Empty:\n    pass\n", encoding="utf-8")
-    _ = invalid.write_text(data="class Broken(:\n    pass\n", encoding="utf-8")
+    _ = unchanged.write_text(
+        data="""\
+class Empty:
+    pass
+""",
+        encoding="utf-8",
+    )
+    _ = invalid.write_text(
+        data="""\
+class Broken(:
+    pass
+""",
+        encoding="utf-8",
+    )
     with step_log(path=trace_path):
         report: dict[str, lints_core.JsonValue] = run_organize(
             paths=(changed, unchanged, invalid),
@@ -630,7 +667,11 @@ def test_long_line_summary_is_written_to_the_status_stream(
     """
     target: Path = tmp_path / "a.py"
     _ = target.write_text(
-        data='value = "' + "word " * 30 + '"\n',
+        data='value = "'
+        + "word " * 30
+        + """\
+"
+""",
         encoding="utf-8",
     )
     broken: Path = tmp_path / "b.py"
@@ -671,14 +712,25 @@ def test_lints_repairs_lines_ruff_cannot_wrap(tmp_path: Path) -> None:
     project.mkdir()
     _ = (project / "pyproject.toml").write_text(
         data=(
-            f"[tool.exactus]\nroot = true\n[tool.ruff]\nline-length "
-            f"= {Constants.line_length}\n"
+            f"""\
+[tool.exactus]
+root = true
+[tool.ruff]
+line-length = {Constants.line_length}
+"""
         ),
         encoding="utf-8",
     )
     source: Path = project / "app.py"
     original: str = (
-        '"""Module."""\n\nVALUE = "' + "alpha beta gamma " * 6 + '"\n'
+        '''\
+"""Module."""
+
+VALUE = "'''
+        + "alpha beta gamma " * 6
+        + """\
+"
+"""
     )
     _ = source.write_text(data=original, encoding="utf-8")
     _ = _run(project=project, out=tmp_path / "out")
@@ -712,9 +764,11 @@ def test_inline_style_scan_lints_generated_code_not_embedded_source(
         data=(
             dedent(
                 text=(
-                    '    window.REPORT_DATA = {"text": "Object.assign(band.sty'
-                    "le, { color: 'red' });\"};\n    Object.assign(band.style,"
-                    ' { color: "red" });\n    '
+                    """\
+    window.REPORT_DATA = {"text": "Object.assign(band.style, { color: 'red' })\
+;"};
+    Object.assign(band.style, { color: "red" });
+    """
                 ),
             )
         ),
@@ -759,7 +813,8 @@ def test_javascript_organizer_orders_safe_method_runs(
     """
     fake_espree: Path = tmp_path / "fake_espree.cjs"
     _ = fake_espree.write_text(
-        data=r""""use strict";
+        data="""\
+"use strict";
 exports.parse = source => {
   const classStart = source.indexOf("class Demo");
   const classEnd = source.lastIndexOf("}") + 1;
@@ -767,16 +822,17 @@ exports.parse = source => {
   const bodyEnd = classEnd - 1;
   const body = [];
   const pattern = new RegExp(
-    "((?:static\\s+)?(?:get\\s+|set\\s+)?#?\\w+" +
-      "\\s*\\([^)]*\\)\\s*\\{\\s*\\})",
+    "((?:static\\\\s+)?(?:get\\\\s+|set\\\\s+)?#?\\\\w+" +
+      "\\\\s*\\\\([^)]*\\\\)\\\\s*\\\\{\\\\s*\\\\})",
     "g",
   );
   let match;
-  while ((match = pattern.exec(source.slice(bodyStart, bodyEnd))) !== null) {
+  while ((match = pattern.exec(source.slice(bodyStart, bodyEnd))) !== null) \
+{
     const text = match[1];
     const start = bodyStart + match.index;
     const end = start + text.length;
-    const words = text.match(/^(static\s+)?(?:(get|set)\s+)?(#?\w+)/);
+    const words = text.match(/^(static\\s+)?(?:(get|set)\\s+)?(#?\\w+)/);
     const name = words[3];
     body.push({
       type: "MethodDefinition",
@@ -912,6 +968,78 @@ def test_uppercase_globals_exempt_generic_binders(tmp_path: Path) -> None:
     expect_true(
         condition=all("`MUT" in message for message in messages),
         message="A generic binder or lowercase global was flagged.",
+    )
+
+
+def test_uppercase_globals_exempt_type_aliases(tmp_path: Path) -> None:
+    """Implicit type aliases skip ``PY002``; mutable globals do not.
+
+    Args:
+        tmp_path: Isolated directory for the sample module.
+
+    """
+    source: Path = tmp_path / "module.py"
+    _ = source.write_text(
+        data=(
+            dedent(
+                text="""\
+    ALIAS = int
+    OTHER = SomeClass
+    PAIR = tuple[int, str]
+    TUP = (int, str)
+    VARIADIC = (int, ...)
+    OPT = Optional[str]
+    UN = int | str | None
+    QUOTED = "Cls" | int
+    DOTTED = mod.Type
+    SINGLE = T
+    COMBINED = READ | WRITE
+    MUTABLE = [1]
+    MSG = "text"
+    MEMBER = Color.RED
+    """,
+            )
+        ),
+        encoding="utf-8",
+    )
+    findings: list[lints_core.JsonValue] = cast(
+        typ="list[lints_core.JsonValue]",
+        val=private_result(
+            owner=LintExactus,
+            name="_uppercase_global_findings",
+            kind=list,
+            file=source,
+            tree=parse(source=source.read_text(encoding="utf-8")),
+        ),
+    )
+    messages: list[str] = [
+        str(object=finding.get("message"))
+        for finding in findings
+        if isinstance(finding, dict)
+    ]
+    flagged: set[str] = {
+        name
+        for name in (
+            "ALIAS",
+            "OTHER",
+            "PAIR",
+            "TUP",
+            "VARIADIC",
+            "OPT",
+            "UN",
+            "QUOTED",
+            "DOTTED",
+            "SINGLE",
+            "COMBINED",
+            "MUTABLE",
+            "MSG",
+            "MEMBER",
+        )
+        if any(f"`{name}`" in message for message in messages)
+    }
+    expect_equal(
+        actual=flagged,
+        expected={"COMBINED", "MUTABLE", "MSG", "MEMBER"},
     )
 
 

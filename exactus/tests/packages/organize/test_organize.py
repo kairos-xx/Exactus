@@ -60,37 +60,78 @@ def test_reorders_every_category_stably() -> None:
     """Place every supported method category in canonical order."""
     source: str = dedent(
         text=(
-            '\n        class Example:\n            """Example containing '
-            'every supported method category."""\n\n            def '
-            '_instance(self) -> None:\n                """Perform private '
-            'instance work."""\n\n            @staticmethod\n            def '
-            '_static() -> None:\n                """Perform private static '
-            'work."""\n\n            @property\n            def '
-            '_hidden(self) -> int:\n                """Return the hidden '
-            "marker.\n\n                Returns:\n                    Hidden "
-            'marker value.\n\n                """\n                return '
-            "1\n\n            @classmethod\n            def _factory(cls) -> "
-            'None:\n                """Perform private factory work."""\n\n  '
-            "          def __repr__(self) -> str:\n                "
-            '"""Return a debugging representation.\n\n                '
-            "Returns:\n                    Debugging representation.\n\n     "
-            '           """\n                return "Example()"\n\n          '
-            '  def public(self) -> None:\n                """Perform '
-            'public work."""\n\n            @staticmethod\n            def '
-            'utility() -> None:\n                """Perform public utility '
-            'work."""\n\n            @property\n            def value(self) '
-            '-> int:\n                """Return the public value.\n\n        '
-            "        Returns:\n                    Public value.\n\n         "
-            '       """\n                return 1\n\n            '
-            "@classmethod\n            def create(cls) -> None:\n           "
-            '     """Perform public factory work."""\n\n            def _'
-            '_init__(self) -> None:\n                """Initialize the '
-            'example."""\n\n            def __new__(cls) -> "Example":\n     '
-            '           """Allocate the example.\n\n                '
-            "Returns:\n                    Allocated example.\n\n            "
-            '    """\n                return super().__new__(cls)\n        '
+            """\
+
+        class Example:
+            \"""Example containing every supported method category.\"""
+
+            def _instance(self) -> None:
+                \"""Perform private instance work.\"""
+
+            @staticmethod
+            def _static() -> None:
+                \"""Perform private static work.\"""
+
+            @property
+            def _hidden(self) -> int:
+                \"""Return the hidden marker.
+
+                Returns:
+                    Hidden marker value.
+
+                \"""
+                return 1
+
+            @classmethod
+            def _factory(cls) -> None:
+                \"""Perform private factory work.\"""
+
+            def __repr__(self) -> str:
+                \"""Return a debugging representation.
+
+                Returns:
+                    Debugging representation.
+
+                \"""
+                return "Example()"
+
+            def public(self) -> None:
+                \"""Perform public work.\"""
+
+            @staticmethod
+            def utility() -> None:
+                \"""Perform public utility work.\"""
+
+            @property
+            def value(self) -> int:
+                \"""Return the public value.
+
+                Returns:
+                    Public value.
+
+                \"""
+                return 1
+
+            @classmethod
+            def create(cls) -> None:
+                \"""Perform public factory work.\"""
+
+            def __init__(self) -> None:
+                \"""Initialize the example.\"""
+
+            def __new__(cls) -> "Example":
+                \"""Allocate the example.
+
+                Returns:
+                    Allocated example.
+
+                \"""
+                return super().__new__(cls)
+        """
         ),
-    ).removeprefix("\n")
+    ).removeprefix("""\
+
+""")
     result: str = PythonClassMethodReorderer.reorder_source(source=source)
     expect(
         condition=method_names(source=result)
@@ -114,31 +155,55 @@ def test_preserves_decorators_annotations_docstrings_and_comments() -> None:
     """Move complex method text without reconstructing its syntax."""
     source: str = dedent(
         text=(
-            '\n        class Example:\n            """Example carrying a '
-            'complex factory method."""\n\n            def _helper(self) -> '
-            'None:\n                """Perform private helper work."""\n    '
-            "            return None\n\n            # Factory documentation "
-            "comment.\n            @custom(\n                "
-            'mode="strict",\n            )\n            @classmethod\n       '
-            "     async def create(\n                cls,\n                "
-            "*,\n                value: tuple[int, str | None],\n           "
-            '     callback: "Callable[[int], bool] | None" = None,\n       '
-            '     ) -> "Example | None":\n                """Create an '
-            "example with the exact original docstring.\n\n                "
-            "Args:\n                    value: Packed settings for the "
-            "example.\n                    callback: Optional acceptance "
-            "predicate.\n\n                Returns:\n                    The "
-            'new example or nothing when rejected.\n\n                """\n  '
-            "              # Body comment remains exact.\n                "
-            "return (\n                    cls()\n                    if "
-            "callback is None or callback(value[0])\n                    "
-            "else None\n                )\n\n            def __init__(self) "
-            '-> None:\n                """Initialize the example."""\n      '
-            "  "
+            """\
+
+        class Example:
+            \"""Example carrying a complex factory method.\"""
+
+            def _helper(self) -> None:
+                \"""Perform private helper work.\"""
+                return None
+
+            # Factory documentation comment.
+            @custom(
+                mode="strict",
+            )
+            @classmethod
+            async def create(
+                cls,
+                *,
+                value: tuple[int, str | None],
+                callback: "Callable[[int], bool] | None" = None,
+            ) -> "Example | None":
+                \"""Create an example with the exact original docstring.
+
+                Args:
+                    value: Packed settings for the example.
+                    callback: Optional acceptance predicate.
+
+                Returns:
+                    The new example or nothing when rejected.
+
+                \"""
+                # Body comment remains exact.
+                return (
+                    cls()
+                    if callback is None or callback(value[0])
+                    else None
+                )
+
+            def __init__(self) -> None:
+                \"""Initialize the example.\"""
+        """
         ),
-    ).removeprefix("\n")
+    ).removeprefix("""\
+
+""")
     method_start: int = source.index("    # Factory documentation comment.")
-    method_end: int = source.index("\n\n    def __init__")
+    method_end: int = source.index("""\
+
+
+    def __init__""")
     method: str = source[method_start:method_end]
     result: str = PythonClassMethodReorderer.reorder_source(source=source)
     expect(condition=method in result)
@@ -158,25 +223,53 @@ def test_property_family_is_adjacent_and_accessor_order_is_normalized() -> (
     """Keep a property getter, setter, and deleter together."""
     source: str = dedent(
         text=(
-            '\n        class Example:\n            """Example owning a managed'
-            ' property family."""\n\n            @property\n            def ot'
-            'her(self) -> int:\n                """Return the other value.\n\n'
-            "                Returns:\n                    Other value.\n\n   "
-            '             """\n                return 2\n\n            @value.'
-            'deleter\n            def value(self) -> None:\n                ""'
-            '"Delete the stored value."""\n\n            @value.setter\n      '
-            '      def value(self, new_value: int) -> None:\n                "'
-            '""Store a new value.\n\n                Args:\n                  '
-            '  new_value: Value to store.\n\n                """\n            '
-            "    self._value = new_value\n\n            @property\n           "
-            ' def value(self) -> int:\n                """Return the stored va'
-            "lue.\n\n                Returns:\n                    Stored valu"
-            'e.\n\n                """\n                return self._value\n  '
-            "      "
+            """\
+
+        class Example:
+            \"""Example owning a managed property family.\"""
+
+            @property
+            def other(self) -> int:
+                \"""Return the other value.
+
+                Returns:
+                    Other value.
+
+                \"""
+                return 2
+
+            @value.deleter
+            def value(self) -> None:
+                \"""Delete the stored value.\"""
+
+            @value.setter
+            def value(self, new_value: int) -> None:
+                \"""Store a new value.
+
+                Args:
+                    new_value: Value to store.
+
+                \"""
+                self._value = new_value
+
+            @property
+            def value(self) -> int:
+                \"""Return the stored value.
+
+                Returns:
+                    Stored value.
+
+                \"""
+                return self._value
+        """
         ),
-    ).removeprefix("\n")
+    ).removeprefix("""\
+
+""")
     result: str = PythonClassMethodReorderer.reorder_source(source=source)
-    getter: int = result.index("@property\n    def value")
+    getter: int = result.index("""\
+@property
+    def value""")
     setter: int = result.index("@value.setter")
     deleter: int = result.index("@value.deleter")
     expect(condition=getter < setter < deleter)
@@ -187,16 +280,26 @@ def test_qualified_binding_decorators_are_recognized() -> None:
     """Recognize terminal names of qualified binding decorators."""
     source: str = dedent(
         text=(
-            '\n        class Example:\n            """Example using '
-            'qualified binding decorators."""\n\n            def '
-            'normal(self) -> None:\n                """Perform normal '
-            'work."""\n\n            @builtins.staticmethod\n            def '
-            'utility() -> None:\n                """Perform utility '
-            'work."""\n\n            @builtins.classmethod\n            def '
-            'create(cls) -> None:\n                """Create an '
-            'example."""\n        '
+            """\
+
+        class Example:
+            \"""Example using qualified binding decorators.\"""
+
+            def normal(self) -> None:
+                \"""Perform normal work.\"""
+
+            @builtins.staticmethod
+            def utility() -> None:
+                \"""Perform utility work.\"""
+
+            @builtins.classmethod
+            def create(cls) -> None:
+                \"""Create an example.\"""
+        """
         ),
-    ).removeprefix("\n")
+    ).removeprefix("""\
+
+""")
     result: str = PythonClassMethodReorderer.reorder_source(source=source)
     expect(
         condition=method_names(source=result)
@@ -208,30 +311,52 @@ def test_blank_line_separated_comment_remains_anchored() -> None:
     """Do not attach a separated section comment to a moving method."""
     source: str = dedent(
         text=(
-            '\n        class Example:\n            """Example with an '
-            'anchored section comment."""\n            # SECTION: '
-            "helpers\n\n            def _helper(self) -> None:\n             "
-            '   """Perform helper work."""\n\n            def __init_'
-            '_(self) -> None:\n                """Initialize the '
-            'example."""\n        '
+            """\
+
+        class Example:
+            \"""Example with an anchored section comment.\"""
+            # SECTION: helpers
+
+            def _helper(self) -> None:
+                \"""Perform helper work.\"""
+
+            def __init__(self) -> None:
+                \"""Initialize the example.\"""
+        """
         ),
-    ).removeprefix("\n")
+    ).removeprefix("""\
+
+""")
     result: str = PythonClassMethodReorderer.reorder_source(source=source)
-    expect(condition="    # SECTION: helpers\n\n    def __init__" in result)
+    expect(
+        condition="""\
+    # SECTION: helpers
+
+    def __init__"""
+        in result,
+    )
 
 
 def test_direct_comment_moves_with_method() -> None:
     """Move a directly adjacent comment together with its method."""
     source: str = dedent(
         text=(
-            '\n        class Example:\n            """Example with directly '
-            'anchored method comments."""\n            # helper comment\n   '
-            "         def _helper(self) -> None:\n                "
-            '"""Perform helper work."""\n\n            # init comment\n      '
-            "      def __init__(self) -> None:\n                "
-            '"""Initialize the example."""\n        '
+            """\
+
+        class Example:
+            \"""Example with directly anchored method comments.\"""
+            # helper comment
+            def _helper(self) -> None:
+                \"""Perform helper work.\"""
+
+            # init comment
+            def __init__(self) -> None:
+                \"""Initialize the example.\"""
+        """
         ),
-    ).removeprefix("\n")
+    ).removeprefix("""\
+
+""")
     result: str = PythonClassMethodReorderer.reorder_source(source=source)
     expect(
         condition=result.index("# init comment")
@@ -247,25 +372,47 @@ def test_nested_class_is_reordered_but_function_local_class_is_not() -> None:
     """Transform structural nested classes without touching runtime locals."""
     source: str = dedent(
         text=(
-            '\n        def factory() -> type:\n            """Build a local '
-            "class.\n\n            Returns:\n                The local "
-            'class.\n\n            """\n            class Local:\n            '
-            '    """Local class kept in source order."""\n\n                '
-            'def _helper(self) -> None:\n                    """Perform '
-            'local helper work."""\n\n                def __init__(self) -> '
-            'None:\n                    """Initialize the local class."""\n '
-            "           return Local\n\n        class Outer:\n            "
-            '"""Outer class containing a nested inner class."""\n\n         '
-            '   class Inner:\n                """Nested inner class."""\n\n  '
-            "              def _helper(self) -> None:\n                    "
-            '"""Perform inner helper work."""\n\n                def __init'
-            '__(self) -> None:\n                    """Initialize the '
-            'inner class."""\n\n            def _outer(self) -> None:\n      '
-            '          """Perform outer work."""\n\n            def __init_'
-            '_(self) -> None:\n                """Initialize the outer '
-            'class."""\n        '
+            """\
+
+        def factory() -> type:
+            \"""Build a local class.
+
+            Returns:
+                The local class.
+
+            \"""
+            class Local:
+                \"""Local class kept in source order.\"""
+
+                def _helper(self) -> None:
+                    \"""Perform local helper work.\"""
+
+                def __init__(self) -> None:
+                    \"""Initialize the local class.\"""
+            return Local
+
+        class Outer:
+            \"""Outer class containing a nested inner class.\"""
+
+            class Inner:
+                \"""Nested inner class.\"""
+
+                def _helper(self) -> None:
+                    \"""Perform inner helper work.\"""
+
+                def __init__(self) -> None:
+                    \"""Initialize the inner class.\"""
+
+            def _outer(self) -> None:
+                \"""Perform outer work.\"""
+
+            def __init__(self) -> None:
+                \"""Initialize the outer class.\"""
+        """
         ),
-    ).removeprefix("\n")
+    ).removeprefix("""\
+
+""")
     result: str = PythonClassMethodReorderer.reorder_source(source=source)
     local_start: int = result.index("    class Local:")
     local_end: int = result.index("    return Local")
@@ -287,15 +434,24 @@ def test_idempotent_and_already_ordered_source_is_byte_identical() -> None:
     """Return byte-identical source once canonical order is reached."""
     source: str = dedent(
         text=(
-            '\n        class Example:\n            """Example already '
-            'arranged in canonical order."""\n\n            def __init_'
-            '_(self) -> None:\n                """Initialize the '
-            'example."""\n\n            def public(self) -> None:\n          '
-            '      """Perform public work."""\n\n            def '
-            '_private(self) -> None:\n                """Perform private '
-            'work."""\n        '
+            """\
+
+        class Example:
+            \"""Example already arranged in canonical order.\"""
+
+            def __init__(self) -> None:
+                \"""Initialize the example.\"""
+
+            def public(self) -> None:
+                \"""Perform public work.\"""
+
+            def _private(self) -> None:
+                \"""Perform private work.\"""
+        """
         ),
-    ).removeprefix("\n")
+    ).removeprefix("""\
+
+""")
     once: str = PythonClassMethodReorderer.reorder_source(source=source)
     twice: str = PythonClassMethodReorderer.reorder_source(source=once)
     expect(condition=once == source)
@@ -306,12 +462,21 @@ def test_single_method_and_empty_class_are_unchanged() -> None:
     """Leave classes with fewer than two direct methods untouched."""
     source: str = dedent(
         text=(
-            '\n        class Empty:\n            """Empty class."""\n\n       '
-            ' class Single:\n            """Class declaring a single '
-            'method."""\n\n            def method(self) -> None:\n           '
-            '     """Perform the only method\'s work."""\n        '
+            """\
+
+        class Empty:
+            \"""Empty class.\"""
+
+        class Single:
+            \"""Class declaring a single method.\"""
+
+            def method(self) -> None:
+                \"""Perform the only method's work.\"""
+        """
         ),
-    ).removeprefix("\n")
+    ).removeprefix("""\
+
+""")
     expect(
         condition=PythonClassMethodReorderer.reorder_source(source=source)
         == source,
@@ -328,13 +493,21 @@ def test_file_api_reorders_and_reports_change(tmp_path: Path) -> None:
     path: Path = tmp_path / "sample.py"
     source: str = dedent(
         text=(
-            '\n        class Example:\n            """Example exercised '
-            'through the file API."""\n\n            def _helper(self) -> '
-            'None:\n                """Perform helper work."""\n\n           '
-            ' def __init__(self) -> None:\n                """Initialize '
-            'the example."""\n        '
+            """\
+
+        class Example:
+            \"""Example exercised through the file API.\"""
+
+            def _helper(self) -> None:
+                \"""Perform helper work.\"""
+
+            def __init__(self) -> None:
+                \"""Initialize the example.\"""
+        """
         ),
-    ).removeprefix("\n")
+    ).removeprefix("""\
+
+""")
     _bytes_written: int = path.write_text(data=source, encoding="utf-8")
     reorderer: PythonClassMethodReorderer = PythonClassMethodReorderer(
         path=path,
@@ -350,7 +523,9 @@ def test_invalid_python_propagates_syntax_error() -> None:
     """Reject invalid input rather than attempting a partial rewrite."""
     with pytest.raises(expected_exception=SyntaxError):
         _result: str = PythonClassMethodReorderer.reorder_source(
-            source="class Broken(:\n",
+            source="""\
+class Broken(:
+""",
         )
 
 
@@ -358,13 +533,21 @@ def test_metrics_report_moved_methods_classes_and_lines() -> None:
     """Aggregate moved-method counts for one reordered class."""
     source: str = dedent(
         text=(
-            '\n        class Example:\n            """Example with two '
-            'methods out of order."""\n\n            def _helper(self) -> '
-            'None:\n                """Perform helper work."""\n\n           '
-            ' def __init__(self) -> None:\n                """Initialize '
-            'the example."""\n        '
+            """\
+
+        class Example:
+            \"""Example with two methods out of order.\"""
+
+            def _helper(self) -> None:
+                \"""Perform helper work.\"""
+
+            def __init__(self) -> None:
+                \"""Initialize the example.\"""
+        """
         ),
-    ).removeprefix("\n")
+    ).removeprefix("""\
+
+""")
     result: ReorderResult = PythonClassMethodReorderer.reorder_source_detailed(
         source=source,
     )
@@ -385,13 +568,21 @@ def test_metrics_report_zero_moves_for_ordered_source() -> None:
     """Report zero movement when the source is already ordered."""
     source: str = dedent(
         text=(
-            '\n        class Example:\n            """Example already in '
-            'canonical order."""\n\n            def __init__(self) -> '
-            'None:\n                """Initialize the example."""\n\n        '
-            '    def public(self) -> None:\n                """Perform '
-            'public work."""\n        '
+            """\
+
+        class Example:
+            \"""Example already in canonical order.\"""
+
+            def __init__(self) -> None:
+                \"""Initialize the example.\"""
+
+            def public(self) -> None:
+                \"""Perform public work.\"""
+        """
         ),
-    ).removeprefix("\n")
+    ).removeprefix("""\
+
+""")
     result: ReorderResult = PythonClassMethodReorderer.reorder_source_detailed(
         source=source,
     )
@@ -406,13 +597,21 @@ def test_custom_order_reorders_by_given_categories() -> None:
     """Reorder methods using a caller-provided category order."""
     source: str = dedent(
         text=(
-            '\n        class Example:\n            """Example reordered by '
-            'a custom category order."""\n\n            def __init__(self) '
-            '-> None:\n                """Initialize the example."""\n\n     '
-            '       def public(self) -> None:\n                """Perform '
-            'public work."""\n        '
+            """\
+
+        class Example:
+            \"""Example reordered by a custom category order.\"""
+
+            def __init__(self) -> None:
+                \"""Initialize the example.\"""
+
+            def public(self) -> None:
+                \"""Perform public work.\"""
+        """
         ),
-    ).removeprefix("\n")
+    ).removeprefix("""\
+
+""")
     order: tuple[str, ...] = (
         "method",
         *tuple(
@@ -457,13 +656,17 @@ def test_configured_order_reads_pyproject(tmp_path: Path) -> None:
 
     """
     _bytes: int = (tmp_path / "pyproject.toml").write_text(
-        data='[tool.organize]\norder = ["method", '
+        data="""\
+[tool.organize]
+order = ["method", """
         + ", ".join(
             f'"{category}"'
             for category in Constants.default_order
             if category != "method"
         )
-        + "]\n",
+        + """\
+]
+""",
         encoding="utf-8",
     )
     order: tuple[str, ...] = configured_order(start=tmp_path)
@@ -479,7 +682,10 @@ def test_configured_order_defaults_without_section(tmp_path: Path) -> None:
 
     """
     _bytes: int = (tmp_path / "pyproject.toml").write_text(
-        data='[project]\nname = "demo"\n',
+        data="""\
+[project]
+name = "demo"
+""",
         encoding="utf-8",
     )
     expect(
@@ -495,7 +701,10 @@ def test_configured_order_rejects_invalid_pyproject(tmp_path: Path) -> None:
 
     """
     _bytes: int = (tmp_path / "pyproject.toml").write_text(
-        data='[tool.organize]\norder = ["init"]\n',
+        data="""\
+[tool.organize]
+order = ["init"]
+""",
         encoding="utf-8",
     )
     with pytest.raises(
@@ -519,13 +728,21 @@ def test_main_dry_run_reports_metrics_without_writing(
     path: Path = tmp_path / "target.py"
     source: str = dedent(
         text=(
-            '\n        class Example:\n            """Example organized by '
-            'the CLI."""\n\n            def _helper(self) -> None:\n         '
-            '       """Perform helper work."""\n\n            def __init_'
-            '_(self) -> None:\n                """Initialize the '
-            'example."""\n        '
+            """\
+
+        class Example:
+            \"""Example organized by the CLI.\"""
+
+            def _helper(self) -> None:
+                \"""Perform helper work.\"""
+
+            def __init__(self) -> None:
+                \"""Initialize the example.\"""
+        """
         ),
-    ).removeprefix("\n")
+    ).removeprefix("""\
+
+""")
     _bytes: int = path.write_text(data=source, encoding="utf-8")
     output: StringIO = StringIO()
     monkeypatch.setattr(target=organize_core, name="stdout", value=output)
@@ -549,13 +766,21 @@ def test_main_expands_globs_and_applies_exclude(
     """
     source: str = dedent(
         text=(
-            '\n        class Example:\n            """Example organized by '
-            'the CLI."""\n\n            def _helper(self) -> None:\n         '
-            '       """Perform helper work."""\n\n            def __init_'
-            '_(self) -> None:\n                """Initialize the '
-            'example."""\n        '
+            """\
+
+        class Example:
+            \"""Example organized by the CLI.\"""
+
+            def _helper(self) -> None:
+                \"""Perform helper work.\"""
+
+            def __init__(self) -> None:
+                \"""Initialize the example.\"""
+        """
         ),
-    ).removeprefix("\n")
+    ).removeprefix("""\
+
+""")
     first: Path = tmp_path / "a_module.py"
     second: Path = tmp_path / "b_module.py"
     _bytes: int = first.write_text(data=source, encoding="utf-8")
@@ -585,13 +810,21 @@ def test_main_order_flag_overrides_pyproject(
     path: Path = tmp_path / "ordered.py"
     source: str = dedent(
         text=(
-            '\n        class Example:\n            """Example already '
-            'ordered for a method-first order."""\n\n            def '
-            'public(self) -> None:\n                """Perform public '
-            'work."""\n\n            def __init__(self) -> None:\n           '
-            '     """Initialize the example."""\n        '
+            """\
+
+        class Example:
+            \"""Example already ordered for a method-first order.\"""
+
+            def public(self) -> None:
+                \"""Perform public work.\"""
+
+            def __init__(self) -> None:
+                \"""Initialize the example.\"""
+        """
         ),
-    ).removeprefix("\n")
+    ).removeprefix("""\
+
+""")
     _bytes: int = path.write_text(data=source, encoding="utf-8")
     order: str = ",".join(
         (

@@ -123,7 +123,11 @@ def test_skip_plugin_records_real_pytest_summary(
     source: Path = tmp_path / "test_service.py"
     _ = source.write_text(
         data=(
-            'import pytest\ndef test_service():\n    pytest.skip("offline")\n'
+            """\
+import pytest
+def test_service():
+    pytest.skip("offline")
+"""
         ),
         encoding="utf-8",
     )
@@ -155,17 +159,21 @@ def test_skip_plugin_preserves_parameter_ids_and_source(
     """
     source: Path = tmp_path / "test_skips.py"
     (tmp_path / "app.py").write_text(
-        data="available = False\n",
+        data="""\
+available = False
+""",
         encoding="utf-8",
     )
     source.write_text(
         data=(
             dedent(
                 text=(
-                    "    import pytest, app\n    @pytest.mark.parametrize("
-                    '"value", ["first", "second"])\n    def test_unavailab'
-                    'le(value):\n        pytest.skip("requires unavailable'
-                    ' service: " + value)\n    '
+                    """\
+    import pytest, app
+    @pytest.mark.parametrize("value", ["first", "second"])
+    def test_unavailable(value):
+        pytest.skip("requires unavailable service: " + value)
+    """
                 ),
             )
         ),

@@ -8,6 +8,7 @@ stamp against the live sources and warns. The executable is meant to
 be distributed alone, so the check never fires outside this
 repository.
 """
+
 from hashlib import sha256
 from json import dumps, loads
 from os import stat_result, walk
@@ -41,6 +42,8 @@ _GENERATED_PREFIX: Final[str] = "vendor/"
 """Staged-only shim tree written by ``shims.generate`` after staging —
 it never exists in the source checkout, so stamped members cannot be
 validated against live files."""
+
+
 def _ignored(*, name: str) -> bool:
     """Return whether a directory entry never enters the bundle.
 
@@ -62,6 +65,8 @@ def _ignored(*, name: str) -> bool:
             (".pyc", ".pyo"),
         )
     )
+
+
 def tree_signature(*, exactus_dir: Path) -> dict[str, str]:
     """Fingerprint every packaged file under ``exactus_dir``.
 
@@ -99,6 +104,8 @@ def tree_signature(*, exactus_dir: Path) -> dict[str, str]:
             except OSError:
                 continue
     return entries
+
+
 def render_signature(*, exactus_dir: Path) -> bytes:
     """Serialize a directory fingerprint for the build stamp.
 
@@ -113,6 +120,8 @@ def render_signature(*, exactus_dir: Path) -> bytes:
         obj={"files": tree_signature(exactus_dir=exactus_dir)},
         sort_keys=True,
     ).encode(encoding="utf-8")
+
+
 def bundle_signature(*, bundle: Path) -> dict[str, str] | None:
     """Read the packaged-source fingerprint stored inside a zipapp.
 
@@ -151,6 +160,8 @@ def bundle_signature(*, bundle: Path) -> dict[str, str] | None:
     return {
         str(object=key): str(object=member) for key, member in entries.items()
     }
+
+
 def dev_project_root(*, bundle: Path) -> Path | None:
     """Locate the development project that produced an executable.
 
@@ -167,12 +178,14 @@ def dev_project_root(*, bundle: Path) -> Path | None:
         The repository root, or ``None`` outside the dev project.
 
     """
+
     def check(*, root: Path) -> Path | None:
         markers: tuple[Path, ...] = (
             root / "exactus" / "__main__.py",
             root / "exactus" / "packages" / "package" / "build.py",
         )
         return root if all(marker.is_file() for marker in markers) else None
+
     resolved: Path = bundle.resolve()
     for depth in (2, 3):
         if root := check(root=resolved.parents[depth - 1]):
@@ -182,6 +195,8 @@ def dev_project_root(*, bundle: Path) -> Path | None:
             if root := check(root=resolved.parents[depth - 1]):
                 return root
     return None
+
+
 def _is_zipapp(*, bundle: Path) -> bool:
     """Return whether an executable file is a Python zipapp.
 
@@ -200,6 +215,8 @@ def _is_zipapp(*, bundle: Path) -> bool:
         return False
     offset: int = head.find(b"\n") + 1 if head.startswith(b"#!") else 0
     return head[offset : offset + 2] == b"PK"
+
+
 def _extra_member(*, relative: str) -> bool:
     """Return whether an unstamped live file proves staleness.
 
@@ -217,6 +234,8 @@ def _extra_member(*, relative: str) -> bool:
         return False
     parts: tuple[str, ...] = tuple(relative.split("/"))
     return not (parts[0] == "bundle" and len(parts) > _BUNDLE_DEPTH)
+
+
 def bundle_stale(*, bundle: Path, exactus_dir: Path) -> bool:
     """Return whether a built zipapp predates the live source tree.
 
@@ -247,6 +266,8 @@ def bundle_stale(*, bundle: Path, exactus_dir: Path) -> bool:
             for relative in current
         )
     )
+
+
 def warn_if_stale(*, stream: TextIO | None = None) -> None:
     """Print the staleness warning when the bundle is older than sources.
 

@@ -33,10 +33,21 @@ def test_excluded_examples_and_parent_rollup() -> None:
     """Fences/comments never count and parent totals include descendants."""
     source: str = dedent(
         text=(
-            "    # Plan\n    ## Work\n    - [x] **R01 — Done** P0\n    ### Chi"
-            "ld\n    - [ ] **UI-O03** □ **P1** ONGOING\n    ```md\n    - [x] f"
-            "ake\n    ```\n    <!--\n    ```\n    - [x] hidden\n    -->\n    -"
-            " [ ] real\n    "
+            """\
+    # Plan
+    ## Work
+    - [x] **R01 — Done** P0
+    ### Child
+    - [ ] **UI-O03** □ **P1** ONGOING
+    ```md
+    - [x] fake
+    ```
+    <!--
+    ```
+    - [x] hidden
+    -->
+    - [ ] real
+    """
         ),
     )
     sections, priorities = parse(text=source)
@@ -57,7 +68,11 @@ def test_identifiers(ident: str) -> None:
         ident: Supported task identifier to preserve during parsing.
 
     """
-    sections, _priorities = parse(text=f"- [ ] **{ident} — Task**\n")
+    sections, _priorities = parse(
+        text=f"""\
+- [ ] **{ident} — Task**
+""",
+    )
     expect_equal(actual=sections[0].tasks[0].ident, expected=ident)
 
 
@@ -69,8 +84,9 @@ def test_identifiers(ident: str) -> None:
         (
             dedent(
                 text=(
-                    "    <!-- ROADMAP_PROGRESS_DASHBOARD_END -->\n    <!--"
-                    " ROADMAP_PROGRESS_DASHBOARD_START -->"
+                    """\
+                    <!-- ROADMAP_PROGRESS_DASHBOARD_END -->
+                    <!-- ROADMAP_PROGRESS_DASHBOARD_START -->"""
                 ),
             )
         ),
@@ -94,25 +110,50 @@ def test_malformed_markers(source: str) -> None:
 
 def test_preserve_outside_managed_block() -> None:
     """Replacement preserves all whitespace outside the managed markers."""
-    source: str = "# Plan\n\n- [ ] Keep  spaces  \n\n"
+    source: str = """\
+# Plan
+
+- [ ] Keep  spaces
+
+"""
     generated: str = update(text=source)
     result: str = update(text=generated.replace("- [ ] Keep", "- [x] Keep"))
     expect_equal(
-        actual=result.endswith("- [x] Keep  spaces  \n\n"),
+        actual=result.endswith("""\
+- [x] Keep  spaces
+
+"""),
         expected=True,
     )
     expect_equal(actual=update(text=result), expected=result)
-    expect_equal(actual=update(text="# Empty\n"), expected="# Empty\n")
+    expect_equal(
+        actual=update(
+            text="""\
+# Empty
+""",
+        ),
+        expected="""\
+# Empty
+""",
+    )
 
 
 def test_top_summary_updates_without_moving_detailed_tables() -> None:
     """Keep HTML totals at the top and detailed tables after task content."""
     source: str = dedent(
         text=(
-            "    # Plan\n    \n    <!-- ROADMAP_PROGRESS_SUMMARY_START -->\n  "
-            "  <!-- ROADMAP_PROGRESS_SUMMARY_END -->\n    \n    ## Work\n    -"
-            " [ ] Task\n    \n    <!-- ROADMAP_PROGRESS_DASHBOARD_START -->\n "
-            "   <!-- ROADMAP_PROGRESS_DASHBOARD_END -->\n    "
+            """\
+    # Plan
+
+    <!-- ROADMAP_PROGRESS_SUMMARY_START -->
+    <!-- ROADMAP_PROGRESS_SUMMARY_END -->
+
+    ## Work
+    - [ ] Task
+
+    <!-- ROADMAP_PROGRESS_DASHBOARD_START -->
+    <!-- ROADMAP_PROGRESS_DASHBOARD_END -->
+    """
         ),
     )
     result: str = update(text=source)
@@ -132,14 +173,24 @@ def test_top_summary_updates_without_moving_detailed_tables() -> None:
 
 def test_duplicate_heading_anchor() -> None:
     """An empty earlier heading still consumes its slug suffix."""
-    rendered: str = update(text="# Plan\n## Same\n## Same\n- [ ] task\n")
+    rendered: str = update(
+        text="""\
+# Plan
+## Same
+## Same
+- [ ] task
+""",
+    )
     expect_equal(actual="[Same](#same-1)" in rendered, expected=True)
 
 
 def test_html_escaping() -> None:
     """Literal script tags cannot terminate the JSON data element."""
     html: str = render_html(
-        text="# Plan\n- [ ] </script><script>evil()</script>\n",
+        text="""\
+# Plan
+- [ ] </script><script>evil()</script>
+""",
     )
     match: Match[str] | None = search(
         pattern=r'<script id="task-data"[^>]*>\s*(.*?)\s*</script>',
@@ -172,7 +223,13 @@ def test_check_and_html_repair(tmp_path: Path) -> None:
 
     """
     path: Path = tmp_path / "Roadmap.md"
-    path.write_text(data="# Plan\n- [ ] Task\n", encoding="utf-8")
+    path.write_text(
+        data="""\
+# Plan
+- [ ] Task
+""",
+        encoding="utf-8",
+    )
     before: bytes = path.read_bytes()
     expect_equal(actual=synchronize(path=path, check=True), expected=True)
     expect_equal(actual=path.read_bytes(), expected=before)
@@ -202,7 +259,12 @@ def test_concurrent_edit(
 
     """
     path: Path = tmp_path / "TODO.md"
-    path.write_text(data="- [ ] before\n", encoding="utf-8")
+    path.write_text(
+        data="""\
+- [ ] before
+""",
+        encoding="utf-8",
+    )
 
     def render(*, text: str) -> str:
         """Simulate an editor changing the source during rendering.
@@ -214,13 +276,23 @@ def test_concurrent_edit(
             Original document, after the simulated edit is saved separately.
 
         """
-        path.write_text(data="- [x] user edit\n", encoding="utf-8")
+        path.write_text(
+            data="""\
+- [x] user edit
+""",
+            encoding="utf-8",
+        )
         return text
 
     monkeypatch.setattr(target=sync, name="render_html", value=render)
     with pytest.raises(expected_exception=ValueError, match="changed during"):
         synchronize(path=path)
-    expect_equal(actual=path.read_text(), expected="- [x] user edit\n")
+    expect_equal(
+        actual=path.read_text(),
+        expected="""\
+- [x] user edit
+""",
+    )
 
 
 def test_symlink_preflight(tmp_path: Path) -> None:
@@ -231,7 +303,12 @@ def test_symlink_preflight(tmp_path: Path) -> None:
 
     """
     path: Path = tmp_path / "TODO.md"
-    path.write_text(data="- [ ] task\n", encoding="utf-8")
+    path.write_text(
+        data="""\
+- [ ] task
+""",
+        encoding="utf-8",
+    )
     target: Path = tmp_path / "other.html"
     target.write_text(data="keep", encoding="utf-8")
     path.with_suffix(suffix=".html").symlink_to(target=target)
@@ -240,7 +317,12 @@ def test_symlink_preflight(tmp_path: Path) -> None:
         match="symbolic-link HTML",
     ):
         synchronize(path=path)
-    expect_equal(actual=path.read_text(), expected="- [ ] task\n")
+    expect_equal(
+        actual=path.read_text(),
+        expected="""\
+- [ ] task
+""",
+    )
     expect_equal(actual=target.read_text(), expected="keep")
 
 
@@ -252,7 +334,12 @@ def test_cli(tmp_path: Path) -> None:
 
     """
     path: Path = tmp_path / "TODO.md"
-    path.write_text(data="- [ ] task\n", encoding="utf-8")
+    path.write_text(
+        data="""\
+- [ ] task
+""",
+        encoding="utf-8",
+    )
     args: list[str] = ["--path", str(object=path), "--no-html"]
     expect_equal(actual=main(argv=[*args, "--check"]), expected=1)
     expect_equal(actual=main(argv=args), expected=0)
@@ -283,7 +370,12 @@ def test_stale_state(tmp_path: Path) -> None:
 
     """
     path: Path = tmp_path / "TODO.md"
-    path.write_text(data="- [ ] task\n", encoding="utf-8")
+    path.write_text(
+        data="""\
+- [ ] task
+""",
+        encoding="utf-8",
+    )
     lock: Path = lock_path(path=path)
     lock.mkdir()
     (lock / "state.json").write_text(
@@ -306,7 +398,13 @@ def test_real_watcher(tmp_path: Path) -> None:
 
     """
     path: Path = tmp_path / "TODO.md"
-    path.write_text(data="# Plan\n- [ ] task\n", encoding="utf-8")
+    path.write_text(
+        data="""\
+# Plan
+- [ ] task
+""",
+        encoding="utf-8",
+    )
     expect_equal(actual=start(path=path, interval=0.05), expected=0)
     try:
         expect_equal(actual=running(path=path), expected=True)

@@ -494,9 +494,7 @@ class JavaScriptDelimiterSimplifier:
     CONTINUATION_WORDS: Final[frozenset[str]] = frozenset(
         {"instanceof", "in", "of", "as"},
     )
-    CONTINUATION_CHARS: Final[frozenset[str]] = frozenset(
-        "+-*/%&|^~!<>=?:,.",
-    )
+    CONTINUATION_CHARS: Final[frozenset[str]] = frozenset("+-*/%&|^~!<>=?:,.")
     BLOCK_KEYWORDS: Final[frozenset[str]] = frozenset(
         {"if", "for", "while", "with", "switch"},
     )
@@ -585,6 +583,7 @@ class JavaScriptDelimiterSimplifier:
         path: Path,
         write: bool = True,
         backup: bool = False,
+        source: str | None = None,
     ) -> FileResult:
         """Simplify file.
 
@@ -592,13 +591,14 @@ class JavaScriptDelimiterSimplifier:
             path: Path.
             write: Write.
             backup: Backup.
+            source: Optional source already read by the owning pipeline.
 
         Returns:
             The resulting value.
 
         """
         started: float = perf_counter()
-        source: str = path.read_text(encoding="utf-8")
+        source = path.read_text(encoding="utf-8") if source is None else source
         text_result: TextResult = self.simplify_text(source=source)
         validation: ValidationMetrics = self._validation_metrics(
             path=path,
@@ -773,7 +773,13 @@ class JavaScriptDelimiterSimplifier:
             body[after_return].isalnum() or body[after_return] in "_$"
         ):
             return None
-        if after_return < len(body) and body[after_return] in "\r\n":
+        if (
+            after_return < len(body)
+            and body[after_return]
+            in """\
+\r
+"""
+        ):
             return None
         expression_start: int = cls._skip_space(
             source=body,
@@ -883,7 +889,10 @@ class JavaScriptDelimiterSimplifier:
                 string=prefix,
             )
             is not None
-            and "\n" in source[opening + 1 : closing]
+            and """\
+
+"""
+            in source[opening + 1 : closing]
         ):
             return True
         if cls._grouping_syntax_requires_parentheses(
@@ -1022,7 +1031,15 @@ class JavaScriptDelimiterSimplifier:
         prefix: str = source[max(0, opening - 32) : opening]
         if (previous_char, following_char) in {("(", ")"), ("[", "]")}:
             return False
-        terminal_context: bool = following_char in {";", ",", "", "\n", "\r"}
+        terminal_context: bool = following_char in {
+            ";",
+            ",",
+            "",
+            """\
+
+""",
+            "\r",
+        }
         expression_boundary: bool = (
             compile_pattern(pattern="(?:return|throw)\\s*$").search(
                 string=prefix,
@@ -1453,7 +1470,10 @@ class JavaScriptDelimiterSimplifier:
                 string=prefix,
             )
             is not None
-            and "\n" in inner
+            and """\
+
+"""
+            in inner
         ):
             return True
         following: str = source[end:].lstrip()
@@ -1627,7 +1647,13 @@ class JavaScriptDelimiterSimplifier:
         return Replacement(
             start=block_start,
             end=block_end + 1,
-            text=body if "\n" in body or "\r" in body else body.strip(),
+            text=body
+            if """\
+
+"""
+            in body
+            or "\r" in body
+            else body.strip(),
             kind="single-statement-control-braces",
         )
 
@@ -1649,9 +1675,7 @@ class JavaScriptDelimiterSimplifier:
         """
         stripped: str = body.strip()
         while True:
-            word_match: Match[str] | None = cls.WORD.match(
-                string=stripped,
-            )
+            word_match: Match[str] | None = cls.WORD.match(string=stripped)
             if word_match is None or word_match.group(0) in {
                 "case",
                 "default",
@@ -2033,7 +2057,12 @@ class JavaScriptDelimiterSimplifier:
                 continue
             if character == "}":
                 return index
-            if character in "\r\n":
+            if (
+                character
+                in """\
+\r
+"""
+            ):
                 following: int = cls._skip_space(source=source, index=index)
                 if following >= len(source) or not cls._expression_continues(
                     source=source,
@@ -2046,12 +2075,7 @@ class JavaScriptDelimiterSimplifier:
         return index
 
     @classmethod
-    def _expression_continues(
-        cls,
-        *,
-        source: str,
-        index: int,
-    ) -> bool:
+    def _expression_continues(cls, *, source: str, index: int) -> bool:
         """Report whether the token at ``index`` extends an expression.
 
         Args:
@@ -2159,7 +2183,9 @@ class JavaScriptDelimiterSimplifier:
             return (cls._scan_template(source=source, start=index), False)
         if char == "/" and next_char == "/":
             end: int = source.find(
-                "\n",
+                """\
+
+""",
                 index + Constants.delimiter_pair_length,
             )
             return (len(source) if end < 0 else end, can_start_regex)
@@ -2601,7 +2627,12 @@ class JavaScriptDelimiterSimplifier:
             if char == "\\":
                 index += 2
                 continue
-            if char in "\r\n":
+            if (
+                char
+                in """\
+\r
+"""
+            ):
                 return start + 1
             if char == "[":
                 in_class = True
@@ -2894,11 +2925,9 @@ class JavaScriptDelimiterSimplifier:
                 main=self._run_node_check(path=temporary.name),
             )
         if returncode != 0:
-            msg: str = (
-                f"Refusing to write "
-                f"{path}: transformed source failed "
-                f"Node syntax validation.\n{stderr}"
-            )
+            msg: str = f"""\
+Refusing to write {path}: transformed source failed Node syntax validation.
+{stderr}"""
             raise ValueError(msg)
 
     async def _run_node_check(self, *, path: str) -> tuple[int, str]:
@@ -2986,7 +3015,7 @@ class JavaScriptFiles:
         """
         normalized: str = path.as_posix()
         return any(
-            f"/{exclude.strip('/')}/" in f"/{normalized}/"
+            f"/{exclude.strip("/")}/" in f"/{normalized}/"
             if "/" in exclude
             else exclude in path.parts
             for exclude in self._excludes
@@ -3080,17 +3109,33 @@ def _line_column(*, source: str, offset: int) -> tuple[int, int]:
         The resulting value.
 
     """
-    line: int = source.count("\n", 0, offset) + 1
-    line_start: int = source.rfind("\n", 0, offset)
+    line: int = (
+        source.count(
+            """\
+
+""",
+            0,
+            offset,
+        )
+        + 1
+    )
+    line_start: int = source.rfind(
+        """\
+
+""",
+        0,
+        offset,
+    )
     return (line, offset - line_start)
 
 
-def _audit_delimiters(
+def audit_delimiters(
     path: Path,
     *,
     simplifier: JavaScriptDelimiterSimplifier,
     root: Path,
     fix: bool,
+    source: str | None = None,
 ) -> DelimiterFinding | DelimiterHeal | None:
     """Audit delimiters.
 
@@ -3099,6 +3144,7 @@ def _audit_delimiters(
         simplifier: Simplifier.
         root: Root.
         fix: Fix.
+        source: Optional source already read by the owning pipeline.
 
     Returns:
         The resulting value.
@@ -3122,6 +3168,7 @@ def _audit_delimiters(
             result: FileResult = simplifier.simplify_file(
                 path=path,
                 write=True,
+                source=source,
             )
         except (OSError, UnicodeDecodeError):
             outcome = unreadable
@@ -3145,7 +3192,9 @@ def _audit_delimiters(
                 )
     else:
         try:
-            source: str = path.read_text(encoding="utf-8")
+            source = (
+                path.read_text(encoding="utf-8") if source is None else source
+            )
         except (OSError, UnicodeDecodeError):
             outcome = unreadable
         else:
@@ -3190,7 +3239,7 @@ def scan_delimiters(
     )
     workers: int = max(1, min(16, cpu_count() or 4, len(inputs.files)))
     audit: partial[DelimiterFinding | DelimiterHeal | None] = partial(
-        _audit_delimiters,
+        audit_delimiters,
         simplifier=simplifier,
         root=inputs.root,
         fix=inputs.fix,

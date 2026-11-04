@@ -173,7 +173,12 @@ def test_print_writes_and_flushes() -> None:
         val=private(owner=core_module, name="_print"),
     )
     printer("alpha", "beta", file=buffer)
-    expect_equal(actual=buffer.getvalue(), expected="alpha beta\n")
+    expect_equal(
+        actual=buffer.getvalue(),
+        expected="""\
+alpha beta
+""",
+    )
 
 
 def test_paint_wraps_or_passes_through() -> None:
@@ -266,7 +271,11 @@ def test_name_collector_loads_only() -> None:
         val=private_call(
             owner=FinalConstantsRefactor,
             name="_loaded_names",
-            node=parse(source="result = func(A, obj.B)\n"),
+            node=parse(
+                source="""\
+result = func(A, obj.B)
+""",
+            ),
         ),
     )
     expect_equal(actual=names, expected={"func", "A", "obj"})
@@ -275,7 +284,11 @@ def test_name_collector_loads_only() -> None:
         val=private_call(
             owner=FinalConstantsRefactor,
             name="_loaded_names",
-            node=parse(source="x = 1\n"),
+            node=parse(
+                source="""\
+x = 1
+""",
+            ),
         ),
     )
     expect_equal(actual=stored, expected=set[str]())
@@ -296,9 +309,15 @@ def test_uppercase_convention() -> None:
 def test_is_final_annotations() -> None:
     """Final annotation detection covers Name, Subscript and Attribute."""
     for source in (
-        "X: Final = 1\n",
-        "X: Final[int] = 1\n",
-        "X: typing.Final = 1\n",
+        """\
+X: Final = 1
+""",
+        """\
+X: Final[int] = 1
+""",
+        """\
+X: typing.Final = 1
+""",
     ):
         expect_true(
             condition=cast(
@@ -311,7 +330,14 @@ def test_is_final_annotations() -> None:
             ),
             message=source,
         )
-    for source in ("X: int = 1\n", "X: list[int] = 1\n"):
+    for source in (
+        """\
+X: int = 1
+""",
+        """\
+X: list[int] = 1
+""",
+    ):
         expect_false(
             condition=cast(
                 typ="bool",
@@ -331,7 +357,11 @@ def test_candidate_accepts_uppercase_final() -> None:
         owner=FinalConstantsRefactor,
         name="_candidate",
         kind=ConstantBinding,
-        statement=assignment(source="X: Final[int] = 1\n"),
+        statement=assignment(
+            source="""\
+X: Final[int] = 1
+""",
+        ),
         statement_index=2,
     )
     expect_equal(actual=binding.name, expected="X")
@@ -341,12 +371,24 @@ def test_candidate_accepts_uppercase_final() -> None:
 def test_candidate_rejects_unsupported_statements() -> None:
     """Non-Final, lowercase, valueless and non-assign forms are skipped."""
     for source in (
-        "x: Final[int] = 1\n",
-        "X: int = 1\n",
-        "X: Final[int]\n",
-        "X = 1\n",
-        "obj.X: Final[int] = 1\n",
-        "import os\n",
+        """\
+x: Final[int] = 1
+""",
+        """\
+X: int = 1
+""",
+        """\
+X: Final[int]
+""",
+        """\
+X = 1
+""",
+        """\
+obj.X: Final[int] = 1
+""",
+        """\
+import os
+""",
     ):
         expect_none(
             value=private_call(
@@ -431,7 +473,13 @@ def test_python_files_prunes_excluded_trees(tmp_path: Path) -> None:
         ".hidden.py",
         "package/readme.md",
     ):
-        write_source(root=tmp_path, relative=relative, source="x = 1\n")
+        write_source(
+            root=tmp_path,
+            relative=relative,
+            source="""\
+x = 1
+""",
+        )
     found: list[Path] = cast(
         typ="list[Path]",
         val=private_call(
@@ -452,22 +500,37 @@ def test_python_files_prunes_renamed_report_trees(tmp_path: Path) -> None:
         tmp_path: Per-test temporary directory.
 
     """
-    write_source(root=tmp_path, relative="app.py", source="x = 1\n")
+    write_source(
+        root=tmp_path,
+        relative="app.py",
+        source="""\
+x = 1
+""",
+    )
     renamed_root: Path = tmp_path / "REPORTS"
     (renamed_root / ".runtime").mkdir(parents=True)
     write_source(
         root=tmp_path,
         relative="REPORTS/LINTS/artifact.py",
-        source="x = 1\n",
+        source="""\
+x = 1
+""",
     )
     bundle: Path = tmp_path / "out" / "DOCS"
     bundle.mkdir(parents=True)
     _ = (bundle / "result.json").write_text(data="{}", encoding="utf-8")
-    _ = (bundle / "result.md").write_text(data="# Docs\n", encoding="utf-8")
+    _ = (bundle / "result.md").write_text(
+        data="""\
+# Docs
+""",
+        encoding="utf-8",
+    )
     write_source(
         root=tmp_path,
         relative="out/DOCS/ARTIFACTS/generated.py",
-        source="x = 1\n",
+        source="""\
+x = 1
+""",
     )
     running: Path = tmp_path / "live" / "COVERAGE"
     (running / "ARTIFACTS").mkdir(parents=True)
@@ -478,7 +541,9 @@ def test_python_files_prunes_renamed_report_trees(tmp_path: Path) -> None:
     write_source(
         root=tmp_path,
         relative="live/COVERAGE/tmp/generated.py",
-        source="x = 1\n",
+        source="""\
+x = 1
+""",
     )
     found: list[Path] = cast(
         typ="list[Path]",
@@ -503,7 +568,9 @@ def test_parse_trees_skips_vanished_files(tmp_path: Path) -> None:
     existing: Path = write_source(
         root=tmp_path,
         relative="app.py",
-        source="x = 1\n",
+        source="""\
+x = 1
+""",
     )
     missing: Path = tmp_path / "gone.py"
     trees: dict[Path, Module] = cast(
@@ -535,7 +602,9 @@ def test_module_name_resolution(tmp_path: Path) -> None:
         path: Path = write_source(
             root=tmp_path,
             relative=relative,
-            source="x = 1\n",
+            source="""\
+x = 1
+""",
         )
         expect_equal(
             actual=private_call(
@@ -558,10 +627,17 @@ def test_top_level_definitions(tmp_path: Path) -> None:
         source=(
             dedent(
                 text=(
-                    "    import a.b\n    import c as d\n    from e import "
-                    "f\n    from g import h as i\n    class Klass: ...\n  "
-                    "  def fn(): ...\n    async def af(): ...\n    Y: int "
-                    "= 2\n    z = 3\n    "
+                    """\
+    import a.b
+    import c as d
+    from e import f
+    from g import h as i
+    class Klass: ...
+    def fn(): ...
+    async def af(): ...
+    Y: int = 2
+    z = 3
+    """
                 ),
             )
         ),
@@ -602,8 +678,11 @@ def test_required_insertion_index_follows_dependencies(tmp_path: Path) -> None:
         source=(
             dedent(
                 text=(
-                    "    def helper() -> int:\n        return 0\n    X: Fi"
-                    "nal[int] = helper() + len([1])\n    "
+                    """\
+    def helper() -> int:
+        return 0
+    X: Final[int] = helper() + len([1])
+    """
                 ),
             )
         ),
@@ -657,7 +736,12 @@ def test_used_before_detects_early_reference(tmp_path: Path) -> None:
         typ="Callable[..., bool]",
         val=private(owner=refactor, name="_used_before"),
     )
-    tree: Module = parse(source="TOP = A\nA: Final[int] = 1\n")
+    tree: Module = parse(
+        source="""\
+TOP = A
+A: Final[int] = 1
+""",
+    )
     expect_true(
         condition=used_before(
             name="A",
@@ -721,7 +805,9 @@ def test_plan_none_without_candidates(tmp_path: Path) -> None:
     expect_none(
         value=plan_for(
             refactor=make_refactor(root=tmp_path),
-            source="x = 1\n",
+            source="""\
+x = 1
+""",
         ),
     )
 
@@ -739,8 +825,11 @@ def test_plan_groups_movable_constants(tmp_path: Path) -> None:
             source=(
                 dedent(
                     text=(
-                        "    from typing import Final\n    A: Final[int] ="
-                        " 1\n    B: Final[str] = 's'\n    "
+                        """\
+    from typing import Final
+    A: Final[int] = 1
+    B: Final[str] = 's'
+    """
                     ),
                 )
             ),
@@ -765,9 +854,13 @@ def test_plan_uses_first_safe_contiguous_group(tmp_path: Path) -> None:
             source=(
                 dedent(
                     text=(
-                        "    A: Final[int] = 1\n    TOP = A\n    def helpe"
-                        "r() -> int:\n        return 0\n    B: Final[int] "
-                        "= helper()\n    "
+                        """\
+    A: Final[int] = 1
+    TOP = A
+    def helper() -> int:
+        return 0
+    B: Final[int] = helper()
+    """
                     ),
                 )
             ),
@@ -793,9 +886,14 @@ def test_plan_does_not_move_across_intervening_statements(
             source=(
                 dedent(
                     text=(
-                        "    A: Final[int] = 1\n    TOP = A\n    ALSO = B"
-                        "\n    B: Final[int] = h()\n    def h() -> int:\n "
-                        "       return 0\n    "
+                        """\
+    A: Final[int] = 1
+    TOP = A
+    ALSO = B
+    B: Final[int] = h()
+    def h() -> int:
+        return 0
+    """
                     ),
                 )
             ),
@@ -822,8 +920,12 @@ def test_module_aliases_for_import_forms(tmp_path: Path) -> None:
                 source=(
                     dedent(
                         text=(
-                            "    import app\n    import app as shorthand\n"
-                            "    import pkg.mod\n    x = 1\n    "
+                            """\
+    import app
+    import app as shorthand
+    import pkg.mod
+    x = 1
+    """
                         ),
                     )
                 ),
@@ -850,9 +952,13 @@ def test_rewrite_imports_splits_moved_names() -> None:
         source=(
             dedent(
                 text=(
-                    "    from app import X, KEEP\n    from app import Y\n "
-                    "   from .app import Z\n    from other import W\n    p"
-                    "rint(X, Y, KEEP, W)\n    "
+                    """\
+    from app import X, KEEP
+    from app import Y
+    from .app import Z
+    from other import W
+    print(X, Y, KEEP, W)
+    """
                 ),
             )
         ),
@@ -874,7 +980,12 @@ def test_rewrite_imports_splits_moved_names() -> None:
 
 def test_local_reference_transformer() -> None:
     """Moved constant loads are qualified; stores and others stay."""
-    tree: Module = parse(source="X = 1\nY = X + Z\n")
+    tree: Module = parse(
+        source="""\
+X = 1
+Y = X + Z
+""",
+    )
     transformer: LocalReferenceTransformer = LocalReferenceTransformer(
         names=frozenset({"X"}),
     )
@@ -887,7 +998,11 @@ def test_local_reference_transformer() -> None:
 
 def test_qualified_reference_transformer() -> None:
     """Module-qualified references gain the Constants hop."""
-    tree: Module = parse(source="print(app.X, app.Y, other.X, obj.inner.X)\n")
+    tree: Module = parse(
+        source="""\
+print(app.X, app.Y, other.X, obj.inner.X)
+""",
+    )
     transformer: QualifiedReferenceTransformer = QualifiedReferenceTransformer(
         module_aliases={"app": frozenset({"X"})},
     )
@@ -901,7 +1016,12 @@ def test_qualified_reference_transformer() -> None:
 
 def test_direct_import_reference_transformer() -> None:
     """Directly imported names qualify through Constants."""
-    tree: Module = parse(source="X = 1\nprint(X, OTHER)\n")
+    tree: Module = parse(
+        source="""\
+X = 1
+print(X, OTHER)
+""",
+    )
     transformer: DirectImportReferenceTransformer = (
         DirectImportReferenceTransformer(replacements={"X": "REAL_X"})
     )
@@ -923,7 +1043,11 @@ def test_run_dry_run_reports_without_writing(
 
     """
     printed: PrintRecorder = record_print(monkeypatch=monkeypatch)
-    source: str = "from typing import Final\n\nLIMIT: Final[int] = 10\n"
+    source: str = """\
+from typing import Final
+
+LIMIT: Final[int] = 10
+"""
     target: Path = write_source(
         root=tmp_path,
         relative="app.py",
@@ -957,10 +1081,15 @@ def test_run_apply_rewrites_local_references(
         source=(
             dedent(
                 text=(
-                    "    from typing import Final\n    \n    LIMIT: Final["
-                    "int] = 10\n    NAME: Final[str] = 'x'\n    \n    def "
-                    "describe() -> str:\n        return f'{NAME} {LIMIT}'"
-                    "\n    "
+                    """\
+    from typing import Final
+
+    LIMIT: Final[int] = 10
+    NAME: Final[str] = 'x'
+
+    def describe() -> str:
+        return f'{NAME} {LIMIT}'
+    """
                 ),
             )
         ),
@@ -1001,8 +1130,12 @@ def test_run_apply_rewrites_cross_module_references(
         source=(
             dedent(
                 text=(
-                    "    from typing import Final\n    \n    DEBUG: Final["
-                    "bool] = True\n    LEVEL: Final[int] = 3\n    "
+                    """\
+    from typing import Final
+
+    DEBUG: Final[bool] = True
+    LEVEL: Final[int] = 3
+    """
                 ),
             )
         ),
@@ -1013,9 +1146,13 @@ def test_run_apply_rewrites_cross_module_references(
         source=(
             dedent(
                 text=(
-                    "    import settings\n    import settings as cfg\n    "
-                    "from settings import DEBUG, LEVEL\n    \n    print(se"
-                    "ttings.DEBUG, cfg.LEVEL, DEBUG, LEVEL)\n    "
+                    """\
+    import settings
+    import settings as cfg
+    from settings import DEBUG, LEVEL
+
+    print(settings.DEBUG, cfg.LEVEL, DEBUG, LEVEL)
+    """
                 ),
             )
         ),
@@ -1047,10 +1184,17 @@ def test_run_preserves_statement_order_and_annotation_dependencies(
         source=(
             dedent(
                 text=(
-                    "    from typing import Final\n    \n    items: list[i"
-                    "nt] = []\n    items.append(1)\n    class Token:\n    "
-                    "    pass\n    \n    X: Final[Token | None] = None\n  "
-                    "  Y: Final[int] = len(items)\n    "
+                    """\
+    from typing import Final
+
+    items: list[int] = []
+    items.append(1)
+    class Token:
+        pass
+
+    X: Final[Token | None] = None
+    Y: Final[int] = len(items)
+    """
                 ),
             )
         ),
@@ -1074,8 +1218,12 @@ def test_run_skips_locally_shadowed_candidate(tmp_path: Path) -> None:
     """
     source: str = dedent(
         text=(
-            "    from typing import Final\n    X: Final[int] = 1\n    def valu"
-            "e(X: int) -> int:\n        return X\n    "
+            """\
+    from typing import Final
+    X: Final[int] = 1
+    def value(X: int) -> int:
+        return X
+    """
         ),
     )
     target: Path = write_source(
@@ -1099,12 +1247,18 @@ def test_run_rewrites_relative_direct_imports(tmp_path: Path) -> None:
     write_source(
         root=tmp_path,
         relative="pkg/settings.py",
-        source="from typing import Final\nX: Final[int] = 1\n",
+        source="""\
+from typing import Final
+X: Final[int] = 1
+""",
     )
     consumer: Path = write_source(
         root=tmp_path,
         relative="pkg/consumer.py",
-        source="from .settings import X\nVALUE = X\n",
+        source="""\
+from .settings import X
+VALUE = X
+""",
     )
     make_refactor(root=tmp_path, dry_run=False).run()
     output: str = consumer.read_text(encoding="utf-8")
@@ -1119,7 +1273,10 @@ def test_run_leaves_star_import_provider_unchanged(tmp_path: Path) -> None:
         tmp_path: Isolated test filesystem.
 
     """
-    provider_source: str = "from typing import Final\nX: Final[int] = 1\n"
+    provider_source: str = """\
+from typing import Final
+X: Final[int] = 1
+"""
     provider: Path = write_source(
         root=tmp_path,
         relative="settings.py",
@@ -1128,7 +1285,10 @@ def test_run_leaves_star_import_provider_unchanged(tmp_path: Path) -> None:
     write_source(
         root=tmp_path,
         relative="consumer.py",
-        source="from settings import *\nVALUE = X\n",
+        source="""\
+from settings import *
+VALUE = X
+""",
     )
     report: ScanReport = make_refactor(root=tmp_path, dry_run=False).run()
     expect_equal(actual=report.planned, expected=0)
@@ -1150,7 +1310,10 @@ def test_run_avoids_constants_and_final_name_collisions(
     write_source(
         root=tmp_path,
         relative="settings.py",
-        source="from typing import Final\nX: Final[int] = 1\n",
+        source="""\
+from typing import Final
+X: Final[int] = 1
+""",
     )
     consumer: Path = write_source(
         root=tmp_path,
@@ -1158,8 +1321,11 @@ def test_run_avoids_constants_and_final_name_collisions(
         source=(
             dedent(
                 text=(
-                    "    from other import Constants\n    from settings im"
-                    "port X\n    VALUE = (Constants, X)\n    "
+                    """\
+    from other import Constants
+    from settings import X
+    VALUE = (Constants, X)
+    """
                 ),
             )
         ),
@@ -1167,7 +1333,9 @@ def test_run_avoids_constants_and_final_name_collisions(
     write_source(
         root=tmp_path,
         relative="other.py",
-        source="Constants = 'other'\n",
+        source="""\
+Constants = 'other'
+""",
     )
     provider: Path = write_source(
         root=tmp_path,
@@ -1175,8 +1343,11 @@ def test_run_avoids_constants_and_final_name_collisions(
         source=(
             dedent(
                 text=(
-                    "    from typing import Final\n    Y: Final[int] = 2\n"
-                    "    from other import final\n    "
+                    """\
+    from typing import Final
+    Y: Final[int] = 2
+    from other import final
+    """
                 ),
             )
         ),
@@ -1202,7 +1373,10 @@ def test_run_skips_provider_when_import_name_is_rebound(
         tmp_path: Isolated test filesystem.
 
     """
-    provider_source: str = "from typing import Final\nX: Final[int] = 1\n"
+    provider_source: str = """\
+from typing import Final
+X: Final[int] = 1
+"""
     provider: Path = write_source(
         root=tmp_path,
         relative="settings.py",
@@ -1211,7 +1385,12 @@ def test_run_skips_provider_when_import_name_is_rebound(
     write_source(
         root=tmp_path,
         relative="consumer.py",
-        source="from settings import X\nBEFORE = X\nX = 7\nAFTER = X\n",
+        source="""\
+from settings import X
+BEFORE = X
+X = 7
+AFTER = X
+""",
     )
     report: ScanReport = make_refactor(root=tmp_path, dry_run=False).run()
     expect_equal(actual=report.planned, expected=0)
@@ -1231,7 +1410,9 @@ def test_run_leaves_partial_and_excluded_files_alone(tmp_path: Path) -> None:
     write_source(
         root=tmp_path,
         relative="node_modules/broken.py",
-        source="def broken(:\n",
+        source="""\
+def broken(:
+""",
     )
     partial: Path = write_source(
         root=tmp_path,
@@ -1239,9 +1420,14 @@ def test_run_leaves_partial_and_excluded_files_alone(tmp_path: Path) -> None:
         source=(
             dedent(
                 text=(
-                    "    from typing import Final\n    A: Final[int] = 1\n"
-                    "    TOP = A\n    def helper() -> int:\n        return"
-                    " 0\n    B: Final[int] = helper()\n    "
+                    """\
+    from typing import Final
+    A: Final[int] = 1
+    TOP = A
+    def helper() -> int:
+        return 0
+    B: Final[int] = helper()
+    """
                 ),
             )
         ),
@@ -1259,7 +1445,9 @@ def test_run_leaves_partial_and_excluded_files_alone(tmp_path: Path) -> None:
         actual=(tmp_path / "node_modules" / "broken.py").read_text(
             encoding="utf-8",
         ),
-        expected="def broken(:\n",
+        expected="""\
+def broken(:
+""",
     )
 
 
@@ -1276,8 +1464,13 @@ def test_run_strips_private_prefix_from_member_names(tmp_path: Path) -> None:
         source=(
             dedent(
                 text=(
-                    "    from typing import Final\n    \n    _LIMIT: Final"
-                    "[int] = 10\n    \n    print(_LIMIT)\n    "
+                    """\
+    from typing import Final
+
+    _LIMIT: Final[int] = 10
+
+    print(_LIMIT)
+    """
                 ),
             )
         ),
@@ -1305,8 +1498,11 @@ def test_run_renames_private_references_between_members(
         source=(
             dedent(
                 text=(
-                    "    from typing import Final\n    _BASE: Final[int] ="
-                    " 2\n    TOTAL: Final[int] = _BASE + 3\n    "
+                    """\
+    from typing import Final
+    _BASE: Final[int] = 2
+    TOTAL: Final[int] = _BASE + 3
+    """
                 ),
             )
         ),
@@ -1330,8 +1526,14 @@ def test_run_skips_underscore_member_collisions(tmp_path: Path) -> None:
     """
     source: str = dedent(
         text=(
-            "    from typing import Final\n    \n    _X: Final[int] = 1\n    X"
-            ": Final[int] = 2\n    \n    print(_X, X)\n    "
+            """\
+    from typing import Final
+
+    _X: Final[int] = 1
+    X: Final[int] = 2
+
+    print(_X, X)
+    """
         ),
     )
     target: Path = write_source(
@@ -1357,9 +1559,14 @@ def test_run_merges_typing_imports_in_member_order(tmp_path: Path) -> None:
         source=(
             dedent(
                 text=(
-                    "    from typing import Final, Protocol\n    \n    X: "
-                    "Final[int] = 1\n    \n    class P(Protocol):\n       "
-                    " pass\n    "
+                    """\
+    from typing import Final, Protocol
+
+    X: Final[int] = 1
+
+    class P(Protocol):
+        pass
+    """
                 ),
             )
         ),
@@ -1386,8 +1593,14 @@ def test_run_inserts_typing_import_when_absent(tmp_path: Path) -> None:
         source=(
             dedent(
                 text=(
-                    '    """Module."""\n    import typing\n    \n    X: ty'
-                    "ping.Final[int] = 1\n    \n    print(X)\n    "
+                    """\
+    \"""Module.\"""
+    import typing
+
+    X: typing.Final[int] = 1
+
+    print(X)
+    """
                 ),
             )
         ),
@@ -1395,7 +1608,9 @@ def test_run_inserts_typing_import_when_absent(tmp_path: Path) -> None:
     make_refactor(root=tmp_path, dry_run=False).run()
     output: str = target.read_text(encoding="utf-8")
     expect_in(
-        member="import typing\nfrom typing import final",
+        member="""\
+import typing
+from typing import final""",
         container=output,
     )
     expect_in(member="x: typing.Final[int] = 1", container=output)
@@ -1415,8 +1630,12 @@ def test_run_keeps_final_import_when_still_used(tmp_path: Path) -> None:
         source=(
             dedent(
                 text=(
-                    "    from typing import Final\n    \n    KEEP_ME: Fina"
-                    "l[int] = 1\n    other: Final[int] = 2\n    "
+                    """\
+    from typing import Final
+
+    KEEP_ME: Final[int] = 1
+    other: Final[int] = 2
+    """
                 ),
             )
         ),
@@ -1441,9 +1660,15 @@ def test_run_places_class_after_docstring_and_imports(tmp_path: Path) -> None:
         source=(
             dedent(
                 text=(
-                    '    """Module docstring."""\n    import os\n    from '
-                    "typing import Final\n    \n    X: Final[int] = 1\n   "
-                    " \n    print(X, os.sep)\n    "
+                    """\
+    \"""Module docstring.\"""
+    import os
+    from typing import Final
+
+    X: Final[int] = 1
+
+    print(X, os.sep)
+    """
                 ),
             )
         ),
@@ -1454,9 +1679,13 @@ def test_run_places_class_after_docstring_and_imports(tmp_path: Path) -> None:
         member=(
             dedent(
                 text=(
-                    '    """Module docstring."""\n    import os\n    from '
-                    "typing import Final, final\n    \n    @final\n    cla"
-                    "ss Constants:"
+                    """\
+    \"""Module docstring.\"""
+    import os
+    from typing import Final, final
+
+    @final
+    class Constants:"""
                 ),
             )
         ),
@@ -1573,12 +1802,19 @@ def test_run_rewrites_legacy_reference_to_snake_case_member(
         source=(
             dedent(
                 text=(
-                    "    from typing import Final, final\n    \n    @final"
-                    '\n    class Constants:\n        """Group module-level'
-                    " constants.\n    \n        Attributes:\n            w"
-                    "orkspace_version:\n                Grouped module con"
-                    'stant.\n        """\n        workspace_version: Final'
-                    "[int] = 3\n    "
+                    """\
+    from typing import Final, final
+
+    @final
+    class Constants:
+        \"""Group module-level constants.
+
+        Attributes:
+            workspace_version:
+                Grouped module constant.
+        \"""
+        workspace_version: Final[int] = 3
+    """
                 ),
             )
         ),
@@ -1589,8 +1825,11 @@ def test_run_rewrites_legacy_reference_to_snake_case_member(
         source=(
             dedent(
                 text=(
-                    "    from provider import Constants\n    \n    VALUE ="
-                    " Constants.WORKSPACE_VERSION\n    "
+                    """\
+    from provider import Constants
+
+    VALUE = Constants.WORKSPACE_VERSION
+    """
                 ),
             )
         ),
@@ -1612,7 +1851,13 @@ def test_cli_main_runs(
         monkeypatch: Pytest patching helper.
 
     """
-    write_source(root=tmp_path, relative="app.py", source="X: Final = 1\n")
+    write_source(
+        root=tmp_path,
+        relative="app.py",
+        source="""\
+X: Final = 1
+""",
+    )
     monkeypatch.setattr(
         target=sys,
         name="argv",
@@ -1713,15 +1958,26 @@ def test_run_merges_constants_into_existing_class(tmp_path: Path) -> None:
         source=(
             dedent(
                 text=(
-                    "    from typing import Final, final\n    \n    \n    "
-                    '@final\n    class Constants:\n        """Group module'
-                    "-level constants.\n    \n        Attributes:\n       "
-                    "     docstring_width: Grouped module constant.\n    "
-                    '\n        """\n    \n        docstring_width: Final[i'
-                    "nt] = 70\n    \n    \n    REPAIR_SOURCES: Final[tuple"
-                    "[str, ...]] = ('x = 1\\n',)\n    CONCAT_SOURCES: Fina"
-                    "l[tuple[str, ...]] = ('y = 2\\n',)\n    print(REPAIR_"
-                    "SOURCES, CONCAT_SOURCES)\n    "
+                    """\
+    from typing import Final, final
+
+
+    @final
+    class Constants:
+        \"""Group module-level constants.
+
+        Attributes:
+            docstring_width: Grouped module constant.
+
+        \"""
+
+        docstring_width: Final[int] = 70
+
+
+    REPAIR_SOURCES: Final[tuple[str, ...]] = ('x = 1\\n',)
+    CONCAT_SOURCES: Final[tuple[str, ...]] = ('y = 2\\n',)
+    print(REPAIR_SOURCES, CONCAT_SOURCES)
+    """
                 ),
             )
         ),
@@ -1763,9 +2019,14 @@ def test_run_skips_merging_into_unrelated_constants(tmp_path: Path) -> None:
         source=(
             dedent(
                 text=(
-                    "    from typing import Final\n    \n    class Constan"
-                    "ts:\n        pass\n    \n    VALUE: Final[int] = 1\n "
-                    "   "
+                    """\
+    from typing import Final
+
+    class Constants:
+        pass
+
+    VALUE: Final[int] = 1
+    """
                 ),
             )
         ),
@@ -1777,9 +2038,14 @@ def test_run_skips_merging_into_unrelated_constants(tmp_path: Path) -> None:
         expected=(
             dedent(
                 text=(
-                    "    from typing import Final\n    \n    class Constan"
-                    "ts:\n        pass\n    \n    VALUE: Final[int] = 1\n "
-                    "   "
+                    """\
+    from typing import Final
+
+    class Constants:
+        pass
+
+    VALUE: Final[int] = 1
+    """
                 ),
             )
         ),
@@ -1799,12 +2065,25 @@ def test_run_skips_member_name_collision_on_merge(tmp_path: Path) -> None:
         source=(
             dedent(
                 text=(
-                    "    from typing import Final, final\n    \n    \n    "
-                    '@final\n    class Constants:\n        """Group module'
-                    "-level constants.\n    \n        Attributes:\n       "
-                    '     value: Grouped module constant.\n    \n        "'
-                    '""\n    \n        value: Final[int] = 1\n    \n    \n'
-                    "    VALUE: Final[int] = 2\n    print(VALUE)\n    "
+                    """\
+    from typing import Final, final
+
+
+    @final
+    class Constants:
+        \"""Group module-level constants.
+
+        Attributes:
+            value: Grouped module constant.
+
+        \"""
+
+        value: Final[int] = 1
+
+
+    VALUE: Final[int] = 2
+    print(VALUE)
+    """
                 ),
             )
         ),

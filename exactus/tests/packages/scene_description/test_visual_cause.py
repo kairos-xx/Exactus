@@ -255,8 +255,11 @@ def test_markdown_missing_block() -> None:
         expected=(
             dedent(
                 text=(
-                    "    ## Rendered change description\n    \n    No scen"
-                    "e description is available.\n    "
+                    """\
+    ## Rendered change description
+
+    No scene description is available.
+    """
                 ),
             )
         ),
@@ -268,8 +271,11 @@ def test_markdown_missing_block() -> None:
         expected=(
             dedent(
                 text=(
-                    "    ## Rendered change description\n    \n    No scen"
-                    "e description is available.\n    "
+                    """\
+    ## Rendered change description
+
+    No scene description is available.
+    """
                 ),
             )
         ),
@@ -291,7 +297,9 @@ def test_markdown_renders_summary_and_elements() -> None:
     }
     markdown: str = _describer().markdown(report=document)
     expect_true(
-        condition=markdown.startswith("## Rendered change description\n"),
+        condition=markdown.startswith("""\
+## Rendered change description
+"""),
         message=markdown,
     )
     expect_in(

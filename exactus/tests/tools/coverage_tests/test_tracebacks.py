@@ -133,9 +133,17 @@ def test_sections_split_failure_and_error_blocks() -> None:
     """Sections are grouped by their banner kind."""
     text: str = dedent(
         text=(
-            "    \n    === FAILURES ===\n    ___ test_one ___\n    frame line"
-            "\n    E assertion\n    === ERRORS ===\n    ___ ERROR at setup of "
-            "test_two ___\n    setup line\n    E setup error\n    "
+            """\
+
+    === FAILURES ===
+    ___ test_one ___
+    frame line
+    E assertion
+    === ERRORS ===
+    ___ ERROR at setup of test_two ___
+    setup line
+    E setup error
+    """
         ),
     )
     sections: list[tuple[str, str, list[str]]] = PytestTracebacks.sections(
@@ -263,7 +271,12 @@ def test_site_picks_deepest_project_frame() -> None:
 
 def test_sites_returns_none_for_missing_section() -> None:
     """Entries without a matching section produce a None site."""
-    text: str = "\n=== FAILURES ===\n___ present_test ___\nE failure\n"
+    text: str = """\
+
+=== FAILURES ===
+___ present_test ___
+E failure
+"""
     sites: tuple[FailureSite | None, ...] = PytestTracebacks.sites(
         text=text,
         root=Constants.root,
@@ -277,8 +290,14 @@ def test_sites_matches_and_pops_sections_in_order() -> None:
     """Each entry consumes its section and later entries may miss."""
     text: str = dedent(
         text=(
-            "    \n    === FAILURES ===\n    ___ first_test ___\n    E failure"
-            " one\n    ___ second_test ___\n    E failure two\n    "
+            """\
+
+    === FAILURES ===
+    ___ first_test ___
+    E failure one
+    ___ second_test ___
+    E failure two
+    """
         ),
     )
     sites: tuple[FailureSite | None, ...] = PytestTracebacks.sites(
@@ -386,10 +405,15 @@ def test_parse_returns_empty_when_no_banner() -> None:
 def test_parse_collects_multiple_failures() -> None:
     """Every test-at group after the banner becomes one failure."""
     test_path: str = str(object=Constants.root / Constants.project_file)
-    text: str = (
-        f"✖ failing tests:\ntest at {test_path}:1:1\n✖ first\nError: first"
-        f" failure\ntest at {test_path}:2:1\n✖ second\nError: second failure\n"
-    )
+    text: str = f"""\
+✖ failing tests:
+test at {test_path}:1:1
+✖ first
+Error: first failure
+test at {test_path}:2:1
+✖ second
+Error: second failure
+"""
     result: tuple[NamedFailure, ...] = NodeTestFailures.parse(
         text=text,
         root=Constants.root,

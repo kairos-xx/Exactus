@@ -61,11 +61,13 @@ def test_parse_server_log(tmp_path: Path) -> None:
     log.write_text(
         data=dedent(
             text=(
-                '    [stderr] 127.0.0.1 - - [d] "GET /a HTTP/1.1" 404 -\n '
-                '   [stderr] 127.0.0.1 - - [d] "GET /a HTTP/1.1" 404 -\n  '
-                '  [stdout] 127.0.0.1 - - [d] "POST /b HTTP/1.1" 500 -\n  '
-                '  [stdout] 127.0.0.1 - - [d] "GET /ok HTTP/1.1" 200 -\n  '
-                "  noise\n    "
+                """\
+    [stderr] 127.0.0.1 - - [d] "GET /a HTTP/1.1" 404 -
+    [stderr] 127.0.0.1 - - [d] "GET /a HTTP/1.1" 404 -
+    [stdout] 127.0.0.1 - - [d] "POST /b HTTP/1.1" 500 -
+    [stdout] 127.0.0.1 - - [d] "GET /ok HTTP/1.1" 200 -
+    noise
+    """
             ),
         ),
         encoding="utf-8",
@@ -206,9 +208,12 @@ def test_start_entrypoint_exports_port(tmp_path: Path) -> None:
     script.write_text(
         data=dedent(
             text=(
-                "    import os,sys,time\n    print('port', os.environ['EXA"
-                "CTUS_PORT'], flush=True)\n    print('err', file=sys.stder"
-                "r, flush=True)\n    time.sleep(30)\n    "
+                """\
+    import os,sys,time
+    print('port', os.environ['EXACTUS_PORT'], flush=True)
+    print('err', file=sys.stderr, flush=True)
+    time.sleep(30)
+    """
             ),
         ),
         encoding="utf-8",

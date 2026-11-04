@@ -352,7 +352,9 @@ def _show_config(*, config: RuntimeConfig) -> None:
         "log-level": config.log_level,
         "menu-bar": config.menu_bar,
     }
-    _ = stdout.write(f"{dumps(obj=payload, indent=2, sort_keys=True)}\n")
+    _ = stdout.write(f"""\
+{dumps(obj=payload, indent=2, sort_keys=True)}
+""")
 
 
 def _config(*, arguments: Namespace) -> RuntimeConfig:
@@ -670,11 +672,15 @@ def _show_connection(*, state: ServiceState) -> None:
     """
     page_url: str = state.public_url or state.local_url
     _ = stdout.write(
-        "\nExactus MCP is ready\n"
-        f"Public page: {page_url}/\n"
-        f"MCP endpoint: {state.mcp_url}\n"
-        f"Bearer token: {state.access_token}\n"
-        "Press Ctrl-C to close the MCP server and ngrok tunnel.\n\n",
+        f"""\
+
+Exactus MCP is ready
+Public page: {page_url}/
+MCP endpoint: {state.mcp_url}
+Bearer token: {state.access_token}
+Press Ctrl-C to close the MCP server and ngrok tunnel.
+
+""",
     )
     stdout.flush()
 
@@ -735,5 +741,7 @@ def main() -> int:
     except KeyboardInterrupt:
         return 0
     except (OSError, RuntimeError, TypeError, ValueError) as exc:
-        _ = stderr.write(f"exactus-mcp: {exc}\n")
+        _ = stderr.write(f"""\
+exactus-mcp: {exc}
+""")
         return 1

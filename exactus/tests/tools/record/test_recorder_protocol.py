@@ -533,7 +533,7 @@ def test_protocol_scalar_validation_helpers() -> None:
         actual=private_result(
             owner=RecorderProtocol,
             name="_string_list",
-            kind=tuple,
+            kind=type(()),
             root={},
             key="x",
         ),
@@ -543,7 +543,7 @@ def test_protocol_scalar_validation_helpers() -> None:
         actual=private_result(
             owner=RecorderProtocol,
             name="_headers",
-            kind=tuple,
+            kind=type(()),
             root={},
             key="x",
         ),

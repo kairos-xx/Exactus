@@ -109,6 +109,8 @@ mapping (`markdown/`). See `templates/README.md`.
 - [`core.py`](core.py) — Lint exactus engine: clean, lint, and type-check sources with rollback.
 - [`css_naming.py`](css_naming.py) — Audit numbered CSS custom-property families without guessing their meaning.
 - [`css_tokens.py`](css_tokens.py) — Audit the CSS custom-property architecture and terminal-layer policy.
+- [`embedded_strings.py`](embedded_strings.py) — Verify and render embedded source strings without altering runtime values.
+- [`javascript_pipeline.py`](javascript_pipeline.py) — Run delimiter and notation work in one bounded per-file pipeline.
 - [`js_delimiters.py`](js_delimiters.py) — Conservatively remove unnecessary JavaScript parentheses and braces.
 - [`js_function_blocks.py`](js_function_blocks.py) — Report JavaScript function and method blocks and modernization eligibility.
 - [`long_lines.py`](long_lines.py) — Repair Python lines that remain too long after Ruff formatting.
@@ -119,6 +121,7 @@ mapping (`markdown/`). See `templates/README.md`.
 - [`report.py`](report.py) — Normalize the LINTS report: summary, scope, findings and metrics.
 - [`shebang.py`](shebang.py) — Exactus Python executable permissions against shebang presence.
 - [`string_transform.py`](string_transform.py) — Source-preserving string dedenting, splitting and f-string formatting.
+- [`workspace.py`](workspace.py) — Isolate lint mutations and turn validated results into source proposals.
 
 ### Subdirectories
 

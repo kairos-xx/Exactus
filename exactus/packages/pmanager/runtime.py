@@ -489,7 +489,12 @@ class Client:
             address=(Constants.host, descriptor.port),
         ) as connection:
             connection.sendall(
-                (dumps(separators=(",", ":"), obj=message) + "\n").encode(),
+                (
+                    dumps(separators=(",", ":"), obj=message)
+                    + """\
+
+"""
+                ).encode(),
             )
             data: bytes = b""
             while b"\n" not in data:
@@ -773,7 +778,10 @@ class Worker:
                 response: dict[str, JsonValue] = self._respond(request=request)
                 connection.sendall(
                     (
-                        dumps(separators=(",", ":"), obj=response) + "\n"
+                        dumps(separators=(",", ":"), obj=response)
+                        + """\
+
+"""
                     ).encode(),
                 )
         server.close()
@@ -1595,9 +1603,11 @@ class Cli:
             stdout.write(
                 dedent(
                     text=(
-                        "    pmanager: --spec PATH --create PROCESS CONTEX"
-                        "T | --observe PROCESS CONTEXT | --status | --tree"
-                        " [CONTEXT] | --validate [--args ...]\n    "
+                        """\
+                        pmanager: --spec PATH --create PROCESS CONTEXT | \
+--observe PROCESS CONTEXT | --status | --tree [CONTEXT] | --validate [--args \
+...]
+"""
                     ),
                 ),
             )
@@ -1627,7 +1637,9 @@ class Cli:
             context=context,
             process_args=process_args,
         )
-        stdout.write(f"{descriptor.pid}\n")
+        stdout.write(f"""\
+{descriptor.pid}
+""")
         return 0
 
     @staticmethod
@@ -1650,7 +1662,7 @@ class Cli:
         filled: int = round(number=Constants.bar_width * progress / 100)
         empty: int = Constants.bar_width - filled
         state: JsonValue = info.get("state", "")
-        return f"[{'█' * filled}{'░' * empty}] {progress:3d}% {state}"
+        return f"[{"█" * filled}{"░" * empty}] {progress:3d}% {state}"
 
     @staticmethod
     def tree(spec: Spec, context: str) -> str:
@@ -1700,7 +1712,7 @@ class Cli:
                 except OSError:
                     status = "unreachable"
             lines: list[str] = [
-                f"{prefix}{('└── ' if last else '├── ')}{name} [{status}]",
+                f"{prefix}{("└── " if last else "├── ")}{name} [{status}]",
             ]
             refs: tuple[str, ...] = Spec.refs(config=spec.process(name=name))
             child_prefix: str = prefix + ("    " if last else "│   ")
@@ -1719,7 +1731,9 @@ class Cli:
             lines.extend(
                 branch(name=root, prefix="", last=idx == len(roots) - 1),
             )
-        return "\n".join(lines)
+        return """\
+
+""".join(lines)
 
     @classmethod
     def _informational(cls, args: list[str], spec: Spec) -> int | None:
@@ -1734,12 +1748,19 @@ class Cli:
 
         """
         if "--validate" in args:
-            stdout.write(f"valid: {len(spec.processes)} processes\n")
+            stdout.write(f"""\
+valid: {len(spec.processes)} processes
+""")
             return 0
         if "--tree" in args:
             idx: int = cls._index(values=args, target="--tree")
             context: str = args[idx + 1] if idx + 1 < len(args) else "default"
-            stdout.write(cls.tree(spec=spec, context=context) + "\n")
+            stdout.write(
+                cls.tree(spec=spec, context=context)
+                + """\
+
+""",
+            )
             return 0
         if "--status" in args:
             return cls._status(args=args)
@@ -1840,7 +1861,9 @@ class Cli:
                 if "--json" in remaining
                 else cls.render(info=info)
             )
-            + "\n",
+            + """\
+
+""",
         )
         return 0
 
@@ -1872,7 +1895,9 @@ class Cli:
                 ):
                     break
                 sleep(1)
-            stdout.write("\n")
+            stdout.write("""\
+
+""")
         except (KeyboardInterrupt, BrokenPipeError):
             return 0
         return 0
@@ -1992,13 +2017,20 @@ class Cli:
         output: str = (
             dumps(indent=2, obj=rows)
             if "--json" in args
-            else "\n".join(
-                f"{row.get('process')}/{row.get('context')} "
-                f"{row.get('state')} {row.get('progress')}%"
+            else """\
+
+""".join(
+                f"{row.get("process")}/{row.get("context")} "
+                f"{row.get("state")} {row.get("progress")}%"
                 for row in rows
             )
         )
-        stdout.write(output + "\n")
+        stdout.write(
+            output
+            + """\
+
+""",
+        )
         return 0
 
     @staticmethod
@@ -2021,13 +2053,17 @@ class Cli:
 
         """
         refs: tuple[str, ...] = Spec.refs(config=spec.process(name=name))
-        stdout.write(f"PLAN {name}/{context}\n")
+        stdout.write(f"""\
+PLAN {name}/{context}
+""")
         existing: Descriptor | None = Discovery.find(
             name=name,
             context=context,
         )
         action: str = "REUSE/RESET" if existing else "CREATE"
-        stdout.write(f"  action: {action}\n")
+        stdout.write(f"""\
+  action: {action}
+""")
         for ref in refs:
             current: Descriptor | None = Discovery.find(
                 name=ref,
@@ -2036,8 +2072,12 @@ class Cli:
             child_action: str = (
                 f"REUSE PID {current.pid}" if current else "CREATE"
             )
-            stdout.write(f"  {ref}/{context}: {child_action}\n")
-        stdout.write(f"  args: {list(process_args)!r}\n")
+            stdout.write(f"""\
+  {ref}/{context}: {child_action}
+""")
+        stdout.write(f"""\
+  args: {list(process_args)!r}
+""")
         return 0
 
 
@@ -2051,7 +2091,9 @@ def main() -> int:
     try:
         return Cli.main(values=argv)
     except (SpecError, RuntimeError, OSError, ValueError) as error:
-        stderr.write(f"error: {error}\n")
+        stderr.write(f"""\
+error: {error}
+""")
         return 2
 
 

@@ -53,6 +53,10 @@ stabilization loop. The Python API exposes the same switch through
 `AuditRunner.use_repair(repair=...)` installs a `FileRepair` that runs for
 every file after each Ruff format/fix cycle; a file the repair changed gets
 another complete cycle. Exactus uses it for long-line repair.
+The final formatter preserves magic trailing commas so multiline source
+remains compatible with Ruff's COM812 rule and repeated runs converge.
+Console capture uses the current standard streams, including redirected
+streams supplied by embedding applications and test runners.
 `ToolSpec.command_prefix` lets callers use a multi-command launcher such as
 an Exactus platform bundle while keeping all discovery, parsing and reporting
 inside `all_lints`.

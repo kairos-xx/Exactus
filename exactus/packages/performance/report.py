@@ -95,7 +95,9 @@ class PerformanceReport:
         path.parent.mkdir(parents=True, exist_ok=True)
         _ = path.write_text(
             data=dumps(obj=cls.build(runs=runs), indent=2, ensure_ascii=False)
-            + "\n",
+            + """\
+
+""",
             encoding="utf-8",
         )
         return path

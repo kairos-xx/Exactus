@@ -102,10 +102,7 @@ def _tool_durations_from(
     for name, entry in tools.items():
         if isinstance(entry, dict):
             value: JsonValue = entry.get("duration_seconds")
-            if isinstance(value, int | float) and not isinstance(
-                value,
-                bool,
-            ):
+            if isinstance(value, int | float) and not isinstance(value, bool):
                 durations[name] = float(value)
     return durations or None
 
@@ -771,7 +768,9 @@ def markdown(*, comparison: JsonValue) -> str:
         return ""
     lines: list[str] = ["## Change since previous report", ""]
     if comparison.get("available") is not True:
-        return "\n".join(
+        return """\
+
+""".join(
             [
                 *lines,
                 "No previous report exists; "
@@ -844,13 +843,20 @@ def markdown(*, comparison: JsonValue) -> str:
                 lines.append(
                     "| "
                     + " | ".join(
-                        cell.replace("|", r"\|").replace("\n", " ")
+                        cell.replace("|", r"\|").replace(
+                            """\
+
+""",
+                            " ",
+                        )
                         for cell in cells
                     )
                     + " |",
                 )
         lines.append("")
-    return "\n".join(lines)
+    return """\
+
+""".join(lines)
 
 
 def apply(*, payload: JsonObject, path: Path) -> None:

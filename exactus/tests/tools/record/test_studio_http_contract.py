@@ -703,7 +703,13 @@ def test_import_save_conflict_and_path_boundaries(
     expect_equal(actual=saved.status, expected=200)
     path: Path = tmp_path / filename
     expect_equal(actual=loads(s=path.read_text()), expected=before)
-    path.write_text(data=path.read_text() + "\n", encoding="utf-8")
+    path.write_text(
+        data=path.read_text()
+        + """\
+
+""",
+        encoding="utf-8",
+    )
     external: bytes = path.read_bytes()
     conflict: Reply = command(
         name="workspace.save",

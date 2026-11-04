@@ -210,8 +210,12 @@ def test_configured_recipe_and_explicit_project(tmp_path: Path) -> None:
     (tmp_path / "pyproject.toml").write_text(
         data=dedent(
             text=(
-                "    [tool.exactus]\n    root = true\n    [tool.exactus.fr"
-                'ontend]\n    actions = "recipes/check.json"\n    '
+                """\
+    [tool.exactus]
+    root = true
+    [tool.exactus.frontend]
+    actions = "recipes/check.json"
+    """
             ),
         ),
         encoding="utf-8",

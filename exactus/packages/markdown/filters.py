@@ -97,7 +97,10 @@ class MarkdownFilters:
             The fenced block.
 
         """
-        return f"```{language}\n{cls.text(value=value)}\n```"
+        return f"""\
+```{language}
+{cls.text(value=value)}
+```"""
 
     @classmethod
     def fence(cls, value: JsonValue, language: str = "") -> str:
@@ -125,7 +128,10 @@ class MarkdownFilters:
             default=3,
         )
         marker: str = "~" * (longest + 1)
-        return f"{marker}{language}\n{text}\n{marker}"
+        return f"""\
+{marker}{language}
+{text}
+{marker}"""
 
     @classmethod
     def bullets(cls, value: JsonValue, path: str | None = None) -> str:
@@ -139,7 +145,9 @@ class MarkdownFilters:
             One ``- item`` line per item.
 
         """
-        return "\n".join(
+        return """\
+
+""".join(
             f"- {cls.text(value=cls._field(value=item, path=path))}"
             for item in cls._items(value=value)
         )
@@ -156,7 +164,9 @@ class MarkdownFilters:
             One ``n. item`` line per item.
 
         """
-        return "\n".join(
+        return """\
+
+""".join(
             f"{index}. {cls.text(value=cls._field(value=item, path=path))}"
             for index, item in enumerate(
                 iterable=cls._items(value=value),
@@ -213,7 +223,9 @@ class MarkdownFilters:
             + " |"
             for row in value
         )
-        return "\n".join(lines)
+        return """\
+
+""".join(lines)
 
     @classmethod
     def register(cls, *, env: Environment) -> None:

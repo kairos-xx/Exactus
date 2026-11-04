@@ -25,9 +25,7 @@ node_modules/
 
 # Result and screenshot artifacts
 /STUDIO_SCREENSHOTS/
-/EXACTUS_RESULTS/
 /EXACTUS_RESULTS_RELEASE/
-/ALL_LINTS_RESULTS/
 
 # Release binaries (attached to GitHub releases, not tracked)
 /bin/release/

@@ -110,6 +110,25 @@ def create_parser() -> ArgumentParser:
     add_common_arguments(parser=parser, default_output="LINTS")
     _ = consume(
         value=parser.add_argument(
+            "--transaction-passes",
+            type=_positive,
+            default=4,
+            metavar="N",
+            help="Maximum complete source transaction passes (default: 4).",
+        ),
+    )
+    _ = consume(
+        value=parser.add_argument(
+            "--transaction-timeout",
+            type=_positive,
+            default=1800,
+            metavar="SECONDS",
+            help="Total mutation and verification budget "
+            "(default: 1800 seconds).",
+        ),
+    )
+    _ = consume(
+        value=parser.add_argument(
             "--workers",
             type=_positive,
             default=None,
@@ -299,6 +318,105 @@ def create_parser() -> ArgumentParser:
     )
     _ = consume(
         value=parser.add_argument(
+            "--no-embedded-strings",
+            action="store_true",
+            help=(
+                "Skip the verified multiline literal presentation pass "
+                "that rewrites supported strings and complete f-strings "
+                "into physical multiline form without changing values."
+            ),
+        ),
+    )
+    _ = consume(
+        value=parser.add_argument(
+            "--format-embedded",
+            action="store_true",
+            help=(
+                "Format inferred HTML, JavaScript, CSS, or Python inside "
+                "multiline literals with Prettier or Ruff. May change "
+                "string contents; requires --allow-value-changes."
+            ),
+        ),
+    )
+    _ = consume(
+        value=parser.add_argument(
+            "--allow-value-changes",
+            action="store_true",
+            help=(
+                "Permit transforms that intentionally change string "
+                "contents; required by --format-embedded."
+            ),
+        ),
+    )
+    _ = consume(
+        value=parser.add_argument(
+            "--line-length",
+            type=_positive,
+            metavar="N",
+            help=(
+                "Explicit string-transform target width; defaults to the "
+                "line length resolved from Ruff configuration."
+            ),
+        ),
+    )
+    _ = consume(
+        value=parser.add_argument(
+            "--multiline-strategy",
+            choices=("preserve", "split", "smart"),
+            default="smart",
+            metavar="MODE",
+            help=(
+                "Multiline literal strategy: preserve existing triple "
+                "quotes, split literals into adjacent physical lines, or "
+                "choose per literal (smart, default)."
+            ),
+        ),
+    )
+    _ = consume(
+        value=parser.add_argument(
+            "--no-split-fstrings",
+            action="store_true",
+            help="Exclude f-strings from width-limited literal splitting.",
+        ),
+    )
+    _ = consume(
+        value=parser.add_argument(
+            "--no-split-raw-strings",
+            action="store_true",
+            help="Exclude raw literals from width-limited splitting.",
+        ),
+    )
+    _ = consume(
+        value=parser.add_argument(
+            "--no-split-bytes",
+            action="store_true",
+            help="Exclude byte literals from width-limited splitting.",
+        ),
+    )
+    _ = consume(
+        value=parser.add_argument(
+            "--no-format-interpolations",
+            action="store_true",
+            help=(
+                "Skip Ruff-backed expansion of eligible oversized calls "
+                "inside f-string interpolations."
+            ),
+        ),
+    )
+    _ = consume(
+        value=parser.add_argument(
+            "--call-format-minimum",
+            type=_positive,
+            default=3,
+            metavar="N",
+            help=(
+                "Minimum argument count before an f-string call "
+                "interpolation is expanded (default 3)."
+            ),
+        ),
+    )
+    _ = consume(
+        value=parser.add_argument(
             "--no-css-naming",
             action="store_true",
             help="Disable the component-aware CSS numeric naming audit.",
@@ -318,6 +436,57 @@ def create_parser() -> ArgumentParser:
             "--css-naming-extended",
             action="store_true",
             help="Include weak-evidence advisory CSS naming findings.",
+        ),
+    )
+    _ = consume(
+        value=parser.add_argument(
+            "--css-naming-convention",
+            action="append",
+            default=[],
+            metavar="SPEC",
+            help=(
+                "Scoped CSS naming registry as key=value pairs joined "
+                "by ';' (stem=--spacing-;unit=px;step=4;members=1,2,4;"
+                "scope=ui;rationale=...;review=...). Repeatable."
+            ),
+        ),
+    )
+    _ = consume(
+        value=parser.add_argument(
+            "--css-naming-exempt",
+            action="append",
+            default=[],
+            metavar="SPEC",
+            help=(
+                "Scoped CSS naming exemption as key=value pairs joined "
+                "by ';' (name=--legacy-;scope=ui;rationale=...). "
+                "Repeatable."
+            ),
+        ),
+    )
+    _ = consume(
+        value=parser.add_argument(
+            "--css-naming-severity",
+            action="append",
+            default=[],
+            metavar="RULE=LEVEL",
+            help=(
+                "Per-rule CSSN severity override (error, warning, "
+                "info); e.g. --css-naming-severity CSSN008=warning. "
+                "Repeatable."
+            ),
+        ),
+    )
+    _ = consume(
+        value=parser.add_argument(
+            "--css-naming-component",
+            action="append",
+            default=[],
+            metavar="PATH=NAME",
+            help=(
+                "Explicit component-root mapping applied before the "
+                "directory heuristic; e.g. web/ui=ui. Repeatable."
+            ),
         ),
     )
     _ = consume(

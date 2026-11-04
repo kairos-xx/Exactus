@@ -107,7 +107,12 @@ def main(argv: Sequence[str] | None = None) -> int:
     path: Path = Path(args.path).absolute()
     try:
         if args.watch_status:
-            stdout.write(dumps(obj=read_state(path=path), indent=2) + "\n")
+            stdout.write(
+                dumps(obj=read_state(path=path), indent=2)
+                + """\
+
+""",
+            )
             return 0 if running(path=path) else 1
         if args.watch_stop:
             return stop(path=path)
@@ -136,7 +141,14 @@ def main(argv: Sequence[str] | None = None) -> int:
             if changed
             else "in sync"
         )
-        stdout.write(f"{path}: {status}\n")
+        stdout.write(f"""\
+{path}: {status}
+""")
         return int(args.check and changed)
     except (OSError, ValueError) as exc:
-        parser.exit(status=2, message=f"Progress sync failed: {exc}\n")
+        parser.exit(
+            status=2,
+            message=f"""\
+Progress sync failed: {exc}
+""",
+        )

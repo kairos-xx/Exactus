@@ -134,7 +134,12 @@ def test_tool_and_terminal_properties(monkeypatch: pytest.MonkeyPatch) -> None:
         expected=f"{Terminal.BOLD}{Terminal.CYAN}text{Terminal.RESET}",
     )
     terminal.write(text="line")
-    expect_equal(actual=stream.getvalue(), expected="line\n")
+    expect_equal(
+        actual=stream.getvalue(),
+        expected="""\
+line
+""",
+    )
     monkeypatch.setenv(name="NO_COLOR", value="1")
 
 

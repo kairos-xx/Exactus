@@ -467,7 +467,12 @@ def test_state_store_roundtrip_and_invalid_content(tmp_path: Path) -> None:
     identifier: UUID = UUID(hex="550e8400-e29b-41d4-a716-446655440000")
     state.write(identifier=identifier)
     expect_equal(actual=state.read(), expected=identifier)
-    _ = state.path.write_text(data="   \n", encoding="utf-8")
+    _ = state.path.write_text(
+        data="""\
+
+""",
+        encoding="utf-8",
+    )
     expect_equal(actual=state.read(), expected=None)
     _ = state.path.write_text(data="not-a-uuid", encoding="utf-8")
     expect_equal(actual=state.read(), expected=None)

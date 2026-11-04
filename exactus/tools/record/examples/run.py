@@ -29,9 +29,11 @@ def main() -> int:
     )
     workspace: Workspace = WorkspaceCodec.load(path=path)
     _ = stdout.write(
-        f"workspace: {path.name}\n"
-        f"flows: {len(workspace.flows)}\n"
-        f"edges: {len(workspace.edges)}\n",
+        f"""\
+workspace: {path.name}
+flows: {len(workspace.flows)}
+edges: {len(workspace.edges)}
+""",
     )
     return int(not workspace.flows)
 

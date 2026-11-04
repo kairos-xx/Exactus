@@ -51,18 +51,18 @@ class MeaningfulCli:
                 include=tuple(options.include),
                 exclude=tuple(options.exclude),
             )
-            payload: str = f"{
-                dumps(
-                    obj=asdict(obj=run), indent=2, sort_keys=True, default=str
-                )
-            }\n"
+            payload: str = f"""\
+{dumps(obj=asdict(obj=run), indent=2, sort_keys=True, default=str)}
+"""
             if options.output_file is None:
                 stdout.write(payload)
             else:
                 options.output_file.parent.mkdir(parents=True, exist_ok=True)
                 options.output_file.write_text(data=payload, encoding="utf-8")
         except (OSError, SyntaxError, ValueError) as error:
-            stderr.write(f"error: {error}\n")
+            stderr.write(f"""\
+error: {error}
+""")
             return 2
         return 0
 

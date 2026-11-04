@@ -82,21 +82,26 @@ def _generated_cases() -> tuple[Case, ...]:
                     Case(
                         name=f"gen-py-string-{index}-{ord(quote)}",
                         suffix=".py",
-                        source=f"x = {quote}{prefix}abc.cde{quote}\n",
+                        source=f"""\
+x = {quote}{prefix}abc.cde{quote}
+""",
                         expected=(Expected.SAFE,),
                     ),
                     Case(
                         name=f"gen-js-string-{index}-{ord(quote)}",
                         suffix=".js",
-                        source=f"const x = {quote}{prefix}abc.cde{quote};\n",
+                        source=f"""\
+const x = {quote}{prefix}abc.cde{quote};
+""",
                         expected=(Expected.SAFE,),
                     ),
                     Case(
                         name=f"gen-css-string-{index}-{ord(quote)}",
                         suffix=".css",
                         source=(
-                            f"x {{ content: {quote}{prefix}"
-                            f"abc.cde{quote}; }}\n"
+                            f"""\
+x {{ content: {quote}{prefix}abc.cde{quote}; }}
+"""
                         ),
                         expected=(Expected.SAFE,),
                     ),
@@ -104,8 +109,9 @@ def _generated_cases() -> tuple[Case, ...]:
                         name=f"gen-html-attribute-{index}-{ord(quote)}",
                         suffix=".html",
                         source=(
-                            f"<div title={quote}{prefix}abc.cde{quote}>"
-                            f"</div>\n"
+                            f"""\
+<div title={quote}{prefix}abc.cde{quote}></div>
+"""
                         ),
                         expected=(Expected.SAFE,),
                     ),
@@ -118,25 +124,33 @@ def _generated_cases() -> tuple[Case, ...]:
                 Case(
                     name=f"gen-py-member-{index}",
                     suffix=".py",
-                    source=f"x ={gap}abc.cde\n",
+                    source=f"""\
+x ={gap}abc.cde
+""",
                     expected=(Expected.GUARDED,),
                 ),
                 Case(
                     name=f"gen-js-member-{index}",
                     suffix=".js",
-                    source=f"const x ={gap}abc.cde;\n",
+                    source=f"""\
+const x ={gap}abc.cde;
+""",
                     expected=(Expected.GUARDED,),
                 ),
                 Case(
                     name=f"gen-css-selector-{index}",
                     suffix=".css",
-                    source=f"abc.cde{gap}{{ color: red; }}\n",
+                    source=f"""\
+abc.cde{gap}{{ color: red; }}
+""",
                     expected=(Expected.GUARDED,),
                 ),
                 Case(
                     name=f"gen-html-script-member-{index}",
                     suffix=".html",
-                    source=f"<script>const x ={gap}abc.cde;</script>\n",
+                    source=f"""\
+<script>const x ={gap}abc.cde;</script>
+""",
                     expected=(Expected.GUARDED,),
                 ),
             ),
@@ -151,25 +165,87 @@ def _generated_cases() -> tuple[Case, ...]:
         Case(
             name=f"gen-js-selector-{method}-{ord(quote)}",
             suffix=".js",
-            source=f"node.{method}({quote}abc.cde{quote});\n",
+            source=f"""\
+node.{method}({quote}abc.cde{quote});
+""",
             expected=(Expected.GUARDED,),
         )
         for method in selector_methods
         for quote in quotes
     )
     jsdoc_forms: tuple[tuple[str, Expected], ...] = (
-        ("/** abc.cde prose */\n", Expected.SAFE),
-        ("/** {@link abc.cde} */\n", Expected.GUARDED),
-        ("/** {@linkcode abc.cde} */\n", Expected.GUARDED),
-        ("/** {@linkplain abc.cde} */\n", Expected.GUARDED),
-        ("/** {@code abc.cde} */\n", Expected.GUARDED),
-        ("/** @type {abc.cde} */\n", Expected.GUARDED),
-        ("/** @returns {abc.cde} */\n", Expected.GUARDED),
-        ("/** @throws {abc.cde} */\n", Expected.GUARDED),
-        ("/** @extends abc.cde */\n", Expected.GUARDED),
-        ("/** @implements abc.cde */\n", Expected.GUARDED),
-        ("/** @memberof abc.cde */\n", Expected.GUARDED),
-        ("/** @see abc.cde */\n", Expected.GUARDED),
+        (
+            """\
+/** abc.cde prose */
+""",
+            Expected.SAFE,
+        ),
+        (
+            """\
+/** {@link abc.cde} */
+""",
+            Expected.GUARDED,
+        ),
+        (
+            """\
+/** {@linkcode abc.cde} */
+""",
+            Expected.GUARDED,
+        ),
+        (
+            """\
+/** {@linkplain abc.cde} */
+""",
+            Expected.GUARDED,
+        ),
+        (
+            """\
+/** {@code abc.cde} */
+""",
+            Expected.GUARDED,
+        ),
+        (
+            """\
+/** @type {abc.cde} */
+""",
+            Expected.GUARDED,
+        ),
+        (
+            """\
+/** @returns {abc.cde} */
+""",
+            Expected.GUARDED,
+        ),
+        (
+            """\
+/** @throws {abc.cde} */
+""",
+            Expected.GUARDED,
+        ),
+        (
+            """\
+/** @extends abc.cde */
+""",
+            Expected.GUARDED,
+        ),
+        (
+            """\
+/** @implements abc.cde */
+""",
+            Expected.GUARDED,
+        ),
+        (
+            """\
+/** @memberof abc.cde */
+""",
+            Expected.GUARDED,
+        ),
+        (
+            """\
+/** @see abc.cde */
+""",
+            Expected.GUARDED,
+        ),
     )
     for index, (source, expected) in enumerate(iterable=jsdoc_forms):
         cases.append(
@@ -187,33 +263,43 @@ def _generated_cases() -> tuple[Case, ...]:
                 Case(
                     name=f"gen-py-comment-{index}",
                     suffix=".py",
-                    source=f"{indent}# case {index}: abc.cde\n",
+                    source=f"""\
+{indent}# case {index}: abc.cde
+""",
                     expected=(Expected.SAFE,),
                 ),
                 Case(
                     name=f"gen-js-comment-{index}",
                     suffix=".js",
-                    source=f"{indent}// case {index}: abc.cde\n",
+                    source=f"""\
+{indent}// case {index}: abc.cde
+""",
                     expected=(Expected.SAFE,),
                 ),
                 Case(
                     name=f"gen-html-text-{index}",
                     suffix=".html",
                     source=(
-                        f'<p data-case="{index}">case {index}: abc.cde</p>\n'
+                        f"""\
+<p data-case="{index}">case {index}: abc.cde</p>
+"""
                     ),
                     expected=(Expected.SAFE,),
                 ),
                 Case(
                     name=f"gen-md-prose-{index}",
                     suffix=".md",
-                    source=f"Case {index}: abc.cde documentation.\n",
+                    source=f"""\
+Case {index}: abc.cde documentation.
+""",
                     expected=(Expected.SAFE,),
                 ),
                 Case(
                     name=f"gen-md-code-{index}",
                     suffix=".md",
-                    source=f"Case {index}: `abc.cde`.\n",
+                    source=f"""\
+Case {index}: `abc.cde`.
+""",
                     expected=(Expected.GUARDED,),
                 ),
             ),
@@ -241,349 +327,473 @@ class Constants:
         Case(
             name="py-attribute",
             suffix=".py",
-            source="x = abc.cde\n",
+            source="""\
+x = abc.cde
+""",
             expected=(Expected.GUARDED,),
         ),
         Case(
             name="py-call",
             suffix=".py",
-            source="x = abc.cde()\n",
+            source="""\
+x = abc.cde()
+""",
             expected=(Expected.GUARDED,),
         ),
         Case(
             name="py-assignment-target",
             suffix=".py",
-            source="abc.cde = 1\n",
+            source="""\
+abc.cde = 1
+""",
             expected=(Expected.GUARDED,),
         ),
         Case(
             name="py-import",
             suffix=".py",
-            source="import abc.cde\n",
+            source="""\
+import abc.cde
+""",
             expected=(Expected.GUARDED,),
         ),
         Case(
             name="py-from-import",
             suffix=".py",
-            source="from abc.cde import x\n",
+            source="""\
+from abc.cde import x
+""",
             expected=(Expected.GUARDED,),
         ),
         Case(
             name="py-decorator",
             suffix=".py",
-            source="@abc.cde\ndef f() -> None:\n    pass\n",
+            source="""\
+@abc.cde
+def f() -> None:
+    pass
+""",
             expected=(Expected.GUARDED,),
         ),
         Case(
             name="py-annotation",
             suffix=".py",
-            source="x: abc.cde[str]\n",
+            source="""\
+x: abc.cde[str]
+""",
             expected=(Expected.GUARDED,),
         ),
         Case(
             name="py-string",
             suffix=".py",
-            source='x = "abc.cde"\n',
+            source="""\
+x = "abc.cde"
+""",
             expected=(Expected.SAFE,),
         ),
         Case(
             name="py-raw-string",
             suffix=".py",
-            source='x = r"abc.cde"\n',
+            source="""\
+x = r"abc.cde"
+""",
             expected=(Expected.SAFE,),
         ),
         Case(
             name="py-comment",
             suffix=".py",
-            source="# abc.cde\n",
+            source="""\
+# abc.cde
+""",
             expected=(Expected.SAFE,),
         ),
         Case(
             name="py-module-docstring",
             suffix=".py",
-            source='"""abc.cde docs."""\n',
+            source="""\
+\"""abc.cde docs.\"""
+""",
             expected=(Expected.SAFE,),
         ),
         Case(
             name="py-function-docstring",
             suffix=".py",
-            source='def f() -> None:\n    """abc.cde docs."""\n',
+            source="""\
+def f() -> None:
+    \"""abc.cde docs.\"""
+""",
             expected=(Expected.SAFE,),
         ),
         Case(
             name="py-fstring-expression",
             suffix=".py",
-            source='x = f"{abc.cde}"\n',
+            source="""\
+x = f"{abc.cde}"
+""",
             expected=(Expected.GUARDED,),
         ),
         Case(
             name="py-fstring-text-and-expression",
             suffix=".py",
-            source='x = f"abc.cde {abc.cde}"\n',
+            source="""\
+x = f"abc.cde {abc.cde}"
+""",
             expected=(Expected.GUARDED, Expected.GUARDED),
         ),
         Case(
             name="py-unicode-prefix",
             suffix=".py",
-            source='x = "João — abc.cde"\n',
+            source="""\
+x = "João — abc.cde"
+""",
             expected=(Expected.SAFE,),
         ),
         Case(
             name="js-member",
             suffix=".js",
-            source="const x = abc.cde;\n",
+            source="""\
+const x = abc.cde;
+""",
             expected=(Expected.GUARDED,),
         ),
         Case(
             name="js-optional-member",
             suffix=".js",
-            source="const x = obj?.abc.cde;\n",
+            source="""\
+const x = obj?.abc.cde;
+""",
             expected=(Expected.GUARDED,),
         ),
         Case(
             name="js-string",
             suffix=".js",
-            source='const x = "abc.cde";\n',
+            source="""\
+const x = "abc.cde";
+""",
             expected=(Expected.SAFE,),
         ),
         Case(
             name="js-comment",
             suffix=".js",
-            source="// abc.cde\n",
+            source="""\
+// abc.cde
+""",
             expected=(Expected.SAFE,),
         ),
         Case(
             name="js-block-comment",
             suffix=".js",
-            source="/* abc.cde */\n",
+            source="""\
+/* abc.cde */
+""",
             expected=(Expected.SAFE,),
         ),
         Case(
             name="js-template-static",
             suffix=".js",
-            source="const x = `abc.cde`;\n",
+            source="""\
+const x = `abc.cde`;
+""",
             expected=(Expected.SAFE,),
         ),
         Case(
             name="js-template-expression",
             suffix=".js",
-            source="const x = `${abc.cde}`;\n",
+            source="""\
+const x = `${abc.cde}`;
+""",
             expected=(Expected.GUARDED,),
         ),
         Case(
             name="js-selector-api",
             suffix=".js",
-            source='document.querySelector("abc.cde");\n',
+            source="""\
+document.querySelector("abc.cde");
+""",
             expected=(Expected.GUARDED,),
         ),
         Case(
             name="js-closest-api",
             suffix=".js",
-            source='node.closest("abc.cde");\n',
+            source="""\
+node.closest("abc.cde");
+""",
             expected=(Expected.GUARDED,),
         ),
         Case(
             name="js-object-key",
             suffix=".js",
-            source='const x = {"abc.cde": 1};\n',
+            source="""\
+const x = {"abc.cde": 1};
+""",
             expected=(Expected.SAFE,),
         ),
         Case(
             name="js-unicode-prefix",
             suffix=".js",
-            source='const x = "João — abc.cde";\n',
+            source="""\
+const x = "João — abc.cde";
+""",
             expected=(Expected.SAFE,),
         ),
         Case(
             name="ts-type-member",
             suffix=".ts",
-            source="type T = typeof abc.cde;\n",
+            source="""\
+type T = typeof abc.cde;
+""",
             expected=(Expected.GUARDED,),
         ),
         Case(
             name="tsx-string",
             suffix=".tsx",
-            source='const x = "abc.cde";\n',
+            source="""\
+const x = "abc.cde";
+""",
             expected=(Expected.SAFE,),
         ),
         Case(
             name="jsdoc-prose",
             suffix=".js",
-            source="/** abc.cde documentation. */\n",
+            source="""\
+/** abc.cde documentation. */
+""",
             expected=(Expected.SAFE,),
         ),
         Case(
             name="jsdoc-link",
             suffix=".js",
-            source="/** {@link abc.cde} */\n",
+            source="""\
+/** {@link abc.cde} */
+""",
             expected=(Expected.GUARDED,),
         ),
         Case(
             name="jsdoc-code",
             suffix=".js",
-            source="/** {@code abc.cde} */\n",
+            source="""\
+/** {@code abc.cde} */
+""",
             expected=(Expected.GUARDED,),
         ),
         Case(
             name="jsdoc-backtick",
             suffix=".js",
-            source="/** `abc.cde` */\n",
+            source="""\
+/** `abc.cde` */
+""",
             expected=(Expected.GUARDED,),
         ),
         Case(
             name="jsdoc-type",
             suffix=".js",
-            source="/** @type {abc.cde} */\n",
+            source="""\
+/** @type {abc.cde} */
+""",
             expected=(Expected.GUARDED,),
         ),
         Case(
             name="jsdoc-see",
             suffix=".js",
-            source="/** @see abc.cde */\n",
+            source="""\
+/** @see abc.cde */
+""",
             expected=(Expected.GUARDED,),
         ),
         Case(
             name="css-selector",
             suffix=".css",
-            source="abc.cde { color: red; }\n",
+            source="""\
+abc.cde { color: red; }
+""",
             expected=(Expected.GUARDED,),
         ),
         Case(
             name="css-string",
             suffix=".css",
-            source='x { content: "abc.cde"; }\n',
+            source="""\
+x { content: "abc.cde"; }
+""",
             expected=(Expected.SAFE,),
         ),
         Case(
             name="css-comment",
             suffix=".css",
-            source="/* abc.cde */\n",
+            source="""\
+/* abc.cde */
+""",
             expected=(Expected.SAFE,),
         ),
         Case(
             name="css-attribute-selector",
             suffix=".css",
-            source='[data-x="abc.cde"] {}\n',
+            source="""\
+[data-x="abc.cde"] {}
+""",
             expected=(Expected.SAFE,),
         ),
         Case(
             name="css-url",
             suffix=".css",
-            source='x { background: url("abc.cde"); }\n',
+            source="""\
+x { background: url("abc.cde"); }
+""",
             expected=(Expected.SAFE,),
         ),
         Case(
             name="html-text",
             suffix=".html",
-            source="<p>abc.cde</p>\n",
+            source="""\
+<p>abc.cde</p>
+""",
             expected=(Expected.SAFE,),
         ),
         Case(
             name="html-attribute",
             suffix=".html",
-            source='<div title="abc.cde"></div>\n',
+            source="""\
+<div title="abc.cde"></div>
+""",
             expected=(Expected.SAFE,),
         ),
         Case(
             name="html-script-member",
             suffix=".html",
-            source="<script>const x = abc.cde;</script>\n",
+            source="""\
+<script>const x = abc.cde;</script>
+""",
             expected=(Expected.GUARDED,),
         ),
         Case(
             name="html-script-string",
             suffix=".html",
-            source='<script>const x = "abc.cde";</script>\n',
+            source="""\
+<script>const x = "abc.cde";</script>
+""",
             expected=(Expected.SAFE,),
         ),
         Case(
             name="html-style-selector",
             suffix=".html",
-            source="<style>abc.cde { color: red; }</style>\n",
+            source="""\
+<style>abc.cde { color: red; }</style>
+""",
             expected=(Expected.GUARDED,),
         ),
         Case(
             name="html-style-string",
             suffix=".html",
-            source='<style>x { content: "abc.cde"; }</style>\n',
+            source="""\
+<style>x { content: "abc.cde"; }</style>
+""",
             expected=(Expected.SAFE,),
         ),
         Case(
             name="html-event-handler",
             suffix=".html",
-            source='<button onclick="abc.cde()">x</button>\n',
+            source="""\
+<button onclick="abc.cde()">x</button>
+""",
             expected=(Expected.GUARDED,),
         ),
         Case(
             name="html-inline-style-string",
             suffix=".html",
-            source="<div style=\"content: 'abc.cde'\"></div>\n",
+            source="""\
+<div style="content: 'abc.cde'"></div>
+""",
             expected=(Expected.SAFE,),
         ),
         Case(
             name="html-comment",
             suffix=".html",
-            source="<!-- abc.cde -->\n",
+            source="""\
+<!-- abc.cde -->
+""",
             expected=(Expected.SAFE,),
         ),
         Case(
             name="html-unicode-prefix",
             suffix=".html",
-            source="<p>João — abc.cde</p>\n",
+            source="""\
+<p>João — abc.cde</p>
+""",
             expected=(Expected.SAFE,),
         ),
         Case(
             name="md-prose",
             suffix=".md",
-            source="Project abc.cde docs.\n",
+            source="""\
+Project abc.cde docs.
+""",
             expected=(Expected.SAFE,),
         ),
         Case(
             name="md-inline-code",
             suffix=".md",
-            source="Use `abc.cde` here.\n",
+            source="""\
+Use `abc.cde` here.
+""",
             expected=(Expected.GUARDED,),
         ),
         Case(
             name="md-fenced-js",
             suffix=".md",
-            source="```js\nconst x = abc.cde;\n```\n",
+            source="""\
+```js
+const x = abc.cde;
+```
+""",
             expected=(Expected.GUARDED,),
         ),
         Case(
             name="md-fenced-text",
             suffix=".md",
-            source="```text\nabc.cde\n```\n",
+            source="""\
+```text
+abc.cde
+```
+""",
             expected=(Expected.GUARDED,),
         ),
         Case(
             name="md-link-label",
             suffix=".md",
-            source="[abc.cde](https://example.test)\n",
+            source="""\
+[abc.cde](https://example.test)
+""",
             expected=(Expected.SAFE,),
         ),
         Case(
             name="toml-string",
             suffix=".toml",
-            source='name = "abc.cde"\n',
+            source="""\
+name = "abc.cde"
+""",
             expected=(Expected.SAFE,),
         ),
         Case(
             name="xml-text",
             suffix=".xml",
-            source="<x>abc.cde</x>\n",
+            source="""\
+<x>abc.cde</x>
+""",
             expected=(Expected.SAFE,),
         ),
         Case(
             name="csv-field",
             suffix=".csv",
-            source='name,value\nproject,"abc.cde"\n',
+            source="""\
+name,value
+project,"abc.cde"
+""",
             expected=(Expected.SAFE,),
         ),
         Case(
             name="txt-text",
             suffix=".txt",
-            source="abc.cde\n",
+            source="""\
+abc.cde
+""",
             expected=(Expected.SAFE,),
         ),
     )
@@ -672,13 +882,71 @@ def test_utf8_byte_character_round_trip() -> None:
 @pytest.mark.parametrize(
     ("suffix", "valid", "invalid"),
     [
-        (".py", "x = 1\n", "x = (\n"),
-        (".toml", 'x = "y"\n', 'x = "y\n'),
-        (".xml", "<x>y</x>\n", "<x>\n"),
-        (".csv", 'a,b\n1,"2"\n', 'a,b\n1,"2\n'),
-        (".js", "const x = 1;\n", "const x = ;\n"),
-        (".css", "x { color: red; }\n", "x { color: ;\n"),
-        (".html", "<p>x</p>\n", "<p><\n"),
+        (
+            ".py",
+            """\
+x = 1
+""",
+            """\
+x = (
+""",
+        ),
+        (
+            ".toml",
+            """\
+x = "y"
+""",
+            """\
+x = "y
+""",
+        ),
+        (
+            ".xml",
+            """\
+<x>y</x>
+""",
+            """\
+<x>
+""",
+        ),
+        (
+            ".csv",
+            """\
+a,b
+1,"2"
+""",
+            """\
+a,b
+1,"2
+""",
+        ),
+        (
+            ".js",
+            """\
+const x = 1;
+""",
+            """\
+const x = ;
+""",
+        ),
+        (
+            ".css",
+            """\
+x { color: red; }
+""",
+            """\
+x { color: ;
+""",
+        ),
+        (
+            ".html",
+            """\
+<p>x</p>
+""",
+            """\
+<p><
+""",
+        ),
     ],
 )
 def test_structural_validation_rejects_invalid_source(
@@ -705,12 +973,26 @@ def test_structural_validation_rejects_invalid_source(
 def test_parser_contracts() -> None:
     """Every configured Tree-sitter grammar must load and parse a specimen."""
     specimens: dict[str, str] = {
-        "javascript": "const x = {a: 1};\n",
-        "typescript": "const x: string = 'x';\n",
-        "tsx": "const x = <div>ok</div>;\n",
-        "css": "x { color: red; }\n",
-        "html": "<!doctype html><p>x</p>\n",
-        "markdown": "# Heading\n\nText.\n",
+        "javascript": """\
+const x = {a: 1};
+""",
+        "typescript": """\
+const x: string = 'x';
+""",
+        "tsx": """\
+const x = <div>ok</div>;
+""",
+        "css": """\
+x { color: red; }
+""",
+        "html": """\
+<!doctype html><p>x</p>
+""",
+        "markdown": """\
+# Heading
+
+Text.
+""",
     }
     for language, source in specimens.items():
         parsed: tuple[bytes, Node] | None = parse_tree(

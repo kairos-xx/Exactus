@@ -60,20 +60,28 @@ def ensure_completion(*, home: Path | None = None) -> None:
                 changed += int(result.changed)
                 if result.status == InstallStatus.BROKEN:
                     _ = stderr.write(
-                        f"Completion: {result.detail}: {profile}\n",
+                        f"""\
+Completion: {result.detail}: {profile}
+""",
                     )
             except (OSError, UnicodeError) as error:
                 _ = stderr.write(
-                    f"Completion: cannot update {profile}: {error}\n",
+                    f"""\
+Completion: cannot update {profile}: {error}
+""",
                 )
         if changed:
             _ = stderr.write(
                 dedent(
                     text=(
-                        "    Completion installed/updated; open a new term"
-                        "inal or reload your shell profile.\n    "
+                        """\
+    Completion installed/updated; open a new terminal or reload your shell \
+profile.
+    """
                     ),
                 ),
             )
     except OSError as error:
-        _ = stderr.write(f"Completion: cannot inspect bundle: {error}\n")
+        _ = stderr.write(f"""\
+Completion: cannot inspect bundle: {error}
+""")

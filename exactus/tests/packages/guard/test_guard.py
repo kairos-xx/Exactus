@@ -3,11 +3,13 @@
 
 from __future__ import annotations
 
+from os import getpid
 from pathlib import Path
 from subprocess import Popen, run
 from sys import executable
 from tempfile import TemporaryDirectory
 from time import monotonic, sleep
+from typing import TYPE_CHECKING, NoReturn
 
 from psutil import NoSuchProcess, Process
 
@@ -16,6 +18,40 @@ from exactus.packages.guard import (
     ProcessSupervisor,
     SupervisionResult,
 )
+from exactus.packages.guard.tracker import ProcessTracker
+from exactus.tests.common.support import expect_equal, private_call
+
+if TYPE_CHECKING:
+    import pytest
+
+
+def test_native_command_reader_failure_keeps_tracking(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Unavailable native command metadata does not abort tracking.
+
+    Args:
+        monkeypatch: Replace only this process object's metadata reader.
+
+    """
+    process: Process = Process(pid=getpid())
+
+    def fail_native() -> NoReturn:
+        """Reproduce the macOS psutil command-reader failure.
+
+        Raises:
+            SystemError: Native metadata could not be read.
+
+        """
+        msg: str = "proc_cmdline returned a result with an exception set"
+        raise SystemError(msg)
+
+    monkeypatch.setattr(target=process, name="cmdline", value=fail_native)
+    tracker: ProcessTracker = ProcessTracker(root_pid=getpid())
+    expect_equal(
+        actual=private_call(owner=tracker, name="_command", process=process),
+        expected=(),
+    )
 
 
 def expect(*, condition: bool, message: str) -> None:

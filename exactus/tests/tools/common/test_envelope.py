@@ -233,7 +233,12 @@ def test_node_version_reads_the_installed_node(
 
     """
     node: Path = tmp_path / "node"
-    _ = node.write_text(data="#!/bin/sh\necho v1.2.3\n")
+    _ = node.write_text(
+        data="""\
+#!/bin/sh
+echo v1.2.3
+""",
+    )
     node.chmod(mode=0o755)
     monkeypatch.setattr(
         target=envelope_module,
@@ -241,7 +246,12 @@ def test_node_version_reads_the_installed_node(
         value=Constant(value=str(object=node)),
     )
     expect_equal(actual=EnvironmentProbe.node_version(), expected="v1.2.3")
-    _ = node.write_text(data="#!/bin/sh\nexit 3\n")
+    _ = node.write_text(
+        data="""\
+#!/bin/sh
+exit 3
+""",
+    )
     expect_none(value=EnvironmentProbe.node_version())
 
 
@@ -268,7 +278,14 @@ def test_duration_human() -> None:
             ("FAIL", "1 blocking finding"),
         ),
         ("FAIL", None, [], ("FAIL", "the tool exited with status 1")),
-        ("ERROR", "Boom: bad\ntrace", None, ("ERROR", "Boom: bad")),
+        (
+            "ERROR",
+            """\
+Boom: bad
+trace""",
+            None,
+            ("ERROR", "Boom: bad"),
+        ),
         ("ERROR", None, None, ("ERROR", "the tool ended early")),
     ],
 )

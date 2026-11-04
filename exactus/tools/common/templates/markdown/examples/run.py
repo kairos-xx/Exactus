@@ -33,11 +33,13 @@ def main() -> int:
         expected: str = (
             "expected.md"
             if stem == "result"
-            else f"expected_{stem.removesuffix('_result')}.md"
+            else f"expected_{stem.removesuffix("_result")}.md"
         )
         if not (root / expected).is_file():
             return 1
-    _ = stdout.write(f"validated {len(stems)} Markdown report fixtures\n")
+    _ = stdout.write(f"""\
+validated {len(stems)} Markdown report fixtures
+""")
     return 0
 
 

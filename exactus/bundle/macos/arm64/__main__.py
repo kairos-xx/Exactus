@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # __EXACTUS_TOOLS_PAYLOAD__
 """Offline partitioned filesystem dispatcher."""
+
 from pathlib import Path
 from typing import TYPE_CHECKING
 

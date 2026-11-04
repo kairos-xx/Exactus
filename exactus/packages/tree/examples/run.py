@@ -33,10 +33,17 @@ def main() -> int:
         demo: Path = root / "demo"
         (demo / "pkg").mkdir(parents=True)
         _ = (demo / "pkg" / "mod.py").write_text(
-            data="X: int = 1\n",
+            data="""\
+X: int = 1
+""",
             encoding="utf-8",
         )
-        _ = (demo / "README.md").write_text(data="# demo\n", encoding="utf-8")
+        _ = (demo / "README.md").write_text(
+            data="""\
+# demo
+""",
+            encoding="utf-8",
+        )
         archive: Path = root / "demo.zip"
         with ZipFile(file=archive, mode="w") as bundle:
             bundle.write(
@@ -45,7 +52,11 @@ def main() -> int:
             )
             bundle.write(filename=demo / "README.md", arcname="README.md")
         text: str = (
-            render_tree(source=demo) + "\n" + render_tree(source=archive)
+            render_tree(source=demo)
+            + """\
+
+"""
+            + render_tree(source=archive)
         )
         _written: int = stdout.write(text)
     return 0

@@ -132,7 +132,12 @@ def test_levels_prefix_output(level: sp.PrintLevel, prefix: str) -> None:
     """
     out: StringIO = StringIO()
     sp.sprint("hi", file=out, style=sp.SprintStyle(level=level, save=False))
-    expect_equal(actual=out.getvalue(), expected=f"{prefix}hi\n")
+    expect_equal(
+        actual=out.getvalue(),
+        expected=f"""\
+{prefix}hi
+""",
+    )
 
 
 def test_color_follows_terminal_detection() -> None:
@@ -149,7 +154,12 @@ def test_color_follows_terminal_detection() -> None:
     expect_in(member="\033[31m", container=plain.getvalue())
     quiet: StringIO = StringIO()
     sp.sprint("", "", file=quiet, sep="", style=sp.SprintStyle(save=False))
-    expect_equal(actual=quiet.getvalue(), expected="\n")
+    expect_equal(
+        actual=quiet.getvalue(),
+        expected="""\
+
+""",
+    )
 
 
 def test_default_streams(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -269,16 +279,27 @@ def test_spec_parsing(tmp_path: Path) -> None:
     expect_none(
         value=private_call(owner=sp, name="_debug_spec", marker=marker),
     )
-    marker.write_text(data="\nnoise\n", encoding="utf-8")
+    marker.write_text(
+        data="""\
+
+noise
+""",
+        encoding="utf-8",
+    )
     expect_none(
         value=private_call(owner=sp, name="_debug_spec", marker=marker),
     )
     marker.write_text(
         data=dedent(
             text=(
-                "    save::cap\n    clear::1h\n    filter::stdout bogus\n "
-                "   filter::all\n    include::a.py b.py[f]\n    exclude::c"
-                ".py\n    "
+                """\
+    save::cap
+    clear::1h
+    filter::stdout bogus
+    filter::all
+    include::a.py b.py[f]
+    exclude::c.py
+    """
             ),
         ),
         encoding="utf-8",
@@ -289,7 +310,12 @@ def test_spec_parsing(tmp_path: Path) -> None:
     expect_equal(actual=spec.streams, expected=("stderr", "stdout"))
     expect_equal(actual=len(spec.include), expected=2)
     expect_equal(actual=len(spec.exclude), expected=1)
-    marker.write_text(data="clear\n", encoding="utf-8")
+    marker.write_text(
+        data="""\
+clear
+""",
+        encoding="utf-8",
+    )
     cleared: SpecShape = require(value=_spec(marker=marker))
     expect_false(condition=cleared.save)
 
@@ -401,9 +427,18 @@ def test_clear_drops_old_records(tmp_path: Path) -> None:
     target.write_text(
         data=dedent(
             text=(
-                "    STDOUT - 01/01/2000 00:00:00\n    old\n    -----\n   "
-                " STDOUT - bad stamp 99/99/9999 99:99:99\n    weird\n    -"
-                "----\n    no header\n    -----\n    \n    -----\n    "
+                """\
+    STDOUT - 01/01/2000 00:00:00
+    old
+    -----
+    STDOUT - bad stamp 99/99/9999 99:99:99
+    weird
+    -----
+    no header
+    -----
+
+    -----
+    """
             ),
         ),
         encoding="utf-8",
@@ -437,24 +472,58 @@ def test_record_is_written_and_filtered(
         value=tmp_path,
     )
     marker: Path = tmp_path / "DEBUG.txt"
-    marker.write_text(data="save\nclear::1d\n", encoding="utf-8")
+    marker.write_text(
+        data="""\
+save
+clear::1d
+""",
+        encoding="utf-8",
+    )
     sp.sprint("captured", file=StringIO())
     log: Path = tmp_path / "debug" / "out.txt"
     expect_in(member="captured", container=log.read_text(encoding="utf-8"))
     log.unlink()
-    marker.write_text(data="save\nfilter::stderr\n", encoding="utf-8")
+    marker.write_text(
+        data="""\
+save
+filter::stderr
+""",
+        encoding="utf-8",
+    )
     sp.sprint("skipped", file=StringIO())
     expect_false(condition=log.exists())
-    marker.write_text(data="save\nexclude::**/*.py\n", encoding="utf-8")
+    marker.write_text(
+        data="""\
+save
+exclude::**/*.py
+""",
+        encoding="utf-8",
+    )
     sp.sprint("excluded", file=StringIO())
     expect_false(condition=log.exists())
-    marker.write_text(data="save\ninclude::nothing/*.py\n", encoding="utf-8")
+    marker.write_text(
+        data="""\
+save
+include::nothing/*.py
+""",
+        encoding="utf-8",
+    )
     sp.sprint("unselected", file=StringIO())
     expect_false(condition=log.exists())
-    marker.write_text(data="clear\n", encoding="utf-8")
+    marker.write_text(
+        data="""\
+clear
+""",
+        encoding="utf-8",
+    )
     sp.sprint("clearonly", file=StringIO())
     expect_false(condition=log.exists())
-    marker.write_text(data="save\n", encoding="utf-8")
+    marker.write_text(
+        data="""\
+save
+""",
+        encoding="utf-8",
+    )
     sp.sprint("opt-out", file=StringIO(), style=sp.SprintStyle(save=False))
     expect_false(condition=log.exists())
 
@@ -478,7 +547,9 @@ def test_record_survives_unwritable_target(
     blocker: Path = tmp_path / "blocked"
     blocker.write_text(data="file", encoding="utf-8")
     (tmp_path / "DEBUG.txt").write_text(
-        data=f"save::{blocker}/sub/out.txt\n",
+        data=f"""\
+save::{blocker}/sub/out.txt
+""",
         encoding="utf-8",
     )
     sp.sprint("still fine", file=StringIO())

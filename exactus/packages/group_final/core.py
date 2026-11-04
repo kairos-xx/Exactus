@@ -43,10 +43,12 @@ from fnmatch import fnmatch
 from os import environ, walk
 from pathlib import Path
 from sys import stdlib_module_names, stdout
-from typing import ClassVar, TextIO, TypeVar, cast, final
+from typing import TYPE_CHECKING, ClassVar, TextIO, TypeVar, cast, final
 
 from exactus.packages.argument_parser import ExactusArgumentParser
 
+if TYPE_CHECKING:
+    from collections.abc import Callable
 try:
     from exactus.packages.steps import trace
 except ImportError:
@@ -195,7 +197,12 @@ def _print(*args: str, file: TextIO = stdout) -> None:
         file: Stream receiving the message.
 
     """
-    _ = file.write(" ".join(str(object=arg) for arg in args) + "\n")
+    _ = file.write(
+        " ".join(str(object=arg) for arg in args)
+        + """\
+
+""",
+    )
     _ = file.flush()
 
 
@@ -279,7 +286,9 @@ class ProgressDisplay:
     def close(self) -> None:
         """Terminate the progress line with a newline."""
         if self._enabled:
-            _ = stdout.write("\n")
+            _ = stdout.write("""\
+
+""")
             _ = stdout.flush()
 
     def _line(self) -> str:
@@ -298,10 +307,10 @@ class ProgressDisplay:
         filled: int = round(number=ratio * 28)
         color: str = Palette.green if ratio >= 1.0 else Palette.cyan
         bar: str = (
-            f"{Palette.dim}[{color}{'█' * filled}{Palette.dim}"
-            f"{'░' * (28 - filled)}]{Palette.reset}"
+            f"{Palette.dim}[{color}{"█" * filled}{Palette.dim}"
+            f"{"░" * (28 - filled)}]{Palette.reset}"
             if self._colored
-            else f"[{'█' * filled}{'░' * (28 - filled)}]"
+            else f"[{"█" * filled}{"░" * (28 - filled)}]"
         )
         return (
             f"{self._label:<8} {bar} {ratio * 100:6.2f}% "
@@ -837,27 +846,46 @@ class FinalConstantsRefactor:
     """
 
     excludes: ClassVar[tuple[str, ...]] = (
+        "**/.*",
         "**/node_modules",
         "**/__pycache__",
-        "**/.*",
-        "**/EXACTUS_RESULTS",
-        "mutants",
+        "**/env",
+        "**/venv",
+        "**/site-packages",
+        "**/build",
+        "**/dist",
         "**/mutants",
-        "dist",
-        "build",
-        ".build-cache",
+        "**/coverage_report",
+        "**/htmlcov",
+        "**/*.egg-info",
+        "**/*.dist-info",
+        "**/EXACTUS_RESULTS",
         "exactus/bundle",
     )
 
-    def __init__(self, *, root: Path, dry_run: bool) -> None:
+    def __init__(
+        self,
+        *,
+        root: Path,
+        dry_run: bool,
+        file_filter: Callable[[Path], bool] | None = None,
+        tree_reader: Callable[[Path], Module] | None = None,
+    ) -> None:
         """Initialize the refactoring operation.
 
         Args:
             root: Python source-tree root.
             dry_run: Whether the run analyzes without writing; when
                 ``False`` transformed files are applied in place.
+            file_filter: Optional filter function for selecting Python source
+                files during refactoring.
+            tree_reader: Optional callable supplied to
+                FinalConstantsRefactor for custom AST parsing.
+
 
         """
+        self._file_filter: Callable[[Path], bool] | None = file_filter
+        self._tree_reader: Callable[[Path], Module] | None = tree_reader
         resolved: Path = root.resolve()
         if resolved.is_file():
             self._explicit_files: tuple[Path, ...] | None = (resolved,)
@@ -874,7 +902,11 @@ class FinalConstantsRefactor:
             Aggregated run statistics for the summary table.
 
         """
-        paths: tuple[Path, ...] = tuple(self._python_files())
+        paths: tuple[Path, ...] = tuple(
+            path
+            for path in self._python_files()
+            if self._file_filter is None or self._file_filter(path)
+        )
         trace(
             step=f"group final: {len(paths)} python files collected",
             depth=3,
@@ -882,7 +914,10 @@ class FinalConstantsRefactor:
         modules: dict[Path, str] = {
             path: self._module_name(path=path) for path in paths
         }
-        trees: dict[Path, Module] = self._parse_trees(paths=paths)
+        trees: dict[Path, Module] = self._parse_trees(
+            paths=paths,
+            tree_reader=self._tree_reader,
+        )
         trace(step=f"group final: parsed {len(trees)} modules", depth=3)
         plans: dict[Path, ModulePlan] = {
             path: plan
@@ -1001,18 +1036,27 @@ class FinalConstantsRefactor:
                 continue
             relative: str = path.relative_to(self._root).as_posix()
             rendered: str = (
-                unparse(ast_obj=fix_missing_locations(node=transformed)) + "\n"
+                unparse(ast_obj=fix_missing_locations(node=transformed))
+                + """\
+
+"""
             )
             source: str = self._leading_header(source=original) + rendered
             changed.append(path)
             if not self._dry_run:
-                path.write_text(data=source, encoding="utf-8", newline="\n")
+                path.write_text(
+                    data=source,
+                    encoding="utf-8",
+                    newline="""\
+
+""",
+                )
             trace(step=f"group final: {relative} — rewritten", depth=4)
             progress.finish()
         progress.close()
         for path in changed:
             _print(
-                f"{('WOULD UPDATE' if self._dry_run else 'UPDATE')} "
+                f"{("WOULD UPDATE" if self._dry_run else "UPDATE")} "
                 f"{path.relative_to(self._root)}",
             )
         return ScanReport(
@@ -1356,7 +1400,11 @@ class FinalConstantsRefactor:
         return class_aliases, module_aliases
 
     @staticmethod
-    def _parse_trees(*, paths: tuple[Path, ...]) -> dict[Path, Module]:
+    def _parse_trees(
+        *,
+        paths: tuple[Path, ...],
+        tree_reader: Callable[[Path], Module] | None = None,
+    ) -> dict[Path, Module]:
         """Parse collected modules, skipping files that vanished.
 
         Collection runs ahead of analysis, so a source can disappear
@@ -1365,6 +1413,9 @@ class FinalConstantsRefactor:
 
         Args:
             paths: Python files collected for this run.
+            tree_reader: Optional callable that parses a file path into
+                an AST Module.
+
 
         Returns:
             Parsed module trees keyed by path, in collection order.
@@ -1373,11 +1424,17 @@ class FinalConstantsRefactor:
         trees: dict[Path, Module] = {}
         for path in paths:
             try:
-                text: str = path.read_text(encoding="utf-8")
+                trees[path] = (
+                    tree_reader(path)
+                    if tree_reader is not None
+                    else parse(
+                        source=path.read_text(encoding="utf-8"),
+                        filename=str(object=path),
+                    )
+                )
             except OSError:
                 trace(step=f"group final: {path} vanished, skipped", depth=3)
                 continue
-            trees[path] = parse(source=text, filename=str(object=path))
         return trees
 
     @staticmethod
@@ -1695,7 +1752,11 @@ class FinalConstantsRefactor:
             Docstring with the merged members listed.
 
         """
-        lines: list[str] = docstring.split(sep="\n")
+        lines: list[str] = docstring.split(
+            sep="""\
+
+""",
+        )
         last_attribute: int = max(
             (
                 index
@@ -1708,7 +1769,9 @@ class FinalConstantsRefactor:
             f"        {member}: Grouped module constant."
             for member, _ in members
         ]
-        return "\n".join(lines)
+        return """\
+
+""".join(lines)
 
     @staticmethod
     def _class_docstring(*, members: list[tuple[str, AnnAssign]]) -> str:
@@ -1732,7 +1795,9 @@ class FinalConstantsRefactor:
             del statement
             lines.append(f"        {member}: Grouped module constant.")
         lines.extend(("", "    "))
-        return "\n".join(lines)
+        return """\
+
+""".join(lines)
 
     @staticmethod
     def _typing_name(*, tree: Module, imported: str) -> str:
@@ -2550,7 +2615,7 @@ class Cli:
         rows: list[str] = [
             "",
             _paint(
-                text=f"{'metric'.ljust(width)}  count",
+                text=f"{"metric".ljust(width)}  count",
                 color=Palette.bold,
                 enabled=enabled,
             ),
@@ -2566,7 +2631,14 @@ class Cli:
                 for label, value in entries
             ),
         )
-        return "\n".join(rows) + "\n"
+        return (
+            """\
+
+""".join(rows)
+            + """\
+
+"""
+        )
 
 
 def main() -> int:

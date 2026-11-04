@@ -96,6 +96,7 @@ No direct files besides this README.
 - [`ac/`](ac/README.md) — Immutable compressed payload packs for this hash prefix.
 - [`ad/`](ad/README.md) — Immutable compressed payload packs for this hash prefix.
 - [`ae/`](ae/README.md) — Immutable compressed payload packs for this hash prefix.
+- [`af/`](af/README.md) — Immutable compressed payload packs for this hash prefix.
 - [`b1/`](b1/README.md) — Immutable compressed payload packs for this hash prefix.
 - [`b2/`](b2/README.md) — Immutable compressed payload packs for this hash prefix.
 - [`b3/`](b3/README.md) — Immutable compressed payload packs for this hash prefix.

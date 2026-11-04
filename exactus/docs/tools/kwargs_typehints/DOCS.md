@@ -195,11 +195,14 @@ Scope semantics:
   routes `global`/`nonlocal` names to the scope that actually owns them,
   and each name is reported at most once per scope.
 - **Exempt**: walrus `:=` bindings (the exemption covers the name for the
-  whole scope), `TypeVar` declarations via `typing`/`typing_extensions`
-  (direct, aliased, or qualified import recognized), members of
-  Enum-family classes (`Enum`, `IntEnum`, `Flag`, `IntFlag`, `StrEnum`,
-  `ReprEnum`), and lambda signatures — Python gives them no annotation
-  syntax.
+  whole scope), `TypeVar`/`ParamSpec`/`TypeVarTuple`/`TypeAliasType`/
+  `NewType` declarations via `typing`/`typing_extensions` (direct,
+  aliased, or qualified import recognized), implicit type aliases binding
+  a type expression at module or class scope (`Alias = int`,
+  `Alias = mod.Type`, `Alias = int | str`, `Alias = list[int]`), members
+  of Enum-family classes (`Enum`, `IntEnum`, `Flag`, `IntFlag`,
+  `StrEnum`, `ReprEnum`), and lambda signatures — Python gives them no
+  annotation syntax.
 - **`--strict`/`-s`** additionally reports bindings whose syntax cannot
   carry an annotation: `for`/`with ... as`/`except ... as`/`match`
   capture/comprehension targets. The suggestion then reads "declare

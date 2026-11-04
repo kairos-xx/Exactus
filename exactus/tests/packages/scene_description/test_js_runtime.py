@@ -152,7 +152,7 @@ def _failure_lines(*, failed: list[JsonValue]) -> list[str]:
     item: JsonValue
     for item in failed:
         entry: dict[str, JsonValue] = require_json_dict(value=item)
-        lines.append(f"{entry.get('name')}: {entry.get('error')}")
+        lines.append(f"{entry.get("name")}: {entry.get("error")}")
     return lines
 
 
@@ -224,7 +224,9 @@ def test_browser_suite_and_coverage() -> None:
     failed: list[JsonValue] = require_json_list(value=results["failed"])
     expect_true(
         condition=not failed,
-        message="\n".join(_failure_lines(failed=failed)),
+        message="""\
+
+""".join(_failure_lines(failed=failed)),
     )
     urls: list[str] = []
     fraction: float = 0.0

@@ -53,7 +53,11 @@ def _project(*, root: Path, targets: str) -> Path:
 
     """
     _ = (root / "pyproject.toml").write_text(
-        data="[tool.exactus]\nroot = true\n" + targets,
+        data="""\
+[tool.exactus]
+root = true
+"""
+        + targets,
         encoding="utf-8",
     )
     return root
@@ -227,14 +231,22 @@ def test_configured_targets_resolve_by_name(tmp_path: Path) -> None:
         targets=(
             dedent(
                 text=(
-                    "    [[tool.exactus.visual_cause.targets]]\n    name ="
-                    ' "home"\n    html = "site"\n    css-b = "b.css"\n    '
-                    'viewports = ["320x480", "1024x768"]\n    accept = ["p'
-                    '"]\n    default-level = "warning"\n    native-styles-'
-                    "b = true\n    [[tool.exactus.visual_cause.targets]]\n"
-                    '    name = "docs"\n    url = "http://x/"\n    url_b ='
-                    ' "http://y/"\n    max-candidates = 9\n    screenshot-'
-                    "scale = 1\n    "
+                    """\
+    [[tool.exactus.visual_cause.targets]]
+    name = "home"
+    html = "site"
+    css-b = "b.css"
+    viewports = ["320x480", "1024x768"]
+    accept = ["p"]
+    default-level = "warning"
+    native-styles-b = true
+    [[tool.exactus.visual_cause.targets]]
+    name = "docs"
+    url = "http://x/"
+    url_b = "http://y/"
+    max-candidates = 9
+    screenshot-scale = 1
+    """
                 ),
             )
         ),
@@ -264,41 +276,79 @@ def test_configured_targets_resolve_by_name(tmp_path: Path) -> None:
     ("body", "error", "message"),
     [
         (
-            'name = " "\nurl = "http://x/"\ncss-b = "b"\n',
+            """\
+name = " "
+url = "http://x/"
+css-b = "b"
+""",
             ValueError,
             "nonempty",
         ),
         (
-            'name = 3\nurl = "http://x/"\ncss-b = "b"\n',
+            """\
+name = 3
+url = "http://x/"
+css-b = "b"
+""",
             TypeError,
             "needs a name",
         ),
-        ("url = 3\nname = 'x'\ncss-b = 'b'\n", TypeError, "url must be text"),
         (
-            "name = 'x'\nurl = 'http://x/'\nurl-b = 3\n",
+            """\
+url = 3
+name = 'x'
+css-b = 'b'
+""",
+            TypeError,
+            "url must be text",
+        ),
+        (
+            """\
+name = 'x'
+url = 'http://x/'
+url-b = 3
+""",
             TypeError,
             "url-b must be text",
         ),
         (
-            "name = 'x'\nurl = 'http://x/'\ncss-b = 3\n",
+            """\
+name = 'x'
+url = 'http://x/'
+css-b = 3
+""",
             ValueError,
             "nonempty path",
         ),
         (
-            "name = 'x'\nurl = 'http://x/'\ncss-b = 'b'\naccept = 3\n",
+            """\
+name = 'x'
+url = 'http://x/'
+css-b = 'b'
+accept = 3
+""",
             ValueError,
             "list of strings",
         ),
         (
-            "name = 'x'\nurl = 'http://x/'\ncss-b = 'b'\nthreshold = true\n",
+            """\
+name = 'x'
+url = 'http://x/'
+css-b = 'b'
+threshold = true
+""",
             TypeError,
             "must be an integer",
         ),
         (
             dedent(
                 text=(
-                    "    name = 'x'\n    url = 'http://x/'\n    css-b = 'b"
-                    "'\n    screenshot-scale = 'big'\n    "
+                    """\
+    name = 'x'
+    url = 'http://x/'
+    css-b = 'b'
+    screenshot-scale = 'big'
+    """
                 ),
             ),
             TypeError,
@@ -307,8 +357,12 @@ def test_configured_targets_resolve_by_name(tmp_path: Path) -> None:
         (
             dedent(
                 text=(
-                    "    name = 'x'\n    url = 'http://x/'\n    css-b = 'b"
-                    "'\n    native-styles-a = 1\n    "
+                    """\
+    name = 'x'
+    url = 'http://x/'
+    css-b = 'b'
+    native-styles-a = 1
+    """
                 ),
             ),
             TypeError,
@@ -317,15 +371,24 @@ def test_configured_targets_resolve_by_name(tmp_path: Path) -> None:
         (
             dedent(
                 text=(
-                    "    name = 'x'\n    url = 'http://x/'\n    css-b = 'b"
-                    "'\n    default-level = 'loud'\n    "
+                    """\
+    name = 'x'
+    url = 'http://x/'
+    css-b = 'b'
+    default-level = 'loud'
+    """
                 ),
             ),
             ValueError,
             "default-level",
         ),
         (
-            "name = 'x'\nurl = 'http://x/'\ncss-b = 'b'\nfail-on = 'x'\n",
+            """\
+name = 'x'
+url = 'http://x/'
+css-b = 'b'
+fail-on = 'x'
+""",
             ValueError,
             "fail-on",
         ),
@@ -348,7 +411,10 @@ def test_invalid_configured_targets_are_rejected(
     """
     root: Path = _project(
         root=tmp_path,
-        targets="[[tool.exactus.visual_cause.targets]]\n" + body,
+        targets="""\
+[[tool.exactus.visual_cause.targets]]
+"""
+        + body,
     )
     with pytest.raises(expected_exception=error, match=message):
         _ = resolve(options=_options(root=root))
@@ -363,7 +429,10 @@ def test_unnamed_configured_target_is_rejected(tmp_path: Path) -> None:
     """
     root: Path = _project(
         root=tmp_path,
-        targets='[[tool.exactus.visual_cause.targets]]\nurl = "http://x/"\n',
+        targets="""\
+[[tool.exactus.visual_cause.targets]]
+url = "http://x/"
+""",
     )
     with pytest.raises(expected_exception=TypeError, match="needs a name"):
         _ = configured(start=root)

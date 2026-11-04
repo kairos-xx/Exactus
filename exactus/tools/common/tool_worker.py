@@ -5,14 +5,14 @@ from __future__ import annotations
 
 from contextlib import suppress
 from importlib import import_module
-from json import JSONDecodeError, loads
+from json import JSONDecodeError, dumps, loads
 from os import chdir, environ, getpid, pathsep
 from pathlib import Path
 from sys import executable
 from sys import path as import_paths
 from time import monotonic
 from traceback import format_exc
-from typing import TYPE_CHECKING, Final, TypedDict, cast, final
+from typing import TYPE_CHECKING, Final, NotRequired, TypedDict, cast, final
 
 from exactus.packages.pmanager import (
     Executor,
@@ -92,6 +92,7 @@ class WorkerRequest(TypedDict):
         run_id: Unique task/process run identifier.
         pipeline_run_id: Parent pipeline run identifier, when applicable.
         project_root: Project root shared by the workspace context.
+        explicit_arguments: Explicit user arguments, separate from defaults.
 
     """
 
@@ -102,6 +103,7 @@ class WorkerRequest(TypedDict):
     run_id: str
     pipeline_run_id: str | None
     project_root: str | None
+    explicit_arguments: NotRequired[list[str]]
 
 
 def ensure_worker_path() -> None:
@@ -195,6 +197,7 @@ def worker_arguments(
                     module=spec.module,
                     output=str(object=request.output),
                     arguments=list(request.arguments),
+                    explicit_arguments=list(request.explicit_arguments),
                     run_id=request.run_id,
                     pipeline_run_id=request.pipeline_run_id,
                     project_root=str(object=request.project_root)
@@ -688,6 +691,9 @@ class ExactusTool(ProcessClass):
                 if text not in import_paths:
                     import_paths.insert(0, text)
             environ["EXACTUS_ORCHESTRATED"] = "1"
+            environ["EXACTUS_EXPLICIT_ARGUMENTS"] = dumps(
+                obj=request.get("explicit_arguments", []),
+            )
             environ["EXACTUS_PMANAGER_WORKER"] = "1"
             environ["EXACTUS_RUN_ID"] = run_id
             environ["EXACTUS_PROJECT_ROOT"] = str(object=root.resolve())

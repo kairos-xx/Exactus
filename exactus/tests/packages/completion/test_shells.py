@@ -13,7 +13,7 @@ from exactus.packages.completion.protocol import (
     Constants as _GroupFinalConstants,
 )
 from exactus.packages.completion.shells import (
-    _function_name,
+    function_name,
     render,
     render_bash,
     render_fish,
@@ -41,11 +41,11 @@ class Constants:
 def test_function_name_sanitizes() -> None:
     """Non-identifier characters become underscores."""
     expect_equal(
-        actual=_function_name(command_name="my-tool"),
+        actual=function_name(command_name="my-tool"),
         expected="_my_tool_completion",
     )
     expect_equal(
-        actual=_function_name(command_name="check"),
+        actual=function_name(command_name="check"),
         expected="_check_completion",
     )
 
@@ -236,16 +236,21 @@ def test_powershell_uses_cursor_and_logical_words(tmp_path: Path) -> None:
             command_name="exactus",
             launcher=("Capture-Request",),
         ) + (
-            f"\nfunction Capture-Request {{ $script:captured = @($args) }}"
-            f"\n$line = '"
-            f"{escaped}"
-            f"'\n$tokens=$null; $errors=$null\n$ast=[System.Management.Aut"
-            f"omation.Language.Parser]::ParseInput(\n    $line, [ref]$toke"
-            f"ns, [ref]$errors\n)\n$command=$ast.Find({{\n    param($node)"
-            f"\n    $node -is [System.Management.Automation.Language.Comma"
-            f"ndAst]\n}}, $true)\n& $__exactusCompleter '' $command "
-            f"{cursor}"
-            f" | Out-Null\n$script:captured | ConvertTo-Json -Compress\n"
+            f"""\
+
+function Capture-Request {{ $script:captured = @($args) }}
+$line = '{escaped}'
+$tokens=$null; $errors=$null
+$ast=[System.Management.Automation.Language.Parser]::ParseInput(
+    $line, [ref]$tokens, [ref]$errors
+)
+$command=$ast.Find({{
+    param($node)
+    $node -is [System.Management.Automation.Language.CommandAst]
+}}, $true)
+& $__exactusCompleter '' $command {cursor} | Out-Null
+$script:captured | ConvertTo-Json -Compress
+"""
         )
         path: Path = tmp_path / f"cursor-{index}.ps1"
         _ = path.write_text(data=script, encoding="utf-8")

@@ -47,7 +47,11 @@ SECTIONS: Final[tuple[str, ...]] = (
     "## Artifacts",
     "## Directory inventory",
     "## Rules",
-    "\n---\n\nExactus · readme",
+    """\
+
+---
+
+Exactus · readme""",
 )
 LEGACY_KEYS: Final[tuple[str, ...]] = (
     "analyzer",
@@ -87,9 +91,21 @@ def _project(*, root: Path) -> None:
 
     """
     (root / "docs" / "guides").mkdir(parents=True)
-    _ = (root / "docs" / "README.md").write_text(data="`a.md`\n")
-    _ = (root / "docs" / "a.md").write_text(data="a\n")
-    _ = (root / "docs" / "b.md").write_text(data="b\n")
+    _ = (root / "docs" / "README.md").write_text(
+        data="""\
+`a.md`
+""",
+    )
+    _ = (root / "docs" / "a.md").write_text(
+        data="""\
+a
+""",
+    )
+    _ = (root / "docs" / "b.md").write_text(
+        data="""\
+b
+""",
+    )
 
 
 def _clean_project(*, root: Path) -> None:
@@ -100,8 +116,16 @@ def _clean_project(*, root: Path) -> None:
 
     """
     (root / "docs").mkdir(parents=True)
-    _ = (root / "docs" / "README.md").write_text(data="`a.md`\n")
-    _ = (root / "docs" / "a.md").write_text(data="a\n")
+    _ = (root / "docs" / "README.md").write_text(
+        data="""\
+`a.md`
+""",
+    )
+    _ = (root / "docs" / "a.md").write_text(
+        data="""\
+a
+""",
+    )
 
 
 def _object(*, path: Path) -> dict[str, JsonValue]:
@@ -175,8 +199,14 @@ def test_crash_render_shows_error_and_na_blocks() -> None:
     for member in (
         "| Status | ERROR |",
         "N/A — the tool reported no findings list.",
-        "## Directory inventory\n\nN/A — the tool reported no directory",
-        "## Rules\n\nN/A — the tool reported no rule counts.",
+        """\
+## Directory inventory
+
+N/A — the tool reported no directory""",
+        """\
+## Rules
+
+N/A — the tool reported no rule counts.""",
     ):
         expect_in(member=member, container=text)
 
@@ -191,7 +221,11 @@ def test_report_data_is_normalized(tmp_path: Path) -> None:
     root: Path = tmp_path / "project"
     _project(root=root)
     (root / "docs" / "archive").mkdir()
-    _ = (root / "docs" / "README.md").write_text(data="`a.md` `archive/`\n")
+    _ = (root / "docs" / "README.md").write_text(
+        data="""\
+`a.md` `archive/`
+""",
+    )
     result: ReadmeExactusResult = readme(
         inputs=ReadmeExactusInput(
             root=root,
@@ -285,7 +319,11 @@ def test_execute_exactus_renders_readme_from_template(tmp_path: Path) -> None:
     markdown: str = (out / "result.md").read_text(encoding="utf-8")
     positions: list[int] = [markdown.index(part) for part in SECTIONS]
     expect_equal(actual=positions, expected=sorted(positions))
-    expect_true(condition=markdown.startswith("# README Exactus\n"))
+    expect_true(
+        condition=markdown.startswith("""\
+# README Exactus
+"""),
+    )
     expect_in(
         member="> **Gate: FAIL** — 3 blocking findings",
         container=markdown,
@@ -354,7 +392,11 @@ def test_clean_readme_run_states_no_findings(tmp_path: Path) -> None:
         "| Status | PASS |",
         "> **Gate: PASS** — No blocking findings",
         "No blocking findings.",
-        "## Findings\n\nNo findings.\n",
+        """\
+## Findings
+
+No findings.
+""",
         f"| docs | present | {readme_bytes} | 1 | 1 | 0 |",
     ):
         expect_in(member=member, container=markdown)

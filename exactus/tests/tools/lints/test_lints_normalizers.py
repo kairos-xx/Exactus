@@ -291,7 +291,9 @@ def test_helper_conversions() -> None:
         actual=private_call(
             owner=LintExactus,
             name="_line_column",
-            text="a\nbc",
+            text="""\
+a
+bc""",
             offset=3,
         ),
         expected=(2, 2),

@@ -30,7 +30,10 @@ def test_environment_loader_preserves_existing_values(tmp_path: Path) -> None:
 
     """
     _ = (tmp_path / ".env").write_text(
-        data="A=file\nB='two'\n",
+        data="""\
+A=file
+B='two'
+""",
         encoding="utf-8",
     )
     values: dict[str, str] = {"A": "process"}

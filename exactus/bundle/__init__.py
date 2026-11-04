@@ -5,6 +5,7 @@ Importing a leaf module through this package resolves the host platform
 automatically: ``from exactus.bundle import partition_fs`` routes to the
 matching ``exactus.bundle.<os>/<arch>/partition_fs`` implementation.
 """
+
 from __future__ import annotations
 
 from importlib import import_module
@@ -14,6 +15,8 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from types import ModuleType
+
+
 def _host_musl() -> bool:
     """Whether this host runs a musl-based Linux.
 
@@ -26,6 +29,8 @@ def _host_musl() -> bool:
         for root in ("/lib", "/usr/lib")
         for loader in Path(root).glob(pattern="ld-musl-*.so*")
     )
+
+
 def _host_leaf_candidates() -> tuple[tuple[str, ...], ...]:
     """Bundle leaf package parts for this host, best first.
 
@@ -53,6 +58,8 @@ def _host_leaf_candidates() -> tuple[tuple[str, ...], ...]:
             return ((os_dir, "musl", arch_dir), glibc)
         return (glibc,)
     return ((os_dir, arch_dir),)
+
+
 def host_leaf() -> Path | None:
     """Return the bundle leaf package directory matching this host.
 
@@ -68,6 +75,8 @@ def host_leaf() -> Path | None:
         if (leaf / "__init__.py").is_file():
             return leaf
     return None
+
+
 def _host_leaf_package() -> str | None:
     """Dotted package name of this host's bundle leaf.
 
@@ -81,6 +90,8 @@ def _host_leaf_package() -> str | None:
         return None
     relative: Path = leaf.relative_to(Path(__file__).resolve().parent)
     return ".".join((__name__, *relative.parts))
+
+
 def __getattr__(name: str) -> ModuleType:
     """Route leaf imports to this host's bundle package.
 
@@ -110,6 +121,8 @@ def __getattr__(name: str) -> ModuleType:
             return module
     msg: str = f"module {__name__!r} has no attribute {name!r}"
     raise AttributeError(msg)
+
+
 def __dir__() -> list[str]:
     """List package attributes plus the host leaf's importables.
 

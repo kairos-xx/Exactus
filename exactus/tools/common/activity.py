@@ -600,7 +600,10 @@ class ActivityFile:
         )
         try:
             _ = temporary.write_text(
-                data=dumps(obj=payload, indent=2, sort_keys=True) + "\n",
+                data=dumps(obj=payload, indent=2, sort_keys=True)
+                + """\
+
+""",
                 encoding="utf-8",
             )
             _ = temporary.replace(target=path)

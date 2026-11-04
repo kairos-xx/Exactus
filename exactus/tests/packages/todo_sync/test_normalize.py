@@ -43,11 +43,22 @@ def test_headers_and_idempotence() -> None:
     """Keep IDs/states/details and allocate collision-free child IDs."""
     source: str = dedent(
         text=(
-            "    # Plan\n    ## P1 — Work\n    - [x] **UI-O03** □ **P0** — Bui"
-            "ld controls\n      Acceptance: retain the evidence.\n      - [ ] "
-            "Nested action\n    - [ ] No urgency\n    ## P1/P2 — Ambiguous\n  "
-            "  - [ ] Unscheduled\n    ```md\n    - [ ] Example\n    ```\n    <"
-            "!--\n    - [x] Hidden\n    -->\n    "
+            """\
+    # Plan
+    ## P1 — Work
+    - [x] **UI-O03** □ **P0** — Build controls
+      Acceptance: retain the evidence.
+      - [ ] Nested action
+    - [ ] No urgency
+    ## P1/P2 — Ambiguous
+    - [ ] Unscheduled
+    ```md
+    - [ ] Example
+    ```
+    <!--
+    - [x] Hidden
+    -->
+    """
         ),
     )
     output: str = normalize(text=source)
@@ -58,8 +69,14 @@ def test_headers_and_idempotence() -> None:
         "  - [ ] **UI-O03-01** **P0** **Frontend** — Nested action",
         "- [ ] **TODO-001** **P1** **Uncategorized** — No urgency",
         "- [ ] **TODO-002** **Untriaged** **Uncategorized** — Unscheduled",
-        "```md\n- [ ] Example\n```",
-        "<!--\n- [x] Hidden\n-->",
+        """\
+```md
+- [ ] Example
+```""",
+        """\
+<!--
+- [x] Hidden
+-->""",
     ):
         expect_equal(actual=expected in output, expected=True)
 
@@ -68,8 +85,10 @@ def test_explicit_metadata_wins() -> None:
     """Description mentions cannot override normalized priority/category."""
     source: str = dedent(
         text=(
-            "    - [ ] **W001** **Untriaged** **Uncategorized** — Consider P0 "
-            "or P1; □ is an example glyph.\n    "
+            """\
+                          - [ ] **W001** **Untriaged** **Uncategorized** — \
+Consider P0 or P1; □ is an example glyph.
+"""
         ),
     )
     sections, priorities = parse(text=source)
@@ -91,16 +110,22 @@ def test_explicit_metadata_wins() -> None:
 
 def test_crlf_and_unknown_priority() -> None:
     """Preserve line endings and do not invent urgency."""
-    source: str = "# Plan\r\n- [ ] **R01 — Package wheel**\r\n  Detail\r\n"
+    source: str = """\
+# Plan\r
+- [ ] **R01 — Package wheel**\r
+  Detail\r
+"""
     output: str = normalize(text=source)
     expect_equal(
         actual=output,
         expected=(
             dedent(
                 text=(
-                    "    # Plan\r\n    - [ ] **R01** **Untriaged** **DevOp"
-                    "s / Release** — **Package wheel**\r\n      Detail\r\n"
-                    "    "
+                    """\
+    # Plan\r
+    - [ ] **R01** **Untriaged** **DevOps / Release** — **Package wheel**\r
+      Detail\r
+    """
                 ),
             )
         ),
@@ -115,7 +140,10 @@ def test_normalization_check_is_read_only(tmp_path: Path) -> None:
 
     """
     source: Path = tmp_path / "TODO.md"
-    original: str = "# Plan\n- [ ] Unscheduled\n"
+    original: str = """\
+# Plan
+- [ ] Unscheduled
+"""
     source.write_text(data=original, encoding="utf-8")
     expect_equal(
         actual=main(

@@ -58,11 +58,15 @@ def main() -> int:
     if arguments.stop:
         adopted: tuple[int, int] | None = local.reuse_server(path=directory)
         if adopted is None:
-            _ = stdout.write(f"no running server for {directory}\n")
+            _ = stdout.write(f"""\
+no running server for {directory}
+""")
             return 1
         control.terminate_tree(pid=adopted[0])
         local.clear_server_state(path=directory)
-        _ = stdout.write(f"stopped pid={adopted[0]}\n")
+        _ = stdout.write(f"""\
+stopped pid={adopted[0]}
+""")
         return 0
     arguments.log.parent.mkdir(parents=True, exist_ok=True)
     pid: int
@@ -71,10 +75,14 @@ def main() -> int:
     pid, url, reused = local.serve(path=directory, log=arguments.log)
     try:
         if not local.wait_ready(url=url, pid=pid):
-            _ = stdout.write(f"server at {url} never accepted a connection\n")
+            _ = stdout.write(f"""\
+server at {url} never accepted a connection
+""")
             return 1
         _ = stdout.write(
-            f"serve pid={pid} url={url} reused={reused} (Ctrl-C to stop)\n",
+            f"""\
+serve pid={pid} url={url} reused={reused} (Ctrl-C to stop)
+""",
         )
         stdout.flush()
         stop: Event = Event()

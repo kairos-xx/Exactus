@@ -32,7 +32,9 @@ def main() -> int:
     stdout.write(rendered)
     golden: str = (root / "expected.md").read_text(encoding="utf-8")
     if rendered != golden:
-        stderr.write("error: rendered output differs from expected.md\n")
+        stderr.write("""\
+error: rendered output differs from expected.md
+""")
         return 1
     return 0
 

@@ -56,23 +56,34 @@ class Performance:
             )
         )
         if not resolved:
-            _ = writer.write("No steps.txt traces found.\n")
+            _ = writer.write("""\
+No steps.txt traces found.
+""")
             return 2
-        _ = writer.write(cls.summarize(runs=resolved) + "\n")
+        _ = writer.write(
+            cls.summarize(runs=resolved)
+            + """\
+
+""",
+        )
         written: Path = PerformanceReport.write(
             runs=resolved,
             path=report
             if report is not None
             else config.output / ReportConstants.file_name,
         )
-        _ = writer.write(f"Report: {written}\n")
+        _ = writer.write(f"""\
+Report: {written}
+""")
         if summary:
             return 0
         index: Path = DashboardExporter.export(
             runs=resolved,
             destination=config.output,
         )
-        _ = writer.write(f"Dashboard: {index}\n")
+        _ = writer.write(f"""\
+Dashboard: {index}
+""")
         if not config.serve:
             return 0
         session: DashboardSession = DashboardLauncher.serve(
@@ -81,7 +92,10 @@ class Performance:
             executable=config.chrome,
             server_timeout=config.server_timeout,
         )
-        _ = writer.write(f"Serving: {session.url}\nPress Ctrl+C to stop.\n")
+        _ = writer.write(f"""\
+Serving: {session.url}
+Press Ctrl+C to stop.
+""")
         try:
             while True:
                 sleep(3600.0)
@@ -100,9 +114,9 @@ class Performance:
             Human-readable summary text.
 
         """
-        return "\n".join(
-            line for run in runs for line in cls._run_lines(run=run)
-        )
+        return """\
+
+""".join(line for run in runs for line in cls._run_lines(run=run))
 
     @classmethod
     def export(cls, *, paths: tuple[Path, ...], destination: Path) -> Path:
@@ -232,7 +246,7 @@ class Performance:
                 f"({run.silent / run.duration:.0%} of runtime)",
             )
         lines.extend(
-            f"  actor {actor.name or '-'}: {actor.inferred:.3f}s "
+            f"  actor {actor.name or "-"}: {actor.inferred:.3f}s "
             f"({actor.share:.0%}), {actor.count} events"
             for actor in run.actors[:3]
         )

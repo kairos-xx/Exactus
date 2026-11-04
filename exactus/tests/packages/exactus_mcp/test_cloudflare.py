@@ -111,7 +111,10 @@ def test_configured_port_reads_project(tmp_path: Path) -> None:
     """
     path: Path = tmp_path / "pyproject.toml"
     _ = path.write_text(
-        data="[tool.exactus.mcp]\nport = 6123\n",
+        data="""\
+[tool.exactus.mcp]
+port = 6123
+""",
         encoding="utf-8",
     )
     expect_equal(actual=configured_port(root=tmp_path), expected=6123)
@@ -129,9 +132,11 @@ def test_quick_tunnel_url_detection(tmp_path: Path) -> None:
         data=(
             dedent(
                 text=(
-                    "    #!/usr/bin/env python3\n    print('INF booting', "
-                    "flush=True)\n    print('INF https://calm-river.tryclo"
-                    "udflare.com', flush=True)\n    "
+                    """\
+    #!/usr/bin/env python3
+    print('INF booting', flush=True)
+    print('INF https://calm-river.trycloudflare.com', flush=True)
+    """
                 ),
             )
         ),
@@ -437,13 +442,57 @@ def test_config_rejects_empty_control_secret() -> None:
     ("body", "expected"),
     [
         (None, 6100),
-        ("[other]\nport = 7000\n", 6100),
-        ("[tool.exactus.mcp]\nport = abc\n", 6100),
-        ("[tool.exactus.mcp]\nport = 70000\n", 6100),
-        ("[tool.exactus.mcp]\nport = 0\n", 6100),
-        ("[tool.exactus.mcp]\nnoequals\nport = 6123\n", 6123),
-        ("[tool.exactus.mcp]\nother = 1\nport = 6123\n", 6123),
-        ("[tool.exactus.mcp]\nport = 6123 # fixed\n", 6123),
+        (
+            """\
+[other]
+port = 7000
+""",
+            6100,
+        ),
+        (
+            """\
+[tool.exactus.mcp]
+port = abc
+""",
+            6100,
+        ),
+        (
+            """\
+[tool.exactus.mcp]
+port = 70000
+""",
+            6100,
+        ),
+        (
+            """\
+[tool.exactus.mcp]
+port = 0
+""",
+            6100,
+        ),
+        (
+            """\
+[tool.exactus.mcp]
+noequals
+port = 6123
+""",
+            6123,
+        ),
+        (
+            """\
+[tool.exactus.mcp]
+other = 1
+port = 6123
+""",
+            6123,
+        ),
+        (
+            """\
+[tool.exactus.mcp]
+port = 6123 # fixed
+""",
+            6123,
+        ),
     ],
 )
 def test_configured_port_edge_cases(
@@ -576,7 +625,12 @@ def test_bootstrapper_provisions_missing_resources(
         data='kv_namespaces=[{id="REPLACE_WITH_KV_NAMESPACE_ID"}]',
         encoding="utf-8",
     )
-    _ = (tmp_path / ".env").write_text(data="OTHER=keep\n", encoding="utf-8")
+    _ = (tmp_path / ".env").write_text(
+        data="""\
+OTHER=keep
+""",
+        encoding="utf-8",
+    )
     monkeypatch.setattr(
         target=cloudflare_module,
         name="which",
@@ -797,7 +851,12 @@ def test_supervisor_resolves_cloudflared(tmp_path: Path) -> None:
 
     """
     script: Path = tmp_path / "cloudflared"
-    _ = script.write_text(data="#!/bin/sh\n", encoding="utf-8")
+    _ = script.write_text(
+        data="""\
+#!/bin/sh
+""",
+        encoding="utf-8",
+    )
     expect_equal(
         actual=_supervisor(
             root=tmp_path,
@@ -1145,9 +1204,19 @@ def test_bootstrapper_wrangler_invocation_uses_pinned_cli(
         owner=boot,
         member="_run_wrangler",
         arguments=("secret", "put", "TOKEN"),
-        input_text="payload\n",
+        input_text="""\
+payload
+""",
     )
-    expect_equal(actual=result, expected=(0, "payload\n"))
+    expect_equal(
+        actual=result,
+        expected=(
+            0,
+            """\
+payload
+""",
+        ),
+    )
     command: tuple[object, ...] = captured[0][0]
     expect_equal(actual=command[0], expected="npx")
     expect_equal(actual=command[2], expected="wrangler@4.45.0")

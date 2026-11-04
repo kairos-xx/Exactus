@@ -3,7 +3,7 @@
   "analyzer": "coverage",
   "comparison": {
     "available": true,
-    "previous_generated_at": "2026-11-02T06:18:55.797265+00:00",
+    "previous_generated_at": "2026-11-04T07:28:54.340295+00:00",
     "previous_run_id": null,
     "previous_status": null,
     "previous_duration_seconds": null,
@@ -23,7 +23,7 @@
     "meta": {
       "format": 3,
       "version": "7.17.0",
-      "timestamp": "2026-11-02T06:48:51.388862",
+      "timestamp": "2026-11-04T07:55:33.438655",
       "branch_coverage": true,
       "show_contexts": false
     },
@@ -416,8 +416,8 @@
   },
   "findings": [],
   "fingerprint": {
-    "commit": "8acd5332d8bb9132a3f9464fe58d265059b6ef39",
-    "tree": "894ba3dd961790939accb258297593340dbeb862",
+    "commit": "68b43a4bd4691257a6e48e3cb87a96edf2139868",
+    "tree": "8037996a0c49bff489a24efc566e2091d89e425b",
     "dirty": true,
     "python": "3.13.9",
     "ruff": "ruff 0.12.0",
@@ -428,8 +428,8 @@
     "per_file_minimum": 80.0,
     "files_below": []
   },
-  "generated_at": "2026-11-02T06:48:51.484950+00:00",
-  "generated_at_human": "02 November 2026, 06:48:51 UTC",
+  "generated_at": "2026-11-04T07:55:33.646821+00:00",
+  "generated_at_human": "04 November 2026, 07:55:33 UTC",
   "import_graph": {
     "excused_sources": [],
     "ignored_non_local_imports": [
@@ -470,11 +470,11 @@
           "evidence": [],
           "level": "TEST-0",
           "metadata": {
-            "duration_seconds": 0.0014306670054793358,
-            "finished_at": "2026-11-02T06:48:51.019002+00:00",
+            "duration_seconds": 0.0015974169946275651,
+            "finished_at": "2026-11-04T07:55:33.263622+00:00",
             "size_bytes": 295,
             "source_lines": 10,
-            "started_at": "2026-11-02T06:48:51.017577+00:00",
+            "started_at": "2026-11-04T07:55:33.262032+00:00",
             "worker_name": "meaningful_0"
           },
           "metrics": {
@@ -535,37 +535,17 @@
       "conftest.py"
     ]
   },
-  "javascript": {
-    "files_measured": 1,
-    "files": [
-      {
-        "path": "web/code.js",
-        "num_statements": 21,
-        "covered_lines": 21,
-        "missing_lines": 0,
-        "uncovered_lines": [],
-        "snippets": {},
-        "percent_covered": 100.0,
-        "percent_covered_display": "100.00"
-      }
-    ],
-    "executable_lines": 21,
-    "covered_lines": 21,
-    "percent_covered": 100.0,
-    "unreached_sources": [],
-    "raw_report": "coverage_raw_js.json"
-  },
+  "javascript": null,
   "local_links": {
     "/Users/joaolopes/Exactus/exactus/tests/standalone/project": "../../..",
     "conftest.py": "../../../conftest.py",
     "python/__init__.py": "../../../python/__init__.py",
     "python/calc.py": "../../../python/calc.py",
-    "web/code.js": "../../../web/code.js",
     "../../../..": "../../../..",
     "result.md": "result.md",
     "result.json": "result.json"
   },
-  "markdown": "# Combined Coverage Exactus\n\n**Run time:** 02 November 2026, 06:48:51 UTC\n\n## Change since previous report\n\n| Findings | Current | Previous | Delta | Added | Resolved | Unchanged |\n|---|---:|---:|---:|---:|---:|---:|\n| Overall | 0 | 0 | 0 | 0 | 0 | 0 |\n\n\n\n## Summary\n\n- Status: **PASS**\n- Coverage gate: **90.0**\n- Per-file gate: **80.0** (0 file(s) below)\n- Coverage: **100%**\n- Statements: **5**\n- Missing lines: **0**\n- Covered lines: **5**\n- Reachable local targets: **2**\n- Ignored non-local imports: **2**\n- Unreached source files: **1**\n- JavaScript files measured: **1**\n- JavaScript line coverage: **100.0%**\n- JavaScript unreached sources: **0**\n\n## File coverage\n\n| File | Statements | Missing | Coverage |\n| --- | ---: | ---: | ---: |\n| [`__init__.py`](../../../__init__.py) | 0 | 0 | 100% |\n| [`python/__init__.py`](../../../python/__init__.py) | 0 | 0 | 100% |\n| [`python/calc.py`](../../../python/calc.py) | 5 | 0 | 100% |\n| [`tests/__init__.py`](../../../tests/__init__.py) | 0 | 0 | 100% |\n\n## Import graph\n\n### Reachable local targets\n\n- [`python/__init__.py`](../../../python/__init__.py) (module `python`)\n- [`python/calc.py`](../../../python/calc.py) (module `python.calc`)\n\n### Unreached source files\n\nThese files were not reached during measurement and are excluded from the percentages above.\n\n- [`conftest.py`](../../../conftest.py)\n\n### Ignored non-local imports\n\n- `__future__`\n- `typing`\n\n## JavaScript coverage\n\n| File | Lines | Missing | Coverage |\n| --- | ---: | ---: | ---: |\n| [`web/code.js`](../../../web/code.js) | 21 | 0 | 100.00% |\n",
+  "markdown": "# Combined Coverage Exactus\n\n**Run time:** 04 November 2026, 07:55:33 UTC\n\n## Change since previous report\n\n| Findings | Current | Previous | Delta | Added | Resolved | Unchanged |\n|---|---:|---:|---:|---:|---:|---:|\n| Overall | 0 | 0 | 0 | 0 | 0 | 0 |\n\n\n\n## Summary\n\n- Status: **PASS**\n- Coverage gate: **90.0**\n- Per-file gate: **80.0** (0 file(s) below)\n- Coverage: **100%**\n- Statements: **5**\n- Missing lines: **0**\n- Covered lines: **5**\n- Reachable local targets: **2**\n- Ignored non-local imports: **2**\n- Unreached source files: **1**\n\n## File coverage\n\n| File | Statements | Missing | Coverage |\n| --- | ---: | ---: | ---: |\n| [`__init__.py`](../../../__init__.py) | 0 | 0 | 100% |\n| [`python/__init__.py`](../../../python/__init__.py) | 0 | 0 | 100% |\n| [`python/calc.py`](../../../python/calc.py) | 5 | 0 | 100% |\n| [`tests/__init__.py`](../../../tests/__init__.py) | 0 | 0 | 100% |\n\n## Import graph\n\n### Reachable local targets\n\n- [`python/__init__.py`](../../../python/__init__.py) (module `python`)\n- [`python/calc.py`](../../../python/calc.py) (module `python.calc`)\n\n### Unreached source files\n\nThese files were not reached during measurement and are excluded from the percentages above.\n\n- [`conftest.py`](../../../conftest.py)\n\n### Ignored non-local imports\n\n- `__future__`\n- `typing`\n",
   "project_href": "../../../..",
   "project_root": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
   "report_bundle": {
@@ -574,8 +554,8 @@
     "web": "result_web"
   },
   "root": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
-  "run_at": "2026-11-02T06:48:51.484950+00:00",
-  "run_at_human": "02 November 2026, 06:48:51 UTC",
+  "run_at": "2026-11-04T07:55:33.646821+00:00",
+  "run_at_human": "04 November 2026, 07:55:33 UTC",
   "schema": "project-exactus-report/v1",
   "sections": [
     {
@@ -609,10 +589,6 @@
     {
       "level": 3,
       "title": "Ignored non-local imports"
-    },
-    {
-      "level": 2,
-      "title": "JavaScript coverage"
     }
   ],
   "web": {

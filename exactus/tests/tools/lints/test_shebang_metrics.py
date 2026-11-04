@@ -33,13 +33,50 @@ class Constants:
     """
 
     scripts: Final[dict[str, tuple[str, bool]]] = {
-        "bin/a.py": ("#!/usr/bin/env python3\nx = 1\n", True),
-        "bin/b.py": ("#!/usr/bin/python3\nx = 1\n", True),
-        "bin/c.py": ("#!/usr/bin/env -S node --flag\n", True),
-        "bin/d.py": ("#!/bin/bash\n", False),
-        "bin/e.py": ("#!/opt/tools/custom-run -x\n", False),
-        "lib/plain.py": ("x = 1\n", True),
-        "lib/quiet.py": ("y = 2\n", False),
+        "bin/a.py": (
+            """\
+#!/usr/bin/env python3
+x = 1
+""",
+            True,
+        ),
+        "bin/b.py": (
+            """\
+#!/usr/bin/python3
+x = 1
+""",
+            True,
+        ),
+        "bin/c.py": (
+            """\
+#!/usr/bin/env -S node --flag
+""",
+            True,
+        ),
+        "bin/d.py": (
+            """\
+#!/bin/bash
+""",
+            False,
+        ),
+        "bin/e.py": (
+            """\
+#!/opt/tools/custom-run -x
+""",
+            False,
+        ),
+        "lib/plain.py": (
+            """\
+x = 1
+""",
+            True,
+        ),
+        "lib/quiet.py": (
+            """\
+y = 2
+""",
+            False,
+        ),
     }
 
 
@@ -183,7 +220,11 @@ def test_metrics_ignore_skipped_files(tmp_path: Path) -> None:
     """
     _project(root=tmp_path)
     (tmp_path / ".hidden").mkdir()
-    _ = (tmp_path / ".hidden" / "x.py").write_text(data="#!/bin/sh\n")
+    _ = (tmp_path / ".hidden" / "x.py").write_text(
+        data="""\
+#!/bin/sh
+""",
+    )
     (tmp_path / "alias.py").symlink_to(target=tmp_path / "bin" / "a.py")
     result: ShebangResult = scan_shebang(
         inputs=ShebangInput(root=tmp_path, includes=(), excludes=("bin/**",)),
@@ -229,7 +270,11 @@ def test_unreadable_file_is_counted_but_not_classified(tmp_path: Path) -> None:
 
     """
     script: Path = tmp_path / "locked.py"
-    _ = script.write_text(data="#!/bin/sh\n")
+    _ = script.write_text(
+        data="""\
+#!/bin/sh
+""",
+    )
     script.chmod(mode=0)
     try:
         result: ShebangResult = _audit(root=tmp_path)

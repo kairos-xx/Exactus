@@ -489,12 +489,19 @@ def _debug_clear(*, target: Path, max_age: float, now: float) -> None:
     record: str
     kept: list[str] = []
     for record in target.read_text(encoding="utf-8", errors="replace").split(
-        sep="-----\n",
+        sep="""\
+-----
+""",
     ):
         if not record.strip():
             continue
         stamp: Match[str] | None = Constants.debug_stamp_pattern.match(
-            string=record.split(sep="\n", maxsplit=1)[0],
+            string=record.split(
+                sep="""\
+
+""",
+                maxsplit=1,
+            )[0],
         )
         try:
             written: float = (
@@ -506,7 +513,12 @@ def _debug_clear(*, target: Path, max_age: float, now: float) -> None:
             written = now
         if now - written > max_age:
             continue
-        kept.append(record + "-----\n")
+        kept.append(
+            record
+            + """\
+-----
+""",
+        )
     _ = target.write_text(data="".join(kept), encoding="utf-8")
 
 
@@ -565,20 +577,13 @@ def _debug_record(
         spec.target.parent.mkdir(parents=True, exist_ok=True)
         with spec.target.open(mode="a", encoding="utf-8") as handle:
             _ = handle.write(
-                f"{record_label}"
-                f" - "
-                f"{stamp}"
-                f"\n"
-                f"{site.path}"
-                f":"
-                f"{site.line}"
-                f":"
-                f"{site.column}"
-                f" > "
-                f"{site.qualname}"
-                f"\n\n"
-                f"{text}"
-                f"\n-----\n",
+                f"""\
+{record_label} - {stamp}
+{site.path}:{site.line}:{site.column} > {site.qualname}
+
+{text}
+-----
+""",
             )
     except OSError:
         return
@@ -587,7 +592,9 @@ def _debug_record(
 def sprint(
     *args: _Printable,
     sep: str = " ",
-    end: str = "\n",
+    end: str = """\
+
+""",
     file: Writer | None = None,
     flush: bool = True,
     style: SprintStyle = Constants.default_style,
@@ -636,7 +643,9 @@ def sprint(
 def sprint_err(
     *args: _Printable,
     sep: str = " ",
-    end: str = "\n",
+    end: str = """\
+
+""",
     flush: bool = True,
     style: SprintStyle = Constants.error_style,
 ) -> None:

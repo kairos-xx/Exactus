@@ -146,7 +146,13 @@ def test_markdown_lists_findings_and_evidence() -> None:
     expect_in(member="### `home/400x300/one`", container=text)
     expect_in(member="4,321", container=text)
     expect_in(member="![](ARTIFACTS/diff.png)", container=text)
-    expect_in(member="## Warning findings\n\nNone.", container=text)
+    expect_in(
+        member="""\
+## Warning findings
+
+None.""",
+        container=text,
+    )
 
 
 def test_markdown_handles_empty_runs() -> None:

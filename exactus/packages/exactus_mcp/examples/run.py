@@ -160,10 +160,13 @@ def main() -> int:
     """
     inspection: Inspection = run_async(main=demonstrate())
     _ = stdout.write(
-        "Authenticated Exactus MCP round trip completed.\n"
-        f"Tools: {', '.join(inspection.tools)}\n"
-        f"Resources: {', '.join(inspection.resources)}\n"
-        f"Status result:\n{inspection.status_json}\n",
+        f"""\
+Authenticated Exactus MCP round trip completed.
+Tools: {", ".join(inspection.tools)}
+Resources: {", ".join(inspection.resources)}
+Status result:
+{inspection.status_json}
+""",
     )
     return 0
 

@@ -9,7 +9,9 @@ def main() -> None:
     """Inspect a local endpoint and write the result."""
     inspector: HttpProcess = HttpProcess()
     result: HttpInspection = inspector.inspect(host="127.0.0.1", port=8000)
-    stdout.write(f"{result}\n")
+    stdout.write(f"""\
+{result}
+""")
 
 
 if __name__ == "__main__":

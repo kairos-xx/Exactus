@@ -36,7 +36,14 @@ class TomlSerializer:
         """
         lines: list[str] = []
         cls._write_table(lines=lines, path=(), table=value, emit_header=False)
-        return "\n".join(lines).rstrip() + "\n"
+        return (
+            """\
+
+""".join(lines).rstrip()
+            + """\
+
+"""
+        )
 
     @classmethod
     def _write_table(
@@ -258,7 +265,12 @@ class TomlSerializer:
             .replace('"', '\\"')
             .replace("\b", "\\b")
             .replace("\t", "\\t")
-            .replace("\n", "\\n")
+            .replace(
+                """\
+
+""",
+                "\\n",
+            )
             .replace("\f", "\\f")
             .replace("\r", "\\r")
         )

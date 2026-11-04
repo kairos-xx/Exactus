@@ -186,7 +186,10 @@ def main() -> None:
             else canonical(document=document)
         )
         (target / f"{name}.pwflow.json").write_text(
-            data=dumps(obj=frozen, indent=1, sort_keys=True) + "\n",
+            data=dumps(obj=frozen, indent=1, sort_keys=True)
+            + """\
+
+""",
             encoding="utf-8",
         )
 

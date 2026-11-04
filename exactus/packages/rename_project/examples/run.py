@@ -55,7 +55,10 @@ def main() -> int:
     Constants.work.mkdir(parents=True)
     copied: Path = Constants.work / Constants.template.name
     _ = copytree(src=Constants.template, dst=copied)
-    _ = stdout.write(f"copied {Constants.template.name} -> {copied}\n\n")
+    _ = stdout.write(f"""\
+copied {Constants.template.name} -> {copied}
+
+""")
     sys_path.insert(0, str(object=Constants.here.parent))
     sys_path.insert(
         0,
@@ -77,8 +80,10 @@ def main() -> int:
     )
     renamed: Path = Constants.work / Constants.new_name
     _ = stdout.write(
-        f"\n{('renamed project:' if status == 0 else 'rename failed:')} "
-        f"{renamed}\n",
+        f"""\
+
+{("renamed project:" if status == 0 else "rename failed:")} {renamed}
+""",
     )
     return status
 

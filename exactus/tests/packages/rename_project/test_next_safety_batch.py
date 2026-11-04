@@ -107,7 +107,9 @@ def _options(*, new_name: str = "foo_bar") -> Options:
 
 def test_python_ast_utf8_columns_are_character_columns() -> None:
     """Python AST UTF-8 columns are character columns."""
-    text: str = 'x = "é"; y = "abc.cde"\n'
+    text: str = """\
+x = "é"; y = "abc.cde"
+"""
     spans: dict[int, tuple[tuple[int, int], ...]] = python_safe_dotted_spans(
         text=text,
     )
@@ -122,9 +124,9 @@ def test_python_ast_utf8_columns_are_character_columns() -> None:
 
 def test_sql_dotted_identifier_excludes_literal_and_comments() -> None:
     """SQL dotted identifier excludes literal and comments."""
-    text: str = (
-        "SELECT abc.cde FROM abc_cde AS abc; SELECT 'abc.cde'; -- abc.cde\n"
-    )
+    text: str = """\
+SELECT abc.cde FROM abc_cde AS abc; SELECT 'abc.cde'; -- abc.cde
+"""
     spans: dict[int, tuple[tuple[int, int], ...]] = sql_safe_dotted_spans(
         text=text,
     )
@@ -161,7 +163,9 @@ def test_sql_file_rewrites_identifier_not_dotted_literal(
     root.mkdir()
     sql: Path = root / "schema.sql"
     sql.write_text(
-        data="SELECT abc.cde FROM abc_cde AS abc; SELECT 'abc.cde';\n",
+        data="""\
+SELECT abc.cde FROM abc_cde AS abc; SELECT 'abc.cde';
+""",
         encoding="utf-8",
     )
     plan: Plan = build_plan(root=root, options=_options())
@@ -181,9 +185,16 @@ def test_golden_project_updates_files_and_sqlite(tmp_path: Path) -> None:
     """
     root: Path = tmp_path / "abc_cde"
     root.mkdir()
-    (root / "NOTES.txt").write_text(data="Abc Cde\n", encoding="utf-8")
+    (root / "NOTES.txt").write_text(
+        data="""\
+Abc Cde
+""",
+        encoding="utf-8",
+    )
     (root / "queries.sql").write_text(
-        data="SELECT abc_cde FROM abc_cde;\n",
+        data="""\
+SELECT abc_cde FROM abc_cde;
+""",
         encoding="utf-8",
     )
     database: Path = root / "state.sqlite"
@@ -199,7 +210,9 @@ def test_golden_project_updates_files_and_sqlite(tmp_path: Path) -> None:
     apply_plan(plan=plan)
     expect_equal(
         actual=(root / "NOTES.txt").read_text(encoding="utf-8"),
-        expected="Foo Bar\n",
+        expected="""\
+Foo Bar
+""",
     )
     expect_in(
         member="foo_bar",
@@ -252,7 +265,12 @@ def test_failure_after_database_mutation_restores_everything(
     root: Path = tmp_path / "abc_cde"
     root.mkdir()
     note: Path = root / "abc_cde.txt"
-    note.write_text(data="abc_cde\n", encoding="utf-8")
+    note.write_text(
+        data="""\
+abc_cde
+""",
+        encoding="utf-8",
+    )
     database: Path = root / "state.sqlite"
     fixture: Table = _table(name="abc_cde", columns=(("value", True),))
     with connect(database=database) as connection:
@@ -285,7 +303,12 @@ def test_failure_after_database_mutation_restores_everything(
     with pytest.raises(expected_exception=RenameError):
         apply_plan(plan=plan)
     expect_true(condition=note.exists())
-    expect_equal(actual=note.read_text(encoding="utf-8"), expected="abc_cde\n")
+    expect_equal(
+        actual=note.read_text(encoding="utf-8"),
+        expected="""\
+abc_cde
+""",
+    )
     with connect(database=database) as connection:
         expect_equal(
             actual=execute(
@@ -312,7 +335,9 @@ def test_application_sql_reference_inventory(tmp_path: Path) -> None:
     root.mkdir()
     app: Path = root / "app.py"
     app.write_text(
-        data='QUERY = "SELECT abc_cde FROM abc_cde"\n',
+        data="""\
+QUERY = "SELECT abc_cde FROM abc_cde"
+""",
         encoding="utf-8",
     )
     database: Path = root / "state.sqlite"

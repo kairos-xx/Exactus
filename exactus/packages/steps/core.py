@@ -243,7 +243,9 @@ class StepLog:
         with self._lock:
             try:
                 _ = stream.write(
-                    f"{stamp} +{elapsed} {'  ' * depth}{step}{trailers}\n",
+                    f"""\
+{stamp} +{elapsed} {"  " * depth}{step}{trailers}
+""",
                 )
                 _ = stream.flush()
             except OSError:
@@ -267,7 +269,9 @@ class StepLog:
         elapsed: str = f"{monotonic() - self._started:9.3f}s"
         with self._lock:
             try:
-                _ = stream.write(f"{stamp} +{elapsed} ~sample {fields}\n")
+                _ = stream.write(f"""\
+{stamp} +{elapsed} ~sample {fields}
+""")
                 _ = stream.flush()
             except OSError:
                 self._stream = None
@@ -384,11 +388,16 @@ def main(*, path: Path | None = None) -> int:
             trace(step=f"stage: {stage}", depth=1)
             trace(step=f"{stage}: items processed", depth=2)
         trace(step="steps: demonstration finished")
-    _ = stdout.write(f"step trace: {destination}\n\n")
+    _ = stdout.write(f"""\
+step trace: {destination}
+
+""")
     if destination.is_file():
         _ = stdout.write(destination.read_text(encoding="utf-8"))
     else:
-        _ = stdout.write("tracing disabled ([tool.steps] write = false)\n")
+        _ = stdout.write("""\
+tracing disabled ([tool.steps] write = false)
+""")
     return 0
 
 

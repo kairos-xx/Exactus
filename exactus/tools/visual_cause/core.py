@@ -172,7 +172,10 @@ def _read_css(*, path: Path | None) -> str:
         if not files:
             msg: str = f"CSS directory contains no files: {path}"
             raise FileNotFoundError(msg)
-        return "\n\n".join(file.read_text(encoding="utf-8") for file in files)
+        return """\
+
+
+""".join(file.read_text(encoding="utf-8") for file in files)
     msg = f"CSS source not found: {path}"
     raise FileNotFoundError(msg)
 

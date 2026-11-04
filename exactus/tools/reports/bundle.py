@@ -272,7 +272,9 @@ class ReportBundle:
         )
         _ = consume(
             value=web.joinpath(Constants.data_name).write_text(
-                data=f"{JsonDict(payload).tojson}\n",
+                data=f"""\
+{JsonDict(payload).tojson}
+""",
                 encoding="utf-8",
             ),
         )
@@ -357,7 +359,11 @@ class ReportBundle:
         lines: list[str] = []
         fence: str = ""
         artifact_table: bool = False
-        for line in markdown.split(sep="\n"):
+        for line in markdown.split(
+            sep="""\
+
+""",
+        ):
             normalized_line: str = line
             marker: Match[str] | None = re_search(
                 pattern=r"^\s*(`{3,}|~{3,})",
@@ -403,7 +409,9 @@ class ReportBundle:
                     for index, cell in enumerate(iterable=cells)
                 ),
             )
-        return "\n".join(lines)
+        return """\
+
+""".join(lines)
 
     @classmethod
     def relative_href(cls, *, href: str, base: Path, root: Path) -> str:
@@ -576,9 +584,16 @@ class ReportBundle:
         ]
         lines[1:1] = [
             "",
-            f"**Run time:** {payload['run_at_human'] or 'Not recorded'}",
+            f"**Run time:** {payload["run_at_human"] or "Not recorded"}",
         ]
-        normalized = "\n".join(lines).rstrip() + "\n"
+        normalized = (
+            """\
+
+""".join(lines).rstrip()
+            + """\
+
+"""
+        )
         payload["report_bundle"] = {
             "markdown": paths.markdown.name,
             "json": paths.json.name,
@@ -598,7 +613,14 @@ class ReportBundle:
         )
         lines = normalized.splitlines()
         lines[3:3] = ["", comparison, ""]
-        normalized = "\n".join(lines).rstrip() + "\n"
+        normalized = (
+            """\
+
+""".join(lines).rstrip()
+            + """\
+
+"""
+        )
         payload["sections"] = cls.sections(markdown=normalized)
         cls.validate_payload(payload=payload, markdown=normalized)
         web_payload: JsonObject = JsonDict(payload)
@@ -607,7 +629,9 @@ class ReportBundle:
         )
         _ = consume(
             value=paths.json.write_text(
-                data=f"{web_payload.tojson}\n",
+                data=f"""\
+{web_payload.tojson}
+""",
                 encoding="utf-8",
             ),
         )
@@ -681,7 +705,9 @@ class ReportBundle:
         )
         for char in Constants.irregular_whitespace:
             escaped = escaped.replace(char, f"\\\\u{ord(char):04x}")
-        return f"window.__REPORT_DATA__ = JSON.parse(`{escaped}`);\n"
+        return f"""\
+window.__REPORT_DATA__ = JSON.parse(`{escaped}`);
+"""
 
     @staticmethod
     def validate_blocks(
@@ -774,8 +800,12 @@ class ReportBundle:
             Relative destination when the file exists, otherwise None.
 
         """
-        if "\n" in candidate or (
-            "/" not in candidate and not Path(candidate).suffix
+        if (
+            """\
+
+"""
+            in candidate
+            or ("/" not in candidate and not Path(candidate).suffix)
         ):
             return None
         try:
@@ -931,7 +961,7 @@ class ReportBundle:
         text: str = candidate.as_posix() + suffix
         href: str = Path(relpath(path=target, start=base)).as_posix()
         anchor: str = f"#L{anchor_line}" if anchor_line else ""
-        return f"[`{text}`]({quote(string=href, safe='/.')}{anchor})"
+        return f"[`{text}`]({quote(string=href, safe="/.")}{anchor})"
 
     @staticmethod
     def _template(name: str) -> str:
@@ -1031,7 +1061,16 @@ class ReportBundle:
         )
         if definition is None:
             return None
-        return str(object=text.count("\n", 0, definition.start("keyword")) + 1)
+        return str(
+            object=text.count(
+                """\
+
+""",
+                0,
+                definition.start("keyword"),
+            )
+            + 1,
+        )
 
     @staticmethod
     def _normalize_markdown(*, title: str, markdown: str) -> str:
@@ -1049,4 +1088,11 @@ class ReportBundle:
         lines: list[str] = normalized.splitlines() if normalized else []
         if not lines or not lines[0].startswith("# "):
             lines = [f"# {title}", "", *lines]
-        return "\n".join(lines).rstrip() + "\n"
+        return (
+            """\
+
+""".join(lines).rstrip()
+            + """\
+
+"""
+        )

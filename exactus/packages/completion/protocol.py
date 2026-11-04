@@ -396,7 +396,9 @@ def _debug(*, message: str, command_name: str = "exactus") -> None:
 
     """
     if environ.get(Constants.debug_variable) in ("1", "true", "yes"):
-        _ = stderr.write(f"{command_name} __complete: {message}\n")
+        _ = stderr.write(f"""\
+{command_name} __complete: {message}
+""")
 
 
 def run_completion(
@@ -453,7 +455,9 @@ def run_completion(
                 command_name=command_name,
             )
             continue
-        _ = stream.write(f"{record}\n")
+        _ = stream.write(f"""\
+{record}
+""")
         written += 1
     _debug(
         message=f"{written} candidate(s) for {request.prefix!r}",

@@ -1,5 +1,6 @@
 # Copyright (c) 2026
 """Dispatch ``python -m exactus.bundle`` to the host platform bundle."""
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -30,5 +31,7 @@ def main() -> int:
         args=[executable, str(object=leaf), *argv[1:]],
         check=False,
     ).returncode
+
+
 if __name__ == "__main__":
     raise SystemExit(main())

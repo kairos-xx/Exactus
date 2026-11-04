@@ -32,14 +32,22 @@ def test_bottom_up_docstrings_child_summaries_and_updates(
     grandchild: Path = child / "engine"
     grandchild.mkdir(parents=True)
     (grandchild / "run.py").write_text(
-        data='"""Replay saved browser actions and retain evidence."""\n',
+        data="""\
+\"""Replay saved browser actions and retain evidence.\"""
+""",
     )
     (child / "README.md").write_text(
         data=dedent(
             text=(
-                "    # Feature\n    \n    Record and replay browser sessio"
-                "ns.\n    \n    ## Usage\n    \n    Keep my examples.\n   "
-                " "
+                """\
+    # Feature
+
+    Record and replay browser sessions.
+
+    ## Usage
+
+    Keep my examples.
+    """
             ),
         ),
     )
@@ -99,14 +107,18 @@ def test_repair_removes_obsolete_and_duplicate_generated_blocks(
     blocks: list[str] = [
         dedent(
             text=(
-                "    <!-- exactus:inventory:start -->\n    - [deleted](del"
-                "eted.md)\n    <!-- exactus:inventory:end -->"
+                """\
+    <!-- exactus:inventory:start -->
+    - [deleted](deleted.md)
+    <!-- exactus:inventory:end -->"""
             ),
         ),
         dedent(
             text=(
-                "    <!-- audit:inventory:start -->\n    - [old status](st"
-                "atus/README.md)\n    <!-- audit:inventory:end -->"
+                """\
+    <!-- audit:inventory:start -->
+    - [old status](status/README.md)
+    <!-- audit:inventory:end -->"""
             ),
         ),
     ]
@@ -114,18 +126,42 @@ def test_repair_removes_obsolete_and_duplicate_generated_blocks(
         blocks.reverse()
     path: Path = docs / "README.md"
     path.write_text(
-        data="# Documentation\n\nKeep the introduction.\n\n"
-        + "\n\nKeep the middle guidance.\n\n".join(blocks)
+        data="""\
+# Documentation
+
+Keep the introduction.
+
+"""
+        + """\
+
+
+Keep the middle guidance.
+
+""".join(blocks)
         + dedent(
             text=(
-                "    \n    \n    Keep this historical mention: `exactus/do"
-                "cs/status/README.md`.\n    "
+                """\
+
+
+                  Keep this historical mention: \
+`exactus/docs/status/README.md`.
+"""
             ),
         )
-        + "\n<!-- exactus:inventory:start -->\nDuplicate generated block.\n"
-        + "<!-- exactus:inventory:end -->\n",
+        + """\
+
+<!-- exactus:inventory:start -->
+Duplicate generated block.
+"""
+        + """\
+<!-- exactus:inventory:end -->
+""",
     )
-    (docs / "current.md").write_text(data="Current guidance.\n")
+    (docs / "current.md").write_text(
+        data="""\
+Current guidance.
+""",
+    )
     inputs: ReadmeExactusInput = ReadmeExactusInput(
         root=tmp_path,
         includes=(),

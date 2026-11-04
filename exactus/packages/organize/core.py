@@ -184,12 +184,12 @@ def validate_order(*, order: Sequence[str]) -> tuple[str, ...]:
     unknown: list[str] = sorted(set(normalized) - default)
     missing: list[str] = sorted(default - set(normalized))
     if unknown:
-        details.append(f"unknown categories: {', '.join(unknown)}")
+        details.append(f"unknown categories: {", ".join(unknown)}")
     if missing:
-        details.append(f"missing categories: {', '.join(missing)}")
+        details.append(f"missing categories: {", ".join(missing)}")
     if not details:
         details.append("duplicate categories")
-    msg: str = f"invalid organize order ({'; '.join(details)})"
+    msg: str = f"invalid organize order ({"; ".join(details)})"
     raise ValueError(msg)
 
 
@@ -380,12 +380,14 @@ class PythonClassMethodReorderer:
         *,
         source: str,
         order: Sequence[str] = Constants.default_order,
+        tree: Module | None = None,
     ) -> ReorderResult:
         """Reorder all classes in Python source and collect metrics.
 
         Args:
             order: Category order overriding the canonical default.
             source: Complete Python source text.
+            tree: Matching read-only AST supplied by a run cache.
 
         Returns:
             Reordered source text with aggregated metrics.
@@ -397,7 +399,7 @@ class PythonClassMethodReorderer:
                 iterable=validate_order(order=order),
             )
         }
-        tree: Module = parse(source=source)
+        tree = parse(source=source) if tree is None else tree
         collector: _ClassCollector = _ClassCollector()
         collector.collect(tree=tree)
         lines: list[str] = source.splitlines(keepends=True)
@@ -903,12 +905,16 @@ def _organize_path(
         else:
             result = JavaScriptClassMethodReorderer(path=path).measure()
     except (OSError, RuntimeError, SyntaxError, TypeError) as error:
-        _written: int = stdout.write(f"error: {path} — {error}\n")
+        _written: int = stdout.write(f"""\
+error: {path} — {error}
+""")
         return None
     metrics: OrganizeMetrics = result.metrics
     if not result.changed:
         _written = stdout.write(
-            f"unchanged: {path} — {metrics.methods_seen} methods\n",
+            f"""\
+unchanged: {path} — {metrics.methods_seen} methods
+""",
         )
         return metrics
     detail: str = (
@@ -918,10 +924,14 @@ def _organize_path(
         } classes reordered, {metrics.lines_moved} lines moved"
     )
     if dry:
-        _written = stdout.write(f"would update: {path} — {detail}\n")
+        _written = stdout.write(f"""\
+would update: {path} — {detail}
+""")
         return metrics
     _bytes_written: int = path.write_text(data=result.source, encoding="utf-8")
-    _written = stdout.write(f"updated: {path} — {detail}\n")
+    _written = stdout.write(f"""\
+updated: {path} — {detail}
+""")
     return metrics
 
 
@@ -1029,9 +1039,11 @@ def main(*, arguments: Sequence[str] | None = None) -> int:
         moved += metrics.methods_moved
         reordered_files += int(metrics.methods_moved > 0)
     _written: int = stdout.write(
-        f"organized {len(paths)} files — {reordered_files} {
-            ('would change' if dry else 'changed')
-        }, {len(paths) - reordered_files - failures} unchanged, "
-        f"{failures} failed; {moved} methods moved\n",
+        f"""\
+organized {len(paths)} files — {reordered_files} \
+{("would change" if dry else "changed")}, \
+{len(paths) - reordered_files - failures} unchanged, {failures} failed; \
+{moved} methods moved
+""",
     )
     return int(failures > 0)

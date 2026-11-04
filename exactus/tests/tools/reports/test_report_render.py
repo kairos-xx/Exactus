@@ -129,10 +129,15 @@ def _tool_dir(*, root: Path, mapping: JsonValue | None) -> Path:
         data=(
             dedent(
                 text=(
-                    '    {% extends "result_template.md" %}\n    {% block '
-                    "tool_extension %}\n    \n    ## Extra\n    \n    {{ e"
-                    "xtra }} / {{ severity_levels | join(',') }}\n    {% e"
-                    "ndblock %}\n    "
+                    """\
+    {% extends "result_template.md" %}
+    {% block tool_extension %}
+
+    ## Extra
+
+    {{ extra }} / {{ severity_levels | join(',') }}
+    {% endblock %}
+    """
                 ),
             )
         ),
@@ -175,13 +180,20 @@ def test_tool_template_extends_common_template(tmp_path: Path) -> None:
     )
     text: str = rendered.markdown
     expect_in(
-        member="## Extra\n\ntool-value / error,warning,info\n",
+        member="""\
+## Extra
+
+tool-value / error,warning,info
+""",
         container=text,
     )
     expect_true(
         condition=text.index("## Artifacts")
         < text.index("## Extra")
-        < text.index("\n---\n"),
+        < text.index("""\
+
+---
+"""),
     )
     expect_equal(actual=rendered.view["extra"], expected="tool-value")
     expect_not_in(member="source", container=rendered.view)
@@ -211,7 +223,12 @@ def test_tool_mapping_wins_over_base(tmp_path: Path) -> None:
         model=_example(),
         tool_dir=folder,
     ).markdown
-    expect_in(member="x / error\n", container=text)
+    expect_in(
+        member="""\
+x / error
+""",
+        container=text,
+    )
     expect_not_in(member="| WARNING |", container=text)
 
 
@@ -311,7 +328,13 @@ def _legacy_bundle(*, output: Path) -> None:
         ),
         analyzer="frontend",
         title="Screenshot Report",
-        markdown="# Screenshot Report\n\n## Findings\n\nNone.\n",
+        markdown="""\
+# Screenshot Report
+
+## Findings
+
+None.
+""",
         data={"findings": [], "summary": {"files": 1}},
     )
 
@@ -402,20 +425,44 @@ def test_fence_markers_in_content_cannot_close_the_fence() -> None:
     invocation: JsonValue = model["invocation"]
     if not isinstance(run, dict) or not isinstance(invocation, dict):
         return
-    run["error"] = (
-        "first\n~~~~text\ninjected heading\n~~~~\nlast\n```python\ncode\n```"
-    )
+    run["error"] = """\
+first
+~~~~text
+injected heading
+~~~~
+last
+```python
+code
+```"""
     invocation["command"] = "run --flag ~~~~"
     markdown: str = ReportTemplates.render(
         model=model,
         tool_dir=ReportTemplates.tool_dir(analyzer="lints"),
     ).markdown
-    expect_in(member="\n~~~~~text\nfirst\n", container=markdown)
     expect_in(
-        member="\n~~~~shell\nrun --flag ~~~~\n~~~~\n",
+        member="""\
+
+~~~~~text
+first
+""",
         container=markdown,
     )
-    expect_in(member="injected heading\n~~~~\nlast", container=markdown)
+    expect_in(
+        member="""\
+
+~~~~shell
+run --flag ~~~~
+~~~~
+""",
+        container=markdown,
+    )
+    expect_in(
+        member="""\
+injected heading
+~~~~
+last""",
+        container=markdown,
+    )
 
 
 def test_render_adds_a_linked_per_file_resume(tmp_path: Path) -> None:

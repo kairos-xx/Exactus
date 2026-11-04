@@ -468,7 +468,7 @@ class MacMenuBarApplication:
             phase_text = f"{phase_text} · {snapshot.active_calls} active"
         self._status.title = f"Exactus MCP — {phase_text}"
         self._project.title = f"Project: {self._supervisor.root.name}"
-        self._local.title = f"Local: {snapshot.local_url or 'Not available'}"
+        self._local.title = f"Local: {snapshot.local_url or "Not available"}"
         public_text: str
         if snapshot.public_url is not None:
             public_text = snapshot.public_url

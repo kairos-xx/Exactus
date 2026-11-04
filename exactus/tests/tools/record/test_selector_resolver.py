@@ -157,10 +157,12 @@ def test_waits_for_elements_that_appear_late(page: Page) -> None:
     _ = page.evaluate(
         expression=dedent(
             text=(
-                "    () => setTimeout(() => {\n                const late "
-                '= document.createElement("p");\n                late.clas'
-                'sName = "late";\n                document.body.append(lat'
-                "e);\n            }, 300)"
+                """\
+    () => setTimeout(() => {
+                const late = document.createElement("p");
+                late.className = "late";
+                document.body.append(late);
+            }, 300)"""
             ),
         ),
     )

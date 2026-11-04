@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, NoReturn
 
 if TYPE_CHECKING:
     from collections.abc import Container
+__tracebackhide__: bool = True
 
 
 def fail(*, message: str) -> NoReturn:

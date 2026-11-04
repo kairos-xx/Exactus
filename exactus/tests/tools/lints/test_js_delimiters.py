@@ -140,9 +140,19 @@ def test_simplifies_supported_constructs(source: str, expected: str) -> None:
         "const y = typeof (a + b);",
         "const aw = await (a + b);",
         "const dl = delete (a ? b : c);",
-        "return (\n  a !== undefined &&\n  items.every(x => x === null)\n);",
-        "throw (\n  new Error('bad')\n);",
-        "function* g() { yield (\n  a + b\n); }",
+        """\
+return (
+  a !== undefined &&
+  items.every(x => x === null)
+);""",
+        """\
+throw (
+  new Error('bad')
+);""",
+        """\
+function* g() { yield (
+  a + b
+); }""",
         "if ((found = next())) run(found);",
         "while ((found = next())) run(found);",
         "for (let i = 0; (x = step(i)); i++) use(x);",
@@ -171,8 +181,12 @@ def test_preserves_object_expression_arrow_inside_call() -> None:
     """Keep object-expression parentheses while simplifying its parameter."""
     source: str = dedent(
         text=(
-            "    const values = items.map((index) => ({\n      index,\n      v"
-            "alue: null,\n    }));\n    "
+            """\
+    const values = items.map((index) => ({
+      index,
+      value: null,
+    }));
+    """
         ),
     )
     expected: str = source.replace("(index) =>", "index =>")
@@ -275,7 +289,13 @@ def test_rich_metrics_and_execution(tmp_path: Path) -> None:
     """
     path: Path = tmp_path / "sample.js"
     _ = path.write_text(
-        data="const fn = (x) => {\n\n    return { value: x };\n\n};\n",
+        data="""\
+const fn = (x) => {
+
+    return { value: x };
+
+};
+""",
         encoding="utf-8",
     )
     execution: ExecutionMetrics = JavaScriptDelimiterSimplifier(
@@ -319,8 +339,13 @@ def test_rich_metrics_and_execution(tmp_path: Path) -> None:
 def test_source_and_empty_transformation_metrics() -> None:
     """Derive source deltas and empty transformation metadata."""
     source_metrics: SourceMetrics = SourceMetrics.compare(
-        before="a\n\n",
-        after="a\n",
+        before="""\
+a
+
+""",
+        after="""\
+a
+""",
     )
     transformations: TransformationMetrics = (
         TransformationMetrics.from_replacements(replacements=())
@@ -369,8 +394,12 @@ def test_real_node_validation_when_available(tmp_path: Path) -> None:
         'const s = "a\\"b"; const x = ((value));',
         "const t = `value ${x}`; const y = ((value));",
         "const r = /a[b\\/]c/gi; const x = ((value));",
-        "const r = /unterminated\nconst x = ((value));",
-        "// comment\nconst x = ((value));",
+        """\
+const r = /unterminated
+const x = ((value));""",
+        """\
+// comment
+const x = ((value));""",
         "/* block */ const x = ((value));",
         "const x = (a && b) || c;",
         "const x = (a || b) && c;",
@@ -394,7 +423,9 @@ def test_real_node_validation_when_available(tmp_path: Path) -> None:
         "if (ready) { function f() {} }",
         "if (ready) { async function f() {} }",
         "if (ready) { if (other) run(); } else stop();",
-        "const f = (x) => { return\nx; };",
+        """\
+const f = (x) => { return
+x; };""",
         "const f = (x) => { /* keep */ return x; };",
         "const f = (x) => { return x; extra(); };",
         "const x = ((foo?.bar));",
@@ -430,11 +461,18 @@ def test_scan_reports_findings_without_writing(tmp_path: Path) -> None:
     """
     dirty: Path = tmp_path / "dirty.js"
     _ = dirty.write_text(
-        data="const f = (x) => { return x; };\n",
+        data="""\
+const f = (x) => { return x; };
+""",
         encoding="utf-8",
     )
     clean: Path = tmp_path / "clean.js"
-    _ = clean.write_text(data="const f = x => x;\n", encoding="utf-8")
+    _ = clean.write_text(
+        data="""\
+const f = x => x;
+""",
+        encoding="utf-8",
+    )
     files: tuple[Path, ...] = (dirty, clean)
     result: DelimiterResult = scan_delimiters(
         inputs=DelimiterInput(root=tmp_path, files=files, fix=False),
@@ -480,7 +518,9 @@ def test_scan_heals_files_with_fix(tmp_path: Path) -> None:
     """
     path: Path = tmp_path / "app.js"
     _ = path.write_text(
-        data="const f = (x) => { return x; };\n",
+        data="""\
+const f = (x) => { return x; };
+""",
         encoding="utf-8",
     )
     result: DelimiterResult = scan_delimiters(
@@ -563,7 +603,12 @@ def test_embedded_delimiters_progress_stays_in_its_phase(
 
     """
     path: Path = tmp_path / "file.js"
-    _ = path.write_text(data="const f = x => x;\n", encoding="utf-8")
+    _ = path.write_text(
+        data="""\
+const f = x => x;
+""",
+        encoding="utf-8",
+    )
     snapshots: list[runtime_module.Progress] = []
 
     def publish(*, progress: runtime_module.Progress) -> None:

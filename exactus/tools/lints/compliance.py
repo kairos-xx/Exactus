@@ -19,7 +19,6 @@ from ast import (
     Module,
     Name,
     expr,
-    parse,
     walk,
 )
 from dataclasses import dataclass
@@ -29,6 +28,8 @@ from typing import TYPE_CHECKING, Final
 
 from exactus.packages.steps import trace
 from exactus.tools.common.cli import ExactusCommonTables, match_path
+from exactus.tools.common.config import ConfigResolver
+from exactus.tools.common.source_cache import source_record, source_text
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
@@ -229,6 +230,7 @@ def scan(
     """
     if inputs.source_files is not None:
         return sorted(inputs.source_files), []
+    resolver: ConfigResolver = ConfigResolver(root=inputs.root)
     files: list[Path] = []
     left_out: list[ComplianceSkip] = []
     path: Path
@@ -237,6 +239,8 @@ def scan(
         if any(skipped(name=part) for part in relative.parts):
             continue
         if match_path(
+            resolver=resolver,
+            tool="lints",
             path=path,
             root=inputs.root,
             includes=inputs.includes,
@@ -282,7 +286,7 @@ def suppression_findings(*, path: Path, root: Path) -> list[ComplianceFinding]:
     number: int
     line: str
     for number, line in enumerate(
-        iterable=path.read_text(encoding="utf-8").splitlines(),
+        iterable=source_text(path=path).splitlines(),
         start=1,
     ):
         findings.extend(
@@ -358,10 +362,7 @@ def annotation_findings(*, path: Path, root: Path) -> list[ComplianceFinding]:
     """
     relative: str = path.relative_to(root).as_posix()
     try:
-        tree: Module = parse(
-            source=path.read_text(encoding="utf-8"),
-            filename=relative,
-        )
+        tree: Module = source_record(path=path).tree
     except (SyntaxError, UnicodeDecodeError, OSError) as error:
         return [
             ComplianceFinding(
@@ -605,7 +606,7 @@ def scan_compliance(*, inputs: ComplianceInput) -> ComplianceResult:
     )
     for skip in left_out:
         trace(
-            step=f"compliance: {skip.target} — skipped: {skip.reason}",
+            step=(f"compliance: {skip.target} — skipped: {skip.reason}"),
             depth=4,
         )
     path: Path

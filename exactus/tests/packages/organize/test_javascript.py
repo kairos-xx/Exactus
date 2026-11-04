@@ -26,45 +26,95 @@ class Constants:
 
     fake_espree: Final[str] = dedent(
         text=(
-            '\n        "use strict";\n\n        const method = (\n          so'
-            "urce,\n          text,\n          kind,\n          name,\n       "
-            "   isStatic = false\n        ) => {\n          const start = sour"
-            "ce.indexOf(text);\n          const end = start + text.length;\n  "
-            '        return {\n            type: "MethodDefinition",\n        '
-            "    kind,\n            static: isStatic,\n            computed: f"
-            "alse,\n            range: [start, end],\n            key: {\n    "
-            '          type: "Identifier",\n              name\n            },'
-            "\n            value: {\n              body: {\n                ty"
-            'pe: "BlockStatement"\n              }\n            }\n          }'
-            ";\n        };\n\n        exports.parse = source => {\n          c"
-            'onst bodyStart = source.indexOf("{");\n          return {\n      '
-            '      type: "Program",\n            comments: [],\n            ra'
-            "nge: [0, source.length],\n            body: [\n              {\n "
-            '               type: "ClassDeclaration",\n                range: '
-            "[0, source.length],\n                body: {\n                  t"
-            'ype: "ClassBody",\n                  range: [bodyStart, source.le'
-            "ngth],\n                  body: [\n                    method(\n "
-            '                     source,\n                      "privateWork('
-            ') {}",\n                      "method",\n                      "p'
-            'rivateWork"\n                    ),\n                    method('
-            '\n                      source,\n                      "static cr'
-            'eate() {}",\n                      "method",\n                   '
-            '   "create",\n                      true\n                    ),'
-            "\n                    method(\n                      source,\n   "
-            '                   "set value(value) {}",\n                      '
-            '"set",\n                      "value"\n                    ),\n  '
-            "                  method(\n                      source,\n       "
-            '               "get value() {}",\n                      "get",\n '
-            '                     "value"\n                    ),\n           '
-            "         method(\n                      source,\n                "
-            '      "constructor() {}",\n                      "constructor",\n'
-            '                      "constructor"\n                    )\n     '
-            "             ].sort(\n                    (left, right) => left.r"
-            "ange[0] - right.range[0]\n                  )\n                }"
-            "\n              }\n            ]\n          };\n        };\n     "
-            "   "
+            """\
+
+        "use strict";
+
+        const method = (
+          source,
+          text,
+          kind,
+          name,
+          isStatic = false
+        ) => {
+          const start = source.indexOf(text);
+          const end = start + text.length;
+          return {
+            type: "MethodDefinition",
+            kind,
+            static: isStatic,
+            computed: false,
+            range: [start, end],
+            key: {
+              type: "Identifier",
+              name
+            },
+            value: {
+              body: {
+                type: "BlockStatement"
+              }
+            }
+          };
+        };
+
+        exports.parse = source => {
+          const bodyStart = source.indexOf("{");
+          return {
+            type: "Program",
+            comments: [],
+            range: [0, source.length],
+            body: [
+              {
+                type: "ClassDeclaration",
+                range: [0, source.length],
+                body: {
+                  type: "ClassBody",
+                  range: [bodyStart, source.length],
+                  body: [
+                    method(
+                      source,
+                      "privateWork() {}",
+                      "method",
+                      "privateWork"
+                    ),
+                    method(
+                      source,
+                      "static create() {}",
+                      "method",
+                      "create",
+                      true
+                    ),
+                    method(
+                      source,
+                      "set value(value) {}",
+                      "set",
+                      "value"
+                    ),
+                    method(
+                      source,
+                      "get value() {}",
+                      "get",
+                      "value"
+                    ),
+                    method(
+                      source,
+                      "constructor() {}",
+                      "constructor",
+                      "constructor"
+                    )
+                  ].sort(
+                    (left, right) => left.range[0] - right.range[0]
+                  )
+                }
+              }
+            ]
+          };
+        };
+        """
         ),
-    ).removeprefix("\n")
+    ).removeprefix("""\
+
+""")
 
 
 def expect(*, condition: bool) -> None:
@@ -96,11 +146,20 @@ def test_javascript_reorders_and_is_idempotent(tmp_path: Path) -> None:
     )
     source: str = dedent(
         text=(
-            "\n        class Example {\n          privateWork() {}\n          "
-            "static create() {}\n          set value(value) {}\n          get "
-            "value() {}\n          constructor() {}\n        }\n        "
+            """\
+
+        class Example {
+          privateWork() {}
+          static create() {}
+          set value(value) {}
+          get value() {}
+          constructor() {}
+        }
+        """
         ),
-    ).removeprefix("\n")
+    ).removeprefix("""\
+
+""")
     path: Path = tmp_path / "example.js"
     _written = path.write_text(data=source, encoding="utf-8")
     first: JavaScriptReorderResult = JavaScriptClassMethodReorderer(
@@ -147,7 +206,12 @@ def test_javascript_reports_organizer_failures(
 
     """
     path: Path = tmp_path / "demo.js"
-    _written: int = path.write_text(data="class Demo {}\n", encoding="utf-8")
+    _written: int = path.write_text(
+        data="""\
+class Demo {}
+""",
+        encoding="utf-8",
+    )
 
     def fake_executable(*, name: str) -> str:
         """Pretend every executable exists on ``PATH``.
@@ -257,11 +321,18 @@ def test_javascript_resolves_global_espree_or_fails(
     espree: Path = tmp_path / "global" / "espree" / "dist" / "espree.cjs"
     espree.parent.mkdir(parents=True)
     _written: int = espree.write_text(
-        data="exports.parse = source => ({});\n",
+        data="""\
+exports.parse = source => ({});
+""",
         encoding="utf-8",
     )
     path: Path = tmp_path / "demo.js"
-    _written = path.write_text(data="class Demo {}\n", encoding="utf-8")
+    _written = path.write_text(
+        data="""\
+class Demo {}
+""",
+        encoding="utf-8",
+    )
 
     def fake_which(*, cmd: str) -> str | None:
         """Resolve node and npm while hiding eslint.

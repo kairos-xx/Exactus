@@ -78,56 +78,94 @@ class Constants:
     unicode_comment_line: Final[int] = 1
     python_source: Final[str] = dedent(
         text=(
-            '    """Module docstring mentioning abc.cde."""\n    import abc.cd'
-            'e\n    \n    VALUE = "abc.cde"  # trailing abc.cde comment\n    N'
-            "AME = f\"{abc.cde} interpolated\"\n    '''module literal with ab"
-            'c.cde\'\'\'\n    \n    def f():\n        """Docstring abc.cde."""'
-            '\n        return abc.cde\n    \n    class K:\n        """Class do'
-            'cstring abc.cde."""\n        x = \'abc.cde\'\n    # full-line abc'
-            ".cde comment\n    "
+            """\
+    \"""Module docstring mentioning abc.cde.\"""
+    import abc.cde
+
+    VALUE = "abc.cde"  # trailing abc.cde comment
+    NAME = f"{abc.cde} interpolated"
+    '''module literal with abc.cde'''
+
+    def f():
+        \"""Docstring abc.cde.\"""
+        return abc.cde
+
+    class K:
+        \"""Class docstring abc.cde.\"""
+        x = 'abc.cde'
+    # full-line abc.cde comment
+    """
         ),
     )
     sql_source: Final[str] = dedent(
         text=(
-            '    SELECT "abc.cde", `abc.cde`, [abc.cde] FROM abc_cde\n    WHER'
-            "E note = 'abc.cde' -- abc.cde tail comment\n    /* abc.cde block"
-            "\n       comment */ SELECT 'unterminated abc.cde\n    "
+            """\
+    SELECT "abc.cde", `abc.cde`, [abc.cde] FROM abc_cde
+    WHERE note = 'abc.cde' -- abc.cde tail comment
+    /* abc.cde block
+       comment */ SELECT 'unterminated abc.cde
+    """
         ),
     )
     javascript_source: Final[str] = dedent(
         text=(
-            "    /** JSDoc abc.cde */\n    const s = 'abc.cde';\n    const t ="
-            ' "abc.cde";\n    const u = `abc.cde`;\n    const v = `${abc.cde} '
-            "sub`;\n    // line abc.cde\n    /* block abc.cde */\n    document"
-            ".querySelector('div.abc-cde');\n    obj.getElementById('abc-cde')"
-            ";\n    return abc.cde;\n    "
+            """\
+    /** JSDoc abc.cde */
+    const s = 'abc.cde';
+    const t = "abc.cde";
+    const u = `abc.cde`;
+    const v = `${abc.cde} sub`;
+    // line abc.cde
+    /* block abc.cde */
+    document.querySelector('div.abc-cde');
+    obj.getElementById('abc-cde');
+    return abc.cde;
+    """
         ),
     )
     css_source: Final[str] = dedent(
         text=(
-            "    /* abc.cde comment */\n    .abc-cde { content: 'abc.cde'; }\n"
-            '    a::before { content: "abc.cde"; }\n    .x { color: red; }\n  '
-            "  "
+            """\
+    /* abc.cde comment */
+    .abc-cde { content: 'abc.cde'; }
+    a::before { content: "abc.cde"; }
+    .x { color: red; }
+    """
         ),
     )
     html_source: Final[str] = dedent(
         text=(
-            "    <html><head><style>/* abc.cde */ .a { color: red }</style><sc"
-            "ript>// abc.cde\n    var x = 'abc.cde';</script></head><body><!--"
-            ' abc.cde --><p class="abc-cde">prose abc.cde text</p><p style=\'c'
-            "olor: red'>abc.cde</p></body></html>\n    "
+            """\
+            <html><head><style>/* abc.cde */ .a { color: red }\
+</style><script>// abc.cde
+            var x = 'abc.cde';</script></head><body><!-- abc.cde --><p \
+class="abc-cde">prose abc.cde text</p><p style='color: \
+red'>abc.cde</p></body></html>
+"""
         ),
     )
     markdown_source: Final[str] = dedent(
         text=(
-            "    # Heading abc.cde\n    Prose paragraph with abc.cde mention."
-            "\n    `inline abc.cde code` and [a link](https://abc.cde/x).\n   "
-            " ```python\n    abc.cde inside a fenced block\n    ```\n    > quo"
-            "ted abc.cde prose\n    - list abc.cde item\n    "
+            """\
+    # Heading abc.cde
+    Prose paragraph with abc.cde mention.
+    `inline abc.cde code` and [a link](https://abc.cde/x).
+    ```python
+    abc.cde inside a fenced block
+    ```
+    > quoted abc.cde prose
+    - list abc.cde item
+    """
         ),
     )
-    text_source: Final[str] = "code abc.cde # comment abc.cde\nplain text\n"
-    unicode_source: Final[str] = "// café ☕ abc.cde\nconst s = 'abc.cde';\n"
+    text_source: Final[str] = """\
+code abc.cde # comment abc.cde
+plain text
+"""
+    unicode_source: Final[str] = """\
+// café ☕ abc.cde
+const s = 'abc.cde';
+"""
 
 
 def _spans(text: str, suffix: str) -> dict[int, tuple[tuple[int, int], ...]]:
@@ -160,7 +198,15 @@ def test_python_safe_spans_cover_strings_and_comments() -> None:
 
 def test_python_safe_spans_fail_closed_on_syntax_error() -> None:
     """Malformed Python produces no safe regions."""
-    expect_equal(actual=_spans(text="def (:\n", suffix=".py"), expected={})
+    expect_equal(
+        actual=_spans(
+            text="""\
+def (:
+""",
+            suffix=".py",
+        ),
+        expected={},
+    )
 
 
 def test_python_safe_spans_exclude_fstring_bodies() -> None:
@@ -202,8 +248,10 @@ def test_typescript_safe_offsets_parse_ts_and_tsx() -> None:
     )
     tsx: str = dedent(
         text=(
-            "    const e = <div className='x'>hi</div>; // abc.cde\n    const "
-            "s = 'abc.cde';\n    "
+            """\
+    const e = <div className='x'>hi</div>; // abc.cde
+    const s = 'abc.cde';
+    """
         ),
     )
     expect_true(condition=bool(_spans(text=tsx, suffix=".tsx")))
@@ -270,19 +318,28 @@ def test_web_symbol_scanner_indexes_cross_references(tmp_path: Path) -> None:
         data=(
             dedent(
                 text=(
-                    '    <html><body><div id="abc-cde" class="x abc-cde"><'
-                    "script src='abc-cde.js'></script></body></html>\n    "
+                    """\
+                    <html><body><div id="abc-cde" class="x abc-cde"><script \
+src='abc-cde.js'></script></body></html>
+"""
                 ),
             )
         ),
         encoding="utf-8",
     )
     _ = (web / "site.css").write_text(
-        data=".abc-cde { color: red } #abc-cde { top: 0 }\n",
+        data="""\
+.abc-cde { color: red } #abc-cde { top: 0 }
+""",
         encoding="utf-8",
     )
     _ = (web / "app.js").write_text(
-        data="document.getElementById('abc-cde');\nfetch('abc-cde.json');\n",
+        data=(
+            """\
+document.getElementById('abc-cde');
+fetch('abc-cde.json');
+"""
+        ),
         encoding="utf-8",
     )
     pattern, styles = cast(

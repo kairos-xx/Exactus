@@ -294,11 +294,16 @@ def package(*, config: PackageConfig, root: Path) -> StageResult:
         )
         _ = (output.parent / "README.md").write_text(
             data=(
-                f"# `{root.name}`\n\n            "
-                f"`{root.name}.zip` is the complete filtered "
-                f"project archive.\n\n            "
-                f"## Project tree\n\n            ```\n            "
-                f"{tree}```\n            "
+                f"""\
+# `{root.name}`
+
+            `{root.name}.zip` is the complete filtered project archive.
+
+            ## Project tree
+
+            ```
+            {tree}```
+            """
             ),
             encoding="utf-8",
         )
@@ -306,11 +311,22 @@ def package(*, config: PackageConfig, root: Path) -> StageResult:
         folders: list[str] = sorted(
             entry.name for entry in packages.iterdir() if entry.is_dir()
         )
-        listing: str = "".join(f"- `{name}/`\n" for name in folders)
+        listing: str = "".join(
+            f"""\
+- `{name}/`
+"""
+            for name in folders
+        )
         _ = (packages / "README.md").write_text(
             data=(
-                "# `artifacts/packages/`\n\n            Generated archive "
-                "directory.\n\n            ## Subdirectories\n\n            "
+                """\
+# `artifacts/packages/`
+
+            Generated archive directory.
+
+            ## Subdirectories
+
+            """
             )
             + listing,
             encoding="utf-8",

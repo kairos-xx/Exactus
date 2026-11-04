@@ -82,7 +82,9 @@ def test_example_module_reports_a_golden_mismatch(
         _ = result
         _ = template
         _ = mapping
-        return "different\n"
+        return """\
+different
+"""
 
     monkeypatch.setattr(
         target=markdown_package,

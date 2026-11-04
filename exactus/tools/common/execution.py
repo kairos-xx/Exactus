@@ -77,6 +77,8 @@ from exactus.tools.common.registry import (
     RunBeat,
     RunClaim,
     RunRegistry,
+    project_root_target,
+    record_project_root,
     run_context,
 )
 from exactus.tools.common.report_comparison import (
@@ -488,6 +490,12 @@ def _join_or_reset_conflicts(
 
     """
     registry: RunRegistry = RunRegistry.for_output(output=output)
+    claim_root: Path = Path(
+        environ.get(
+            RegistryTables.project_root_env,
+            str(object=Path.cwd()),
+        ),
+    ).resolve()
     conflicts: tuple[RunRecord, ...] | None = registry.claim(
         request=RunClaim(
             kind="tool",
@@ -496,7 +504,10 @@ def _join_or_reset_conflicts(
             pipeline_run_id=pipeline_run_id,
             pid=getpid(),
             output=output,
-            targets=(str(object=output.resolve()),),
+            targets=(
+                str(object=output.resolve()),
+                project_root_target(root=claim_root),
+            ),
         ),
     )
     if conflicts is None:
@@ -512,6 +523,12 @@ def _join_or_reset_conflicts(
     )
     conflict: RunRecord
     for conflict in conflicts:
+        foreign_root: Path | None = record_project_root(record=conflict)
+        if foreign_root is not None and foreign_root != claim_root:
+            _observe_live_run(output=Path(conflict.output))
+            if process_exists(pid=conflict.pid):
+                terminate_tree(pid=conflict.pid, replaced=True)
+            continue
         owner: str = conflict.pipeline_run_id or conflict.run_id
         descriptor: Descriptor | None = Discovery.find(
             name=conflict.identifier,
@@ -526,11 +543,7 @@ def _join_or_reset_conflicts(
             pipeline_run_id=conflict.pipeline_run_id,
         )
         if observed is not None:
-            registry.finish(
-                run_id=run_id,
-                status="DONE",
-                elapsed_seconds=0.0,
-            )
+            registry.finish(run_id=run_id, status="DONE", elapsed_seconds=0.0)
             return observed
         if process_exists(pid=conflict.pid):
             terminate_tree(pid=conflict.pid, replaced=True)
@@ -1095,7 +1108,7 @@ def _fallback_markdown(
         "| Field | Value |",
         "| --- | --- |",
         f"| Analyzer | `{result.analyzer}` |",
-        f"| Result | **{('PASS' if result.status == 0 else 'FAIL')}** |",
+        f"| Result | **{("PASS" if result.status == 0 else "FAIL")}** |",
         f"| Exit status | `{result.status}` |",
         f"| Elapsed | `{result.elapsed_seconds:.3f}s` |",
         f"| Command | `{result.command}` |",
@@ -1123,7 +1136,7 @@ def _fallback_markdown(
     else:
         lines.extend(("| Artifact | Bytes |", "| --- | ---: |"))
         lines.extend(
-            f"| `{artifact.get('path')}` | {artifact.get('bytes')} |"
+            f"| `{artifact.get("path")}` | {artifact.get("bytes")} |"
             for artifact in artifacts
             if isinstance(artifact, dict)
         )
@@ -1137,7 +1150,7 @@ def _fallback_markdown(
                 continue
             lines.extend(
                 (
-                    f"### `{artifact.get('path')}`",
+                    f"### `{artifact.get("path")}`",
                     "",
                     "```json",
                     dumps(obj=content, indent=2, sort_keys=True),
@@ -1145,7 +1158,9 @@ def _fallback_markdown(
                     "",
                 ),
             )
-    return "\n".join(lines)
+    return """\
+
+""".join(lines)
 
 
 def _fallback_resume(*, result: FallbackResult) -> str:
@@ -1408,13 +1423,18 @@ def _invoke(
         context.interrupted.set()
         return (130, "KeyboardInterrupt")
     Constants.logger.error(
-        "Analyzer run failed: %s\n%s",
+        """\
+Analyzer run failed: %s
+%s""",
         exception,
         capture.traceback,
     )
     return (
         1,
-        f"{type(exception).__name__}: {exception}\n\n{capture.traceback}",
+        f"""\
+{type(exception).__name__}: {exception}
+
+{capture.traceback}""",
     )
 
 
@@ -1595,7 +1615,10 @@ def _stamp_json(
         payload["resume"] = resume
     _ = consume(
         value=path.write_text(
-            data=JsonDict(payload).tojson + "\n",
+            data=JsonDict(payload).tojson
+            + """\
+
+""",
             encoding="utf-8",
         ),
     )
@@ -1638,7 +1661,15 @@ def _stamp_markdown(*, path: Path, result: str, resume: str) -> None:
     if "## Resume" not in markdown:
         lines.extend(("", "## Resume", "", resume))
     _ = consume(
-        value=path.write_text(data="\n".join(lines) + "\n", encoding="utf-8"),
+        value=path.write_text(
+            data="""\
+
+""".join(lines)
+            + """\
+
+""",
+            encoding="utf-8",
+        ),
     )
 
 
@@ -2467,7 +2498,7 @@ def execute_exactus(
     if "EXACTUS_ORCHESTRATED" not in environ:
         ExactusTerminal.finish_standalone_progress(failed=not result.passed)
         ExactusTerminal.results(
-            title=f"exactus · {analyzer.removeprefix('exactus_')}",
+            title=f"exactus · {analyzer.removeprefix("exactus_")}",
             rows=(
                 ResultRow(
                     tool=analyzer,
@@ -2739,7 +2770,10 @@ def crashed_exactus(
                     },
                 )
                 _ = report_json.write_text(
-                    data=JsonDict(report_payload).tojson + "\n",
+                    data=JsonDict(report_payload).tojson
+                    + """\
+
+""",
                     encoding="utf-8",
                 )
         if not _stamp_normalized(

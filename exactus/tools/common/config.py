@@ -13,6 +13,8 @@ from __future__ import annotations
 from argparse import Action, ArgumentParser, ArgumentTypeError
 from dataclasses import dataclass
 from importlib import import_module
+from json import dumps
+from json import loads as json_loads
 from os import environ
 from pathlib import Path
 from sys import argv as sys_argv
@@ -21,6 +23,10 @@ from typing import TYPE_CHECKING, Final, cast, final
 
 from exactus.packages.argument_parser import normalized_option
 from exactus.tools.common.collect_files import mark
+from exactus.tools.common.path_filters import (
+    PathFilters,
+    default_excluded_dirs,
+)
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Collection, Sequence
@@ -137,6 +143,30 @@ def reports_directory(*, files: tuple[ConfigFile, ...]) -> Path:
         msg = "[tool.exactus] reports-dir must stay inside the project"
         raise ConfigError(msg)
     return directory
+
+
+def reports_root(*, start: Path) -> Path:
+    """Return the resolved absolute reports directory for ``start``.
+
+    ``EXACTUS_REPORTS_ROOT`` — exported by the orchestrator and by
+    ``resolve_arguments`` — wins; otherwise the configured
+    ``reports-dir`` resolves against its anchor, defaulting to
+    ``<start>/EXACTUS_RESULTS``.
+
+    Args:
+        start: Directory configuration discovery begins at.
+
+    Returns:
+        Absolute reports directory.
+
+    """
+    if override := environ.get("EXACTUS_REPORTS_ROOT"):
+        return Path(override).resolve()
+    files: tuple[ConfigFile, ...] = discovery_from_environment(start=start)
+    return (
+        reports_anchor(files=files, start=start)
+        / reports_directory(files=files)
+    ).resolve()
 
 
 def reports_anchor(*, files: tuple[ConfigFile, ...], start: Path) -> Path:
@@ -569,7 +599,7 @@ def _section_layers(
     names: tuple[str, ...] = (tool,)
     tables: list[tuple[str, dict[str, JsonValue]]] = [
         (
-            f"{label}: [tool.exactus.{'.'.join((*prefix, name))}]",
+            f"{label}: [tool.exactus.{".".join((*prefix, name))}]",
             _resolved_paths(
                 files=files,
                 path=(*prefix, name),
@@ -1082,6 +1112,7 @@ def resolve_arguments(
     )
     if environ.get(Constants.orchestrated_variable) == "1":
         return mark(tokens=given)
+    environ["EXACTUS_EXPLICIT_ARGUMENTS"] = dumps(obj=given)
     start: Path = Path.cwd()
     for item in given:
         if not item.startswith("-") and Path(item).is_dir():
@@ -1123,3 +1154,788 @@ def resolve_arguments(
     except ConfigError as exc:
         parser.error(message=str(object=exc))
     return mark(tokens=(*configured, *given))
+
+
+def validate_nested(
+    *,
+    root: Path,
+    files: tuple[ConfigFile, ...],
+    parsers: dict[str, ArgumentParser],
+    pipelines: Collection[str],
+) -> None:
+    """Validate encountered owned nested tables before starting tool workers.
+
+    Args:
+        root: Immutable run root.
+        files: Already discovered run-level carriers.
+        parsers: Known tool grammars.
+        pipelines: Known pipeline identifiers.
+
+    """
+    validate(files=files, parsers=parsers, pipelines=pipelines)
+    if environ.get(Constants.environment_variable):
+        return
+    raw_excludes: JsonValue = stacked(files=files, path=()).get("exclude", [])
+    excludes: tuple[str, ...] = (
+        tuple(value for value in raw_excludes if isinstance(value, str))
+        if isinstance(raw_excludes, list)
+        else (raw_excludes,)
+        if isinstance(raw_excludes, str)
+        else ()
+    )
+    patterns: PathFilters = PathFilters(excludes=excludes)
+    reports: Path = reports_directory(files=files)
+    excluded: frozenset[str] = default_excluded_dirs(
+        root=root,
+        reports_dir=reports,
+    )
+    for directory, dirnames, filenames in root.walk():
+        dirnames[:] = [
+            name
+            for name in dirnames
+            if not name.startswith(".")
+            and name not in excluded
+            and patterns.matches(
+                relative=f"{(directory / name).relative_to(root).as_posix()}/",
+            )
+        ]
+        if directory == root or Constants.file_name not in filenames:
+            continue
+        item: ConfigFile | None = _load(path=directory / Constants.file_name)
+        if item is not None:
+            validate(files=(item,), parsers=parsers, pipelines=pipelines)
+
+
+def files_for_path(*, path: Path, boundary: Path) -> tuple[ConfigFile, ...]:
+    """Discover a path's configuration without crossing the run boundary.
+
+    Args:
+        path: Existing file or directory within the run root.
+        boundary: Run-global project root.
+
+    Returns:
+        Configuration carriers, nearest first.
+
+    Raises:
+        ConfigError: If the path is missing or resolves outside the root.
+
+    """
+    resolved: Path = path.resolve()
+    root: Path = boundary.resolve()
+    if not resolved.exists() or not resolved.is_relative_to(root):
+        msg: str = f"{path}: expected an existing path inside {root}"
+        raise ConfigError(msg)
+    return discover(
+        start=resolved if resolved.is_dir() else resolved.parent,
+        boundary=root,
+    )
+
+
+def stacked_provenance(
+    *,
+    files: tuple[ConfigFile, ...],
+    path: tuple[str, ...],
+) -> dict[str, Path]:
+    """Identify the nearest declaration contributing each merged option.
+
+    Args:
+        files: Configuration carriers, nearest first.
+        path: Table path below tool.exactus.
+
+    Returns:
+        Normalized option names mapped to their nearest declaring file.
+
+    """
+    return {
+        key: item.path
+        for item in reversed(files)
+        for key in stacked(files=(item,), path=path)
+    }
+
+
+class ConfigResolver:
+    """Own directory configuration and native-carrier caches for one run."""
+
+    def __init__(self, *, root: Path) -> None:
+        """Bind discovery and ownership to an immutable run root.
+
+        Args:
+            root: Existing analysis root.
+
+        """
+        self.root: Path = root.resolve()
+        self._files: dict[Path, tuple[ConfigFile, ...]] = {}
+        self._native: dict[tuple[Path, tuple[str, ...]], Path | None] = {}
+        self._parsers: dict[str, ArgumentParser] = {}
+        self._validated: set[tuple[Path, str]] = set()
+        self._documents: dict[Path, dict[str, JsonValue]] = {}
+        self._native_filters: dict[tuple[Path, str], PathFilters] = {}
+
+    def files(self, *, path: Path) -> tuple[ConfigFile, ...]:
+        """Resolve and memoize a directory's exactus configuration chain.
+
+        Args:
+            path: Existing candidate within the run root.
+
+        Returns:
+            Carriers in nearest-first order.
+
+        Raises:
+            ConfigError: When the path is missing or outside the run root.
+
+        """
+        resolved: Path = path.resolve()
+        if not resolved.exists() or not resolved.is_relative_to(self.root):
+            msg: str = f"{path}: expected an existing path inside {self.root}"
+            raise ConfigError(msg)
+        directory: Path = resolved if resolved.is_dir() else resolved.parent
+        if directory not in self._files:
+            override: str = environ.get(Constants.environment_variable, "")
+            if override:
+                self._files[directory] = discover(
+                    start=directory,
+                    boundary=self.root,
+                    disabled=override == Constants.disabled,
+                    explicit=None
+                    if override == Constants.disabled
+                    else Path(override),
+                )
+            else:
+                carrier: Path = directory / Constants.file_name
+                item: ConfigFile | None = (
+                    _load(path=carrier) if carrier.is_file() else None
+                )
+                parents: tuple[ConfigFile, ...] = (
+                    self.files(path=directory.parent)
+                    if directory != self.root
+                    and (item is None or item.table.get("root") is not True)
+                    else ()
+                )
+                self._files[directory] = (
+                    *((item,) if item is not None else ()),
+                    *parents,
+                )
+        return self._files[directory]
+
+    def stacked(
+        self,
+        *,
+        path: Path,
+        table: tuple[str, ...] = (),
+    ) -> dict[str, JsonValue]:
+        """Merge the selected path's tool table.
+
+        Args:
+            path: Existing candidate within the root.
+            table: Table components below tool.exactus.
+
+        Returns:
+            Merged non-table options.
+
+        """
+        return stacked(files=self.files(path=path), path=table)
+
+    def argv_signature(
+        self,
+        *,
+        tool: str,
+        path: Path,
+        parser: ArgumentParser | None = None,
+    ) -> tuple[str, ...]:
+        """Render path-specific options while retaining global ownership.
+
+        Args:
+            tool: Canonical tool identifier.
+            path: Candidate whose ancestor tables apply.
+            parser: Tool parser, or the standard tool module's parser.
+
+        Returns:
+            Deterministic per-path option tokens, excluding run controls.
+
+        """
+        if parser is None:
+            if tool not in self._parsers:
+                self._parsers[tool] = tool_parser(
+                    module=f"exactus.tools.{tool}.main",
+                )
+            parser = self._parsers[tool]
+        global_keys: frozenset[str] = Constants.orchestrator_keys | {
+            "fix",
+            "dry",
+            "workers",
+            "jobs",
+            "install-tools",
+            "no-install-tools",
+            "output-dir",
+            "collect-files",
+        }
+        values: dict[str, JsonValue] = {
+            **self.stacked(path=path),
+            **self.stacked(path=path, table=(tool,)),
+        }
+        return tuple(
+            render(
+                values={
+                    k: v for k, v in values.items() if k not in global_keys
+                },
+                parser=parser,
+                source=str(object=path),
+                strict=False,
+            ),
+        )
+
+    def options(self, *, path: Path, tool: str) -> dict[str, JsonValue]:
+        """Resolve nested per-file options without overriding explicit CLI.
+
+        Args:
+            path: Source candidate.
+            tool: Canonical tool identifier.
+
+        Returns:
+            Nested common/tool values excluding global ownership controls.
+
+        """
+        nested: tuple[ConfigFile, ...] = tuple(
+            item
+            for item in self.files(path=path)
+            if item.path.parent != self.root
+        )
+        if tool not in self._parsers:
+            self._parsers[tool] = tool_parser(
+                module=f"exactus.tools.{tool}.main",
+            )
+        for item in nested:
+            identity: tuple[Path, str] = (item.path, tool)
+            if identity not in self._validated:
+                render(
+                    values=stacked(files=(item,), path=(tool,)),
+                    parser=self._parsers[tool],
+                    source=str(object=item.path),
+                    strict=True,
+                )
+                self._validated.add(identity)
+        values: dict[str, JsonValue] = {
+            **stacked(files=nested, path=()),
+            **stacked(files=nested, path=(tool,)),
+        }
+        try:
+            explicit: JsonValue = json_loads(
+                s=environ.get("EXACTUS_EXPLICIT_ARGUMENTS", "[]"),
+            )
+        except ValueError:
+            explicit = []
+        protected: set[str] = (
+            {
+                normalized_option(argument=token)
+                .removeprefix("--")
+                .replace("_", "-")
+                .split(sep="=", maxsplit=1)[0]
+                for token in explicit
+                if isinstance(token, str) and token.startswith("--")
+            }
+            if isinstance(explicit, list)
+            else set()
+        )
+        global_keys: frozenset[str] = Constants.orchestrator_keys | {
+            "fix",
+            "dry",
+            "workers",
+            "jobs",
+            "install-tools",
+            "no-install-tools",
+            "output-dir",
+            "collect-files",
+            "no-fix",
+            "unsafe-fixes",
+        }
+        return {
+            key: value
+            for key, value in values.items()
+            if key not in global_keys
+            and key not in protected
+            and f"no-{key}" not in protected
+            and key.removeprefix("no-") not in protected
+        }
+
+    def boolean(
+        self,
+        *,
+        path: Path,
+        tool: str,
+        name: str,
+        default: bool,
+    ) -> bool:
+        """Read a validated per-file boolean option.
+
+        Args:
+            path: Source candidate.
+            tool: Tool table.
+            name: Normalized option key.
+            default: Effective run-level fallback.
+
+        Returns:
+            Nested boolean or the supplied fallback.
+
+        Raises:
+            ConfigError: If a nested declaration is not boolean.
+
+        """
+        value: JsonValue = self.options(path=path, tool=tool).get(
+            name,
+            default,
+        )
+        if not isinstance(value, bool):
+            msg: str = f"{path}: {name}: expected true or false"
+            raise ConfigError(msg)
+        return value
+
+    def filters(self, *, path: Path, tool: str | None = None) -> PathFilters:
+        """Anchor applicable selection patterns at their declaring folders.
+
+        Args:
+            path: Existing candidate within the root.
+            tool: Optional tool table whose filters also apply.
+
+        Returns:
+            Root-relative include/exclude unions for this candidate.
+
+        """
+        values: dict[str, list[str]] = {"include": [], "exclude": []}
+        for item in reversed(self.files(path=path)):
+            prefix: str = (
+                item.path.parent.relative_to(self.root).as_posix()
+                if item.path.parent.is_relative_to(self.root)
+                else "."
+            )
+            for table in ((), (tool,)) if tool is not None else ((),):
+                declared: dict[str, JsonValue] = stacked(
+                    files=(item,),
+                    path=table,
+                )
+                for key, collected in values.items():
+                    raw: JsonValue | None = declared.get(key)
+                    patterns: list[JsonValue] = (
+                        raw if isinstance(raw, list) else [raw]
+                    )
+                    collected.extend(
+                        f"{prefix}/{pattern}" if prefix != "." else pattern
+                        for pattern in patterns
+                        if isinstance(pattern, str)
+                    )
+        return PathFilters(
+            includes=tuple(values["include"]),
+            excludes=tuple(values["exclude"]),
+        )
+
+    def native_filters(self, *, path: Path, tool: str) -> PathFilters:
+        """Resolve native selection tables relative to their declaring carrier.
+
+        Args:
+            path: Existing source candidate.
+            tool: Analyzer name.
+
+        Returns:
+            Scoped native include/exclude unions.
+
+        """
+        directory: Path = path.resolve().parent
+        key: tuple[Path, str] = (directory, tool)
+        if key in self._native_filters:
+            return self._native_filters[key]
+        patterns: dict[str, list[str]] = {"include": [], "exclude": []}
+        native: str = "ruff" if tool in {"ruff", "ruff_docs"} else tool
+        for parent in (directory, *directory.parents):
+            carrier: Path | None = parent / "pyproject.toml"
+            document: dict[str, JsonValue] = {}
+            if carrier and carrier.is_file():
+                if carrier not in self._documents:
+                    self._documents[carrier] = loads(
+                        carrier.read_text(encoding="utf-8"),
+                    )
+                document = self._documents[carrier]
+            tables: tuple[dict[str, JsonValue], ...] = (
+                _sub_table(
+                    table=document,
+                    path=("tool", "audit_linters_json"),
+                ),
+                _sub_table(
+                    table=document,
+                    path=("tool", "audit_linters_json", tool),
+                ),
+                _sub_table(table=document, path=("tool", native)),
+            )
+            prefix: str = parent.relative_to(self.root).as_posix()
+            for table in tables:
+                self._scope_native_patterns(
+                    table=table,
+                    prefix=prefix,
+                    patterns=patterns,
+                )
+            if (
+                parent == self.root
+                or _sub_table(table=document, path=("tool", "exactus")).get(
+                    "root",
+                )
+                is True
+            ):
+                break
+        if native == "ruff":
+            carrier = self.nearest_native(path=path, sections=("ruff",))
+            if carrier is not None and carrier.name in {
+                "ruff.toml",
+                ".ruff.toml",
+            }:
+                if carrier not in self._documents:
+                    self._documents[carrier] = loads(
+                        carrier.read_text(encoding="utf-8"),
+                    )
+                self._scope_native_patterns(
+                    table=self._documents[carrier],
+                    prefix=carrier.parent.relative_to(self.root).as_posix(),
+                    patterns=patterns,
+                )
+        result: PathFilters = PathFilters(
+            includes=tuple(patterns["include"]),
+            excludes=tuple(patterns["exclude"]),
+        )
+        self._native_filters[key] = result
+        return result
+
+    def nearest_native(
+        self,
+        *,
+        path: Path,
+        sections: tuple[str, ...],
+    ) -> Path | None:
+        """Find the nearest native config containing a requested tool table.
+
+        Args:
+            path: Existing source candidate.
+            sections: Tool table names or explicit native config filenames.
+
+        Returns:
+            Nearest qualifying carrier, or None within this root.
+
+        Raises:
+            ConfigError: If a discovered pyproject is invalid TOML.
+
+        """
+        _ = self.files(path=path)
+        directory: Path = path.resolve()
+        if not directory.is_dir():
+            directory = directory.parent
+        key: tuple[Path, tuple[str, ...]] = (directory, sections)
+        if key in self._native:
+            return self._native[key]
+        names: dict[str, tuple[str, ...]] = {
+            "ruff": (".ruff.toml", "ruff.toml"),
+            "basedpyright": ("basedpyrightconfig.json", "pyrightconfig.json"),
+            "pyright": ("pyrightconfig.json",),
+            "pyrefly": ("pyrefly.toml",),
+            "typescript": ("jsconfig.json", "tsconfig.json"),
+        }
+        result: Path | None = None
+        for parent in (directory, *directory.parents):
+            candidates: tuple[str, ...] = tuple(
+                name
+                for section in sections
+                for name in names.get(section, (section,))
+            )
+            result = next(
+                (
+                    parent / name
+                    for name in candidates
+                    if (parent / name).is_file()
+                ),
+                None,
+            )
+            if result is not None:
+                break
+            result, stopped = self._native_pyproject(
+                parent=parent,
+                sections=sections,
+            )
+            if result is not None or stopped or parent == self.root:
+                break
+        self._native[key] = result
+        return result
+
+    @staticmethod
+    def _scope_native_patterns(
+        *,
+        table: dict[str, JsonValue],
+        prefix: str,
+        patterns: dict[str, list[str]],
+    ) -> None:
+        """Anchor native selection patterns in the declaring directory.
+
+        Args:
+            table: Native analyzer configuration.
+            prefix: Root-relative declaring directory.
+            patterns: Owned accumulating selection lists.
+
+        """
+        for name, values in patterns.items():
+            for option in (name, f"extend-{name}", f"project-{name}s"):
+                raw: JsonValue = table.get(option, [])
+                selected: list[JsonValue] = (
+                    [raw]
+                    if isinstance(raw, str)
+                    else raw
+                    if isinstance(raw, list)
+                    else []
+                )
+                values.extend(
+                    f"{prefix}/{value}" if prefix != "." else value
+                    for value in selected
+                    if isinstance(value, str)
+                )
+
+    def _native_document(
+        self,
+        *,
+        pyproject: Path,
+    ) -> dict[str, JsonValue]:
+        """Load and cache one ``pyproject.toml`` document.
+
+        Args:
+            pyproject: Configuration file to read.
+
+        Returns:
+            Decoded TOML document.
+
+        Raises:
+            ConfigError: If the file is invalid TOML.
+
+        """
+        if pyproject not in self._documents:
+            try:
+                self._documents[pyproject] = loads(
+                    pyproject.read_text(encoding="utf-8"),
+                )
+            except TOMLDecodeError as error:
+                msg: str = f"{pyproject}: invalid TOML: {error}"
+                raise ConfigError(msg) from error
+        return self._documents[pyproject]
+
+    def _native_pyproject(
+        self,
+        *,
+        parent: Path,
+        sections: tuple[str, ...],
+    ) -> tuple[Path | None, bool]:
+        """Inspect a cached native table and its optional inheritance boundary.
+
+        Args:
+            parent: Current directory inside the run root.
+            sections: Requested native tool names.
+
+        Returns:
+            Matching carrier and whether nested Exactus inheritance stops.
+
+        Raises:
+            ConfigError: When the native carrier is invalid TOML.
+
+        """
+        pyproject: Path = parent / "pyproject.toml"
+        if not pyproject.is_file():
+            return None, False
+        try:
+            if pyproject not in self._documents:
+                self._documents[pyproject] = loads(
+                    pyproject.read_text(encoding="utf-8"),
+                )
+            document: dict[str, JsonValue] = self._documents[pyproject]
+        except TOMLDecodeError as error:
+            msg: str = f"{pyproject}: invalid TOML: {error}"
+            raise ConfigError(msg) from error
+        tools: dict[str, JsonValue] = _sub_table(
+            table=document,
+            path=("tool",),
+        )
+        matched: bool = any(
+            section in tools
+            or (section == "basedpyright" and "pyright" in tools)
+            for section in sections
+        )
+        stopped: bool = (
+            _sub_table(table=tools, path=("exactus",)).get("root") is True
+        )
+        return pyproject if matched else None, stopped
+
+
+@dataclass(frozen=True, slots=True)
+class OptionProvenance:
+    """Describe one resolved option and its winning declaration.
+
+    Attributes:
+        name: Parser destination.
+        value: Display-compatible resolved value.
+        layer: Winning precedence layer.
+        source: Declaring configuration carrier, if any.
+
+    """
+
+    name: str
+    value: str
+    layer: str
+    source: Path | None
+
+
+@dataclass(frozen=True, slots=True)
+class ToolConfigReport:
+    """Expose one tool's resolved options.
+
+    Attributes:
+        identifier: Canonical tool identifier.
+        options: Resolved options with provenance.
+
+    """
+
+    identifier: str
+    options: tuple[OptionProvenance, ...]
+
+
+@dataclass(frozen=True, slots=True)
+class ShowConfigReport:
+    """Represent the versioned path-scoped configuration contract.
+
+    Attributes:
+        path: Selected file or directory.
+        anchor: Directory discovery starts at.
+        root: Run-global ownership root.
+        files: Nearest-first exactus carriers.
+        pipeline: Optional selected pipeline.
+        tools: Resolved tool option reports.
+        reports_dir: Run-global report destination.
+
+    """
+
+    path: Path
+    anchor: Path
+    root: Path
+    files: tuple[Path, ...]
+    pipeline: str | None
+    tools: tuple[ToolConfigReport, ...]
+    reports_dir: Path
+
+    def to_json(self) -> dict[str, JsonValue]:
+        """Serialize schema version one without platform-specific objects.
+
+        Returns:
+            JSON-compatible report data.
+
+        """
+        return {
+            "schema_version": 1,
+            "path": str(object=self.path),
+            "anchor": str(object=self.anchor),
+            "root": str(object=self.root),
+            "files": [str(object=p) for p in self.files],
+            "pipeline": self.pipeline,
+            "reports_dir": str(object=self.reports_dir),
+            "tools": [
+                {
+                    "identifier": tool.identifier,
+                    "options": [
+                        {
+                            "name": option.name,
+                            "value": option.value,
+                            "layer": option.layer,
+                            "source": str(object=option.source)
+                            if option.source is not None
+                            else None,
+                        }
+                        for option in tool.options
+                    ],
+                }
+                for tool in self.tools
+            ],
+        }
+
+
+def show_config(
+    *,
+    root: Path,
+    path: Path | None = None,
+    tools: tuple[EffectiveRequest, ...] = (),
+    pipeline: str | None = None,
+    cli: tuple[str, ...] = (),
+) -> ShowConfigReport:
+    """Resolve one path through the same model used by the CLI display.
+
+    Args:
+        root: Run-global project root.
+        path: Selected existing path, defaulting to root.
+        tools: Tools and optional presets to report.
+        pipeline: Selected pipeline.
+        cli: Explicit tool arguments with highest precedence.
+
+    Returns:
+        Versioned structured report retaining option provenance.
+
+    """
+    selected: Path = (path or root).resolve()
+    resolver: ConfigResolver = ConfigResolver(root=root)
+    files: tuple[ConfigFile, ...] = resolver.files(path=selected)
+    reports: list[ToolConfigReport] = []
+    for request in tools:
+        paths: dict[str, tuple[str, ...]] = {
+            "common": (),
+            "tool": (request.tool,),
+            "pipeline": ("pipeline", pipeline or "", request.tool),
+        }
+        options: list[OptionProvenance] = []
+        for name, value, layer in effective(
+            files=files,
+            request=EffectiveRequest(
+                tool=request.tool,
+                module=request.module,
+                preset=request.preset,
+                cli=(*request.cli, *cli),
+                pipeline=pipeline or request.pipeline,
+            ),
+        ):
+            origins: dict[str, Path] = (
+                stacked_provenance(
+                    files=files,
+                    path=paths.get(layer, ()),
+                )
+                if layer in paths
+                else {}
+            )
+            parser: ArgumentParser = tool_parser(module=request.module)
+            source: Path | None = next(
+                (
+                    origin
+                    for key, origin in origins.items()
+                    if (action := _action(parser=parser, key=key)) is not None
+                    and action.dest == name
+                ),
+                None,
+            )
+            options.append(
+                OptionProvenance(
+                    name=name,
+                    value=value,
+                    layer=layer,
+                    source=source,
+                ),
+            )
+        reports.append(
+            ToolConfigReport(
+                identifier=request.tool,
+                options=tuple(options),
+            ),
+        )
+    global_files: tuple[ConfigFile, ...] = resolver.files(path=root)
+    return ShowConfigReport(
+        path=selected,
+        anchor=selected if selected.is_dir() else selected.parent,
+        root=root.resolve(),
+        files=tuple(item.path for item in files),
+        pipeline=pipeline,
+        tools=tuple(reports),
+        reports_dir=reports_anchor(files=global_files, start=root)
+        / reports_directory(files=global_files),
+    )

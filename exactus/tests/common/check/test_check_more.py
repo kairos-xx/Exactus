@@ -55,7 +55,9 @@ def _make_venv(root: Path, version: str, name: str = ".venv") -> Path:
     venv: Path = root / name
     (venv / "bin").mkdir(parents=True)
     (venv / "pyvenv.cfg").write_text(
-        data=f"version = {version}\n",
+        data=f"""\
+version = {version}
+""",
         encoding="utf-8",
     )
     (venv / "bin" / "python").write_text(data="", encoding="utf-8")
@@ -90,7 +92,12 @@ def test_venv_version_parsing(tmp_path: Path) -> None:
         actual=private_call(owner=check, name="_venv_version", venv=venv),
         expected=(3, 9),
     )
-    (venv / "pyvenv.cfg").write_text(data="version = x\n", encoding="utf-8")
+    (venv / "pyvenv.cfg").write_text(
+        data="""\
+version = x
+""",
+        encoding="utf-8",
+    )
     expect_none(
         value=private_call(owner=check, name="_venv_version", venv=venv),
     )

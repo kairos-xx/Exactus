@@ -111,6 +111,8 @@ def pytest_terminal_summary(terminalreporter: TerminalReporter) -> None:
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(
         data=dumps(obj={"version": 3, "files": timings}, sort_keys=True)
-        + "\n",
+        + """\
+
+""",
         encoding="utf-8",
     )

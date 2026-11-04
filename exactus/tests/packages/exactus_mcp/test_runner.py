@@ -205,12 +205,16 @@ def test_run_collects_reports_and_bounds_output(
             expected=body,
         )
     _ = report.with_suffix(suffix=".md").write_text(
-        data="# Docs\n",
+        data="""\
+# Docs
+""",
         encoding="utf-8",
     )
     expect_equal(
         actual=runner.read_report(tool="docs", report_format="markdown"),
-        expected="# Docs\n",
+        expected="""\
+# Docs
+""",
     )
     expect_in(member="docs", container=runner.list_tools())
 

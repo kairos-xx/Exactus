@@ -72,5 +72,7 @@ def main() -> int:
             ),
         ),
     )
-    stdout.write(f"{result.path}\n")
+    stdout.write(f"""\
+{result.path}
+""")
     return 0

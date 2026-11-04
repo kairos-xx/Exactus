@@ -209,7 +209,7 @@ def test_parse_enforces_input_limit() -> None:
             "--shell=bash",
             "--active-word-index=1",
             "--word=check",
-            f"--word={'x' * _GroupFinalConstants_5.max_input}",
+            f"--word={"x" * _GroupFinalConstants_5.max_input}",
         ),
     )
     expect_equal(actual=parsed.status, expected=Constants.exit_malformed)
@@ -234,7 +234,14 @@ def test_render_record_fields() -> None:
 
 def test_render_record_rejects_control_characters() -> None:
     """Fields containing separators or newlines are dropped."""
-    for field_value in ("a\x1fb", "a\nb", "a\rb", "a\x00b"):
+    for field_value in (
+        "a\x1fb",
+        """\
+a
+b""",
+        "a\rb",
+        "a\x00b",
+    ):
         expect_none(
             value=render_record(
                 candidate=CompletionCandidate(

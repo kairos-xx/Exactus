@@ -237,16 +237,10 @@ def show(*, report: Report) -> None:
         else "killed"
     )
     _ = stdout.write(
-        f"{report.example.name:<28}"
-        f" "
-        f"{report.form:<7}"
-        f" "
-        f"{report.status:<8}"
-        f" "
-        f"{report.seconds:6.1f}"
-        f"s  "
-        f"{code}"
-        f"\n",
+        f"""\
+{report.example.name:<28} {report.form:<7} {report.status:<8} \
+{report.seconds:6.1f}s  {code}
+""",
     )
     if report.status in {"fail", "timeout"}:
         tail: list[str] = report.log.read_text(
@@ -255,7 +249,9 @@ def show(*, report: Report) -> None:
         ).splitlines()[-Constants.log_tail :]
         line: str
         for line in tail:
-            _ = stdout.write(f"    {line}\n")
+            _ = stdout.write(f"""\
+    {line}
+""")
 
 
 def _run(
@@ -277,7 +273,9 @@ def _run(
     """
     reports: list[Report] = []
     for form in forms(example=example):
-        _ = stdout.write(f"running {example.name} ({form})...\n")
+        _ = stdout.write(f"""\
+running {example.name} ({form})...
+""")
         stdout.flush()
         report: Report = launch(
             example=example,
@@ -327,9 +325,10 @@ def main(*, arguments: tuple[str, ...] | None = None) -> int:
             unknown: set[str] = wanted - known
             if unknown:
                 _ = stdout.write(
-                    f"unknown examples: "
-                    f"{sorted(unknown)}\nknown examples:   "
-                    f"{sorted(known)}\n",
+                    f"""\
+unknown examples: {sorted(unknown)}
+known examples:   {sorted(known)}
+""",
                 )
                 return 2
             examples = list(filter(lambda item: item.name in wanted, examples))
@@ -348,9 +347,10 @@ def main(*, arguments: tuple[str, ...] | None = None) -> int:
             guard.result.terminated or guard.result.killed
         ):
             _ = stdout.write(
-                f"guard cleaned "
-                f"{len(guard.result.terminated) + len(guard.result.killed)}"
-                " stray descendant(s)\n",
+                f"""\
+guard cleaned {len(guard.result.terminated) + len(guard.result.killed)} stray \
+descendant(s)
+""",
             )
         reports: list[Report] = [
             report for group in grouped for report in group
@@ -360,8 +360,11 @@ def main(*, arguments: tuple[str, ...] | None = None) -> int:
             if report.status in {"ok", "alive"}:
                 passed += 1
         _ = stdout.write(
-            f"\n{passed}/{len(reports)} invocations ran well "
-            f"({len(reports) - passed} failed)\n",
+            f"""\
+
+{passed}/{len(reports)} invocations ran well ({len(reports) - passed} failed)\
+
+""",
         )
         return 0 if passed == len(reports) else 1
 

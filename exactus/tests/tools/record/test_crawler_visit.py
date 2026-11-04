@@ -56,40 +56,60 @@ class Constants:
 
     site: Final[str] = dedent(
         text=(
-            '    <!doctype html><html lang="en"><body>\n    <nav class="sv-nav'
-            'igation-rail">\n    <button data-value="items">Items</button>\n  '
-            '  <button data-value="settings">Settings</button>\n    <button da'
-            'ta-value="">Empty</button>\n    <button data-value="items">Dup</b'
-            'utton>\n    </nav>\n    <a href="#/items/detail">detail</a><a hre'
-            'f="#/items">same</a>\n    <a href="/plain">plain</a>\n    <div id'
-            '="main-content"></div>\n    <script>\n    const routes = {\n     '
-            ' items: `<h1>Items</h1>\n        <button id="create">Create item<'
-            "/button>\n        <button>Delete item</button>\n        <button>S"
-            "witch to dark theme</button>\n        <button>Create item</button"
-            '>\n        <button id="post">Add record</button>\n        <button'
-            ' disabled id="off">Config disabled</button>\n        <select name'
-            '="kind"><option value="">pick</option>\n          <option value="'
-            'a">A</option></select>\n        <select aria-label="size"><option'
-            ' value="s">S</option></select>\n        <select><option value="z"'
-            '>Z</option></select>\n        <input type="checkbox" name="flag">'
-            '\n        <input type="checkbox" aria-label="Toggle theme">\n    '
-            '    <input type="radio">\n        <div id="dlg" hidden>Dialog ope'
-            "n</div>`,\n      settings: `<h1>Settings</h1><p>plain</p>`,\n    "
-            "};\n    function render() {\n      const route = (location.hash.r"
-            'eplace("#/", "") || "items").split("/")[0];\n      document.getEl'
-            'ementById("main-content").innerHTML =\n        routes[route] || r'
-            'outes.items;\n      const create = document.getElementById("creat'
-            'e");\n      if (create) create.onclick = () => {\n        documen'
-            't.getElementById("dlg").hidden = false;\n      };\n      const po'
-            'st = document.getElementById("post");\n      if (post) post.oncli'
-            'ck = () =>\n        fetch("/api/save", {method: "POST", body: "x"'
-            '});\n      console.log("rendered", route);\n    }\n    window.add'
-            'EventListener("hashchange", render);\n    render();\n    if (!loc'
-            'alStorage.getItem("vmim.setup.seen")) {\n      document.body.inse'
-            'rtAdjacentHTML("beforeend",\n        \'<div class="vmim-setup"><b'
-            'utton id="cont">Continue</button></div>\');\n      document.getEl'
-            'ementById("cont").onclick = () =>\n        document.querySelector'
-            '(".vmim-setup").remove();\n    }\n    </script></body></html>'
+            """\
+    <!doctype html><html lang="en"><body>
+    <nav class="sv-navigation-rail">
+    <button data-value="items">Items</button>
+    <button data-value="settings">Settings</button>
+    <button data-value="">Empty</button>
+    <button data-value="items">Dup</button>
+    </nav>
+    <a href="#/items/detail">detail</a><a href="#/items">same</a>
+    <a href="/plain">plain</a>
+    <div id="main-content"></div>
+    <script>
+    const routes = {
+      items: `<h1>Items</h1>
+        <button id="create">Create item</button>
+        <button>Delete item</button>
+        <button>Switch to dark theme</button>
+        <button>Create item</button>
+        <button id="post">Add record</button>
+        <button disabled id="off">Config disabled</button>
+        <select name="kind"><option value="">pick</option>
+          <option value="a">A</option></select>
+        <select aria-label="size"><option value="s">S</option></select>
+        <select><option value="z">Z</option></select>
+        <input type="checkbox" name="flag">
+        <input type="checkbox" aria-label="Toggle theme">
+        <input type="radio">
+        <div id="dlg" hidden>Dialog open</div>`,
+      settings: `<h1>Settings</h1><p>plain</p>`,
+    };
+    function render() {
+      const route = (location.hash.replace("#/", "") || "items").split("/")[0]\
+;
+      document.getElementById("main-content").innerHTML =
+        routes[route] || routes.items;
+      const create = document.getElementById("create");
+      if (create) create.onclick = () => {
+        document.getElementById("dlg").hidden = false;
+      };
+      const post = document.getElementById("post");
+      if (post) post.onclick = () =>
+        fetch("/api/save", {method: "POST", body: "x"});
+      console.log("rendered", route);
+    }
+    window.addEventListener("hashchange", render);
+    render();
+    if (!localStorage.getItem("vmim.setup.seen")) {
+      document.body.insertAdjacentHTML("beforeend",
+        '<div class="vmim-setup"><button id="cont">Continue</button></div>');\
+
+      document.getElementById("cont").onclick = () =>
+        document.querySelector(".vmim-setup").remove();
+    }
+    </script></body></html>"""
         ),
     )
 

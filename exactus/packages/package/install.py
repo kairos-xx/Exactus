@@ -125,7 +125,10 @@ class Constants:
     posix_install_dir: Final[Path] = Path("/usr/local/bin")
     windows_root_variable: Final[str] = "ProgramFiles"
     windows_root_fallback: Final[str] = "C:/Program Files"
-    windows_shim: Final[str] = '@echo off\r\npy -3 "%~dp0exactus" %*\r\n'
+    windows_shim: Final[str] = """\
+@echo off\r
+py -3 "%~dp0exactus" %*\r
+"""
     systems: Final[dict[str, str]] = {
         "linux": "linux",
         "darwin": "macos",
@@ -243,8 +246,11 @@ def _write_release_readme(
     """
     _ = (directory / "README.md").write_text(
         data=(
-            f"# `{directory.name}/`\n\nStandalone Exactus executable for "
-            f"{system} {architecture}.\n"
+            f"""\
+# `{directory.name}/`
+
+Standalone Exactus executable for {system} {architecture}.
+"""
         ),
         encoding="utf-8",
     )
@@ -823,7 +829,12 @@ def _install_dependencies(*, ui: _InstallUi) -> int:
     site_packages: Path = Path(getusersitepackages())
     site_packages.mkdir(parents=True, exist_ok=True)
     _ = (site_packages / Constants.pth_name).write_text(
-        data="".join(f"{site_dir}\n" for site_dir in site_dirs),
+        data="".join(
+            f"""\
+{site_dir}
+"""
+            for site_dir in site_dirs
+        ),
         encoding="utf-8",
     )
     ui.done(step="dependencies", detail=f"{len(site_dirs)} site directories")

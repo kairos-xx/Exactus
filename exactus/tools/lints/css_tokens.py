@@ -175,7 +175,9 @@ class Constants:
     )
     analysis_limit: Final[int] = 16384
     message_limit: Final[int] = 120
-    blanks: Final[str] = " \t\r\n\f"
+    blanks: Final[str] = """\
+ \t\r
+\x0c"""
     function_call: Final[Pattern[str]] = compile_pattern(
         pattern=r"[A-Za-z_-][A-Za-z0-9_-]*\s*\(",
     )
@@ -986,7 +988,17 @@ def _blank(*, text: str, fill: str = " ") -> str:
         A string of the same length and line structure.
 
     """
-    return "".join("\n" if char == "\n" else fill for char in text)
+    return "".join(
+        """\
+
+"""
+        if char
+        == """\
+
+"""
+        else fill
+        for char in text
+    )
 
 
 def _string_end(*, text: str, start: int) -> int:
@@ -1013,7 +1025,12 @@ def _string_end(*, text: str, start: int) -> int:
             index += 2
         elif char == quote:
             return index + 1
-        elif char == "\n":
+        elif (
+            char
+            == """\
+
+"""
+        ):
             return index
         else:
             index += 1
@@ -1105,10 +1122,17 @@ def lex(*, text: str) -> CssSource:
                 masked.append(_blank(text=text[match.end() : end]))
         position = end
     offsets: list[int] = []
-    found: int = text.find("\n")
+    found: int = text.find("""\
+
+""")
     while found >= 0:
         offsets.append(found)
-        found = text.find("\n", found + 1)
+        found = text.find(
+            """\
+
+""",
+            found + 1,
+        )
     return CssSource(
         clean="".join(clean),
         masked="".join(masked),
@@ -1281,7 +1305,7 @@ class CssTokenAudit:
         self.findings: list[CssTokenFinding] = []
         self.declarations: list[CssDeclaration] = []
         trace(
-            step=f"css tokens: parsing {len(set(inputs.files))} files",
+            step=(f"css tokens: parsing {len(set(inputs.files))} files"),
             depth=3,
         )
         for file in sorted(set(inputs.files)):

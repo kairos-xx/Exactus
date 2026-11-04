@@ -66,7 +66,12 @@ def source_file(*, tmp_path: Path, suffix: str = ".js") -> Path:
 
     """
     path: Path = tmp_path / f"sample{suffix}"
-    path.write_text(data="const x = value => value;\n", encoding="utf-8")
+    path.write_text(
+        data="""\
+const x = value => value;
+""",
+        encoding="utf-8",
+    )
     return path
 
 
@@ -337,27 +342,32 @@ def scenario_file(*, tmp_path: Path, marker: str) -> Path:
         "SCENARIO_ANALYZE": (
             dedent(
                 text=(
-                    "    /*SCENARIO_ANALYZE*/\n    function free(x) { retu"
-                    "rn x; }\n    class Demo { method(y) { return y; } }\n"
-                    "    const arrow = z => z;"
+                    """\
+    /*SCENARIO_ANALYZE*/
+    function free(x) { return x; }
+    class Demo { method(y) { return y; } }
+    const arrow = z => z;"""
                 ),
             )
         ),
         "SCENARIO_TO_ARROW": (
             dedent(
                 text=(
-                    "    /*SCENARIO_TO_ARROW*/\n    function double(x) { r"
-                    "eturn x * 2; }\n    function make(x) { return { value"
-                    ": x }; }\n    class Demo { method(a, b) { return a + "
-                    "b; } }"
+                    """\
+    /*SCENARIO_TO_ARROW*/
+    function double(x) { return x * 2; }
+    function make(x) { return { value: x }; }
+    class Demo { method(a, b) { return a + b; } }"""
                 ),
             )
         ),
         "SCENARIO_FROM_ARROW": (
             dedent(
                 text=(
-                    "    /*SCENARIO_FROM_ARROW*/\n    const inc = x => x +"
-                    " 1;\n    class Demo { static twice = x => x * 2; }"
+                    """\
+    /*SCENARIO_FROM_ARROW*/
+    const inc = x => x + 1;
+    class Demo { static twice = x => x * 2; }"""
                 ),
             )
         ),
@@ -582,7 +592,11 @@ def test_public_espree_resolution_fallbacks(*, tmp_path: Path) -> None:
     analyzer_result: CompletedProcess[str] = completed(stdout="[]")
     eslint_results: list[CompletedProcess[str]] = [
         completed(code=1),
-        completed(stdout="/eslint/espree.cjs\n"),
+        completed(
+            stdout="""\
+/eslint/espree.cjs
+""",
+        ),
     ]
     with (
         patch(
@@ -611,7 +625,11 @@ def test_public_espree_resolution_fallbacks(*, tmp_path: Path) -> None:
     candidate.write_text(data="", encoding="utf-8")
     npm_results: list[CompletedProcess[str]] = [
         completed(code=1),
-        completed(stdout=f"{global_root}\n"),
+        completed(
+            stdout=f"""\
+{global_root}
+""",
+        ),
     ]
     with (
         patch(
@@ -710,11 +728,18 @@ def test_scan_reports_findings_without_writing(tmp_path: Path) -> None:
     """
     scenario: Path = tmp_path / "scenario.js"
     _ = scenario.write_text(
-        data="function double(x) { return x * 2; }\n",
+        data="""\
+function double(x) { return x * 2; }
+""",
         encoding="utf-8",
     )
     clean: Path = tmp_path / "clean.js"
-    _ = clean.write_text(data="const double = x => x * 2;\n", encoding="utf-8")
+    _ = clean.write_text(
+        data="""\
+const double = x => x * 2;
+""",
+        encoding="utf-8",
+    )
     files: tuple[Path, ...] = (scenario, clean)
     result: FunctionBlocksResult = scan_function_blocks(
         inputs=FunctionBlocksInput(root=tmp_path, files=files, fix=False),
@@ -760,7 +785,9 @@ def test_scan_heals_files_with_fix(tmp_path: Path) -> None:
     """
     path: Path = tmp_path / "app.js"
     _ = path.write_text(
-        data="function double(x) { return x * 2; }\n",
+        data="""\
+function double(x) { return x * 2; }
+""",
         encoding="utf-8",
     )
     result: FunctionBlocksResult = scan_function_blocks(
@@ -812,7 +839,12 @@ def test_embedded_function_blocks_progress_stays_in_its_phase(
 
     """
     path: Path = tmp_path / "file.js"
-    _ = path.write_text(data="const f = x => x;\n", encoding="utf-8")
+    _ = path.write_text(
+        data="""\
+const f = x => x;
+""",
+        encoding="utf-8",
+    )
     snapshots: list[runtime_module.Progress] = []
 
     def publish(*, progress: runtime_module.Progress) -> None:

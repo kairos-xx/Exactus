@@ -5,14 +5,15 @@
   "test_files_discovered": 1,
   "tests_collected": 2,
   "tests_executed": 2,
-  "js_tests_discovered": 1,
+  "tests_reused": 0,
+  "js_tests_discovered": 0,
   "js_returncode": 0,
   "pytest_jobs": 18,
   "pytest_shard_by": "file",
   "pytest_shards": 1,
   "test_execution": {
     "status": 0,
-    "duration_seconds": 3.008,
+    "duration_seconds": 4.057,
     "tests": [
       {
         "shard": 0,
@@ -55,5 +56,5 @@
     "warnings": []
   },
   "coverage_file": "coverage_raw_py.json",
-  "coverage_sha256": "75a1e6cfe3ea70620955d03519e25101d16d4db5ab403d5e9483c0d1750e696b"
+  "coverage_sha256": "88e70b32128ab57d1da88b631405a5f6d6afef164d3bb8b9bcf5488561ab865b"
 }

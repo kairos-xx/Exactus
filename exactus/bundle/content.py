@@ -8,6 +8,7 @@ exact tool versions they carry. The generated inventory lists the
 operating systems, architectures, and installed tools so a staged tree
 documents itself without the builder's logs.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -22,6 +23,8 @@ _MANIFEST: Final[str] = "data/bundle.json"
 """Per-target manifest holding components and resolved versions."""
 _LIBC_LAYOUT_PARTS: Final[int] = 3
 """Path depth of ``<os>/<libc>/<arch>`` target leaves."""
+
+
 @final
 @dataclass(frozen=True, slots=True)
 class _Target:
@@ -47,6 +50,8 @@ class _Target:
     python: tuple[tuple[str, str], ...]
     node: str
     node_packages: tuple[tuple[str, str], ...]
+
+
 def _pairs(*, value: object) -> tuple[tuple[str, str], ...]:
     """Return sorted ``(name, version)`` pairs from a JSON object.
 
@@ -67,6 +72,8 @@ def _pairs(*, value: object) -> tuple[tuple[str, str], ...]:
         if isinstance(name, str) and isinstance(version, str):
             pairs.append((name, version))
     return tuple(sorted(pairs))
+
+
 def _leaves(*, root: Path) -> list[Path]:
     """Return target directories holding a bundle manifest.
 
@@ -90,6 +97,8 @@ def _leaves(*, root: Path) -> list[Path]:
         if not hidden:
             leaves.append(manifest.parent.parent)
     return sorted(leaves)
+
+
 def _target(*, root: Path, leaf: Path) -> _Target:
     """Load one target's bundle manifest.
 
@@ -126,9 +135,7 @@ def _target(*, root: Path, leaf: Path) -> _Target:
     node: object = versions.get("node")
     return _Target(
         platform=(
-            platform
-            if isinstance(platform, str)
-            else "-".join(relative)
+            platform if isinstance(platform, str) else "-".join(relative)
         ),
         system=relative[0] if relative else "",
         libc=relative[1] if len(relative) == _LIBC_LAYOUT_PARTS else "",
@@ -138,6 +145,8 @@ def _target(*, root: Path, leaf: Path) -> _Target:
         node=node if isinstance(node, str) else "",
         node_packages=_pairs(value=versions.get("node_packages")),
     )
+
+
 def _merged(
     *,
     targets: list[_Target],
@@ -170,6 +179,8 @@ def _merged(
                 versions[version] = set()
             versions[version].add(target.platform)
     return merged
+
+
 def content_markdown(*, targets: list[_Target]) -> str:
     """Render the inventory document for staged targets.
 
@@ -232,6 +243,8 @@ def content_markdown(*, targets: list[_Target]) -> str:
             lines.append(f"| `{name}` | `{version}` | {scope} |")
     lines.append("")
     return "\n".join(lines)
+
+
 def write_content(*, root: Path) -> Path | None:
     """Write ``CONTENT.md`` for a staged bundle root.
 

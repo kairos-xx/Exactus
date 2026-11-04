@@ -51,11 +51,15 @@ class Sources:
 
     clean: Final[str] = dedent(
         text=(
-            "    :root {\n      --primary-length-unit: 4px;\n      --base-leng"
-            "th-gap: calc(var(--primary-length-unit) * 2);\n      --catalog-bo"
-            "x-measure-gap: var(--base-length-gap);\n      --gap: var(--catalo"
-            "g-box-measure-gap);\n    }\n    .box { margin: var(--gap); displa"
-            "y: flex; }\n    "
+            """\
+    :root {
+      --primary-length-unit: 4px;
+      --base-length-gap: calc(var(--primary-length-unit) * 2);
+      --catalog-box-measure-gap: var(--base-length-gap);
+      --gap: var(--catalog-box-measure-gap);
+    }
+    .box { margin: var(--gap); display: flex; }
+    """
         ),
     )
 
@@ -120,23 +124,68 @@ def test_conforming_layers_pass(tmp_path: Path) -> None:
 @pytest.mark.parametrize(
     ("text", "rule"),
     [
-        (":root { --a: 1px; }\n:root { --a: 2px; }\n", "CSS101"),
-        (".a { margin: var(--gap); }\n", "CSS102"),
-        (":root { --base-derived-x: 1px; }\n", "CSS103"),
-        (":root { --primary-keyword-solid: solid; }\n", "CSS104"),
-        (":root { --primary-percent-half: 50%; }\n", "CSS105"),
-        (":root { --primary-duration-slow: 400ms; }\n", "CSS106"),
-        (":root { --primary-font-weight-bold: 700; }\n", "CSS107"),
         (
-            ":root { --primary-a: 1px; --primary-b: var(--primary-a); }\n",
+            """\
+:root { --a: 1px; }
+:root { --a: 2px; }
+""",
+            "CSS101",
+        ),
+        (
+            """\
+.a { margin: var(--gap); }
+""",
+            "CSS102",
+        ),
+        (
+            """\
+:root { --base-derived-x: 1px; }
+""",
+            "CSS103",
+        ),
+        (
+            """\
+:root { --primary-keyword-solid: solid; }
+""",
+            "CSS104",
+        ),
+        (
+            """\
+:root { --primary-percent-half: 50%; }
+""",
+            "CSS105",
+        ),
+        (
+            """\
+:root { --primary-duration-slow: 400ms; }
+""",
+            "CSS106",
+        ),
+        (
+            """\
+:root { --primary-font-weight-bold: 700; }
+""",
+            "CSS107",
+        ),
+        (
+            """\
+:root { --primary-a: 1px; --primary-b: var(--primary-a); }
+""",
             "CSS108",
         ),
-        (":root { --primary-a: calc(1px * 2); }\n", "CSS109"),
+        (
+            """\
+:root { --primary-a: calc(1px * 2); }
+""",
+            "CSS109",
+        ),
         (
             dedent(
                 text=(
-                    "    :root { --catalog-box-measure-a: 1px; --base-a: v"
-                    "ar(--catalog-box-measure-a); }\n    "
+                    """\
+    :root { --catalog-box-measure-a: 1px; --base-a: \
+var(--catalog-box-measure-a); }
+    """
                 ),
             ),
             "CSS110",
@@ -144,8 +193,10 @@ def test_conforming_layers_pass(tmp_path: Path) -> None:
         (
             dedent(
                 text=(
-                    "    :root { --primary-a: 1px; --catalog-box-measure-a"
-                    ": var(--primary-a); }\n    "
+                    """\
+                    :root { --primary-a: 1px; --catalog-box-measure-a: \
+var(--primary-a); }
+"""
                 ),
             ),
             "CSS111",
@@ -153,8 +204,10 @@ def test_conforming_layers_pass(tmp_path: Path) -> None:
         (
             dedent(
                 text=(
-                    "    :root { --catalog-box-color-a: color-mix(in oklab"
-                    ", red, blue); }\n    "
+                    """\
+                    :root { --catalog-box-color-a: color-mix(in oklab, red, \
+blue); }
+"""
                 ),
             ),
             "CSS112",
@@ -162,23 +215,57 @@ def test_conforming_layers_pass(tmp_path: Path) -> None:
         (
             dedent(
                 text=(
-                    "    :root { --base-number-one: 1; --catalog-box-measu"
-                    "re-a: calc(2 * var(--base-number-one)); }\n    "
+                    """\
+                    :root { --base-number-one: 1; --catalog-box-measure-a: \
+calc(2 * var(--base-number-one)); }
+"""
                 ),
             ),
             "CSS113",
         ),
-        (":root { --catalog-box-measure: 1px; }\n", "CSS114"),
-        (":root { --catalog-measure-box-gap: 1px; }\n", "CSS115"),
-        (":root { --catalog-box-weird-gap: 1px; }\n", "CSS116"),
-        (":root { --catalog-box-measure-lg: 1px; }\n", "CSS117"),
-        (":root { --catalog-timeline-measure-gap: 1px; }\n", "CSS118"),
-        (":root { --gap: 4px; }\n", "CSS119"),
+        (
+            """\
+:root { --catalog-box-measure: 1px; }
+""",
+            "CSS114",
+        ),
+        (
+            """\
+:root { --catalog-measure-box-gap: 1px; }
+""",
+            "CSS115",
+        ),
+        (
+            """\
+:root { --catalog-box-weird-gap: 1px; }
+""",
+            "CSS116",
+        ),
+        (
+            """\
+:root { --catalog-box-measure-lg: 1px; }
+""",
+            "CSS117",
+        ),
+        (
+            """\
+:root { --catalog-timeline-measure-gap: 1px; }
+""",
+            "CSS118",
+        ),
+        (
+            """\
+:root { --gap: 4px; }
+""",
+            "CSS119",
+        ),
         (
             dedent(
                 text=(
-                    "    :root { --catalog-box-measure-a: 1px; --gap: var("
-                    "--catalog-box-measure-a, 4px); }\n    "
+                    """\
+    :root { --catalog-box-measure-a: 1px; --gap: var(--catalog-box-measure-a, \
+4px); }
+    """
                 ),
             ),
             "CSS120",
@@ -186,8 +273,10 @@ def test_conforming_layers_pass(tmp_path: Path) -> None:
         (
             dedent(
                 text=(
-                    "    :root { --base-a: 1px; --gap: var(--base-a); }\n "
-                    "   .a { margin: var(--base-a); }\n    "
+                    """\
+                    :root { --base-a: 1px; --gap: var(--base-a); }
+                    .a { margin: var(--base-a); }
+"""
                 ),
             ),
             "CSS121",
@@ -195,15 +284,32 @@ def test_conforming_layers_pass(tmp_path: Path) -> None:
         (
             dedent(
                 text=(
-                    "    :root { --gap: var(--catalog-a-measure-b); }\n   "
-                    " .a { width: calc(var(--gap) + 1px); }\n    "
+                    """\
+                    :root { --gap: var(--catalog-a-measure-b); }
+                    .a { width: calc(var(--gap) + 1px); }
+"""
                 ),
             ),
             "CSS122",
         ),
-        (".a { color: red; }\n", "CSS123"),
-        (".a { unknown-prop: 5px; }\n", "CSS124"),
-        (".a { flex-grow: 2; }\n", "CSS125"),
+        (
+            """\
+.a { color: red; }
+""",
+            "CSS123",
+        ),
+        (
+            """\
+.a { unknown-prop: 5px; }
+""",
+            "CSS124",
+        ),
+        (
+            """\
+.a { flex-grow: 2; }
+""",
+            "CSS125",
+        ),
     ],
 )
 def test_each_rule_reports(tmp_path: Path, text: str, rule: str) -> None:
@@ -240,9 +346,11 @@ def test_scoped_overrides_are_not_conflicts(tmp_path: Path) -> None:
     """
     text: str = dedent(
         text=(
-            "    :root { --dynamic-lane-h: 1.75rem; }\n    .a { --dynamic-lane"
-            "-h: 3rem; }\n    @media (width < 40rem) { .a { --dynamic-lane-h: "
-            "1rem; } }\n    "
+            """\
+    :root { --dynamic-lane-h: 1.75rem; }
+    .a { --dynamic-lane-h: 3rem; }
+    @media (width < 40rem) { .a { --dynamic-lane-h: 1rem; } }
+    """
         ),
     )
     findings: tuple[CssTokenFinding, ...] = audit(
@@ -261,12 +369,18 @@ def test_tokens_resolve_across_files(tmp_path: Path) -> None:
     """
     sources: dict[str, str] = {
         "tokens.css": Sources.clean.partition(".box")[0],
-        "app.css": ".box { margin: var(--gap); }\n",
+        "app.css": """\
+.box { margin: var(--gap); }
+""",
     }
     expect_equal(actual=audit(root=tmp_path, sources=sources), expected=())
     missing: tuple[CssTokenFinding, ...] = audit(
         root=tmp_path,
-        sources={"app.css": ".box { margin: var(--gap); }\n"},
+        sources={
+            "app.css": """\
+.box { margin: var(--gap); }
+""",
+        },
     )
     expect_equal(actual=rules(findings=missing), expected=["CSS102"])
 
@@ -280,7 +394,11 @@ def test_dynamic_references_need_no_definition(tmp_path: Path) -> None:
     """
     findings: tuple[CssTokenFinding, ...] = audit(
         root=tmp_path,
-        sources={"app.css": ":root { --base-w: var(--dynamic-width); }\n"},
+        sources={
+            "app.css": """\
+:root { --base-w: var(--dynamic-width); }
+""",
+        },
     )
     expect_not_in(member="CSS102", container=rules(findings=findings))
 
@@ -295,8 +413,13 @@ def test_comments_and_strings_hide_nothing(tmp_path: Path) -> None:
     text: str = (
         dedent(
             text=(
-                "    /* .a { color: red; } */\n    .a {\n      content: va"
-                'r(--gap);\n      quotes: "a;b{c}";\n    }\n    '
+                """\
+    /* .a { color: red; } */
+    .a {
+      content: var(--gap);
+      quotes: "a;b{c}";
+    }
+    """
             ),
         )
     ) + Sources.clean
@@ -321,9 +444,13 @@ def test_component_directories_are_matched_whole(tmp_path: Path) -> None:
         "components/side-bar/side.css": (
             dedent(
                 text=(
-                    "    :root {\n      --catalog-side-bar-measure-gap: 1p"
-                    "x;\n      --catalog-side-measure-gap: 1px;\n      --c"
-                    "atalog-bar-measure-gap: 1px;\n    }\n    "
+                    """\
+    :root {
+      --catalog-side-bar-measure-gap: 1px;
+      --catalog-side-measure-gap: 1px;
+      --catalog-bar-measure-gap: 1px;
+    }
+    """
                 ),
             )
         ),
@@ -349,8 +476,10 @@ def test_grammar_keywords_stay_literal(tmp_path: Path) -> None:
     """
     text: str = dedent(
         text=(
-            "    .a { place-items: center; flex-flow: row wrap; display: flex;"
-            " }\n    .b { place-items: 4px; flex: 0 0 auto; }\n    "
+            """\
+    .a { place-items: center; flex-flow: row wrap; display: flex; }
+    .b { place-items: 4px; flex: 0 0 auto; }
+    """
         ),
     )
     findings: tuple[CssTokenFinding, ...] = audit(
@@ -372,7 +501,12 @@ def test_finding_locates_declaration(tmp_path: Path) -> None:
     """
     findings: tuple[CssTokenFinding, ...] = audit(
         root=tmp_path,
-        sources={"app.css": Sources.clean + ".late { color: red; }\n"},
+        sources={
+            "app.css": Sources.clean
+            + """\
+.late { color: red; }
+""",
+        },
     )
     expect_equal(actual=len(findings), expected=1)
     expect_equal(actual=findings[0].file, expected=tmp_path / "app.css")
@@ -414,7 +548,12 @@ def test_unreadable_files_are_findings_not_crashes(tmp_path: Path) -> None:
 
     """
     good: Path = tmp_path / "good.css"
-    good.write_text(data=".a { color: red; }\n", encoding="utf-8")
+    good.write_text(
+        data="""\
+.a { color: red; }
+""",
+        encoding="utf-8",
+    )
     binary: Path = tmp_path / "binary.css"
     binary.write_bytes(data=b"\xff\xfe\x00.a { color: red }")
     findings: tuple[CssTokenFinding, ...] = scan_css_tokens(
@@ -454,20 +593,34 @@ def test_byte_order_mark_and_crlf(tmp_path: Path) -> None:
 @pytest.mark.parametrize(
     ("text", "expected"),
     [
-        (".a { color: red; /* never closed\n margin: 0; }\n", [("CSS123", 1)]),
         (
-            '.a { content: "oops; color: red;\n}\n.b { color: blue; }\n',
+            """\
+.a { color: red; /* never closed
+ margin: 0; }
+""",
+            [("CSS123", 1)],
+        ),
+        (
+            """\
+.a { content: "oops; color: red;
+}
+.b { color: blue; }
+""",
             [("CSS123", 1), ("CSS123", 3)],
         ),
         (
-            '.a { content: "a\\"b;c"; color: red; }\n',
+            """\
+.a { content: "a\\"b;c"; color: red; }
+""",
             [("CSS123", 1), ("CSS123", 1)],
         ),
         (
             dedent(
                 text=(
-                    "    .a { background: url(data:image/svg+xml;utf8,<svg"
-                    ">{;}</svg>); color: red; }\n    "
+                    """\
+                    .a { background: url(data:image/svg+xml;utf8,<svg>{;}\
+</svg>); color: red; }
+"""
                 ),
             ),
             [("CSS123", 1), ("CSS123", 1)],
@@ -475,15 +628,27 @@ def test_byte_order_mark_and_crlf(tmp_path: Path) -> None:
         (
             dedent(
                 text=(
-                    "    .a { width: calc(1px; color: red; }\n    .b { mar"
-                    "gin: var(--gap); }\n    "
+                    """\
+    .a { width: calc(1px; color: red; }
+    .b { margin: var(--gap); }
+    """
                 ),
             ),
             [("CSS102", 2), ("CSS122", 1), ("CSS123", 1)],
         ),
-        ("} ; ) .a { color: red; } } ;\n", [("CSS123", 1)]),
+        (
+            """\
+} ; ) .a { color: red; } } ;
+""",
+            [("CSS123", 1)],
+        ),
         (".a { color: red", [("CSS123", 1)]),
-        (".a\\{b { color: red; }\n", [("CSS123", 1)]),
+        (
+            """\
+.a\\{b { color: red; }
+""",
+            [("CSS123", 1)],
+        ),
     ],
 )
 def test_malformed_input_degrades_locally(
@@ -513,7 +678,12 @@ def test_important_does_not_hide_a_plain_reference(tmp_path: Path) -> None:
         tmp_path: Isolated project root.
 
     """
-    text: str = Sources.clean + ".a { color: var(--gap) !important; }\n"
+    text: str = (
+        Sources.clean
+        + """\
+.a { color: var(--gap) !important; }
+"""
+    )
     expect_equal(
         actual=audit(root=tmp_path, sources={"app.css": text}),
         expected=(),
@@ -529,8 +699,10 @@ def test_strings_are_not_references_or_literals(tmp_path: Path) -> None:
     """
     text: str = dedent(
         text=(
-            '    .a { content: "var(--nope) 4px"; }\n    .b { unknown-prop: ur'
-            "l(sprite.png#4px) }\n    "
+            """\
+    .a { content: "var(--nope) 4px"; }
+    .b { unknown-prop: url(sprite.png#4px) }
+    """
         ),
     )
     findings: tuple[CssTokenFinding, ...] = audit(
@@ -547,9 +719,9 @@ def test_css_wide_keywords_need_no_token(tmp_path: Path) -> None:
         tmp_path: Isolated project root.
 
     """
-    text: str = (
-        ".a { font: inherit; color: unset !important; margin: auto; }\n"
-    )
+    text: str = """\
+.a { font: inherit; color: unset !important; margin: auto; }
+"""
     findings: tuple[CssTokenFinding, ...] = audit(
         root=tmp_path,
         sources={"app.css": text},
@@ -564,7 +736,9 @@ def test_negative_numbers_are_literals(tmp_path: Path) -> None:
         tmp_path: Isolated project root.
 
     """
-    text: str = ".a { unknown-prop: -4px; other-prop: col-4px; }\n"
+    text: str = """\
+.a { unknown-prop: -4px; other-prop: col-4px; }
+"""
     findings: tuple[CssTokenFinding, ...] = audit(
         root=tmp_path,
         sources={"app.css": text},
@@ -596,7 +770,13 @@ def test_long_values_are_clipped_in_messages(tmp_path: Path) -> None:
     """
     findings: tuple[CssTokenFinding, ...] = audit(
         root=tmp_path,
-        sources={"app.css": ".a { color: " + "red " * 5000 + "; }\n"},
+        sources={
+            "app.css": ".a { color: "
+            + "red " * 5000
+            + """\
+; }
+""",
+        },
     )
     expect_equal(actual=len(findings), expected=1)
     limit: int = 3 * Constants.message_limit
@@ -610,7 +790,13 @@ def test_one_line_files_scale(tmp_path: Path) -> None:
         tmp_path: Isolated project root.
 
     """
-    text: str = ".a{" + "color:red;" * 20000 + "}\n"
+    text: str = (
+        ".a{"
+        + "color:red;" * 20000
+        + """\
+}
+"""
+    )
     findings: tuple[CssTokenFinding, ...] = audit(
         root=tmp_path,
         sources={"app.css": text},
@@ -642,7 +828,9 @@ def test_lexer_keeps_text_length_and_lines(tmp_path: Path) -> None:
         "}",
         ";",
         ":",
-        "\n",
+        """\
+
+""",
         "url(",
         "a",
     )
@@ -655,7 +843,12 @@ def test_lexer_keeps_text_length_and_lines(tmp_path: Path) -> None:
             expect_equal(
                 actual=source.newlines,
                 expected=tuple(
-                    i for i, c in enumerate(iterable=text) if c == "\n"
+                    i
+                    for i, c in enumerate(iterable=text)
+                    if c
+                    == """\
+
+"""
                 ),
             )
             declarations: list[CssDeclaration] = parse_declarations(
@@ -664,7 +857,12 @@ def test_lexer_keeps_text_length_and_lines(tmp_path: Path) -> None:
             )
             expect_true(
                 condition=all(
-                    1 <= item.line <= text.count("\n") + 1
+                    1
+                    <= item.line
+                    <= text.count("""\
+
+""")
+                    + 1
                     for item in declarations
                 ),
                 message=repr(text),
@@ -680,10 +878,14 @@ def test_every_prefix_of_a_sheet_audits(tmp_path: Path) -> None:
     """
     text: str = dedent(
         text=(
-            "    @import url(a.css);\n    :root { --primary-a: 4px; --base-b: "
-            "calc(var(--primary-a) * 2); }\n    @media (min-width: 40rem) {\n "
-            '     .a { content: "x;y"; margin: var(--gap, 4px) !important;\n  '
-            "         background: url(data:a;b) /* note */ red; }\n    }\n    "
+            """\
+    @import url(a.css);
+    :root { --primary-a: 4px; --base-b: calc(var(--primary-a) * 2); }
+    @media (min-width: 40rem) {
+      .a { content: "x;y"; margin: var(--gap, 4px) !important;
+           background: url(data:a;b) /* note */ red; }
+    }
+    """
         ),
     )
     path: Path = tmp_path / "app.css"
@@ -694,7 +896,13 @@ def test_every_prefix_of_a_sheet_audits(tmp_path: Path) -> None:
         )
         expect_true(
             condition=all(
-                0 <= f.line <= text.count("\n") + 1 for f in findings
+                0
+                <= f.line
+                <= text.count("""\
+
+""")
+                + 1
+                for f in findings
             ),
             message=f"prefix {size}",
         )
@@ -742,13 +950,19 @@ def test_token_findings_are_part_of_lints(
     """
     root: Path = tmp_path / "project"
     root.mkdir()
-    (root / "pyproject.toml").write_text(data="[tool.ruff]\n")
+    (root / "pyproject.toml").write_text(
+        data="""\
+[tool.ruff]
+""",
+    )
     (root / "app.css").write_text(
         data=Sources.clean
         + dedent(
             text=(
-                "    .late { color: red; }\n    :root { --catalog-timeline"
-                "-measure-gap: 1px; }\n    "
+                """\
+    .late { color: red; }
+    :root { --catalog-timeline-measure-gap: 1px; }
+    """
             ),
         ),
     )

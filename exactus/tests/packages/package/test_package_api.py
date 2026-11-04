@@ -328,10 +328,18 @@ def test_load_config_reads_all_stages(tmp_path: Path) -> None:
     path.write_text(
         data=dedent(
             text=(
-                "    [tool.package.build]\n    enabled=true\n    targets=["
-                '"all"]\n    [tool.package.bundle]\n    enabled=true\n    '
-                'node-version="24"\n    part-bytes=123\n    [tool.package.'
-                'package]\n    enabled=true\n    output="x.zip"\n    '
+                """\
+    [tool.package.build]
+    enabled=true
+    targets=["all"]
+    [tool.package.bundle]
+    enabled=true
+    node-version="24"
+    part-bytes=123
+    [tool.package.package]
+    enabled=true
+    output="x.zip"
+    """
             ),
         ),
         encoding="utf-8",
@@ -462,7 +470,10 @@ def test_bundle_builds_requested_targets(
     )
     result: api.StageResult = api.bundle(config=config, root=tmp_path)
     expect_equal(actual=len(result.outputs), expected=2)
-    expect_equal(actual=dict(builds)["linux-musl-amd64"], expected=("pillow",))
+    expect_equal(
+        actual=dict(builds)["linux-musl-amd64"],
+        expected=("playwright", "pillow"),
+    )
     expect_equal(
         actual=dict(builds)["macos-arm64"],
         expected=("playwright", "pillow"),
@@ -476,7 +487,12 @@ def test_package_archives_project_and_documents(tmp_path: Path) -> None:
         tmp_path: Isolated project root.
 
     """
-    _ = (tmp_path / "module.py").write_text(data="x = 1\n", encoding="utf-8")
+    _ = (tmp_path / "module.py").write_text(
+        data="""\
+x = 1
+""",
+        encoding="utf-8",
+    )
     result: api.StageResult = api.package(
         config=PackageConfig(enabled=True),
         root=tmp_path,
@@ -499,7 +515,12 @@ def test_package_honours_explicit_output(tmp_path: Path) -> None:
         tmp_path: Isolated project root.
 
     """
-    _ = (tmp_path / "module.py").write_text(data="x = 1\n", encoding="utf-8")
+    _ = (tmp_path / "module.py").write_text(
+        data="""\
+x = 1
+""",
+        encoding="utf-8",
+    )
     output: Path = tmp_path / "custom.zip"
     result: api.StageResult = api.package(
         config=PackageConfig(enabled=True, output=output),
@@ -507,6 +528,4 @@ def test_package_honours_explicit_output(tmp_path: Path) -> None:
     )
     expect_equal(actual=result.outputs, expected=(output,))
     expect_true(condition=output.is_file())
-    expect_true(
-        condition=not (tmp_path / "artifacts" / "packages").exists(),
-    )
+    expect_true(condition=not (tmp_path / "artifacts" / "packages").exists())

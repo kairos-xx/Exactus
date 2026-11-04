@@ -53,13 +53,15 @@ def trace_text() -> str:
     """
     return dedent(
         text=(
-            "    2026-01-01T00:00:00.000+00:00 +    0.000s tool: start\n    20"
-            "26-01-01T00:00:00.010+00:00 +    0.010s   collect\n    2026-01-01"
-            "T00:00:00.020+00:00 +    0.020s     item\n    2026-01-01T00:00:00"
-            ".030+00:00 +    0.030s     item\n    2026-01-01T00:00:00.040+00:0"
-            "0 +    0.040s     item\n    2026-01-01T00:00:02.000+00:00 +    2."
-            "000s   report\n    2026-01-01T00:00:02.500+00:00 +    2.500s tool"
-            ": done\n    "
+            """\
+    2026-01-01T00:00:00.000+00:00 +    0.000s tool: start
+    2026-01-01T00:00:00.010+00:00 +    0.010s   collect
+    2026-01-01T00:00:00.020+00:00 +    0.020s     item
+    2026-01-01T00:00:00.030+00:00 +    0.030s     item
+    2026-01-01T00:00:00.040+00:00 +    0.040s     item
+    2026-01-01T00:00:02.000+00:00 +    2.000s   report
+    2026-01-01T00:00:02.500+00:00 +    2.500s tool: done
+    """
         ),
     )
 
@@ -108,7 +110,10 @@ def test_parser_ignores_malformed_lines(tmp_path: Path) -> None:
     """
     path: Path = tmp_path / "steps.txt"
     _ = path.write_text(
-        data="bad\n2026-01-01T00:00:00Z + 0.100s valid\n",
+        data="""\
+bad
+2026-01-01T00:00:00Z + 0.100s valid
+""",
         encoding="utf-8",
     )
     events: tuple[StepEvent, ...] = StepParser.parse_file(path=path)
@@ -186,10 +191,17 @@ def test_export_writes_assets_and_raw_lines(tmp_path: Path) -> None:
     script: str = (destination / "data.js").read_text(encoding="utf-8")
     prefix: str = "window.__PERFORMANCE_STEPS__ = JSON.parse(`"
     expect_equal(actual=script.startswith(prefix), expected=True)
-    expect_equal(actual=script.endswith("`);\n"), expected=True)
+    expect_equal(
+        actual=script.endswith("""\
+`);
+"""),
+        expected=True,
+    )
     cooked: str = (
         script.removeprefix(prefix)
-        .removesuffix("`);\n")
+        .removesuffix("""\
+`);
+""")
         .replace("\\\\", "\x00")
         .replace("\\`", "`")
         .replace("\\$", "$")
@@ -596,10 +608,16 @@ def test_config_reads_pyproject_and_cli_precedence(tmp_path: Path) -> None:
         data=(
             dedent(
                 text=(
-                    '    [tool.performance]\n    sources = ["configured"]'
-                    '\n    output = "configured-output"\n    serve = false'
-                    "\n    open = false\n    gap-threshold = 1.5\n    repe"
-                    "tition-threshold = 20\n    server-timeout = 4.0\n    "
+                    """\
+    [tool.performance]
+    sources = ["configured"]
+    output = "configured-output"
+    serve = false
+    open = false
+    gap-threshold = 1.5
+    repetition-threshold = 20
+    server-timeout = 4.0
+    """
                 ),
             )
         ),
@@ -657,7 +675,10 @@ def test_config_rejects_invalid_table_values(tmp_path: Path) -> None:
     )
     for line, kind in invalid:
         _ = (tmp_path / "pyproject.toml").write_text(
-            data=f"[tool.performance]\n{line}\n",
+            data=f"""\
+[tool.performance]
+{line}
+""",
             encoding="utf-8",
         )
         with pytest.raises(expected_exception=ValueError, match=kind):
@@ -677,7 +698,10 @@ def test_config_rejects_out_of_range_values(tmp_path: Path) -> None:
         "server-timeout = 0.0",
     ):
         _ = (tmp_path / "pyproject.toml").write_text(
-            data=f"[tool.performance]\n{line}\n",
+            data=f"""\
+[tool.performance]
+{line}
+""",
             encoding="utf-8",
         )
         with pytest.raises(
@@ -695,13 +719,17 @@ def test_config_handles_non_table_tool_sections(tmp_path: Path) -> None:
 
     """
     _ = (tmp_path / "pyproject.toml").write_text(
-        data='tool = "x"\n',
+        data="""\
+tool = "x"
+""",
         encoding="utf-8",
     )
     config: PerformanceConfig = PerformanceConfig.load(project=tmp_path)
     expect_equal(actual=config.serve, expected=True)
     _ = (tmp_path / "pyproject.toml").write_text(
-        data='tool.performance = "x"\n',
+        data="""\
+tool.performance = "x"
+""",
         encoding="utf-8",
     )
     config = PerformanceConfig.load(project=tmp_path)
@@ -719,7 +747,9 @@ def test_config_root_and_paths_expansion(tmp_path: Path) -> None:
     traces: Path = project / "traces"
     traces.mkdir(parents=True)
     _ = (project / "pyproject.toml").write_text(
-        data="[tool.performance]\n",
+        data="""\
+[tool.performance]
+""",
         encoding="utf-8",
     )
     marker: Path = traces / "a.steps.txt"
@@ -1065,7 +1095,9 @@ def test_analyzer_attributes_time_per_actor_template_and_thread(
     stamp: str = "2026-01-01T00:00:00Z"
     path: Path = tmp_path / "steps.txt"
     _ = path.write_text(
-        data="\n".join(
+        data="""\
+
+""".join(
             (
                 f"{stamp} +   0.000s tool: start",
                 f"{stamp} +   0.100s lint: file 1.py @thread=W_1",
@@ -1074,7 +1106,9 @@ def test_analyzer_attributes_time_per_actor_template_and_thread(
                 f"{stamp} +   3.000s tool: done",
             ),
         )
-        + "\n",
+        + """\
+
+""",
         encoding="utf-8",
     )
     run: PerformanceRun = PerformanceAnalyzer.analyze_file(
@@ -1102,7 +1136,9 @@ def test_samples_are_parsed_and_summarized(tmp_path: Path) -> None:
     stamp: str = "2026-01-01T00:00:00Z"
     path: Path = tmp_path / "steps.txt"
     _ = path.write_text(
-        data="\n".join(
+        data="""\
+
+""".join(
             (
                 f"{stamp} +   0.000s tool: start",
                 f"{stamp} +   1.000s ~sample cpu=50.0 rss=100.0 threads=4 "
@@ -1112,7 +1148,9 @@ def test_samples_are_parsed_and_summarized(tmp_path: Path) -> None:
                 f"{stamp} +   2.000s tool: done",
             ),
         )
-        + "\n",
+        + """\
+
+""",
         encoding="utf-8",
     )
     run: PerformanceRun = PerformanceAnalyzer.analyze_file(path=path)
@@ -1139,8 +1177,10 @@ def test_report_is_machine_readable_and_written_without_a_server(
     stamp: str = "2026-01-01T00:00:00Z"
     path: Path = tmp_path / "steps.txt"
     _ = path.write_text(
-        data=f"{stamp} +   0.000s tool: start\n"
-        f"{stamp} +   2.000s tool: done\n",
+        data=f"""\
+{stamp} +   0.000s tool: start
+{stamp} +   2.000s tool: done
+""",
         encoding="utf-8",
     )
     run: PerformanceRun = PerformanceAnalyzer.analyze_file(path=path)

@@ -30,7 +30,9 @@ def _trace(*, tool: str) -> str:
 
     """
     return (
-        "\n".join(
+        """\
+
+""".join(
             (
                 f"2026-10-14T12:00:00.000+00:00 +    0.000s {tool}: start",
                 "2026-10-14T12:00:00.010+00:00 +    0.010s   discover",
@@ -45,7 +47,9 @@ def _trace(*, tool: str) -> str:
                 f"2026-10-14T12:00:02.050+00:00 +    2.050s {tool}: done",
             ),
         )
-        + "\n"
+        + """\
+
+"""
     )
 
 
@@ -77,21 +81,27 @@ def main() -> int:
         )
         for run in runs:
             _ = stdout.write(
-                f"{run.tool}: duration={run.duration:.3f}s "
-                f"events={len(run.events)} stages={len(run.stages)} "
-                f"largest_gap={run.largest_gap:.3f}s\n",
+                f"""\
+{run.tool}: duration={run.duration:.3f}s events={len(run.events)} \
+stages={len(run.stages)} largest_gap={run.largest_gap:.3f}s
+""",
             )
             for bottleneck in run.bottlenecks[:3]:
                 _ = stdout.write(
-                    f"  {bottleneck.kind}: {bottleneck.label} "
-                    f"score={bottleneck.score:.3f}\n",
+                    f"""\
+  {bottleneck.kind}: {bottleneck.label} score={bottleneck.score:.3f}
+""",
                 )
-        _ = stdout.write(f"Dashboard exported to {index}\n")
+        _ = stdout.write(f"""\
+Dashboard exported to {index}
+""")
         _ = stdout.write(
             dedent(
                 text=(
-                    "    Use Performance.serve(...) in a persistent applic"
-                    "ation to open it.\n    "
+                    """\
+                    Use Performance.serve(...) in a persistent application to \
+open it.
+"""
                 ),
             ),
         )

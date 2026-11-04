@@ -16,6 +16,7 @@ from contextlib import suppress
 from importlib import import_module
 from pathlib import Path
 from sys import path as sys_path
+from textwrap import dedent
 from threading import Thread
 from time import monotonic
 from typing import TYPE_CHECKING, Final, final
@@ -176,6 +177,33 @@ def main() -> int:
             thread.join()
     except KeyboardInterrupt:
         pass
+    for name in ("project-watch-copy", "project-mirror"):
+        destination: Path = Constants.results / name
+        if destination.is_dir():
+            readme: Path = destination / "README.md"
+            body: str = (
+                readme.read_text(encoding="utf-8")
+                if readme.is_file()
+                else """\
+# Generated watcher output
+"""
+            )
+            marker: str = "[`@activity.json`]"
+            if marker not in body:
+                _ = readme.write_text(
+                    data=body.rstrip()
+                    + dedent(
+                        text=(
+                            """\
+
+
+    - [`@activity.json`](%40activity.json) — Watcher activity and completion \
+state.
+    """
+                        ),
+                    ),
+                    encoding="utf-8",
+                )
     return 0
 
 

@@ -127,7 +127,7 @@ class SceneChangeDescriber:
         label: str = self._label(element=after, selector=selector)
         return ElementChange(
             selector=selector,
-            summary=f"{label}: {'; '.join(details)}.",
+            summary=f"{label}: {"; ".join(details)}.",
             details=tuple(details),
         )
 
@@ -209,10 +209,10 @@ class SceneChangeDescriber:
         text: JsonValue = element.get("text")
         tag: JsonValue = element.get("tag")
         if isinstance(name, str) and name.strip():
-            return f"{tag or 'element'} “{name.strip()}”"
+            return f"{tag or "element"} “{name.strip()}”"
         if isinstance(text, str) and text.strip():
             compact: str = " ".join(text.split())
-            return f"{tag or 'element'} “{compact[:80]}”"
+            return f"{tag or "element"} “{compact[:80]}”"
         return str(object=tag or selector)
 
     @staticmethod
@@ -307,17 +307,17 @@ class SceneChangeDescriber:
         dh: float = b.get("height", 0.0) - a.get("height", 0.0)
         movement: list[str] = []
         if abs(dx) >= Constants.geometry_tolerance:
-            movement.append(f"{abs(dx):g}px {('right' if dx > 0 else 'left')}")
+            movement.append(f"{abs(dx):g}px {("right" if dx > 0 else "left")}")
         if abs(dy) >= Constants.geometry_tolerance:
-            movement.append(f"{abs(dy):g}px {('down' if dy > 0 else 'up')}")
+            movement.append(f"{abs(dy):g}px {("down" if dy > 0 else "up")}")
         if movement:
             output.append("moved " + " and ".join(movement))
         size: list[str] = []
         if abs(dw) >= Constants.geometry_tolerance:
-            size.append(f"width {a.get('width', 0):g}→{b.get('width', 0):g}px")
+            size.append(f"width {a.get("width", 0):g}→{b.get("width", 0):g}px")
         if abs(dh) >= Constants.geometry_tolerance:
             size.append(
-                f"height {a.get('height', 0):g}→{b.get('height', 0):g}px",
+                f"height {a.get("height", 0):g}→{b.get("height", 0):g}px",
             )
         if size:
             output.append("resized (" + ", ".join(size) + ")")

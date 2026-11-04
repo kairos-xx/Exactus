@@ -1,4 +1,5 @@
 """Offline dependency-aware runtime for partitioned filesystem tools."""
+
 from __future__ import annotations
 
 from contextlib import contextmanager
@@ -15,6 +16,7 @@ from sys import argv as sys_argv
 from sys import executable as sys_executable
 from sys import platform as sys_platform
 from tempfile import gettempdir
+from textwrap import dedent
 from time import monotonic, sleep
 from typing import (
     TYPE_CHECKING,
@@ -57,9 +59,7 @@ elif __package__:
     try:
         from .conflict_copies import clear_conflict_copies
     except ImportError:
-        from exactus.tools.common.conflict_copies import (
-            clear_conflict_copies,
-        )
+        from exactus.tools.common.conflict_copies import clear_conflict_copies
     from .partition_fs import (
         Catalog,
         FormatError,
@@ -102,6 +102,8 @@ else:
         rollback,
         verify_tree,
     )
+
+
 def closure(catalog: Catalog, name: str) -> list[str]:
     """Resolve dependencies once, in deterministic dependency-first order.
 
@@ -116,6 +118,7 @@ def closure(catalog: Catalog, name: str) -> list[str]:
     """
     resolved: list[str] = []
     active: set[str] = set()
+
     def visit(component: str) -> None:
         """Visit one dependency and reject missing or cyclic references.
 
@@ -141,8 +144,11 @@ def closure(catalog: Catalog, name: str) -> list[str]:
             visit(component=dependency)
         active.remove(component)
         resolved.append(component)
+
     visit(component=name)
     return resolved
+
+
 class _PosixLock(Protocol):
     """Typed interface to the optional POSIX locking module.
 
@@ -156,6 +162,7 @@ class _PosixLock(Protocol):
     LOCK_EX: int
     LOCK_NB: int
     LOCK_UN: int
+
     def flock(self, stream: BinaryIO, operation: int, /) -> None:
         """Lock or unlock a file descriptor.
 
@@ -164,6 +171,8 @@ class _PosixLock(Protocol):
             operation: Operation for this operation.
 
         """
+
+
 class _WindowsLock(Protocol):
     """Typed interface to the optional Windows locking module.
 
@@ -175,6 +184,7 @@ class _WindowsLock(Protocol):
 
     LK_NBLCK: int
     LK_UNLCK: int
+
     def locking(self, descriptor: int, operation: int, count: int, /) -> None:
         """Lock or unlock bytes at the current file offset.
 
@@ -184,6 +194,8 @@ class _WindowsLock(Protocol):
             count: Count for this operation.
 
         """
+
+
 class _PosixUid(Protocol):
     """Typed interface to the optional POSIX user identifier."""
 
@@ -195,6 +207,8 @@ class _PosixUid(Protocol):
 
         """
         ...
+
+
 def _cache_owner() -> str:
     """Tag one cache writer so fallback roots stay per-owner.
 
@@ -210,15 +224,12 @@ def _cache_owner() -> str:
     if sys_platform == "win32":
         return (
             "h"
-            + sha256(
-                data=str(object=Path.home()).encode(),
-            ).hexdigest()[:16]
+            + sha256(data=str(object=Path.home()).encode()).hexdigest()[:16]
         )
-    module: _PosixUid = cast(
-        typ="_PosixUid",
-        val=import_module(name="os"),
-    )
+    module: _PosixUid = cast(typ="_PosixUid", val=import_module(name="os"))
     return f"u{module.getuid()}"
+
+
 def _usable_cache_root(root: Path) -> bool:
     """Whether ``root`` can host the catalog lock file for this process.
 
@@ -252,6 +263,8 @@ def _usable_cache_root(root: Path) -> bool:
     except OSError:
         return False
     return True
+
+
 def _cache_candidates(base: Path, identity: str) -> tuple[Path, ...]:
     """Order catalog cache roots: shared first, per-owner escapes next.
 
@@ -269,6 +282,8 @@ def _cache_candidates(base: Path, identity: str) -> tuple[Path, ...]:
         base / f"{identity}.{owner}",
         Path(gettempdir()) / f"exactus-tools-{owner}" / identity,
     )
+
+
 def _select_cache_root(base: Path, identity: str) -> Path:
     """Pick the first usable catalog cache root for this process.
 
@@ -296,6 +311,8 @@ def _select_cache_root(base: Path, identity: str) -> Path:
         + ", ".join(str(object=candidate) for candidate in candidates)
     )
     raise PermissionError(msg)
+
+
 @contextmanager
 def cache_lock(root: Path, timeout: float = 120.0) -> Generator[None]:
     """Serialize cache publication across processes without stale markers.
@@ -360,6 +377,8 @@ def cache_lock(root: Path, timeout: float = 120.0) -> Generator[None]:
                 yield
             finally:
                 fcntl.flock(stream, fcntl.LOCK_UN)
+
+
 class Runtime:
     """Per-component atomic readiness, decoded objects, and environments."""
 
@@ -399,6 +418,7 @@ class Runtime:
         )
         self.components = self.root / "components"
         self.objects = ObjectStore(root=self.root / "objects")
+
     @staticmethod
     def readiness(catalog: Catalog, recipe: Recipe) -> dict[str, Json]:
         """Return the identity required before reusing a component.
@@ -419,6 +439,7 @@ class Runtime:
             "recipe_sha256": recipe["recipe_sha256"],
             "tree_sha256": recipe["tree_sha256"],
         }
+
     def ensure(self, name: str) -> Path:
         """Materialize only a tool's closure; preserve valid prior trees.
 
@@ -478,6 +499,7 @@ class Runtime:
             ):
                 shutil_rmtree(path=self.objects.root, ignore_errors=True)
         return self.components / name
+
     def environment(self, name: str) -> dict[str, str]:
         """Compose original environment semantics dependency-first.
 
@@ -517,6 +539,7 @@ class Runtime:
                 values.append(env[variable])
             env[variable] = os_pathsep.join(dict.fromkeys(values))
         return env
+
     def tools(self) -> dict[str, tuple[str, dict[str, str]]]:
         """Discover preserved tool declarations from catalog metadata.
 
@@ -539,6 +562,7 @@ class Runtime:
                     raise FormatError(msg)
                 tools[tool] = (name, spec)
         return tools
+
     def command(
         self,
         tool: str,
@@ -594,6 +618,7 @@ class Runtime:
             msg = f"Unsupported tool kind: {kind}"
             raise FormatError(msg)
         return (command, self.environment(name=name))
+
     @staticmethod
     def _ready(
         recipe: Recipe,
@@ -636,6 +661,7 @@ class Runtime:
         except (OSError, ValueError):
             return False
         return True
+
     @staticmethod
     def _index_files(
         recipe: Recipe,
@@ -655,6 +681,7 @@ class Runtime:
                 materializer.files[entry.get("sha256", ""), entry["mode"]] = (
                     target / entry["path"]
                 )
+
     def _recover_objects(self, recipe: Recipe) -> None:
         """Decode only packs with missing/corrupt required objects.
 
@@ -696,6 +723,7 @@ class Runtime:
                 },
                 store=self.objects,
             )
+
     def _publish(
         self,
         recipe: Recipe,
@@ -750,6 +778,8 @@ class Runtime:
         finally:
             if temporary.exists():
                 shutil_rmtree(path=temporary)
+
+
 def _write(text: str) -> None:
     """Write to the current stdout, including redirected host streams.
 
@@ -759,6 +789,8 @@ def _write(text: str) -> None:
     """
     stream: TextIO = cast(typ="TextIO", val=import_module(name="sys").stdout)
     stream.write(text)
+
+
 def _error(text: str) -> None:
     """Write diagnostics to the current redirected stderr.
 
@@ -768,6 +800,8 @@ def _error(text: str) -> None:
     """
     stream: TextIO = cast(typ="TextIO", val=import_module(name="sys").stderr)
     stream.write(text)
+
+
 @final
 class Constants:
     """Group module-level constants.
@@ -778,6 +812,8 @@ class Constants:
     """
 
     maintenance_arguments: Final[int] = 2
+
+
 def _maintenance(runtime: Runtime, args: list[str]) -> None:
     """Apply verified updates or restore a retained catalog under a lock.
 
@@ -800,6 +836,8 @@ def _maintenance(runtime: Runtime, args: list[str]) -> None:
             else rollback(root=runtime.source, digest=args[1])
         )
     _write(text=updated["root_sha256"] + "\n")
+
+
 class ProcessReplacement(Protocol):
     """Native process replacement boundary used by dispatch tests."""
 
@@ -818,6 +856,8 @@ class ProcessReplacement(Protocol):
 
         """
         ...
+
+
 def _bundle_root(*, catalog_path: Path) -> Path:
     """Locate the package root for conflict-copy cleanup.
 
@@ -837,6 +877,8 @@ def _bundle_root(*, catalog_path: Path) -> Path:
     if cleanup_root.name == "data":
         cleanup_root = cleanup_root.parent
     return cleanup_root
+
+
 def main(
     catalog_path: Path,
     arguments: list[str] | None = None,
@@ -876,10 +918,15 @@ def main(
         elif tool in {"--help", "-h"}:
             _write(
                 text=(
-                    "usage: tools.py TOOL [ARGS...]\nOffline partitioned"
-                    " filesystem launcher.\nlist-tools | --verify |"
-                    " --verify-deep | --version\nCache: EXACTUS_TOOLS_CACHE or"
-                    " XDG_CACHE_HOME/exactus-tools\n"
+                    dedent(
+                        text=(
+                            "    usage: tools.py TOOL [ARGS...]\n    Offli"
+                            "ne partitioned filesystem launcher.\n    list"
+                            "-tools | --verify | --verify-deep | --version"
+                            "\n    Cache: EXACTUS_TOOLS_CACHE or XDG_CACHE"
+                            "_HOME/exactus-tools\n    "
+                        ),
+                    )
                 ),
             )
         elif tool in {"--apply-update", "--rollback"}:

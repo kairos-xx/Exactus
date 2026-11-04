@@ -27,7 +27,10 @@ class Constants:
 
     """
 
-    document: Final[str] = "- [ ] pending\n- [x] done\n"
+    document: Final[str] = """\
+- [ ] pending
+- [x] done
+"""
     interval: Final[float] = 0.01
     wakeups: Final[int] = 2
 

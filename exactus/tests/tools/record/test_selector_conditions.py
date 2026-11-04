@@ -63,9 +63,12 @@ class Constants:
     minimum_wait_ms: Final[int] = 250
     html: Final[str] = dedent(
         text=(
-            '    \n    <p class="row" id="r1">one</p><p class="row" id="r2">tw'
-            'o</p>\n    <p class="row" id="r3" style="display:none">three</p>'
-            '\n    <button id="go">Go</button>\n    '
+            """\
+
+    <p class="row" id="r1">one</p><p class="row" id="r2">two</p>
+    <p class="row" id="r3" style="display:none">three</p>
+    <button id="go">Go</button>
+    """
         ),
     )
     rows: Final[SelectorDef] = SelectorDef(
@@ -250,10 +253,12 @@ def test_a_pace_waits_for_a_condition_that_becomes_true(
     _ = page.evaluate(
         expression=dedent(
             text=(
-                "    () => setTimeout(() => {\n                const late "
-                '= document.createElement("p");\n                late.clas'
-                'sName = "late";\n                document.body.append(lat'
-                "e);\n            }, 1500)"
+                """\
+    () => setTimeout(() => {
+                const late = document.createElement("p");
+                late.className = "late";
+                document.body.append(late);
+            }, 1500)"""
             ),
         ),
     )

@@ -48,18 +48,19 @@ def discovery_target(tmp_path: Path) -> Iterator[str]:
         data=(
             dedent(
                 text=(
-                    "    <!doctype html><html><body>\n            <main id"
-                    '="screen" style="height:400px;background:#eee">\n    '
-                    '        <h1 id="outcome">Start</h1>\n            <but'
-                    'ton id="first" onclick="this.hidden=true;\n          '
-                    "    document.querySelector('#second').hidden=false;\n"
-                    "              document.querySelector('#screen').style"
-                    ".background='#c00'\">Next</button>\n            <but"
-                    'ton id="second" hidden onclick="this.hidden=true;\n  '
-                    "            document.querySelector('#outcome').textCo"
-                    "ntent='Done';\n              document.querySelector('"
-                    "#screen').style.background='#00c'\">Finish</button>"
-                    "\n            </main></body></html>"
+                    """\
+    <!doctype html><html><body>
+            <main id="screen" style="height:400px;background:#eee">
+            <h1 id="outcome">Start</h1>
+            <button id="first" onclick="this.hidden=true;
+              document.querySelector('#second').hidden=false;
+              document.querySelector('#screen')\
+.style.background='#c00'">Next</button>
+            <button id="second" hidden onclick="this.hidden=true;
+              document.querySelector('#outcome').textContent='Done';
+              document.querySelector('#screen')\
+.style.background='#00c'">Finish</button>
+            </main></body></html>"""
                 ),
             )
         ),

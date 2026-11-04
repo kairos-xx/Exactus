@@ -202,7 +202,10 @@ def test_write_false_discards_every_step(tmp_path: Path) -> None:
 
     """
     _ = (tmp_path / "pyproject.toml").write_text(
-        data="[tool.steps]\nwrite = false\n",
+        data="""\
+[tool.steps]
+write = false
+""",
         encoding="utf-8",
     )
     destination: Path = tmp_path / "out" / "steps.txt"
@@ -221,7 +224,10 @@ def test_write_true_records_steps(tmp_path: Path) -> None:
 
     """
     _ = (tmp_path / "pyproject.toml").write_text(
-        data="[tool.steps]\nwrite = true\n",
+        data="""\
+[tool.steps]
+write = true
+""",
         encoding="utf-8",
     )
     destination: Path = tmp_path / "out" / "steps.txt"
@@ -242,7 +248,10 @@ def test_pyproject_without_steps_section_keeps_writing(tmp_path: Path) -> None:
 
     """
     _ = (tmp_path / "pyproject.toml").write_text(
-        data='[project]\nname = "demo"\n',
+        data="""\
+[project]
+name = "demo"
+""",
         encoding="utf-8",
     )
     destination: Path = tmp_path / "out" / "steps.txt"
@@ -341,7 +350,10 @@ def test_configured_sampling_writes_resource_lines(tmp_path: Path) -> None:
 
     """
     _ = (tmp_path / "pyproject.toml").write_text(
-        data="[tool.steps]\nsample = 0.05\n",
+        data="""\
+[tool.steps]
+sample = 0.05
+""",
         encoding="utf-8",
     )
     destination: Path = tmp_path / "ARTIFACTS" / "steps.txt"

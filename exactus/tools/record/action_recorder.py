@@ -152,8 +152,8 @@ class LocatorCompiler:
             return f"page.get_by_test_id({dumps(obj=value)})"
         if kind == "role":
             return (
-                f"page.get_by_role({dumps(obj=candidate.get('role'))}, name={
-                    dumps(obj=candidate.get('name'))
+                f"page.get_by_role({dumps(obj=candidate.get("role"))}, name={
+                    dumps(obj=candidate.get("name"))
                 }, "
                 f"exact=True)"
             )
@@ -183,8 +183,8 @@ class LocatorCompiler:
             return f"page.getByTestId({dumps(obj=value)})"
         if kind == "role":
             return (
-                f"page.getByRole({dumps(obj=candidate.get('role'))}, {{name: {
-                    dumps(obj=candidate.get('name'))
+                f"page.getByRole({dumps(obj=candidate.get("role"))}, {{name: {
+                    dumps(obj=candidate.get("name"))
                 }, exact: "
                 f"true}})"
             )
@@ -352,7 +352,10 @@ class ActionCompiler:
         _normalized_written: int = (
             output / "actions.normalized.json"
         ).write_text(
-            data=dumps(obj=actions, indent=2, ensure_ascii=False) + "\n",
+            data=dumps(obj=actions, indent=2, ensure_ascii=False)
+            + """\
+
+""",
             encoding="utf-8",
         )
         python_lines: list[str] = ["# Generated Playwright actions."]
@@ -381,11 +384,21 @@ class ActionCompiler:
             if elapsed is not None:
                 previous_elapsed = elapsed
         _python_written: int = (output / "actions.py.txt").write_text(
-            data="\n".join(python_lines) + "\n",
+            data="""\
+
+""".join(python_lines)
+            + """\
+
+""",
             encoding="utf-8",
         )
         _javascript_written: int = (output / "actions.mjs.txt").write_text(
-            data="\n".join(js_lines) + "\n",
+            data="""\
+
+""".join(js_lines)
+            + """\
+
+""",
             encoding="utf-8",
         )
 
@@ -466,7 +479,7 @@ def _emit_python_fill(action: Action, locator: str) -> str:
         Python fill statement.
 
     """
-    return f"{locator}.fill({dumps(obj=action.get('value'))})"
+    return f"{locator}.fill({dumps(obj=action.get("value"))})"
 
 
 def _emit_python_select(action: Action, locator: str) -> str:
@@ -480,7 +493,7 @@ def _emit_python_select(action: Action, locator: str) -> str:
         Python select_option statement.
 
     """
-    return f"{locator}.select_option({dumps(obj=action.get('values'))})"
+    return f"{locator}.select_option({dumps(obj=action.get("values"))})"
 
 
 def _emit_python_key(action: Action, locator: str) -> str:
@@ -558,7 +571,7 @@ def _emit_python_goto(action: Action, locator: str) -> str:
 
     """
     _ = locator
-    return f"page.goto({dumps(obj=action.get('url'))})"
+    return f"page.goto({dumps(obj=action.get("url"))})"
 
 
 def _emit_python_wait(action: Action, locator: str) -> str:
@@ -573,7 +586,7 @@ def _emit_python_wait(action: Action, locator: str) -> str:
 
     """
     _ = locator
-    return f"page.wait_for_timeout(timeout={action.get('milliseconds', 0)})"
+    return f"page.wait_for_timeout(timeout={action.get("milliseconds", 0)})"
 
 
 def _emit_python_position(action: Action, locator: str) -> str | None:
@@ -614,7 +627,7 @@ def _emit_python_locator_action(action: Action, locator: str) -> str:
         Python method invocation for the registered action.
 
     """
-    return f"{locator}.{action['type']}()"
+    return f"{locator}.{action["type"]}()"
 
 
 def _emit_javascript_click(action: Action, locator: str) -> str:
@@ -648,7 +661,7 @@ def _emit_javascript_fill(action: Action, locator: str) -> str:
         JavaScript fill statement.
 
     """
-    return f"await {locator}.fill({dumps(obj=action.get('value'))});"
+    return f"await {locator}.fill({dumps(obj=action.get("value"))});"
 
 
 def _emit_javascript_select(action: Action, locator: str) -> str:
@@ -662,7 +675,7 @@ def _emit_javascript_select(action: Action, locator: str) -> str:
         JavaScript selectOption statement.
 
     """
-    return f"await {locator}.selectOption({dumps(obj=action.get('values'))});"
+    return f"await {locator}.selectOption({dumps(obj=action.get("values"))});"
 
 
 def _emit_javascript_key(action: Action, locator: str) -> str:
@@ -740,7 +753,7 @@ def _emit_javascript_goto(action: Action, locator: str) -> str:
 
     """
     _ = locator
-    return f"await page.goto({dumps(obj=action.get('url'))});"
+    return f"await page.goto({dumps(obj=action.get("url"))});"
 
 
 def _emit_javascript_wait(action: Action, locator: str) -> str:
@@ -755,7 +768,7 @@ def _emit_javascript_wait(action: Action, locator: str) -> str:
 
     """
     _ = locator
-    return f"await page.waitForTimeout({action.get('milliseconds', 0)});"
+    return f"await page.waitForTimeout({action.get("milliseconds", 0)});"
 
 
 def _emit_javascript_position(action: Action, locator: str) -> str | None:
@@ -796,7 +809,7 @@ def _emit_javascript_locator_action(action: Action, locator: str) -> str:
         Awaited JavaScript method invocation for the registered action.
 
     """
-    return f"await {locator}.{action['type']}();"
+    return f"await {locator}.{action["type"]}();"
 
 
 class ActionRecorder:
@@ -895,11 +908,15 @@ class ActionRecorder:
         with self._raw.open(
             mode="a",
             encoding="utf-8",
-            newline="\n",
+            newline="""\
+
+""",
         ) as stream:
             _written: int = stream.write(
                 dumps(obj=action, ensure_ascii=False, separators=(",", ":"))
-                + "\n",
+                + """\
+
+""",
             )
         sprint(dumps(obj=action, ensure_ascii=False))
 

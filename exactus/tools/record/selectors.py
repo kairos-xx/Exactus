@@ -348,7 +348,9 @@ class SelectorCodec:
                 indent=2,
                 sort_keys=True,
             )
-            + "\n"
+            + """\
+
+"""
         )
         temporary: str | None = None
         try:

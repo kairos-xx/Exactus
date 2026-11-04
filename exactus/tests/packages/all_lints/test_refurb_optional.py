@@ -47,7 +47,9 @@ def test_refurb_output_parses(tmp_path: Path) -> None:
             owner=runner,
             name="_refurb",
             file=Path("src/app.py"),
-            text="src/app.py:3:17 [FURB109]: Use a tuple instead of a list\n",
+            text="""\
+src/app.py:3:17 [FURB109]: Use a tuple instead of a list
+""",
         ),
     )
     expect_equal(actual=len(results), expected=1)

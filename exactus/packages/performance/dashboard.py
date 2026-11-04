@@ -55,7 +55,10 @@ class DashboardExporter:
             run.tool: cls.raw_lines(run=run) for run in runs
         }
         _ = (destination / "steps.json").write_text(
-            data=dumps(obj=data, indent=2) + "\n",
+            data=dumps(obj=data, indent=2)
+            + """\
+
+""",
             encoding="utf-8",
         )
         _ = PerformanceReport.write(
@@ -115,7 +118,9 @@ class DashboardExporter:
             .replace("`", "\\`")
             .replace("${", "\\${")
         )
-        return f"window.__PERFORMANCE_STEPS__ = JSON.parse(`{escaped}`);\n"
+        return f"""\
+window.__PERFORMANCE_STEPS__ = JSON.parse(`{escaped}`);
+"""
 
     @classmethod
     def _copy_styles(cls, *, source: Traversable, destination: Path) -> None:

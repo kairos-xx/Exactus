@@ -97,23 +97,27 @@ def main(*, scratch: Path | None = None) -> int:
     )
     try:
         if not local.wait_ready(url=url, pid=pid):
-            _ = stdout.write(f"server at {url} never accepted a connection\n")
+            _ = stdout.write(f"""\
+server at {url} never accepted a connection
+""")
             return 1
         adopted: tuple[int, int] | None = local.reuse_server(
             path=Constants.site,
         )
         if adopted is None:
-            _ = stdout.write("reuse_server did not adopt the running server\n")
+            _ = stdout.write("""\
+reuse_server did not adopt the running server
+""")
             return 1
         adopted_pid, port = adopted
         body: str = _fetch(port=port, path="/index.html")
         _ = stdout.write(
-            f"serve    pid={pid} url={url} reused={reused}\n"
-            f"adopt    pid={adopted_pid} "
-            f"same_process={adopted_pid == pid}\n"
-            "ping     "
-            f"{('ok' if local.ping_server(port=port) else 'failed')}\n"
-            f"index    {body.splitlines()[0]!r}\n",
+            f"""\
+serve    pid={pid} url={url} reused={reused}
+adopt    pid={adopted_pid} same_process={adopted_pid == pid}
+ping     {("ok" if local.ping_server(port=port) else "failed")}
+index    {body.splitlines()[0]!r}
+""",
         )
         return 0
     finally:

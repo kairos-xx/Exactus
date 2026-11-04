@@ -57,7 +57,14 @@ class FakeNativeRunner:
         elif arguments[:2] == ("launchctl", "bootout"):
             self.active = False
         elif arguments[:2] == ("launchctl", "print"):
-            output = "state = running\npid = 4321\n" if self.active else ""
+            output = (
+                """\
+state = running
+pid = 4321
+"""
+                if self.active
+                else ""
+            )
             return self._result(
                 arguments=arguments,
                 returncode=0 if self.active else 1,
@@ -69,16 +76,30 @@ class FakeNativeRunner:
             self.active = False
         elif "show" in arguments:
             output = (
-                "LoadState=loaded\nActiveState=active\nMainPID=4321\n"
+                """\
+LoadState=loaded
+ActiveState=active
+MainPID=4321
+"""
                 if self.active
-                else "LoadState=not-found\nActiveState=inactive\nMainPID=0\n"
+                else """\
+LoadState=not-found
+ActiveState=inactive
+MainPID=0
+"""
             )
         elif "/Create" in arguments or "/Run" in arguments:
             self.active = True
         elif "/Delete" in arguments or "/End" in arguments:
             self.active = False
         elif "/Query" in arguments:
-            output = "Status: Running\n" if self.active else ""
+            output = (
+                """\
+Status: Running
+"""
+                if self.active
+                else ""
+            )
             return self._result(
                 arguments=arguments,
                 returncode=0 if self.active else 1,

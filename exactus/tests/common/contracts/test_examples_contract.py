@@ -74,7 +74,9 @@ def test_every_example_run_script_is_executable() -> None:
         if not script.stat().st_mode & S_IXUSR:
             failures.append(str(object=directory.relative_to(root)))
             continue
-        first_line: str = script.read_text(encoding="utf-8").partition("\n")[0]
+        first_line: str = script.read_text(encoding="utf-8").partition("""\
+
+""")[0]
         if first_line != "#!/usr/bin/env python3":
             failures.append(str(object=directory.relative_to(root)))
     expect_equal(actual=failures, expected=[])

@@ -53,27 +53,39 @@ def main() -> int:
         for root in (before, after, target):
             (root / "src").mkdir(parents=True)
         (before / "src/app.py").write_text(
-            data="VERSION = 1\n",
+            data="""\
+VERSION = 1
+""",
             encoding="utf-8",
         )
         (before / "obsolete.txt").write_text(
-            data="remove me\n",
+            data="""\
+remove me
+""",
             encoding="utf-8",
         )
         (after / "src/app.py").write_text(
-            data="VERSION = 2\n",
+            data="""\
+VERSION = 2
+""",
             encoding="utf-8",
         )
         (after / "src/new.py").write_text(
-            data="ENABLED = True\n",
+            data="""\
+ENABLED = True
+""",
             encoding="utf-8",
         )
         (target / "src/app.py").write_text(
-            data="VERSION = 1\n",
+            data="""\
+VERSION = 1
+""",
             encoding="utf-8",
         )
         (target / "obsolete.txt").write_text(
-            data="remove me\n",
+            data="""\
+remove me
+""",
             encoding="utf-8",
         )
         archive: Path = Path(
@@ -98,7 +110,10 @@ def main() -> int:
             encoding="utf-8",
         )
         require(
-            condition=updated_content == "VERSION = 2\n",
+            condition=updated_content
+            == """\
+VERSION = 2
+""",
             message="Patch did not update src/app.py.",
         )
         require(
@@ -121,7 +136,10 @@ def main() -> int:
             encoding="utf-8",
         )
         require(
-            condition=restored_content == "VERSION = 1\n",
+            condition=restored_content
+            == """\
+VERSION = 1
+""",
             message="Reverse patch did not restore src/app.py.",
         )
         require(

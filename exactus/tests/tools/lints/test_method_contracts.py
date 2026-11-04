@@ -18,11 +18,16 @@ def test_external_override_keeps_instance_binding() -> None:
     tree: Module = parse(
         source=dedent(
             text=(
-                "    from http.server import BaseHTTPRequestHandler\n    f"
-                "rom typing import override\n    class Handler(BaseHTTPReq"
-                "uestHandler):\n        @override\n        def log_message"
-                "(self, format, *args):\n            pass\n        def hel"
-                "per(self):\n            return 1\n    "
+                """\
+                from http.server import BaseHTTPRequestHandler
+                from typing import override
+                class Handler(BaseHTTPRequestHandler):
+                    @override
+                    def log_message(self, format, *args):
+                        pass
+                    def helper(self):
+                        return 1
+"""
             ),
         ),
     )

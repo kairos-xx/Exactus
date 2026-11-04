@@ -54,15 +54,24 @@ class Constants:
     max_test_matches: Final[int] = 200
     stats_script: Final[str] = dedent(
         text=(
-            "    \n    args => {\n      const Engine = globalThis.__EXACTUS_ES"
-            "__;\n      const engine = new Engine(document, { deep: true });\n"
-            "      for (const [name, expression] of Object.entries(args.defini"
-            "tions)) {\n        try { engine.define(name, expression); } catch"
-            " { /* reported by the test */ }\n      }\n      try {\n        re"
-            "turn { ok: true, stats: engine.stats(args.expression, { variables"
-            ": args.variables }) };\n      } catch (error) {\n        return {"
-            ' ok: false, message: String(error.message).split("\\n")[0], code:'
-            " error.code ?? null };\n      }\n    }\n    "
+            """\
+
+    args => {
+      const Engine = globalThis.__EXACTUS_ES__;
+      const engine = new Engine(document, { deep: true });
+      for (const [name, expression] of Object.entries(args.definitions)) {
+        try { engine.define(name, expression); } catch { /* reported by the \
+test */ }
+      }
+      try {
+        return { ok: true, stats: engine.stats(args.expression, { variables: \
+args.variables }) };
+      } catch (error) {
+        return { ok: false, message: String(error.message).split("\\n")[0], \
+code: error.code ?? null };
+      }
+    }
+    """
         ),
     )
 

@@ -18,6 +18,8 @@ from ast import (
     Assign,
     AsyncFunctionDef,
     Attribute,
+    BinOp,
+    BitOr,
     Call,
     ClassDef,
     Constant,
@@ -32,6 +34,7 @@ from ast import (
     Raise,
     Store,
     Subscript,
+    Tuple,
     expr,
     iter_child_nodes,
     iter_fields,
@@ -40,9 +43,8 @@ from ast import (
 )
 from collections.abc import Callable, Generator, Iterator, Mapping, Sequence
 from contextlib import contextmanager, suppress
-from dataclasses import dataclass, field, replace
+from dataclasses import asdict, dataclass, field, replace
 from datetime import datetime
-from fnmatch import fnmatch
 from importlib.resources import files as resource_files
 from itertools import pairwise
 from json import JSONDecodeError, dumps, loads
@@ -65,6 +67,12 @@ from time import monotonic, perf_counter
 from tomllib import loads as toml_loads
 from typing import TYPE_CHECKING, ClassVar, Final, Self, cast, final
 
+from exactus.packages.all_lints import (
+    ResolvedRuffPolicy,
+    RuffStabilizer,
+    RuffStabilizerOptions,
+    resolve_tool_command,
+)
 from exactus.packages.organize import configured_order
 from exactus.packages.steps import trace
 from exactus.tools.common.cli import (
@@ -74,11 +82,25 @@ from exactus.tools.common.cli import (
     resolve_exactus_tool_bundle,
     resolve_linter_toolchain,
 )
+from exactus.tools.common.config import ConfigResolver, render, tool_parser
+from exactus.tools.common.path_filters import default_excluded_dirs, glob_match
 from exactus.tools.common.runtime import (
     Progress,
     publish_progress,
     release_activities,
     run_source_activity,
+)
+from exactus.tools.common.source_cache import (
+    SourceCache,
+    SourceRecord,
+    source_record,
+)
+from exactus.tools.common.source_transaction import (
+    FileEdit,
+    SourceConflictError,
+    SourceJournal,
+    StageContext,
+    StageObserver,
 )
 from exactus.tools.common.sprint import Writer, sprint
 from exactus.tools.common.toml import TomlDocument, TomlSerializer, TomlValue
@@ -87,12 +109,20 @@ from exactus.tools.lints.compliance import (
     ComplianceResult,
     scan_compliance,
 )
-from exactus.tools.lints.css_naming import CssNamingSettings, scan_css_naming
+from exactus.tools.lints.css_naming import (
+    CssNamingSettings,
+    convention_spec,
+    exemption_spec,
+    parse_convention,
+    parse_exemption,
+    scan_css_naming,
+)
 from exactus.tools.lints.css_tokens import (
     CssTokenFinding,
     CssTokenInput,
     scan_css_tokens,
 )
+from exactus.tools.lints.javascript_pipeline import scan_javascript_conventions
 from exactus.tools.lints.js_delimiters import (
     DelimiterInput,
     DelimiterResult,
@@ -125,15 +155,25 @@ from exactus.tools.lints.shebang import (
     scan_shebang,
 )
 from exactus.tools.lints.string_transform import (
+    CallFormatOptions,
+    StringTransformSettings,
     TransformOptions,
     TransformResult,
     transform_strings,
 )
+from exactus.tools.lints.workspace import SourceWorkspace, TransactionLimits
 
 if TYPE_CHECKING:
+    from argparse import ArgumentParser, Namespace
     from importlib.resources.abc import Traversable
 
     from exactus.packages.all_lints import ToolResult
+    from exactus.tools.lints.css_naming import CssNamingFinding
+    from exactus.tools.lints.shebang import (
+        ExecWithoutShebang,
+        ShebangWithoutExec,
+    )
+    from exactus.tools.lints.string_transform import MultilineStrategy
 type JsonScalar = None | bool | int | float | str
 type JsonValue = JsonScalar | list["JsonValue"] | dict[str, "JsonValue"]
 type IssueKey = tuple[str, int, int, str, str]
@@ -184,6 +224,9 @@ class Constants:
         ruff_config_names: Standalone Ruff configuration filenames.
         upper_global_pattern: Uppercase module-global pattern.
         upper_global_exempt_calls: Calls exempt from the global rule.
+        type_builtin_names: Builtin class names treated as type
+            references.
+        type_reference: Pattern matching quoted forward references.
         js_class_pattern: JavaScript class-body pattern.
         js_method_pattern: JavaScript method pattern.
         js_arrow_field_pattern: JavaScript arrow-field pattern.
@@ -314,8 +357,8 @@ class Constants:
                 return text
         return ""
 
-    @classmethod
-    def ruff_policy(cls, *, cwd: Path) -> tuple[str, ...]:
+    @staticmethod
+    def ruff_policy(*, cwd: Path) -> tuple[str, ...]:
         """Return Ruff rule-selection flags for the exactused project.
 
         A project that configures Ruff keeps its own rule selection;
@@ -328,9 +371,7 @@ class Constants:
             Ruff CLI flags.
 
         """
-        if cls.ruff_config_text(cwd=cwd):
-            return cls.ruff_extend_ignores
-        return ("--select", "ALL", *cls.ruff_extend_ignores)
+        return ResolvedRuffPolicy.rule_flags_for(root=cwd)
 
     eslint_config_names: ClassVar[tuple[str, ...]] = (
         "eslint.config.js",
@@ -357,6 +398,30 @@ class Constants:
     )
     upper_global_exempt_calls: ClassVar[frozenset[str]] = frozenset(
         ("TypeVar", "ParamSpec", "TypeVarTuple", "TypeAliasType", "NewType"),
+    )
+    type_builtin_names: ClassVar[frozenset[str]] = frozenset(
+        {
+            "bool",
+            "bytearray",
+            "bytes",
+            "complex",
+            "dict",
+            "float",
+            "frozenset",
+            "int",
+            "list",
+            "memoryview",
+            "object",
+            "range",
+            "set",
+            "slice",
+            "str",
+            "tuple",
+            "type",
+        },
+    )
+    type_reference: ClassVar[Pattern[str]] = compile_regex(
+        pattern=r"[A-Za-z_]\w*(?:\.[A-Za-z_]\w*)*",
     )
     js_class_pattern: ClassVar[Pattern[str]] = compile_regex(
         pattern=r"^[ \t]*(?:export\s+(?:default\s+)?)?"
@@ -1043,6 +1108,9 @@ class LintExactusConfig:
             refactors, compliance and guarded inference are skipped.
         css_naming: CATALOG custom-property naming scan settings.
         python_simplify: Whether the python_simplify transform runs.
+        strings: String presentation transform settings: literal
+            splitting, f-string call expansion, and embedded-literal
+            rewriting.
 
     """
 
@@ -1061,6 +1129,264 @@ class LintExactusConfig:
     simple: bool = False
     css_naming: CssNamingSettings = field(default_factory=CssNamingSettings)
     python_simplify: bool = True
+    strings: StringTransformSettings = field(
+        default_factory=StringTransformSettings,
+    )
+
+
+def config_from_options(*, options: Namespace) -> LintExactusConfig:
+    """Build typed transform settings from the validated lint parser.
+
+    Args:
+        options: Parsed lint CLI values.
+
+    Returns:
+        Immutable lint settings.
+
+    """
+    dry: bool = cast(typ="bool", val=options.dry)
+    return LintExactusConfig(
+        clean=not (dry or cast(typ="bool", val=options.no_clean)),
+        fix=not (dry or cast(typ="bool", val=options.no_fix)),
+        long_lines=not cast(typ="bool", val=options.no_long_lines),
+        delimiters=not cast(typ="bool", val=options.no_delimiters),
+        notation=not cast(typ="bool", val=options.no_notation),
+        infer=not (dry or cast(typ="bool", val=options.no_infer)),
+        install_tools=not (
+            dry or cast(typ="bool", val=options.no_install_tools)
+        ),
+        group_final=not cast(typ="bool", val=options.no_group_final),
+        organize=not cast(typ="bool", val=options.no_organize),
+        unsafe_fixes=not dry and cast(typ="bool", val=options.unsafe_fixes),
+        workers=cast(typ="int | None", val=options.workers),
+        shebang=ShebangSettings(
+            heal=not (dry or cast(typ="bool", val=options.no_shebang_heal)),
+            exec_no_shebang=cast(
+                typ="ExecWithoutShebang",
+                val=options.exec_no_shebang,
+            ),
+            shebang_no_exec=cast(
+                typ="ShebangWithoutExec",
+                val=options.shebang_no_exec,
+            ),
+        ),
+        simple=cast(typ="bool", val=options.simple),
+        python_simplify=not cast(typ="bool", val=options.no_python_simplify),
+        strings=StringTransformSettings(
+            line_length=cast(typ="int | None", val=options.line_length),
+            multiline_strategy=cast(
+                typ="MultilineStrategy",
+                val=options.multiline_strategy,
+            ),
+            split_fstrings=not cast(typ="bool", val=options.no_split_fstrings),
+            split_raw_strings=not cast(
+                typ="bool",
+                val=options.no_split_raw_strings,
+            ),
+            split_bytes=not cast(typ="bool", val=options.no_split_bytes),
+            format_interpolations=not cast(
+                typ="bool",
+                val=options.no_format_interpolations,
+            ),
+            call_format_minimum=cast(
+                typ="int",
+                val=options.call_format_minimum,
+            ),
+            embedded_strings=not cast(
+                typ="bool",
+                val=options.no_embedded_strings,
+            ),
+            format_embedded=cast(typ="bool", val=options.format_embedded),
+            allow_value_changes=cast(
+                typ="bool",
+                val=options.allow_value_changes,
+            ),
+        ),
+        css_naming=CssNamingSettings(
+            enabled=not cast(typ="bool", val=options.no_css_naming),
+            registered_scales=frozenset(
+                cast(typ="list[str]", val=options.css_naming_scale),
+            ),
+            check_extended=cast(typ="bool", val=options.css_naming_extended),
+            conventions=frozenset(
+                parse_convention(spec=spec)
+                for spec in cast(
+                    typ="list[str]",
+                    val=options.css_naming_convention,
+                )
+            ),
+            exemptions=frozenset(
+                parse_exemption(spec=spec)
+                for spec in cast(
+                    typ="list[str]",
+                    val=options.css_naming_exempt,
+                )
+            ),
+            rule_severity=frozenset(
+                (
+                    pair.partition("=")[0],
+                    pair.partition("=")[2],
+                )
+                for pair in cast(
+                    typ="list[str]",
+                    val=options.css_naming_severity,
+                )
+            ),
+            component_roots=frozenset(
+                (
+                    pair.partition("=")[0],
+                    pair.partition("=")[2],
+                )
+                for pair in cast(
+                    typ="list[str]",
+                    val=options.css_naming_component,
+                )
+            ),
+        ),
+    )
+
+
+class LintsConfigResolver(ConfigResolver):
+    """Resolve concrete lint transform switches within one source subtree."""
+
+    def __init__(self, *, root: Path) -> None:
+        """Own resolved configurations for one run.
+
+        Args:
+            root: Immutable run root.
+
+        """
+        super().__init__(root=root)
+        self._settings: dict[
+            tuple[LintExactusConfig, str],
+            LintExactusConfig,
+        ] = {}
+
+    def resolve(
+        self,
+        *,
+        path: Path,
+        base: LintExactusConfig,
+    ) -> LintExactusConfig:
+        """Overlay nested switches while retaining global mutation ownership.
+
+        Args:
+            path: Source candidate.
+            base: Effective global run settings.
+
+        Returns:
+            File-specific transform configuration.
+
+        """
+        values: dict[str, JsonValue] = self.options(path=path, tool="lints")
+        key: tuple[LintExactusConfig, str] = (
+            base,
+            dumps(obj=values, sort_keys=True),
+        )
+        if key in self._settings:
+            return self._settings[key]
+        parser: ArgumentParser = tool_parser(module="exactus.tools.lints.main")
+        defaults: dict[str, JsonValue] = {
+            f"no_{name}": not value
+            for name, value in asdict(obj=base).items()
+            if isinstance(value, bool)
+            and name
+            not in {
+                "simple",
+                "unsafe_fixes",
+                "install_tools",
+            }
+        }
+        defaults.update(
+            {
+                "simple": base.simple,
+                "unsafe_fixes": base.unsafe_fixes,
+                "workers": base.workers,
+                "no_install_tools": not base.install_tools,
+                "no_shebang_heal": not base.shebang.heal,
+                "exec_no_shebang": base.shebang.exec_no_shebang,
+                "shebang_no_exec": base.shebang.shebang_no_exec,
+                "no_css_naming": not base.css_naming.enabled,
+                "css_naming_scale": cast(
+                    typ="JsonValue",
+                    val=list(base.css_naming.registered_scales),
+                ),
+                "css_naming_extended": base.css_naming.check_extended,
+                "css_naming_convention": cast(
+                    typ="JsonValue",
+                    val=[
+                        convention_spec(convention=convention)
+                        for convention in base.css_naming.conventions
+                    ],
+                ),
+                "css_naming_exempt": cast(
+                    typ="JsonValue",
+                    val=[
+                        exemption_spec(exemption=exemption)
+                        for exemption in base.css_naming.exemptions
+                    ],
+                ),
+                "css_naming_severity": cast(
+                    typ="JsonValue",
+                    val=[
+                        f"{rule}={level}"
+                        for rule, level in base.css_naming.rule_severity
+                    ],
+                ),
+                "css_naming_component": cast(
+                    typ="JsonValue",
+                    val=[
+                        f"{prefix}={name}"
+                        for prefix, name in base.css_naming.component_roots
+                    ],
+                ),
+            },
+        )
+        defaults.update(
+            {
+                (
+                    f"no_{name}"
+                    if name
+                    in {
+                        "split_fstrings",
+                        "split_raw_strings",
+                        "split_bytes",
+                        "format_interpolations",
+                        "embedded_strings",
+                    }
+                    else name
+                ): not value
+                if name
+                in {
+                    "split_fstrings",
+                    "split_raw_strings",
+                    "split_bytes",
+                    "format_interpolations",
+                    "embedded_strings",
+                }
+                else value
+                for name, value in asdict(obj=base.strings).items()
+            },
+        )
+        defaults.update(
+            {
+                key.replace("-", "_"): value
+                for key, value in values.items()
+                if isinstance(value, bool)
+            },
+        )
+        parser.set_defaults(**defaults)
+        options: Namespace = parser.parse_args(
+            args=render(
+                values=values,
+                parser=parser,
+                source=str(object=path),
+                strict=False,
+            ),
+        )
+        resolved: LintExactusConfig = config_from_options(options=options)
+        self._settings[key] = resolved
+        return resolved
 
 
 @dataclass(frozen=True, slots=True)
@@ -1080,6 +1406,10 @@ class LintExactusRequest:
         tool_args: Extra CLI arguments appended per tool.
         css_context_words: Application or component words that CATALOG
             custom-property names must not contain.
+        transaction_limits: Bounds on private mutating passes and per-stage
+            runtime for the transactional fix path.
+        publisher: Report sink invoked inside the source commit, or
+            ``None`` to leave publication to the caller.
 
     """
 
@@ -1093,6 +1423,10 @@ class LintExactusRequest:
     toolchain: Path | None
     tool_args: ToolArguments
     css_context_words: Sequence[str] = ()
+    transaction_limits: TransactionLimits = field(
+        default_factory=TransactionLimits,
+    )
+    publisher: Callable[[dict[str, JsonValue]], None] | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -1140,6 +1474,7 @@ class CustomToolsInput:
         ruff_command: Resolved Ruff executable prefix for transforms.
         delimiters: Whether the JavaScript delimiter scan runs.
         notation: Whether the JavaScript function-block scan runs.
+        strings: String presentation transform settings.
 
     """
 
@@ -1154,6 +1489,9 @@ class CustomToolsInput:
     css_context_words: Sequence[str] = ()
     css_naming: CssNamingSettings = field(default_factory=CssNamingSettings)
     shebang: ShebangSettings = field(default_factory=ShebangSettings)
+    strings: StringTransformSettings = field(
+        default_factory=StringTransformSettings,
+    )
     progress: LintProgress = field(default_factory=LintProgress)
     fix: bool = True
     ruff_command: tuple[str, ...] | None = None
@@ -1194,11 +1532,15 @@ class _TransformRuntime:
         cwd: Project working directory used to stabilize transformed
             files with Ruff.
         ruff_command: Resolved Ruff executable prefix for transforms.
+        strings: String presentation transform settings.
 
     """
 
     cwd: Path
     ruff_command: tuple[str, ...]
+    strings: StringTransformSettings = field(
+        default_factory=StringTransformSettings,
+    )
 
 
 @dataclass(frozen=True, slots=True)
@@ -1455,7 +1797,13 @@ class SourceCleaner:
             cleaned = cls._markup(source=source)
         else:
             cleaned = source
-        return f"{cleaned.rstrip(chr(10))}\n" if cleaned else ""
+        return (
+            f"""\
+{cleaned.rstrip(chr(10))}
+"""
+            if cleaned
+            else ""
+        )
 
     @classmethod
     def collect(
@@ -1499,6 +1847,8 @@ class SourceCleaner:
         cwd: Path,
         writer: Writer,
         commands: ToolCommands,
+        *,
+        enabled: bool = True,
     ) -> CleanStats:
         """Clean source files and run formatters.
 
@@ -1507,13 +1857,25 @@ class SourceCleaner:
             cwd: Project working directory.
             writer: Status-message writer.
             commands: Resolved executable prefixes keyed by tool name.
+            enabled: Run-level cleaning fallback.
 
         Returns:
             Accumulated cleaning statistics.
 
         """
         stats: CleanStats = CleanStats()
-        existing: list[Path] = [file for file in files if file.is_file()]
+        resolver: ConfigResolver = ConfigResolver(root=cwd)
+        existing: list[Path] = [
+            file
+            for file in files
+            if file.is_file()
+            and not resolver.boolean(
+                path=file,
+                tool="lints",
+                name="no-clean",
+                default=not enabled,
+            )
+        ]
         trace(step=f"clean: normalize {len(existing)} files", depth=3)
         for file in existing:
             cls._clean(path=file, stats=stats, writer=writer)
@@ -1962,7 +2324,15 @@ class SourceCleaner:
             trace(step=f"clean: {path} — unchanged", depth=4)
             return
         stats.changed += 1
-        stats.lines_removed += max(0, source.count("\n") - cleaned.count("\n"))
+        stats.lines_removed += max(
+            0,
+            source.count("""\
+
+""")
+            - cleaned.count("""\
+
+"""),
+        )
         stats.bytes_delta += len(cleaned.encode(encoding="utf-8")) - len(
             source.encode(encoding="utf-8"),
         )
@@ -1995,7 +2365,9 @@ class SourceCleaner:
             ``True`` when the entry should be skipped.
 
         """
-        if name in cls.default_excludes:
+        if name in cls.default_excludes or name in default_excluded_dirs(
+            root=cwd,
+        ):
             return True
         if name.startswith(".") and name != ".":
             return True
@@ -2007,8 +2379,8 @@ class SourceCleaner:
         except ValueError:
             return True
         return any(
-            fnmatch(name=f"{relative}/**", pat=pattern)
-            or fnmatch(name=relative, pat=pattern)
+            glob_match(relative=f"{relative}/**", pattern=pattern)
+            or glob_match(relative=relative, pattern=pattern)
             for pattern in excludes
         )
 
@@ -2136,9 +2508,9 @@ class SourceCleaner:
         return (
             any(part in cls.default_excludes for part in path.parts)
             or any(
-                fnmatch(name=relative, pat=pattern)
-                or fnmatch(name=str(object=path), pat=pattern)
-                or fnmatch(name=path.name, pat=pattern)
+                glob_match(relative=relative, pattern=pattern)
+                or glob_match(relative=str(object=path), pattern=pattern)
+                or glob_match(relative=path.name, pattern=pattern)
                 for pattern in scope.excludes
             )
             or (
@@ -2168,6 +2540,7 @@ class SourceCleaner:
         """
         seen: set[Path] = set()
         files: list[Path] = []
+        resolver: ConfigResolver = ConfigResolver(root=scope.cwd)
         for pattern in paths:
             for file in cls._expand(
                 pattern=pattern,
@@ -2184,6 +2557,20 @@ class SourceCleaner:
                     path=file,
                     resolved=resolved,
                     scope=scope,
+                ):
+                    continue
+                if resolved.is_relative_to(scope.cwd.resolve()) and (
+                    not resolver.filters(path=resolved, tool="lints").matches(
+                        relative=resolved.relative_to(
+                            scope.cwd.resolve(),
+                        ).as_posix(),
+                    )
+                    or any(
+                        part in default_excluded_dirs(root=scope.cwd)
+                        for part in resolved.relative_to(
+                            scope.cwd.resolve(),
+                        ).parts
+                    )
                 ):
                     continue
                 seen.add(resolved)
@@ -2289,7 +2676,7 @@ class SourceCleaner:
         ]
         if skipped:
             sprint(
-                f"Skipping formatters not installed: {', '.join(skipped)}.",
+                f"Skipping formatters not installed: {", ".join(skipped)}.",
                 file=writer,
             )
         for command, tolerate_findings in formatter_commands:
@@ -2325,7 +2712,13 @@ class SourceCleaner:
             ``True`` when the tag name ends at ``index``.
 
         """
-        return index >= len(lowered) or lowered[index] in " \t\r\n/>"
+        return (
+            index >= len(lowered)
+            or lowered[index]
+            in """\
+ \t\r
+/>"""
+        )
 
     @staticmethod
     def _rstrip(line: str) -> str:
@@ -2339,8 +2732,13 @@ class SourceCleaner:
 
         """
         return (
-            f"{body.rstrip(' \t')}{line[len(body) :]}"
-            if (body := line.rstrip("\r\n")) != line
+            f"{body.rstrip(" \t")}{line[len(body) :]}"
+            if (
+                body := line.rstrip("""\
+\r
+""")
+            )
+            != line
             else line.rstrip(" \t")
         )
 
@@ -2435,7 +2833,7 @@ class SourceCleaner:
             f"{stats.changed} changed, "
             f"{stats.lines_removed} lines removed, "
             f"{abs(stats.bytes_delta)} bytes "
-            f"{'added' if stats.bytes_delta > 0 else 'removed'}",
+            f"{"added" if stats.bytes_delta > 0 else "removed"}",
             file=writer,
         )
 
@@ -2457,8 +2855,8 @@ def _lint_path_excluded(path: Path, cwd: Path, ignores: Sequence[str]) -> bool:
     except ValueError:
         return True
     return any(
-        fnmatch(name=relative, pat=pattern)
-        or fnmatch(name=path.name, pat=pattern)
+        glob_match(relative=relative, pattern=pattern)
+        or glob_match(relative=path.name, pattern=pattern)
         for pattern in ignores
     )
 
@@ -2489,8 +2887,8 @@ def _lint_dir_pruned(
     except ValueError:
         return True
     return any(
-        fnmatch(name=f"{relative}/**", pat=pattern)
-        or fnmatch(name=relative, pat=pattern)
+        glob_match(relative=f"{relative}/**", pattern=pattern)
+        or glob_match(relative=relative, pattern=pattern)
         for pattern in ignores
     )
 
@@ -2643,6 +3041,215 @@ class LintExactus:
             guarded inference is retained, one when it is rolled back.
 
         """
+        with SourceCache():
+            if not request.config.fix:
+                result: tuple[dict[str, JsonValue], int] = cls._run_cached(
+                    request=request,
+                )
+                if request.publisher is not None:
+                    request.publisher(result[0])
+                return result
+            return cls._run_transaction(request=request)
+
+    @staticmethod
+    def run_command(command: Sequence[str], cwd: Path) -> CommandResult:
+        """Run one command without raising for diagnostics.
+
+        Args:
+            command: Command and arguments.
+            cwd: Project working directory.
+
+        Returns:
+            Captured subprocess result.
+
+        """
+        started: float = perf_counter()
+        observer: StageObserver | None = StageContext.current.get()
+        completed: CompletedProcess[str] = run(
+            args=list(command),
+            cwd=cwd,
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=observer.remaining_seconds()
+            if observer is not None
+            else None,
+        )
+        return CommandResult(
+            command=tuple(command),
+            returncode=completed.returncode,
+            stdout=completed.stdout,
+            stderr=completed.stderr,
+            duration_seconds=round(number=perf_counter() - started, ndigits=3),
+        )
+
+    @staticmethod
+    def parse_json_output(result: CommandResult) -> JsonValue:
+        """Parse JSON output from a command.
+
+        Args:
+            result: Completed command.
+
+        Returns:
+            Parsed JSON value.
+
+        Raises:
+            RuntimeError: If stdout is not valid JSON.
+
+        """
+        try:
+            value: JsonValue = cast(
+                typ="JsonValue",
+                val=loads(s=result.stdout),
+            )
+        except JSONDecodeError as error:
+            msg: str = dedent(
+                text=f"""\
+    Invalid JSON from {" ".join(result.command)}: {error}
+    stderr:
+    {result.stderr}""",
+            )
+            raise RuntimeError(msg) from error
+        return value
+
+    @classmethod
+    def _run_transaction(
+        cls: type[Self],
+        *,
+        request: LintExactusRequest,
+    ) -> tuple[dict[str, JsonValue], int]:
+        """Validate all source mutations privately before publishing edits.
+
+        Args:
+            request: Run scope and global settings for the guarded
+                workflow.
+
+        Returns:
+            The verified report payload and the final read-only pass's
+            exit status.
+
+        Raises:
+            SourceConflictError: If the private workspace cycles, its
+                pass budget is exhausted, or a proposal no longer owns
+                its source.
+
+        """
+        directory: Path = (
+            (
+                request.report_path.parent
+                if request.report_path is not None
+                else request.cwd / ".exactus"
+            )
+            / ".runtime"
+            / "lints-transactions"
+        )
+        journal: SourceJournal = SourceJournal(
+            root=request.cwd,
+            directory=directory,
+        )
+        journal.acquire()
+        try:
+            with SourceWorkspace(
+                root=request.cwd,
+                ignores=request.ignores,
+                limits=request.transaction_limits,
+                output=request.report_path,
+            ) as workspace:
+                prospective: LintExactusRequest = replace(
+                    request,
+                    cwd=workspace.path,
+                    publisher=None,
+                    targets=tuple(
+                        workspace.translate(value=value)
+                        for value in request.targets
+                    ),
+                    tool_args={
+                        name: tuple(
+                            workspace.translate(value=value)
+                            for value in values
+                        )
+                        for name, values in request.tool_args.items()
+                    },
+                )
+                seen: set[str] = {workspace.fingerprint()}
+                report: dict[str, JsonValue]
+                status: int
+                for _ in range(request.transaction_limits.max_passes):
+                    before: str = workspace.fingerprint()
+                    report, status = cls._run_cached(request=prospective)
+                    after: str = workspace.fingerprint()
+                    if after == before:
+                        break
+                    if after in seen:
+                        msg: str = (
+                            "Complete lint pipeline entered a source cycle."
+                        )
+                        raise SourceConflictError(msg)
+                    seen.add(after)
+                else:
+                    msg = "Complete lint pipeline exhausted its pass budget."
+                    raise SourceConflictError(msg)
+                workspace.freeze()
+                report, status = cls._run_cached(
+                    request=replace(
+                        prospective,
+                        config=replace(
+                            request.config,
+                            fix=False,
+                            clean=False,
+                            infer=False,
+                            install_tools=False,
+                        ),
+                    ),
+                )
+                edits: tuple[FileEdit, ...] = workspace.proposals()
+                report = cast(
+                    typ="dict[str, JsonValue]",
+                    val=loads(
+                        s=workspace.translate(
+                            value=dumps(obj=report),
+                            reverse=True,
+                        ),
+                    ),
+                )
+                report["transaction"] = {
+                    "state": "committed",
+                    "files": len(edits),
+                    "stages": [
+                        {"name": name, "paths": list(paths)}
+                        for name, paths in workspace.stages
+                    ],
+                }
+
+                def _publisher() -> None:
+                    """Publish the verified report inside the commit."""
+                    if request.publisher is not None:
+                        request.publisher(report)
+
+                journal.commit(
+                    edits=edits,
+                    publish=_publisher
+                    if request.publisher is not None
+                    else None,
+                )
+                return report, status
+        finally:
+            journal.release()
+
+    @classmethod
+    def _run_cached(
+        cls: type[Self],
+        request: LintExactusRequest,
+    ) -> tuple[dict[str, JsonValue], int]:
+        """Execute the workflow within its owning source-cache context.
+
+        Args:
+            request: Run scope and global settings.
+
+        Returns:
+            Report payload and exit status.
+
+        """
         started_at: datetime = datetime.now().astimezone()
         started_counter: float = perf_counter()
         cwd: Path = request.cwd
@@ -2658,7 +3265,7 @@ class LintExactus:
         group_final_report: JsonValue = run_source_activity(
             mode="write",
             identity="lints:group-final",
-            enabled=config.group_final and not config.simple,
+            enabled=not config.simple,
             action=lambda: cls._group_final_stage(
                 cwd=cwd,
                 config=config,
@@ -2679,6 +3286,7 @@ class LintExactus:
         stylelint_args: list[str] = scope.stylelint_args
         htmlhint_args: list[str] = scope.htmlhint_args
         clean_files: list[Path] = scope.clean_files
+        LintsConfigResolver(root=cwd)
         trace(
             step=(
                 f"collect: {len(python_files)} python, "
@@ -2692,7 +3300,7 @@ class LintExactus:
         organize_report: JsonValue = run_source_activity(
             mode="write",
             identity="lints:organize",
-            enabled=config.organize and not config.simple,
+            enabled=not config.simple,
             action=lambda: cls._organize_stage(
                 cwd=cwd,
                 python_files=python_files,
@@ -2772,63 +3380,6 @@ class LintExactus:
         report["findings"] = all_findings
         trace(step=f"lints: run finished — status {status}", depth=0)
         return report, status
-
-    @staticmethod
-    def run_command(command: Sequence[str], cwd: Path) -> CommandResult:
-        """Run one command without raising for diagnostics.
-
-        Args:
-            command: Command and arguments.
-            cwd: Project working directory.
-
-        Returns:
-            Captured subprocess result.
-
-        """
-        started: float = perf_counter()
-        completed: CompletedProcess[str] = run(
-            args=list(command),
-            cwd=cwd,
-            check=False,
-            capture_output=True,
-            text=True,
-        )
-        return CommandResult(
-            command=tuple(command),
-            returncode=completed.returncode,
-            stdout=completed.stdout,
-            stderr=completed.stderr,
-            duration_seconds=round(number=perf_counter() - started, ndigits=3),
-        )
-
-    @staticmethod
-    def parse_json_output(result: CommandResult) -> JsonValue:
-        """Parse JSON output from a command.
-
-        Args:
-            result: Completed command.
-
-        Returns:
-            Parsed JSON value.
-
-        Raises:
-            RuntimeError: If stdout is not valid JSON.
-
-        """
-        try:
-            value: JsonValue = cast(
-                typ="JsonValue",
-                val=loads(s=result.stdout),
-            )
-        except JSONDecodeError as error:
-            msg: str = dedent(
-                text=f"""\
-    Invalid JSON from {" ".join(result.command)}: {error}
-    stderr:
-    {result.stderr}""",
-            )
-            raise RuntimeError(msg) from error
-        return value
 
     @classmethod
     def _ensure_node(cls: type[Self], cwd: Path, writer: Writer) -> None:
@@ -2980,7 +3531,7 @@ class LintExactus:
             if which(cmd=probe) is None:
                 continue
             sprint(
-                f"Installing missing runtime: Node.js via {label}",
+                (f"Installing missing runtime: Node.js via {label}"),
                 file=writer,
             )
             for command in commands:
@@ -4159,13 +4710,16 @@ class LintExactus:
             step=(f"conventions: python — parse pass ({len(files)} files)"),
             depth=3,
         )
+        resolver: LintsConfigResolver | None = (
+            LintsConfigResolver(root=transform_runtime.cwd)
+            if transform_runtime is not None
+            else None
+        )
         for file in files:
             try:
-                source: bytes = file.read_bytes()
-                tree: Module = parse(
-                    source=source.decode(encoding="utf-8"),
-                    filename=str(object=file),
-                )
+                record: SourceRecord = source_record(path=file, mutable=fix)
+                source: bytes = record.source.encode(encoding="utf-8")
+                tree: Module = record.tree
                 changed: bool = fix and cls._fix_exception_messages(
                     file=file,
                     source=source,
@@ -4176,16 +4730,30 @@ class LintExactus:
                         source=file.read_text(encoding="utf-8"),
                         filename=str(object=file),
                     )
+                file_runtime: _TransformRuntime | None = (
+                    replace(
+                        transform_runtime,
+                        strings=resolver.resolve(
+                            path=file,
+                            base=LintExactusConfig(
+                                strings=transform_runtime.strings,
+                            ),
+                        ).strings,
+                    )
+                    if resolver is not None and transform_runtime is not None
+                    else transform_runtime
+                )
                 converted: TransformResult | None = (
                     cls._fix_string_transforms(
                         file=file,
                         tree=tree,
                         ruff_command=(
-                            transform_runtime.ruff_command
-                            if transform_runtime is not None
+                            file_runtime.ruff_command
+                            if file_runtime is not None
                             else None
                         ),
                         widths=transform_widths,
+                        transform_runtime=file_runtime,
                     )
                     if fix
                     else None
@@ -4245,49 +4813,6 @@ class LintExactus:
         return findings
 
     @classmethod
-    def _stabilize_transforms(
-        cls: type[Self],
-        *,
-        files: Sequence[Path],
-        cwd: Path | None,
-        ruff_command: tuple[str, ...] | None,
-        trees: dict[Path, Module],
-    ) -> None:
-        """Re-run Ruff over string-transformed files and refresh trees.
-
-        Args:
-            files: Files rewritten by the string transformer.
-            cwd: Project working directory; ``None`` skips stabilization.
-            ruff_command: Resolved Ruff executable prefix; ``None`` skips
-                stabilization.
-            trees: Parsed modules refreshed in place for rewritten files.
-
-        """
-        if not files or cwd is None or ruff_command is None:
-            return
-        arguments: list[str] = [str(object=file) for file in files]
-        for command in (
-            (*ruff_command, "format", *arguments),
-            (
-                *ruff_command,
-                "check",
-                *Constants.ruff_policy(cwd=cwd),
-                "--fix",
-                *arguments,
-            ),
-            (*ruff_command, "format", *arguments),
-        ):
-            _ = cls.run_command(command=command, cwd=cwd)
-        for file in files:
-            try:
-                trees[file] = parse(
-                    source=file.read_text(encoding="utf-8"),
-                    filename=str(object=file),
-                )
-            except (SyntaxError, UnicodeDecodeError):
-                _ = trees.pop(file, None)
-
-    @classmethod
     def _bare_import_findings(
         cls: type[Self],
         file: Path,
@@ -4344,7 +4869,7 @@ class LintExactus:
                             message=(
                                 f"Bare import `{alias.name}` is only "
                                 "used through attributes "
-                                f"({', '.join(sorted(set(attributes)))}); "
+                                f"({", ".join(sorted(set(attributes)))}); "
                                 "prefer `from ... import ...`."
                             ),
                             position=(
@@ -4374,7 +4899,7 @@ class LintExactus:
         findings: list[JsonValue] = []
         for statement in tree.body:
             names: list[Name] = []
-            if isinstance(statement, Assign) and not cls._generic_binder_call(
+            if isinstance(statement, Assign) and not cls._type_declaration(
                 statement=statement,
             ):
                 names.extend(
@@ -4467,7 +4992,7 @@ class LintExactus:
                         file=file,
                         rule="JS004",
                         message=(
-                            f"Function `{match.group('name')}` uses function "
+                            f"Function `{match.group("name")}` uses function "
                             "declaration syntax; prefer arrow notation."
                         ),
                         position=(line, column),
@@ -4558,7 +5083,7 @@ class LintExactus:
                     file=file,
                     rule="JS003",
                     message=(
-                        f"Instance method `{match.group('name')}` "
+                        f"Instance method `{match.group("name")}` "
                         "uses arrow notation; only static methods "
                         "and standalone functions should be arrows."
                     ),
@@ -4630,7 +5155,7 @@ class LintExactus:
                             rule="JS005",
                             message=(
                                 "Static inline style "
-                                f"`{match.group('property')}` {detail}"
+                                f"`{match.group("property")}` {detail}"
                             ),
                             position=cls._line_column(
                                 text=text,
@@ -4665,7 +5190,7 @@ class LintExactus:
                             rule="JS006",
                             message=(
                                 "Static inline style "
-                                f"`{property_match.group('property')}` is "
+                                f"`{property_match.group("property")}` is "
                                 "assigned through `Object.assign(...style, "
                                 "{...})`; move it to a CSS class."
                             ),
@@ -4813,7 +5338,7 @@ class LintExactus:
                         rule="CSS001",
                         message=(
                             f"`{property_name}` contains a hardcoded "
-                            f"{', '.join(dict.fromkeys(reasons))}; the value "
+                            f"{", ".join(dict.fromkeys(reasons))}; the value "
                             "must come from a CSS variable. This includes "
                             "gradient definitions/components and all numeric "
                             "measurements. Only 0, 1, 0%, and 100% are "
@@ -5225,7 +5750,8 @@ class LintExactus:
         stylelint_args: list[str] = scope.stylelint_args
         htmlhint_args: list[str] = scope.htmlhint_args
         clean_files: list[Path] = scope.clean_files
-        if config.clean and config.fix and not config.simple:
+        resolver: LintsConfigResolver = LintsConfigResolver(root=cwd)
+        if config.fix and not config.simple:
             trace(step=f"clean: {len(clean_files)} source files", depth=2)
             _ = run_source_activity(
                 mode="write",
@@ -5235,6 +5761,7 @@ class LintExactus:
                     cwd=cwd,
                     writer=status_writer,
                     commands=commands,
+                    enabled=config.clean,
                 ),
             )
         tools: dict[str, JsonValue] = {}
@@ -5263,16 +5790,24 @@ class LintExactus:
                         ruff_command=commands.get("ruff"),
                         delimiters=config.delimiters,
                         notation=config.notation,
+                        strings=config.strings,
                     ),
                 ),
             )
-        if config.python_simplify and not config.simple:
+        if not config.simple:
             simplify_counts: dict[str, int] = run_source_activity(
                 mode="write",
                 identity="lints:python-simplify",
                 enabled=config.fix,
                 action=lambda: simplify_python_files(
-                    files=sorted(python_files),
+                    files=sorted(
+                        path
+                        for path in python_files
+                        if resolver.resolve(
+                            path=path,
+                            base=config,
+                        ).python_simplify
+                    ),
                     fix=config.fix,
                 ),
             )
@@ -5283,6 +5818,7 @@ class LintExactus:
                 "version": "built-in",
                 "findings": [],
                 "proposals": simplify_counts["proposals"],
+                "skipped": simplify_counts["skipped"],
                 "healed": simplify_counts["changed"],
             }
         report: dict[str, JsonValue] = {
@@ -5293,12 +5829,13 @@ class LintExactus:
         }
         repair: LongLineRepair | None = cls._long_line_repair(
             config=config,
+            root=cwd,
             commands=commands,
         )
         trace(
             step=(
                 "all lints: long-line repair — "
-                f"{'enabled' if repair is not None else 'disabled'}"
+                f"{"enabled" if repair is not None else "disabled"}"
             ),
             depth=2,
         )
@@ -5349,7 +5886,10 @@ class LintExactus:
             raise RuntimeError(msg)
         status: int = 0
         if not config.simple:
-            inference: bool = config.infer and config.fix
+            inference: bool = config.fix and any(
+                resolver.resolve(path=path, base=config).infer
+                for path in python_files
+            )
             progress.stage(name="infer" if inference else "pyrefly")
             trace(
                 step="stage: infer" if inference else "stage: pyrefly",
@@ -5869,7 +6409,7 @@ class LintExactus:
         entries: dict[str, JsonValue] = {"custom_shebang": shebang}
         trace(
             step=(
-                f"conventions: shebang — {shebang.get('count', 0)} findings"
+                f"conventions: shebang — {shebang.get("count", 0)} findings"
             ),
             depth=2,
         )
@@ -5884,6 +6424,7 @@ class LintExactus:
                     _TransformRuntime(
                         cwd=inputs.cwd,
                         ruff_command=inputs.ruff_command,
+                        strings=inputs.strings,
                     )
                     if inputs.ruff_command is not None
                     else None
@@ -5906,33 +6447,53 @@ class LintExactus:
             ),
             depth=2,
         )
-        if inputs.delimiters:
+        delimiter_result: DelimiterResult
+        notation_result: FunctionBlocksResult
+        delimiter_result, notation_result = scan_javascript_conventions(
+            delimiters=DelimiterInput(
+                root=inputs.cwd,
+                files=tuple(scopes.delimiter_files),
+                fix=inputs.fix,
+            ),
+            notation=FunctionBlocksInput(
+                root=inputs.cwd,
+                files=tuple(scopes.notation_files),
+                fix=inputs.fix,
+            ),
+            progress_span=(
+                slicer.span(weight=len(scopes.delimiter_files))[0],
+                slicer.span(weight=len(scopes.notation_files))[1],
+            ),
+        )
+        if inputs.delimiters or scopes.delimiter_files:
             slicer.mark(weight=0, detail="delimiters")
             delimiters: dict[str, JsonValue] = cls._delimiter_report(
                 inputs=inputs,
                 files=scopes.delimiter_files,
+                result=delimiter_result,
                 progress_span=slicer.span(weight=len(scopes.delimiter_files)),
             )
             entries["custom_javascript_delimiters"] = delimiters
             trace(
                 step=(
                     "conventions: javascript delimiters — "
-                    f"{delimiters.get('count', 0)} findings"
+                    f"{delimiters.get("count", 0)} findings"
                 ),
                 depth=2,
             )
-        if inputs.notation:
+        if inputs.notation or scopes.notation_files:
             slicer.mark(weight=0, detail="notation")
             notation: dict[str, JsonValue] = cls._notation_report(
                 inputs=inputs,
                 files=scopes.notation_files,
+                result=notation_result,
                 progress_span=slicer.span(weight=len(scopes.notation_files)),
             )
             entries["custom_javascript_notation"] = notation
             trace(
                 step=(
                     "conventions: javascript notation — "
-                    f"{notation.get('count', 0)} findings"
+                    f"{notation.get("count", 0)} findings"
                 ),
                 depth=2,
             )
@@ -5992,15 +6553,30 @@ class LintExactus:
                                 file=finding.file,
                                 rule=finding.rule,
                                 message=finding.message,
-                                position=(finding.line, 1),
+                                position=(finding.line, finding.column),
                             ),
                         ),
                         "severity": finding.severity,
+                        "scope": finding.scope,
+                        "canonical": finding.canonical,
+                        "members": cast(
+                            typ="list[JsonValue]",
+                            val=list(finding.members),
+                        ),
+                        "related": cast(
+                            typ="list[JsonValue]",
+                            val=list(finding.related),
+                        ),
+                        "confidence": finding.confidence,
+                        "reason": finding.reason,
                     }
-                    for finding in scan_css_naming(
-                        root=inputs.cwd,
+                    for finding in cls._scoped_css_naming(
+                        inputs=inputs,
                         files=scopes.css_files,
-                        settings=inputs.css_naming,
+                        references=(
+                            *scopes.javascript_files,
+                            *scopes.html_files,
+                        ),
                     )
                 ],
             ],
@@ -6417,7 +6993,31 @@ class LintExactus:
             inputs.commands.get(tool) is not None
             for tool in ("ruff", "basedpyright", "pyrefly")
         ):
-            status, rewritten = cls._infer_guard(inputs=inputs)
+            resolver: LintsConfigResolver = LintsConfigResolver(
+                root=inputs.cwd,
+            )
+            eligible: frozenset[Path] = frozenset(
+                path
+                for path in inputs.python_files
+                if resolver.resolve(
+                    path=path,
+                    base=LintExactusConfig(infer=infer),
+                ).infer
+            )
+            status, rewritten = (
+                cls._infer_guard(
+                    inputs=replace(
+                        inputs,
+                        python_files=eligible,
+                        python_args=cls._relative_args(
+                            cwd=inputs.cwd,
+                            files=eligible,
+                        ),
+                    ),
+                )
+                if eligible
+                else (0, False)
+            )
             if rewritten:
                 started: float = perf_counter()
                 refreshed: list[JsonValue] = sorted(
@@ -6517,7 +7117,7 @@ class LintExactus:
                 cwd=inputs.cwd,
             )
             trace(
-                step=f"infer: pyrefly infer — exit {infer.returncode}",
+                step=(f"infer: pyrefly infer — exit {infer.returncode}"),
                 depth=2,
             )
             changed: bool = cls._sources_changed(
@@ -6528,7 +7128,7 @@ class LintExactus:
             )
             trace(
                 step=(
-                    f"infer: sources {'changed' if changed else 'unchanged'}"
+                    f"infer: sources {"changed" if changed else "unchanged"}"
                 ),
                 depth=2,
             )
@@ -6662,10 +7262,7 @@ class LintExactus:
                 htmlhint_args=scope.htmlhint_args,
                 clean_files=scope.clean_files,
             )
-            trace(
-                step=f"toolchain: required — {sorted(required)}",
-                depth=2,
-            )
+            trace(step=f"toolchain: required — {sorted(required)}", depth=2)
             cls._ensure_tools(
                 cwd=request.cwd,
                 writer=request.writer,
@@ -6691,6 +7288,121 @@ class LintExactus:
         if scope.eslint_args and commands.get("eslint") is not None:
             cls._augment_node_path(cwd=request.cwd)
         return commands
+
+    @classmethod
+    def _type_declaration(cls: type[Self], *, statement: Assign) -> bool:
+        """Return whether an assignment declares a type, not a global.
+
+        ``TypeVar``-family constructors and implicit type aliases bind a
+        type declaration rather than mutable state, so ``PY002`` does not
+        apply.
+
+        Args:
+            statement: Module-level assignment statement.
+
+        Returns:
+            Whether the assigned value declares a type.
+
+        """
+        return cls._generic_binder_call(
+            statement=statement,
+        ) or cls._type_expression(node=statement.value, nested=False)
+
+    @classmethod
+    def _type_expression(cls: type[Self], *, node: expr, nested: bool) -> bool:
+        """Return whether an expression is a valid type form.
+
+        Args:
+            node: Expression under the assignment target.
+            nested: Whether the expression sits inside a union or tuple
+                where ``None``, ``...`` and quoted references remain
+                type forms.
+
+        Returns:
+            Whether the expression declares a type rather than a value.
+
+        """
+        if isinstance(node, Name):
+            return cls._type_name(name=node.id)
+        if isinstance(node, Attribute):
+            return node.attr[:1].isupper() and not node.attr.isupper()
+        if isinstance(node, Subscript):
+            return cls._type_expression(node=node.value, nested=False)
+        if isinstance(node, BinOp) and isinstance(node.op, BitOr):
+            return cls._type_expression(
+                node=node.left,
+                nested=True,
+            ) and cls._type_expression(node=node.right, nested=True)
+        if isinstance(node, Tuple):
+            return bool(node.elts) and all(
+                cls._type_expression(node=element, nested=True)
+                for element in node.elts
+            )
+        return (
+            nested
+            and isinstance(node, Constant)
+            and (
+                node.value is None
+                or node.value is Ellipsis
+                or (
+                    isinstance(node.value, str)
+                    and Constants.type_reference.fullmatch(string=node.value)
+                    is not None
+                )
+            )
+        )
+
+    @staticmethod
+    def _stabilize_transforms(
+        *,
+        files: Sequence[Path],
+        cwd: Path | None,
+        ruff_command: tuple[str, ...] | None,
+        trees: dict[Path, Module],
+    ) -> None:
+        """Re-run Ruff over string-transformed files and refresh trees.
+
+        Args:
+            files: Files rewritten by the string transformer.
+            cwd: Project working directory; ``None`` skips stabilization.
+            ruff_command: Resolved Ruff executable prefix; ``None`` skips
+                stabilization.
+            trees: Parsed modules refreshed in place for rewritten files.
+
+        """
+        if not files or cwd is None or ruff_command is None:
+            return
+        _ = RuffStabilizer(
+            paths=list(files),
+            options=RuffStabilizerOptions(
+                command_prefix=ruff_command,
+                project_root=cwd,
+            ),
+        )
+        for file in files:
+            try:
+                trees[file] = parse(
+                    source=file.read_text(encoding="utf-8"),
+                    filename=str(object=file),
+                )
+            except (SyntaxError, UnicodeDecodeError):
+                _ = trees.pop(file, None)
+
+    @staticmethod
+    def _type_name(*, name: str) -> bool:
+        """Return whether a bare name reads as a type reference.
+
+        Args:
+            name: Identifier used as a type expression.
+
+        Returns:
+            Whether the name is a builtin type or a type-styled
+            identifier.
+
+        """
+        return name in Constants.type_builtin_names or (
+            name[:1].isupper() and (not name.isupper() or len(name) == 1)
+        )
 
     @staticmethod
     def _augment_node_path(cwd: Path) -> None:
@@ -6732,18 +7444,22 @@ class LintExactus:
         tree: Module,
         ruff_command: tuple[str, ...] | None,
         widths: dict[Path | None, int],
+        transform_runtime: _TransformRuntime | None = None,
     ) -> TransformResult:
         """Apply source-preserving string transformations to a Python file.
 
-        String dedent conversion, width-limited literal splitting and
-        f-string call expansion reuse the caller's parsed tree. Effective
-        Ruff line lengths are memoized per project configuration.
+        String dedent conversion, width-limited literal splitting,
+        f-string call expansion and the embedded-literal presentation
+        pass reuse the caller's parsed tree. Effective Ruff line lengths
+        are memoized per project configuration.
 
         Args:
             file: Python source file to rewrite in place.
             tree: Pre-parsed source tree matching the file.
             ruff_command: Resolved Ruff executable prefix, when available.
             widths: Effective line lengths keyed by project configuration.
+            transform_runtime: Ruff prefix and string-transform settings,
+                when available.
 
         Returns:
             The transformation result; its tree describes the rewritten
@@ -6756,17 +7472,41 @@ class LintExactus:
                 file_path=file,
                 ruff_command=ruff_command or ("ruff",),
             )
+        ruff_executable: str | None = (
+            ruff_command[0]
+            if ruff_command is not None and len(ruff_command) == 1
+            else None
+        )
+        settings: StringTransformSettings = (
+            transform_runtime.strings
+            if transform_runtime is not None
+            else StringTransformSettings()
+        )
+        line_length: int = (
+            settings.line_length
+            if settings.line_length is not None
+            else widths[key]
+        )
         return transform_strings(
             file=file,
             tree=tree,
             write=True,
             options=TransformOptions(
-                line_length=widths[key],
-                ruff_executable=(
-                    ruff_command[0]
-                    if ruff_command is not None and len(ruff_command) == 1
-                    else None
+                line_length=line_length,
+                ruff_executable=ruff_executable,
+                multiline_strategy=settings.multiline_strategy,
+                split_fstrings=settings.split_fstrings,
+                split_raw_strings=settings.split_raw_strings,
+                split_bytes=settings.split_bytes,
+                format_interpolations=settings.format_interpolations,
+                call_format=CallFormatOptions(
+                    minimum_arguments=settings.call_format_minimum,
+                    ruff_executable=ruff_executable,
+                    line_length=line_length,
                 ),
+                rewrite_embedded_literals=settings.embedded_strings,
+                format_embedded=settings.format_embedded,
+                allow_value_changes=settings.allow_value_changes,
             ),
         )
 
@@ -6884,12 +7624,12 @@ class LintExactus:
         exactus_bundle: Path | None = resolve_exactus_tool_bundle(root=cwd)
         commands: dict[str, tuple[str, ...] | None] = {}
         for tool in ("ruff", "basedpyright"):
-            found: str | None = which(cmd=tool)
+            resolved: tuple[str, ...] | None = resolve_tool_command(name=tool)
             commands[tool] = (
                 (str(object=bundled), tool)
                 if bundled is not None
-                else (found,)
-                if found is not None
+                else resolved
+                if resolved is not None
                 else (str(object=exactus_bundle), tool)
                 if exactus_bundle is not None
                 else None
@@ -6913,7 +7653,7 @@ class LintExactus:
             trace(
                 step=(
                     f"toolchain: {name} → "
-                    f"{' '.join(command) if command else 'missing'}"
+                    f"{" ".join(command) if command else "missing"}"
                 ),
                 depth=3,
             )
@@ -7037,8 +7777,22 @@ class LintExactus:
 
         """
         return (
-            text.count("\n", 0, offset) + 1,
-            offset - text.rfind("\n", 0, offset),
+            text.count(
+                """\
+
+""",
+                0,
+                offset,
+            )
+            + 1,
+            offset
+            - text.rfind(
+                """\
+
+""",
+                0,
+                offset,
+            ),
         )
 
     @staticmethod
@@ -7530,12 +8284,16 @@ class LintExactus:
             The resulting value.
 
         """
-        if not config.group_final or config.simple:
+        if config.simple:
             return {"enabled": False, "dry_run": not config.fix}
         progress.note(step="group final")
         return cast(
             typ="JsonValue",
-            val=run_group_final(root=cwd, dry_run=not config.fix),
+            val=run_group_final(
+                root=cwd,
+                dry_run=not config.fix,
+                enabled=config.group_final,
+            ),
         )
 
     @staticmethod
@@ -7560,18 +8318,27 @@ class LintExactus:
             The resulting value.
 
         """
-        if not config.organize or config.simple:
+        if config.simple:
             return {"enabled": False, "dry_run": not config.fix}
+        resolver: ConfigResolver = ConfigResolver(root=cwd)
         progress.note(step="organize")
         return cast(
             typ="JsonValue",
             val=run_organize(
                 paths=sorted(
-                    python_files
-                    | frozenset(cwd / path for path in javascript_args),
+                    file
+                    for file in python_files
+                    | frozenset(cwd / path for path in javascript_args)
+                    if not resolver.boolean(
+                        path=file,
+                        tool="lints",
+                        name="no-organize",
+                        default=not config.organize,
+                    )
                 ),
                 dry_run=not config.fix,
                 order=configured_order(start=cwd),
+                workers=config.workers,
             ),
         )
 
@@ -7580,12 +8347,15 @@ class LintExactus:
         *,
         config: LintExactusConfig,
         commands: ToolCommands,
+        root: Path | None = None,
     ) -> LongLineRepair | None:
         """Build the long-line repair for the stabilization loop.
 
         Args:
             config: Stage configuration for the run.
             commands: Resolved executable prefixes keyed by tool name.
+            root: Represents an optional project root path for certain
+                lints configuration and repair.
 
         Returns:
             A repair bound to the resolved Ruff launcher, or ``None``
@@ -7595,7 +8365,27 @@ class LintExactus:
         ruff: tuple[str, ...] | None = commands.get("ruff")
         if not (config.fix and config.long_lines) or ruff is None:
             return None
-        return LongLineRepair(ruff_command=ruff)
+        resolver: LintsConfigResolver | None = (
+            LintsConfigResolver(root=root) if root is not None else None
+        )
+
+        def eligible(path: Path) -> bool:
+            """Resolve whether a file permits automatic long-line repairs.
+
+            Args:
+                path: Python source candidate.
+
+            Returns:
+                File-specific repair toggle.
+
+            """
+            return (
+                resolver.resolve(path=path, base=config).long_lines
+                if resolver is not None
+                else config.long_lines
+            )
+
+        return LongLineRepair(ruff_command=ruff, file_filter=eligible)
 
     @staticmethod
     def _report_long_lines(
@@ -7859,11 +8649,53 @@ class LintExactus:
         }
 
     @staticmethod
+    def _scoped_css_naming(
+        *,
+        inputs: CustomToolsInput,
+        files: Sequence[Path],
+        references: Sequence[Path] = (),
+    ) -> tuple[CssNamingFinding, ...]:
+        """Apply per-file naming policy while retaining the complete CSS graph.
+
+        Args:
+            inputs: Effective global custom-tool configuration.
+            files: Complete selected CSS graph.
+            references: Non-stylesheet sources scanned for statically
+                knowable property references.
+
+        Returns:
+            Findings selected by their file's resolved naming policy.
+
+        """
+        resolver: LintsConfigResolver = LintsConfigResolver(root=inputs.cwd)
+        policies: dict[CssNamingSettings, set[str]] = {}
+        for path in files:
+            policy: CssNamingSettings = resolver.resolve(
+                path=path,
+                base=LintExactusConfig(css_naming=inputs.css_naming),
+            ).css_naming
+            policies.setdefault(policy, set()).add(
+                path.relative_to(inputs.cwd).as_posix(),
+            )
+        return tuple(
+            finding
+            for policy, members in policies.items()
+            for finding in scan_css_naming(
+                root=inputs.cwd,
+                files=files,
+                settings=policy,
+                reference_files=references,
+            )
+            if finding.file in members
+        )
+
+    @staticmethod
     def _delimiter_report(
         *,
         inputs: CustomToolsInput,
         files: Sequence[Path],
         progress_span: tuple[float, float],
+        result: DelimiterResult | None = None,
     ) -> dict[str, JsonValue]:
         """Scan JavaScript sources for removable delimiters and heal them.
 
@@ -7872,6 +8704,8 @@ class LintExactus:
                 scope and the fix toggle.
             files: JavaScript sources covered by the delimiter scan.
             progress_span: Conventions-stage slice this scan may fill.
+            result: Holds the DelimiterResult from scanning delimiters or a
+                provided cached result.
 
         Returns:
             A built-in linter entry with findings, applied repairs and
@@ -7882,11 +8716,11 @@ class LintExactus:
         trace(
             step=(
                 f"delimiters: scanning {len(files)} files — "
-                f"heal {'on' if inputs.fix else 'off'}"
+                f"heal {"on" if inputs.fix else "off"}"
             ),
             depth=3,
         )
-        result: DelimiterResult = scan_delimiters(
+        result = result or scan_delimiters(
             inputs=DelimiterInput(
                 root=inputs.cwd,
                 files=tuple(sorted(files)),
@@ -7937,6 +8771,7 @@ class LintExactus:
         inputs: CustomToolsInput,
         files: Sequence[Path],
         progress_span: tuple[float, float],
+        result: FunctionBlocksResult | None = None,
     ) -> dict[str, JsonValue]:
         """Run the JavaScript function-block notation scan.
 
@@ -7945,6 +8780,7 @@ class LintExactus:
                 scope and the fix toggle.
             files: JavaScript sources covered by the notation scan.
             progress_span: Conventions-stage slice this scan may fill.
+            result: Optional result from the shared JavaScript traversal.
 
         Returns:
             A built-in linter entry with findings, applied repairs and
@@ -7955,11 +8791,11 @@ class LintExactus:
         trace(
             step=(
                 f"notation: scanning {len(files)} files — "
-                f"heal {'on' if inputs.fix else 'off'}"
+                f"heal {"on" if inputs.fix else "off"}"
             ),
             depth=3,
         )
-        result: FunctionBlocksResult = scan_function_blocks(
+        result = result or scan_function_blocks(
             inputs=FunctionBlocksInput(
                 root=inputs.cwd,
                 files=tuple(sorted(files)),
@@ -8025,10 +8861,28 @@ class LintExactus:
         heal: bool = inputs.shebang.heal and inputs.fix
         trace(
             step=(
-                f"shebang: scanning sources — heal {'on' if heal else 'off'}"
+                f"shebang: scanning sources — heal {"on" if heal else "off"}"
             ),
             depth=3,
         )
+        resolver: LintsConfigResolver = LintsConfigResolver(root=inputs.cwd)
+
+        def settings_for(path: Path) -> ShebangSettings:
+            """Resolve a source's permission policy under global fix ownership.
+
+            Args:
+                path: Owned Python source.
+
+            Returns:
+                File-specific permission settings.
+
+            """
+            local: ShebangSettings = resolver.resolve(
+                path=path,
+                base=LintExactusConfig(shebang=inputs.shebang),
+            ).shebang
+            return replace(local, heal=local.heal and inputs.fix)
+
         result: ShebangResult = scan_shebang(
             inputs=ShebangInput(
                 root=inputs.cwd,
@@ -8042,6 +8896,7 @@ class LintExactus:
                 source_files=tuple(inputs.python_files),
             ),
             progress_span=progress_span,
+            settings_for=settings_for,
         )
         return {
             "returncode": int(bool(result.findings)),
@@ -8094,7 +8949,9 @@ class LintExactus:
         except (OSError, SubprocessError):
             return None
         found: Match[str] | None = Constants.version_pattern.search(
-            string=f"{completed.stdout}\n{completed.stderr}",
+            string=f"""\
+{completed.stdout}
+{completed.stderr}""",
         )
         return found.group() if found is not None else None
 
@@ -8250,6 +9107,7 @@ class LintExactus:
             Per-sub-step file scopes used for findings and weighting.
 
         """
+        resolver: ConfigResolver = ConfigResolver(root=inputs.cwd)
         return _ConventionScopes(
             python_files=sorted(
                 file for file in inputs.python_files if file.is_file()
@@ -8259,6 +9117,12 @@ class LintExactus:
                 for file in inputs.eslint_args
                 if Path(file).suffix.lower()
                 in JavaScriptDelimiterSimplifier.EXTENSIONS
+                and not resolver.boolean(
+                    path=inputs.cwd / file,
+                    tool="lints",
+                    name="no-delimiters",
+                    default=not inputs.delimiters,
+                )
                 and not file.endswith(".min.js")
                 and (inputs.cwd / file).is_file()
             ],
@@ -8266,6 +9130,12 @@ class LintExactus:
                 inputs.cwd / file
                 for file in inputs.eslint_args
                 if Path(file).suffix.lower() in {".js", ".mjs", ".cjs", ".jsx"}
+                and not resolver.boolean(
+                    path=inputs.cwd / file,
+                    tool="lints",
+                    name="no-notation",
+                    default=not inputs.notation,
+                )
                 and not file.endswith(".min.js")
                 and (inputs.cwd / file).is_file()
             ],

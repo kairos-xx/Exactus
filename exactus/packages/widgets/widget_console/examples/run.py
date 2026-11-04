@@ -70,9 +70,7 @@ def main(*, arguments: Sequence[str] | None = None) -> int:
         mode once the page loaded.
 
     """
-    parser: ExactusArgumentParser = ExactusArgumentParser(
-        description=__doc__,
-    )
+    parser: ExactusArgumentParser = ExactusArgumentParser(description=__doc__)
     _ = parser.add_argument(
         "--headless",
         action="store_true",
@@ -86,7 +84,9 @@ def main(*, arguments: Sequence[str] | None = None) -> int:
     )
     args: Namespace = parser.parse_args(args=arguments)
     url: str = start_demo(log=Path(gettempdir()) / "exactus-js-console.log")
-    _ = stdout.write(f"{url}\n")
+    _ = stdout.write(f"""\
+{url}
+""")
     stdout.flush()
     session: BrowserSession = BrowserSession(headless=args.headless)
     ready: bool = True

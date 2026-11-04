@@ -14,7 +14,7 @@ Provide @activity json content.
 
 ### Subdirectories
 
-- [`COVERAGE/`](COVERAGE/README.md) — Provide coverage raw js json content.
-- [`TESTS/`](TESTS/README.md) — Provide js tests json content.
+- [`COVERAGE/`](COVERAGE/README.md) — Provide import graph json content.
+- [`TESTS/`](TESTS/README.md) — Provide shard 000 log content.
 
 <!-- exactus:inventory:end -->

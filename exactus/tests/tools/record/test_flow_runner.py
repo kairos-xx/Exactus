@@ -1102,20 +1102,30 @@ def test_websocket_response_capture_feeds_the_next_action(
         html=(
             dedent(
                 text=(
-                    "    <script>\n    class ExactusFakeSocket extends Eve"
-                    "ntTarget {\n      constructor(url, protocols) {\n    "
-                    "    super();\n        this.url = url;\n        this.p"
-                    "rotocol = Array.isArray(protocols) ? protocols[0] ?? "
-                    '"" : "";\n        queueMicrotask(() => this.dispatchE'
-                    'vent(new Event("open")));\n      }\n      send(messag'
-                    "e) {\n        this.sent = message;\n        queueMicr"
-                    'otask(() => this.dispatchEvent(new MessageEvent("mess'
-                    'age", {\n          data: JSON.stringify({payload: {to'
-                    "tal: 12.5}})\n        })));\n      }\n      close(cod"
-                    "e, reason) {\n        queueMicrotask(() => this.dispa"
-                    'tchEvent(\n          new CloseEvent("close", {code, r'
-                    "eason})\n        ));\n      }\n    }\n    window.WebS"
-                    "ocket = ExactusFakeSocket;\n    </script>"
+                    """\
+    <script>
+    class ExactusFakeSocket extends EventTarget {
+      constructor(url, protocols) {
+        super();
+        this.url = url;
+        this.protocol = Array.isArray(protocols) ? protocols[0] ?? "" : "";
+        queueMicrotask(() => this.dispatchEvent(new Event("open")));
+      }
+      send(message) {
+        this.sent = message;
+        queueMicrotask(() => this.dispatchEvent(new MessageEvent("message", \
+{
+          data: JSON.stringify({payload: {total: 12.5}})
+        })));
+      }
+      close(code, reason) {
+        queueMicrotask(() => this.dispatchEvent(
+          new CloseEvent("close", {code, reason})
+        ));
+      }
+    }
+    window.WebSocket = ExactusFakeSocket;
+    </script>"""
                 ),
             )
         ),

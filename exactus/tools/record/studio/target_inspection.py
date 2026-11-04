@@ -28,68 +28,85 @@ class Constants:
 
     probe: Final[str] = dedent(
         text=(
-            "    ({x, y}) => {\n            const element = document.elementFr"
-            "omPoint(x, y);\n            if (!element) return null;\n         "
-            "   let selector = '';\n            for (const attribute of ['id',"
-            " 'data-testid', 'name']) {\n              const value = element.g"
-            "etAttribute(attribute);\n              if (!value) continue;\n   "
-            "           const candidate = attribute === 'id' ? '#' + CSS.escap"
-            "e(value)\n                : '[' + attribute + '=' + JSON.stringif"
-            "y(value) + ']';\n              if (document.querySelectorAll(cand"
-            "idate).length === 1) {\n                selector = candidate;\n  "
-            "              break;\n              }\n            }\n           "
-            " if (!selector) {\n              const parts = [];\n             "
-            " for (let node = element;\n                node && node !== docum"
-            "ent.documentElement;\n                node = node.parentElement) "
-            "{\n                const tag = node.localName;\n                c"
-            "onst siblings = [...node.parentElement.children]\n               "
-            "   .filter(child => child.localName === tag);\n                pa"
-            "rts.unshift(siblings.length > 1\n                  ? tag + ':nth-"
-            "of-type('\n                    + (siblings.indexOf(node) + 1) + '"
-            ")' : tag);\n                const candidate = parts.join(' > ');"
-            "\n                if (document.querySelectorAll(candidate).length"
-            " === 1) {\n                  selector = candidate;\n             "
-            "     break;\n                }\n              }\n            }\n "
-            "           const rect = element.getBoundingClientRect();\n       "
-            "     const implicit = {a: 'link', button: 'button',\n            "
-            "  select: 'combobox', textarea: 'textbox', img: 'img',\n         "
-            "     nav: 'navigation',\n              h1: 'heading', h2: 'headin"
-            "g', h3: 'heading', h4: 'heading',\n              h5: 'heading', h"
-            "6: 'heading', li: 'listitem', ul: 'list'};\n            const inp"
-            "utRoles = {checkbox: 'checkbox', radio: 'radio',\n              b"
-            "utton: 'button', submit: 'button', range: 'slider'};\n           "
-            " const roleOf = node => node.getAttribute('role')\n              "
-            "|| (node.localName === 'input'\n                ? inputRoles[node"
-            ".type] || 'textbox'\n                : implicit[node.localName] |"
-            "| '');\n            const nameOf = node => (node.getAttribute('ar"
-            "ia-label')\n              || node.textContent || node.getAttribut"
-            "e('placeholder')\n              || '').trim().replace(/\\s+/g, ' "
-            "').slice(0, 60);\n            const role = roleOf(element);\n    "
-            "        const name = nameOf(element);\n            const alternat"
-            "ives = [];\n            const testId = element.getAttribute('data"
-            "-testid');\n            if (testId)\n              alternatives.p"
-            "ush({strategy: 'test id',\n                selector: '[data-testi"
-            "d=' + JSON.stringify(testId) + ']',\n                matches: doc"
-            "ument.querySelectorAll(\n                  '[data-testid=' + JSON"
-            ".stringify(testId) + ']').length});\n            if (role && name"
-            ")\n              alternatives.push({strategy: 'role and name',\n "
-            "               selector: 'role=' + role + '[name='\n             "
-            "     + JSON.stringify(name) + ']',\n                matches: [..."
-            "document.querySelectorAll('*')].filter(\n                  node ="
-            "> roleOf(node) === role\n                    && nameOf(node) === "
-            "name).length});\n            if (selector)\n              alterna"
-            "tives.push({strategy: 'css', selector,\n                matches: "
-            "document.querySelectorAll(selector).length});\n            return"
-            " {selector: selector || 'html', tag: element.localName,\n        "
-            "      text: (element.getAttribute('aria-label')\n                "
-            "|| element.textContent || '').trim().slice(0, 120),\n            "
-            "  role, name, alternatives,\n              matches: selector ? do"
-            "cument.querySelectorAll(selector).length\n                : 0,\n "
-            "             frame: window === window.top ? 'main page'\n        "
-            "        : 'frame ' + (window.name || location.pathname),\n       "
-            "       page: location.href,\n              rect: {x: rect.x, y: r"
-            "ect.y,\n                width: rect.width, height: rect.height}};"
-            "\n          }"
+            """\
+    ({x, y}) => {
+            const element = document.elementFromPoint(x, y);
+            if (!element) return null;
+            let selector = '';
+            for (const attribute of ['id', 'data-testid', 'name']) {
+              const value = element.getAttribute(attribute);
+              if (!value) continue;
+              const candidate = attribute === 'id' ? '#' + CSS.escape(value)
+                : '[' + attribute + '=' + JSON.stringify(value) + ']';
+              if (document.querySelectorAll(candidate).length === 1) {
+                selector = candidate;
+                break;
+              }
+            }
+            if (!selector) {
+              const parts = [];
+              for (let node = element;
+                node && node !== document.documentElement;
+                node = node.parentElement) {
+                const tag = node.localName;
+                const siblings = [...node.parentElement.children]
+                  .filter(child => child.localName === tag);
+                parts.unshift(siblings.length > 1
+                  ? tag + ':nth-of-type('
+                    + (siblings.indexOf(node) + 1) + ')' : tag);
+                const candidate = parts.join(' > ');
+                if (document.querySelectorAll(candidate).length === 1) {
+                  selector = candidate;
+                  break;
+                }
+              }
+            }
+            const rect = element.getBoundingClientRect();
+            const implicit = {a: 'link', button: 'button',
+              select: 'combobox', textarea: 'textbox', img: 'img',
+              nav: 'navigation',
+              h1: 'heading', h2: 'heading', h3: 'heading', h4: 'heading',
+              h5: 'heading', h6: 'heading', li: 'listitem', ul: 'list'};
+            const inputRoles = {checkbox: 'checkbox', radio: 'radio',
+              button: 'button', submit: 'button', range: 'slider'};
+            const roleOf = node => node.getAttribute('role')
+              || (node.localName === 'input'
+                ? inputRoles[node.type] || 'textbox'
+                : implicit[node.localName] || '');
+            const nameOf = node => (node.getAttribute('aria-label')
+              || node.textContent || node.getAttribute('placeholder')
+              || '').trim().replace(/\\s+/g, ' ').slice(0, 60);
+            const role = roleOf(element);
+            const name = nameOf(element);
+            const alternatives = [];
+            const testId = element.getAttribute('data-testid');
+            if (testId)
+              alternatives.push({strategy: 'test id',
+                selector: '[data-testid=' + JSON.stringify(testId) + ']',
+                matches: document.querySelectorAll(
+                  '[data-testid=' + JSON.stringify(testId) + ']').length});
+            if (role && name)
+              alternatives.push({strategy: 'role and name',
+                selector: 'role=' + role + '[name='
+                  + JSON.stringify(name) + ']',
+                matches: [...document.querySelectorAll('*')].filter(
+                  node => roleOf(node) === role
+                    && nameOf(node) === name).length});
+            if (selector)
+              alternatives.push({strategy: 'css', selector,
+                matches: document.querySelectorAll(selector).length});
+            return {selector: selector || 'html', tag: element.localName,
+              text: (element.getAttribute('aria-label')
+                || element.textContent || '').trim().slice(0, 120),
+              role, name, alternatives,
+              matches: selector ? document.querySelectorAll(selector).length
+                : 0,
+              frame: window === window.top ? 'main page'
+                : 'frame ' + (window.name || location.pathname),
+              page: location.href,
+              rect: {x: rect.x, y: rect.y,
+                width: rect.width, height: rect.height}};
+          }"""
         ),
     )
     frame_tags: Final[set[str]] = {"iframe", "frame"}

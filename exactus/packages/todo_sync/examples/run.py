@@ -63,9 +63,11 @@ def main(*, scratch: Path | None = None) -> int:
     html: Path = target.with_suffix(suffix=".html")
     percent: float = completion(text=target.read_text(encoding="utf-8"))
     _ = stdout.write(
-        f"sync      {target.name}: {'updated' if changed else 'in sync'}\n"
-        f"dashboard {html.name}: {html.stat().st_size} bytes\n"
-        f"complete  {percent:.1f}%\n",
+        f"""\
+sync      {target.name}: {("updated" if changed else "in sync")}
+dashboard {html.name}: {html.stat().st_size} bytes
+complete  {percent:.1f}%
+""",
     )
     return 0
 

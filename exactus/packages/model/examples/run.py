@@ -73,7 +73,9 @@ def _show(*, statement: Compilable) -> None:
         statement: Structural statement to compile and display.
 
     """
-    _ = stdout.write(f"{SQLiteCompiler.compile(statement=statement).sql};\n")
+    _ = stdout.write(f"""\
+{SQLiteCompiler.compile(statement=statement).sql};
+""")
 
 
 def main() -> int:
@@ -114,7 +116,10 @@ def main() -> int:
             statement=select,
             parameters=(Constants.open_title,),
         ).fetchone()
-    _ = stdout.write(f"\nfetched: {row}\n")
+    _ = stdout.write(f"""\
+
+fetched: {row}
+""")
     return 0
 
 

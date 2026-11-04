@@ -170,7 +170,12 @@ def test_state_and_restore_cover_symbolic_links(tmp_path: Path) -> None:
 
     """
     target_file: Path = tmp_path / "target.txt"
-    target_file.write_text(data="target\n", encoding="utf-8")
+    target_file.write_text(
+        data="""\
+target
+""",
+        encoding="utf-8",
+    )
     link: Path = tmp_path / "link"
     link.symlink_to(target="target.txt")
     link_state: EntryState = state(path=link)
@@ -181,12 +186,25 @@ def test_state_and_restore_cover_symbolic_links(tmp_path: Path) -> None:
         message="Symbolic-link state was not captured correctly.",
     )
     backup: Path = tmp_path / "backup.txt"
-    backup.write_text(data="before\n", encoding="utf-8")
+    backup.write_text(
+        data="""\
+before
+""",
+        encoding="utf-8",
+    )
     destination: Path = tmp_path / "destination.txt"
-    destination.write_text(data="after\n", encoding="utf-8")
+    destination.write_text(
+        data="""\
+after
+""",
+        encoding="utf-8",
+    )
     restore(source=backup, target=destination)
     _expect(
-        condition=destination.read_text(encoding="utf-8") == "before\n",
+        condition=destination.read_text(encoding="utf-8")
+        == """\
+before
+""",
         message="Regular-file restoration did not replace the destination.",
     )
     remove(path=destination)
@@ -205,14 +223,26 @@ def test_restore_copies_directory_tree(tmp_path: Path) -> None:
     """
     source: Path = tmp_path / "backup"
     source.mkdir()
-    (source / "nested.txt").write_text(data="saved\n", encoding="utf-8")
+    (source / "nested.txt").write_text(
+        data="""\
+saved
+""",
+        encoding="utf-8",
+    )
     target: Path = tmp_path / "target"
     target.mkdir()
-    (target / "stale.txt").write_text(data="stale\n", encoding="utf-8")
+    (target / "stale.txt").write_text(
+        data="""\
+stale
+""",
+        encoding="utf-8",
+    )
     restore(source=source, target=target)
     _expect(
         condition=(target / "nested.txt").read_text(encoding="utf-8")
-        == "saved\n",
+        == """\
+saved
+""",
         message="Directory restoration omitted nested content.",
     )
     _expect(
@@ -669,8 +699,18 @@ def test_main_verify_and_conflict_policies(
     """
     root: Path = tmp_path / "project"
     root.mkdir()
-    (root / "same.txt").write_text(data="same\n", encoding="utf-8")
-    (root / "drift.txt").write_text(data="actual\n", encoding="utf-8")
+    (root / "same.txt").write_text(
+        data="""\
+same
+""",
+        encoding="utf-8",
+    )
+    (root / "drift.txt").write_text(
+        data="""\
+actual
+""",
+        encoding="utf-8",
+    )
     package_dir: Path = _package(
         tmp_path=tmp_path / "pkg",
         manifest=_manifest_for(
@@ -730,7 +770,9 @@ def test_main_verify_and_conflict_policies(
     )
     _expect(
         condition=(root / "drift.txt").read_text(encoding="utf-8")
-        == "actual\n",
+        == """\
+actual
+""",
         message="Dry-run unexpectedly mutated the destination file.",
     )
     _expect(
@@ -749,7 +791,9 @@ def test_main_verify_and_conflict_policies(
     )
     _expect(
         condition=(root / "drift.txt").read_text(encoding="utf-8")
-        == "target\n",
+        == """\
+target
+""",
         message="Backup conflict policy did not overwrite the file.",
     )
     _expect(
@@ -764,7 +808,10 @@ def test_main_verify_and_conflict_policies(
     result: dict[str, object] = loads(s=capfd.readouterr().out)
     _expect(
         condition=result.get("skipped") == ["drift.txt"]
-        and (root / "drift.txt").read_text(encoding="utf-8") == "target\n",
+        and (root / "drift.txt").read_text(encoding="utf-8")
+        == """\
+target
+""",
         message="Skip conflict policy did not leave the file untouched.",
     )
 
@@ -784,9 +831,24 @@ def test_main_apply_commits_full_delta(
     """
     root: Path = tmp_path / "project"
     root.mkdir()
-    (root / "keep.txt").write_text(data="old\n", encoding="utf-8")
-    (root / "origin.txt").write_text(data="origin\n", encoding="utf-8")
-    (root / "gone.txt").write_text(data="gone\n", encoding="utf-8")
+    (root / "keep.txt").write_text(
+        data="""\
+old
+""",
+        encoding="utf-8",
+    )
+    (root / "origin.txt").write_text(
+        data="""\
+origin
+""",
+        encoding="utf-8",
+    )
+    (root / "gone.txt").write_text(
+        data="""\
+gone
+""",
+        encoding="utf-8",
+    )
     directory: Path = root / "replaced"
     directory.mkdir()
     probe: Path = tmp_path / "probe-link"
@@ -852,12 +914,18 @@ def test_main_apply_commits_full_delta(
         message="Runtime application returned a nonzero status.",
     )
     _expect(
-        condition=(root / "keep.txt").read_text(encoding="utf-8") == "new\n",
+        condition=(root / "keep.txt").read_text(encoding="utf-8")
+        == """\
+new
+""",
         message="Changed file did not receive the staged payload.",
     )
     _expect(
         condition=not (root / "origin.txt").exists()
-        and (root / "moved.txt").read_text(encoding="utf-8") == "moved\n",
+        and (root / "moved.txt").read_text(encoding="utf-8")
+        == """\
+moved
+""",
         message="Move operation did not relocate the file.",
     )
     _expect(
@@ -892,8 +960,18 @@ def test_main_rolls_back_failed_postcondition(
     """
     root: Path = tmp_path / "project"
     root.mkdir()
-    (root / "old.txt").write_text(data="orig\n", encoding="utf-8")
-    (root / "victim.txt").write_text(data="victim\n", encoding="utf-8")
+    (root / "old.txt").write_text(
+        data="""\
+orig
+""",
+        encoding="utf-8",
+    )
+    (root / "victim.txt").write_text(
+        data="""\
+victim
+""",
+        encoding="utf-8",
+    )
     link: Path = root / "lnk"
     link.symlink_to(target="victim.txt")
     probe: Path = tmp_path / "probe-link"
@@ -935,7 +1013,10 @@ def test_main_rolls_back_failed_postcondition(
         )
     _expect(
         condition=(root / "old.txt").is_file()
-        and (root / "old.txt").read_text(encoding="utf-8") == "orig\n",
+        and (root / "old.txt").read_text(encoding="utf-8")
+        == """\
+orig
+""",
         message="Rollback did not restore the modified file.",
     )
     _expect(

@@ -26,11 +26,17 @@ from asyncio import Semaphore, create_subprocess_exec, gather, run
 from asyncio.subprocess import PIPE
 from bisect import bisect_right
 from collections import Counter
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict, dataclass, field, replace
-from fnmatch import fnmatch
 from functools import partial
 from hashlib import sha256
 from importlib import import_module
+from importlib.metadata import (
+    PackageNotFoundError,
+    distributions,
+    entry_points,
+    version,
+)
 from importlib.resources import files
 from importlib.util import find_spec
 from json import dumps, loads
@@ -40,12 +46,23 @@ from re import Match, Pattern
 from re import compile as recompile
 from shutil import rmtree
 from subprocess import CompletedProcess, SubprocessError
-from sys import executable, stdlib_module_names
+from sys import executable, stdlib_module_names, version_info
 from textwrap import dedent
 from threading import Thread
 from time import monotonic, sleep
-from typing import TYPE_CHECKING, ClassVar, Final, Self, cast, final, override
+from typing import (
+    TYPE_CHECKING,
+    ClassVar,
+    Final,
+    Self,
+    TypedDict,
+    Unpack,
+    cast,
+    final,
+    override,
+)
 from urllib.parse import unquote, urlparse
+from uuid import uuid4
 
 from exactus.packages.steps import trace
 from exactus.tools.common.cli import (
@@ -56,6 +73,8 @@ from exactus.tools.common.cli import (
     is_reports_tree,
     resolve_exactus_tool_bundle,
 )
+from exactus.tools.common.path_filters import default_excluded_dirs, glob_match
+from exactus.tools.common.process_control import read_json, write_json
 from exactus.tools.common.runtime import (
     Progress,
     emit_progress,
@@ -65,6 +84,9 @@ from exactus.tools.common.snippets import finding_excerpt
 from exactus.tools.coverage_tests.arguments import (
     Constants as _GroupFinalConstants,
 )
+from exactus.tools.coverage_tests.backend import monitoring_supported
+from exactus.tools.coverage_tests.event_progress import TestBatchProgress
+from exactus.tools.coverage_tests.incremental import ShardBaseline
 from exactus.tools.coverage_tests.meaningful import (
     MeaningfulConfig,
     MeaningfulResult,
@@ -77,6 +99,7 @@ from exactus.tools.coverage_tests.report import (
     CoverageTestsReport,
     ReportInputs,
 )
+from exactus.tools.coverage_tests.shard_progress import ShardProgress
 from exactus.tools.coverage_tests.tracebacks import (
     FailureSite,
     NamedFailure,
@@ -86,6 +109,7 @@ from exactus.tools.coverage_tests.tracebacks import (
 from exactus.tools.reports.bundle import ReportBundle, ReportPaths
 
 if TYPE_CHECKING:
+    from _hashlib import HASH
     from asyncio.subprocess import Process
     from collections.abc import Callable, Iterable, Mapping, Sequence
     from types import ModuleType
@@ -123,9 +147,13 @@ class Constants:
     )
     child_env_drop: Final[frozenset[str]] = frozenset(
         {
+            "EXACTUS_CONFIG",
+            "EXACTUS_EXPLICIT_ARGUMENTS",
             "EXACTUS_ORCHESTRATED",
             "EXACTUS_PIPELINE_RUN_ID",
             "EXACTUS_REGISTRY",
+            "EXACTUS_REPORTS_ROOT",
+            "EXACTUS_ROOT",
             "EXACTUS_RUN_ID",
             "EXACTUS_TOOL",
         },
@@ -358,6 +386,17 @@ def _character_ranges(
     )
 
 
+class BatchTimingOptions(TypedDict, total=False):
+    """Carry optional timing estimates for batch execution.
+
+    Attributes:
+        estimated_seconds: Positive expected command durations.
+
+    """
+
+    estimated_seconds: tuple[float, ...]
+
+
 class CoverageRunError(RuntimeError):
     """Represent a combined-coverage discovery or execution failure."""
 
@@ -433,6 +472,9 @@ class CoverageConfig:
         measure_js: Measure js.
         jobs: Jobs.
         shard_by: Pytest shard unit.
+        collect_cache: Reuse content-identified pytest node collection.
+        fail_first: Schedule previously failing files first.
+        incremental: Reuse verified passing isolated coverage shards.
         context_lines: Context lines.
         per_file_minimum: Per file minimum.
         test_includes: Test includes.
@@ -454,6 +496,9 @@ class CoverageConfig:
     measure_js: bool = True
     jobs: int = 1
     shard_by: str = "file"
+    collect_cache: bool = True
+    fail_first: bool = False
+    incremental: bool = False
     context_lines: int = 3
     per_file_minimum: float | None = None
     test_includes: tuple[str, ...] = ()
@@ -903,7 +948,8 @@ class LocalModuleIndex:
             return False
         relative: str = path.relative_to(self._root).as_posix()
         return any(
-            fnmatch(name=relative, pat=pattern) for pattern in self._excludes
+            glob_match(relative=relative, pattern=pattern)
+            for pattern in self._excludes
         )
 
     def _aliases(self: Self, record: ModuleRecord) -> tuple[str, ...]:
@@ -1273,6 +1319,10 @@ class CombinedCoverageRunner:
         self.report_inputs: ReportInputs | None = None
         self.report_legacy: dict[str, JsonValue] = {}
         self._current_static_costs: dict[str, int] = {}
+        self._baseline: ShardBaseline | None = None
+        self._baseline_shards: tuple[tuple[str, ...], ...] = ()
+        self._baseline_inputs: tuple[str, tuple[str, ...]] = ("", ())
+        self._incremental_index: LocalModuleIndex | None = None
 
     @classmethod
     def execute_program(
@@ -1316,6 +1366,7 @@ class CombinedCoverageRunner:
             "pytest shard",
             (0.2, 0.6),
         ),
+        **timing: Unpack[BatchTimingOptions],
     ) -> tuple[CompletedProcess[bytes], ...]:
         """Execute several Python module commands in parallel.
 
@@ -1325,6 +1376,7 @@ class CombinedCoverageRunner:
             program: Program.
             concurrency: Maximum simultaneously running commands.
             progress: Activity label and parent-task span for this batch.
+            **timing: Optional expected durations in command order.
 
         Returns:
             The resulting value.
@@ -1337,6 +1389,7 @@ class CombinedCoverageRunner:
                 program=program,
                 concurrency=concurrency,
                 progress=progress,
+                **timing,
             ),
         )
 
@@ -1672,12 +1725,15 @@ class CombinedCoverageRunner:
         if not (tests := self.discover_tests()):
             return self._pass_without_tests()
         trace(step="stage: index sources", depth=1)
-        emit_progress(
-            state="RUNNING",
-            completed=1,
-            total=5,
-            step="index sources",
-            detail=f"{len(tests)} test files",
+        publish_progress(
+            progress=Progress(
+                state="RUNNING",
+                completed=0,
+                total=1,
+                step="index sources",
+                detail=f"{len(tests)} test files",
+                span=(0.0, 0.1),
+            ),
         )
         index: LocalModuleIndex = LocalModuleIndex(
             root=self._config.root,
@@ -1695,12 +1751,9 @@ class CombinedCoverageRunner:
             ),
             depth=2,
         )
-        self._layout.coverage_artifacts.mkdir(parents=True, exist_ok=True)
-        self._write_manifest(graph=graph)
-        self._purge_data_files()
-        collect_config: Path = self._write_coverage_config(
-            name=".coveragerc.collect",
-            omitted=index.excluded,
+        collect_config: Path = self._prepare_collection(
+            index=index,
+            graph=graph,
         )
         js_results: list[JsCoverageResult | None] = []
         js_errors: list[Exception] = []
@@ -1807,7 +1860,8 @@ class CombinedCoverageRunner:
                 and bool(meaningful.actionable or meaningful.analysis_errors)
             ),
         )
-        final_status: int = threshold_status or execution.status
+        final_status: int = threshold_status or execution.status or js_status
+        self._finish_baseline(passed=final_status == 0)
         trace(
             step=(
                 f"coverage tests: gates — total "
@@ -1838,6 +1892,7 @@ class CombinedCoverageRunner:
             "pytest shard",
             (0.2, 0.6),
         ),
+        **timing: Unpack[BatchTimingOptions],
     ) -> tuple[CompletedProcess[bytes], ...]:
         """Execute several Python module commands concurrently.
 
@@ -1847,14 +1902,33 @@ class CombinedCoverageRunner:
             program: Program.
             concurrency: Maximum simultaneously running commands.
             progress: Activity label and parent-task span for this batch.
+            **timing: Optional expected durations in command order.
 
         Returns:
             The resulting value.
 
         """
-        finished: list[int] = [0]
+        estimated_seconds: tuple[float, ...] = timing.get(
+            "estimated_seconds",
+            (),
+        )
         total: int = len(argument_sets)
         durations: list[float] = [0.0 for _index in range(total)]
+        estimates: tuple[float, ...] = (
+            estimated_seconds
+            if len(estimated_seconds) == total
+            else tuple(60.0 for _index in range(total))
+        )
+        events: TestBatchProgress = TestBatchProgress(
+            arguments=argument_sets,
+            estimates=estimates,
+            sink=publish_progress,
+        )
+        tracker: ShardProgress = ShardProgress(
+            estimates=estimates,
+            phase=progress,
+            sink=events.publish,
+        )
         semaphore: Semaphore | None = (
             Semaphore(value=concurrency)
             if concurrency is not None and concurrency < total
@@ -1883,42 +1957,48 @@ class CombinedCoverageRunner:
                 The resulting value.
 
             """
-            started: float = monotonic()
             if semaphore is None:
-                result: CompletedProcess[bytes] = await cls._execute_async(
-                    arguments=arguments,
-                    cwd=cwd,
-                    program=program,
-                )
-            else:
-                async with semaphore:
-                    result = await cls._execute_async(
-                        arguments=arguments,
-                        cwd=cwd,
-                        program=program,
-                    )
-            durations[shard] = monotonic() - started
-            finished[0] += 1
-            publish_progress(
-                progress=Progress(
-                    state="RUNNING",
-                    completed=finished[0],
-                    total=total,
-                    step=progress[0],
-                    detail=f"shard {shard} exit {result.returncode}",
-                    span=progress[1],
-                ),
+                return await execute(shard=shard, arguments=arguments)
+            async with semaphore:
+                return await execute(shard=shard, arguments=arguments)
+
+        async def execute(
+            *,
+            shard: int,
+            arguments: tuple[str, ...],
+        ) -> CompletedProcess[bytes]:
+            """Run one acquired worker slot and report its actual lifetime.
+
+            Args:
+                shard: Command index.
+                arguments: Subprocess argument vector.
+
+            Returns:
+                Actual subprocess result.
+
+            """
+            started: float = monotonic()
+            tracker.started(shard=shard)
+            result: CompletedProcess[bytes] = await cls._execute_async(
+                arguments=arguments,
+                cwd=cwd,
+                program=program,
             )
+            durations[shard] = monotonic() - started
+            tracker.finished(shard=shard, status=result.returncode)
             return result
 
-        results: tuple[CompletedProcess[bytes], ...] = tuple(
-            await gather(
-                *(
-                    tracked(shard=index, arguments=arguments)
-                    for index, arguments in enumerate(iterable=argument_sets)
+        async with tracker:
+            results: tuple[CompletedProcess[bytes], ...] = tuple(
+                await gather(
+                    *(
+                        tracked(shard=index, arguments=arguments)
+                        for index, arguments in enumerate(
+                            iterable=argument_sets,
+                        )
+                    ),
                 ),
-            ),
-        )
+            )
         cls._last_batch_durations = tuple(durations)
         return results
 
@@ -1973,8 +2053,8 @@ class CombinedCoverageRunner:
                 suffix: str = f": {detail}" if detail else ""
                 origin: str = cls._issue_origin(entry=entry)
                 lines.append(
-                    f"- `{entry.get('test', 'n/a')}` — {
-                        entry.get('kind', 'FAILED')
+                    f"- `{entry.get("test", "n/a")}` — {
+                        entry.get("kind", "FAILED")
                     }{suffix}{origin}",
                 )
             lines.append("")
@@ -1984,10 +2064,10 @@ class CombinedCoverageRunner:
                 entry = item if isinstance(item, dict) else {}
                 origin = cls._issue_origin(entry=entry)
                 lines.append(
-                    f"- `{entry.get('test', 'n/a')}` — `{
-                        entry.get('category', 'Warning')
-                    }` at `{entry.get('location', 'n/a')}`: {
-                        entry.get('message', '')
+                    f"- `{entry.get("test", "n/a")}` — `{
+                        entry.get("category", "Warning")
+                    }` at `{entry.get("location", "n/a")}`: {
+                        entry.get("message", "")
                     }{origin}",
                 )
             lines.append("")
@@ -2131,6 +2211,19 @@ class CombinedCoverageRunner:
             + size_weight,
         )
 
+    @classmethod
+    def _test_cost_item(cls, test: Path, /) -> int:
+        """Adapt static-cost analysis to an ordered cold-cache worker pool.
+
+        Args:
+            test: Test file missing learned runtime telemetry.
+
+        Returns:
+            Static scheduling weight.
+
+        """
+        return cls._test_cost(test=test)
+
     @property
     def _work_dir(self: Self) -> Path:
         """The scratch directory holding this run's coverage plumbing.
@@ -2160,8 +2253,8 @@ class CombinedCoverageRunner:
 
         """
         return (
-            self._config.root
-            / ".exactus-cache"
+            self._config.output.parent
+            / ".runtime"
             / "coverage-tests"
             / CoverageCoreDefaults.test_costs_name
         )
@@ -2306,7 +2399,10 @@ class CombinedCoverageRunner:
             encoding="utf-8",
             errors="replace",
         )
-        return f"{stdout_text}\n=== stderr ===\n{stderr_text}"
+        return f"""\
+{stdout_text}
+=== stderr ===
+{stderr_text}"""
 
     @staticmethod
     def _js_failures(*, text: str) -> tuple[str, ...]:
@@ -2386,8 +2482,8 @@ class CombinedCoverageRunner:
             The resulting value.
 
         """
-        return f" _(shard {entry.get('shard', '?')}, `{
-            entry.get('log', 'n/a')
+        return f" _(shard {entry.get("shard", "?")}, `{
+            entry.get("log", "n/a")
         }`)_"
 
     @staticmethod
@@ -2448,7 +2544,12 @@ class CombinedCoverageRunner:
         index: int
         char: str
         for index, char in enumerate(iterable=source):
-            if char == "\n":
+            if (
+                char
+                == """\
+
+"""
+            ):
                 line_starts.append(index + 1)
         ascending: tuple[tuple[int, int, int], ...] = tuple(
             sorted(ranges, key=lambda entry: entry[1] - entry[0]),
@@ -2638,10 +2739,10 @@ class CombinedCoverageRunner:
         )
         return [
             f"- JavaScript files measured: **{
-                javascript.get(('files_measured'), 0)
+                javascript.get(("files_measured"), 0)
             }**",
             f"- JavaScript line coverage: **{
-                javascript.get(('percent_covered'), 'n/a')
+                javascript.get(("percent_covered"), "n/a")
             }%**",
             f"- JavaScript unreached sources: **{js_unreached_count}**",
         ]
@@ -2664,9 +2765,9 @@ class CombinedCoverageRunner:
         )
         return "".join(
             (
-                f"| `{values.get('path', 'n/a')}` | ",
-                f"{values.get('num_statements', 'n/a')} | ",
-                f"{values.get('missing_lines', 'n/a')} | ",
+                f"| `{values.get("path", "n/a")}` | ",
+                f"{values.get("num_statements", "n/a")} | ",
+                f"{values.get("missing_lines", "n/a")} | ",
                 f"{percent}% |",
             ),
         )
@@ -2685,7 +2786,7 @@ class CombinedCoverageRunner:
         if isinstance(item, dict) and isinstance(item.get("file"), str):
             module: JsonValue = item.get("module")
             suffix: str = f" (module `{module}`)" if module else ""
-            return f"- `{item['file']}`{suffix}"
+            return f"- `{item["file"]}`{suffix}"
         return f"- `{item}`"
 
     @staticmethod
@@ -2868,6 +2969,70 @@ class CombinedCoverageRunner:
                 return f"packages/{parts[index + 2]}"
         return "shared"
 
+    def _prepare_collection(
+        self,
+        *,
+        index: LocalModuleIndex,
+        graph: ImportGraph,
+    ) -> Path:
+        """Persist the import manifest and initialize clean coverage scratch.
+
+        Args:
+            index: Current owned source index.
+            graph: Reachable local imports.
+
+        Returns:
+            Coverage collection configuration.
+
+        """
+        self._layout.coverage_artifacts.mkdir(parents=True, exist_ok=True)
+        self._write_manifest(graph=graph)
+        self._purge_data_files()
+        self._incremental_index = index
+        return self._write_coverage_config(
+            name=".coveragerc.collect",
+            omitted=index.excluded,
+        )
+
+    def _execution_report(
+        self,
+        *,
+        execution: TestExecution,
+    ) -> dict[str, JsonValue]:
+        """Distinguish executed shards from reused baseline shards.
+
+        Args:
+            execution: Recorded shard outcomes.
+
+        Returns:
+            Execution metadata with explicit incremental provenance.
+
+        """
+        payload: dict[str, JsonValue] = self._execution_manifest(
+            execution=execution,
+        )
+        if self._baseline is not None:
+            payload["incremental"] = {
+                "executed_shards": cast(
+                    typ="JsonValue",
+                    val=self._baseline.executed,
+                ),
+                "reused_shards": cast(
+                    typ="JsonValue",
+                    val=self._baseline.reused,
+                ),
+            }
+            for name in ("tests", "shards"):
+                entries: JsonValue = payload.get(name)
+                if isinstance(entries, list):
+                    for entry in entries:
+                        if isinstance(entry, dict):
+                            entry["reused"] = (
+                                entry.get("shard", entry.get("index"))
+                                in self._baseline.reused
+                            )
+        return payload
+
     def _record_test_output(
         self: Self,
         *,
@@ -2897,7 +3062,13 @@ class CombinedCoverageRunner:
             log_name: str = f"shard-{index:03}.log"
             _ = consume(
                 value=(log_dir / log_name).write_text(
-                    data=text if text.endswith("\n") else f"{text}\n",
+                    data=text
+                    if text.endswith("""\
+
+""")
+                    else f"""\
+{text}
+""",
                     encoding="utf-8",
                 ),
             )
@@ -2979,13 +3150,14 @@ class CombinedCoverageRunner:
         """
         self._work_dir.mkdir(parents=True, exist_ok=True)
         config_path: Path = self._work_dir / name
-        source_lines: str = "\n".join(
-            map(self._indent_item, self._config.source_roots),
-        )
+        source_lines: str = """\
+
+""".join(map(self._indent_item, self._config.source_roots))
         source_root_names: frozenset[str] = frozenset(
             root.name for root in self._config.source_roots
         )
         patterns: tuple[str, ...] = (
+            f"    {self._config.output.as_posix()}/**",
             *map(self._indent_item, omitted),
             *(
                 f"    */{directory}/**"
@@ -3009,16 +3181,31 @@ class CombinedCoverageRunner:
                 )
             ),
         )
-        omit_lines: tuple[str, ...] = ("omit =", "\n".join(patterns))
+        omit_lines: tuple[str, ...] = (
+            "omit =",
+            """\
+
+""".join(patterns),
+        )
         parallel_line: tuple[str, ...] = (
             ("parallel = True",) if self._config.jobs > 1 else ()
         )
         _ = consume(
             value=config_path.write_text(
-                data="\n".join(
+                data="""\
+
+""".join(
                     (
                         "[run]",
                         f"branch = {self._config.branch}",
+                        *(
+                            ("core = sysmon",)
+                            if monitoring_supported(
+                                branch=self._config.branch,
+                                pytest_args=self._config.pytest_args,
+                            )
+                            else ()
+                        ),
                         "concurrency = thread, greenlet"
                         if find_spec(name="greenlet") is not None
                         else "concurrency = thread",
@@ -3057,7 +3244,8 @@ class CombinedCoverageRunner:
         """
         if not self._data_file.is_file():
             return frozenset()
-        _ = activate_exactus_tool_bundle(root=Path.cwd())
+        if find_spec(name="coverage") is None:
+            _ = activate_exactus_tool_bundle(root=self._config.root)
         coverage_module: ModuleType = import_module(name="coverage")
         data_type: type[CoverageData] = cast(
             typ="type[CoverageData]",
@@ -3123,7 +3311,7 @@ class CombinedCoverageRunner:
             return False
         relative: str = path.relative_to(self._config.root).as_posix()
         return any(
-            fnmatch(name=relative, pat=pattern)
+            glob_match(relative=relative, pattern=pattern)
             for pattern in self._config.source_excludes
         )
 
@@ -3310,6 +3498,7 @@ class CombinedCoverageRunner:
                 else ()
             ),
             "--test",
+            f"--test-concurrency={self._config.jobs}",
             *test_names,
         )
         process: CompletedProcess[bytes] = self.execute_program(
@@ -3392,7 +3581,9 @@ class CombinedCoverageRunner:
                     indent=2,
                     sort_keys=True,
                 )
-                + "\n",
+                + """\
+
+""",
                 encoding="utf-8",
             ),
         )
@@ -3449,7 +3640,10 @@ class CombinedCoverageRunner:
                 self._layout.tests_artifacts
                 / CoverageCoreDefaults.js_tests_name
             ).write_text(
-                data=dumps(obj=document, indent=2) + "\n",
+                data=dumps(obj=document, indent=2)
+                + """\
+
+""",
                 encoding="utf-8",
             ),
         )
@@ -3794,7 +3988,9 @@ class CombinedCoverageRunner:
                     indent=2,
                     sort_keys=True,
                 )
-                + "\n",
+                + """\
+
+""",
                 encoding="utf-8",
             ),
         )
@@ -3814,6 +4010,7 @@ class CombinedCoverageRunner:
         *,
         timing_output: Path | None = None,
         use_bundle: bool = False,
+        data_file: Path | None = None,
     ) -> tuple[str, ...]:
         """Build arguments for the single combined coverage test run.
 
@@ -3822,6 +4019,7 @@ class CombinedCoverageRunner:
             config_path: Config path.
             timing_output: Optional per-file timing telemetry destination.
             use_bundle: Use bundle.
+            data_file: Optional isolated incremental coverage basename.
 
         Returns:
             The resulting value.
@@ -3832,8 +4030,10 @@ class CombinedCoverageRunner:
             data=(
                 dedent(
                     text=(
-                        "    # Copyright (c) 2026 Project contributors\n    "
-                        '"""Generated coverage subprocess helpers."""\n    '
+                        """\
+    # Copyright (c) 2026 Project contributors
+    \"""Generated coverage subprocess helpers.\"""
+    """
                     ),
                 )
             ),
@@ -3845,16 +4045,39 @@ class CombinedCoverageRunner:
             .read_text(encoding="utf-8"),
             encoding="utf-8",
         )
+        _ = (config_path.parent / "exactus_progress_plugin.py").write_text(
+            data=files(anchor="exactus.tools.coverage_tests")
+            .joinpath("progress_plugin.py")
+            .read_text(encoding="utf-8"),
+            encoding="utf-8",
+        )
+        events_path: Path = (
+            timing_output.with_suffix(suffix=".events.jsonl")
+            if timing_output is not None
+            else config_path.with_name(
+                name=f"pytest-events-{uuid4().hex}.jsonl",
+            )
+        )
+        events_path.unlink(missing_ok=True)
         return (
             *(() if use_bundle else ("-m",)),
             "coverage",
             "run",
             f"--rcfile={config_path}",
+            *((f"--data-file={data_file}",) if data_file is not None else ()),
             "-m",
             "pytest",
             "-v",
             "-p",
             "exactus_skip_plugin",
+            "-p",
+            "exactus_progress_plugin",
+            f"--exactus-events={events_path}",
+            *(
+                (f"--exactus-events-total={len(items)}",)
+                if self._config.shard_by == "node"
+                else ()
+            ),
             *(
                 ("--exactus-timings-output", str(object=timing_output))
                 if timing_output is not None
@@ -3917,6 +4140,12 @@ class CombinedCoverageRunner:
             collect_config.parent / f"pytest-timings-{index}.json"
             for index in range(len(shards))
         )
+        if self._config.incremental:
+            return self._run_incremental_shards(
+                shards=shards,
+                collect_config=collect_config,
+                bundle=bundle,
+            )
         started: float = monotonic()
         argument_sets: tuple[tuple[str, ...], ...] = tuple(
             (
@@ -3930,12 +4159,18 @@ class CombinedCoverageRunner:
             ),
         )
         regular_count: int = len(regular_shards)
+        estimates: tuple[float, ...] = self._shard_estimates(shards=shards)
+        spans: tuple[tuple[float, float], tuple[float, float]] = (
+            self._shard_spans(estimates=estimates, regular_count=regular_count)
+        )
         regular_statuses: tuple[CompletedProcess[bytes], ...] = (
             self.execute_many(
                 argument_sets=argument_sets[:regular_count],
                 cwd=self._config.root,
                 program=str(object=bundle) if bundle is not None else None,
                 concurrency=self._config.jobs,
+                progress=("pytest shard", spans[0]),
+                estimated_seconds=estimates[:regular_count],
             )
         )
         if exclusive_shards:
@@ -3952,6 +4187,8 @@ class CombinedCoverageRunner:
                 cwd=self._config.root,
                 program=str(object=bundle) if bundle is not None else None,
                 concurrency=1,
+                progress=("exclusive pytest shards", spans[1]),
+                estimated_seconds=estimates[regular_count:],
             )
             if exclusive_shards
             else ()
@@ -3969,8 +4206,361 @@ class CombinedCoverageRunner:
             ),
             depth=2,
         )
-        return self._record_test_output(
+        execution: TestExecution = self._record_test_output(
             results=shard_statuses,
+            duration_seconds=monotonic() - started,
+        )
+        write_json(
+            path=self._test_cost_cache_path.parent / "pytest-failures.json",
+            payload={
+                "version": 1,
+                "files": cast(
+                    typ="JsonValue",
+                    val=sorted(
+                        {
+                            failure.test.split(sep="::", maxsplit=1)[0]
+                            for shard in execution.shards
+                            for failure in shard.failures
+                        },
+                    ),
+                ),
+            },
+        )
+        return execution
+
+    def _shard_estimates(
+        self,
+        *,
+        shards: tuple[tuple[str, ...], ...],
+    ) -> tuple[float, ...]:
+        """Estimate isolated shard work from the already learned file timings.
+
+        Args:
+            shards: Complete selected isolation plan.
+
+        Returns:
+            Positive expected work seconds in shard order.
+
+        """
+        learned: dict[str, float] = self._load_test_cost_cache()
+        counts: Counter[str] = Counter(
+            item.split(sep="::", maxsplit=1)[0]
+            for shard in shards
+            for item in shard
+        )
+        return tuple(
+            max(
+                0.001,
+                sum(
+                    learned.get(item.split(sep="::", maxsplit=1)[0], 60.0)
+                    / counts[item.split(sep="::", maxsplit=1)[0]]
+                    for item in shard
+                ),
+            )
+            for shard in shards
+        )
+
+    def _shard_spans(
+        self,
+        *,
+        estimates: tuple[float, ...],
+        regular_count: int,
+    ) -> tuple[tuple[float, float], tuple[float, float]]:
+        """Allocate disjoint progress spans using expected batch wall times.
+
+        Args:
+            estimates: Expected work per selected shard.
+            regular_count: Number of parallel shards before serial work.
+
+        Returns:
+            Parallel and exclusive spans whose shared boundary never regresses.
+
+        """
+        regular: float = max(
+            max(estimates[:regular_count], default=0.0),
+            sum(estimates[:regular_count]) / max(self._config.jobs, 1),
+        )
+        exclusive: float = sum(estimates[regular_count:])
+        split: float = (
+            0.2 + 0.4 * regular / (regular + exclusive)
+            if regular + exclusive
+            else 0.6
+        )
+        split = min(0.6, max(0.2, split))
+        return (0.2, split), (split, 0.6)
+
+    def _finish_baseline(self, *, passed: bool) -> None:
+        """Promote a passing baseline only if its inputs remained unchanged.
+
+        Args:
+            passed: Combined test and coverage-gate outcome.
+
+        """
+        if self._baseline is None or not passed:
+            return
+        identity: str
+        sources: dict[Path, bytes]
+        identity, sources = self._incremental_inputs()
+        current: tuple[str, ...] = tuple(
+            self._shard_fingerprint(shard=shard, sources=sources)
+            for shard in self._baseline_shards
+        )
+        self._baseline.commit(
+            shards=self._baseline_shards,
+            passed=(identity, current) == self._baseline_inputs,
+        )
+
+    def _incremental_inputs(self) -> tuple[str, dict[Path, bytes]]:
+        """Fingerprint shared inputs and read owned Python dependency bytes.
+
+        Returns:
+            Shared-input identity and content indexed by absolute path.
+
+        """
+        digest: HASH = sha256()
+        sources: dict[Path, bytes] = {}
+        for directory, dirnames, filenames in self._config.root.walk():
+            dirnames[:] = sorted(
+                name
+                for name in dirnames
+                if not name.startswith(".")
+                and name not in self._config.excluded_dirs
+                and name not in default_excluded_dirs(root=self._config.root)
+                and name not in {"artifacts", "bundle", "node_modules"}
+                and not (directory / name).is_relative_to(self._config.output)
+            )
+            for name in sorted(filenames):
+                path: Path = directory / name
+                relative: str = self._relative_string(path=path)
+                if any(
+                    glob_match(relative=relative, pattern=pattern)
+                    for pattern in self._config.source_excludes
+                ):
+                    continue
+                data: bytes = path.read_bytes()
+                digest.update(relative.encode())
+                if path.suffix == ".py":
+                    sources[path.resolve()] = data
+                else:
+                    digest.update(data)
+        digest.update(
+            dumps(
+                obj={
+                    "config": repr(self._config),
+                    "python": tuple(version_info),
+                    "executable": executable,
+                    "environment": {
+                        key: value
+                        for key, value in _child_environ().items()
+                        if key != "PYTEST_CURRENT_TEST"
+                    },
+                    "distributions": sorted(
+                        (dist.metadata.get("Name", ""), dist.version)
+                        for dist in distributions()
+                    ),
+                    "plugins": sorted(
+                        (
+                            entry.name,
+                            entry.value,
+                            entry.dist.version if entry.dist else "",
+                        )
+                        for entry in entry_points(group="pytest11")
+                    ),
+                    "coverage": version(distribution_name="coverage"),
+                    "pytest": version(distribution_name="pytest"),
+                },
+                sort_keys=True,
+            ).encode(),
+        )
+        # Runner changes must invalidate baselines in other projects too.
+        digest.update(Path(__file__).read_bytes())
+        return digest.hexdigest(), sources
+
+    def _shard_fingerprint(
+        self,
+        *,
+        shard: tuple[str, ...],
+        sources: dict[Path, bytes],
+    ) -> str:
+        """Hash the local import closure and conservative fixture dependencies.
+
+        Args:
+            shard: Exact test selection.
+            sources: Current owned Python inputs.
+
+        Returns:
+            Shard's transitive content identity.
+
+        """
+        digest: HASH = sha256()
+        tests: tuple[Path, ...] = tuple(
+            {
+                self._config.root / item.split(sep="::", maxsplit=1)[0]
+                for item in shard
+            }
+            | {path for path in sources if path.name == "conftest.py"},
+        )
+        paths: set[Path] = set(tests)
+        if self._incremental_index is not None:
+            graph: ImportGraph = ImportGraphResolver(
+                index=self._incremental_index,
+            ).resolve(tests=tests)
+            paths.update(record.path for record in graph.targets)
+        # Dynamic imports cannot be proven statically: use all owned sources.
+        if any(
+            token in sources.get(path, b"")
+            for path in paths
+            for token in (
+                b"import_module",
+                b"__import__",
+                b"exec(",
+                b"eval(",
+                b"read_text",
+                b"read_bytes",
+                b"open(",
+                b"subprocess",
+                b"Popen",
+                b"runpy",
+            )
+        ):
+            paths.update(sources)
+        for path in sorted(paths):
+            digest.update(str(object=path).encode())
+            digest.update(
+                sources[path] if path in sources else path.read_bytes(),
+            )
+        return digest.hexdigest()
+
+    def _run_incremental_shards(
+        self,
+        *,
+        shards: tuple[tuple[str, ...], ...],
+        collect_config: Path,
+        bundle: Path | None,
+    ) -> TestExecution:
+        """Execute changed isolated shards and restore verified unchanged data.
+
+        Args:
+            shards: Fresh complete isolation plan.
+            collect_config: Coverage subprocess configuration.
+            bundle: Optional bundled Python tool launcher.
+
+        Returns:
+            Combined current and explicitly identified baseline test results.
+
+        """
+        identity: str
+        sources: dict[Path, bytes]
+        identity, sources = self._incremental_inputs()
+        baseline: ShardBaseline = ShardBaseline(
+            directory=self._config.output.parent
+            / ".runtime"
+            / "coverage-baseline",
+            identity=identity,
+        )
+        self._baseline = baseline
+        self._baseline_shards = baseline.layout(fallback=shards)
+        shards = self._baseline_shards
+        fingerprints: tuple[str, ...] = tuple(
+            self._shard_fingerprint(shard=shard, sources=sources)
+            for shard in shards
+        )
+        self._baseline_inputs = (identity, fingerprints)
+        paths: tuple[Path, ...] = tuple(
+            self._work_dir / f".coverage.shard-{index}"
+            for index in range(len(shards))
+        )
+        results: dict[int, CompletedProcess[bytes]] = {}
+        started: float = monotonic()
+        for index, shard in enumerate(iterable=shards):
+            cached: CompletedProcess[bytes] | None = baseline.restore(
+                shard=shard,
+                fingerprint=fingerprints[index],
+                target=paths[index],
+            )
+            if cached is not None:
+                baseline.reused.append(index)
+                results[index] = cached
+        timing_paths: list[Path] = []
+        estimates: tuple[float, ...] = self._shard_estimates(shards=shards)
+        regular_count: int = sum(
+            not self._exclusive_shard(shard=shard) for shard in shards
+        )
+        spans: tuple[tuple[float, float], tuple[float, float]] = (
+            self._shard_spans(estimates=estimates, regular_count=regular_count)
+        )
+        for exclusive in (False, True):
+            pending: list[int] = [
+                index
+                for index, shard in enumerate(iterable=shards)
+                if index not in results
+                and self._exclusive_shard(shard=shard) == exclusive
+            ]
+            timing: tuple[Path, ...] = tuple(
+                self._work_dir / f"pytest-timings-{index}.json"
+                for index in pending
+            )
+            timing_paths.extend(timing)
+            arguments: tuple[tuple[str, ...], ...] = tuple(
+                self._coverage_arguments(
+                    items=shards[index],
+                    config_path=collect_config,
+                    timing_output=path,
+                    use_bundle=bundle is not None,
+                    data_file=paths[index],
+                )
+                for index, path in zip(pending, timing, strict=True)
+            )
+            statuses: tuple[CompletedProcess[bytes], ...] = (
+                self.execute_many(
+                    argument_sets=arguments,
+                    cwd=self._config.root,
+                    program=str(object=bundle) if bundle is not None else None,
+                    concurrency=1 if exclusive else self._config.jobs,
+                    progress=(
+                        "exclusive pytest shards"
+                        if exclusive
+                        else "pytest shards",
+                        spans[int(exclusive)],
+                    ),
+                    estimated_seconds=tuple(
+                        estimates[index] for index in pending
+                    ),
+                )
+                if arguments
+                else ()
+            )
+            for index, result in zip(pending, statuses, strict=True):
+                baseline.executed.append(index)
+                results[index] = result
+                baseline.stage(
+                    shard=shards[index],
+                    fingerprint=fingerprints[index],
+                    source=paths[index],
+                    result=result,
+                )
+        self._update_test_cost_cache(timing_paths=tuple(timing_paths))
+        self._publish_test_cost_cache()
+        trace(
+            step=f"incremental: {len(baseline.executed)} executed shards, "
+            f"{len(baseline.reused)} reused passing shards",
+            depth=2,
+        )
+        write_json(
+            path=self._layout.coverage_artifacts / "incremental.json",
+            payload={
+                "version": 1,
+                "executed_shards": cast(
+                    typ="JsonValue",
+                    val=baseline.executed,
+                ),
+                "reused_shards": cast(typ="JsonValue", val=baseline.reused),
+                "strategy": "transitive-import-closure; "
+                "dynamic imports invalidate all Python inputs",
+            },
+        )
+        return self._record_test_output(
+            results=tuple(results[index] for index in range(len(shards))),
             duration_seconds=monotonic() - started,
         )
 
@@ -3999,6 +4589,13 @@ class CombinedCoverageRunner:
         """
         path: Path = self._test_cost_cache_path
         if not path.is_file():
+            path = (
+                self._config.root
+                / ".exactus-cache"
+                / "coverage-tests"
+                / CoverageCoreDefaults.test_costs_name
+            )
+        if not path.is_file():
             return {}
         try:
             raw: JsonValue = cast(
@@ -4010,6 +4607,17 @@ class CombinedCoverageRunner:
         target_version: int = 3
         if not isinstance(raw, dict) or raw.get("version") != target_version:
             return {}
+        static_values: JsonValue = raw.get("static_costs", {})
+        if isinstance(static_values, dict):
+            self._current_static_costs.update(
+                {
+                    key: value
+                    for key, value in static_values.items()
+                    if isinstance(value, int)
+                    and not isinstance(value, bool)
+                    and value > 0
+                },
+            )
         files_value: JsonValue | None = raw.get("files")
         if not isinstance(files_value, dict):
             return {}
@@ -4075,11 +4683,17 @@ class CombinedCoverageRunner:
         cache_path.parent.mkdir(parents=True, exist_ok=True)
         cache_path.write_text(
             data=dumps(
-                obj={"version": 3, "files": learned},
+                obj={
+                    "version": 3,
+                    "files": learned,
+                    "static_costs": self._current_static_costs,
+                },
                 indent=2,
                 sort_keys=True,
             )
-            + "\n",
+            + """\
+
+""",
             encoding="utf-8",
         )
         for timing_path in timing_paths:
@@ -4109,6 +4723,36 @@ class CombinedCoverageRunner:
             CoverageRunError: When pytest collection fails or yields no nodes.
 
         """
+        fingerprint: str | None = (
+            self._collection_fingerprint(tests=tests)
+            if self._config.collect_cache
+            else None
+        )
+        cache_path: Path = (
+            self._test_cost_cache_path.parent / "pytest-nodes.json"
+        )
+        if fingerprint is not None and cache_path.is_file():
+            try:
+                cached: JsonValue = loads(
+                    s=cache_path.read_text(encoding="utf-8"),
+                )
+            except (OSError, UnicodeError, ValueError):
+                cached = None
+            if (
+                isinstance(cached, dict)
+                and cached.get("fingerprint") == fingerprint
+            ):
+                stored: JsonValue | None = cached.get("nodes")
+                if (
+                    isinstance(stored, list)
+                    and stored
+                    and all(isinstance(n, str) for n in stored)
+                ):
+                    trace(
+                        step="test shards: pytest collection cache hit",
+                        depth=2,
+                    )
+                    return tuple(cast(typ="list[str]", val=stored))
         relative_tests: tuple[str, ...] = tuple(
             self._relative_string(path=test) for test in tests
         )
@@ -4170,6 +4814,16 @@ class CombinedCoverageRunner:
             msg = "pytest node collection completed without any test node IDs"
             raise CoverageRunError(msg)
         trace(step=f"test shards: collected {len(nodes)} node IDs", depth=2)
+        if fingerprint is not None:
+            cache_path.parent.mkdir(parents=True, exist_ok=True)
+            write_json(
+                path=cache_path,
+                payload={
+                    "version": 1,
+                    "fingerprint": fingerprint,
+                    "nodes": cast(typ="JsonValue", val=list(nodes)),
+                },
+            )
         return nodes
 
     def _isolated_node_shards(
@@ -4217,6 +4871,85 @@ class CombinedCoverageRunner:
         )
         return tuple(shards)
 
+    def _collection_fingerprint(
+        self,
+        *,
+        tests: tuple[Path, ...],
+    ) -> str | None:
+        """Identify collection inputs, bypassing arbitrary collection hooks.
+
+        Args:
+            tests: Selected test files.
+
+        Returns:
+            Content/config/plugin/environment digest, or None for hooks.
+
+        """
+        digest: HASH = sha256()
+        root: Path = self._config.root
+        for directory, dirnames, filenames in root.walk():
+            dirnames[:] = sorted(
+                name
+                for name in dirnames
+                if not name.startswith(".")
+                and name not in self._config.excluded_dirs
+                and name not in default_excluded_dirs(root=self._config.root)
+                and name not in {"artifacts", "bundle", "node_modules"}
+            )
+            for name in sorted(filenames):
+                path: Path = directory / name
+                if any(
+                    glob_match(
+                        relative=path.relative_to(root).as_posix(),
+                        pattern=pattern,
+                    )
+                    for pattern in self._config.source_excludes
+                ):
+                    continue
+                try:
+                    content: bytes = path.read_bytes()
+                except (OSError, UnicodeError):
+                    return None
+                if name == "conftest.py" and any(
+                    token in content
+                    for token in (
+                        b"pytest_generate_tests",
+                        b"pytest_collection",
+                        b"pytest_collect_file",
+                        b"pytest_pycollect",
+                    )
+                ):
+                    return None
+                digest.update(path.relative_to(root).as_posix().encode())
+                digest.update(content)
+        plugins: list[tuple[str, str, str]] = sorted(
+            (entry.name, entry.value, entry.dist.version if entry.dist else "")
+            for entry in entry_points(group="pytest11")
+        )
+        environment: dict[str, str] = {
+            key: value
+            for key, value in _child_environ().items()
+            if key != "PYTEST_CURRENT_TEST"
+        }
+        try:
+            pytest_version: str = version(distribution_name="pytest")
+        except PackageNotFoundError:
+            return None
+        digest.update(
+            dumps(
+                obj={
+                    "tests": [self._relative_string(path=p) for p in tests],
+                    "args": self._config.pytest_args,
+                    "plugins": plugins,
+                    "pytest": pytest_version,
+                    "python": tuple(version_info),
+                    "environment": environment,
+                },
+                sort_keys=True,
+            ).encode(),
+        )
+        return digest.hexdigest()
+
     def _balanced_test_shards(
         self: Self,
         *,
@@ -4240,19 +4973,35 @@ class CombinedCoverageRunner:
         mutable_shards: list[list[str]] = [[] for _ in range(shard_count)]
         shard_weights: list[int] = [0 for _ in range(shard_count)]
         learned: dict[str, float] = self._load_test_cost_cache()
-        static_costs: dict[str, int] = {
-            self._relative_string(path=test): self._test_cost(test=test)
+        missing: tuple[Path, ...] = tuple(
+            test
             for test in tests
-        }
-        ratios: list[float] = [
-            learned[path] / max(1, static)
-            for path, static in static_costs.items()
-            if path in learned
-        ]
-        ratios.sort()
-        seconds_per_static: float = (
-            ratios[len(ratios) // 2] if ratios else 0.001
+            if self._relative_string(path=test) not in learned
         )
+        static_costs: dict[str, int] = {}
+        if missing:
+            pool: ThreadPoolExecutor
+            with ThreadPoolExecutor(max_workers=self._config.jobs) as pool:
+                costs: list[int] = list(
+                    pool.map(self._test_cost_item, missing),
+                )
+            static_costs = {
+                self._relative_string(path=test): cost
+                for test, cost in zip(missing, costs, strict=True)
+            }
+        calibrated: dict[str, int] = self._current_static_costs
+        calibration: tuple[str, ...] = (
+            tuple(path for path in learned if calibrated.get(path, 0) > 0)
+            if missing
+            else ()
+        )
+        seconds_per_static: float = (
+            sum(learned[path] for path in calibration)
+            / sum(calibrated[path] for path in calibration)
+            if calibration
+            else 0.001
+        )
+        self._current_static_costs.update(static_costs)
         node_counts: Counter[str] = Counter(
             item.split(sep="::", maxsplit=1)[0] for item in selected
         )
@@ -4281,9 +5030,27 @@ class CombinedCoverageRunner:
             )
             return max(1, int(static_seconds * 1000.0))
 
+        last_failures: dict[str, JsonValue] = (
+            read_json(
+                path=self._test_cost_cache_path.parent
+                / "pytest-failures.json",
+            )
+            if self._config.fail_first
+            else {}
+        ) or {}
+        failed_values: JsonValue = last_failures.get("files", [])
+        failed: frozenset[str] = (
+            frozenset(item for item in failed_values if isinstance(item, str))
+            if isinstance(failed_values, list)
+            else frozenset()
+        )
         weighted_tests: list[tuple[int, str]] = sorted(
             ((estimated_milliseconds(item=item), item) for item in selected),
-            key=lambda item: (-item[0], item[1]),
+            key=lambda item: (
+                item[1].split(sep="::", maxsplit=1)[0] not in failed,
+                -item[0],
+                item[1],
+            ),
         )
         weight: int
         item: str
@@ -4331,7 +5098,7 @@ class CombinedCoverageRunner:
             program=str(object=bundle) if bundle is not None else None,
         )
         trace(
-            step=f"coverage {' '.join(arguments)} — exit {process.returncode}",
+            step=f"coverage {" ".join(arguments)} — exit {process.returncode}",
             depth=2,
         )
         return process.returncode
@@ -4396,20 +5163,20 @@ class CombinedCoverageRunner:
             "",
             "## Summary",
             "",
-            f"- Status: **{('PASS' if passed else 'FAIL')}**",
+            f"- Status: **{("PASS" if passed else "FAIL")}**",
             (
                 f"- Coverage gate: "
-                f"**{(minimum if minimum is not None else 'disabled')}**"
+                f"**{(minimum if minimum is not None else "disabled")}**"
             ),
             (
                 f"- Per-file gate: "
-                f"**{per_file if per_file is not None else 'disabled'}** "
+                f"**{per_file if per_file is not None else "disabled"}** "
                 f"({len(shortfalls)} file(s) below)"
             ),
             f"- Coverage: **{percent}%**",
-            f"- Statements: **{total.get('num_statements', 'n/a')}**",
-            f"- Missing lines: **{total.get('missing_lines', 'n/a')}**",
-            f"- Covered lines: **{total.get('covered_lines', 'n/a')}**",
+            f"- Statements: **{total.get("num_statements", "n/a")}**",
+            f"- Missing lines: **{total.get("missing_lines", "n/a")}**",
+            f"- Covered lines: **{total.get("covered_lines", "n/a")}**",
             f"- Reachable local targets: **{target_count}**",
             f"- Ignored non-local imports: **{ignored_count}**",
             f"- Unreached source files: **{unreached_count}**",
@@ -4451,8 +5218,8 @@ class CombinedCoverageRunner:
                 "".join(
                     (
                         f"| `{name}` | ",
-                        f"{values.get('num_statements', 'n/a')} | ",
-                        f"{values.get('missing_lines', 'n/a')} | ",
+                        f"{values.get("num_statements", "n/a")} | ",
+                        f"{values.get("missing_lines", "n/a")} | ",
                         f"{cell_percent}% |",
                     ),
                 ),
@@ -4484,7 +5251,14 @@ class CombinedCoverageRunner:
             )
         if javascript is not None:
             lines.extend(self._js_section_lines(javascript=javascript))
-        return "\n".join(lines).rstrip() + "\n"
+        return (
+            """\
+
+""".join(lines).rstrip()
+            + """\
+
+"""
+        )
 
     def _write_exactus_bundle(
         self: Self,
@@ -4622,7 +5396,7 @@ class CombinedCoverageRunner:
             coverage=coverage,
             graph=graph_full,
             javascript=javascript,
-            execution=self._execution_manifest(execution=execution)
+            execution=self._execution_report(execution=execution)
             if execution is not None
             else None,
             groups=tuple(groups),
@@ -4693,16 +5467,16 @@ class CombinedCoverageRunner:
             )
             lines.extend(
                 (
-                    f"### `{item['test']}`",
+                    f"### `{item["test"]}`",
                     "",
                     "**Outcome:** SKIPPED · **Severity:** info",
-                    f"**Location:** `{item['path']}:{item['line']}`",
+                    f"**Location:** `{item["path"]}:{item["line"]}`",
                     "",
                     str(object=item["message"]),
                     "",
                     (
                         f"Log: [Test "
-                        f"output]({item['log']}) (shard {item['shard']})"
+                        f"output]({item["log"]}) (shard {item["shard"]})"
                     ),
                     "",
                 ),
@@ -4715,7 +5489,7 @@ class CombinedCoverageRunner:
                 )
                 lines.append("~~~python")
                 lines.extend(
-                    f"{row['n']}{'>' if row['target'] else ' '}| {row['text']}"
+                    f"{row["n"]}{">" if row["target"] else " "}| {row["text"]}"
                     for row in rows
                 )
                 lines.extend(("~~~", ""))
@@ -4799,9 +5573,9 @@ class CombinedCoverageRunner:
                 reason: str = str(object=entry.get("detail", "")).strip()
                 first: str = (reason.splitlines() or [""])[0]
                 lines.append(
-                    f"| `{entry.get('test')}` | {entry.get('kind')} | "
-                    f"{first.replace('|', chr(92) + '|')[:200]} | "
-                    f"`{entry.get('log')}` |",
+                    f"| `{entry.get("test")}` | {entry.get("kind")} | "
+                    f"{first.replace("|", chr(92) + "|")[:200]} | "
+                    f"`{entry.get("log")}` |",
                 )
             lines.append("")
         lines.extend(skipped_lines)
@@ -4814,8 +5588,8 @@ class CombinedCoverageRunner:
             ),
         )
         lines.extend(
-            f"| `{row['group']}` | {row['files']} | {row['tests']} | "
-            f"{row['passed']} | {row['failed']} | {row['skipped']} |"
+            f"| `{row["group"]}` | {row["files"]} | {row["tests"]} | "
+            f"{row["passed"]} | {row["failed"]} | {row["skipped"]} |"
             for row in group_rows
         )
         lines.extend(
@@ -4824,7 +5598,7 @@ class CombinedCoverageRunner:
         lines.append("| --- | ---: | ---: | ---: | --- |")
         lines.extend(
             f"| {shard.index} | {shard.returncode} | "
-            f"{shard.collected if shard.collected is not None else 'n/a'} | "
+            f"{shard.collected if shard.collected is not None else "n/a"} | "
             f"{len(shard.tests)} | `{shard.log}` |"
             for shard in execution.shards
         )
@@ -4838,7 +5612,7 @@ class CombinedCoverageRunner:
             lines.append("| --- | ---: |")
             lines.extend(
                 (
-                    f"| {text.replace('|', chr(92) + '|')[:200]} | {count} |"
+                    f"| {text.replace("|", chr(92) + "|")[:200]} | {count} |"
                     for text, count in warnings.most_common()
                 ),
             )
@@ -4850,7 +5624,9 @@ class CombinedCoverageRunner:
             ),
             analyzer="tests",
             title="Combined Tests Report",
-            markdown="\n".join(lines),
+            markdown="""\
+
+""".join(lines),
             data=cast(
                 typ="dict[str, JsonValue]",
                 val={
@@ -4967,7 +5743,7 @@ class CombinedCoverageRunner:
                 entries: list[tuple[str, str]] = executed.get(test, [])
                 lines.append(
                     f"### `{test}` — {len(entries)} "
-                    f"test{('' if len(entries) == 1 else 's')}",
+                    f"test{("" if len(entries) == 1 else "s")}",
                 )
                 lines.append("")
                 if entries:
@@ -4976,7 +5752,7 @@ class CombinedCoverageRunner:
                     outcome: str
                     for test_name, outcome in entries:
                         lines.append(
-                            f"| `{test_name.replace('|', chr(92) + '|')}` "
+                            f"| `{test_name.replace("|", chr(92) + "|")}` "
                             f"| {outcome} |",
                         )
                 else:
@@ -4991,7 +5767,9 @@ class CombinedCoverageRunner:
                 ),
                 analyzer=f"tests-{name.lower()}",
                 title=f"{name} Test Analyzer",
-                markdown="\n".join(lines),
+                markdown="""\
+
+""".join(lines),
                 data=payload,
             )
         return tuple(
@@ -5168,7 +5946,16 @@ class CombinedCoverageRunner:
                         shard.collected or 0 for shard in execution.shards
                     ),
                     "tests_executed": sum(
-                        len(shard.tests) for shard in execution.shards
+                        len(shard.tests)
+                        for shard in execution.shards
+                        if self._baseline is None
+                        or shard.index not in self._baseline.reused
+                    ),
+                    "tests_reused": sum(
+                        len(shard.tests)
+                        for shard in execution.shards
+                        if self._baseline is not None
+                        and shard.index in self._baseline.reused
                     ),
                     "js_tests_discovered": len(js_result.tests)
                     if js_result is not None
@@ -5177,7 +5964,7 @@ class CombinedCoverageRunner:
                     "pytest_jobs": self._config.jobs,
                     "pytest_shard_by": self._config.shard_by,
                     "pytest_shards": len(execution.shards),
-                    "test_execution": self._execution_manifest(
+                    "test_execution": self._execution_report(
                         execution=execution,
                     ),
                     "coverage_file": CoverageCoreDefaults.raw_report_name,
@@ -5454,7 +6241,10 @@ class CombinedCoverageRunner:
                     self._layout.coverage_artifacts
                     / CoverageCoreDefaults.raw_report_name
                 ).write_text(
-                    data=dumps(obj=new_report, indent=2) + "\n",
+                    data=dumps(obj=new_report, indent=2)
+                    + """\
+
+""",
                     encoding="utf-8",
                 )
         new_manifest: dict[str, JsonValue] | None = js_manifest
@@ -5853,7 +6643,7 @@ class CommandLine:
             msg: str = (
                 f"Every --source-root must be an existing "
                 f"directory inside the project root: "
-                f"{', '.join(map(str, invalid))}"
+                f"{", ".join(map(str, invalid))}"
             )
             raise CoverageRunError(msg)
         return CoverageConfig(

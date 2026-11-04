@@ -51,7 +51,10 @@ def _engine_source() -> str:
             "export class ExtendedSelector",
             "class ExtendedSelector",
         ).replace("export default ExtendedSelector;", "")
-        + "\nglobalThis.ExtendedSelector = ExtendedSelector;\n"
+        + """\
+
+globalThis.ExtendedSelector = ExtendedSelector;
+"""
     )
 
 
@@ -165,8 +168,10 @@ class QuerySession:
                 expression=(
                     dedent(
                         text=(
-                            "    ([node, expression]) =>\n    new Extended"
-                            "Selector(document).matches(node, expression)"
+                            """\
+                            ([node, expression]) =>
+                            new ExtendedSelector(document).matches(node, \
+expression)"""
                         ),
                     )
                 ),
@@ -179,8 +184,9 @@ class QuerySession:
                 expression=(
                     dedent(
                         text=(
-                            "    expression =>\n    new ExtendedSelector(d"
-                            "ocument).count(expression)"
+                            """\
+    expression =>
+    new ExtendedSelector(document).count(expression)"""
                         ),
                     )
                 ),
@@ -209,8 +215,9 @@ class QuerySession:
             expression=(
                 dedent(
                     text=(
-                        "    node =>\n    new ExtendedSelector(document).b"
-                        "estSelector(node, {deep: true})"
+                        """\
+    node =>
+    new ExtendedSelector(document).bestSelector(node, {deep: true})"""
                     ),
                 )
             ),
@@ -276,10 +283,14 @@ class QuerySession:
                 expression=(
                     dedent(
                         text=(
-                            "    () => {\n      const styles = document.qu"
-                            'erySelectorAll(\'style, link[rel="stylesheet"'
-                            "]');\n      for (const node of styles) {\n   "
-                            "     node.remove();\n      }\n    }"
+                            """\
+    () => {
+      const styles = document.querySelectorAll('style, link[rel="stylesheet"]\
+');
+      for (const node of styles) {
+        node.remove();
+      }
+    }"""
                         ),
                     )
                 ),

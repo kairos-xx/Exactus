@@ -353,7 +353,7 @@ def _section(*, root: Path, nested: bool) -> dict[str, JsonValue]:
     if value is None:
         return {}
     if not isinstance(value, dict):
-        msg = f"[{'/'.join(keys)}] must be a TOML table"
+        msg = f"[{"/".join(keys)}] must be a TOML table"
         raise TypeError(msg)
     return value
 

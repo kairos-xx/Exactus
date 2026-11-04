@@ -2,6 +2,7 @@
 """Public API for reproducible source-bundle archives."""
 
 from .core import (
+    BundleOptions,
     BundleResult,
     Selection,
     available_components,
@@ -15,6 +16,7 @@ from .core import (
 )
 
 __all__: list[str] = [
+    "BundleOptions",
     "BundleResult",
     "Selection",
     "available_components",

@@ -12,8 +12,16 @@ from exactus.tests.common.support import (
     expect_true,
 )
 from exactus.tools.lints.css_naming import (
+    CssNamingConvention,
+    CssNamingExemption,
     CssNamingFinding,
+    CssNamingReferences,
     CssNamingSettings,
+    collect_css_references,
+    convention_spec,
+    exemption_spec,
+    parse_convention,
+    parse_exemption,
     scan_css_naming,
 )
 
@@ -64,7 +72,10 @@ def test_mask_comments_and_strings(tmp_path: Path) -> None:
     """
     css: Path = tmp_path / "style.css"
     _ = css.write_text(
-        data='/* --x1: 1; --x2: 2; */\ncontent: "--x3: 3";\n',
+        data="""\
+/* --x1: 1; --x2: 2; */
+content: "--x3: 3";
+""",
         encoding="utf-8",
     )
     expect_false(condition=bool(scan_css_naming(root=tmp_path, files=[css])))
@@ -337,3 +348,451 @@ def test_namespaced_parallel_hyphenated_families(tmp_path: Path) -> None:
         ),
         expected=1,
     )
+
+
+def test_convention_registry_members_and_value(tmp_path: Path) -> None:
+    """Registered stems obey member lists and quantity/value steps.
+
+    Args:
+        tmp_path: Per-test project directory.
+
+    """
+    file: Path = tmp_path / "vars.css"
+    _ = file.write_text(
+        data=":root {--spacing-4: 16px;--spacing-9: 9px;--spacing-2: 4px;}",
+        encoding="utf-8",
+    )
+    convention: CssNamingConvention = CssNamingConvention(
+        stem="--spacing-",
+        members=frozenset({"2", "4", "8"}),
+        unit="px",
+        step=4.0,
+    )
+    findings: tuple[CssNamingFinding, ...] = scan_css_naming(
+        root=tmp_path,
+        files=(file,),
+        settings=CssNamingSettings(conventions=frozenset({convention})),
+    )
+    rules: list[str] = [finding.rule for finding in findings]
+    expect_equal(
+        actual=sorted(set(rules)),
+        expected=["CSSN011"],
+    )
+    expect_true(
+        condition=any(
+            finding.reason == "registry-member" for finding in findings
+        ),
+    )
+    expect_true(
+        condition=any(
+            finding.reason == "registry-value" for finding in findings
+        ),
+    )
+
+
+def test_convention_scope_and_versions(tmp_path: Path) -> None:
+    """Scoped registries apply per component; version stems pass.
+
+    Args:
+        tmp_path: Per-test project directory.
+
+    """
+    inside: Path = tmp_path / "components" / "button" / "vars.css"
+    outside: Path = tmp_path / "components" / "menu" / "vars.css"
+    inside.parent.mkdir(parents=True)
+    outside.parent.mkdir(parents=True)
+    _ = inside.write_text(
+        data=":root {--pad-1: 1px;--pad-2: 2px;}",
+        encoding="utf-8",
+    )
+    _ = outside.write_text(
+        data=":root {--pad-1: 1px;--pad-2: 2px;--theme-v2: dark;}",
+        encoding="utf-8",
+    )
+    settings: CssNamingSettings = CssNamingSettings(
+        conventions=frozenset(
+            {
+                CssNamingConvention(
+                    stem="--pad-",
+                    scope="components/button",
+                ),
+                CssNamingConvention(stem="--theme-v", versions=True),
+            },
+        ),
+    )
+    findings: tuple[CssNamingFinding, ...] = scan_css_naming(
+        root=tmp_path,
+        files=(inside, outside),
+        settings=settings,
+    )
+    expect_true(
+        condition=any(
+            finding.file == outside and finding.rule == "CSSN001"
+            for finding in findings
+        ),
+    )
+    expect_false(
+        condition=any(finding.file == inside for finding in findings),
+    )
+    expect_false(
+        condition=any("theme-v" in finding.message for finding in findings),
+    )
+
+
+def test_scoped_exemptions_and_roots(tmp_path: Path) -> None:
+    """Exemptions suppress findings only inside their scope; roots map.
+
+    Args:
+        tmp_path: Per-test project directory.
+
+    """
+    legacy: Path = tmp_path / "web" / "legacy" / "a.css"
+    other: Path = tmp_path / "web" / "modern" / "b.css"
+    legacy.parent.mkdir(parents=True)
+    other.parent.mkdir(parents=True)
+    body: str = ":root {--item1: 1px;--item2: 2px;}"
+    _ = legacy.write_text(data=body, encoding="utf-8")
+    _ = other.write_text(data=body, encoding="utf-8")
+    settings: CssNamingSettings = CssNamingSettings(
+        exemptions=frozenset(
+            {
+                CssNamingExemption(
+                    name="--item*",
+                    scope="legacy",
+                    rationale="vendor shim",
+                ),
+            },
+        ),
+        component_roots=frozenset(
+            {("web/legacy", "legacy"), ("web/modern", "modern")},
+        ),
+    )
+    findings: tuple[CssNamingFinding, ...] = scan_css_naming(
+        root=tmp_path,
+        files=(legacy, other),
+        settings=settings,
+    )
+    expect_false(
+        condition=any(finding.file == legacy for finding in findings),
+    )
+    expect_true(
+        condition=any(
+            finding.file == other and "modern" in finding.message
+            for finding in findings
+        ),
+    )
+
+
+def test_rule_severity_override_and_validation(tmp_path: Path) -> None:
+    """Per-rule severities resolve through policy; bad values reject.
+
+    Args:
+        tmp_path: Per-test project directory.
+
+    """
+    file: Path = tmp_path / "vars.css"
+    _ = file.write_text(
+        data=":root {--item1: 1px;--item2: 2px;}",
+        encoding="utf-8",
+    )
+    findings: tuple[CssNamingFinding, ...] = scan_css_naming(
+        root=tmp_path,
+        files=(file,),
+        settings=CssNamingSettings(
+            rule_severity=frozenset({("CSSN001", "info")}),
+        ),
+    )
+    expect_true(
+        condition=all(finding.severity == "info" for finding in findings),
+    )
+    with pytest.raises(expected_exception=ValueError, match="severity"):
+        _ = scan_css_naming(
+            root=tmp_path,
+            files=(file,),
+            settings=CssNamingSettings(
+                rule_severity=frozenset({("CSSN001", "fatal")}),
+            ),
+        )
+
+
+def test_javascript_and_html_reference_collection(tmp_path: Path) -> None:
+    """Statically knowable references come from JS and HTML sources.
+
+    Args:
+        tmp_path: Per-test project directory.
+
+    """
+    js: Path = tmp_path / "app.js"
+    _ = js.write_text(
+        data=dedent(
+            text="""\
+    el.style.setProperty("--accent", v);
+    const old = el.style.getPropertyValue("--legacy-1");
+    theme("--brand");
+    dynamic.setProperty(name, v);
+    """,
+        ),
+        encoding="utf-8",
+    )
+    html: Path = tmp_path / "index.html"
+    _ = html.write_text(
+        data="""\
+<div style="--inline-1: 2px; color: var(--accent)">x</div>
+""",
+        encoding="utf-8",
+    )
+    css: Path = tmp_path / "vars.css"
+    _ = css.write_text(
+        data=":root {--accent: red;--legacy-1: 1px;--brand: blue;"
+        "--inline-1: 1px;--unused-1: 3px;--unused-2: 4px;}",
+        encoding="utf-8",
+    )
+    references: CssNamingReferences = collect_css_references(
+        files=(js, html),
+    )
+    expect_true(condition=references.dynamic)
+    expect_false(condition=references.complete)
+    expect_true(
+        condition={
+            "--accent",
+            "--legacy-1",
+            "--brand",
+            "--inline-1",
+        }
+        <= references.names,
+    )
+    findings: tuple[CssNamingFinding, ...] = scan_css_naming(
+        root=tmp_path,
+        files=(css,),
+        settings=CssNamingSettings(check_extended=True),
+        reference_files=(js, html),
+    )
+    expect_true(
+        condition={
+            finding.canonical
+            for finding in findings
+            if finding.rule == "CSSN008"
+        }
+        == {"--unused-1", "--unused-2"},
+    )
+    expect_true(
+        condition=all(
+            finding.severity == "info"
+            for finding in findings
+            if finding.rule == "CSSN008"
+        ),
+    )
+
+
+def test_complete_reference_coverage_escalates(tmp_path: Path) -> None:
+    """Complete coverage upgrades CSSN008; literals count as use.
+
+    Args:
+        tmp_path: Per-test project directory.
+
+    """
+    js: Path = tmp_path / "app.js"
+    _ = js.write_text(
+        data="""\
+node.style.setProperty("--used", "1px");
+""",
+        encoding="utf-8",
+    )
+    css: Path = tmp_path / "vars.css"
+    _ = css.write_text(
+        data=":root {--used: 1px;--orphan: 2px;}",
+        encoding="utf-8",
+    )
+    findings: tuple[CssNamingFinding, ...] = scan_css_naming(
+        root=tmp_path,
+        files=(css,),
+        settings=CssNamingSettings(check_extended=True),
+        reference_files=(js,),
+    )
+    advisory: list[CssNamingFinding] = [
+        finding for finding in findings if finding.rule == "CSSN008"
+    ]
+    expect_equal(actual=len(advisory), expected=1)
+    expect_equal(actual=advisory[0].canonical, expected="--orphan")
+    expect_equal(actual=advisory[0].severity, expected="warning")
+
+
+def test_finding_contract_carries_evidence(tmp_path: Path) -> None:
+    """Findings expose scope, canonical names, members and locations.
+
+    Args:
+        tmp_path: Per-test project directory.
+
+    """
+    file: Path = tmp_path / "vars.css"
+    _ = file.write_text(
+        data="@media (min-width: 1px) {.card {--item1: 1px;}"
+        ".list {--item2: 2px;}}",
+        encoding="utf-8",
+    )
+    findings: tuple[CssNamingFinding, ...] = scan_css_naming(
+        root=tmp_path,
+        files=(file,),
+    )
+    family: list[CssNamingFinding] = [
+        finding for finding in findings if finding.rule == "CSSN001"
+    ]
+    expect_equal(actual=len(family), expected=2)
+    expect_true(
+        condition=all(
+            finding.members == ("--item1", "--item2") for finding in family
+        ),
+    )
+    expected_related: int = 2
+    expect_true(
+        condition=all(
+            len(finding.related) == expected_related for finding in family
+        ),
+    )
+    expect_true(
+        condition=any("@media" in finding.scope for finding in family),
+    )
+    expect_true(
+        condition=all(
+            finding.reason == "distinct-ordinals" for finding in family
+        ),
+    )
+    expect_true(
+        condition=all(finding.confidence == "high" for finding in family),
+    )
+    expect_true(
+        condition=any(finding.canonical == "--item1" for finding in family),
+    )
+
+
+def test_fixture_edge_cases(tmp_path: Path) -> None:
+    """Escaped, unicode, repeated and malformed CSS do not corrupt output.
+
+    Args:
+        tmp_path: Per-test project directory.
+
+    """
+    file: Path = tmp_path / "edge.css"
+    _ = file.write_text(
+        data=":root {--café-1: 1px;--café-2: 2px;"
+        "--item\\-escaped1: 4px;--item\\-escaped2: 5px;"
+        "--dup1: 1px;--dup1: 2px;--dup2: 3px;}"
+        "@media (a) { @supports (b) { .x {--item1: 1px;} }"
+        "/* unclosed",
+        encoding="utf-8",
+    )
+    findings: tuple[CssNamingFinding, ...] | None
+    findings = (
+        scan_css_naming(
+            root=tmp_path,
+            files=(file,),
+        )
+        or None
+    )
+    expect_true(
+        condition=isinstance(findings, tuple),
+    )
+    if isinstance(findings, tuple):
+        expect_true(
+            condition=any("caf" in finding.message for finding in findings),
+        )
+
+
+def test_imports_shadow_dom_and_large_inputs(tmp_path: Path) -> None:
+    """Imports, :host/::part scopes and large inputs stay bounded.
+
+    Args:
+        tmp_path: Per-test project directory.
+
+    """
+    file: Path = tmp_path / "component.css"
+    _ = file.write_text(
+        data=dedent(
+            text="""\
+    @import "tokens.css";
+    :host {--item1: 1px;--item2: 2px;}
+    ::part(label) {color: var(--item1);}
+    """,
+        )
+        + "".join(
+            f"""\
+.x{i} {{--dup: {i}px;}}
+"""
+            for i in range(800)
+        ),
+        encoding="utf-8",
+    )
+    findings: tuple[CssNamingFinding, ...] = scan_css_naming(
+        root=tmp_path,
+        files=(file,),
+    )
+    family: list[CssNamingFinding] = [
+        finding for finding in findings if finding.rule == "CSSN001"
+    ]
+    expect_equal(actual=len(family), expected=2)
+    expect_true(
+        condition=all(":host" in finding.scope for finding in family),
+    )
+
+
+def test_deterministic_under_shuffled_discovery(tmp_path: Path) -> None:
+    """File discovery order never changes the emitted findings.
+
+    Args:
+        tmp_path: Per-test project directory.
+
+    """
+    files: list[Path] = []
+    for index, content in enumerate(
+        iterable=(
+            ":root {--item1: 1px;}",
+            ":root {--item2: 2px;}",
+            ":root {--item3: 3px;}",
+        ),
+    ):
+        file: Path = tmp_path / f"f{index}.css"
+        _ = file.write_text(data=content, encoding="utf-8")
+        files.append(file)
+    baseline: tuple[CssNamingFinding, ...] = scan_css_naming(
+        root=tmp_path,
+        files=files,
+    )
+    shuffled: tuple[CssNamingFinding, ...] = scan_css_naming(
+        root=tmp_path,
+        files=list(reversed(files)),
+    )
+    expect_equal(actual=baseline, expected=shuffled)
+
+
+def test_registry_specs_round_trip() -> None:
+    """Convention and exemption specs serialize and parse losslessly."""
+    convention: CssNamingConvention = parse_convention(
+        spec=(
+            "stem=--spacing-;members=1,2,4;unit=px;step=4;"
+            "versions=0;scope=components/button;"
+            "rationale=design scale;review=2026-01"
+        ),
+    )
+    expect_equal(
+        actual=parse_convention(
+            spec=convention_spec(convention=convention),
+        ),
+        expected=convention,
+    )
+    expect_equal(
+        actual=convention.members,
+        expected=frozenset({"1", "2", "4"}),
+    )
+    exemption: CssNamingExemption = parse_exemption(
+        spec="name=--legacy-;scope=web;rationale=shim",
+    )
+    expect_equal(
+        actual=parse_exemption(
+            spec=exemption_spec(exemption=exemption),
+        ),
+        expected=exemption,
+    )
+    with pytest.raises(expected_exception=ValueError, match="stem"):
+        _ = parse_convention(spec="unit=px")
+    with pytest.raises(expected_exception=ValueError, match="unknown"):
+        _ = parse_exemption(spec="name=--x;bogus=1")

@@ -1,48 +1,43 @@
 {
   "activity": {
-    "count": 4,
+    "count": 3,
     "dropped": 0,
     "events": [
       {
-        "at": "2026-11-02T06:49:03.412664+00:00",
+        "at": "2026-11-04T07:55:49.875347+00:00",
         "level": "info",
         "message": "started: Readme"
       },
       {
-        "at": "2026-11-02T06:49:03.412920+00:00",
+        "at": "2026-11-04T07:55:49.876945+00:00",
         "level": "info",
         "message": "step: starting (Readme)"
       },
       {
-        "at": "2026-11-02T06:49:04.431081+00:00",
+        "at": "2026-11-04T07:55:50.845720+00:00",
         "level": "info",
-        "message": "step: inventory (web)"
-      },
-      {
-        "at": "2026-11-02T06:49:05.707225+00:00",
-        "level": "info",
-        "message": "finished: DONE (exit status 0) in 2.295s"
+        "message": "finished: DONE (exit status 0) in 0.970s"
       }
     ],
     "limit": 50
   },
-  "elapsed_seconds": 2.295,
+  "elapsed_seconds": 0.971,
   "extra": {
     "exit_code": 0,
-    "previous_duration_seconds": 1.893
+    "previous_duration_seconds": 0.742
   },
-  "finished_at": "2026-11-02T06:49:05.707274+00:00",
+  "finished_at": "2026-11-04T07:55:50.845762+00:00",
   "heartbeat": {
     "alive": false,
     "interval_seconds": 1.0,
-    "last_beat": "2026-11-02T06:49:05.707281+00:00",
+    "last_beat": "2026-11-04T07:55:50.845766+00:00",
     "phase": "finished",
-    "pid": 74976
+    "pid": 30972
   },
   "items": [],
   "kind": "tool",
   "name": "readme",
-  "pipeline_run_id": "7906d1edd1a543c7894fd4387463792d",
+  "pipeline_run_id": "514ec66fc2624d32b23c563ae81bb010",
   "progress": {
     "completed": 4,
     "current": "Readme",
@@ -76,9 +71,9 @@
     "step": "complete",
     "total": 4
   },
-  "run_id": "7906d1edd1a543c7894fd4387463792d:readme",
+  "run_id": "514ec66fc2624d32b23c563ae81bb010:readme",
   "schema": "exactus/activity/v1",
-  "started_at": "2026-11-02T06:49:03.412444+00:00",
+  "started_at": "2026-11-04T07:55:49.875243+00:00",
   "status": "DONE",
-  "updated_at": "2026-11-02T06:49:05.707281+00:00"
+  "updated_at": "2026-11-04T07:55:50.845766+00:00"
 }

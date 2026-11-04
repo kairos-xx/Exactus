@@ -22,7 +22,13 @@ def test_default_workspace(
     """
     source: Path = tmp_path / "exactus" / "docs" / "todo" / "TODO.md"
     source.parent.mkdir(parents=True)
-    source.write_text(data="# Plan\n- [ ] Task\n", encoding="utf-8")
+    source.write_text(
+        data="""\
+# Plan
+- [ ] Task
+""",
+        encoding="utf-8",
+    )
     monkeypatch.chdir(path=tmp_path)
     expect_equal(actual=main(argv=[]), expected=0)
     expect_equal(

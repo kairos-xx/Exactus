@@ -34,13 +34,15 @@ class ApiExample:
             exclude=(root / "examples" / "cli",),
         )
         stdout.write(
-            "Meaningful Python API example\n"
-            f"files: {run.metadata.total_files}\n"
-            f"workers: {run.metadata.workers_used}\n"
-            f"duration: {run.metadata.duration_seconds:.6f}s\n"
-            f"progress callbacks: {len(updates)}\n"
-            f"completion: {updates[-1].percent if updates else 100.0:.2f}%\n"
-            f"TEST-3: {run.metadata.test_3}\n",
+            f"""\
+Meaningful Python API example
+files: {run.metadata.total_files}
+workers: {run.metadata.workers_used}
+duration: {run.metadata.duration_seconds:.6f}s
+progress callbacks: {len(updates)}
+completion: {(updates[-1].percent if updates else 100.0):.2f}%
+TEST-3: {run.metadata.test_3}
+""",
         )
 
 

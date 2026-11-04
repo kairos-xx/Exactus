@@ -67,6 +67,28 @@ The `lints` tool: clean, lint and type-check sources with rollback.
   within the effective Ruff line length, and f-string calls expand where
   safe — each rewrite is AST-validated so behavior is preserved. Findings
   surface as `custom_python`.
+- The same pass finishes with the embedded-literal presentation stage
+  (`embedded_strings`): supported multiline strings and complete f-strings
+  — including implicit adjacent concatenations — are rendered as physical
+  multiline triple-quoted literals. The lossless mode is on by default and
+  verified against the complete AST: values, interpolations, conversion
+  flags, format specifications, docstrings, comments and encoding are
+  preserved byte-for-byte; unrenderable candidates surface as structured
+  `LiteralIssue` records in `TransformResult.literal_issues`. The parsed
+  module is threaded through every stage so unchanged files are never
+  reparsed. `--no-embedded-strings` (or `no-embedded-strings = true`)
+  disables the pass and `LintExactusConfig.strings.embedded_strings` is
+  the Python form. `--format-embedded` additionally formats inferred
+  HTML/JavaScript/CSS/Python inside literals via Prettier/Ruff and may
+  change string contents, so it requires `--allow-value-changes` (or the
+  `format-embedded` / `allow-value-changes` pyproject keys, or
+  `LintExactusConfig.strings.format_embedded` + `allow_value_changes`).
+  The remaining presentation knobs — `--line-length`,
+  `--multiline-strategy`, `--no-split-fstrings`,
+  `--no-split-raw-strings`, `--no-split-bytes`,
+  `--no-format-interpolations`, and `--call-format-minimum` — map to the
+  same-named `[tool.exactus.lints]` keys and the
+  `LintExactusConfig.strings` `StringTransformSettings` fields.
 - Audits stylesheet custom properties against the five-layer token graph
   (`PRIMARY`/`DYNAMIC`/`BASE`/`CATALOG`/terminal): literal-only layers,
   derivation order and terminal-layer consumption are enforced and reported
@@ -1673,6 +1695,7 @@ the language with `organize[python]` and `organize[javascript]` prefixes.
 | `core.py` | Lint exactus engine: clean, lint, and type-check sources with rollback. |
 | `css_naming.py` | Audit numbered CSS custom-property families without guessing their meaning. |
 | `css_tokens.py` | Audit the CSS custom-property architecture and terminal-layer policy. |
+| `embedded_strings.py` | Rewrite multiline literals into physical multiline form with AST verification. |
 | `js_delimiters.py` | Conservatively remove unnecessary JavaScript parentheses and braces. |
 | `js_function_blocks.py` | Report JavaScript function and method blocks and modernization eligibility. |
 | `long_lines.py` | Repair Python lines that remain too long after Ruff formatting. |
@@ -1708,9 +1731,23 @@ the language with `organize[python]` and `organize[javascript]` prefixes.
 | `--runtime-max-size` | Byte cap on the shared EXACTUS_RESULTS/.runtime registry database as raw bytes or a size (for example 33554432 or 64MB); the oldest finished runs are deleted when it is exceeded. 0 disables the cap (default: 64MB). | type=_byte_size, default=None, metavar='SIZE' |
 | `--bare-import-exception` | Allow a Python bare import. Repeat for multiple modules; defaults to pytest. | action='append', default=list(Constants.default_bare_import_exceptions), metavar='MODULE' |
 | `--no-python-simplify` | Disable safe adjacent-statement Python AST rewrites. | action='store_true' |
+| `--no-embedded-strings` | Skip the verified multiline literal presentation pass that rewrites supported strings and complete f-strings into physical multiline form without changing values. | action='store_true' |
+| `--format-embedded` | Format inferred HTML, JavaScript, CSS, or Python inside multiline literals with Prettier or Ruff. May change string contents; requires --allow-value-changes. | action='store_true' |
+| `--allow-value-changes` | Permit transforms that intentionally change string contents; required by --format-embedded. | action='store_true' |
+| `--line-length` | Explicit string-transform target width; defaults to the line length resolved from Ruff configuration. | metavar='N' |
+| `--multiline-strategy` | Multiline literal strategy: preserve existing triple quotes, split literals into adjacent physical lines, or choose per literal (smart, default). | choices=('preserve', 'split', 'smart') |
+| `--no-split-fstrings` | Exclude f-strings from width-limited literal splitting. | action='store_true' |
+| `--no-split-raw-strings` | Exclude raw literals from width-limited splitting. | action='store_true' |
+| `--no-split-bytes` | Exclude byte literals from width-limited splitting. | action='store_true' |
+| `--no-format-interpolations` | Skip Ruff-backed expansion of eligible oversized calls inside f-string interpolations. | action='store_true' |
+| `--call-format-minimum` | Minimum argument count before an f-string call interpolation is expanded (default 3). | metavar='N' |
 | `--no-css-naming` | Disable the component-aware CSS numeric naming audit. | action='store_true' |
 | `--css-naming-scale` | Registered numeric CSS design scale (repeatable). | action='append', default=[], metavar='STEM' |
 | `--css-naming-extended` | Include weak-evidence advisory CSS naming findings. | action='store_true' |
+| `--css-naming-convention` | Scoped CSS naming registry as `key=value` pairs joined by `;`. | action='append', default=[], metavar='SPEC' |
+| `--css-naming-exempt` | Scoped CSS naming exemption as `key=value` pairs joined by `;`. | action='append', default=[], metavar='SPEC' |
+| `--css-naming-severity` | Per-rule CSSN severity override (error, warning, info). | action='append', default=[], metavar='RULE=LEVEL' |
+| `--css-naming-component` | Explicit component-root mapping applied before the directory heuristic. | action='append', default=[], metavar='PATH=NAME' |
 | `--css-context-word` | Application or component word that CSS CATALOG token names must not contain (CSS118). Repeat for multiple words; components/<name>/ directories are added automatically. | action='append', default=[], metavar='WORD' |
 | `--toolchain` | Explicit exactus toolchain executable path. | type=Path, default=None |
 
@@ -1881,6 +1918,7 @@ Lint exactus engine: clean, lint, and type-check sources with rollback.
   - `simple` = `False`
   - `css_naming` = `field(default_factory=CssNamingSettings)`
   - `python_simplify` = `True`
+  - `strings` = `field(default_factory=StringTransformSettings)`
 - `class LintExactusRequest` — Carry the inputs of one guarded lint-exactus run.
   - `css_context_words` = `()`
   - Fields: `cwd: Path`, `targets: Sequence[str]`, `report_path: Path | None`, `ignores: Sequence[str]`, `bare_import_exceptions: Sequence[str]`, `config: LintExactusConfig`, `writer: Writer`, `toolchain: Path | None`, `tool_args: ToolArguments`
@@ -1895,6 +1933,7 @@ Lint exactus engine: clean, lint, and type-check sources with rollback.
   - `fix` = `True`
   - `ruff_command` = `None`
   - `delimiters` = `True`
+  - `strings` = `field(default_factory=StringTransformSettings)`
   - `notation` = `True`
   - Fields: `cwd: Path`, `python_files: frozenset[Path]`, `eslint_args: Sequence[str]`, `stylelint_args: Sequence[str]`, `htmlhint_args: Sequence[str]`, `bare_import_exceptions: Sequence[str]`, `targets: Sequence[str]`, `ignores: Sequence[str]`
 - `class AllLintsStageInput` — Carry inputs for the all-lints package stage.
@@ -1934,6 +1973,9 @@ Lint exactus engine: clean, lint, and type-check sources with rollback.
 
 Audit numbered CSS custom-property families without guessing their meaning.
 
+- `class CssNamingConvention` — One scoped semantic registry for a numbered property stem (members, unit/step correspondence, versions, scope, rationale, review).
+- `class CssNamingExemption` — One scoped naming exemption with provenance metadata.
+- `class CssNamingReferences` — Statically knowable custom-property use outside stylesheets (`names`, `locations`, `dynamic`, `scanned`; `complete` reports whether coverage is exhaustive).
 - `class CssNamingSettings` — Configure contextual CSS custom-property naming audits.
   - `enabled` = `True`
   - `min_members` = `2`
@@ -1944,8 +1986,13 @@ Audit numbered CSS custom-property families without guessing their meaning.
   - `check_values` = `True`
   - `check_extended` = `False`
   - `max_alias_depth` = `3`
+  - `conventions` = `frozenset()`
+  - `exemptions` = `frozenset()`
+  - `component_roots` = `frozenset()`
+  - `rule_severity` = `frozenset()`
 - `class CssNamingFinding` — A suspicious custom-property declaration or family.
   - `severity` = `'warning'`
+  - `column` = `1`, `scope` = `''`, `canonical` = `''`, `members` = `()`, `related` = `()`, `confidence` = `'high'`, `reason` = `''`
   - Fields: `rule: str`, `file: Path`, `line: int`, `message: str`
 - `class Constants` — Regex patterns and policy for numeric token names.
   - `numbered` = `compile_pattern(pattern='^(--[\\w-]*?)(\\d+)([A-Za-z_-]*)$')`
@@ -1957,7 +2004,11 @@ Audit numbered CSS custom-property families without guessing their meaning.
   - `minimum_family` = `2`
   - `arbitrary_digits` = `3`
   - `rules` = `{'CSSN001': 'numbered-family', 'CSSN002': 'suspicious-numeric-identifier'...`
-- `scan_css_naming(*, root: Path, files: Sequence[Path], settings: CssNamingSettings | None=None) -> tuple[CssNamingFinding, ...]` — Classify numeric CSS custom-property families without modifying code.
+- `collect_css_references(*, files: Sequence[Path]) -> CssNamingReferences` — Collect statically knowable custom-property use in HTML/JavaScript sources (`var()`, `setProperty`/`getPropertyValue`/`removeProperty`/`getPropertyPriority`, quoted literals); non-literal access marks coverage incomplete.
+- `parse_convention(*, spec: str) -> CssNamingConvention` / `convention_spec(*, convention) -> str` — Parse and serialize `key=value;` registry specs (`stem`, `members`, `unit`, `step`, `versions`, `scope`, `rationale`, `review`).
+- `parse_exemption(*, spec: str) -> CssNamingExemption` / `exemption_spec(*, exemption) -> str` — Parse and serialize `key=value;` exemption specs (`name`, `scope`, `rationale`, `review`).
+- `scan_css_naming(*, root: Path, files: Sequence[Path], settings: CssNamingSettings | None=None, reference_files: Sequence[Path]=()) -> tuple[CssNamingFinding, ...]` — Classify numeric CSS custom-property families without modifying code.
+- `CSSN011 registry-violation` — declaration of a registered stem whose ordinal is not an allowed member or whose value violates the registered unit/step correspondence.
 
 ### `css_tokens.py`
 
@@ -2015,6 +2066,35 @@ Audit the CSS custom-property architecture and terminal-layer policy.
 - `class CssTokenAudit` — Audit a stylesheet set against the token architecture.
   - `__init__(self, *, inputs: CssTokenInput) -> None` — Parse the stylesheet set and audit it immediately.
 - `scan_css_tokens(*, inputs: CssTokenInput) -> tuple[CssTokenFinding, ...]` — Audit a stylesheet set against the token architecture.
+
+### `embedded_strings.py`
+
+Verify and render embedded source strings without altering runtime values.
+
+The automatic path never executes evaluated source and never rewrites an
+interpolation. Embedded-code formatting is deliberately opt-in and may change
+the meaning of string contents, especially HTML and CSS whitespace.
+
+- `type EmbeddedLanguage` — `Literal["python", "html", "javascript", "css"]`.
+- `class Constants` — Immutable policy defaults and formatter names.
+  - `minimum_width` = `20`
+  - `maximum_width` = `320`
+  - `max_embedded_bytes` = `1_000_000`
+  - `format_timeout` = `30`
+- `class EmbeddedFormatter(Protocol)` — Typed boundary for bundled or injected language formatters.
+- `class LiteralIssue` — Explain an unmodified literal and its source position.
+  - Fields: `line: int`, `column: int`, `reason: str`
+- `class LiteralRewrite` — Result of a source-only embedded string rewrite.
+  - Fields: `source: str`, `tree: Module`, `count: int`, `issues: tuple[LiteralIssue, ...]`, `changed_values: bool`
+- `class LiteralOptions` — Immutable configuration for a verified rewrite.
+  - `line_length` = `79`
+  - `format_embedded` = `False`
+  - `allow_value_changes` = `False`
+  - `language` = `None`
+  - `strict` = `False`
+- `run_checked_command(*, args: Sequence[str], input_text: str | None=None, timeout: float=30, check: bool=False) -> CompletedProcess[str]` — Run a trusted executable cross-platform with no command shell; bounded by a per-child deadline.
+- `format_embedded_source(*, source: str, language: EmbeddedLanguage, line_length: int, executable: str | None=None) -> str` — Format explicitly permitted embedded code via Ruff or Prettier.
+- `rewrite_multiline_literals(*, source: str, options: LiteralOptions | None=None, formatter: EmbeddedFormatter | None=None, tree: Module | None=None) -> LiteralRewrite` — Convert multiline literals and verify AST identity before returning. Accepts a pre-parsed module via `tree`; in lossless mode the complete AST dump of input and output must match.
 
 ### `js_delimiters.py`
 
@@ -2231,16 +2311,31 @@ Bridge Exactus lints to packaged source-refactor and lint tools.
 
 ### `python_simplify.py`
 
-Perform conservative, scope-aware Python 3.13 AST rewrites.
+Perform conservative, scope-aware Python 3.13 AST rewrites restricted to directly adjacent statements inside one function body. Every proposal carries a stable rule identifier and a safety justification; rejected candidates are reported with a stable skip reason instead of being silently dropped.
 
 - `class PythonSimplifyProposal` — One source-preserving edit proposal.
-  - Fields: `rule: str`, `line: int`, `before: str`, `after: str`
+  - Fields: `rule: str`, `line: int`, `before: str`, `after: str`, `reason: str`
+- `class PythonSimplifySkip` — One rejected rewrite candidate with its safety reason.
+  - Fields: `rule: str`, `line: int`, `reason: str`
 - `class PythonSimplifyResult` — One source analysis or guarded transformation.
-  - Fields: `source: str`, `proposals: tuple[PythonSimplifyProposal, ...]`, `changed: bool`
+  - Fields: `source: str`, `proposals: tuple[PythonSimplifyProposal, ...]`, `skipped: tuple[PythonSimplifySkip, ...]`, `changed: bool`
 - `class PairContext` — Immutable input for candidate statement replacements.
   - Fields: `source: str`, `lines: Sequence[str]`, `walrus: bool`, `function: FunctionDef | AsyncFunctionDef`
 - `simplify_python_source(*, source: str, fix: bool=False, walrus: bool=True) -> PythonSimplifyResult` — Find and optionally commit validated adjacent-statement rewrites.
-- `simplify_python_files(*, files: Sequence[Path], fix: bool=False, walrus: bool=True) -> dict[str, int]` — Analyze or rewrite Python files, recording proposed and applied edits.
+- `simplify_python_files(*, files: Sequence[Path], fix: bool=False, walrus: bool=True) -> dict[str, int]` — Analyze or rewrite Python files, recording proposed, skipped and applied edits. Returns `{"files", "proposals", "skipped", "changed"}`.
+
+Rules:
+
+- `PYS000` — Shared safety guard (not a rewrite): annotated assignments, multi-line assignments and comment-carrying lines are skipped, never silently.
+- `PYS001` — Inline a one-use local returned immediately (`x = f(); return x` → `return f()`). Skips `global`/`nonlocal` names, comments, and multi-line returns.
+- `PYS002` — Fold a directly adjacent assignment into an `if` test as a named expression (`x = f(); if x:` → `if (x := f())`). Skips outer-scope declarations, comments, and disabled walrus policy.
+- `PYS003` — Inline a one-use local into a following `Expr`/`Assign`/`AnnAssign` statement when the load is provably evaluated exactly once in the enclosing scope. Skips deferred or repeated loads (lambdas, comprehensions, generator expressions).
+- `PYS004` — Remove a store unconditionally overwritten by the same name when the initializer is a provably pure constant (`x = 1; x = g()` → `x = g()`).
+- `PYS005` — Inline a one-use local occupying the first evaluated position of a return expression (`x = f(); return x or d` → `return (f()) or d`), preserving evaluation order and short-circuit semantics.
+- `PYS006` — `PYS005` variant where the load is the conditional test (`x = f(); return y if x else z`).
+- `PYS007`–`PYS010` — Reserved, unimplemented: the covered patterns (nested control flow, comprehension intermediates, redundant temporaries, optional helper-body rewrites) are already owned by Ruff `SIM`/`C4`/`UP` rules or are opt-in-only; duplicating them would compete with the resolved Ruff policy.
+
+Safety analysis: per-file reparse after each candidate, atomic writes preserving encoding (PEP 263), permissions, BOM and CRLF; `global`/`nonlocal` declarations, annotations, comments, nested scopes, deferred loads and unproven evaluation order cause recorded skips rather than rewrites.
 
 ### `report.py`
 
@@ -2364,6 +2459,20 @@ Source-preserving string dedenting, splitting and f-string formatting.
 - `class TransformOptions` — Split options plus call formatting for the combined transform.
   - `format_interpolations` = `True`
   - `call_format` = `None`
+  - `rewrite_embedded_literals` = `True`
+  - `format_embedded` = `False`
+  - `allow_value_changes` = `False`
+- `class StringTransformSettings` — User-facing presentation knobs for the string transform.
+  - `line_length` = `None`
+  - `multiline_strategy` = `'smart'`
+  - `split_fstrings` = `True`
+  - `split_raw_strings` = `True`
+  - `split_bytes` = `True`
+  - `format_interpolations` = `True`
+  - `call_format_minimum` = `3`
+  - `embedded_strings` = `True`
+  - `format_embedded` = `False`
+  - `allow_value_changes` = `False`
 - `offsets(*, lines: list[str]) -> list[int]` — Return the cumulative character offset at each line start.
 - `position(*, offsets: list[int], point: tuple[int, int]) -> int` — Map a ``(row, column)`` token position to a character offset.
 - `flatten(node: expr) -> list[Constant | FormattedValue] | None` — Flatten literals and f-string expressions in evaluation order.
@@ -2386,17 +2495,18 @@ Source-preserving string dedenting, splitting and f-string formatting.
   - Fields: `source: str`, `count: int`, `changed: bool`
 - `literal_parts(value: str | bytes, width: int) -> list[str] | None` — Split at word boundaries, retaining exact escape semantics.
 - `offset(lines: list[str], starts: list[int], line: int, column: int) -> int` — Convert UTF-8 AST byte column to a source character offset.
-- `atomic_write(path: Path, content: str | bytes) -> None` — Replace a source file atomically, retaining its permission bits.
+- `atomic_write(path: Path, content: str | bytes, *, expected: bytes | None=None) -> None` — Replace a source file atomically, retaining its permission bits; `expected` enables concurrent-edit detection and symlinks are refused.
 - `resolve_line_length(*, file: str | Path, line_length: int | None=None, ruff_executable: str | None=None, ruff_args: tuple[str, ...]=()) -> int` — Read Ruff's effective formatter width for the target file.
 - `split_strings(file: str | Path, *, tree: Module | None=None, write: bool=True, dry_run: bool=False, options: SplitOptions | None=None) -> SplitResult` — Split provably equivalent oversized literals; report unsafe cases.
 - `class TransformResult` — Combined transformation result and rejected-split diagnostics.
+  - `literal_issues` = `()`
   - Fields: `source: str`, `tree: Module`, `count: int`, `changed: bool`, `skipped: tuple[Skipped, ...]`
-- `transform_strings(file: str | Path, *, tree: Module | None=None, write: bool=True, dry_run: bool=False, options: TransformOptions | None=None) -> TransformResult` — Run dedent conversion followed by width-limited splitting.
+- `transform_strings(file: str | Path, *, tree: Module | None=None, write: bool=True, dry_run: bool=False, options: TransformOptions | None=None) -> TransformResult` — Run dedent conversion, width-limited splitting and the verified embedded-literal presentation pass, reusing the caller's parsed tree where possible.
 
 ## Dependencies and consumers
 
 - Other packages: [`all_lints`](../../packages/all_lints/DOCS.md), [`argument_parser`](../../packages/argument_parser/DOCS.md), [`group_final`](../../packages/group_final/DOCS.md), [`organize`](../../packages/organize/DOCS.md), [`project_python`](../../packages/project_python/DOCS.md), [`steps`](../../packages/steps/DOCS.md), [`common`](../common/DOCS.md), [`reports`](../reports/DOCS.md)
-- Used by: `__main__.py`, `tests/tools/common/test_context_lines.py`, `tests/tools/lints/test_compliance.py`, `tests/tools/lints/test_css_naming.py`, `tests/tools/lints/test_css_tokens.py`, `tests/tools/lints/test_js_delimiters.py`, `tests/tools/lints/test_js_function_blocks.py`, `tests/tools/lints/test_lints.py`, `tests/tools/lints/test_lints_install.py`, `tests/tools/lints/test_lints_normalizers.py`, `tests/tools/lints/test_lints_report.py`, `tests/tools/lints/test_long_lines.py`, `tests/tools/lints/test_method_contracts.py`, `tests/tools/lints/test_python_simplify.py`, `tests/tools/lints/test_shebang.py`, `tests/tools/lints/test_shebang_metrics.py`, `tests/tools/lints/test_source_cleaner.py`, `tests/tools/lints/test_string_transform.py`, `tests/tools/reports/test_report_snippets.py`
+- Used by: `__main__.py`, `tests/tools/common/test_context_lines.py`, `tests/tools/lints/test_compliance.py`, `tests/tools/lints/test_css_naming.py`, `tests/tools/lints/test_css_tokens.py`, `tests/tools/lints/test_embedded_strings.py`, `tests/tools/lints/test_js_delimiters.py`, `tests/tools/lints/test_js_function_blocks.py`, `tests/tools/lints/test_lints.py`, `tests/tools/lints/test_lints_install.py`, `tests/tools/lints/test_lints_normalizers.py`, `tests/tools/lints/test_lints_report.py`, `tests/tools/lints/test_long_lines.py`, `tests/tools/lints/test_method_contracts.py`, `tests/tools/lints/test_python_simplify.py`, `tests/tools/lints/test_shebang.py`, `tests/tools/lints/test_shebang_metrics.py`, `tests/tools/lints/test_source_cleaner.py`, `tests/tools/lints/test_string_transform.py`, `tests/tools/reports/test_report_snippets.py`
 
 ## Tests
 
@@ -2406,7 +2516,7 @@ Tests live in `exactus/tests/tools/lints/`.
   - `test_configuration_rules_preserve_findings`
   - `test_engineering_findings_are_part_of_lints`
   - `test_source_rules_preserve_findings`
-- `test_css_naming.py` — Regression tests for numeric CSS custom-property naming. (13 tests)
+- `test_css_naming.py` — Regression tests for numeric CSS custom-property naming. (23 tests)
   - `test_arbitrary_identifier`
   - `test_configuration_can_disable_scan`
   - `test_cross_file_component_and_isolation`
@@ -2446,6 +2556,34 @@ Tests live in `exactus/tests/tools/lints/`.
   - `test_token_findings_are_part_of_lints`
   - `test_tokens_resolve_across_files`
   - `test_unreadable_files_are_findings_not_crashes`
+- `test_embedded_strings.py` — Regression and randomized invariance tests for embedded string rendering; literals are `chr(10).join`-composed so the project's own transform never rewrites test inputs. (49 tests)
+  - `test_atomic_write_rejects_concurrent_edits`
+  - `test_concatenated_imports`
+  - `test_documented_python_and_node_examples`
+  - `test_embedded_formatter_dispatch`
+  - `test_embedded_formatter_explicitly_changes_value`
+  - `test_embedded_formatter_refuses_interpolations`
+  - `test_exact_value_and_idempotence`
+  - `test_external_formatter_error_is_reported`
+  - `test_formatted_values_preserved`
+  - `test_fstring_ast_and_idempotence`
+  - `test_fstring_readme_concatenation`
+  - `test_integrated_pipeline_formats_concatenated_fstrings`
+  - `test_missing_embedded_formatter_is_reported`
+  - `test_old_dedent_pass_ignores_fstring_interpolations`
+  - `test_original_ast_literal_values`
+  - `test_protect_docstrings_and_inline_comments`
+  - `test_randomized_fstring_fragments`
+  - `test_randomized_losslessness`
+  - `test_static_write_text_detects_language`
+  - `test_subprocess_adapter_success_and_errors`
+  - `test_subprocess_adapter_timeout`
+  - `test_transform_dry_run_write_and_idempotent`
+  - `test_transform_error_paths`
+  - `test_transform_reuses_supplied_tree`
+  - `test_unicode_before_source_token`
+  - `test_unknown_or_malformed_formatter_inputs`
+  - `test_width_rejected_without_mutation`
 - `test_js_delimiters.py` — Behavioral tests for the JavaScript delimiter simplifier. (13 tests)
   - `test_embedded_delimiters_progress_stays_in_its_phase`
   - `test_file_discovery_and_exclusions`
@@ -2561,7 +2699,7 @@ Tests live in `exactus/tests/tools/lints/`.
   - `test_unbreakable_line_is_reported`
 - `test_method_contracts.py` — Protect externally inherited instance methods from binding changes. (1 tests)
   - `test_external_override_keeps_instance_binding`
-- `test_python_simplify.py` — Regression tests for conservative Python simplifications. (14 tests)
+- `test_python_simplify.py` — Regression tests for conservative Python simplifications. (35 tests)
   - `test_audit_does_not_modify_source`
   - `test_comment_prevents_rewrite`
   - `test_file_runner_audit_only`
@@ -2643,3 +2781,19 @@ Tests live in `exactus/tests/tools/lints/`.
   - `test_write_failure_and_source_preservation`
 
 <!-- exactus:reference:end -->
+
+## Scoped settings and shared preparation
+
+`LintsConfigResolver` resolves typed per-file configurations. Nested transform
+switches, string settings, CSS naming policy, permission policy and analyzer
+arguments apply below their declaring folder. Explicit CLI settings and global
+mutation/resource ownership take precedence. CSS naming retains the complete
+selected graph when policies differ between files.
+
+Organize prepares files in a bounded thread pool and commits in deterministic
+path order. Group-final, organize, cleaning, Python conventions and compliance
+share the owning run's source cache; mutable syntax trees are copied. JavaScript
+delimiters and notation share one per-file traversal and source reads. They use
+different specialist grammars (the delimiter tokenizer and Espree), so this
+change does not claim to halve parser work. Replacing either grammar without
+semantic equivalence would risk changing findings.

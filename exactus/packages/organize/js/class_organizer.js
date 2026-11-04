@@ -3,7 +3,7 @@
 const fs = require("node:fs");
 const {createRequire} = require("node:module");
 const input = JSON.parse(fs.readFileSync(0, "utf8"));
-const source = fs.readFileSync(input.file, "utf8");
+const source = typeof input.source === "string" ? input.source : fs.readFileSync(input.file, "utf8");
 const espree = createRequire(input.file)(input.espree);
 const options = {
   comment: true,

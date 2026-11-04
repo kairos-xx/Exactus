@@ -4,7 +4,7 @@
   "tool": {
     "name": "docs",
     "display_name": "Documentation Exactus",
-    "version": "0.6.1"
+    "version": "0.7.1"
   },
   "summary": {
     "targets_eligible": 8,
@@ -17,7 +17,7 @@
     {
       "name": "@activity.json",
       "path": "ARTIFACTS/@activity.json",
-      "bytes": 1856
+      "bytes": 1857
     },
     {
       "name": "README.md",
@@ -42,10 +42,10 @@
   ],
   "comparison": {
     "available": true,
-    "previous_generated_at": "2026-11-02T06:18:42.822619+00:00",
-    "previous_run_id": "ca892f99f2a643d3be26908062de1af7:docs",
+    "previous_generated_at": "2026-11-04T07:28:53.367346+00:00",
+    "previous_run_id": "31d9c7856e1548c08c21c2613f4835b4:docs",
     "previous_status": "PASS",
-    "previous_duration_seconds": 2.47,
+    "previous_duration_seconds": 0.677,
     "current_total": 0,
     "previous_total": 0,
     "delta": 0,
@@ -143,7 +143,7 @@
       }
     ]
   },
-  "duration_seconds": 1.249,
+  "duration_seconds": 2.063,
   "environment": {
     "os": "Darwin 25.3.0",
     "python": "3.13.9",
@@ -156,7 +156,7 @@
       },
       {
         "name": "EXACTUS_PIPELINE_RUN_ID",
-        "value": "7906d1edd1a543c7894fd4387463792d"
+        "value": "514ec66fc2624d32b23c563ae81bb010"
       },
       {
         "name": "EXACTUS_REGISTRY",
@@ -168,7 +168,7 @@
       },
       {
         "name": "EXACTUS_RUN_ID",
-        "value": "7906d1edd1a543c7894fd4387463792d:docs"
+        "value": "514ec66fc2624d32b23c563ae81bb010:docs"
       },
       {
         "name": "EXACTUS_TOOL",
@@ -176,7 +176,11 @@
       },
       {
         "name": "LANG",
-        "value": "C.UTF-8"
+        "value": "en_US.UTF-8"
+      },
+      {
+        "name": "TERM",
+        "value": "xterm-256color"
       }
     ]
   },
@@ -186,8 +190,8 @@
         "discovered": 2,
         "parsed": 2,
         "failed": 0,
-        "symbols": 3,
-        "documented": 3,
+        "symbols": 4,
+        "documented": 4,
         "findings": 0,
         "language": "javascript",
         "coverage_percent": 100.0
@@ -271,7 +275,7 @@
         {
           "language": "javascript",
           "files_analyzed": 2,
-          "lines_analyzed": 35
+          "lines_analyzed": 37
         },
         {
           "language": "python",
@@ -283,8 +287,8 @@
   },
   "findings": [],
   "fingerprint": {
-    "commit": "8acd5332d8bb9132a3f9464fe58d265059b6ef39",
-    "tree": "894ba3dd961790939accb258297593340dbeb862",
+    "commit": "68b43a4bd4691257a6e48e3cb87a96edf2139868",
+    "tree": "8037996a0c49bff489a24efc566e2091d89e425b",
     "dirty": true,
     "python": "3.13.9",
     "ruff": "ruff 0.12.0",
@@ -294,24 +298,24 @@
     "status": "PASS",
     "reason": "No blocking findings"
   },
-  "generated_at": "2026-11-02T06:48:35.864131+00:00",
-  "generated_at_human": "02 November 2026, 06:48:35 UTC",
+  "generated_at": "2026-11-04T07:55:31.082103+00:00",
+  "generated_at_human": "04 November 2026, 07:55:31 UTC",
   "invocation": {
-    "command": "/Users/joaolopes/Exactus/bin/release/exactus_macos_arm64/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=56065 --orchestrator-control-token=[redacted] --orchestrator-worker-port=56041 --orchestrator-worker-token=[redacted] '--orchestrator-call={\"args\":[],\"kwargs\":{\"request\":{\"identifier\":\"docs\",\"module\":\"exactus.tools.docs.main\",\"output\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/DOCS\",\"arguments\":[],\"run_id\":\"7906d1edd1a543c7894fd4387463792d:docs\",\"pipeline_run_id\":\"7906d1edd1a543c7894fd4387463792d\",\"project_root\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\"}}}'",
+    "command": "/Users/joaolopes/Exactus/bin/release/exactus_macos_arm64/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=54875 --orchestrator-control-token=[redacted] --orchestrator-worker-port=54857 --orchestrator-worker-token=[redacted] '--orchestrator-call={\"args\":[],\"kwargs\":{\"request\":{\"identifier\":\"docs\",\"module\":\"exactus.tools.docs.main\",\"output\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/DOCS\",\"arguments\":[],\"explicit_arguments\":[],\"run_id\":\"514ec66fc2624d32b23c563ae81bb010:docs\",\"pipeline_run_id\":\"514ec66fc2624d32b23c563ae81bb010\",\"project_root\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\"}}}'",
     "cwd": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
     "arguments": [
       "exactus.tools.common.tool_worker",
       "ExactusTool",
-      "--orchestrator-control-port=56065",
+      "--orchestrator-control-port=54875",
       "--orchestrator-control-token=[redacted]",
-      "--orchestrator-worker-port=56041",
+      "--orchestrator-worker-port=54857",
       "--orchestrator-worker-token=[redacted]",
-      "--orchestrator-call={\"args\":[],\"kwargs\":{\"request\":{\"identifier\":\"docs\",\"module\":\"exactus.tools.docs.main\",\"output\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/DOCS\",\"arguments\":[],\"run_id\":\"7906d1edd1a543c7894fd4387463792d:docs\",\"pipeline_run_id\":\"7906d1edd1a543c7894fd4387463792d\",\"project_root\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\"}}}"
+      "--orchestrator-call={\"args\":[],\"kwargs\":{\"request\":{\"identifier\":\"docs\",\"module\":\"exactus.tools.docs.main\",\"output\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/DOCS\",\"arguments\":[],\"explicit_arguments\":[],\"run_id\":\"514ec66fc2624d32b23c563ae81bb010:docs\",\"pipeline_run_id\":\"514ec66fc2624d32b23c563ae81bb010\",\"project_root\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\"}}}"
     ]
   },
   "passed": true,
-  "pipeline_run_id": "7906d1edd1a543c7894fd4387463792d",
-  "previous_duration_seconds": 2.47,
+  "pipeline_run_id": "514ec66fc2624d32b23c563ae81bb010",
+  "previous_duration_seconds": 0.677,
   "project_href": "../../..",
   "project_root": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
   "report_bundle": {
@@ -322,22 +326,22 @@
   "resume": "PASS: analyzer completed with exit status 0.",
   "root": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
   "run": {
-    "id": "7906d1edd1a543c7894fd4387463792d:docs",
-    "pipeline_id": "7906d1edd1a543c7894fd4387463792d",
+    "id": "514ec66fc2624d32b23c563ae81bb010:docs",
+    "pipeline_id": "514ec66fc2624d32b23c563ae81bb010",
     "status": "PASS",
     "exit_code": 0,
-    "started_at": "2026-11-02T06:48:35.739024+00:00",
-    "finished_at": "2026-11-02T06:48:36.990596+00:00",
-    "at_human": "02 November 2026, 06:48:35 UTC",
-    "started_at_human": "02 November 2026, 06:48:35 UTC",
-    "finished_at_human": "02 November 2026, 06:48:36 UTC",
-    "duration_seconds": 1.249,
-    "duration_human": "1.2 s",
+    "started_at": "2026-11-04T07:55:30.916488+00:00",
+    "finished_at": "2026-11-04T07:55:32.980920+00:00",
+    "at_human": "04 November 2026, 07:55:30 UTC",
+    "started_at_human": "04 November 2026, 07:55:30 UTC",
+    "finished_at_human": "04 November 2026, 07:55:32 UTC",
+    "duration_seconds": 2.063,
+    "duration_human": "2.1 s",
     "error": null
   },
-  "run_at": "2026-11-02T06:48:35.739024+00:00",
-  "run_at_human": "02 November 2026, 06:48:35 UTC",
-  "run_id": "7906d1edd1a543c7894fd4387463792d:docs",
+  "run_at": "2026-11-04T07:55:30.916488+00:00",
+  "run_at_human": "04 November 2026, 07:55:30 UTC",
+  "run_id": "514ec66fc2624d32b23c563ae81bb010:docs",
   "schema": "project-exactus-report/v1",
   "scope": {
     "include": [
@@ -347,20 +351,6 @@
       "**/*.py"
     ],
     "exclude": [
-      "**/.agents/**",
-      "**/.build-cache/**",
-      "**/.cache/**",
-      "**/.claude/**",
-      "**/.cursor/**",
-      "**/.devin/**",
-      "**/.eggs/**",
-      "**/.git/**",
-      "**/.history/**",
-      "**/.mypy_cache/**",
-      "**/.pytest_cache/**",
-      "**/.ruff_cache/**",
-      "**/.tox/**",
-      "**/.venv/**",
       "**/EXACTUS_RESULTS/**",
       "**/__pycache__/**",
       "**/build/**",
@@ -448,8 +438,8 @@
       "discovered": 2,
       "parsed": 2,
       "failed": 0,
-      "symbols": 3,
-      "documented": 3,
+      "symbols": 4,
+      "documented": 4,
       "findings": 0
     },
     "python": {

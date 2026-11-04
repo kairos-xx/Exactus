@@ -15,7 +15,12 @@ def test_private_output(tmp_path: Path) -> None:
 
     """
     path: Path = tmp_path / "TODO.md"
-    path.write_text(data="- [ ] private task\n", encoding="utf-8")
+    path.write_text(
+        data="""\
+- [ ] private task
+""",
+        encoding="utf-8",
+    )
     path.chmod(mode=0o600)
     synchronize(path=path)
     expect_equal(actual=path.stat().st_mode & 0o777, expected=0o600)

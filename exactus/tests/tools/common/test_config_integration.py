@@ -30,10 +30,15 @@ class Constants:
 
     """
 
-    gate: Final[str] = "[tool.exactus.coverage_tests]\nfail-under = 77\n"
-    zero_gate: Final[str] = (
-        "[tool.exactus.coverage_tests]\nfail-under = 0\nminimum = 0\n"
-    )
+    gate: Final[str] = """\
+[tool.exactus.coverage_tests]
+fail-under = 77
+"""
+    zero_gate: Final[str] = """\
+[tool.exactus.coverage_tests]
+fail-under = 0
+minimum = 0
+"""
 
 
 def _project_with(*, directory: Path, text: str) -> None:
@@ -84,7 +89,10 @@ def test_context_lines_from_pyproject(
     """
     _project_with(
         directory=tmp_path,
-        text="[tool.exactus.coverage_tests]\ncontext-lines = 5\n",
+        text="""\
+[tool.exactus.coverage_tests]
+context-lines = 5
+""",
     )
     monkeypatch.chdir(path=tmp_path)
     monkeypatch.delenv(name="EXACTUS_ORCHESTRATED", raising=False)
@@ -129,7 +137,10 @@ def test_standalone_config_error_exits_two(
     """
     _project_with(
         directory=tmp_path,
-        text="[tool.exactus.coverage_tests]\nfail-undr = 1\n",
+        text="""\
+[tool.exactus.coverage_tests]
+fail-undr = 1
+""",
     )
     monkeypatch.chdir(path=tmp_path)
     monkeypatch.delenv(name="EXACTUS_ORCHESTRATED", raising=False)
@@ -157,7 +168,11 @@ def test_check_single_tool_uses_pyproject_gate(sample_project: Path) -> None:
     )
     _project_with(
         directory=sample_project,
-        text=original + "\n" + Constants.zero_gate,
+        text=original
+        + """\
+
+"""
+        + Constants.zero_gate,
     )
     root: list[str] = [
         "--root",
@@ -186,7 +201,10 @@ def test_check_reports_config_errors(
     monkeypatch.setenv(name="EXACTUS_CONFIG", value="")
     _project_with(
         directory=sample_project,
-        text="[tool.exactus.coverage_tests]\nfail-undr = 1\n",
+        text="""\
+[tool.exactus.coverage_tests]
+fail-undr = 1
+""",
     )
     status: int = main(
         arguments=["--root", str(object=sample_project), "--coverage_tests"],
@@ -241,7 +259,10 @@ def test_orchestrator_settings_apply_to_pipeline_style_runs(
     monkeypatch.setenv(name="EXACTUS_CONFIG", value="")
     _project_with(
         directory=sample_project,
-        text="[tool.exactus]\nclear = true\n",
+        text="""\
+[tool.exactus]
+clear = true
+""",
     )
     marker: Path = sample_project / "EXACTUS_RESULTS" / "marker.txt"
     marker.parent.mkdir(parents=True)

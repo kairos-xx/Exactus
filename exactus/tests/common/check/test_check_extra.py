@@ -3,8 +3,10 @@
 
 from __future__ import annotations
 
+from dataclasses import replace
 from errno import ENOTEMPTY
 from os import environ, getpid, kill
+from pathlib import Path
 from signal import SIGTERM
 from subprocess import Popen
 from sys import executable
@@ -29,12 +31,10 @@ from exactus.tests.common.support import (
 from exactus.tools.common.catalog import (
     GroupFinalConstants as CatalogConstants,
 )
-from exactus.tools.common.catalog import PipelineSpec
+from exactus.tools.common.catalog import PipelineSpec, ToolSpec
 from exactus.tools.common.registry import RunClaim, RunRegistry
 
 if TYPE_CHECKING:
-    from pathlib import Path
-
     from exactus.tools.common.json_types import JsonValue
 pytestmark: pytest.MarkDecorator = pytest.mark.usefixtures("isolated_check")
 
@@ -271,7 +271,11 @@ def test_clear_variants(
     (locked / "inner").mkdir(parents=True)
     (locked / "inner" / "f").write_text(data="x")
     (locked / "inner").chmod(mode=0o555)
-    (tmp_path / "DEBUG.txt").write_text(data="save::dbg\n")
+    (tmp_path / "DEBUG.txt").write_text(
+        data="""\
+save::dbg
+""",
+    )
     (tmp_path / "dbg").mkdir()
     (tmp_path / "dbg" / "out.txt").write_text(data="x")
     _ = private_call(
@@ -345,11 +349,20 @@ def test_debug_clear_refuses_dangerous_targets(tmp_path: Path) -> None:
 
     """
     Check.use_root(root=tmp_path)
-    (tmp_path / "DEBUG.txt").write_text(data=f"save::{tmp_path}/x.log\n")
+    (tmp_path / "DEBUG.txt").write_text(
+        data=f"""\
+save::{tmp_path}/x.log
+""",
+    )
     (tmp_path / "keep.txt").write_text(data="keep")
     _ = private_call(owner=Check, name="_clear_debug_output")
     expect_true(condition=(tmp_path / "keep.txt").exists())
-    (tmp_path / "DEBUG.txt").write_text(data="save::/\nsave::missing/dir\n")
+    (tmp_path / "DEBUG.txt").write_text(
+        data="""\
+save::/
+save::missing/dir
+""",
+    )
     _ = private_call(owner=Check, name="_clear_debug_output")
 
 
@@ -525,7 +538,10 @@ def test_debug_output_resolves_relative_save_directives(
     """
     Check.use_root(root=tmp_path)
     (tmp_path / "DEBUG.txt").write_text(
-        data=f"unrelated::ignored\nsave::{directive}\n",
+        data=f"""\
+unrelated::ignored
+save::{directive}
+""",
         encoding="utf-8",
     )
     expect_equal(
@@ -583,4 +599,120 @@ def test_config_arguments_preserve_tool_operands(
         else str(object=tmp_path / "config.toml")
         if disabled is False
         else "unchanged",
+    )
+
+
+def test_explicit_output_extracts_last_report_dir() -> None:
+    """Forwarded ``-o``/``--output-dir`` operands steer the run output."""
+    expect_equal(
+        actual=private_call(
+            owner=Check,
+            name="_explicit_output",
+            arguments=(
+                "--include",
+                "src/**",
+                "-o",
+                "reports/one",
+                "--output-dir=reports/two",
+            ),
+        ),
+        expected=Path("reports/two"),
+    )
+    expect_equal(
+        actual=private_call(
+            owner=Check,
+            name="_explicit_output",
+            arguments=("--context-lines", "4", "-o/tmp/three"),
+        ),
+        expected=Path("/" + "tmp/three"),
+    )
+    expect_equal(
+        actual=private_call(
+            owner=Check,
+            name="_explicit_output",
+            arguments=("--include", "a", "--exclude", "b"),
+        ),
+        expected=None,
+    )
+
+
+def test_run_output_honors_explicit_report_dir(tmp_path: Path) -> None:
+    """A forwarded ``-o`` steers the standalone run output tree.
+
+    Args:
+        tmp_path: Independent project root.
+
+    """
+    Check.use_root(root=tmp_path)
+    tool: ToolSpec = require_type(
+        value=CatalogConstants.exactus_catalog.tool(
+            identifier="kwargs_typehints",
+        ),
+        kind=ToolSpec,
+    )
+    custom: Path = tmp_path / "custom"
+    expect_equal(
+        actual=private_call(
+            owner=Check,
+            name="_run_output",
+            tool=tool,
+            forwarded=(
+                "--include",
+                "src/**",
+                "--output-dir",
+                "first",
+                "-o",
+                str(object=custom),
+            ),
+        ),
+        expected=custom.resolve(),
+    )
+    expect_equal(
+        actual=private_call(
+            owner=Check,
+            name="_run_output",
+            tool=tool,
+            forwarded=("-o", "relative_dir"),
+        ),
+        expected=(tmp_path / "relative_dir").resolve(),
+    )
+
+
+def test_run_output_defaults_and_respects_foreign_flags(
+    tmp_path: Path,
+) -> None:
+    """Canonical output holds without ``-o`` or for file-flag tools.
+
+    Args:
+        tmp_path: Independent project root.
+
+    """
+    Check.use_root(root=tmp_path)
+    tool: ToolSpec = require_type(
+        value=CatalogConstants.exactus_catalog.tool(
+            identifier="kwargs_typehints",
+        ),
+        kind=ToolSpec,
+    )
+    expect_equal(
+        actual=private_call(
+            owner=Check,
+            name="_run_output",
+            tool=tool,
+            forwarded=("--context-lines", "4"),
+        ),
+        expected=tmp_path / "EXACTUS_RESULTS" / tool.output,
+    )
+    foreign: ToolSpec = replace(
+        tool,
+        module="exactus.packages.package.cli",
+    )
+    expect_equal(
+        actual=private_call(
+            owner=Check,
+            name="_run_output",
+            tool=foreign,
+            forwarded=("-o", str(object=tmp_path / "ignored")),
+        ),
+        expected=tmp_path / "EXACTUS_RESULTS" / tool.output,
     )

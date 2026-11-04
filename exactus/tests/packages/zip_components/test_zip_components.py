@@ -12,6 +12,7 @@ from zipfile import ZipFile
 import pytest
 
 from exactus.packages.zip_components.core import (
+    BundleOptions,
     BundleResult,
     Selection,
     available_components,
@@ -43,18 +44,27 @@ def _fake_tree(root: Path) -> None:
 
     """
     files: dict[str, str] = {
-        "pyproject.toml": "[tool.steps]\nwrite = true\n",
+        "pyproject.toml": """\
+[tool.steps]
+write = true
+""",
         "exactus/packages/__init__.py": "",
         "exactus/packages/alpha/__init__.py": (
             dedent(
                 text=(
-                    "    from exactus.packages.beta import B\n    PROBE: s"
-                    "tr = 'exactus.packages.delta'\n    "
+                    """\
+    from exactus.packages.beta import B
+    PROBE: str = 'exactus.packages.delta'
+    """
                 ),
             )
         ),
-        "exactus/packages/beta/__init__.py": "B: int = 1\n",
-        "exactus/packages/beta/core.py": "import exactus.packages.gamma\n",
+        "exactus/packages/beta/__init__.py": """\
+B: int = 1
+""",
+        "exactus/packages/beta/core.py": """\
+import exactus.packages.gamma
+""",
         "exactus/packages/gamma/__init__.py": "",
         "exactus/packages/delta/__init__.py": "",
         "exactus/packages/unused/__init__.py": "",
@@ -78,15 +88,23 @@ def _project_tree(root: Path) -> None:
     """
     files: dict[str, str] = {
         "exactus/__init__.py": "",
-        "exactus/bundle/stale.txt": "stale\n",
+        "exactus/bundle/stale.txt": """\
+stale
+""",
         "exactus/tools/lints/__init__.py": "",
         "exactus/packages/pkg/__init__.py": "",
-        "artifacts/packages/release.zip": "zip\n",
-        "build/exactus/bundle/BUILT.txt": "built\n",
+        "artifacts/packages/release.zip": """\
+zip
+""",
+        "build/exactus/bundle/BUILT.txt": """\
+built
+""",
         "build/exactus/bundle/__pycache__/noise.pyc": "",
         "node_modules/pkg/index.js": "",
         ".hidden/secret.txt": "",
-        "visible.py": "x = 1\n",
+        "visible.py": """\
+x = 1
+""",
     }
     relative: str
     text: str
@@ -150,8 +168,10 @@ def test_discover_components_skips_missing_directories(tmp_path: Path) -> None:
         data=(
             dedent(
                 text=(
-                    "    import exactus.packages.missing\n    from exactus"
-                    ".packages.absent import x\n    "
+                    """\
+    import exactus.packages.missing
+    from exactus.packages.absent import x
+    """
                 ),
             )
         ),
@@ -199,7 +219,7 @@ def test_collect_files_adds_skeleton_skips_caches(tmp_path: Path) -> None:
 
 
 def test_collect_files_includes_results_directories(tmp_path: Path) -> None:
-    """Bundle existing report directories of selected exactus tools.
+    """Bundle existing report directories when results are requested.
 
     Args:
         tmp_path: Temporary test directory.
@@ -218,9 +238,35 @@ def test_collect_files_includes_results_directories(tmp_path: Path) -> None:
     files: tuple[str, ...] = collect_files(
         root=tmp_path,
         selection=Selection(tools=("helper",), packages=()),
+        include_results=True,
     )
     expect_in(member="EXACTUS_RESULTS/HELPER/result.md", container=files)
     expect_not_in(member="EXACTUS_RESULTS/OTHER/result.md", container=files)
+
+
+def test_collect_files_excludes_results_by_default(tmp_path: Path) -> None:
+    """Omit report directories unless ``include_results`` is requested.
+
+    Args:
+        tmp_path: Temporary test directory.
+
+    """
+    _fake_tree(root=tmp_path)
+    tool: Path = tmp_path / "exactus" / "tools" / "helper"
+    tool.mkdir(parents=True)
+    _bytes: int = (tool / "__init__.py").write_text(data="", encoding="utf-8")
+    results: Path = tmp_path / "EXACTUS_RESULTS" / "HELPER"
+    results.mkdir(parents=True)
+    _bytes = (results / "result.md").write_text(data="", encoding="utf-8")
+    files: tuple[str, ...] = collect_files(
+        root=tmp_path,
+        selection=Selection(tools=("helper",), packages=()),
+    )
+    expect_true(
+        condition=not any(
+            member.startswith("EXACTUS_RESULTS/") for member in files
+        ),
+    )
 
 
 def test_collect_files_ignores_missing_results(tmp_path: Path) -> None:
@@ -254,7 +300,7 @@ def test_create_bundle_writes_a_real_archive(tmp_path: Path) -> None:
     result: BundleResult = create_bundle(
         root=tmp_path,
         packages=("alpha",),
-        output=output,
+        options=BundleOptions(output=output),
     )
     expect_true(condition=output.is_file())
     expect_true(condition=result.path == output)
@@ -289,10 +335,7 @@ def test_create_bundle_scaffolds_readme_and_tree(tmp_path: Path) -> None:
 
 def test_lints_selection_discovers_pipeline_components() -> None:
     """Expand the real lints tool into its shared dependencies."""
-    selection: Selection = discover_components(
-        root=_root(),
-        tools=("lints",),
-    )
+    selection: Selection = discover_components(root=_root(), tools=("lints",))
     expect_in(member="common", container=selection.tools)
     expect_in(member="reports", container=selection.tools)
     expect_in(member="all_lints", container=selection.packages)
@@ -332,6 +375,59 @@ def test_main_writes_the_scaffolded_bundle(
     readme: str = (bundle / "README.md").read_text(encoding="utf-8")
     expect_in(member="unzip -o packages_alpha.zip", container=readme)
     expect_in(member="packages_alpha.zip", container=capture.getvalue())
+
+
+def test_main_include_results_flag_bundles_report_directories(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """``--include-results`` adds ``EXACTUS_RESULTS/<TOOL>`` to the zip.
+
+    Args:
+        tmp_path: Temporary test directory.
+        monkeypatch: Pytest monkeypatch fixture.
+
+    """
+    _fake_tree(root=tmp_path)
+    tool: Path = tmp_path / "exactus" / "tools" / "helper"
+    tool.mkdir(parents=True)
+    _bytes: int = (tool / "__init__.py").write_text(data="", encoding="utf-8")
+    results: Path = tmp_path / "EXACTUS_RESULTS" / "HELPER"
+    results.mkdir(parents=True)
+    _bytes = (results / "result.md").write_text(data="", encoding="utf-8")
+    monkeypatch.setattr(
+        target="exactus.packages.zip_components.core.project_root",
+        name=lambda: tmp_path,
+    )
+    monkeypatch.setattr(
+        target="exactus.packages.zip_components.core.stdout",
+        name=StringIO(),
+    )
+    status: int = main(
+        arguments=(
+            "--tools",
+            "helper",
+            "--output",
+            str(object=tmp_path / "a.zip"),
+        ),
+    )
+    expect_true(condition=status == 0)
+    with ZipFile(file=tmp_path / "a.zip") as archive:
+        names: tuple[str, ...] = tuple(archive.namelist())
+    expect_not_in(member="EXACTUS_RESULTS/HELPER/result.md", container=names)
+    status = main(
+        arguments=(
+            "--tools",
+            "helper",
+            "--include-results",
+            "--output",
+            str(object=tmp_path / "b.zip"),
+        ),
+    )
+    expect_true(condition=status == 0)
+    with ZipFile(file=tmp_path / "b.zip") as archive:
+        names = tuple(archive.namelist())
+    expect_in(member="EXACTUS_RESULTS/HELPER/result.md", container=names)
 
 
 def test_main_output_folder_overrides_the_default_directory(
@@ -709,7 +805,9 @@ def test_create_project_archive_requires_the_built_bundle(
 
     """
     _bytes: int = (tmp_path / "marker.txt").write_text(
-        data="x = 1\n",
+        data="""\
+x = 1
+""",
         encoding="utf-8",
     )
     with pytest.raises(

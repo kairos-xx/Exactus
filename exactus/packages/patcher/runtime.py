@@ -505,7 +505,9 @@ def render_diff(
         after: EntryData | None = _entry(operation=operation, key="after")
         chunks.append(
             paint(
-                text=f"diff --git a/{path} b/{path}\n",
+                text=f"""\
+diff --git a/{path} b/{path}
+""",
                 code="34",
                 enabled=color,
             ),
@@ -513,7 +515,12 @@ def render_diff(
         if move_from is not None:
             chunks.append(
                 paint(
-                    text=(f"rename from {move_from}\nrename to {path}\n"),
+                    text=(
+                        f"""\
+rename from {move_from}
+rename to {path}
+"""
+                    ),
                     code="33",
                     enabled=color,
                 ),
@@ -530,14 +537,26 @@ def render_diff(
             old: str = "absent" if before is None else before_kind or ""
             new: str = "absent" if after is None else after_kind or ""
             chunks.append(
-                paint(text=f"{old} -> {new}\n", code="33", enabled=color),
+                paint(
+                    text=f"""\
+{old} -> {new}
+""",
+                    code="33",
+                    enabled=color,
+                ),
             )
             continue
         old_bytes: bytes = diff_blob(package=package, raw=before)
         new_bytes: bytes = diff_blob(package=package, raw=after)
         if b"\0" in old_bytes or b"\0" in new_bytes:
             chunks.append(
-                paint(text="Binary files differ\n", code="33", enabled=color),
+                paint(
+                    text="""\
+Binary files differ
+""",
+                    code="33",
+                    enabled=color,
+                ),
             )
             continue
         try:
@@ -545,7 +564,13 @@ def render_diff(
             new_text: str = new_bytes.decode(encoding="utf-8")
         except UnicodeDecodeError:
             chunks.append(
-                paint(text="Binary files differ\n", code="33", enabled=color),
+                paint(
+                    text="""\
+Binary files differ
+""",
+                    code="33",
+                    enabled=color,
+                ),
             )
             continue
         old_name: str = (
@@ -923,7 +948,9 @@ def _inspection_status(
                 indent=2 if args.info else None,
                 sort_keys=True,
             )
-            + "\n",
+            + """\
+
+""",
         )
         return 0
     if args.list:
@@ -935,7 +962,9 @@ def _inspection_status(
             )
             suffix: str = f" <- {move_from}" if move_from is not None else ""
             _ = sys.stdout.write(
-                f"{_operation_kind(operation=operation):6} {path}{suffix}\n",
+                f"""\
+{_operation_kind(operation=operation):6} {path}{suffix}
+""",
             )
         return 0
     return None
@@ -972,14 +1001,18 @@ def main() -> int:
     )
     if args.verify:
         _ = sys.stdout.write(
-            f"verified preconditions; conflicts={len(conflicts)}\n",
+            f"""\
+verified preconditions; conflicts={len(conflicts)}
+""",
         )
         return 0 if not conflicts else 2
     if args.dry_run:
         for operation in operations:
             path: str = _operation_text(operation=operation, key="path") or ""
             action: str = "SKIP" if path in skipped else "APPLY"
-            _ = sys.stdout.write(f"{action} {path}\n")
+            _ = sys.stdout.write(f"""\
+{action} {path}
+""")
         return 0
     added: list[str] = []
     changed: list[str] = []
@@ -1035,8 +1068,15 @@ def main() -> int:
         "rolled_back": False,
     }
     if args.conflict == "backup" and conflicts:
-        _ = sys.stdout.write("conflicts were backed up transactionally\n")
-    _ = sys.stdout.write(dumps(obj=result, sort_keys=True) + "\n")
+        _ = sys.stdout.write("""\
+conflicts were backed up transactionally
+""")
+    _ = sys.stdout.write(
+        dumps(obj=result, sort_keys=True)
+        + """\
+
+""",
+    )
     return 0
 
 

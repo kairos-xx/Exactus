@@ -300,7 +300,13 @@ def normalize(*, text: str) -> str:
             fallback=parents[-1][3] if parents else "Uncategorized",
         )
         body: str = description(label=label, ident=ident)
-        ending: str = source[index][len(source[index].rstrip("\r\n")) :]
+        ending: str = source[index][
+            len(
+                source[index].rstrip("""\
+\r
+"""),
+            ) :
+        ]
         source[index] = "".join(
             (
                 f"{indent}- [{state}] **{ident}** **{priority}** ",

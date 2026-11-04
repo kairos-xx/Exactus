@@ -111,10 +111,16 @@ def _data_js(*, web: Path) -> dict[str, JsonValue]:
         encoding="utf-8",
     )
     expect_true(condition=text.startswith(Constants.data_js_prefix))
-    expect_true(condition=text.endswith(";\n"))
+    expect_true(
+        condition=text.endswith("""\
+;
+"""),
+    )
     argument: str = (
         text.removeprefix(Constants.data_js_prefix)
-        .removesuffix(";\n")
+        .removesuffix("""\
+;
+""")
         .removeprefix("JSON.parse(`")
         .removesuffix("`)")
     )
@@ -135,9 +141,21 @@ def _readme_bundle(*, root: Path, out: Path) -> None:
 
     """
     (root / "docs" / "guides").mkdir(parents=True)
-    _ = (root / "docs" / "README.md").write_text(data="`a.md`\n")
-    _ = (root / "docs" / "a.md").write_text(data="a\n")
-    _ = (root / "docs" / "b.md").write_text(data="b\n")
+    _ = (root / "docs" / "README.md").write_text(
+        data="""\
+`a.md`
+""",
+    )
+    _ = (root / "docs" / "a.md").write_text(
+        data="""\
+a
+""",
+    )
+    _ = (root / "docs" / "b.md").write_text(
+        data="""\
+b
+""",
+    )
     _ = ent.execute_exactus(
         analyzer="readme",
         title="Readme Exactus",
@@ -301,7 +319,13 @@ def test_unmigrated_web_data_has_no_view(tmp_path: Path) -> None:
         ),
         analyzer="frontend",
         title="Screenshot Report",
-        markdown="# Screenshot Report\n\n## Findings\n\nNone.\n",
+        markdown="""\
+# Screenshot Report
+
+## Findings
+
+None.
+""",
         data={"findings": [], "summary": {"files": 1}},
     )
     stamped: Path = tmp_path / "stamped"
@@ -391,7 +415,11 @@ def test_error_after_report_is_kept(tmp_path: Path) -> None:
     root: Path = tmp_path / "project"
     out: Path = tmp_path / "EXACTUS_RESULTS" / "README"
     (root / "docs").mkdir(parents=True)
-    _ = (root / "docs" / "README.md").write_text(data="docs\n")
+    _ = (root / "docs" / "README.md").write_text(
+        data="""\
+docs
+""",
+    )
     _ = ent.execute_exactus(
         analyzer="readme",
         title="Readme Exactus",

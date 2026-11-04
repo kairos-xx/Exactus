@@ -109,12 +109,19 @@ class ConversionResult:
 class JavaScriptBlockAnalyzer:
     """Parse and classify function-like blocks in one JavaScript file."""
 
-    def __init__(self, *, path: Path, espree: str | None = None) -> None:
+    def __init__(
+        self,
+        *,
+        path: Path,
+        espree: str | None = None,
+        source: str | None = None,
+    ) -> None:
         """Init  .
 
         Args:
             path: Path.
             espree: Espree.
+            source: Optional source passed to the analyzer without rereading.
 
         Raises:
             FileNotFoundError: Raised when the operation cannot be completed.
@@ -129,6 +136,7 @@ class JavaScriptBlockAnalyzer:
             msg = f"Expected a JavaScript file, received: {self.path}"
             raise ValueError(msg)
         self._espree: str | None = espree
+        self._source: str | None = source
 
     def resolve_espree(self) -> str:
         """Resolve espree.
@@ -165,6 +173,11 @@ class JavaScriptBlockAnalyzer:
                         "action": "analyze",
                         "espree": self.resolve_espree(),
                         "file": str(object=self.path),
+                        **(
+                            {"source": self._source}
+                            if self._source is not None
+                            else {}
+                        ),
                     },
                 ),
             )
@@ -216,6 +229,11 @@ class JavaScriptBlockAnalyzer:
                         "direction": direction or "normalize",
                         "espree": self.resolve_espree(),
                         "file": str(object=self.path),
+                        **(
+                            {"source": self._source}
+                            if self._source is not None
+                            else {}
+                        ),
                     },
                 ),
             )
@@ -688,8 +706,23 @@ def _line_column(*, source: str, offset: int) -> tuple[int, int]:
         The resulting value.
 
     """
-    line: int = source.count("\n", 0, offset) + 1
-    line_start: int = source.rfind("\n", 0, offset)
+    line: int = (
+        source.count(
+            """\
+
+""",
+            0,
+            offset,
+        )
+        + 1
+    )
+    line_start: int = source.rfind(
+        """\
+
+""",
+        0,
+        offset,
+    )
     return (line, offset - line_start)
 
 
@@ -711,12 +744,13 @@ def _first_change_offset(*, before: str, after: str) -> int:
     return offset
 
 
-def _audit_function_blocks(
+def audit_function_blocks(
     path: Path,
     *,
     root: Path,
     fix: bool,
     espree: str | None,
+    source: str | None = None,
 ) -> FunctionBlocksFinding | FunctionBlocksHeal | None:
     """Audit function blocks.
 
@@ -725,6 +759,7 @@ def _audit_function_blocks(
         root: Root.
         fix: Fix.
         espree: Espree.
+        source: Optional source already read by the owning pipeline.
 
     Returns:
         The resulting value.
@@ -756,7 +791,9 @@ def _audit_function_blocks(
     except ValueError:
         relative = path.as_posix()
     try:
-        original: str = path.read_text(encoding="utf-8")
+        original: str = (
+            path.read_text(encoding="utf-8") if source is None else source
+        )
     except (OSError, UnicodeDecodeError):
         return error(
             rule="JSN002",
@@ -766,6 +803,7 @@ def _audit_function_blocks(
         analyzer: JavaScriptBlockAnalyzer = JavaScriptBlockAnalyzer(
             path=path,
             espree=espree,
+            source=original,
         )
         result: ConversionResult = analyzer.normalize()
     except (OSError, UnicodeDecodeError):
@@ -863,7 +901,7 @@ def scan_function_blocks(
     workers: int = max(1, min(16, cpu_count() or 4, len(inputs.files)))
     audit: partial[FunctionBlocksFinding | FunctionBlocksHeal | None] = (
         partial(
-            _audit_function_blocks,
+            audit_function_blocks,
             root=inputs.root,
             fix=inputs.fix,
             espree=espree,

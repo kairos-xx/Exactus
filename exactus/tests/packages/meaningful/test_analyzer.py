@@ -33,7 +33,11 @@ def expect(*, condition: bool) -> None:
     [
         (
             "__init__.py",
-            '"""Exports."""\nfrom pathlib import Path\n__all__ = ("Path",)\n',
+            """\
+\"""Exports.\"""
+from pathlib import Path
+__all__ = ("Path",)
+""",
             UnitTestLevel.TEST_0,
         ),
         (
@@ -41,10 +45,17 @@ def expect(*, condition: bool) -> None:
             (
                 dedent(
                     text=(
-                        '    """Entrypoint."""\n    from package import ru'
-                        'n\n    \n    def main() -> None:\n        """Dele'
-                        'gate."""\n        run()\n    \n    if __name__ =='
-                        ' "__main__":\n        main()\n    '
+                        """\
+    \"""Entrypoint.\"""
+    from package import run
+
+    def main() -> None:
+        \"""Delegate.\"""
+        run()
+
+    if __name__ == "__main__":
+        main()
+    """
                     ),
                 )
             ),
@@ -55,10 +66,14 @@ def expect(*, condition: bool) -> None:
             (
                 dedent(
                     text=(
-                        '    """Delegate."""\n    from package import run'
-                        "\n    \n    def execute(value: str) -> str:\n    "
-                        '    """Delegate."""\n        return run(value)\n '
-                        "   "
+                        """\
+    \"""Delegate.\"""
+    from package import run
+
+    def execute(value: str) -> str:
+        \"""Delegate.\"""
+        return run(value)
+    """
                     ),
                 )
             ),
@@ -69,9 +84,13 @@ def expect(*, condition: bool) -> None:
             (
                 dedent(
                     text=(
-                        '    """Compute."""\n    \n    def double(value: i'
-                        'nt) -> int:\n        """Double."""\n        retur'
-                        "n value * 2\n    "
+                        """\
+    \"""Compute.\"""
+
+    def double(value: int) -> int:
+        \"""Double.\"""
+        return value * 2
+    """
                     ),
                 )
             ),
@@ -82,10 +101,14 @@ def expect(*, condition: bool) -> None:
             (
                 dedent(
                     text=(
-                        '    """I/O."""\n    from pathlib import Path\n   '
-                        ' \n    def load(path: Path) -> str:\n        """L'
-                        'oad."""\n        return path.read_text(encoding="'
-                        'utf-8")\n    '
+                        """\
+    \"""I/O.\"""
+    from pathlib import Path
+
+    def load(path: Path) -> str:
+        \"""Load.\"""
+        return path.read_text(encoding="utf-8")
+    """
                     ),
                 )
             ),
@@ -96,11 +119,17 @@ def expect(*, condition: bool) -> None:
             (
                 dedent(
                     text=(
-                        '    """Branch."""\n    \n    def clamp(value: int'
-                        ') -> int:\n        """Clamp."""\n        if value'
-                        " < 0:\n            return 0\n        if value > 1"
-                        "00:\n            return 100\n        return value"
-                        "\n    "
+                        """\
+    \"""Branch.\"""
+
+    def clamp(value: int) -> int:
+        \"""Clamp.\"""
+        if value < 0:
+            return 0
+        if value > 100:
+            return 100
+        return value
+    """
                     ),
                 )
             ),
@@ -111,9 +140,12 @@ def expect(*, condition: bool) -> None:
             (
                 dedent(
                     text=(
-                        '    """Constants."""\n    from typing import Fina'
-                        "l\n    \n    NAMES: Final[frozenset[str]] = froze"
-                        'nset({"a", "b"})\n    '
+                        """\
+    \"""Constants.\"""
+    from typing import Final
+
+    NAMES: Final[frozenset[str]] = frozenset({"a", "b"})
+    """
                     ),
                 )
             ),
@@ -124,11 +156,17 @@ def expect(*, condition: bool) -> None:
             (
                 dedent(
                     text=(
-                        '    """Entrypoint."""\n    from package import cl'
-                        'i\n    \n    def main() -> None:\n        """Dele'
-                        'gate."""\n        raise SystemExit(cli())\n    \n'
-                        '    if __name__ == "__main__":\n        main()\n '
-                        "   "
+                        """\
+    \"""Entrypoint.\"""
+    from package import cli
+
+    def main() -> None:
+        \"""Delegate.\"""
+        raise SystemExit(cli())
+
+    if __name__ == "__main__":
+        main()
+    """
                     ),
                 )
             ),
@@ -139,10 +177,15 @@ def expect(*, condition: bool) -> None:
             (
                 dedent(
                     text=(
-                        '    """Init with behavior."""\n    \n    def norm'
-                        'alize(value: int) -> int:\n        """Normalize."'
-                        '""\n        if value < 0:\n            return 0\n'
-                        "        return value\n    "
+                        """\
+    \"""Init with behavior.\"""
+
+    def normalize(value: int) -> int:
+        \"""Normalize.\"""
+        if value < 0:
+            return 0
+        return value
+    """
                     ),
                 )
             ),
@@ -153,10 +196,14 @@ def expect(*, condition: bool) -> None:
             (
                 dedent(
                     text=(
-                        '    """Subprocess."""\n    from subprocess import'
-                        ' run\n    \n    def execute() -> None:\n        "'
-                        '""Execute."""\n        run(args=("true",), check='
-                        "True)\n    "
+                        """\
+    \"""Subprocess.\"""
+    from subprocess import run
+
+    def execute() -> None:
+        \"""Execute.\"""
+        run(args=("true",), check=True)
+    """
                     ),
                 )
             ),
@@ -167,10 +214,14 @@ def expect(*, condition: bool) -> None:
             (
                 dedent(
                     text=(
-                        '    """Subprocess alias."""\n    import subproces'
-                        "s as sp\n    \n    def execute() -> None:\n      "
-                        '  """Execute."""\n        sp.run(args=("true",), '
-                        "check=True)\n    "
+                        """\
+    \"""Subprocess alias.\"""
+    import subprocess as sp
+
+    def execute() -> None:
+        \"""Execute.\"""
+        sp.run(args=("true",), check=True)
+    """
                     ),
                 )
             ),
@@ -181,10 +232,14 @@ def expect(*, condition: bool) -> None:
             (
                 dedent(
                     text=(
-                        '    """Ambient state."""\n    from os import envi'
-                        'ron\n    \n    def token() -> str:\n        """Re'
-                        'ad token."""\n        return environ["TOKEN"]\n  '
-                        "  "
+                        """\
+    \"""Ambient state.\"""
+    from os import environ
+
+    def token() -> str:
+        \"""Read token.\"""
+        return environ["TOKEN"]
+    """
                     ),
                 )
             ),
@@ -195,9 +250,13 @@ def expect(*, condition: bool) -> None:
             (
                 dedent(
                     text=(
-                        '    """Mutation."""\n    \n    def add(values: li'
-                        'st[int], value: int) -> None:\n        """Add one'
-                        ' value."""\n        values.append(value)\n    '
+                        """\
+    \"""Mutation.\"""
+
+    def add(values: list[int], value: int) -> None:
+        \"""Add one value.\"""
+        values.append(value)
+    """
                     ),
                 )
             ),
@@ -208,9 +267,13 @@ def expect(*, condition: bool) -> None:
             (
                 dedent(
                     text=(
-                        '    """Typing only."""\n    from typing import TY'
-                        "PE_CHECKING\n    \n    if TYPE_CHECKING:\n       "
-                        " from package import Thing\n    "
+                        """\
+    \"""Typing only.\"""
+    from typing import TYPE_CHECKING
+
+    if TYPE_CHECKING:
+        from package import Thing
+    """
                     ),
                 )
             ),
@@ -221,11 +284,15 @@ def expect(*, condition: bool) -> None:
             (
                 dedent(
                     text=(
-                        '    """Model."""\n    from dataclasses import dat'
-                        "aclass, field\n    \n    @dataclass(frozen=True, "
-                        'slots=True)\n    class Model:\n        """Data mo'
-                        'del."""\n        names: tuple[str, ...] = field(d'
-                        "efault_factory=tuple)\n    "
+                        """\
+    \"""Model.\"""
+    from dataclasses import dataclass, field
+
+    @dataclass(frozen=True, slots=True)
+    class Model:
+        \"""Data model.\"""
+        names: tuple[str, ...] = field(default_factory=tuple)
+    """
                     ),
                 )
             ),
@@ -236,10 +303,17 @@ def expect(*, condition: bool) -> None:
             (
                 dedent(
                     text=(
-                        '    """Stubs."""\n    \n    def first() -> None:'
-                        '\n        """Stub."""\n        pass\n    \n    de'
-                        'f second() -> None:\n        """Stub."""\n       '
-                        " ...\n    "
+                        """\
+    \"""Stubs.\"""
+
+    def first() -> None:
+        \"""Stub.\"""
+        pass
+
+    def second() -> None:
+        \"""Stub.\"""
+        ...
+    """
                     ),
                 )
             ),
@@ -250,12 +324,19 @@ def expect(*, condition: bool) -> None:
             (
                 dedent(
                     text=(
-                        '    """Complex."""\n    \n    def choose(value: i'
-                        'nt) -> int:\n        """Choose."""\n        if va'
-                        "lue > 0:\n            if value > 1:\n            "
-                        "    if value > 2:\n                    return val"
-                        "ue * 2\n        if value < 0:\n            return"
-                        " -value\n        return 0\n    "
+                        """\
+    \"""Complex.\"""
+
+    def choose(value: int) -> int:
+        \"""Choose.\"""
+        if value > 0:
+            if value > 1:
+                if value > 2:
+                    return value * 2
+        if value < 0:
+            return -value
+        return 0
+    """
                     ),
                 )
             ),
@@ -299,9 +380,15 @@ def test_metrics_json_and_render(*, tmp_path: Path) -> None:
         data=(
             dedent(
                 text=(
-                    '    """Branch."""\n    \n    def choose(value: int) -'
-                    '> int:\n        """Choose."""\n        if value:\n   '
-                    "         return value + 1\n        return 0\n    "
+                    """\
+    \"""Branch.\"""
+
+    def choose(value: int) -> int:
+        \"""Choose.\"""
+        if value:
+            return value + 1
+        return 0
+    """
                 ),
             )
         ),
@@ -341,6 +428,11 @@ def test_syntax_error_is_preserved(*, tmp_path: Path) -> None:
 
     """
     path: Path = tmp_path / "broken.py"
-    path.write_text(data="def broken(:\n", encoding="utf-8")
+    path.write_text(
+        data="""\
+def broken(:
+""",
+        encoding="utf-8",
+    )
     with pytest.raises(expected_exception=SyntaxError):
         PythonTestNeedClassifier(path=path)

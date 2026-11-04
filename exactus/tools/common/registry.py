@@ -67,12 +67,16 @@ class RegistryTables:
         max_size_env: Environment variable overriding ``max_size_bytes``.
         live_status: Row status marking a run as actively owned.
         columns: Canonical ``runs`` column order used by ``SELECT``.
+        root_target_prefix: ``targets`` marker prefix recording the
+            claiming run's project root; marker entries never drive
+            conflicts and let adopters reject foreign-project runs.
 
     """
 
     database_name: Final[str] = "runs.db"
     env_path: Final[str] = "EXACTUS_REGISTRY"
     project_root_env: Final[str] = "EXACTUS_PROJECT_ROOT"
+    root_target_prefix: Final[str] = "root://"
     exactus_root_name: Final[str] = "EXACTUS_RESULTS"
     busy_timeout_seconds: Final[float] = 10.0
     retention: Final[timedelta] = timedelta(days=7)
@@ -132,6 +136,38 @@ def run_context(*, root: Path, owner: str) -> str:
 
     """
     return f"{workspace_context(root=root)}/{owner}"
+
+
+def project_root_target(*, root: Path) -> str:
+    """Return the ``targets`` marker recording one project root.
+
+    Args:
+        root: Project root claimed by the run.
+
+    Returns:
+        Namespaced marker inert to conflict matching.
+
+    """
+    return f"{RegistryTables.root_target_prefix}{root}"
+
+
+def record_project_root(*, record: RunRecord) -> Path | None:
+    """Return the project root a run record claimed, when marked.
+
+    Args:
+        record: Registry row decoded by ``claim`` or ``live``.
+
+    Returns:
+        The claiming run's resolved project root, or ``None`` for rows
+        claimed before root markers existed.
+
+    """
+    prefix: str = RegistryTables.root_target_prefix
+    target: str
+    for target in record.targets:
+        if target.startswith(prefix):
+            return Path(target.removeprefix(prefix)).resolve()
+    return None
 
 
 @dataclass(frozen=True, slots=True)
@@ -602,7 +638,13 @@ class RunRegistry:
         """
         now: str = datetime.now(tz=UTC).astimezone().isoformat()
         output: str = str(object=request.output.resolve())
-        wanted: frozenset[str] = frozenset((output, *request.targets))
+        prefix: str = RegistryTables.root_target_prefix
+        wanted: frozenset[str] = frozenset(
+            (
+                output,
+                *(t for t in request.targets if not t.startswith(prefix)),
+            ),
+        )
         try:
             with self._connection() as connection:
                 try:

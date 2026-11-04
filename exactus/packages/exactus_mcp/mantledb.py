@@ -242,8 +242,8 @@ class MantleUrlStore:
         """
         return (
             "https://mantledb.sh/v2/"
-            f"{quote(string=self.namespace, safe='')}/"
-            f"{quote(string=self.path, safe='/')}"
+            f"{quote(string=self.namespace, safe="")}/"
+            f"{quote(string=self.path, safe="/")}"
         )
 
     def save(self, *, url: str) -> None:

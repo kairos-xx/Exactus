@@ -1871,37 +1871,47 @@ class FlowRunner:
                 expression=(
                     dedent(
                         text=(
-                            "    async ({\n      url, protocols, message, "
-                            "receiveCount, timeoutMs\n    }) => await new "
-                            "Promise((resolve, reject) => {\n      const s"
-                            "ocket = protocols.length > 0\n        ? new W"
-                            "ebSocket(url, protocols)\n        : new WebSo"
-                            "cket(url);\n      const messages = [];\n     "
-                            " const timer = setTimeout(() => {\n        so"
-                            'cket.close(1000, "Exactus timeout");\n       '
-                            " reject(new Error(`WebSocket session timed ou"
-                            "t after ${timeoutMs} ms`));\n      }, timeout"
-                            'Ms);\n      socket.addEventListener("open", ('
-                            ") => {\n        if (message) socket.send(mess"
-                            "age);\n        if (receiveCount === 0) socket"
-                            '.close(1000, "Exactus completed");\n      });'
-                            '\n      socket.addEventListener("message", ev'
-                            "ent => {\n        messages.push(\n          t"
-                            'ypeof event.data === "string" ? event.data : '
-                            "`[Binary frame]`\n        );\n        if (mes"
-                            "sages.length >= receiveCount) {\n          so"
-                            'cket.close(1000, "Exactus completed");\n     '
-                            "   }\n      });\n      socket.addEventListene"
-                            'r("error", () => {\n        clearTimeout(time'
-                            'r);\n        reject(new Error("WebSocket conn'
-                            'ection failed"));\n      });\n      socket.ad'
-                            'dEventListener("close", event => {\n        c'
-                            "learTimeout(timer);\n        resolve({\n     "
-                            "     url,\n          protocol: socket.protoco"
-                            "l,\n          messages,\n          last_messa"
-                            "ge: messages.at(-1) ?? null,\n          close"
-                            "_code: event.code,\n          close_reason: e"
-                            "vent.reason\n        });\n      });\n    })"
+                            """\
+    async ({
+      url, protocols, message, receiveCount, timeoutMs
+    }) => await new Promise((resolve, reject) => {
+      const socket = protocols.length > 0
+        ? new WebSocket(url, protocols)
+        : new WebSocket(url);
+      const messages = [];
+      const timer = setTimeout(() => {
+        socket.close(1000, "Exactus timeout");
+        reject(new Error(`WebSocket session timed out after ${timeoutMs} ms`))\
+;
+      }, timeoutMs);
+      socket.addEventListener("open", () => {
+        if (message) socket.send(message);
+        if (receiveCount === 0) socket.close(1000, "Exactus completed");
+      });
+      socket.addEventListener("message", event => {
+        messages.push(
+          typeof event.data === "string" ? event.data : `[Binary frame]`
+        );
+        if (messages.length >= receiveCount) {
+          socket.close(1000, "Exactus completed");
+        }
+      });
+      socket.addEventListener("error", () => {
+        clearTimeout(timer);
+        reject(new Error("WebSocket connection failed"));
+      });
+      socket.addEventListener("close", event => {
+        clearTimeout(timer);
+        resolve({
+          url,
+          protocol: socket.protocol,
+          messages,
+          last_message: messages.at(-1) ?? null,
+          close_code: event.code,
+          close_reason: event.reason
+        });
+      });
+    })"""
                         ),
                     )
                 ),
@@ -2009,7 +2019,7 @@ class FlowRunner:
             if selected is None and item.get("required") is not False:
                 msg: str = (
                     f"Response variable {name!r} could not read "
-                    f"{source}{f'.{path}' if path else ''}."
+                    f"{source}{f".{path}" if path else ""}."
                 )
                 raise ValueError(msg)
             if selected is None:
@@ -2245,7 +2255,7 @@ class FlowRunner:
                 except (PlaywrightError, OSError) as failure:
                     status, error = (
                         "failed",
-                        f"{error or ''} Screenshot: {failure}",
+                        f"{error or ""} Screenshot: {failure}",
                     )
         drift: JsonValue = (
             cast(typ="dict[str, JsonValue]", val=response).get("drift")

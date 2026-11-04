@@ -300,8 +300,24 @@ def inventory_text(*, document: JsonValue | None) -> str:
                 for name, version in sorted(pairs.items())
             ),
         )
-        sections.append("\n".join(lines))
-    return "\n\n".join(sections) + ("\n" if sections else "")
+        sections.append(
+            """\
+
+""".join(lines),
+        )
+    return (
+        """\
+
+
+""".join(sections)
+        + (
+            """\
+
+"""
+            if sections
+            else ""
+        )
+    )
 
 
 def run(*, arguments: Sequence[str] | None = None) -> int:
@@ -318,14 +334,24 @@ def run(*, arguments: Sequence[str] | None = None) -> int:
     resolved: list[str] = list(argv[1:] if arguments is None else arguments)
     launcher: Path | None = resolve_exactus_tool_bundle(root=Path.cwd())
     if launcher is None:
-        _ = stderr.write(Constants.no_bundle + "\n")
+        _ = stderr.write(
+            Constants.no_bundle
+            + """\
+
+""",
+        )
         stderr.flush()
         return 2
     document: JsonValue | None = _manifest(launcher=launcher)
     if not resolved:
         text: str = inventory_text(document=document)
         if not text:
-            _ = stderr.write(Constants.no_manifest + "\n")
+            _ = stderr.write(
+                Constants.no_manifest
+                + """\
+
+""",
+            )
             stderr.flush()
             return 2
         _ = stdout.write(text)
@@ -338,7 +364,9 @@ def run(*, arguments: Sequence[str] | None = None) -> int:
             | Constants.launcher_commands
         )
         if name not in known:
-            _ = stderr.write(f'ERROR: no bundled tool named "{name}"\n')
+            _ = stderr.write(f"""\
+ERROR: no bundled tool named "{name}"
+""")
             stderr.flush()
             return 2
     return spawn(

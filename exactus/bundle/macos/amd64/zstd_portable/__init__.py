@@ -1,4 +1,5 @@
 """Portable Zstandard CLI wrapper with lazy zipped-binary extraction."""
+
 from __future__ import annotations
 
 from contextlib import suppress
@@ -33,6 +34,8 @@ if TYPE_CHECKING:
     from types import TracebackType
     from typing import IO
 type OpenMode = Literal["r", "rb", "w", "wb"]
+
+
 @final
 class Constants:
     """Group module-level constants.
@@ -55,6 +58,8 @@ class Constants:
         ("windows", "x86"): ("windows-x86.zip", "zstd.exe"),
         ("windows", "x86_64"): ("windows-x86_64.zip", "zstd.exe"),
     }
+
+
 def _normalize(*, os_name: str, machine: str) -> tuple[str, str]:
     """Normalize a platform pair into a ``_TARGETS`` key.
 
@@ -85,6 +90,8 @@ def _normalize(*, os_name: str, machine: str) -> tuple[str, str]:
         msg = f"Unsupported OS: {os_name}"
         raise RuntimeError(msg)
     return (os_name, aliases[machine])
+
+
 def _payload(*, target: tuple[str, str]) -> tuple[Path, str]:
     """Resolve the payload archive for a normalized platform.
 
@@ -116,6 +123,8 @@ def _payload(*, target: tuple[str, str]) -> tuple[Path, str]:
         msg = f"Missing native payload: {archive}"
         raise RuntimeError(msg)
     return (archive, member)
+
+
 def _read_member(*, archive: Path, member: str) -> bytes:
     """Read the single executable member from a payload archive.
 
@@ -146,6 +155,8 @@ def _read_member(*, archive: Path, member: str) -> bytes:
     except BadZipFile as exc:
         msg = f"Invalid native payload: {archive}"
         raise RuntimeError(msg) from exc
+
+
 def export_package(*, os_name: str, machine: str, target: Path) -> Path:
     """Stage this package plus the target's payload into ``target``.
 
@@ -204,6 +215,8 @@ def export_package(*, os_name: str, machine: str, target: Path) -> Path:
     )
     heal_directory(directory=package, entries=sorted(package.iterdir()))
     return package
+
+
 def export_binary(*, os_name: str, machine: str, target: Path) -> Path:
     """Extract the native CLI binary for an explicit platform.
 
@@ -225,6 +238,8 @@ def export_binary(*, os_name: str, machine: str, target: Path) -> Path:
         mode: int = executable.stat().st_mode | S_IXUSR | S_IXGRP | S_IXOTH
         executable.chmod(mode=mode)
     return executable
+
+
 class ProgressCallback(Protocol):
     """Progress sink invoked with a percent and a status label."""
 
@@ -236,6 +251,8 @@ class ProgressCallback(Protocol):
             status: Short status label such as ``compressing``.
 
         """
+
+
 @dataclass(frozen=True, slots=True)
 class ZstdOptions:
     """Compression and progress options for :class:`Zstd`.
@@ -253,10 +270,13 @@ class ZstdOptions:
     threads: int = 0
     progress: ProgressCallback | None = None
     expected_size: int | None = None
+
+
 class Zstd:
     """Stream data through a bundled native Zstandard CLI."""
 
     _extract_lock: Lock = Lock()
+
     def __init__(
         self,
         *,
@@ -323,6 +343,7 @@ class Zstd:
         self._bytes_read: int = 0
         self._read_eof: bool = False
         self._closed: bool = False
+
     @property
     def bytes_written(self) -> int:
         """Source bytes written.
@@ -332,6 +353,7 @@ class Zstd:
 
         """
         return self._bytes_written
+
     @property
     def progress(self) -> float | None:
         """Source-input progress from zero through one hundred.
@@ -352,6 +374,7 @@ class Zstd:
         if total == 0:
             return 100.0
         return min(consumed / total * 100.0, 100.0)
+
     @property
     def bytes_read(self) -> int:
         """Decompressed bytes read.
@@ -361,6 +384,7 @@ class Zstd:
 
         """
         return self._bytes_read
+
     @property
     def closed(self) -> bool:
         """Whether this stream is closed.
@@ -370,6 +394,7 @@ class Zstd:
 
         """
         return self._closed
+
     def readable(self) -> bool:
         """Return whether this stream supports reading.
 
@@ -378,6 +403,7 @@ class Zstd:
 
         """
         return self._mode == "r"
+
     def writable(self) -> bool:
         """Return whether this stream supports writing.
 
@@ -386,6 +412,7 @@ class Zstd:
 
         """
         return self._mode == "w"
+
     def open(self) -> None:
         """Start the bundled compressor or decompressor.
 
@@ -464,6 +491,7 @@ class Zstd:
             )
             self._input_thread.start()
         self._emit(status="started")
+
     def write(self, data: bytes | bytearray | memoryview) -> int:
         """Write uncompressed bytes to a compression stream.
 
@@ -487,6 +515,7 @@ class Zstd:
         self._bytes_written += written
         self._emit(status="compressing")
         return written
+
     def read(self, size: int = -1) -> bytes:
         """Read decompressed bytes from a decompression stream.
 
@@ -513,6 +542,7 @@ class Zstd:
         self._bytes_read += len(data)
         self._emit(status="decompressing")
         return data
+
     def readinto(self, buffer: bytearray | memoryview) -> int:
         """Read decompressed bytes directly into a writable buffer.
 
@@ -526,6 +556,7 @@ class Zstd:
         data: bytes = self.read(size=len(buffer))
         buffer[: len(data)] = data
         return len(data)
+
     def flush(self) -> None:
         """Flush pending Python-side input to the compressor pipe.
 
@@ -540,6 +571,7 @@ class Zstd:
             msg = "Zstd is not open."
             raise RuntimeError(msg)
         self._stdin.flush()
+
     def close(self) -> None:
         """Finalize compression or decompression."""
         if self._closed:
@@ -567,6 +599,7 @@ class Zstd:
             self._stderr_thread.join()
         self._validate(returncode=returncode, partial_read=partial_read)
         self._emit(status="complete", complete=True)
+
     def __enter__(self) -> Self:
         """Open this writer.
 
@@ -576,6 +609,7 @@ class Zstd:
         """
         self.open()
         return self
+
     def __exit__(
         self,
         _exc_type: type[BaseException] | None,
@@ -599,6 +633,7 @@ class Zstd:
             if _exc_value is None:
                 raise
         return False
+
     @staticmethod
     def _hash_file(*, file: Path) -> str:
         """Return SHA-256 for a file.
@@ -615,6 +650,7 @@ class Zstd:
             while chunk := stream.read(1024 * 1024):
                 digest.update(chunk)
         return digest.hexdigest()
+
     @staticmethod
     def _target() -> tuple[str, str]:
         """Normalize the current platform.
@@ -624,6 +660,7 @@ class Zstd:
 
         """
         return _normalize(os_name=system().lower(), machine=machine().lower())
+
     def _validate(self, *, returncode: int, partial_read: bool) -> None:
         """Raise when the finalized stream failed.
 
@@ -655,6 +692,7 @@ class Zstd:
                 f" {self._bytes_written}."
             )
             raise RuntimeError(msg)
+
     def _get_executable(self) -> Path:
         """Extract/cache the executable for this platform.
 
@@ -690,6 +728,7 @@ class Zstd:
             temporary.replace(target=executable)
             marker.write_text(data=digest, encoding="ascii")
         return executable
+
     def _feed_compressed_input(self) -> None:
         """Feed compressed input to zstd while tracking source progress."""
         stream: IO[bytes] | None = self._stdin
@@ -709,6 +748,7 @@ class Zstd:
             with suppress(OSError):
                 stream.close()
             self._stdin = None
+
     def _read_stderr(self) -> None:
         """Drain child stderr."""
         process: Popen[bytes] | None = self._process
@@ -719,6 +759,7 @@ class Zstd:
                 raw.decode(encoding="utf-8", errors="replace").rstrip(),
             )
         process.stderr.close()
+
     def _emit(self, status: str, *, complete: bool = False) -> None:
         """Emit application progress.
 
@@ -732,6 +773,7 @@ class Zstd:
                 percent=100.0 if complete else self.progress,
                 status=status,
             )
+
     def _error_message(self) -> str:
         """Format child diagnostics.
 

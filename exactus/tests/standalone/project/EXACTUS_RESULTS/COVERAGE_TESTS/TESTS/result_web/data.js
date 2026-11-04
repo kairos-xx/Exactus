@@ -12,7 +12,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
   "analyzer": "tests",
   "comparison": {
     "available": true,
-    "previous_generated_at": "2026-11-02T06:18:49.185986+00:00",
+    "previous_generated_at": "2026-11-04T07:28:52.887781+00:00",
     "previous_run_id": null,
     "previous_status": "PASS",
     "previous_duration_seconds": null,
@@ -31,15 +31,15 @@ window.__REPORT_DATA__ = JSON.parse(`{
   "failed_tests": [],
   "findings": [],
   "fingerprint": {
-    "commit": "8acd5332d8bb9132a3f9464fe58d265059b6ef39",
-    "tree": "894ba3dd961790939accb258297593340dbeb862",
+    "commit": "68b43a4bd4691257a6e48e3cb87a96edf2139868",
+    "tree": "8037996a0c49bff489a24efc566e2091d89e425b",
     "dirty": true,
     "python": "3.13.9",
     "ruff": "ruff 0.12.0",
     "basedpyright": "basedpyright 1.40.2"
   },
-  "generated_at": "2026-11-02T06:48:35.143125+00:00",
-  "generated_at_human": "02 November 2026, 06:48:35 UTC",
+  "generated_at": "2026-11-04T07:55:30.248489+00:00",
+  "generated_at_human": "04 November 2026, 07:55:30 UTC",
   "groups": [
     {
       "group": "tests",
@@ -56,7 +56,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
     "result.md": "result.md",
     "result.json": "result.json"
   },
-  "markdown": "# Combined Tests Report\\n\\n**Run time:** 02 November 2026, 06:48:35 UTC\\n\\n## Change since previous report\\n\\n| Findings | Current | Previous | Delta | Added | Resolved | Unchanged |\\n|---|---:|---:|---:|---:|---:|---:|\\n| Overall | 0 | 0 | 0 | 0 | 0 | 0 |\\n\\n\\n\\n- Status: **PASS**\\n- Tests run: **2** — 2 passed\\n- Test files: **1**\\n- Groups: **1**\\n- Shards: **1**\\n\\n## Results by group\\n\\n| Group | Files | Tests | Passed | Failed | Skipped |\\n| --- | ---: | ---: | ---: | ---: | ---: |\\n| \`tests\` | 1 | 2 | 2 | 0 | 0 |\\n\\n## Shards\\n\\n| Shard | Exit | Collected | Run | Log |\\n| --- | ---: | ---: | ---: | --- |\\n| 0 | 0 | 2 | 2 | \`ARTIFACTS/TESTS/pytest-shards/shard-000.log\` |\\n",
+  "markdown": "# Combined Tests Report\\n\\n**Run time:** 04 November 2026, 07:55:30 UTC\\n\\n## Change since previous report\\n\\n| Findings | Current | Previous | Delta | Added | Resolved | Unchanged |\\n|---|---:|---:|---:|---:|---:|---:|\\n| Overall | 0 | 0 | 0 | 0 | 0 | 0 |\\n\\n\\n\\n- Status: **PASS**\\n- Tests run: **2** — 2 passed\\n- Test files: **1**\\n- Groups: **1**\\n- Shards: **1**\\n\\n## Results by group\\n\\n| Group | Files | Tests | Passed | Failed | Skipped |\\n| --- | ---: | ---: | ---: | ---: | ---: |\\n| \`tests\` | 1 | 2 | 2 | 0 | 0 |\\n\\n## Shards\\n\\n| Shard | Exit | Collected | Run | Log |\\n| --- | ---: | ---: | ---: | --- |\\n| 0 | 0 | 2 | 2 | \`ARTIFACTS/TESTS/pytest-shards/shard-000.log\` |\\n",
   "passed": true,
   "project_href": "../../../..",
   "project_root": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
@@ -65,8 +65,8 @@ window.__REPORT_DATA__ = JSON.parse(`{
     "json": "result.json",
     "web": "result_web"
   },
-  "run_at": "2026-11-02T06:48:35.143125+00:00",
-  "run_at_human": "02 November 2026, 06:48:35 UTC",
+  "run_at": "2026-11-04T07:55:30.248489+00:00",
+  "run_at_human": "04 November 2026, 07:55:30 UTC",
   "schema": "project-exactus-report/v1",
   "sections": [
     {

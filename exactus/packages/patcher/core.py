@@ -310,9 +310,10 @@ class ProjectSnapshot:
         for entry in self.entries:
             digest.update(
                 (
-                    f"{entry.path.as_posix()}\0{entry.kind}\0"
-                    f"{entry.mode:o}\0{entry.digest}\0"
-                    f"{entry.link_target}\n"
+                    f"""\
+{entry.path.as_posix()}\x00{entry.kind}\x00{entry.mode:o}\x00{entry.digest}\
+\x00{entry.link_target}
+"""
                 ).encode(),
             )
         return digest.hexdigest()

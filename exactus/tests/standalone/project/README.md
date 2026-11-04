@@ -17,7 +17,7 @@ page, and `tests/` the tests covering both. Running `exactus` with
 ### Subdirectories
 
 - [`python/`](python/README.md) — A toy Python package (`calc.py`: `add`, `is_even`) exercised by the fixture's tests and by the standalone `exactus` run.
-- [`tests/`](tests/README.md) — Fixture-project tests: `test_calc.py` covers `python/calc.py` and `code.test.mjs` covers `web/code.js`. They run both inside the repository suite and inside the standalone `exactus` audit.
+- [`tests/`](tests/README.md) — Fixture-project tests: `test_calc.py` covers `python/calc.py` and `code.test.mjs` covers `web/code.js`. They run both inside the repository suite and inside the standalone `exactus` audit. The JavaScript test uses ordinary assertions without Node-specific APIs or type definitions.
 - [`web/`](web/README.md) — A one-page fixture (`index.html`, `code.js`, `style.css`) loaded by the standalone `exactus` run's HTML/CSS/JS checks.
 
 <!-- exactus:inventory:end -->

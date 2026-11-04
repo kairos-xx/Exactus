@@ -31,7 +31,12 @@ def test_posix_backend(monkeypatch: pytest.MonkeyPatch) -> None:
 
     """
     result: SimpleNamespace = SimpleNamespace(
-        stdout="1 cmd one\n\ninvalid\n2 cmd two\n",
+        stdout="""\
+1 cmd one
+
+invalid
+2 cmd two
+""",
     )
 
     def _run_stub(**_kwargs: object) -> SimpleNamespace:

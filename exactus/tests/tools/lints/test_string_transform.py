@@ -95,9 +95,12 @@ def test_implicit() -> None:
         path.write_text(
             data=dedent(
                 text=(
-                    "    from pathlib import Path\n    from textwrap import in"
-                    'dent\n    _ = Path("x").write_text(data=("def f():\\n" " '
-                    '   return 42\\n"), encoding="utf-8")\n    '
+                    """\
+    from pathlib import Path
+    from textwrap import indent
+    _ = Path("x").write_text(data=("def f():\\n" "    return 42\\n"), \
+encoding="utf-8")
+    """
                 ),
             ),
             encoding="utf-8",
@@ -116,7 +119,12 @@ def test_docstring() -> None:
     """Do not convert a module docstring."""
     with TemporaryDirectory() as folder:
         path: Path = Path(folder) / "example.py"
-        path.write_text(data='("hello\\n" "world\\n")\n', encoding="utf-8")
+        path.write_text(
+            data="""\
+("hello\\n" "world\\n")
+""",
+            encoding="utf-8",
+        )
         expect_equal(actual=convert_strings(file=path).count, expected=0)
 
 
@@ -130,7 +138,12 @@ def test_explicit_and_fstrings() -> None:
         with TemporaryDirectory() as folder:
             path: Path = Path(folder) / "sample.py"
             after_path: Path = Path(folder) / "after.py"
-            path.write_text(data=f"value = {expression}\n", encoding="utf-8")
+            path.write_text(
+                data=f"""\
+value = {expression}
+""",
+                encoding="utf-8",
+            )
             result: ConversionResult = convert_strings(file=path, write=False)
             expect_equal(actual=result.count, expected=1)
             after_path.write_text(data=result.source, encoding="utf-8")
@@ -156,7 +169,12 @@ def test_explicit_and_fstrings() -> None:
     ):
         with TemporaryDirectory() as folder:
             target: Path = Path(folder) / "sample.py"
-            target.write_text(data=f"value = {expression}\n", encoding="utf-8")
+            target.write_text(
+                data=f"""\
+value = {expression}
+""",
+                encoding="utf-8",
+            )
             expect_equal(
                 actual=convert_strings(file=target, write=False).count,
                 expected=0,
@@ -175,7 +193,12 @@ def test_complex_literals() -> None:
         with TemporaryDirectory() as folder:
             path: Path = Path(folder) / "sample.py"
             after_path: Path = Path(folder) / "after.py"
-            path.write_text(data=f"result = {expression}\n", encoding="utf-8")
+            path.write_text(
+                data=f"""\
+result = {expression}
+""",
+                encoding="utf-8",
+            )
             converted: ConversionResult = convert_strings(
                 file=path,
                 write=False,
@@ -210,7 +233,12 @@ def test_fstring_call_formatting(tmp_path: Path) -> None:
 
     """
     path: Path = tmp_path / "sample.py"
-    path.write_text(data='a = f"b{c(d,e,f,g)}"\n', encoding="utf-8")
+    path.write_text(
+        data="""\
+a = f"b{c(d,e,f,g)}"
+""",
+        encoding="utf-8",
+    )
     result: ConversionResult = convert_strings(file=path, write=False)
     expect_in(member="c(d, e, f, g)", container=result.source)
     expect_equal(actual=result.count, expected=1)
@@ -238,7 +266,9 @@ def test_fstring_nested_call_formatting(tmp_path: Path) -> None:
     """
     path: Path = tmp_path / "nested.py"
     path.write_text(
-        data='a = f"{call(one,inner( 2,3 ),four):>10}"\n',
+        data="""\
+a = f"{call(one,inner( 2,3 ),four):>10}"
+""",
         encoding="utf-8",
     )
     result: ConversionResult = convert_strings(file=path, write=False)
@@ -249,7 +279,17 @@ def test_fstring_nested_call_formatting(tmp_path: Path) -> None:
 
 def test_ast_helpers_and_rejections() -> None:
     """Cover flattening, signature, rendering, and rejection paths."""
-    expect_equal(actual=offsets(lines=["abc\n", "xy"]), expected=[0, 4, 6])
+    expect_equal(
+        actual=offsets(
+            lines=[
+                """\
+abc
+""",
+                "xy",
+            ],
+        ),
+        expected=[0, 4, 6],
+    )
     expect_equal(actual=position(offsets=[0, 4, 6], point=(2, 1)), expected=5)
     expect_none(value=flatten(node=parse(source='a + "b"', mode="eval").body))
     expect_none(
@@ -325,27 +365,47 @@ def test_import_variations() -> None:
     """Merge or insert ``dedent`` across existing textwrap imports."""
     expect_true(
         condition=with_dedent_import(
-            result="from textwrap import dedent\nx = 1\n",
+            result="""\
+from textwrap import dedent
+x = 1
+""",
         ).startswith("from textwrap import dedent"),
     )
     expect_true(
         condition=with_dedent_import(
-            result="from textwrap import indent as i\nx = 1\n",
-        ).startswith("from textwrap import dedent\n"),
+            result="""\
+from textwrap import indent as i
+x = 1
+""",
+        ).startswith("""\
+from textwrap import dedent
+"""),
     )
     expect_true(
         condition=with_dedent_import(
-            result="from textwrap import *\nx = 1\n",
-        ).startswith("from textwrap import dedent\n"),
+            result="""\
+from textwrap import *
+x = 1
+""",
+        ).startswith("""\
+from textwrap import dedent
+"""),
     )
     expect_true(
         condition=with_dedent_import(
-            result='"""docs"""\nfrom __future__ import annotations\nx = 1\n',
+            result="""\
+\"""docs\"""
+from __future__ import annotations
+x = 1
+""",
         ).startswith(
             dedent(
                 text=(
-                    '    """docs"""\n    from __future__ import annotations\n'
-                    "    from textwrap import dedent\n    "
+                    """\
+    \"""docs\"""
+    from __future__ import annotations
+    from textwrap import dedent
+    """
                 ),
             ),
         ),
@@ -353,14 +413,20 @@ def test_import_variations() -> None:
     expect_equal(
         actual=insertion_offset(
             updated=parse(source="x = 1"),
-            updated_lines=["x = 1\n"],
+            updated_lines=[
+                """\
+x = 1
+""",
+            ],
         ),
         expected=0,
     )
     expect_in(
         member="dedent",
         container=merge_dedent(
-            result="from textwrap import indent\n",
+            result="""\
+from textwrap import indent
+""",
             compatible=require_type(
                 value=parse(source="from textwrap import indent").body[0],
                 kind=ImportFrom,
@@ -378,7 +444,12 @@ def test_options_and_error_cases(tmp_path: Path) -> None:
 
     """
     path: Path = tmp_path / "source.py"
-    path.write_text(data='x = "a\\n" + "b\\n"\n', encoding="utf-8")
+    path.write_text(
+        data="""\
+x = "a\\n" + "b\\n"
+""",
+        encoding="utf-8",
+    )
     original: str = path.read_text(encoding="utf-8")
     expect_equal(
         actual=convert_strings(
@@ -394,7 +465,12 @@ def test_options_and_error_cases(tmp_path: Path) -> None:
     path.write_text(data="x = (", encoding="utf-8")
     with pytest.raises(expected_exception=SyntaxError):
         convert_strings(file=path)
-    path.write_text(data='x = "a\\n" + "b\\n"\n', encoding="utf-8")
+    path.write_text(
+        data="""\
+x = "a\\n" + "b\\n"
+""",
+        encoding="utf-8",
+    )
     disabled: CallFormatOptions = CallFormatOptions(enabled=False)
     expect_true(
         condition=convert_strings(file=path, call_format=disabled).changed,
@@ -412,19 +488,39 @@ def test_ruff_failure_paths(tmp_path: Path) -> None:
 
     """
     fake: Path = tmp_path / "ruff"
-    fake.write_text(data="#!/bin/sh\nexit 2\n", encoding="utf-8")
+    fake.write_text(
+        data="""\
+#!/bin/sh
+exit 2
+""",
+        encoding="utf-8",
+    )
     fake.chmod(mode=493)
     expect_none(
         value=ruff_call(
-            call="c(\n    a,\n    b\n)",
+            call="""\
+c(
+    a,
+    b
+)""",
             executable=str(object=fake),
             line_length=88,
         ),
     )
-    fake.write_text(data="#!/bin/sh\nexit 0\n", encoding="utf-8")
+    fake.write_text(
+        data="""\
+#!/bin/sh
+exit 0
+""",
+        encoding="utf-8",
+    )
     expect_true(
         condition=ruff_call(
-            call="c(\n    a,\n    b\n)",
+            call="""\
+c(
+    a,
+    b
+)""",
             executable=str(object=fake),
             line_length=88,
         )
@@ -448,19 +544,55 @@ def test_fstring_ruff_staging_with_fake(tmp_path: Path) -> None:
 
     """
     fake: Path = tmp_path / "ruff"
-    fake.write_text(data="#!/bin/sh\nexit 0\n", encoding="utf-8")
+    fake.write_text(
+        data="""\
+#!/bin/sh
+exit 0
+""",
+        encoding="utf-8",
+    )
     fake.chmod(mode=493)
     options: CallFormatOptions = CallFormatOptions(
         ruff_executable=str(object=fake),
     )
     path: Path = tmp_path / "source.py"
     for source, expected in (
-        ('a = f"{call(a,b,c)}"\n', True),
-        ('a = f"{call(a,b,c,d)}"\n', True),
-        ('a = f"{call(a, inner(b,c), d)}"\n', True),
-        ('a = f"{call(a,b)}"\n', False),
-        ('a = f"{call(a,b,c):>10}"\n', True),
-        ('a = f"{call(a,b,c)}" + "\\n"\n', True),
+        (
+            """\
+a = f"{call(a,b,c)}"
+""",
+            True,
+        ),
+        (
+            """\
+a = f"{call(a,b,c,d)}"
+""",
+            True,
+        ),
+        (
+            """\
+a = f"{call(a, inner(b,c), d)}"
+""",
+            True,
+        ),
+        (
+            """\
+a = f"{call(a,b)}"
+""",
+            False,
+        ),
+        (
+            """\
+a = f"{call(a,b,c):>10}"
+""",
+            True,
+        ),
+        (
+            """\
+a = f"{call(a,b,c)}" + "\\n"
+""",
+            True,
+        ),
     ):
         path.write_text(data=source, encoding="utf-8")
         result: ConversionResult = convert_strings(
@@ -478,7 +610,11 @@ def test_long_literal() -> None:
         path: Path = Path(folder) / "sample.py"
         after_path: Path = Path(folder) / "after.py"
         path.write_text(
-            data='a = "' + "verylong" * 12 + '"\n',
+            data='a = "'
+            + "verylong" * 12
+            + """\
+"
+""",
             encoding="utf-8",
         )
         result: SplitResult = split_strings(
@@ -512,11 +648,15 @@ def test_long_fstring() -> None:
         path: Path = Path(folder) / "sample.py"
         after_path: Path = Path(folder) / "after.py"
         path.write_text(
-            data='name = "Joe"\na = f"'
+            data='''\
+name = "Joe"
+a = f"'''
             + "verylong" * 10
             + "{name}"
             + "verylong" * 10
-            + '"\n',
+            + """\
+"
+""",
             encoding="utf-8",
         )
         result: SplitResult = split_strings(
@@ -541,16 +681,29 @@ def test_multiline_bytes_raw_and_docstrings() -> None:
         source: str = (
             '"""'
             + "doc" * 40
-            + '"""\n'
+            + """\
+\"""
+"""
             + 'a = """'
             + "z" * 60
-            + "\n"
-            + "ab\n" * 20
-            + '"""\nb = b"'
+            + """\
+
+"""
+            + """\
+ab
+"""
+            * 20
+            + '''\
+"""
+b = b"'''
             + "a" * 90
-            + '"\nc = r"'
+            + '''\
+"
+c = r"'''
             + "xyz" * 30
-            + '"\n'
+            + """\
+"
+"""
         )
         path.write_text(data=source, encoding="utf-8")
         result: SplitResult = split_strings(
@@ -596,7 +749,14 @@ def test_rejections_and_settings() -> None:
     """Reject unsupported options."""
     with TemporaryDirectory() as folder:
         path: Path = Path(folder) / "sample.py"
-        path.write_text(data='a = "' + "x" * 100 + '"\n', encoding="utf-8")
+        path.write_text(
+            data='a = "'
+            + "x" * 100
+            + """\
+"
+""",
+            encoding="utf-8",
+        )
         with pytest.raises(expected_exception=ValueError, match="line_length"):
             split_strings(file=path, options=SplitOptions(max_line_size=10))
         with pytest.raises(
@@ -629,7 +789,15 @@ def test_nested_fstrings_and_debug_are_safe() -> None:
     with TemporaryDirectory() as folder:
         path: Path = Path(folder) / "sample.py"
         source: str = (
-            'value = 4\na = f"' + "a" * 70 + "{value=}" + "b" * 70 + '"\n'
+            '''\
+value = 4
+a = f"'''
+            + "a" * 70
+            + "{value=}"
+            + "b" * 70
+            + """\
+"
+"""
         )
         path.write_text(data=source, encoding="utf-8")
         result: SplitResult = split_strings(
@@ -650,7 +818,13 @@ def test_unicode_escapes_and_crlf() -> None:
     """Handle Unicode and escaped controls without changing AST semantics."""
     with TemporaryDirectory() as folder:
         path: Path = Path(folder) / "sample.py"
-        source: str = 'a = "' + "é\\r\\n\\x00" * 20 + '"\r\n'
+        source: str = (
+            'a = "'
+            + "é\\r\\n\\x00" * 20
+            + """\
+"\r
+"""
+        )
         path.write_bytes(data=source.encode(encoding="utf-8"))
         result: SplitResult = split_strings(
             file=path,
@@ -675,7 +849,13 @@ def test_controls_and_error_paths(tmp_path: Path) -> None:
     """
     path: Path = tmp_path / "sample.py"
     path.write_text(
-        data='a = f"' + "a" * 100 + "{x}" + "b" * 100 + '"\n',
+        data='a = f"'
+        + "a" * 100
+        + "{x}"
+        + "b" * 100
+        + """\
+"
+""",
         encoding="utf-8",
     )
     expect_false(
@@ -693,7 +873,14 @@ def test_controls_and_error_paths(tmp_path: Path) -> None:
         ).count
         >= 0,
     )
-    path.write_text(data='a = b"' + "a" * 100 + '"\n', encoding="utf-8")
+    path.write_text(
+        data='a = b"'
+        + "a" * 100
+        + """\
+"
+""",
+        encoding="utf-8",
+    )
     expect_false(
         condition=split_strings(
             file=path,
@@ -701,7 +888,14 @@ def test_controls_and_error_paths(tmp_path: Path) -> None:
             options=SplitOptions(split_bytes=False),
         ).changed,
     )
-    path.write_text(data='a = r"' + "a" * 100 + '"\n', encoding="utf-8")
+    path.write_text(
+        data='a = r"'
+        + "a" * 100
+        + """\
+"
+""",
+        encoding="utf-8",
+    )
     expect_false(
         condition=split_strings(
             file=path,
@@ -709,7 +903,14 @@ def test_controls_and_error_paths(tmp_path: Path) -> None:
             options=SplitOptions(split_raw_strings=False),
         ).changed,
     )
-    path.write_text(data='a = "' + "a" * 100 + '"\n', encoding="utf-8")
+    path.write_text(
+        data='a = "'
+        + "a" * 100
+        + """\
+"
+""",
+        encoding="utf-8",
+    )
     expect_true(
         condition=split_strings(
             file=path,
@@ -724,7 +925,12 @@ def test_controls_and_error_paths(tmp_path: Path) -> None:
             write=False,
         ).changed,
     )
-    path.write_text(data="a = (\n", encoding="utf-8")
+    path.write_text(
+        data="""\
+a = (
+""",
+        encoding="utf-8",
+    )
     with pytest.raises(expected_exception=SyntaxError):
         split_strings(file=path)
 
@@ -747,7 +953,16 @@ def test_literal_helpers_and_atomic_failure(
     expect_none(value=literal_parts(value="a", width=2))
     expect_true(condition=literal_parts(value=b"abcdef", width=5) is not None)
     expect_equal(
-        actual=offset(lines=["éx\n"], starts=[0], line=1, column=2),
+        actual=offset(
+            lines=[
+                """\
+éx
+""",
+            ],
+            starts=[0],
+            line=1,
+            column=2,
+        ),
         expected=1,
     )
     path: Path = tmp_path / "file.py"
@@ -791,18 +1006,56 @@ def test_varied_literal_boundaries(tmp_path: Path) -> None:
 
     """
     cases: list[str] = [
-        'a = "' + "\\U0001f600" * 25 + '"\n',
-        'a = "' + "\\\\" * 55 + '"\n',
-        'a = "' + "x" * 120 + '"  # important\n',
-        'a = f"' + "x" * 80 + "{value!r:>20}" + "y" * 80 + '"\n',
+        'a = "'
+        + "\\U0001f600" * 25
+        + """\
+"
+""",
+        'a = "'
+        + "\\\\" * 55
+        + """\
+"
+""",
+        'a = "'
+        + "x" * 120
+        + """\
+"  # important
+""",
+        'a = f"'
+        + "x" * 80
+        + "{value!r:>20}"
+        + "y" * 80
+        + """\
+"
+""",
         'a = f"'
         + "x" * 80
         + "{value:{width}.{precision}f}"
         + "y" * 80
-        + '"\n',
-        'a = f"' + "x" * 80 + "{value=}" + "y" * 80 + '"\n',
-        'a = """' + "x" * 120 + "\n" + "y" * 120 + '"""\n',
-        'a = "' + "é" * 100 + '"\n',
+        + """\
+"
+""",
+        'a = f"'
+        + "x" * 80
+        + "{value=}"
+        + "y" * 80
+        + """\
+"
+""",
+        'a = """'
+        + "x" * 120
+        + """\
+
+"""
+        + "y" * 120
+        + """\
+\"""
+""",
+        'a = "'
+        + "é" * 100
+        + """\
+"
+""",
     ]
     path: Path = tmp_path / "sample.py"
     for source in cases:
@@ -838,13 +1091,23 @@ def test_nested_and_comment_preservation(tmp_path: Path) -> None:
 
     """
     source: str = (
-        'class C:\n    """'
+        '''\
+class C:
+    """'''
         + "d" * 120
-        + '"""\n    def method(self):\n        """'
+        + '''\
+"""
+    def method(self):
+        """'''
         + "e" * 120
-        + '"""\n        value = "'
+        + '''\
+"""
+        value = "'''
         + "z" * 120
-        + '"\n        return value\n'
+        + """\
+"
+        return value
+"""
     )
     path: Path = tmp_path / "sample.py"
     path.write_text(data=source, encoding="utf-8")
@@ -874,13 +1137,47 @@ def test_more_skip_and_conversion_branches(tmp_path: Path) -> None:
     """
     path: Path = tmp_path / "sample.py"
     samples: list[str] = [
-        'a = """' + "a" * 110 + '"""\n',
-        'a = f"' + "a" * 110 + "{value!r}" + "b" * 110 + '"\n',
-        'a = f"' + "a" * 110 + "{value:{width}}" + "b" * 110 + '"\n',
-        'a = f"' + "a" * 110 + "{value=}" + "b" * 110 + '"\n',
-        'a = b"' + "a" * 110 + '"\n',
-        'a = "' + "\\n" * 110 + '"\n',
-        'a = "' + "a" * 110 + '"\n',
+        'a = """'
+        + "a" * 110
+        + """\
+\"""
+""",
+        'a = f"'
+        + "a" * 110
+        + "{value!r}"
+        + "b" * 110
+        + """\
+"
+""",
+        'a = f"'
+        + "a" * 110
+        + "{value:{width}}"
+        + "b" * 110
+        + """\
+"
+""",
+        'a = f"'
+        + "a" * 110
+        + "{value=}"
+        + "b" * 110
+        + """\
+"
+""",
+        'a = b"'
+        + "a" * 110
+        + """\
+"
+""",
+        'a = "'
+        + "\\n" * 110
+        + """\
+"
+""",
+        'a = "'
+        + "a" * 110
+        + """\
+"
+""",
     ]
     strategies: tuple[MultilineStrategy, ...] = ("preserve", "smart", "split")
     for source in samples:
@@ -906,7 +1203,14 @@ def test_more_skip_and_conversion_branches(tmp_path: Path) -> None:
                     include_attributes=False,
                 ),
             )
-    path.write_text(data='a = "' + "a" * 110 + '"\n', encoding="utf-8")
+    path.write_text(
+        data='a = "'
+        + "a" * 110
+        + """\
+"
+""",
+        encoding="utf-8",
+    )
     expect_true(
         condition=split_strings(
             file=path,
@@ -931,7 +1235,17 @@ def test_indented_budget_and_empty_literals(tmp_path: Path) -> None:
 
     """
     path: Path = tmp_path / "sample.py"
-    source: str = "def f():\n" + " " * 24 + 'a = "' + "a" * 100 + '"\n'
+    source: str = (
+        """\
+def f():
+"""
+        + " " * 24
+        + 'a = "'
+        + "a" * 100
+        + """\
+"
+"""
+    )
     path.write_text(data=source, encoding="utf-8")
     result: SplitResult = split_strings(
         file=path,
@@ -960,7 +1274,13 @@ def test_rejected_candidate_paths(
 
     """
     path: Path = tmp_path / "sample.py"
-    source: str = 'a = "' + "a" * 120 + '"\n'
+    source: str = (
+        'a = "'
+        + "a" * 120
+        + """\
+"
+"""
+    )
     path.write_text(data=source, encoding="utf-8")
     original_parts: Callable[[str | bytes, int], list[str] | None] = (
         string_transform.literal_parts
@@ -1033,7 +1353,13 @@ def test_write_failure_and_source_preservation(
 
     """
     path: Path = tmp_path / "sample.py"
-    source: str = 'a = "' + "a" * 120 + '"\r\n'
+    source: str = (
+        'a = "'
+        + "a" * 120
+        + """\
+"\r
+"""
+    )
     path.write_bytes(data=source.encode(encoding="utf-8"))
 
     def fail_write(path: Path, content: str | bytes) -> Never:
@@ -1072,14 +1398,21 @@ def test_format_interpolation_and_idempotence(tmp_path: Path) -> None:
 
     """
     path: Path = tmp_path / "sample.py"
-    source: str = 'a = f"prefix{func(first, second, third, fourth)}suffix"\n'
+    source: str = """\
+a = f"prefix{func(first, second, third, fourth)}suffix"
+"""
     path.write_text(data=source, encoding="utf-8")
     result: SplitResult = split_strings(
         file=path,
         options=SplitOptions(max_line_size=30, format_interpolations=True),
     )
     expect_equal(actual=result.count, expected=1)
-    expect_in(member="func(\n", container=result.source)
+    expect_in(
+        member="""\
+func(
+""",
+        container=result.source,
+    )
     expect_equal(
         actual=dump(
             node=parse(source=result.source),
@@ -1104,7 +1437,15 @@ def test_source_encoding_and_crlf_roundtrip(tmp_path: Path) -> None:
 
     """
     path: Path = tmp_path / "sample.py"
-    source: str = '# coding: latin-1\r\na = "' + "é" * 90 + '"\r\n'
+    source: str = (
+        '''\
+# coding: latin-1\r
+a = "'''
+        + "é" * 90
+        + """\
+"\r
+"""
+    )
     path.write_bytes(data=source.encode(encoding="latin-1"))
     result: SplitResult = split_strings(
         file=path,
@@ -1115,7 +1456,12 @@ def test_source_encoding_and_crlf_roundtrip(tmp_path: Path) -> None:
         actual=path.read_bytes().decode(encoding="latin-1"),
         expected=result.source,
     )
-    expect_in(member="\r\n", container=result.source)
+    expect_in(
+        member="""\
+\r
+""",
+        container=result.source,
+    )
     statement: Assign = require_type(
         value=parse(source=result.source).body[0],
         kind=Assign,
@@ -1134,7 +1480,13 @@ def test_interpolation_rejection(tmp_path: Path) -> None:
 
     """
     path: Path = tmp_path / "sample.py"
-    source: str = 'a = f"{func(' + "a" * 75 + ', other)}"\n'
+    source: str = (
+        'a = f"{func('
+        + "a" * 75
+        + """\
+, other)}"
+"""
+    )
     path.write_text(data=source, encoding="utf-8")
     result: SplitResult = split_strings(
         file=path,
@@ -1158,7 +1510,9 @@ def test_interpolation_keyword_and_single_argument(tmp_path: Path) -> None:
     """
     path: Path = tmp_path / "sample.py"
     path.write_text(
-        data='a = f"prefix{func(first=alpha, second=beta, **extra)}suffix"\n',
+        data="""\
+a = f"prefix{func(first=alpha, second=beta, **extra)}suffix"
+""",
         encoding="utf-8",
     )
     result: SplitResult = split_strings(
@@ -1169,7 +1523,11 @@ def test_interpolation_keyword_and_single_argument(tmp_path: Path) -> None:
     expect_true(condition=result.changed)
     expect_in(member="**extra,", container=result.source)
     path.write_text(
-        data='a = f"prefix{func(' + "a" * 50 + ')}suffix"\n',
+        data='a = f"prefix{func('
+        + "a" * 50
+        + """\
+)}suffix"
+""",
         encoding="utf-8",
     )
     result = split_strings(
@@ -1194,7 +1552,9 @@ def test_interpolation_comment_protection(tmp_path: Path) -> None:
     """
     path: Path = tmp_path / "sample.py"
     path.write_text(
-        data='a = f"prefix{func(first="#", second=other)}suffix"\n',
+        data="""\
+a = f"prefix{func(first="#", second=other)}suffix"
+""",
         encoding="utf-8",
     )
     result: SplitResult = split_strings(
@@ -1219,7 +1579,12 @@ def test_interpolation_already_short_and_already_multiline(
 
     """
     path: Path = tmp_path / "sample.py"
-    path.write_text(data='a = f"{func(first, second)}"\n', encoding="utf-8")
+    path.write_text(
+        data="""\
+a = f"{func(first, second)}"
+""",
+        encoding="utf-8",
+    )
     expect_false(
         condition=split_strings(
             file=path,
@@ -1228,7 +1593,12 @@ def test_interpolation_already_short_and_already_multiline(
         ).changed,
     )
     path.write_text(
-        data='a = f"{func(\n    first,\n    second,\n)}"\n',
+        data="""\
+a = f"{func(
+    first,
+    second,
+)}"
+""",
         encoding="utf-8",
     )
     expect_false(
@@ -1248,7 +1618,15 @@ def test_combined_transform(tmp_path: Path) -> None:
 
     """
     path: Path = tmp_path / "combined.py"
-    source: str = 'a = "hello\\n" + "world\\n"\nb = "' + "x" * 95 + '"\n'
+    source: str = (
+        '''\
+a = "hello\\n" + "world\\n"
+b = "'''
+        + "x" * 95
+        + """\
+"
+"""
+    )
     path.write_text(data=source, encoding="utf-8")
     result: TransformResult = transform_strings(
         file=path,
@@ -1273,7 +1651,9 @@ def test_combined_dry_run(tmp_path: Path) -> None:
 
     """
     path: Path = tmp_path / "combined.py"
-    source: str = 'a = "first\\n" + "second\\n"\n'
+    source: str = """\
+a = "first\\n" + "second\\n"
+"""
     path.write_text(data=source, encoding="utf-8")
     result: TransformResult = transform_strings(file=path, dry_run=True)
     expect_true(condition=result.changed)
@@ -1288,15 +1668,23 @@ def test_ruff_line_length_discovery(tmp_path: Path) -> None:
 
     """
     target: Path = tmp_path / "sample.py"
-    target.write_text(data='value = "hello"\n', encoding="utf-8")
+    target.write_text(
+        data="""\
+value = "hello"
+""",
+        encoding="utf-8",
+    )
     fake: Path = tmp_path / "ruff"
     fake.write_text(
         data=dedent(
             text=(
-                "    #!/usr/bin/env python3\n    import sys\n    if '--show-se"
-                "ttings' not in sys.argv: sys.exit(2)\n    if '--config' in sy"
-                "s.argv: print('formatter.line_width = 67')\n    else: print('"
-                "formatter.line_width = 79')\n    "
+                """\
+    #!/usr/bin/env python3
+    import sys
+    if '--show-settings' not in sys.argv: sys.exit(2)
+    if '--config' in sys.argv: print('formatter.line_width = 67')
+    else: print('formatter.line_width = 79')
+    """
             ),
         ),
         encoding="utf-8",
@@ -1347,16 +1735,28 @@ def test_ruff_line_length_discovery(tmp_path: Path) -> None:
     )
     with pytest.raises(expected_exception=ValueError, match="line_length"):
         resolve_line_length(file=target, line_length=0)
-    fake.write_text(data="#!/bin/sh\nexit 2\n", encoding="utf-8")
+    fake.write_text(
+        data="""\
+#!/bin/sh
+exit 2
+""",
+        encoding="utf-8",
+    )
     with pytest.raises(
         expected_exception=RuntimeError,
         match="resolution failed",
     ):
         resolve_line_length(file=target, ruff_executable=str(object=fake))
-    fake.write_text(data="#!/bin/sh\necho no-settings\n", encoding="utf-8")
+    fake.write_text(
+        data="""\
+#!/bin/sh
+echo no-settings
+""",
+        encoding="utf-8",
+    )
     with pytest.raises(
         expected_exception=RuntimeError,
-        match="formatter.line_width",
+        match=r"formatter\.line_width",
     ):
         resolve_line_length(file=target, ruff_executable=str(object=fake))
 

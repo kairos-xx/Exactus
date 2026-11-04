@@ -121,7 +121,9 @@ def main() -> int:
         url = f"{origin}index.html"
     try:
         for destination in run(main=capture(url=url, output=arguments.output)):
-            _ = stdout.write(f"{destination}\n")
+            _ = stdout.write(f"""\
+{destination}
+""")
     finally:
         if owned is not None:
             terminate_tree(pid=owned[0])

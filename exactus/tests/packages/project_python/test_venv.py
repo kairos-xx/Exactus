@@ -460,8 +460,10 @@ def test_main_module_runs_the_requested_script(
     script: Path = tmp_path / "task.py"
     _ = script.write_text(
         data=(
-            "from pathlib import Path\n"
-            f'Path({str(object=marker)!r}).write_text("ran")\n'
+            f"""\
+from pathlib import Path
+Path({str(object=marker)!r}).write_text("ran")
+"""
         ),
         encoding="utf-8",
     )

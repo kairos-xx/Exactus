@@ -10,6 +10,7 @@ if __package__ in (None, ""):
 from exactus.packages.argument_parser import ExactusArgumentParser
 from exactus.packages.project_python import auto as _project_python_auto
 from exactus.tools.actions.runner import load_actions, run_actions
+from exactus.tools.common.config import reports_root
 
 if TYPE_CHECKING:
     from argparse import ArgumentParser, Namespace
@@ -31,14 +32,16 @@ def main() -> int:
     parser.add_argument(
         "--output",
         type=Path,
-        default=Path("EXACTUS_RESULTS/ACTIONS"),
+        default=None,
+        help="results destination (default: <reports-dir>/ACTIONS)",
     )
     args: Namespace = parser.parse_args()
+    root: Path = args.root or args.specification.resolve().parent
     report: dict[str, JsonValue]
     report = run_actions(
         specification=load_actions(path=args.specification),
-        root=args.root or args.specification.resolve().parent,
-        output=args.output,
+        root=root,
+        output=args.output or reports_root(start=root) / "ACTIONS",
     )
     return int(report["status"] != "succeeded")
 

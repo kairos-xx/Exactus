@@ -226,7 +226,9 @@ class Constants:
             "tuple",
         },
     )
-    usage: Final[str] = "Usage: python_test_need.py FILE.py [--json]\n"
+    usage: Final[str] = """\
+Usage: python_test_need.py FILE.py [--json]
+"""
     default_threshold: Final[int] = 12
     complex_cyclomatic_threshold: Final[int] = 6
     complex_nesting_threshold: Final[int] = 3
@@ -467,18 +469,20 @@ class Classification:
             The resulting value.
 
         """
-        return "\n".join(
+        return """\
+
+""".join(
             (
                 f"file: {self.path}",
                 f"classification: {self.level.value} ({self.category.value})",
                 f"score: {self.score}",
                 "unit tests required: "
-                f"{('yes' if self.requires_unit_tests else 'no')}",
+                f"{("yes" if self.requires_unit_tests else "no")}",
                 "execution required: "
-                f"{('yes' if self.requires_execution else 'no')}",
+                f"{("yes" if self.requires_execution else "no")}",
                 (
                     f"branch coverage required: "
-                    f"{('yes' if self.requires_branch_coverage else 'no')}"
+                    f"{("yes" if self.requires_branch_coverage else "no")}"
                 ),
                 "metrics:",
                 (

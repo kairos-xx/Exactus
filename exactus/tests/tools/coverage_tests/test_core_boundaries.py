@@ -16,6 +16,7 @@ if TYPE_CHECKING:
     from pathlib import Path
 
     from exactus.tools.common.json_types import JsonValue
+    from exactus.tools.common.runtime import Progress
 
 
 def _config(*, root: Path, jobs: int = 2) -> core.CoverageConfig:
@@ -68,7 +69,10 @@ def test_discovery_prunes_outputs_but_keeps_nested_test_groups(
         hidden / "test_hidden.py",
     ):
         path.write_text(
-            data="def test_value():\n    assert True\n",
+            data="""\
+def test_value():
+    assert True
+""",
             encoding="utf-8",
         )
     runner: core.CombinedCoverageRunner = core.CombinedCoverageRunner(
@@ -92,9 +96,9 @@ def test_collection_progress_cannot_overtake_test_execution(
         monkeypatch: Progress publisher replacement.
 
     """
-    updates: list[core.Progress] = []
+    updates: list[Progress] = []
 
-    def retain(*, progress: core.Progress) -> None:
+    def retain(*, progress: Progress) -> None:
         """Retain one published update.
 
         Args:
@@ -114,11 +118,19 @@ def test_collection_progress_cannot_overtake_test_execution(
     )
     _ = runner.execute_many(argument_sets=(("-c", "pass"),), cwd=tmp_path)
     expect_equal(
-        actual=[update.step for update in updates],
+        actual=[
+            update.step
+            for update in updates
+            if update.completed == update.total
+        ],
         expected=["pytest collect", "pytest shard"],
     )
     expect_equal(
-        actual=[update.span for update in updates],
+        actual=[
+            update.span
+            for update in updates
+            if update.completed == update.total
+        ],
         expected=[(0.1, 0.2), (0.2, 0.6)],
     )
 
@@ -143,7 +155,12 @@ def test_file_shards_are_balanced_without_duplicate_collection(
     for path, (_name, count) in zip(tests, counts, strict=True):
         path.write_text(
             data="".join(
-                f"def test_case_{index}() -> None:\n    pass\n\n\n"
+                f"""\
+def test_case_{index}() -> None:
+    pass
+
+
+"""
                 for index in range(count)
             ),
             encoding="utf-8",
@@ -174,7 +191,10 @@ def test_node_shards_split_large_test_modules(tmp_path: Path) -> None:
     """
     test_file: Path = tmp_path / "test_large.py"
     test_file.write_text(
-        data="def test_one(): pass\ndef test_two(): pass\n",
+        data="""\
+def test_one(): pass
+def test_two(): pass
+""",
         encoding="utf-8",
     )
     runner: core.CombinedCoverageRunner = core.CombinedCoverageRunner(
@@ -208,9 +228,14 @@ def test_node_collection_uses_exact_pytest_ids(tmp_path: Path) -> None:
         data=(
             dedent(
                 text=(
-                    "    import pytest\n    \n    \n    @pytest.mark.param"
-                    "etrize('value', [1, 2])\n    def test_value(value: in"
-                    "t) -> None:\n        assert value > 0\n    "
+                    """\
+    import pytest
+
+
+    @pytest.mark.parametrize('value', [1, 2])
+    def test_value(value: int) -> None:
+        assert value > 0
+    """
                 ),
             )
         ),
@@ -247,8 +272,18 @@ def test_node_shards_isolate_standalone_packages(tmp_path: Path) -> None:
     second: Path = tmp_path / "tests" / "packages" / "second" / "test_b.py"
     first.parent.mkdir(parents=True)
     second.parent.mkdir(parents=True)
-    first.write_text(data="def test_a(): pass\n", encoding="utf-8")
-    second.write_text(data="def test_b(): pass\n", encoding="utf-8")
+    first.write_text(
+        data="""\
+def test_a(): pass
+""",
+        encoding="utf-8",
+    )
+    second.write_text(
+        data="""\
+def test_b(): pass
+""",
+        encoding="utf-8",
+    )
     runner: core.CombinedCoverageRunner = core.CombinedCoverageRunner(
         config=_config(root=tmp_path),
     )
@@ -301,9 +336,12 @@ def test_child_environment_drops_live_coordination(
 
     """
     values: dict[str, str] = {
+        "EXACTUS_CONFIG": "/live/pyproject.toml",
         "EXACTUS_ORCHESTRATED": "1",
         "EXACTUS_PIPELINE_RUN_ID": "pipeline",
         "EXACTUS_REGISTRY": "/live/runs.db",
+        "EXACTUS_REPORTS_ROOT": "/live/results",
+        "EXACTUS_ROOT": "/live/project",
         "EXACTUS_RUN_ID": "coverage",
         "EXACTUS_TOOL": "coverage_tests",
     }
@@ -592,7 +630,12 @@ def test_source_excludes_drop_measured_python_files(tmp_path: Path) -> None:
     dropped: Path = src / "pkg" / "generated.py"
     legacy: Path = src / "legacy_helper.py"
     for path in (kept, dropped, legacy):
-        path.write_text(data="VALUE = 1\n", encoding="utf-8")
+        path.write_text(
+            data="""\
+VALUE = 1
+""",
+            encoding="utf-8",
+        )
     index: core.LocalModuleIndex = core.LocalModuleIndex(
         root=tmp_path,
         source_roots=(src,),
@@ -621,7 +664,12 @@ def test_source_excludes_drop_measured_javascript(tmp_path: Path) -> None:
     kept: Path = src / "kept.mjs"
     dropped: Path = src / "generated.mjs"
     for path in (kept, dropped):
-        path.write_text(data="export const value = 1;\n", encoding="utf-8")
+        path.write_text(
+            data="""\
+export const value = 1;
+""",
+            encoding="utf-8",
+        )
     config: core.CoverageConfig = core.replace(
         _config(root=tmp_path),
         source_roots=(src,),

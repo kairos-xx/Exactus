@@ -67,12 +67,22 @@ def test_description_extracts_script_docblock(tmp_path: Path) -> None:
     """
     script: Path = tmp_path / "widget.js"
     script.write_text(
-        data="/**\n * Render the panel.\n * @param root host element\n */\n",
+        data="""\
+/**
+ * Render the panel.
+ * @param root host element
+ */
+""",
         encoding="utf-8",
     )
     expect_equal(actual=description(path=script), expected="Render the panel.")
     style: Path = tmp_path / "theme.css"
-    style.write_text(data="a { color: red; }\n", encoding="utf-8")
+    style.write_text(
+        data="""\
+a { color: red; }
+""",
+        encoding="utf-8",
+    )
     expect_equal(
         actual=description(path=style),
         expected="Provide theme css content.",
@@ -89,7 +99,12 @@ def test_heal_directory_skips_history_trees(tmp_path: Path) -> None:
     directory: Path = tmp_path / ".history" / "snapshot"
     directory.mkdir(parents=True)
     entry: Path = directory / "state.py"
-    entry.write_text(data='"""Saved state."""\n', encoding="utf-8")
+    entry.write_text(
+        data="""\
+\"""Saved state.\"""
+""",
+        encoding="utf-8",
+    )
     heal_directory(directory=directory, entries=[entry])
     expect_false(condition=(directory / "README.md").is_file())
 
@@ -106,7 +121,9 @@ def test_heal_directory_seeds_readme_from_first_candidate(
     directory: Path = tmp_path / "pkg"
     directory.mkdir()
     (directory / "alpha.py").write_text(
-        data='"""Seed the alpha summary."""\n',
+        data="""\
+\"""Seed the alpha summary.\"""
+""",
         encoding="utf-8",
     )
     heal_directory(directory=directory, entries=sorted(directory.iterdir()))
@@ -144,16 +161,26 @@ def test_heal_directory_replaces_managed_block_only(tmp_path: Path) -> None:
         data=(
             dedent(
                 text=(
-                    "    # Head\n    \n    Intro prose.\n    \n    <!-- ex"
-                    "actus:inventory:start -->\n    STALE ROW\n    <!-- ex"
-                    "actus:inventory:end -->\n    \n    Tail prose.\n    "
+                    """\
+    # Head
+
+    Intro prose.
+
+    <!-- exactus:inventory:start -->
+    STALE ROW
+    <!-- exactus:inventory:end -->
+
+    Tail prose.
+    """
                 ),
             )
         ),
         encoding="utf-8",
     )
     (directory / "tool.py").write_text(
-        data='"""Fresh tool."""\n',
+        data="""\
+\"""Fresh tool.\"""
+""",
         encoding="utf-8",
     )
     entries: list[Path] = sorted(directory.iterdir())
@@ -176,7 +203,11 @@ def test_entry_line_links_directories_to_their_readme(tmp_path: Path) -> None:
     child: Path = tmp_path / "child dir"
     child.mkdir()
     (child / "README.md").write_text(
-        data="# Child\n\nKeep the child summary.\n",
+        data="""\
+# Child
+
+Keep the child summary.
+""",
         encoding="utf-8",
     )
     line: str = entry_line(entry=child)

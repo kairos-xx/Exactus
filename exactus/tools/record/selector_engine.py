@@ -91,7 +91,10 @@ def engine_script() -> str:
         "class ExtendedSelector ",
     ).replace(Constants.default_export, "")
     name: str = Constants.global_name
-    return f"{script}\nglobalThis.{name} = ExtendedSelector;\n"
+    return f"""\
+{script}
+globalThis.{name} = ExtendedSelector;
+"""
 
 
 class SelectorRuntimeError(ValueError):
@@ -205,7 +208,7 @@ class EngineWorld:
         """
         literal: str = dumps(obj=argument, allow_nan=False)
         return self.evaluate(
-            expression=f"({function.strip().removesuffix(';')})({literal})",
+            expression=f"({function.strip().removesuffix(";")})({literal})",
         )
 
     def _reset(self) -> None:
@@ -258,7 +261,9 @@ class EngineWorld:
         context_id: int = world["executionContextId"]
         _ = self._send(
             context_id=context_id,
-            expression=f"{engine_script()}\n'ready'",
+            expression=f"""\
+{engine_script()}
+'ready'""",
         )
         self._context_id = context_id
         return context_id

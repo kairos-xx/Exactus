@@ -1,6 +1,9 @@
 {
   "files": {
-    "exactus/tests/standalone/project/tests/test_calc.py": 0.005321717524895575
+    "exactus/tests/standalone/project/tests/test_calc.py": 0.004492769397854261
+  },
+  "static_costs": {
+    "tests/test_calc.py": 65
   },
   "version": 3
 }

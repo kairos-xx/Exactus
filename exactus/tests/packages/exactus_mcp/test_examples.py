@@ -122,6 +122,11 @@ def test_client_prints_inspection_summary(
         expected=["https://service.example/mcp", "bearer-value"],
     )
     output: str = stream.getvalue()
-    expect_in(member="  - docs\n  - lints", container=output)
+    expect_in(
+        member="""\
+  - docs
+  - lints""",
+        container=output,
+    )
     expect_in(member="  - exactus://policy/agents", container=output)
     expect_in(member='{"status": "online"}', container=output)

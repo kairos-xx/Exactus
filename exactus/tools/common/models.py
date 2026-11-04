@@ -87,7 +87,7 @@ def result_stats(*, report_json: Path) -> str:
             )
     order: tuple[str, ...] = ("error", "warning", "information", "info")
     counts: list[str] = [
-        f"{severity[level]} {level}{'s' if severity[level] != 1 else ''}"
+        f"{severity[level]} {level}{"s" if severity[level] != 1 else ""}"
         for level in order
         if severity.get(level)
     ]
@@ -123,6 +123,7 @@ class ToolRequest:
         run_id: Unique run identifier for this tool execution.
         pipeline_run_id: Owning pipeline run identifier, if any.
         project_root: Exactused project root, or ``None`` for the worker cwd.
+        explicit_arguments: User arguments retaining per-file precedence.
 
     """
 
@@ -132,6 +133,7 @@ class ToolRequest:
     run_id: str
     pipeline_run_id: str | None = None
     project_root: Path | None = None
+    explicit_arguments: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)

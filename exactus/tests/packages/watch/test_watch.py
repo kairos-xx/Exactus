@@ -500,10 +500,18 @@ def test_pyproject_discovery_loading_and_errors(tmp_path: Path) -> None:
         data=(
             dedent(
                 text=(
-                    '    [tool.watch]\n    source="."\n    destination="..'
-                    '/backup"\n    interval=1\n    settle-time=0.2\n    ex'
-                    'clude=["*.tmp"]\n    initial-sync=true\n    mirror-de'
-                    "letes=false\n    quiet=true\n    run=false\n    "
+                    """\
+    [tool.watch]
+    source="."
+    destination="../backup"
+    interval=1
+    settle-time=0.2
+    exclude=["*.tmp"]
+    initial-sync=true
+    mirror-deletes=false
+    quiet=true
+    run=false
+    """
                 ),
             )
         ),
@@ -521,12 +529,48 @@ def test_pyproject_discovery_loading_and_errors(tmp_path: Path) -> None:
     expect_none(value=core.PyprojectConfig.discover(start=tmp_path / "none"))
     cases: tuple[tuple[str, type[Exception], str], ...] = (
         ("x = [", ValueError, "Invalid TOML"),
-        ("[tool]\nwatch=1", TypeError, "must be a TOML table"),
-        ("[tool.watch]\nwat=1", ValueError, "Unknown"),
-        ("[tool.watch]\nsource=1", TypeError, "non-empty string"),
-        ("[tool.watch]\ninterval=true", TypeError, "must be a number"),
-        ("[tool.watch]\nexclude=[1]", TypeError, "array of strings"),
-        ('[tool.watch]\nquiet="x"', TypeError, "must be a boolean"),
+        (
+            """\
+[tool]
+watch=1""",
+            TypeError,
+            "must be a TOML table",
+        ),
+        (
+            """\
+[tool.watch]
+wat=1""",
+            ValueError,
+            "Unknown",
+        ),
+        (
+            """\
+[tool.watch]
+source=1""",
+            TypeError,
+            "non-empty string",
+        ),
+        (
+            """\
+[tool.watch]
+interval=true""",
+            TypeError,
+            "must be a number",
+        ),
+        (
+            """\
+[tool.watch]
+exclude=[1]""",
+            TypeError,
+            "array of strings",
+        ),
+        (
+            '''\
+[tool.watch]
+quiet="x"''',
+            TypeError,
+            "must be a boolean",
+        ),
     )
     for text, error, message in cases:
         _ = pyproject.write_text(data=text)
@@ -534,7 +578,11 @@ def test_pyproject_discovery_loading_and_errors(tmp_path: Path) -> None:
             core.PyprojectConfig.load(path=pyproject)
     _ = pyproject.write_text(data="x=1")
     expect_equal(actual=core.PyprojectConfig.load(path=pyproject), expected={})
-    _ = pyproject.write_text(data="[tool]\nx=1")
+    _ = pyproject.write_text(
+        data="""\
+[tool]
+x=1""",
+    )
     expect_equal(actual=core.PyprojectConfig.load(path=pyproject), expected={})
 
 
@@ -556,9 +604,14 @@ def test_settings_precedence_and_resolution(
         data=(
             dedent(
                 text=(
-                    '    [tool.watch]\n    source="."\n    destination="..'
-                    '/d"\n    interval=2.0\n    initial-sync=true\n    exc'
-                    'lude=["x"]\n    '
+                    """\
+    [tool.watch]
+    source="."
+    destination="../d"
+    interval=2.0
+    initial-sync=true
+    exclude=["x"]
+    """
                 ),
             )
         ),
@@ -1215,10 +1268,13 @@ def test_supervisor_restarts_for_changed_watch_configuration(
             TOML document text.
 
         """
-        return (
-            f"[tool.watch]\nrun = {str(object=enabled).lower()}\nsource ="
-            f' "."\ndestination = "{destination}"\ninterval = 0.01\n'
-        )
+        return f"""\
+[tool.watch]
+run = {str(object=enabled).lower()}
+source = "."
+destination = "{destination}"
+interval = 0.01
+"""
 
     _ = pyproject.write_text(data=configuration(destination=first_destination))
     arguments: core.CliArguments = cli_values(pyproject=pyproject)
@@ -1264,7 +1320,11 @@ def test_supervisor_restarts_for_changed_watch_configuration(
             """
             del initial_sync
             if len(destinations) == 1:
-                _ = pyproject.write_text(data="[tool.watch\n")
+                _ = pyproject.write_text(
+                    data="""\
+[tool.watch
+""",
+                )
                 expect_true(condition=require(value=should_stop)())
                 return True
             return False
@@ -1310,8 +1370,12 @@ def test_run_false_pauses_until_pyproject_enables_watcher(
         """
         _ = pyproject.write_text(
             data=(
-                f"[tool.watch]\nrun = {str(object=enabled).lower()}\nsource ="
-                f' "."\ndestination = "{destination}"\n'
+                f"""\
+[tool.watch]
+run = {str(object=enabled).lower()}
+source = "."
+destination = "{destination}"
+"""
             ),
         )
 

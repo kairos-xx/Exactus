@@ -75,7 +75,7 @@ def human_size(*, size: int) -> str:
             return (
                 f"{size}B"
                 if unit == "B"
-                else f"{f'{value:.1f}'.removesuffix('.0')}{unit}"
+                else f"{f"{value:.1f}".removesuffix(".0")}{unit}"
             )
         value /= size_base
     return f"{size}B"
@@ -281,7 +281,7 @@ def _tree_rows(
         )
         rows.append(
             (
-                f"{prefix}{branch}{child_name}{('/' if is_dir else '')}",
+                f"{prefix}{branch}{child_name}{("/" if is_dir else "")}",
                 size,
                 mtime,
             ),
@@ -370,7 +370,14 @@ def render_tree(
             f"  "
             f"{when:%d %b %Y %H:%M}",
         )
-    return "\n".join(lines) + "\n"
+    return (
+        """\
+
+""".join(lines)
+        + """\
+
+"""
+    )
 
 
 def _expand(*, patterns: Sequence[str]) -> list[Path]:
@@ -471,7 +478,9 @@ def main(*, arguments: Sequence[str] | None = None) -> int:
                 exclude=tuple(options.exclude or ()),
             ),
         )
-    text: str = "\n".join(rendered)
+    text: str = """\
+
+""".join(rendered)
     if options.output is not None:
         options.output.parent.mkdir(parents=True, exist_ok=True)
         _ = options.output.write_text(data=text, encoding="utf-8")

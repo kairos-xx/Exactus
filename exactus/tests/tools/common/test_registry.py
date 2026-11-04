@@ -609,3 +609,56 @@ def test_runtime_env_limits_bound_finished_runs(
     conn.close()
     expect_equal(actual=remaining, expected=["live"])
     expect_equal(actual=reg.sanitize(), expected=0)
+
+
+def test_project_root_markers_are_conflict_inert(tmp_path: Path) -> None:
+    """Shared ``root://`` markers never create cross-output conflicts.
+
+    Markers stay on the record for adopter scoping, but identical
+    markers across different outputs must not conflict.
+
+    Args:
+        tmp_path: Per-test temporary directory.
+
+    """
+    registry: RunRegistry = RunRegistry(path=tmp_path / "runs.db")
+    marker: str = rg.project_root_target(root=tmp_path)
+    _ = registry.claim(
+        request=_claim(
+            run_id="a" * 32,
+            out=tmp_path / "out-a",
+            targets=(marker,),
+        ),
+    )
+    expect_equal(
+        actual=registry.claim(
+            request=_claim(
+                run_id="b" * 32,
+                out=tmp_path / "out-b",
+                pid=getppid(),
+                targets=(marker,),
+            ),
+        ),
+        expected=(),
+    )
+    record: RunRecord
+    for record in registry.live():
+        expect_equal(
+            actual=rg.record_project_root(record=record),
+            expected=tmp_path.resolve(),
+        )
+
+
+def test_unmarked_records_report_no_project_root(tmp_path: Path) -> None:
+    """Rows claimed without a marker decode to ``None``.
+
+    Args:
+        tmp_path: Per-test temporary directory.
+
+    """
+    registry: RunRegistry = RunRegistry(path=tmp_path / "runs.db")
+    _ = registry.claim(
+        request=_claim(run_id="c" * 32, out=tmp_path / "out"),
+    )
+    record: RunRecord = registry.live()[0]
+    expect_none(value=rg.record_project_root(record=record))

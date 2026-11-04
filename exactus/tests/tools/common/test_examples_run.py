@@ -194,7 +194,9 @@ def test_transcript_failed_detects_coordinator_markers(tmp_path: Path) -> None:
         command=("true",),
     )
     _ = (logs / "crash.log").write_text(
-        data="Traceback (most recent call last)\n",
+        data="""\
+Traceback (most recent call last)
+""",
         encoding="utf-8",
     )
     expect_true(
@@ -205,7 +207,12 @@ def test_transcript_failed_detects_coordinator_markers(tmp_path: Path) -> None:
         delay_seconds=0.0,
         command=("true",),
     )
-    _ = (logs / "clean.log").write_text(data="ok\n", encoding="utf-8")
+    _ = (logs / "clean.log").write_text(
+        data="""\
+ok
+""",
+        encoding="utf-8",
+    )
     expect_true(
         condition=not demo.transcript_failed(root=tmp_path, invocation=clean),
     )

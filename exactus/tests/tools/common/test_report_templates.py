@@ -147,7 +147,11 @@ def test_bundle_ships_the_common_web_assets(tmp_path: Path) -> None:
         ),
         analyzer="demo",
         title="Demo",
-        markdown="# Demo\n\nBody\n",
+        markdown="""\
+# Demo
+
+Body
+""",
         data={"findings": []},
     )
     web: Path = tmp_path / "result_web"

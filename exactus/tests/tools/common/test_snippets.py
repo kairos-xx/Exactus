@@ -60,7 +60,12 @@ def _write(*, root: Path, name: str, lines: int) -> Path:
     path: Path = root / name
     path.parent.mkdir(parents=True, exist_ok=True)
     _ = path.write_text(
-        data="".join(f"line {number}\n" for number in range(1, lines + 1)),
+        data="".join(
+            f"""\
+line {number}
+"""
+            for number in range(1, lines + 1)
+        ),
         encoding="utf-8",
     )
     return path
@@ -158,7 +163,12 @@ def test_last_line_without_newline_is_read(tmp_path: Path) -> None:
         tmp_path: Per-test temporary directory.
 
     """
-    _ = (tmp_path / "a.txt").write_text(data="one\r\ntwo", encoding="utf-8")
+    _ = (tmp_path / "a.txt").write_text(
+        data="""\
+one\r
+two""",
+        encoding="utf-8",
+    )
     captured: Excerpt = require(
         value=excerpt(root=tmp_path, path="a.txt", line=2, context=1),
     )
@@ -322,7 +332,11 @@ def test_huge_lines_are_clipped_without_breaking_numbering(
     huge: str = "x" * (SnippetLimits.max_line_bytes * 3)
     wide: str = "y" * (SnippetLimits.max_line_chars + 10)
     _ = (tmp_path / "min.js").write_text(
-        data=f"{huge}\n{wide}\nshort\n",
+        data=f"""\
+{huge}
+{wide}
+short
+""",
         encoding="utf-8",
     )
     captured: Excerpt = require(

@@ -19,6 +19,7 @@ if TYPE_CHECKING:
     from collections.abc import Container
 
     from exactus.tools.common.json_types import JsonValue
+__tracebackhide__: bool = True
 
 
 def fail(*, message: str) -> NoReturn:

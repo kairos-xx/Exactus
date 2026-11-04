@@ -1,20 +1,20 @@
 # Python Call, Import, and Typing Exactus
 
-**Run time:** 02 November 2026, 06:48:37 UTC
+**Run time:** 04 November 2026, 07:55:28 UTC
 
 ## Identity
 
 | Field | Value |
 |---|---|
-| Tool | kwargs_typehints 0.6.1 |
-| Run ID | 7906d1edd1a543c7894fd4387463792d:kwargs_typehints |
-| Pipeline run | 7906d1edd1a543c7894fd4387463792d |
+| Tool | kwargs_typehints 0.7.1 |
+| Run ID | 514ec66fc2624d32b23c563ae81bb010:kwargs_typehints |
+| Pipeline run | 514ec66fc2624d32b23c563ae81bb010 |
 | Status | PASS |
 | Exit code | 0 |
-| Started | 02 November 2026, 06:48:37 UTC |
-| Finished | 02 November 2026, 06:48:40 UTC |
-| Duration | 2.6 s |
-| Previous duration | 2.869s |
+| Started | 04 November 2026, 07:55:28 UTC |
+| Finished | 04 November 2026, 07:55:32 UTC |
+| Duration | 3.9 s |
+| Previous duration | 1.954s |
 
 ## What was checked
 
@@ -60,7 +60,7 @@
 | Metric | Current | Previous | Delta |
 |---|---:|---:|---:|
 | Findings | 0 | 0 | 0 |
-| Previous duration | 2.869s | | |
+| Previous duration | 1.954s | | |
 
 | Finding change | Count |
 |---|---:|
@@ -89,27 +89,7 @@
 
 - `.*/**`
 - `**/.*/**`
-- `EXACTUS_RESULTS/**`
-- `**/EXACTUS_RESULTS/**`
-- `node_modules/**`
-- `build/**`
-- `dist/**`
-- `*.egg-info/**`
 - `**/__pycache__/**`
-- `**/.agents/**`
-- `**/.build-cache/**`
-- `**/.cache/**`
-- `**/.claude/**`
-- `**/.cursor/**`
-- `**/.devin/**`
-- `**/.eggs/**`
-- `**/.git/**`
-- `**/.history/**`
-- `**/.mypy_cache/**`
-- `**/.pytest_cache/**`
-- `**/.ruff_cache/**`
-- `**/.tox/**`
-- `**/.venv/**`
 - `**/build/**`
 - `**/coverage_report/**`
 - `**/dist/**`
@@ -119,6 +99,10 @@
 - `**/node_modules/**`
 - `**/site-packages/**`
 - `**/venv/**`
+- `*.egg-info/**`
+- `*.dist-info/**`
+- `EXACTUS_RESULTS/**`
+- `**/EXACTUS_RESULTS/**`
 
 **Skipped targets**
 
@@ -129,13 +113,13 @@ No skipped targets.
 ### Invocation
 
 ~~~~shell
-/Users/joaolopes/Exactus/bin/release/exactus_macos_arm64/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=56241 --orchestrator-control-token=[redacted] --orchestrator-worker-port=56223 --orchestrator-worker-token=[redacted] '--orchestrator-call={"args":[],"kwargs":{"request":{"identifier":"kwargs_typehints","module":"exactus.tools.kwargs_typehints.main","output":"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/KWARGS_TYPEHINTS","arguments":[],"run_id":"7906d1edd1a543c7894fd4387463792d:kwargs_typehints","pipeline_run_id":"7906d1edd1a543c7894fd4387463792d","project_root":"/Users/joaolopes/Exactus/exactus/tests/standalone/project"}}}'
+/Users/joaolopes/Exactus/bin/release/exactus_macos_arm64/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=54977 --orchestrator-control-token=[redacted] --orchestrator-worker-port=54933 --orchestrator-worker-token=[redacted] '--orchestrator-call={"args":[],"kwargs":{"request":{"identifier":"kwargs_typehints","module":"exactus.tools.kwargs_typehints.main","output":"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/KWARGS_TYPEHINTS","arguments":[],"explicit_arguments":[],"run_id":"514ec66fc2624d32b23c563ae81bb010:kwargs_typehints","pipeline_run_id":"514ec66fc2624d32b23c563ae81bb010","project_root":"/Users/joaolopes/Exactus/exactus/tests/standalone/project"}}}'
 ~~~~
 
 | Property | Value |
 |---|---|
 | Working directory | [/Users/joaolopes/Exactus/exactus/tests/standalone/project](../..) |
-| Arguments | `exactus.tools.common.tool_worker` `ExactusTool` `--orchestrator-control-port=56241` `--orchestrator-control-token=[redacted]` `--orchestrator-worker-port=56223` `--orchestrator-worker-token=[redacted]` `--orchestrator-call={"args":[],"kwargs":{"request":{"identifier":"kwargs_typehints","module":"exactus.tools.kwargs_typehints.main","output":"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/KWARGS_TYPEHINTS","arguments":[],"run_id":"7906d1edd1a543c7894fd4387463792d:kwargs_typehints","pipeline_run_id":"7906d1edd1a543c7894fd4387463792d","project_root":"/Users/joaolopes/Exactus/exactus/tests/standalone/project"}}}` |
+| Arguments | `exactus.tools.common.tool_worker` `ExactusTool` `--orchestrator-control-port=54977` `--orchestrator-control-token=[redacted]` `--orchestrator-worker-port=54933` `--orchestrator-worker-token=[redacted]` `--orchestrator-call={"args":[],"kwargs":{"request":{"identifier":"kwargs_typehints","module":"exactus.tools.kwargs_typehints.main","output":"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/KWARGS_TYPEHINTS","arguments":[],"explicit_arguments":[],"run_id":"514ec66fc2624d32b23c563ae81bb010:kwargs_typehints","pipeline_run_id":"514ec66fc2624d32b23c563ae81bb010","project_root":"/Users/joaolopes/Exactus/exactus/tests/standalone/project"}}}` |
 
 ### Environment
 
@@ -149,12 +133,13 @@ No skipped targets.
 | Variable | Value |
 | --- | --- |
 | EXACTUS_ORCHESTRATED | 1 |
-| EXACTUS_PIPELINE_RUN_ID | 7906d1edd1a543c7894fd4387463792d |
+| EXACTUS_PIPELINE_RUN_ID | 514ec66fc2624d32b23c563ae81bb010 |
 | EXACTUS_REGISTRY | [/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/.runtime/runs.db](../.runtime/runs.db) |
 | EXACTUS_ROOT | [/Users/joaolopes/Exactus/exactus/tests/standalone/project](../..) |
-| EXACTUS_RUN_ID | 7906d1edd1a543c7894fd4387463792d:kwargs_typehints |
+| EXACTUS_RUN_ID | 514ec66fc2624d32b23c563ae81bb010:kwargs_typehints |
 | EXACTUS_TOOL | kwargs_typehints |
-| LANG | C.UTF-8 |
+| LANG | en_US.UTF-8 |
+| TERM | xterm-256color |
 
 ## Gate
 
@@ -170,7 +155,7 @@ No findings.
 
 | Artifact | Path | Bytes |
 | --- | --- | --- |
-| @activity.json | [ARTIFACTS/@activity.json](ARTIFACTS/%40activity.json) | 2081 |
+| @activity.json | [ARTIFACTS/@activity.json](ARTIFACTS/%40activity.json) | 2080 |
 | README.md | [ARTIFACTS/README.md](ARTIFACTS/README.md) | 461 |
 | heuristics.json | [ARTIFACTS/heuristics.json](ARTIFACTS/heuristics.json) | 3915721 |
 | stderr.log | [ARTIFACTS/stderr.log](ARTIFACTS/stderr.log) | 0 |
@@ -208,4 +193,4 @@ No automatic source edits were applicable.
 
 ---
 
-Exactus · kwargs_typehints 0.6.1 · Run 7906d1edd1a543c7894fd4387463792d:kwargs_typehints · Result PASS · Duration 2.6 s
+Exactus · kwargs_typehints 0.7.1 · Run 514ec66fc2624d32b23c563ae81bb010:kwargs_typehints · Result PASS · Duration 3.9 s

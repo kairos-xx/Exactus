@@ -355,7 +355,7 @@ Shared pytest fixtures for the toolkit tests.
 
 - `class Constants` — Group module-level constants.
   - `root` = `Path(__file__).resolve().parents[2]`
-  - `excludes` = `('EXACTUS_RESULTS/**', 'build/**', 'exec/**', 'artifacts/**', 'exactus/re...`
+  - `excludes` = `('EXACTUS_RESULTS/**', 'build/**', 'exec/**', 'artifacts/**', 'demo/**')`
   - `signals` = `tuple((Signals[name] for name in ('SIGHUP', 'SIGINT', 'SIGTERM', 'SIGQUIT...`
 - `repo_args() -> tuple[str, ...]` — Return the root plus exclusion arguments for self-exactuss.
 - `sample_project(tmp_path: Path) -> Path` — Create a small Python/JS/CSS/HTML project with known defects.
@@ -1620,6 +1620,16 @@ ANSI-styled ``--help`` formatting shared by the root scripts.
 - `test_pretty_parser_renders_dimmed_epilog(monkeypatch: pytest.MonkeyPatch) -> None` — The epilog text is dimmed when styling is enabled.
 - `test_formatter_is_pretty() -> None` — ``pretty_parser`` uses the ANSI help formatter class.
 
+### `packages/package/test_musl_browser.py`
+
+Verify native browser payload layout without contacting package mirrors.
+
+- `test_native_browser_launchers_and_abi(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, arch: Literal['amd64', 'arm64'], *, corrupt: bool) -> None` — Stage the right ABI, relative links, fonts and both launch modes.
+- `test_windows_arm64_ships_the_playwright_x64_browser() -> None` — Windows ARM64 includes offline browsers, using OS x64 emulation.
+- `test_musl_python_driver_keeps_native_dependencies(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, arch: Literal['amd64', 'arm64']) -> None` — Only Playwright's portable driver uses a manylinux wheel.
+- `test_interrupted_build_removes_only_its_own_container(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, interruption: TimeoutExpired | KeyboardInterrupt) -> None` — Cancellation cannot orphan the APK installer container.
+- `test_node_bundles_its_own_runtime_libraries(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None` — Node can start before any browser component has been extracted.
+
 ### `packages/package/test_package_api.py`
 
 Tests for the unified package Python API.
@@ -2324,7 +2334,7 @@ Exercise the language-aware safe-span scanners in the renamer.
   - `sql_source` = `dedent(text='    SELECT "abc.cde", `abc.cde`, [abc.cde] FROM abc_cde\n...`
   - `javascript_source` = `dedent(text='    /** JSDoc abc.cde */\n    const s = \'abc.cde\';\n    co...`
   - `css_source` = `dedent(text='    /* abc.cde comment */\n    .abc-cde { content: \'abc.cde...`
-  - `html_source` = `dedent(text='    <html><head><style>/* abc.cde */ .a { color: red }</styl...`
+  - `html_source` = `dedent(text='            <html><head><style>/* abc.cde */ .a { color: red...`
   - `markdown_source` = `dedent(text='    # Heading abc.cde\n    Prose paragraph with abc.cde ment...`
   - `text_source` = `'code abc.cde # comment abc.cde\nplain text\n'`
   - `unicode_source` = `"// café ☕ abc.cde\nconst s = 'abc.cde';\n"`
@@ -3092,12 +3102,14 @@ Tests for source-bundle archives of exactus tools and packages packages.
 - `test_discover_components_is_transitive(tmp_path: Path) -> None` — Follow component imports until no new component appears.
 - `test_discover_components_skips_missing_directories(tmp_path: Path) -> None` — Ignore imports that do not resolve to component directories.
 - `test_collect_files_adds_skeleton_skips_caches(tmp_path: Path) -> None` — Bundle skeleton paths and component trees without cache noise.
-- `test_collect_files_includes_results_directories(tmp_path: Path) -> None` — Bundle existing report directories of selected exactus tools.
+- `test_collect_files_includes_results_directories(tmp_path: Path) -> None` — Bundle existing report directories when results are requested.
+- `test_collect_files_excludes_results_by_default(tmp_path: Path) -> None` — Omit report directories unless ``include_results`` is requested.
 - `test_collect_files_ignores_missing_results(tmp_path: Path) -> None` — Skip report directories that do not exist.
 - `test_create_bundle_writes_a_real_archive(tmp_path: Path) -> None` — Write archive members at repository-relative paths.
 - `test_create_bundle_scaffolds_readme_and_tree(tmp_path: Path) -> None` — Default bundles nest under ``artifacts/zip-components/<stem>/``.
 - `test_lints_selection_discovers_pipeline_components() -> None` — Expand the real lints tool into its shared dependencies.
 - `test_main_writes_the_scaffolded_bundle(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None` — Place the archive inside ``artifacts/zip-components/<stem>/`` with docs.
+- `test_main_include_results_flag_bundles_report_directories(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None` — ``--include-results`` adds ``EXACTUS_RESULTS/<TOOL>`` to the zip.
 - `test_main_output_folder_overrides_the_default_directory(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None` — Place the bundle under ``--output-folder`` instead.
 - `test_main_root_flag_bundles_from_the_given_directory(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None` — Bundle from ``--root`` instead of the auto-detected root.
 - `test_available_components_lists_every_package(tmp_path: Path) -> None` — List canonical exactus tools plus every packages package.
@@ -5787,3 +5799,11 @@ Top-level exports, read from the source.
 - Other packages: [`bundle`](../bundle/DOCS.md), [`action_javascript`](../packages/actions/action_javascript/DOCS.md), [`action_pointer`](../packages/actions/action_pointer/DOCS.md), [`action_rest`](../packages/actions/action_rest/DOCS.md), [`all_lints`](../packages/all_lints/DOCS.md), [`argument_parser`](../packages/argument_parser/DOCS.md), [`browser`](../packages/browser/DOCS.md), [`completion`](../packages/completion/DOCS.md), [`exactus_mcp`](../packages/exactus_mcp/DOCS.md), [`extended_selector`](../packages/extended_selector/DOCS.md), [`external`](../packages/external/DOCS.md), [`group_final`](../packages/group_final/DOCS.md), [`guard`](../packages/guard/DOCS.md), [`http_process`](../packages/http_process/DOCS.md), [`markdown`](../packages/markdown/DOCS.md), [`meaningful`](../packages/meaningful/DOCS.md), [`model`](../packages/model/DOCS.md), [`organize`](../packages/organize/DOCS.md), [`package`](../packages/package/DOCS.md), [`patcher`](../packages/patcher/DOCS.md), [`performance`](../packages/performance/DOCS.md), [`pmanager`](../packages/pmanager/DOCS.md), [`project_python`](../packages/project_python/DOCS.md), [`rename_project`](../packages/rename_project/DOCS.md), [`scene_description`](../packages/scene_description/DOCS.md), [`screenshot`](../packages/screenshot/DOCS.md), [`server`](../packages/server/DOCS.md), [`shebang_update`](../packages/shebang_update/DOCS.md), [`steps`](../packages/steps/DOCS.md), [`todo_sync`](../packages/todo_sync/DOCS.md), [`tree`](../packages/tree/DOCS.md), [`visual_cause`](../packages/visual_cause/DOCS.md), [`watch`](../packages/watch/DOCS.md), [`widget_clock`](../packages/widgets/widget_clock/DOCS.md), [`widget_console`](../packages/widgets/widget_console/DOCS.md), [`widget_selector`](../packages/widgets/widget_selector/DOCS.md), [`zip_components`](../packages/zip_components/DOCS.md), [`zstd_portable`](../packages/zstd_portable/DOCS.md), [`actions`](../tools/actions/DOCS.md), [`common`](../tools/common/DOCS.md), [`completion`](../tools/completion/DOCS.md), [`coverage_tests`](../tools/coverage_tests/DOCS.md), [`docs`](../tools/docs/DOCS.md), [`frontend`](../tools/frontend/DOCS.md), [`kwargs_typehints`](../tools/kwargs_typehints/DOCS.md), [`lints`](../tools/lints/DOCS.md), [`performance`](../tools/performance/DOCS.md), [`readme`](../tools/readme/DOCS.md), [`record`](../tools/record/DOCS.md), [`reports`](../tools/reports/DOCS.md), [`self_test`](../tools/self_test/DOCS.md), [`visual_cause`](../tools/visual_cause/DOCS.md)
 
 <!-- exactus:reference:end -->
+
+## Helper traceback visibility
+
+Assertion helpers in `tests/common/support.py` and
+`tests/packages/rename_project/assertions.py` set module-level
+`__tracebackhide__ = True`. Ordinary pytest output shows the calling test frame;
+`--tb=native` retains complete Python tracebacks for helper debugging. Failure
+site extraction follows the visible project frame.

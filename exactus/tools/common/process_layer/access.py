@@ -9,6 +9,7 @@ from pathlib import Path
 from secrets import token_bytes
 from typing import Final, final
 
+from exactus.tools.common.config import reports_root
 from exactus.tools.common.process_layer.process_control import (
     IdentityResponder,
 )
@@ -23,7 +24,6 @@ class Constants:
         filename: Grouped module constant.
         environment: Grouped module constant.
         reports: Grouped module constant.
-        default_reports: Grouped module constant.
         secret_bytes: Grouped module constant.
         close_timeout: Grouped module constant.
 
@@ -33,7 +33,6 @@ class Constants:
     filename: Final[str] = "authkey"
     environment: Final[str] = "EXACTUS_AUTHKEY"
     reports: Final[str] = "EXACTUS_REPORTS_ROOT"
-    default_reports: Final[str] = "EXACTUS_RESULTS"
     secret_bytes: Final[int] = 32
     close_timeout: Final[float] = 2.0
 
@@ -52,9 +51,7 @@ def runtime_dir(*, output: Path | None = None) -> Path:
     if reports := environ.get(Constants.reports):
         return Path(reports) / Constants.directory
     base: Path = (
-        output.parent
-        if output is not None
-        else Path.cwd() / Constants.default_reports
+        output.parent if output is not None else reports_root(start=Path.cwd())
     )
     return base / Constants.directory
 

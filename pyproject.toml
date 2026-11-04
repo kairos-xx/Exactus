@@ -259,24 +259,24 @@ extraPaths = [
     "exactus/packages/rename_project/examples/project/src",
 ]
 
-[[tool.basedpyright.executionEnvironments]]
-root = "exactus/tests/packages/completion"
-reportPrivateUsage = "none"
+# [[tool.basedpyright.executionEnvironments]]
+# root = "exactus/tests/packages/completion"
+# reportPrivateUsage = "none"
 
-[[tool.basedpyright.executionEnvironments]]
-root = "exactus/tests/tools/completion"
-reportPrivateUsage = "none"
+# [[tool.basedpyright.executionEnvironments]]
+# root = "exactus/tests/tools/completion"
+# reportPrivateUsage = "none"
 
-[[tool.basedpyright.executionEnvironments]]
-root = "exactus/tests/tools/record"
-reportMissingParameterType = "none"
-reportMissingTypeStubs = "none"
-reportPrivateUsage = "none"
-reportUnknownArgumentType = "none"
-reportUnknownLambdaType = "none"
-reportUnknownMemberType = "none"
-reportUnknownParameterType = "none"
-reportUnknownVariableType = "none"
+# [[tool.basedpyright.executionEnvironments]]
+# root = "exactus/tests/tools/record"
+# reportMissingParameterType = "none"
+# reportMissingTypeStubs = "none"
+# reportPrivateUsage = "none"
+# reportUnknownArgumentType = "none"
+# reportUnknownLambdaType = "none"
+# reportUnknownMemberType = "none"
+# reportUnknownParameterType = "none"
+# reportUnknownVariableType = "none"
 
 # ── pyrefly ──
 
@@ -304,7 +304,10 @@ search-path = [
 #
 
 [tool.pytest.ini_options]
-addopts = ["--ignore=exactus/bundle", "--ignore=dev"]
+addopts = [
+    "--ignore=exactus/bundle",
+    "--ignore=dev",
+]
 filterwarnings = [
     "ignore::UserWarning:multiprocessing.resource_tracker",
     "ignore:pkg_resources is deprecated:UserWarning",
@@ -337,7 +340,7 @@ pythonpath = [".", "exactus/packages/rename_project"]
 [tool.exactus]
 clear = true # clear reports before running; a list
 # clears only the named tools
-reports-dir = "EXACTUS_RESULTS" # reports dir, resolved against this file
+reports-dir = "artifacts/EXACTUS_RESULTS" # reports dir, resolved against this file
 root = true                     # mark this pyproject as the project root:
 # stops upward discovery and anchors
 # reports-dir even when run from a subdir
@@ -349,9 +352,7 @@ collect-files = true # bundle FILES/{README,TREE,files.zip} with
 exclude = [
     "exactus/bundle/**",
     "exactus/vendor/_vendor/**",
-    "bin/release/exactus",
-    "bin/release/exactus_all/exactus",
-    "bin/release/exactus_*/exactus",
+    "bin/release/**",
     "artifacts/**",
     # "dev/**",
     # "**/dev/**",
@@ -429,8 +430,11 @@ fail-under = 90           # overall Python+JS coverage floor
 per-file-minimum = 80     # per-source-file coverage floor
 source-root = ["exactus"] # Exactus packages are self-contained owned code
 jobs = 4                  # bound browser/process concurrency for stability
+# no-collect-cache = true          # force isolated pytest collection
+# incremental = true               # reuse verified passing coverage shards
+# fail-first = true                # schedule last-failed files first
 shard-by = "node"         # node | file; node splits large pytest modules
-# output-dir = "EXACTUS_RESULTS/COVERAGE_TESTS" # report destination
+# output-dir = "artifacts/EXACTUS_RESULTS/COVERAGE_TESTS" # report destination
 # include = ["src/**"]             # include relative paths matching GLOB
 # exclude = ["tmp/**"]             # exclude test files AND measured
 # sources matching GLOB (coverage and meaningful findings drop them)
@@ -479,7 +483,7 @@ shard-by = "node"         # node | file; node splits large pytest modules
 # ── docs ──
 
 [tool.exactus.docs]
-# output-dir = "EXACTUS_RESULTS/DOCS"  # report destination
+# output-dir = "artifacts/EXACTUS_RESULTS/DOCS"  # report destination
 # include = ["src/**"]             # include relative paths matching GLOB
 # exclude = ["tmp/**"]             # exclude relative paths matching GLOB
 # context-lines = 3                # snippet lines around reported lines
@@ -493,7 +497,7 @@ shard-by = "node"         # node | file; node splits large pytest modules
 
 [tool.exactus.frontend]
 actions = "demo/actions/frontend.json"
-# output-dir = "EXACTUS_RESULTS/FRONTEND" # report destination
+# output-dir = "artifacts/EXACTUS_RESULTS/FRONTEND" # report destination
 # include = ["src/**"]             # include relative paths matching GLOB
 # exclude = ["tmp/**"]             # exclude relative paths matching GLOB
 # context-lines = 3                # snippet lines around reported lines
@@ -520,7 +524,7 @@ allow-bare-import = ["sys"] # sys.stdout/sys.stderr must resolve
 # steer inference; unset falls back to the project .venv/venv,
 # then requires-python probes on PATH, then the running
 # interpreter
-# output-dir = "EXACTUS_RESULTS/KWARGS_TYPEHINTS" # report destination
+# output-dir = "artifacts/EXACTUS_RESULTS/KWARGS_TYPEHINTS" # report destination
 # include = ["src/**"]             # include relative paths matching GLOB
 # exclude = ["tmp/**"]             # exclude relative paths matching GLOB
 # context-lines = 3                # snippet lines around reported lines
@@ -531,13 +535,16 @@ allow-bare-import = ["sys"] # sys.stdout/sys.stderr must resolve
 # ── lints ──
 
 [tool.exactus.lints]
+# no-python-simplify = true        # report without Python simplification
+# css-naming-scale = ["spacing"]  # registered intrinsic scale namespaces
+# css-naming-extended = true       # audit extended CSS token names
 # temporary folders and IDE local-history snapshots are never linted
 exclude = ["tmp/**", "**/tmp/**", ".history/**"]
 simple = false # true runs only the all_lints package audit and reports
 # its findings alone — no cleaning, convention scans, refactors,
 # compliance or guarded inference
 # workers = 8                      # max parallel external linters; 1 = serial, omitted = auto (max 16)
-# output-dir = "EXACTUS_RESULTS/LINTS" # report destination
+# output-dir = "artifacts/EXACTUS_RESULTS/LINTS" # report destination
 # include = ["src/**"]             # include relative paths matching GLOB
 # context-lines = 3                # snippet lines around reported lines
 # dry = true                       # report only: all no-* stages below off
@@ -548,6 +555,25 @@ simple = false # true runs only the all_lints package audit and reports
 # no-long-lines = true             # skip the long-line repair inside --fix
 # no-delimiters = true             # skip the JS delimiter scan/simplification
 # no-notation = true               # skip the JS function-block normalization
+# --- string transform presentation knobs ----------------------------
+# line-length = 79                 # explicit transform width; default is the
+#                                  # line length resolved from Ruff config
+# multiline-strategy = "smart"     # preserve | split | smart
+# no-split-fstrings = true         # exclude f-strings from literal splitting
+# no-split-raw-strings = true      # exclude raw literals from splitting
+# no-split-bytes = true            # exclude byte literals from splitting
+# no-format-interpolations = true  # skip oversized call expansion inside
+#                                  # f-string interpolations
+# call-format-minimum = 3          # min arguments before a call is expanded
+# no-embedded-strings = true       # skip the verified multiline literal
+#                                  # presentation pass (lossless; strings and
+#                                  # complete f-strings become physical
+#                                  # multiline literals, values unchanged)
+# format-embedded = true           # format inferred HTML/JS/CSS/Python inside
+#                                  # multiline literals (Prettier/Ruff);
+#                                  # requires allow-value-changes
+# allow-value-changes = true       # permit transforms that intentionally
+#                                  # change string contents
 no-css-naming = true               # numbered CATALOG token families (h2, w4,
                                    # spacing-8) are this system's convention
 # no-infer = true                  # skip environment inference
@@ -575,12 +601,12 @@ no-css-naming = true               # numbered CATALOG token families (h2, w4,
 # ── performance ──
 
 # Instruments the generic exactus/packages/performance package: scans
-# EXACTUS_RESULTS for steps.txt traces and exports the dashboard under
-# EXACTUS_RESULTS/PERFORMANCE. Pipelines pass --no-serve so exports never
-# block on the dashboard server.
+# artifacts/EXACTUS_RESULTS for steps.txt traces and exports the
+# dashboard under artifacts/EXACTUS_RESULTS/PERFORMANCE. Pipelines pass
+# --no-serve so exports never block on the dashboard server.
 # [tool.exactus.performance]
-# output-dir = "EXACTUS_RESULTS/PERFORMANCE" # report destination
-# source = ["EXACTUS_RESULTS"]     # trace roots to scan, repeatable
+# output-dir = "artifacts/EXACTUS_RESULTS/PERFORMANCE" # report destination
+# source = ["artifacts/EXACTUS_RESULTS"] # trace roots to scan, repeatable
 # serve = true                   # serve the dashboard after export;
 #                                # no-serve = true forces it off
 # open = true                    # open the managed browser;
@@ -592,7 +618,7 @@ no-css-naming = true               # numbered CATALOG token families (h2, w4,
 # ── readme ──
 
 # [tool.exactus.readme]
-# output-dir = "EXACTUS_RESULTS/README" # report destination
+# output-dir = "artifacts/EXACTUS_RESULTS/README" # report destination
 # include = ["src/**"]             # include relative paths matching GLOB
 # exclude = ["tmp/**"]             # exclude relative paths matching GLOB
 # context-lines = 3                # snippet lines around reported lines
@@ -604,7 +630,7 @@ no-css-naming = true               # numbered CATALOG token families (h2, w4,
 window = false # open the managed browser window with
 # Studio and stop Studio when it closes;
 # no-window = true forces it off
-# output-dir = "EXACTUS_RESULTS/RECORD" # report destination
+# output-dir = "artifacts/EXACTUS_RESULTS/RECORD" # report destination
 # include = ["src/**"]             # include relative paths matching GLOB
 # exclude = ["tmp/**"]             # exclude relative paths matching GLOB
 # context-lines = 3                # snippet lines around reported lines
@@ -636,7 +662,7 @@ window = false # open the managed browser window with
 
 [tool.exactus.visual_cause]
 target = "example" # named [[targets]] entry run by pipelines
-# output-dir = "EXACTUS_RESULTS/VISUAL_CAUSE" # report destination
+# output-dir = "artifacts/EXACTUS_RESULTS/VISUAL_CAUSE" # report destination
 # include = ["src/**"]           # include relative paths matching GLOB
 # exclude = ["tmp/**"]           # exclude relative paths matching GLOB
 # context-lines = 3              # snippet lines around reported lines
@@ -764,10 +790,10 @@ order = [
 # [tool.exactus.performance] instead (see the exactus sections above).
 # Input files, directories, or project-relative glob expressions.
 # CLI positional sources replace this complete list when supplied.
-sources = ["EXACTUS_RESULTS"]
+sources = ["artifacts/EXACTUS_RESULTS"]
 
 # Export directory, relative to the project root unless absolute.
-output = "EXACTUS_RESULTS/PERFORMANCE"
+output = "artifacts/EXACTUS_RESULTS/PERFORMANCE"
 
 # Export and start exactus.packages.server after analysis.
 # serve = true

@@ -60,7 +60,12 @@ def test_coverage_report_keeps_failure_details_out_of_summary_tables(
         tmp_path: Isolated source and report directory.
 
     """
-    (tmp_path / "app.py").write_text(data="value = 1\n" * 10)
+    (tmp_path / "app.py").write_text(
+        data="""\
+value = 1
+"""
+        * 10,
+    )
     inputs: ReportInputs = ReportInputs(
         root=tmp_path,
         context=1,
@@ -115,7 +120,12 @@ def test_coverage_report_keeps_failure_details_out_of_summary_tables(
     )
     expect_in(member="| app.py | 70.00% | 80.00% | 10.00", container=rendered)
     expect_in(
-        member="**Uncovered lines**\n\n```text\n3-5\n```",
+        member="""\
+**Uncovered lines**
+
+```text
+3-5
+```""",
         container=rendered,
     )
     expect_equal(

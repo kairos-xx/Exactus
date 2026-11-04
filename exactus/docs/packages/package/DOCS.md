@@ -64,6 +64,29 @@ configuration sources from silently disagreeing. See the commented template in
 `[tool.package.package]` controls `enabled`, `output`, and
 `include-exactus-results`.
 
+## Offline browser payloads
+
+The `browser` group includes Playwright, Chromium, the headless shell, and
+FFmpeg. Browser installation happens during bundling, not at runtime.
+
+- macOS, Linux glibc, and Windows AMD64 use the browser revisions selected by
+  the bundled Playwright catalog.
+- Linux musl AMD64 and ARM64 use native, signature-verified Alpine packages.
+  Docker is required at build time. The Alpine image is digest-pinned and
+  Chromium's APK version is pinned in `bundle.py`. The payload includes its
+  shared libraries and fonts, records installed package versions, and uses
+  relocatable launchers in Playwright's expected catalog directories. The
+  Playwright Python driver uses its portable Python/JavaScript files with the
+  bundled musl Node runtime; greenlet and other native Python dependencies
+  still use musllinux wheels.
+- Windows ARM64 ships the Windows x64 browser payload and uses Windows x64
+  emulation. The Node driver and Python dependencies remain ARM64; the browser
+  must not be described as a native ARM64 executable.
+
+Source-tree tests using a host Playwright installation and its browser cache
+are separate from offline pyz verification. A host `playwright install` does
+not prove a release executable contains working browsers.
+
 <!-- exactus:reference:start -->
 
 ## Package layout
@@ -82,6 +105,7 @@ configuration sources from silently disagreeing. See the commented template in
 | `install.py` | Install the built ``exactus`` executable system-wide. |
 | `inventory.py` | Share project-tree filtering between package and build_make scripts. |
 | `inventory_cli.py` | ANSI-styled ``--help``/``-h`` output shared by the root scripts. |
+| `musl_browser.py` | Stage relocatable, signed Alpine Chromium packages for musl targets. |
 | `partition_fs.py` | Deterministic, streaming content-addressed filesystem bundles. |
 | `partition_launcher.py` | Offline dependency-aware runtime for partitioned filesystem tools. |
 | `process_control.py` | Cross-invocation exactus ownership and process termination primitives. |
@@ -223,6 +247,8 @@ Build incremental partitioned offline tool bundles and catalogs.
   - `cft_file` = `None`
   - Fields: `name: str`, `cdn_file: str`
 - `class BrowserDistribution` — Playwright browser archives and payload pruning for a target.
+  - `apk_image` = `None`
+  - `apk_chromium` = `''`
   - Fields: `archives: tuple[BrowserArchive, ...]`, `cft_dir: str | None`, `prune_names: frozenset[str]`, `locale_suffix: str`, `locale_parent: str | None`, `locale_keep: tuple[str, ...]`
 - `class NodeDistribution` — Node.js runtime source and on-disk layout for a target.
   - Fields: `suffix: str`, `mirror: str`, `archive: str`, `binary: str`, `npm: str`, `prune: tuple[str, ...]`
@@ -259,12 +285,13 @@ Build incremental partitioned offline tool bundles and catalogs.
   - `linux_browsers` = `BrowserDistribution(archives=(BrowserArchive(name='chromium', cdn_file='c...`
   - `windows_browsers` = `BrowserDistribution(archives=(BrowserArchive(name='chromium', cdn_file='c...`
   - `no_browsers` = `BrowserDistribution(archives=(), cft_dir=None, prune_names=frozenset(), l...`
+  - `musl_browsers` = `replace(no_browsers, apk_image='alpine:3.24@sha256:be2656061b536c1883c403...`
   - `mac_wheels_arm64` = `('macosx_14_0_arm64', 'macosx_13_0_arm64', 'macosx_12_0_arm64', 'macosx_1...`
   - `mac_wheels_x64` = `('macosx_14_0_x86_64', 'macosx_13_0_x86_64', 'macosx_12_0_x86_64', 'macos...`
   - `targets` = `{'linux-glibc-amd64': BuildTarget(name='linux-glibc-amd64', os='linux', a...`
   - `target_groups` = `{'linux': ('linux-glibc-amd64', 'linux-glibc-arm64', 'linux-musl-amd64',...`
   - `distribution` = `Distribution()`
-  - `target_unavailable` = `{'linux-musl-amd64': ('browser',), 'linux-musl-arm64': ('browser', 'tree-...`
+  - `target_unavailable` = `{'linux-musl-arm64': ('tree-sitter_tree-sitter-language-pack',), 'windows...`
 - `class BuildToolsDefaults` — Immutable filesystem defaults for the bundle builder.
   - `script_dir` = `Path(__file__).resolve().parent`
   - `project_root` = `script_dir.parent.parent.parent`
@@ -452,6 +479,19 @@ ANSI-styled ``--help``/``-h`` output shared by the root scripts.
   - `format_help(self) -> str` — Return the full help with a styled leading usage line.
   - `start_section(self, heading: str | None) -> None` — Begin a help section with a bold heading.
 - `pretty_parser(*, prog: str, description: str, epilog: str='') -> ArgumentParser` — Create an ``ArgumentParser`` with the ANSI help formatter.
+
+### `musl_browser.py`
+
+Stage relocatable, signed Alpine Chromium packages for musl targets.
+
+- `class Constants` — Build inputs and relocatable launch settings.
+  - `install` = `'apk --root /payload --initdb --no-scripts --keys-dir /etc/apk/keys --rep...`
+  - `launcher` = `dedent(text='    #!/bin/sh\n    set -eu\n    root=$(CDPATH= cd -- "$(dirn...`
+  - `node_launcher` = `dedent(text='    #!/bin/sh\n    set -eu\n    entry=$0\n    while [ -L "$e...`
+  - `fonts` = `dedent(text='    <?xml version="1.0"?>\n    <!DOCTYPE fontconfig SYSTEM "...`
+- `install_packages(*, root: Path, image: str, arch: Literal['amd64', 'arm64'], packages: tuple[str, ...]) -> None` — Install signature-verified APKs into a relocatable private root.
+- `install_node(*, stage: Path, image: str, arch: Literal['amd64', 'arm64']) -> None` — Bundle Node's C++ runtime independently of the browser component.
+- `install(*, stage: Path, image: str, version: str, arch: Literal['amd64', 'arm64'], revisions: dict[str, str]) -> None` — Install signed packages and expose Playwright's expected entry points.
 
 ### `partition_fs.py`
 
@@ -647,7 +687,7 @@ Files: `examples/README.md`, `examples/api/README.md`, `examples/api/__init__.py
 ## Dependencies and consumers
 
 - Other packages: [`bundle`](../../bundle/DOCS.md), [`argument_parser`](../argument_parser/DOCS.md), [`completion`](../completion/DOCS.md), [`tree`](../tree/DOCS.md), [`zstd_portable`](../zstd_portable/DOCS.md), [`actions`](../../tools/actions/DOCS.md), [`common`](../../tools/common/DOCS.md)
-- Used by: `__main__.py`, `bundle/linux/glibc/amd64/partition_launcher.py`, `bundle/linux/glibc/arm64/partition_launcher.py`, `bundle/linux/musl/amd64/partition_launcher.py`, `bundle/linux/musl/arm64/partition_launcher.py`, `bundle/macos/amd64/partition_launcher.py`, `bundle/macos/arm64/partition_launcher.py`, `bundle/windows/amd64/partition_launcher.py`, `bundle/windows/arm64/partition_launcher.py`, `tests/packages/package/test_inventory_cli.py`, `tests/packages/package/test_package_api.py`, `tests/packages/package/test_package_build.py`, `tests/packages/package/test_package_cli.py`, `tests/packages/package/test_package_config.py`, `tests/packages/package/test_package_install.py`, `tests/packages/package/test_package_shims.py`, `tests/packages/package/test_partition_fs.py`, `tests/standalone/test_standalone.py`, `tests/tools/common/test_common.py`, `tests/tools/common/test_toolkit.py`
+- Used by: `__main__.py`, `bundle/linux/glibc/amd64/partition_launcher.py`, `bundle/linux/glibc/arm64/partition_launcher.py`, `bundle/linux/musl/amd64/partition_launcher.py`, `bundle/linux/musl/arm64/partition_launcher.py`, `bundle/macos/amd64/partition_launcher.py`, `bundle/macos/arm64/partition_launcher.py`, `bundle/windows/amd64/partition_launcher.py`, `bundle/windows/arm64/partition_launcher.py`, `tests/packages/package/test_inventory_cli.py`, `tests/packages/package/test_musl_browser.py`, `tests/packages/package/test_package_api.py`, `tests/packages/package/test_package_build.py`, `tests/packages/package/test_package_cli.py`, `tests/packages/package/test_package_config.py`, `tests/packages/package/test_package_install.py`, `tests/packages/package/test_package_shims.py`, `tests/packages/package/test_partition_fs.py`, `tests/standalone/test_standalone.py`, `tests/tools/common/test_common.py`, `tests/tools/common/test_toolkit.py`
 
 ## Tests
 
@@ -668,6 +708,12 @@ Tests live in `exactus/tests/packages/package/`.
   - `test_styled_honours_no_color`
   - `test_styled_is_false_without_tty`
   - `test_styled_is_true_on_tty`
+- `test_musl_browser.py` — Verify native browser payload layout without contacting package mirrors. (5 tests)
+  - `test_interrupted_build_removes_only_its_own_container`
+  - `test_musl_python_driver_keeps_native_dependencies`
+  - `test_native_browser_launchers_and_abi`
+  - `test_node_bundles_its_own_runtime_libraries`
+  - `test_windows_arm64_ships_the_playwright_x64_browser`
 - `test_package_api.py` — Tests for the unified package Python API. (12 tests)
   - `test_build_collects_every_output`
   - `test_build_expands_target_aliases`

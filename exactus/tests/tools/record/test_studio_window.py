@@ -26,7 +26,11 @@ def _project(*, root: Path, body: str) -> Path:
 
     """
     _ = (root / "pyproject.toml").write_text(
-        data=f"[tool.exactus]\nroot = true\n[tool.exactus.record]\n{body}",
+        data=f"""\
+[tool.exactus]
+root = true
+[tool.exactus.record]
+{body}""",
         encoding="utf-8",
     )
     return root
@@ -68,7 +72,12 @@ def test_pyproject_enables_and_flag_overrides(tmp_path: Path) -> None:
         tmp_path: Disposable project directory.
 
     """
-    root: Path = _project(root=tmp_path, body="window = true\n")
+    root: Path = _project(
+        root=tmp_path,
+        body="""\
+window = true
+""",
+    )
     expect_true(condition=resolve_window(flag=None, start=root))
     expect_false(condition=resolve_window(flag=False, start=root))
     expect_true(condition=resolve_window(flag=True, start=root))

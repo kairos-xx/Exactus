@@ -70,7 +70,9 @@ def test_frontend_report_explains_diagnostics_and_steps(
                     {
                         "severity": "error",
                         "category": "console",
-                        "message": "Unable to save\nResponse was malformed",
+                        "message": """\
+Unable to save
+Response was malformed""",
                         "file": "https://example.test/app.js",
                         "line": 9,
                         "column": 17,
@@ -117,8 +119,9 @@ def test_frontend_report_explains_diagnostics_and_steps(
                 "line": (
                     dedent(
                         text=(
-                            "    Traceback (most recent call last):\n    R"
-                            "untimeError: save failed"
+                            """\
+                            Traceback (most recent call last):
+                            RuntimeError: save failed"""
                         ),
                     )
                 ),
@@ -151,12 +154,22 @@ def test_frontend_report_explains_diagnostics_and_steps(
         "Browser and discovery diagnostics",
         "Source: `https://example.test/app.js`:9:17",
         "Function: `saveSettings`",
-        "```text\nUnable to save\nResponse was malformed\n```",
-        "```text\nGET /error HTTP 500\n```",
+        """\
+```text
+Unable to save
+Response was malformed
+```""",
+        """\
+```text
+GET /error HTTP 500
+```""",
         dedent(
             text=(
-                "    ```text\n    Traceback (most recent call last):\n    "
-                "RuntimeError: save failed\n    ```"
+                """\
+    ```text
+    Traceback (most recent call last):
+    RuntimeError: save failed
+    ```"""
             ),
         ),
     ):
@@ -249,18 +262,26 @@ def test_findings_group_browser_failures_by_flow(tmp_path: Path) -> None:
         model=model,
         tool_dir=ReportTemplates.tool_dir(analyzer="frontend"),
     ).markdown
-    section: str = rendered.split(sep="## Findings\n", maxsplit=1)[1].split(
-        sep="## Artifacts",
+    section: str = rendered.split(
+        sep="""\
+## Findings
+""",
         maxsplit=1,
-    )[0]
+    )[1].split(sep="## Artifacts", maxsplit=1)[0]
     expect_equal(actual=section.count("### Flow: 1-390x844-light"), expected=1)
     for text in (
         "#### Discovery",
         "### Server",
         "**HTTP request failed**",
         "**Browser console error**",
-        "```text\nFailed to load resource\n```",
-        "```text\nGET /api/error HTTP/1.1 500\n```",
+        """\
+```text
+Failed to load resource
+```""",
+        """\
+```text
+GET /api/error HTTP/1.1 500
+```""",
     ):
         expect_in(member=text, container=section)
     expect_not_in(member="FRONTEND001 at", container=rendered)

@@ -1,13 +1,13 @@
 # `TESTS/`
 
-Provide js tests json content.
+Provide shard 000 log content.
 
 <!-- exactus:inventory:start -->
 ## Directory contents
 
 ### Files
 
-- [`js-tests.json`](js-tests.json) — Provide js tests json content.
+No direct files besides this README.
 
 ### Subdirectories
 

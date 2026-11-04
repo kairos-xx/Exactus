@@ -10,6 +10,7 @@ from json import dumps, loads
 from pathlib import Path
 from shutil import which
 from sys import stdout
+from textwrap import dedent
 from time import monotonic
 from typing import TYPE_CHECKING, Final, Literal, Protocol, cast, final
 from urllib.parse import SplitResult, urlsplit
@@ -180,10 +181,18 @@ class CssTarget:
                 else css_file.relative_to(path).as_posix()
             )
             chunks.append(
-                f"/* css-visual-cause source: {relative} */\n"
-                f"{css_file.read_text(encoding='utf-8')}",
+                f"""\
+/* css-visual-cause source: {relative} */
+{css_file.read_text(encoding="utf-8")}""",
             )
-        return cls(source=path, files=files, css="\n\n".join(chunks))
+        return cls(
+            source=path,
+            files=files,
+            css="""\
+
+
+""".join(chunks),
+        )
 
     def manifest(self) -> dict[str, JsonValue]:
         """Return report metadata for this target.
@@ -675,7 +684,17 @@ def _extended_selector_source() -> str | None:
         "export default ExtendedSelector;",
         "window.ExtendedSelector = ExtendedSelector;",
     )
-    return "() => {\n" + body + '\n  return "ok";\n};\n'
+    return (
+        """\
+() => {
+"""
+        + body
+        + """\
+
+  return "ok";
+};
+"""
+    )
 
 
 class CssVisualCause:
@@ -1781,7 +1800,7 @@ class CssVisualCause:
             "|---|---:|",
         ]
         lines.extend(
-            f"| `{item.get('size', '')}` | {item.get('count', 0)} |"
+            f"| `{item.get("size", "")}` | {item.get("count", 0)} |"
             for item in repeated_value
             if isinstance(item, dict)
         )
@@ -1853,7 +1872,7 @@ class CssVisualCause:
             if rows:
                 body.extend(
                     [
-                        f"**{group.replace('_', ' ').title()}**",
+                        f"**{group.replace("_", " ").title()}**",
                         "",
                         "| Property | A | B |",
                         "|---|---|---|",
@@ -1869,7 +1888,9 @@ class CssVisualCause:
                     "",
                 ],
             )
-        return "\n".join(["###### What changed", "", *body])
+        return """\
+
+""".join(["###### What changed", "", *body])
 
     @staticmethod
     def _collect_contributors(
@@ -1999,7 +2020,9 @@ class CssVisualCause:
             data=dumps(obj=payload, indent=2),
             encoding="utf-8",
         )
-        stdout.write(f"[css-visual-cause] {phase} {completed}/{total}\n")
+        stdout.write(f"""\
+[css-visual-cause] {phase} {completed}/{total}
+""")
         stdout.flush()
         if self._observer is not None:
             self._observer(phase=phase, completed=completed, total=total)
@@ -2030,11 +2053,17 @@ class CssVisualCause:
         )
         (self.settings.output / "report.md").write_text(
             data=(
-                "# CSS visual-causality analysis failed\n\n"
-                f"- Error: `{type(error).__name__}`\n"
-                f"- URL A: `{self.settings.url}`\n"
-                f"- URL B: `{self.settings.url_b or self.settings.url}`\n\n"
-                f"```text\n{error}\n```\n"
+                f"""\
+# CSS visual-causality analysis failed
+
+- Error: `{type(error).__name__}`
+- URL A: `{self.settings.url}`
+- URL B: `{self.settings.url_b or self.settings.url}`
+
+```text
+{error}
+```
+"""
             ),
             encoding="utf-8",
         )
@@ -2496,20 +2525,24 @@ class CssVisualCause:
             )
         page.evaluate(
             expression=(
-                "\n([ruleIndex, property, value]) => {\n"
-                "  const sheet = document.getElementById("
-                '"__css_cause_style__").sheet;\n'
-                "  const flat = [];\n"
-                "  const walk = (rules) => {\n"
-                "    for (const item of rules) {\n"
-                "      if (item instanceof CSSStyleRule) flat.push(item);\n"
-                '      else if ("cssRules" in item) walk(item.cssRules);\n'
-                "    }\n"
-                "  };\n"
-                "  walk(sheet.cssRules);\n"
-                "  const target = flat[ruleIndex];\n"
-                "  if (target) target.style.setProperty(property, value);\n"
-                "}\n"
+                dedent(
+                    text="""\
+
+    ([ruleIndex, property, value]) => {
+      const sheet = document.getElementById("__css_cause_style__").sheet;
+      const flat = [];
+      const walk = (rules) => {
+        for (const item of rules) {
+          if (item instanceof CSSStyleRule) flat.push(item);
+          else if ("cssRules" in item) walk(item.cssRules);
+        }
+      };
+      walk(sheet.cssRules);
+      const target = flat[ruleIndex];
+      if (target) target.style.setProperty(property, value);
+    }
+    """,
+                )
             ),
             arg=[rule.index, property_name, authored_value],
         )
@@ -3292,7 +3325,11 @@ class CssVisualCause:
             )
             _, trial_elements, _ = self._render(
                 browser=trial.browser,
-                css=self.css_b + "\n" + trial_css,
+                css=self.css_b
+                + """\
+
+"""
+                + trial_css,
                 intervention=Intervention(),
                 side="b",
             )
@@ -4252,14 +4289,16 @@ class CssVisualCause:
         )
         self._write_human_report(results=results, structure=structure)
         stdout.write(
-            "\n".join(
+            """\
+
+""".join(
                 [
                     f"Changed pixels: {results.baseline}",
                     f"Visual regions: {len(results.regions)}",
                     f"Affected DOM elements: {len(results.affected)}",
                     f"Changed DOM nodes: {len(results.nodes)}",
                     f"Causal CSS rules: {len(results.causes)}",
-                    f"Report: {self.settings.output / 'report.json'}",
+                    f"Report: {self.settings.output / "report.json"}",
                     "",
                 ],
             ),
@@ -4308,7 +4347,12 @@ class CssVisualCause:
             state=state,
         )
         (self.settings.output / "report.md").write_text(
-            data="\n".join(lines) + "\n",
+            data="""\
+
+""".join(lines)
+            + """\
+
+""",
             encoding="utf-8",
         )
 
@@ -4650,7 +4694,7 @@ class CssVisualCause:
             f"{round(number=baseline_pixels):,} changed pixels |",
             f"| Evidence score | {confidence:.3f} |",
             "| Impact classification | "
-            f"{impact.get('impact_kind', 'unknown')} |",
+            f"{impact.get("impact_kind", "unknown")} |",
             "",
             "> **Metric meaning:** for counterfactually proven properties, "
             "“explained visual delta” is the number of changed pixels removed "
@@ -4683,9 +4727,9 @@ class CssVisualCause:
         if tokens:
             lines.extend(["**Causal value fragments:**", ""])
             lines.extend(
-                f"- `{token.get('b', '')}` → `{token.get('a', '')}` "
+                f"- `{token.get("b", "")}` → `{token.get("a", "")}` "
                 "(confidence "
-                f"{self._json_float(value=token.get('confidence', 0.0)):.3f})"
+                f"{self._json_float(value=token.get("confidence", 0.0)):.3f})"
                 for token in tokens[:8]
             )
             lines.append("")

@@ -23,7 +23,7 @@ from subprocess import CalledProcessError, CompletedProcess, run
 from threading import Lock
 from tokenize import detect_encoding
 from tomllib import load as tload
-from typing import cast
+from typing import TYPE_CHECKING, cast
 
 from exactus.tools.lints.long_lines_engine import (
     BatchResult,
@@ -35,6 +35,8 @@ from exactus.tools.lints.long_lines_engine import (
     TextResult,
 )
 
+if TYPE_CHECKING:
+    from collections.abc import Callable
 __all__: list[str] = [
     "BatchResult",
     "Constants",
@@ -511,13 +513,22 @@ class LongLineRepair:
     guarded by one lock, and each call owns its fixer.
     """
 
-    def __init__(self, *, ruff_command: tuple[str, ...] = ("ruff",)) -> None:
+    def __init__(
+        self,
+        *,
+        ruff_command: tuple[str, ...] = ("ruff",),
+        file_filter: Callable[[Path], bool] | None = None,
+    ) -> None:
         """Create a repair bound to one Ruff launcher.
 
         Args:
             ruff_command: Executable prefix used to invoke Ruff.
+            file_filter: Optional per-instance filter for Python file paths
+                in the long_lines repair flow
+
 
         """
+        self._file_filter: Callable[[Path], bool] | None = file_filter
         self._ruff_command: tuple[str, ...] = ruff_command
         self._lock: Lock = Lock()
         self._lengths: dict[Path | None, int] = {}
@@ -536,6 +547,13 @@ class LongLineRepair:
             paths: Python files Ruff just formatted and fixed.
 
         """
+        paths = tuple(
+            path
+            for path in paths
+            if self._file_filter is None or self._file_filter(path)
+        )
+        if not paths:
+            return
         reported_by_path: dict[Path, frozenset[int]] = (
             LongLinesAPI.ruff_e501_rows_many(
                 paths=paths,
@@ -591,6 +609,8 @@ class LongLineRepair:
             path: Python file Ruff just formatted and fixed.
 
         """
+        if self._file_filter is not None and not self._file_filter(path):
+            return
         try:
             line_length: int = self._line_length(path=path)
             if not LongLinesAPI.has_long_lines(

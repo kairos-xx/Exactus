@@ -165,7 +165,9 @@ def test_validate_results_success_and_failures(
     ]
     for reference in references:
         (results / reference).write_bytes(data=b"png")
-    markdown: str = "\n".join(
+    markdown: str = """\
+
+""".join(
         [
             "## `b.css`",
             "### Rule 1: `.a`",
@@ -243,10 +245,17 @@ def test_validate_results_rejects_incomplete_evidence_triplet(
     )
     markdown: str = dedent(
         text=(
-            "    ## `b.css`\n    ### Rule 1: `.a`\n    #### `width: 1px`\n    "
-            "##### Affected element `.a`\n    **What changed:**\n    **Other c"
-            "ontributing properties:**\n    ```css\n    .a{}\n    ```\n    ![]"
-            "(evidence/a.png)"
+            """\
+    ## `b.css`
+    ### Rule 1: `.a`
+    #### `width: 1px`
+    ##### Affected element `.a`
+    **What changed:**
+    **Other contributing properties:**
+    ```css
+    .a{}
+    ```
+    ![](evidence/a.png)"""
         ),
     )
     (results / "report.md").write_text(data=markdown, encoding="utf-8")
@@ -285,16 +294,28 @@ def test_validate_results_rejects_zero_missing_and_empty_evidence(
     )
     base: str = dedent(
         text=(
-            "    ## `b.css`\n    ### Rule 1: `.a`\n    #### `width: 1px`\n    "
-            "##### Affected element `.a`\n    **Other contributing properties:"
-            "**\n    ```css\n    .a{}\n    ```"
+            """\
+    ## `b.css`
+    ### Rule 1: `.a`
+    #### `width: 1px`
+    ##### Affected element `.a`
+    **Other contributing properties:**
+    ```css
+    .a{}
+    ```"""
         ),
     )
-    triplet: str = (
-        "![](evidence/a.png)\n![](evidence/b.png)\n![](evidence/diff.png)"
-    )
+    triplet: str = """\
+![](evidence/a.png)
+![](evidence/b.png)
+![](evidence/diff.png)"""
     (results / "report.md").write_text(
-        data=base + "\nChanged rules represented | 0\n" + triplet,
+        data=base
+        + """\
+
+Changed rules represented | 0
+"""
+        + triplet,
         encoding="utf-8",
     )
     with pytest.raises(
@@ -303,7 +324,11 @@ def test_validate_results_rejects_zero_missing_and_empty_evidence(
     ):
         validator.main()
     (results / "report.md").write_text(
-        data=base + "\n" + triplet,
+        data=base
+        + """\
+
+"""
+        + triplet,
         encoding="utf-8",
     )
     with pytest.raises(

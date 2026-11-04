@@ -9,6 +9,7 @@ Tests for the unified package pipeline.
 
 - [`__init__.py`](__init__.py) — Tests for the unified package pipeline.
 - [`test_inventory_cli.py`](test_inventory_cli.py) — ANSI-styled ``--help`` formatting shared by the root scripts.
+- [`test_musl_browser.py`](test_musl_browser.py) — Verify native browser payload layout without contacting package mirrors.
 - [`test_package_api.py`](test_package_api.py) — Tests for the unified package Python API.
 - [`test_package_build.py`](test_package_build.py) — Tests for Exactus executable staging.
 - [`test_package_cli.py`](test_package_cli.py) — Tests for the unified package CLI.

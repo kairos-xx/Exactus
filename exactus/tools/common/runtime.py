@@ -23,6 +23,7 @@ from exactus.tools.common.catalog import (
     GroupFinalConstants as CatalogConstants,
 )
 from exactus.tools.common.registry import RunRegistry
+from exactus.tools.common.source_transaction import observe_source_stage
 
 
 @final
@@ -330,7 +331,10 @@ def run_source_activity[ResultT](
         Operation result.
 
     """
-    with source_activity(mode=mode, identity=identity, enabled=enabled):
+    with (
+        source_activity(mode=mode, identity=identity, enabled=enabled),
+        observe_source_stage(name=identity),
+    ):
         return action()
 
 

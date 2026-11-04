@@ -65,7 +65,12 @@ def test_command_output_missing_program() -> None:
 def test_validate_payload_missing_keys() -> None:
     """Payloads lacking required keys raise ``ValueError``."""
     with pytest.raises(expected_exception=ValueError, match="missing keys"):
-        ReportBundle.validate_payload(payload={}, markdown="# report\n")
+        ReportBundle.validate_payload(
+            payload={},
+            markdown="""\
+# report
+""",
+        )
 
 
 def test_validate_payload_markdown_heading() -> None:
@@ -76,7 +81,9 @@ def test_validate_payload_markdown_heading() -> None:
     ):
         ReportBundle.validate_payload(
             payload=_payload(),
-            markdown="body without heading\n",
+            markdown="""\
+body without heading
+""",
         )
 
 
@@ -85,7 +92,9 @@ def test_validate_payload_empty_sections() -> None:
     with pytest.raises(expected_exception=ValueError, match="section index"):
         ReportBundle.validate_payload(
             payload=_payload(sections=[]),
-            markdown="# report\n",
+            markdown="""\
+# report
+""",
         )
 
 
@@ -94,7 +103,9 @@ def test_validate_payload_web_keys() -> None:
     with pytest.raises(expected_exception=ValueError, match="web metadata"):
         ReportBundle.validate_payload(
             payload=_payload(web={"index": "i", "css": "c"}),
-            markdown="# report\n",
+            markdown="""\
+# report
+""",
         )
 
 
@@ -129,7 +140,11 @@ def test_write_emits_web_data_files(tmp_path: Path) -> None:
         ),
         analyzer="demo",
         title="Demo",
-        markdown="# Demo\n\nBody\n",
+        markdown="""\
+# Demo
+
+Body
+""",
         data={"findings": []},
     )
     web: Path = tmp_path / "result_web"
@@ -180,7 +195,9 @@ def test_web_data_js_escapes_template_sequences() -> None:
     expect_in(member="\\${name}", container=script)
     argument: str = (
         script.removeprefix("window.__REPORT_DATA__ = JSON.parse(`")
-        .removesuffix("`);\n")
+        .removesuffix("""\
+`);
+""")
         .replace("\\${", "${")
         .replace("\\`", "`")
         .replace("\\\\", "\\")
@@ -230,7 +247,9 @@ def test_write_compares_findings_with_previous_report(tmp_path: Path) -> None:
         paths=paths,
         analyzer="demo",
         title="Demo",
-        markdown="# Demo\n",
+        markdown="""\
+# Demo
+""",
         data={
             "findings": [
                 finding(rule="A", path="a.py"),
@@ -242,7 +261,9 @@ def test_write_compares_findings_with_previous_report(tmp_path: Path) -> None:
         paths=paths,
         analyzer="demo",
         title="Demo",
-        markdown="# Demo\n",
+        markdown="""\
+# Demo
+""",
         data={
             "findings": [
                 finding(rule="B", path="b.py"),
@@ -288,12 +309,21 @@ def test_large_markdown_stays_in_one_file(tmp_path: Path) -> None:
         json=tmp_path / "result.json",
         web=tmp_path / "result_web",
     )
-    body: str = "Coverage evidence é\n" * 22000
+    body: str = (
+        """\
+Coverage evidence é
+"""
+        * 22000
+    )
     _ = ReportBundle.write(
         paths=paths,
         analyzer="demo",
         title="Demo",
-        markdown=f"# Demo\n\n{body}Final evidence marker\n",
+        markdown=f"""\
+# Demo
+
+{body}Final evidence marker
+""",
     )
     markdown: str = paths.markdown.read_text(encoding="utf-8")
     expect_in(member=body, container=markdown)
@@ -315,11 +345,15 @@ def test_normalize_markdown_adds_title() -> None:
         owner=ReportBundle,
         name="_normalize_markdown",
         title="Lint Report",
-        markdown="findings follow\n",
+        markdown="""\
+findings follow
+""",
     )
     expect_true(
         condition=isinstance(normalized, str)
-        and normalized.startswith("# Lint Report\n"),
+        and normalized.startswith("""\
+# Lint Report
+"""),
     )
 
 
@@ -406,14 +440,19 @@ def test_link_paths_links_existing_files(tmp_path: Path) -> None:
     source: Path = tmp_path / "pkg" / "mod.py"
     source.parent.mkdir(parents=True)
     _ = source.write_text(
-        data="def test_target() -> None:\n    pass\n",
+        data="""\
+def test_target() -> None:
+    pass
+""",
         encoding="utf-8",
     )
     base: Path = tmp_path / "reports"
     base.mkdir()
     sibling: Path = base / "local.txt"
     _ = sibling.write_text(data="x", encoding="utf-8")
-    markdown: str = "\n".join(
+    markdown: str = """\
+
+""".join(
         [
             "see `pkg/mod.py:1` here",
             "inside `local.txt` report",
@@ -477,10 +516,15 @@ def test_artifact_names_stay_plain_and_paths_are_linked(
         _ = (artifacts / name).write_text(data="", encoding="utf-8")
     markdown: str = dedent(
         text=(
-            "    | Artifact | Path | Bytes |\n    | --- | --- | --- |\n    | R"
-            "EADME.md | ARTIFACTS/README.md | 0 |\n    | `__init__.py` | `ARTI"
-            "FACTS/__init__.py` | 0 |\n    \n    | Target |\n    | --- |\n    "
-            "| README.md |"
+            """\
+    | Artifact | Path | Bytes |
+    | --- | --- | --- |
+    | README.md | ARTIFACTS/README.md | 0 |
+    | `__init__.py` | `ARTIFACTS/__init__.py` | 0 |
+
+    | Target |
+    | --- |
+    | README.md |"""
         ),
     )
     linked: str = ReportBundle.link_paths(
@@ -509,12 +553,14 @@ def test_link_paths_leaves_non_paths(tmp_path: Path) -> None:
         tmp_path: Per-test temporary directory.
 
     """
-    markdown: str = "\n".join(
+    markdown: str = """\
+
+""".join(
         [
             "bare `word`",
             "gone `pkg/absent.py`",
             "up `../outside.py`",
-            f"out `{tmp_path.parent / 'other.py'}`",
+            f"out `{tmp_path.parent / "other.py"}`",
             "empty `pkg/mod.py::[x]`",
         ],
     )
@@ -540,7 +586,7 @@ def test_link_paths_leaves_oversized_paths(tmp_path: Path) -> None:
 
     """
     (tmp_path / "tests").mkdir()
-    raw: str = f"exactus/tests/test_case[{'x' * 300}]"
+    raw: str = f"exactus/tests/test_case[{"x" * 300}]"
     markdown: str = f"failed `{raw}`"
     linked: str = ReportBundle.link_paths(
         markdown=markdown,
@@ -566,7 +612,9 @@ def test_portable_links_cover_artifacts_and_existing_links(
     artifact: Path = base / "ARTIFACTS" / "shot 1.png"
     artifact.parent.mkdir()
     _ = artifact.write_bytes(data=b"image")
-    markdown: str = "\n".join(
+    markdown: str = """\
+
+""".join(
         [
             f"[source](<{source.as_uri()}>)",
             f"path `{source}`",
@@ -594,7 +642,9 @@ def test_portable_links_cover_artifacts_and_existing_links(
     expect_in(member=f'[ref]: {href} "Document"', container=linked)
     expect_in(member="[web](https://example.com/docs)", container=linked)
     expect_in(
-        member=f"~~~python\n[source]({source.as_uri()})",
+        member=f"""\
+~~~python
+[source]({source.as_uri()})""",
         container=linked,
     )
     expect_equal(
@@ -649,15 +699,27 @@ def test_link_paths_node_fallbacks(tmp_path: Path) -> None:
     """
     source: Path = tmp_path / "pkg" / "mod.py"
     source.parent.mkdir(parents=True)
-    _ = source.write_text(data="x = 1\n", encoding="utf-8")
+    _ = source.write_text(
+        data="""\
+x = 1
+""",
+        encoding="utf-8",
+    )
     document: Path = tmp_path / "notes.md"
-    _ = document.write_text(data="# notes\n", encoding="utf-8")
+    _ = document.write_text(
+        data="""\
+# notes
+""",
+        encoding="utf-8",
+    )
     pseudo: Path = tmp_path / "pkg" / "fake.py"
     pseudo.mkdir()
     markdown: str = dedent(
         text=(
-            "    miss `pkg/mod.py::absent`\n    doc `notes.md::section`\n    d"
-            "ir `pkg/fake.py::any`"
+            """\
+    miss `pkg/mod.py::absent`
+    doc `notes.md::section`
+    dir `pkg/fake.py::any`"""
         ),
     )
     linked: str = ReportBundle.link_paths(
@@ -678,14 +740,30 @@ def test_normalize_markdown_variants() -> None:
         title="T",
         markdown="",
     )
-    expect_equal(actual=empty, expected="# T\n")
+    expect_equal(
+        actual=empty,
+        expected="""\
+# T
+""",
+    )
     headed: object = private_call(
         owner=ReportBundle,
         name="_normalize_markdown",
         title="T",
-        markdown="# Given\n\nbody\n",
+        markdown="""\
+# Given
+
+body
+""",
     )
-    expect_equal(actual=headed, expected="# Given\n\nbody\n")
+    expect_equal(
+        actual=headed,
+        expected="""\
+# Given
+
+body
+""",
+    )
 
 
 def test_write_records_previous_duration(tmp_path: Path) -> None:
@@ -705,14 +783,18 @@ def test_write_records_previous_duration(tmp_path: Path) -> None:
         paths=paths,
         analyzer="demo",
         title="Demo",
-        markdown="# Demo\n",
+        markdown="""\
+# Demo
+""",
         data={"findings": [], "duration_seconds": 9.876},
     )
     payload: JsonObject = ReportBundle.write(
         paths=paths,
         analyzer="demo",
         title="Demo",
-        markdown="# Demo\n",
+        markdown="""\
+# Demo
+""",
         data={"findings": []},
     )
     expect_equal(

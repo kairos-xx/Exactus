@@ -169,15 +169,19 @@ def main() -> int:
             )
             current: ProcessStatus = handle.status()
             stdout.write(
-                f"{current.key.name}/{current.key.context}: "
-                f"{current.state.value} {current.custom_status}\n",
+                f"""\
+{current.key.name}/{current.key.context}: {current.state.value} \
+{current.custom_status}
+""",
             )
             context.broadcast(
                 topic="configuration.changed",
                 payload={"revision": 2},
             )
             for event in context.broadcasts(after=0):
-                stdout.write(f"{event.topic}: {event.payload}\n")
+                stdout.write(f"""\
+{event.topic}: {event.payload}
+""")
     finally:
         _sweep()
     return 0

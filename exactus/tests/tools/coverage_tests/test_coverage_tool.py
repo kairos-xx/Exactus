@@ -243,7 +243,12 @@ def test_project_without_tests(tmp_path: Path) -> None:
     """
     project: Path = tmp_path / "empty"
     project.mkdir()
-    (project / "a.py").write_text(data="x = 1\n", encoding="utf-8")
+    (project / "a.py").write_text(
+        data="""\
+x = 1
+""",
+        encoding="utf-8",
+    )
     expect_in(
         member=_run(project=project, out=tmp_path / "out"),
         container={0, 1, 2},
@@ -357,7 +362,7 @@ def test_skip_plugin_preserves_project_imports(
                     "Constants; print(Constants.skip_fields)"
                 ),
                 "exactus_skip_plugin",
-                f"--rcfile={tmp_path / 'coverage.ini'}",
+                f"--rcfile={tmp_path / "coverage.ini"}",
             ),
             cwd=tmp_path,
         ),
@@ -377,7 +382,12 @@ def test_production_conftest_is_measured(tmp_path: Path) -> None:
     fixture: Path = tmp_path / "tests" / "nested" / "conftest.py"
     for source in (production, fixture):
         source.parent.mkdir(parents=True, exist_ok=True)
-        _ = source.write_text(data="value = 42\n", encoding="utf-8")
+        _ = source.write_text(
+            data="""\
+value = 42
+""",
+            encoding="utf-8",
+        )
     method: str = "_write_coverage_config"
     write_config: Callable[..., Path] = cast(
         typ="Callable[..., Path]",
@@ -406,7 +416,12 @@ def test_owned_source_root_is_not_omitted_by_directory_name(
     source_root: Path = tmp_path / "packages"
     source_root.mkdir()
     source: Path = source_root / "module.py"
-    _ = source.write_text(data="value = 42\n", encoding="utf-8")
+    _ = source.write_text(
+        data="""\
+value = 42
+""",
+        encoding="utf-8",
+    )
     runner: CombinedCoverageRunner = CombinedCoverageRunner(
         config=CoverageConfig(
             root=tmp_path,
@@ -448,8 +463,12 @@ def test_file_snippets_embed_context(tmp_path: Path) -> None:
     source: Path = tmp_path / "src" / "app.py"
     source.parent.mkdir(parents=True)
     _ = source.write_text(
-        data="\n".join(f"line_{number} = {number}" for number in range(1, 31))
-        + "\n",
+        data="""\
+
+""".join(f"line_{number} = {number}" for number in range(1, 31))
+        + """\
+
+""",
         encoding="utf-8",
     )
     snippets: dict[str, JsonValue] = cast(
@@ -490,8 +509,12 @@ def test_file_snippets_zero_and_negative_context(tmp_path: Path) -> None:
     source: Path = tmp_path / "src" / "app.py"
     source.parent.mkdir(parents=True)
     _ = source.write_text(
-        data="\n".join(f"line_{number} = {number}" for number in range(1, 31))
-        + "\n",
+        data="""\
+
+""".join(f"line_{number} = {number}" for number in range(1, 31))
+        + """\
+
+""",
         encoding="utf-8",
     )
     for requested in (0, -4):
@@ -591,10 +614,17 @@ def test_combined_tests_report_lists_failures_with_reasons(
         data=(
             dedent(
                 text=(
-                    "    from pkg.mod import add\n    \n    \n    def test"
-                    "_add():\n        assert add(1, 2) == 3\n    \n    \n "
-                    "   def test_broken():\n        assert add(1, 2) == 99"
-                    ", 'wrong sum'\n    "
+                    """\
+    from pkg.mod import add
+
+
+    def test_add():
+        assert add(1, 2) == 3
+
+
+    def test_broken():
+        assert add(1, 2) == 99, 'wrong sum'
+    """
                 ),
             )
         ),
@@ -658,25 +688,40 @@ def tiny_project(tmp_path: Path) -> Path:
     root: Path = tmp_path / "tiny"
     files: dict[str, str] = {
         "pkg/__init__.py": "",
-        "pkg/calc.py": "def add(a, b):\n    return a + b\n",
+        "pkg/calc.py": """\
+def add(a, b):
+    return a + b
+""",
         "tests/test_calc.py": (
             dedent(
                 text=(
-                    "    from pkg.calc import add\n    \n    \n    def tes"
-                    "t_ok():\n        assert add(1, 2) == 3\n    \n    \n "
-                    "   def test_bad():\n        assert add(1, 2) == 4, 'b"
-                    "ad sum'\n    "
+                    """\
+    from pkg.calc import add
+
+
+    def test_ok():
+        assert add(1, 2) == 3
+
+
+    def test_bad():
+        assert add(1, 2) == 4, 'bad sum'
+    """
                 ),
             )
         ),
-        "lib/twice.mjs": "export const twice = (n) => n * 2;\n",
+        "lib/twice.mjs": """\
+export const twice = (n) => n * 2;
+""",
         "tests/twice.test.mjs": (
             dedent(
                 text=(
-                    '    import test from "node:test";\n    import assert '
-                    'from "node:assert/strict";\n    import { twice } from'
-                    ' "../lib/twice.mjs";\n    \n    test("twice", () => a'
-                    "ssert.equal(twice(2), 4));\n    "
+                    """\
+    import test from "node:test";
+    import assert from "node:assert/strict";
+    import { twice } from "../lib/twice.mjs";
+
+    test("twice", () => assert.equal(twice(2), 4));
+    """
                 ),
             )
         ),
@@ -830,12 +875,17 @@ def test_playwright_greenlet_body_is_measured(tmp_path: Path) -> None:
         data=(
             dedent(
                 text=(
-                    "    from playwright.sync_api import sync_playwright\n"
-                    "    \n    def version():\n        with sync_playwrigh"
-                    "t() as playwright:\n            browser = playwright."
-                    "chromium.launch()\n            try:\n                "
-                    "return browser.version\n            finally:\n       "
-                    "         browser.close()\n    "
+                    """\
+    from playwright.sync_api import sync_playwright
+
+    def version():
+        with sync_playwright() as playwright:
+            browser = playwright.chromium.launch()
+            try:
+                return browser.version
+            finally:
+                browser.close()
+    """
                 ),
             )
         ),
@@ -845,9 +895,12 @@ def test_playwright_greenlet_body_is_measured(tmp_path: Path) -> None:
         data=(
             dedent(
                 text=(
-                    "    from browser_app import version\n    \n    def te"
-                    "st_browser_version():\n        assert version().split"
-                    "('.')[0].isdigit()\n    "
+                    """\
+    from browser_app import version
+
+    def test_browser_version():
+        assert version().split('.')[0].isdigit()
+    """
                 ),
             )
         ),
@@ -884,10 +937,16 @@ def test_group_reports_do_not_inherit_other_group_failures(
         data=(
             dedent(
                 text=(
-                    "    import pytest\n    from pkg.mod import add\n    "
-                    "\n    def test_pass():\n        assert add(1, 2) == 3"
-                    "\n    \n    def test_skip():\n        pytest.skip('Op"
-                    "tional fixture unavailable')\n    "
+                    """\
+    import pytest
+    from pkg.mod import add
+
+    def test_pass():
+        assert add(1, 2) == 3
+
+    def test_skip():
+        pytest.skip('Optional fixture unavailable')
+    """
                 ),
             )
         ),
@@ -897,8 +956,10 @@ def test_group_reports_do_not_inherit_other_group_failures(
         data=(
             dedent(
                 text=(
-                    "    def test_fail():\n        assert False, 'Intentio"
-                    "nal regression fixture'\n    "
+                    """\
+    def test_fail():
+        assert False, 'Intentional regression fixture'
+    """
                 ),
             )
         ),
@@ -948,7 +1009,10 @@ def test_v8_offsets_after_astral_unicode_keep_the_correct_line(
         tmp_path: Temporary source directory.
 
     """
-    source: str = 'const icon = "😀";\nthrow Error("missing");\n'
+    source: str = """\
+const icon = "😀";
+throw Error("missing");
+"""
     path: Path
     path = tmp_path / "unicode.js"
     start: int
@@ -984,7 +1048,9 @@ def test_excuse_shortfalls_filters_javascript_below_minimum(
     """
     source: Path = tmp_path / "mod.js"
     _ = source.write_text(
-        data="export const used = () => 1;\n",
+        data="""\
+export const used = () => 1;
+""",
         encoding="utf-8",
     )
     runner: CombinedCoverageRunner = CombinedCoverageRunner(

@@ -228,148 +228,263 @@ class Constants:
     fixture: Final[dict[str, str]] = {
         "pyproject.toml": dedent(
             text=(
-                '\n            [project]\n            name = "exactus-self_tes'
-                't-fixture"\n            version = "0.1.0"\n            requir'
-                'es-python = ">=3.13"\n\n            [tool.pytest.ini_options]'
-                '\n            testpaths = ["."]\n            '
+                """\
+
+            [project]
+            name = "exactus-self_test-fixture"
+            version = "0.1.0"
+            requires-python = ">=3.13"
+
+            [tool.pytest.ini_options]
+            testpaths = ["."]
+            """
             ),
         ).lstrip(),
         "app.py": dedent(
             text=(
-                "\n            # Copyright (c) 2026 Project contributors.\n   "
-                '         """Small fixture module exercised by the self-test."'
-                '""\n\n            from __future__ import annotations\n\n     '
-                "       from typing import Final, final\n\n\n            @fina"
-                'l\n            class Constants:\n                """Group fix'
-                "ture constants.\n\n                Attributes:\n             "
-                "       greeting: Grouped module constant.\n\n                "
-                '"""\n\n                greeting: Final[str] = "Hello, self_te'
-                'st!"\n\n\n            def greet(*, name: str) -> str:\n      '
-                '          """Return the greeting shown by the fixture page.\n'
-                "\n                Args:\n                    name: Name to gr"
-                "eet.\n\n                Returns:\n                    The gre"
-                'eting text.\n\n                """\n                return f"'
-                'Hello, {name}!"\n\n\n            def add(*, left: int, right:'
-                ' int) -> int:\n                """Add two integers.\n\n      '
-                "          Args:\n                    left: First operand.\n  "
-                "                  right: Second operand.\n\n                R"
-                'eturns:\n                    The sum.\n\n                """'
-                "\n                return left + right\n            "
+                """\
+
+            # Copyright (c) 2026 Project contributors.
+            \"""Small fixture module exercised by the self-test.\"""
+
+            from __future__ import annotations
+
+            from typing import Final, final
+
+
+            @final
+            class Constants:
+                \"""Group fixture constants.
+
+                Attributes:
+                    greeting: Grouped module constant.
+
+                \"""
+
+                greeting: Final[str] = "Hello, self_test!"
+
+
+            def greet(*, name: str) -> str:
+                \"""Return the greeting shown by the fixture page.
+
+                Args:
+                    name: Name to greet.
+
+                Returns:
+                    The greeting text.
+
+                \"""
+                return f"Hello, {name}!"
+
+
+            def add(*, left: int, right: int) -> int:
+                \"""Add two integers.
+
+                Args:
+                    left: First operand.
+                    right: Second operand.
+
+                Returns:
+                    The sum.
+
+                \"""
+                return left + right
+            """
             ),
         ).lstrip(),
         "test_app.py": dedent(
             text=(
-                "\n            # Copyright (c) 2026 Project contributors.\n   "
-                '         """Pytest coverage for the fixture module."""\n\n   '
-                "         from __future__ import annotations\n\n            fr"
-                "om typing import NoReturn\n\n            from app import Cons"
-                "tants, add, greet\n\n\n            def fail(*, message: str) "
-                '-> NoReturn:\n                """Fail the running test.\n\n  '
-                "              Args:\n                    message: Explanation"
-                " of the failed expectation.\n\n                Raises:\n     "
-                '               AssertionError: Always.\n\n                """'
-                "\n                raise AssertionError(message)\n\n\n        "
-                "    def expect_equal(\n                *,\n                ac"
-                "tual: str | int,\n                expected: str | int,\n     "
-                '       ) -> None:\n                """Require ``actual`` to e'
-                "qual ``expected``.\n\n                Args:\n                "
-                "    actual: Observed value.\n                    expected: Re"
-                'quired value.\n\n                """\n                if actu'
-                'al != expected:\n                    fail(message=f"expected '
-                '{expected!r}, got {actual!r}")\n\n\n            def test_gree'
-                't() -> None:\n                """The greeting includes the su'
-                'pplied name."""\n                expect_equal(\n             '
-                '       actual=greet(name="self_test"),\n                    e'
-                'xpected="Hello, self_test!",\n                )\n\n\n        '
-                '    def test_add() -> None:\n                """Two operands '
-                'add together."""\n                expect_equal(\n            '
-                "        actual=add(left=2, right=3),\n                    exp"
-                "ected=5,\n                )\n\n\n            def test_constan"
-                'ts() -> None:\n                """The grouped greeting matche'
-                's the function output."""\n                expect_equal(\n   '
-                "                 actual=Constants.greeting,\n                "
-                '    expected=greet(name="self_test"),\n                )\n   '
-                "         "
+                """\
+
+            # Copyright (c) 2026 Project contributors.
+            \"""Pytest coverage for the fixture module.\"""
+
+            from __future__ import annotations
+
+            from typing import NoReturn
+
+            from app import Constants, add, greet
+
+
+            def fail(*, message: str) -> NoReturn:
+                \"""Fail the running test.
+
+                Args:
+                    message: Explanation of the failed expectation.
+
+                Raises:
+                    AssertionError: Always.
+
+                \"""
+                raise AssertionError(message)
+
+
+            def expect_equal(
+                *,
+                actual: str | int,
+                expected: str | int,
+            ) -> None:
+                \"""Require ``actual`` to equal ``expected``.
+
+                Args:
+                    actual: Observed value.
+                    expected: Required value.
+
+                \"""
+                if actual != expected:
+                    fail(message=f"expected {expected!r}, got {actual!r}")
+
+
+            def test_greet() -> None:
+                \"""The greeting includes the supplied name.\"""
+                expect_equal(
+                    actual=greet(name="self_test"),
+                    expected="Hello, self_test!",
+                )
+
+
+            def test_add() -> None:
+                \"""Two operands add together.\"""
+                expect_equal(
+                    actual=add(left=2, right=3),
+                    expected=5,
+                )
+
+
+            def test_constants() -> None:
+                \"""The grouped greeting matches the function output.\"""
+                expect_equal(
+                    actual=Constants.greeting,
+                    expected=greet(name="self_test"),
+                )
+            """
             ),
         ).lstrip(),
         "app.js": dedent(
             text=(
-                "\n            /**\n             * Return the greeting shown b"
-                "y the fixture page.\n             * @param {string} name Name"
-                " to greet.\n             * @returns {string} The greeting tex"
-                "t.\n             */\n            export const greet = name =>"
-                " `Hello, ${name}!`;\n\n            /**\n             * Add tw"
-                "o integers.\n             * @param {number} left First operan"
-                "d.\n             * @param {number} right Second operand.\n   "
-                "          * @returns {number} The sum.\n             */\n    "
-                "        export const add = (left, right) => left + right;\n  "
-                "          "
+                """\
+
+            /**
+             * Return the greeting shown by the fixture page.
+             * @param {string} name Name to greet.
+             * @returns {string} The greeting text.
+             */
+            export const greet = name => `Hello, ${name}!`;
+
+            /**
+             * Add two integers.
+             * @param {number} left First operand.
+             * @param {number} right Second operand.
+             * @returns {number} The sum.
+             */
+            export const add = (left, right) => left + right;
+            """
             ),
         ).lstrip(),
         "app.test.mjs": dedent(
             text=(
-                '\n            import { add, greet } from "./app.js";\n\n     '
-                "       /**\n             * Require two values to compare equa"
-                "l.\n             * @param {string | number} actual Observed v"
-                "alue.\n             * @param {string | number} expected Requi"
-                "red value.\n             * @throws {Error} When the values di"
-                "ffer.\n             */\n            const expectEqual = (actu"
-                "al, expected) => {\n                if (actual !== expected) "
-                "{\n                    throw new Error(`expected ${expected},"
-                " got ${actual}`);\n                }\n            };\n\n     "
-                '       expectEqual(greet("self_test"), "Hello, self_test!");'
-                "\n            expectEqual(add(2, 3), 5);\n            "
+                """\
+
+            import { add, greet } from "./app.js";
+
+            /**
+             * Require two values to compare equal.
+             * @param {string | number} actual Observed value.
+             * @param {string | number} expected Required value.
+             * @throws {Error} When the values differ.
+             */
+            const expectEqual = (actual, expected) => {
+                if (actual !== expected) {
+                    throw new Error(`expected ${expected}, got ${actual}`);
+                }
+            };
+
+            expectEqual(greet("self_test"), "Hello, self_test!");
+            expectEqual(add(2, 3), 5);
+            """
             ),
         ).lstrip(),
         "style.css": dedent(
             text=(
-                "\n            .page {\n              display: flex;\n        "
-                "      flex-direction: column;\n              position: relati"
-                "ve;\n            }\n            "
+                """\
+
+            .page {
+              display: flex;
+              flex-direction: column;
+              position: relative;
+            }
+            """
             ),
         ).lstrip(),
         "index.html": dedent(
             text=(
-                '\n            <!doctype html>\n            <html lang="en">\n'
-                '              <head>\n                <meta charset="utf-8" /'
-                '>\n                <meta\n                  name="viewport"\n'
-                '                  content="width=device-width, initial-scale='
-                '1"\n                />\n                <title>Exactus Fixtur'
-                'e</title>\n                <link rel="stylesheet" href="style'
-                '.css" />\n              </head>\n              <body>\n      '
-                '          <main class="page">\n                  <h1>Exactus '
-                "Fixture</h1>\n                  <p data-greeting>Hello</p>\n "
-                '                 <script type="module" src="app.js"></script>'
-                "\n                </main>\n              </body>\n           "
-                " </html>\n            "
+                """\
+
+            <!doctype html>
+            <html lang="en">
+              <head>
+                <meta charset="utf-8" />
+                <meta
+                  name="viewport"
+                  content="width=device-width, initial-scale=1"
+                />
+                <title>Exactus Fixture</title>
+                <link rel="stylesheet" href="style.css" />
+              </head>
+              <body>
+                <main class="page">
+                  <h1>Exactus Fixture</h1>
+                  <p data-greeting>Hello</p>
+                  <script type="module" src="app.js"></script>
+                </main>
+              </body>
+            </html>
+            """
             ),
         ).lstrip(),
     }
     site_pages: Final[dict[str, str]] = {
         "index.html": dedent(
             text=(
-                "\n                <!doctype html>\n                <html lang"
-                '="en">\n                <head>\n                    <meta cha'
-                'rset="utf-8">\n                    <title>exactus probe</titl'
-                "e>\n                </head>\n                <body>\n        "
-                "            <h1>exactus probe site</h1>\n                    "
-                '<a href="second.html">second</a>\n                    <form>'
-                "\n                    <label>\n                        Name\n"
-                '                        <input name="q" type="text">\n       '
-                '             </label>\n                    <button type="subm'
-                'it">Go</button>\n                    </form>\n               '
-                " </body>\n                </html>\n                "
+                """\
+
+                <!doctype html>
+                <html lang="en">
+                <head>
+                    <meta charset="utf-8">
+                    <title>exactus probe</title>
+                </head>
+                <body>
+                    <h1>exactus probe site</h1>
+                    <a href="second.html">second</a>
+                    <form>
+                    <label>
+                        Name
+                        <input name="q" type="text">
+                    </label>
+                    <button type="submit">Go</button>
+                    </form>
+                </body>
+                </html>
+                """
             ),
         ).lstrip(),
         "second.html": dedent(
             text=(
-                "\n                <!doctype html>\n                <html lang"
-                '="en">\n                <head>\n                    <meta cha'
-                'rset="utf-8">\n                    <title>exactus second</tit'
-                "le>\n                </head>\n                <body>\n       "
-                "             <h1>exactus second page</h1>\n                  "
-                '  <a href="index.html">back</a>\n                </body>\n   '
-                "             </html>\n                "
+                """\
+
+                <!doctype html>
+                <html lang="en">
+                <head>
+                    <meta charset="utf-8">
+                    <title>exactus second</title>
+                </head>
+                <body>
+                    <h1>exactus second page</h1>
+                    <a href="index.html">back</a>
+                </body>
+                </html>
+                """
             ),
         ).lstrip(),
     }
@@ -382,7 +497,9 @@ def say(*, text: str) -> None:
         text: Line content.
 
     """
-    stdout.write(f"{text}\n")
+    stdout.write(f"""\
+{text}
+""")
     stdout.flush()
 
 
@@ -583,7 +700,10 @@ def _mutmut_cwd() -> Path:
     temporary: Path = Path(TemporaryDirectory(prefix="exactus-mutmut-").name)
     temporary.mkdir(parents=True, exist_ok=True)
     _ = (temporary / "setup.cfg").write_text(
-        data="[mutmut]\nsource_paths = src\n",
+        data="""\
+[mutmut]
+source_paths = src
+""",
         encoding="utf-8",
     )
     return temporary
@@ -1199,9 +1319,9 @@ def _findings(*, checks: Checks) -> list[JsonValue]:
         index += 1
         finding: dict[str, JsonValue] = {
             "id": f"SEL-{index:03d}",
-            "title": f"self_test {entry['kind']} check failed",
+            "title": f"self_test {entry["kind"]} check failed",
             "severity": "error",
-            "rule": f"self_test-{entry['kind']}",
+            "rule": f"self_test-{entry["kind"]}",
             "path": str(object=entry["name"]),
             "file": str(object=entry["name"]),
             "line": 0,
@@ -1276,10 +1396,12 @@ def _markdown(*, checks: Checks) -> str:
     """
     lines: list[str] = ["## Checks", ""]
     for entry in checks.entries:
-        reason: str = f" — {entry['reason']}" if entry.get("reason") else ""
-        lines.append(f"- **{entry['status']}** `{entry['name']}`{reason}")
+        reason: str = f" — {entry["reason"]}" if entry.get("reason") else ""
+        lines.append(f"- **{entry["status"]}** `{entry["name"]}`{reason}")
     lines.append("")
-    return "\n".join(lines)
+    return """\
+
+""".join(lines)
 
 
 def bundle_tools() -> list[str] | None:
@@ -1558,7 +1680,7 @@ def main(*, arguments: Sequence[str] | None = None) -> int:
                 ),
             )
             trace(
-                step=f"report: bundle written — {output_dir / 'result.md'}",
+                step=f"report: bundle written — {output_dir / "result.md"}",
                 depth=2,
             )
         status: int = 1 if checks.failed else 0

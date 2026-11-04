@@ -106,6 +106,7 @@ class Queries:
         settle_request: Settle request.
         settle_observer: Settle observer.
         bump_owner_generation: Bump owner generation.
+        bump_owner_plan: Bump owner generation and fingerprint.
         select_pending: Select pending.
         seal_owner: Seal owner.
         finish_owner: Finish owner.
@@ -197,6 +198,17 @@ class Queries:
     bump_owner_generation: Final[Update] = owners.update(
         values=(
             (owners.col(name="generation"), Param()),
+            (owners.col(name="updated_at"), Param()),
+        ),
+    ).where(
+        predicate=owners.col(name="run_id")
+        .eq(value=Param())
+        .and_(other=owners.col(name="state").eq(value=Param())),
+    )
+    bump_owner_plan: Final[Update] = owners.update(
+        values=(
+            (owners.col(name="generation"), Param()),
+            (owners.col(name="fingerprint"), Param()),
             (owners.col(name="updated_at"), Param()),
         ),
     ).where(

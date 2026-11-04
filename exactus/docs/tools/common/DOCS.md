@@ -704,6 +704,7 @@ Cross-process exactus run registry backed by an embedded database.
   - `database_name` = `'runs.db'`
   - `env_path` = `'EXACTUS_REGISTRY'`
   - `project_root_env` = `'EXACTUS_PROJECT_ROOT'`
+  - `root_target_prefix` = `'root://'`
   - `exactus_root_name` = `'EXACTUS_RESULTS'`
   - `busy_timeout_seconds` = `10.0`
   - `retention` = `timedelta(days=7)`
@@ -718,6 +719,8 @@ Cross-process exactus run registry backed by an embedded database.
   - `columns` = `('run_id', 'kind', 'identifier', 'pipeline_run_id', 'pid', 'output', 'tar...`
 - `workspace_context(*, root: Path) -> str` — Return the deterministic pmanager context for one project root.
 - `run_context(*, root: Path, owner: str) -> str` — Return one invocation child context inside a workspace context.
+- `project_root_target(*, root: Path) -> str` — Return the ``targets`` marker recording one project root.
+- `record_project_root(*, record: RunRecord) -> Path | None` — Return the project root a run record claimed, when marked.
 - `class RunClaim` — Ownership facts registered by one starting run.
   - Fields: `kind: str`, `identifier: str`, `run_id: str`, `pipeline_run_id: str | None`, `pid: int`, `output: Path`, `targets: tuple[str, ...]`
 - `class RunBeat` — Optional progress fields refreshed by one heartbeat.
@@ -1447,3 +1450,43 @@ Tests live in `exactus/tests/tools/common/`.
   - `test_normalize_strips_decoration`
 
 <!-- exactus:reference:end -->
+
+## Path-scoped configuration
+
+`ConfigResolver(root=...)` owns one run's cached configuration chains. Its
+`files`, `stacked`, `argv_signature`, `nearest_native`, `filters`, and `options`
+methods resolve an existing path inside that root. Nested `root = true` stops
+inheritance. Scalars use the nearest declaration; lists concatenate from the
+outermost declaration. Include/exclude patterns are unioned and anchored to the
+declaring folder. Explicit CLI options win over nested defaults. Fix/dry mode,
+workers, tool installation, reports-dir and orchestration remain run-global.
+Owned nested tables are validated before workers start and again when consumed.
+
+`exactus exactus/tools/lints/core.py --show-config -t lints` displays the chain
+and winning option provenance. Add `--json` for schema version 1. The JSON object
+contains `schema_version`, `path`, `anchor`, `root`, `files` (nearest first),
+`pipeline`, `reports_dir`, and `tools`. Each tool has `identifier` and `options`;
+each option has `name`, display-compatible string `value`, `layer`, and nullable
+`source`. Layers are default, preset, common, tool, pipeline, and cli. The
+`OptionProvenance`, `ToolConfigReport`, and `ShowConfigReport` frozen dataclasses
+power both displays; the existing tuple-based `effective()` API is retained.
+Paths outside the root or missing paths return exit status 2 with a root hint.
+
+`path_filters.py` defines the canonical generated-directory inventory.
+`glob_match` accepts root matches for `**/name/**`, for includes as well as
+excludes. Hidden directories are independently pruned. Egg-info and dist-info
+patterns remain necessary because these directory names need not start with a
+dot. `default_excludes` resolves the reports path from its explicit argument,
+then `EXACTUS_REPORTS_ROOT`, then `EXACTUS_RESULTS`.
+
+`source_cache.py` owns bounded, context-local source and Python AST snapshots.
+Filesystem identity includes nanosecond modification/change times, size and
+inode; refreshed bytes receive a content digest. Mutating consumers receive
+independent AST copies. Context exit releases snapshots; writes invalidate or
+refresh the corresponding entry. Atomic replacement files stay beside targets.
+
+JSON state replacement uses unique temporary files beside the destination,
+flushed before replacement and cleaned on failure. Concurrent owners therefore
+cannot consume the same `.tmp` file. The standalone actions, package, and server
+copies use the same ownership contract, exercised by a shared synchronized race
+test. Same-filesystem atomic writes deliberately do not use the global TMPDIR.

@@ -40,4 +40,4 @@ ignore = ["D203", "D213"]
 pythonVersion = "3.13"
 typeCheckingMode = "strict"
 include = ["rename_project.py", "cli_help.py"]
-extraPaths = ["."]
+extraPaths = [".", "../../.."]

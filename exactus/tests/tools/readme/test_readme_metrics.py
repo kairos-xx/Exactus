@@ -18,10 +18,15 @@ class Constants:
 
     """
 
-    doc: Final[str] = '"""Module."""\n'
-    js: Final[str] = (
-        "/** Add. */\nexport function add(a, b) {\n  return a;\n}\n"
-    )
+    doc: Final[str] = """\
+\"""Module.\"""
+"""
+    js: Final[str] = """\
+/** Add. */
+export function add(a, b) {
+  return a;
+}
+"""
 
 
 def _write(*, root: Path, name: str, text: str) -> None:
@@ -45,14 +50,43 @@ def _project(*, root: Path) -> None:
         root: Project directory.
 
     """
-    _write(root=root, name="README.md", text="# Root\n\nIntro.\n")
-    _write(root=root, name="app.py", text=Constants.doc + "x = 1\n")
+    _write(
+        root=root,
+        name="README.md",
+        text="""\
+# Root
+
+Intro.
+""",
+    )
+    _write(
+        root=root,
+        name="app.py",
+        text=Constants.doc
+        + """\
+x = 1
+""",
+    )
     _write(root=root, name="pkg/mod.py", text=Constants.doc)
     _write(root=root, name="pkg/inner/deep.py", text=Constants.doc)
     _write(root=root, name="pkg/inner/readme.md", text="tiny")
     _write(root=root, name="web/app.js", text=Constants.js)
-    _write(root=root, name="exactus/docs/README.md", text="# Docs\n" * 40)
-    _write(root=root, name="exactus/docs/guide.md", text="guide\nmore\n")
+    _write(
+        root=root,
+        name="exactus/docs/README.md",
+        text="""\
+# Docs
+"""
+        * 40,
+    )
+    _write(
+        root=root,
+        name="exactus/docs/guide.md",
+        text="""\
+guide
+more
+""",
+    )
     _write(root=root, name="exactus/docs/empty.md", text="")
 
 

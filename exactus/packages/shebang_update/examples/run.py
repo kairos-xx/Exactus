@@ -57,12 +57,14 @@ def _script(*, shebang: str, doc: str, message: str) -> str:
         Complete script text with a docstring and ``stdout.write`` call.
 
     """
-    return (
-        f"{shebang}\n"
-        f'"""{doc}"""\n\n'
-        "from sys import stdout\n\n"
-        f'_ = stdout.write("{message}\\n")\n'
-    )
+    return f"""\
+{shebang}
+\"""{doc}\"""
+
+from sys import stdout
+
+_ = stdout.write("{message}\\n")
+"""
 
 
 def _seed() -> None:
@@ -94,7 +96,9 @@ def _seed() -> None:
         script.write_text(data=data, encoding="utf-8")
         script.chmod(mode=0o755)
     (tools / "notes.txt").write_text(
-        data="no shebang here\n",
+        data="""\
+no shebang here
+""",
         encoding="utf-8",
     )
 
@@ -107,14 +111,21 @@ def main() -> int:
 
     """
     _seed()
-    _ = stdout.write(f"scratch project: {Constants.work}\n\n")
+    _ = stdout.write(f"""\
+scratch project: {Constants.work}
+
+""")
     updated: int = ShebangUpdater(settings=Settings(root=Constants.work)).run()
     line: str = (
         (Constants.work / "tools" / "build.py")
         .read_text(encoding="utf-8")
         .splitlines()[0]
     )
-    _ = stdout.write(f"\ntools/build.py now reads:\n  {line}\n")
+    _ = stdout.write(f"""\
+
+tools/build.py now reads:
+  {line}
+""")
     return 0 if updated == 1 else 1
 
 

@@ -7,7 +7,7 @@ from contextlib import suppress
 from dataclasses import replace
 from importlib import import_module
 from json import dumps, loads
-from os import getpid, kill
+from os import getpid, getppid, kill
 from pathlib import Path
 from signal import SIGCONT
 from subprocess import Popen, check_output
@@ -41,7 +41,12 @@ from exactus.tools.common.activity import (
 from exactus.tools.common.catalog import GroupFinalConstants, ToolSpec
 from exactus.tools.common.models import ToolActivity, ToolRunResult
 from exactus.tools.common.pipeline_supervisor import PipelineCoordinator
-from exactus.tools.common.registry import RunClaim, RunRecord, RunRegistry
+from exactus.tools.common.registry import (
+    RunClaim,
+    RunRecord,
+    RunRegistry,
+    project_root_target,
+)
 from exactus.tools.common.stderr_capture import StderrRecorder
 from exactus.tools.common.terminal import ExactusTerminal
 
@@ -680,8 +685,31 @@ def _docs() -> ToolSpec:
     )
 
 
-def test_global_fraction_normalizes_each_task_before_aggregation() -> None:
-    """Large internal work totals cannot dominate other pipeline tasks."""
+def _kwargs() -> ToolSpec:
+    """Return the ``kwargs_typehints`` tool specification.
+
+    Returns:
+        The catalog entry.
+
+    """
+    return require_type(
+        value=GroupFinalConstants.exactus_catalog.tool(
+            identifier="kwargs_typehints",
+        ),
+        kind=ToolSpec,
+    )
+
+
+def test_global_fraction_normalizes_each_task_before_aggregation(
+    results_root: Path,
+) -> None:
+    """Large internal work totals cannot dominate other pipeline tasks.
+
+    Args:
+        results_root: Temporary reports root isolating coordination state.
+
+    """
+    del results_root
     run: object = private_call(
         owner=Check,
         name="_new_pipeline_run",
@@ -993,13 +1021,7 @@ def test_pipeline_pauses_and_releases_prelaunched_tools(
         )
         expect_equal(
             actual=rows[1],
-            expected=(
-                "docs",
-                "HELD*",
-                0.0,
-                "waiting for dependencies",
-                None,
-            ),
+            expected=("docs", "HELD*", 0.0, "waiting for dependencies", None),
         )
         private_call(owner=Check, name="_release_group", run=run, group=1)
         expect_equal(actual=paused, expected={"docs": sleeper.pid})
@@ -1261,6 +1283,79 @@ def test_progress_rows_overlay_external_run_progress(
         expected=("docs", "RUN*", 0.0, "starting", None),
     )
     del registry
+
+
+def test_external_tools_skip_foreign_project_roots(
+    results_root: Path,
+    tmp_path: Path,
+) -> None:
+    """Runs claimed for a different project root are never adoptable.
+
+    A standalone run pointed at this report tree from a foreign
+    project root must not satisfy this pipeline's stage, while a
+    same-root marker and marker-less rows stay adoptable.
+
+    Args:
+        results_root: Temporary ``EXACTUS_RESULTS`` directory.
+        tmp_path: Per-test temporary directory.
+
+    """
+    sleeper: Popen[bytes] = Popen(args=("sleep", "60"))
+    try:
+        registry: RunRegistry = _claim(
+            results_root=results_root,
+            request=RunClaim(
+                kind="tool",
+                identifier="docs",
+                run_id="foreign-docs",
+                pipeline_run_id=None,
+                pid=sleeper.pid,
+                output=results_root / "DOCS",
+                targets=(project_root_target(root=tmp_path / "foreign"),),
+            ),
+        )
+        _ = _claim(
+            results_root=results_root,
+            request=RunClaim(
+                kind="tool",
+                identifier="lints",
+                run_id="local-lints",
+                pipeline_run_id=None,
+                pid=getpid(),
+                output=results_root / "LINTS",
+                targets=(project_root_target(root=tmp_path),),
+            ),
+        )
+        _ = _claim(
+            results_root=results_root,
+            request=RunClaim(
+                kind="tool",
+                identifier="kwargs_typehints",
+                run_id="legacy-kwargs",
+                pipeline_run_id=None,
+                pid=getppid(),
+                output=results_root / "KWARGS_TYPEHINTS",
+                targets=(),
+            ),
+        )
+        run: object = private_call(
+            owner=Check,
+            name="_new_pipeline_run",
+            pipeline="self",
+            run_id="pipe",
+            waves=((_lints(),), (_docs(), _kwargs())),
+        )
+        external: dict[str, RunRecord] = cast(
+            typ="dict[str, RunRecord]",
+            val=private_call(owner=Check, name="_external_tools", run=run),
+        )
+        expect_not_in(member="docs", container=external)
+        expect_in(member="lints", container=external)
+        expect_in(member="kwargs_typehints", container=external)
+        del registry
+    finally:
+        sleeper.terminate()
+        _ = sleeper.wait(timeout=5)
 
 
 def test_wave_adopts_and_drains_an_external_run(

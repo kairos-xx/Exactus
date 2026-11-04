@@ -36,7 +36,7 @@ from ast import (
 )
 from asyncio import Semaphore, create_subprocess_exec, gather, run
 from asyncio.subprocess import PIPE
-from dataclasses import asdict, dataclass, field
+from dataclasses import asdict, dataclass, field, replace
 from enum import StrEnum
 from fnmatch import fnmatchcase
 from pathlib import Path
@@ -64,6 +64,7 @@ from exactus.tools.common.cli import (
     exactus_tool_prefix,
     is_reports_tree,
 )
+from exactus.tools.common.config import ConfigResolver
 from exactus.tools.common.runtime import emit_progress
 from exactus.tools.common.snippets import SnippetLimits, finding_excerpt
 from exactus.tools.reports.bundle import ReportBundle, ReportPaths
@@ -523,7 +524,7 @@ class Text:
             "can",
             "should",
         }:
-            return f"Return whether {' '.join(words[1:]) or phrase}."
+            return f"Return whether {" ".join(words[1:]) or phrase}."
         verbs: dict[str, str] = {
             "add": "Add",
             "analyze": "Analyze",
@@ -550,9 +551,9 @@ class Text:
             "write": "Write",
         }
         return (
-            f"{verbs[words[0]]} {' '.join(words[1:])}."
+            f"{verbs[words[0]]} {" ".join(words[1:])}."
             if words[0] in verbs and len(words) > 1
-            else f"{'Return' if returns else 'Handle'} {phrase}."
+            else f"{"Return" if returns else "Handle"} {phrase}."
         )
 
     @classmethod
@@ -641,8 +642,23 @@ class Text:
             Line and column pair.
 
         """
-        line: int = source.count("\n", 0, offset) + 1
-        previous: int = source.rfind("\n", 0, offset)
+        line: int = (
+            source.count(
+                """\
+
+""",
+                0,
+                offset,
+            )
+            + 1
+        )
+        previous: int = source.rfind(
+            """\
+
+""",
+            0,
+            offset,
+        )
         return line, offset if previous < 0 else offset - previous - 1
 
     @staticmethod
@@ -851,8 +867,8 @@ class PythonAnalyzer:
         returns: str = cls._annotation(node=node.returns)
         prefix: str = "async " if isinstance(node, AsyncFunctionDef) else ""
         return (
-            f"{prefix}{node.name}({', '.join(parts)})"
-            f"{f' -> {returns}' if returns else ''}"
+            f"{prefix}{node.name}({", ".join(parts)})"
+            f"{f" -> {returns}" if returns else ""}"
         )
 
     @classmethod
@@ -999,7 +1015,9 @@ class PythonAnalyzer:
             lines.extend(["", "Raises:"])
             lines.extend(map(cls._raises_entry, raises))
         lines.append('"""')
-        return "\n".join(lines)
+        return """\
+
+""".join(lines)
 
     @classmethod
     def _suggest_class(cls: type[Self], node: ClassDef) -> str:
@@ -1019,7 +1037,9 @@ class PythonAnalyzer:
             lines.extend(["", "Attributes:"])
             lines.extend(map(cls._parameter_entry, attributes))
         lines.append('"""')
-        return "\n".join(lines)
+        return """\
+
+""".join(lines)
 
     @staticmethod
     def _annotation(node: expr | None) -> str:
@@ -1745,7 +1765,12 @@ class JavaScriptAnalyzer:
         while index < len(source):
             pair: str = source[index : index + 2]
             if pair == "//":
-                end: int = source.find("\n", index + 2)
+                end: int = source.find(
+                    """\
+
+""",
+                    index + 2,
+                )
                 end = len(source) if end < 0 else end
             elif pair == "/*":
                 end = cls._block_comment_end(source=source, start=index)
@@ -1836,7 +1861,12 @@ class JavaScriptAnalyzer:
             if char == "\\":
                 index += 2
                 continue
-            if char == "\n":
+            if (
+                char
+                == """\
+
+"""
+            ):
                 return None
             if char == "[":
                 in_class = True
@@ -2041,7 +2071,9 @@ class JavaScriptAnalyzer:
             lines.append(" * @returns {*} The resulting value.")
         lines.extend(map(cls._throws_entry, throws))
         lines.append(" */")
-        return "\n".join(lines)
+        return """\
+
+""".join(lines)
 
     @classmethod
     def _body_after_params(
@@ -2088,7 +2120,12 @@ class JavaScriptAnalyzer:
         """
         position: int
         for position in range(start, end):
-            if chars[position] != "\n":
+            if (
+                chars[position]
+                != """\
+
+"""
+            ):
                 chars[position] = " "
 
     @staticmethod
@@ -2457,7 +2494,16 @@ class JavaScriptAnalyzer:
         match: Match[str]
         for match in self._method_pattern.finditer(string=region):
             absolute: int = brace + 1 + match.start()
-            line_start: int = masked.rfind("\n", brace + 1, absolute) + 1
+            line_start: int = (
+                masked.rfind(
+                    """\
+
+""",
+                    brace + 1,
+                    absolute,
+                )
+                + 1
+            )
             if (
                 self._brace_depth(masked=masked, start=brace, end=absolute)
                 != 1
@@ -2503,7 +2549,7 @@ class JavaScriptAnalyzer:
                     body_end=body_end,
                     params_text=parameters,
                     signature=(
-                        f"{'async ' if match.group('async') else ''}"
+                        f"{"async " if match.group("async") else ""}"
                         f"{method_name}({parameters.strip()})"
                     ),
                     is_async=bool(match.group("async")),
@@ -2568,8 +2614,8 @@ class JavaScriptAnalyzer:
                     body_end=body_end,
                     params_text=parameters,
                     signature=(
-                        f"{'async ' if match.group('async') else ''}"
-                        f"function{'*' if match.group('generator') else ''} "
+                        f"{"async " if match.group("async") else ""}"
+                        f"function{"*" if match.group("generator") else ""} "
                         f"{name}({parameters.strip()})"
                     ),
                     is_async=bool(match.group("async")),
@@ -2694,7 +2740,15 @@ class JavaScriptAnalyzer:
         """
         boundary: int = len(masked)
         index: int
-        for index in (masked.find(";", cursor), masked.find("\n", cursor)):
+        for index in (
+            masked.find(";", cursor),
+            masked.find(
+                """\
+
+""",
+                cursor,
+            ),
+        ):
             if index >= 0 and index < boundary:
                 boundary = index
         open_paren: int = masked.find("(", cursor, boundary)
@@ -2766,7 +2820,12 @@ class JavaScriptAnalyzer:
         arrow: int = cursor + single.end() - 2
         after_arrow: int = arrow + 2
         brace: int = masked.find("{", after_arrow)
-        line_end: int = masked.find("\n", after_arrow)
+        line_end: int = masked.find(
+            """\
+
+""",
+            after_arrow,
+        )
         body_start: int | None = (
             brace
             if brace >= 0 and (line_end < 0 or brace < line_end)
@@ -3435,7 +3494,16 @@ def _count_lines(*, text: str) -> int:
         Number of lines; ``0`` for empty text.
 
     """
-    return text.count("\n") + (0 if not text or text.endswith("\n") else 1)
+    return text.count("""\
+
+""") + (
+        0
+        if not text
+        or text.endswith("""\
+
+""")
+        else 1
+    )
 
 
 def _metrics(*, config: Config, report: Report) -> JsonValue:
@@ -3534,6 +3602,7 @@ class DocumentationExactus:
 
         """
         self._config: Config = config
+        self._resolver: ConfigResolver = ConfigResolver(root=config.root)
         self._file_filter: Callable[[Path], bool] | None = file_filter
         self._report: Report = Report()
         self._python: PythonAnalyzer = PythonAnalyzer(
@@ -3588,7 +3657,13 @@ class DocumentationExactus:
         progress_interval: int = max(1, len(eligible) // 32)
         completed: int = 0
         for file in python_files:
-            self._python.analyze(file=file)
+            configured: Config = self._file_config(path=file)
+            analyzer: PythonAnalyzer = (
+                self._python
+                if configured == self._config
+                else PythonAnalyzer(config=configured, report=self._report)
+            )
+            analyzer.analyze(file=file)
             completed += 1
             if completed % progress_interval == 0:
                 emit_progress(
@@ -3600,7 +3675,13 @@ class DocumentationExactus:
                 )
         self._javascript.finish_prepare()
         for file in javascript_files:
-            self._javascript.analyze(file=file)
+            configured = self._file_config(path=file)
+            javascript: JavaScriptAnalyzer = (
+                self._javascript
+                if configured == self._config
+                else JavaScriptAnalyzer(config=configured, report=self._report)
+            )
+            javascript.analyze(file=file)
             completed += 1
             if completed % progress_interval == 0 or completed == len(
                 eligible,
@@ -3719,6 +3800,32 @@ class DocumentationExactus:
 
         """
         return finding.relative_dict(root=self._config.root)
+
+    def _file_config(self, *, path: Path) -> Config:
+        """Resolve meaningful per-file scanner flags, preserving run ownership.
+
+        Args:
+            path: Source candidate.
+
+        Returns:
+            Scanner settings for this file.
+
+        """
+        return replace(
+            self._config,
+            public_only=self._resolver.boolean(
+                path=path,
+                tool="docs",
+                name="public-only",
+                default=self._config.public_only,
+            ),
+            validate_javascript=not self._resolver.boolean(
+                path=path,
+                tool="docs",
+                name="no-js-check",
+                default=not self._config.validate_javascript,
+            ),
+        )
 
     def _discover(self: Self) -> tuple[Path, ...]:
         """Walk the root once, collecting Python and JavaScript sources.

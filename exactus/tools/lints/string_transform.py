@@ -26,12 +26,12 @@ from ast import (
     walk,
 )
 from dataclasses import dataclass, replace
+from functools import partial
 from io import BytesIO, StringIO
 from os import fsync
 from pathlib import Path
 from re import Match, search
 from shutil import which
-from subprocess import CompletedProcess, run
 from tempfile import NamedTemporaryFile, TemporaryDirectory
 from textwrap import dedent
 from tokenize import (
@@ -46,8 +46,18 @@ from tokenize import (
 )
 from typing import TYPE_CHECKING, Final, Literal, final
 
+from .embedded_strings import (
+    LiteralIssue,
+    LiteralOptions,
+    LiteralRewrite,
+    format_embedded_source,
+    rewrite_multiline_literals,
+    run_checked_command,
+)
+
 if TYPE_CHECKING:
     from collections.abc import Sequence
+    from subprocess import CompletedProcess
 
 
 @final
@@ -153,11 +163,48 @@ class TransformOptions(SplitOptions):
     Attributes:
         format_interpolations: Expand eligible oversized f-string calls.
         call_format: Ruff-backed call formatting configuration.
+        rewrite_embedded_literals: Normalize supported literal presentations.
+        format_embedded: Explicitly format inferred HTML, JS, CSS, or Python.
+        allow_value_changes: Explicit consent to embedded content changes.
 
     """
 
     format_interpolations: bool = True
     call_format: CallFormatOptions | None = None
+    rewrite_embedded_literals: bool = True
+    format_embedded: bool = False
+    allow_value_changes: bool = False
+
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class StringTransformSettings:
+    """User-facing presentation knobs for the string transform.
+
+    Attributes:
+        line_length: Explicit transform width; ``None`` resolves the
+            effective width from Ruff configuration.
+        multiline_strategy: Preserve, split, or smart literal handling.
+        split_fstrings: Consider f-strings as split candidates.
+        split_raw_strings: Consider raw literals as candidates.
+        split_bytes: Consider byte literals as candidates.
+        format_interpolations: Expand eligible oversized f-string calls.
+        call_format_minimum: Minimum call arguments before expansion.
+        embedded_strings: Rewrite multiline literal presentation.
+        format_embedded: Format inferred embedded-language contents.
+        allow_value_changes: Consent to embedded content changes.
+
+    """
+
+    line_length: int | None = None
+    multiline_strategy: MultilineStrategy = "smart"
+    split_fstrings: bool = True
+    split_raw_strings: bool = True
+    split_bytes: bool = True
+    format_interpolations: bool = True
+    call_format_minimum: int = 3
+    embedded_strings: bool = True
+    format_embedded: bool = False
+    allow_value_changes: bool = False
 
 
 def offsets(*, lines: list[str]) -> list[int]:
@@ -367,7 +414,9 @@ def verified(
             or dedent(text=rendered_text) != original_text
         ):
             return False
-        probe: str = "\x01\n\x02"
+        probe: str = """\
+\x01
+\x02"""
         original_probe: str = original_text
         rendered_probe: str = rendered_text
         for index in range(len(original_expr)):
@@ -408,16 +457,26 @@ def render(*, parts: list[Constant | FormattedValue]) -> str | None:
         if chunks is None:
             return None
         content: str = "".join(chunks)
-        lines: list[str] = content.split(sep="\n")
-        body: str = "\n".join(
+        lines: list[str] = content.split(
+            sep="""\
+
+""",
+        )
+        body: str = """\
+
+""".join(
             f"    {line}" if line.strip() or index == len(lines) - 1 else ""
             for index, line in enumerate(iterable=lines)
         )
-        if content.endswith("\n"):
-            body = body.removesuffix("\n")
-        candidate: str = (
-            f"{('f' if is_fstring else '')}{quote}\\\n{body}{quote}"
-        )
+        if content.endswith("""\
+
+"""):
+            body = body.removesuffix("""\
+
+""")
+        candidate: str = f"""\
+{("f" if is_fstring else "")}{quote}\\
+{body}{quote}"""
         if verified(candidate=candidate, parts=parts, is_fstring=is_fstring):
             return f"dedent(text={candidate})"
     return None
@@ -472,12 +531,25 @@ def _patches(
 
     """
     patches: list[tuple[int, int, str]] = []
+    interpolated_parts: set[int] = {
+        id(part)
+        for expression in walk(node=original)
+        if isinstance(expression, JoinedStr)
+        for part in walk(node=expression)
+        if part is not expression
+    }
     for node in walk(node=original):
         if not isinstance(node, (BinOp, Constant, JoinedStr)):
             continue
+        if isinstance(node, JoinedStr) or id(node) in interpolated_parts:
+            continue
         parts: list[Constant | FormattedValue] | None = flatten(node=node)
         if parts is None or not any(
-            isinstance(part, Constant) and "\n" in str(object=part.value)
+            isinstance(part, Constant)
+            and """\
+
+"""
+            in str(object=part.value)
             for part in parts
         ):
             continue
@@ -583,7 +655,13 @@ def merge_dedent(
             + ", ".join(names)
             + result[end:]
         )
-    return result[:start] + "from textwrap import dedent\n" + result[start:]
+    return (
+        result[:start]
+        + """\
+from textwrap import dedent
+"""
+        + result[start:]
+    )
 
 
 def insertion_offset(*, updated: Module, updated_lines: list[str]) -> int:
@@ -694,7 +772,13 @@ def with_dedent_import(*, result: str, updated: Module | None = None) -> str:
         updated=updated,
         updated_lines=updated_lines,
     )
-    return result[:offset] + "from textwrap import dedent\n" + result[offset:]
+    return (
+        result[:offset]
+        + """\
+from textwrap import dedent
+"""
+        + result[offset:]
+    )
 
 
 def ruff_call(*, call: str, executable: str, line_length: int) -> str | None:
@@ -711,9 +795,14 @@ def ruff_call(*, call: str, executable: str, line_length: int) -> str | None:
     """
     with TemporaryDirectory(prefix="string-dedent-") as folder:
         path: Path = Path(folder) / "snippet.py"
-        path.write_text(data=f'_ = f"{{{call}}}"\n', encoding="utf-8")
+        path.write_text(
+            data=f"""\
+_ = f"{{{call}}}"
+""",
+            encoding="utf-8",
+        )
         for command in (("check", "--select", "ALL", "--fix"), ("format",)):
-            process: CompletedProcess[str] = run(
+            process: CompletedProcess[str] = run_checked_command(
                 args=[
                     executable,
                     *command,
@@ -724,8 +813,6 @@ def ruff_call(*, call: str, executable: str, line_length: int) -> str | None:
                     str(object=line_length),
                     str(object=path),
                 ],
-                capture_output=True,
-                text=True,
                 check=False,
             )
             if process.returncode not in (0, 1):
@@ -864,9 +951,16 @@ def _staged_call(
     """
     staged: str = (
         original_call[:opening_end]
-        + "\n"
-        + "\n".join(f"    {chunk}," for chunk in chunks[:-1])
-        + f"\n    {chunks[-1]}\n"
+        + """\
+
+"""
+        + """\
+
+""".join(f"    {chunk}," for chunk in chunks[:-1])
+        + f"""\
+
+    {chunks[-1]}
+"""
         + original_call[closing:]
     )
     try:
@@ -903,7 +997,13 @@ def _staged_source(
         return None
     start, end = _bounds(offsets=offsets, node=node)
     original_call: str = source[start:end]
-    if "\n" in original_call or "\r" in original_call:
+    if (
+        """\
+
+"""
+        in original_call
+        or "\r" in original_call
+    ):
         return None
     split: tuple[int, int, list[str]] | None = _call_arguments(
         original_call=original_call,
@@ -963,7 +1063,15 @@ def _call_patch(
     if formatted is None or formatted == source[start:end]:
         return None
     indent: str = " " * (start - offsets[node.lineno - 1])
-    formatted = formatted.replace("\n", "\n" + indent)
+    formatted = formatted.replace(
+        """\
+
+""",
+        """\
+
+"""
+        + indent,
+    )
     try:
         candidate: str = source[:start] + formatted + source[end:]
         if dump(
@@ -1208,14 +1316,29 @@ def offset(lines: list[str], starts: list[int], line: int, column: int) -> int:
     )
 
 
-def atomic_write(path: Path, content: str | bytes) -> None:
+def atomic_write(
+    path: Path,
+    content: str | bytes,
+    *,
+    expected: bytes | None = None,
+) -> None:
     """Replace a source file atomically, retaining its permission bits.
 
     Args:
         path: Destination file replaced atomically.
         content: Text or bytes written to the file.
+        expected: Optional source snapshot for concurrent-edit protection.
+
+    Raises:
+        RuntimeError: If the original file changed or is a symbolic link.
 
     """
+    if path.is_symlink():
+        msg: str = f"Refusing to replace a symbolic link: {path}"
+        raise RuntimeError(msg)
+    if expected is not None and path.read_bytes() != expected:
+        msg = f"Concurrent modification detected: {path}"
+        raise RuntimeError(msg)
     with NamedTemporaryFile(
         mode="wb",
         dir=path.parent,
@@ -1236,6 +1359,9 @@ def atomic_write(path: Path, content: str | bytes) -> None:
             raise
     try:
         temporary.chmod(mode=path.stat().st_mode)
+        if expected is not None and path.read_bytes() != expected:
+            msg = f"Concurrent modification detected: {path}"
+            raise RuntimeError(msg)
         temporary.replace(target=path)
     finally:
         temporary.unlink(missing_ok=True)
@@ -1279,7 +1405,7 @@ def resolve_line_length(
             msg = f"Ruff executable was not found: {ruff_executable}"
             raise RuntimeError(msg)
         return 88
-    completed: CompletedProcess[str] = run(
+    completed: CompletedProcess[str] = run_checked_command(
         args=[
             executable,
             "check",
@@ -1287,8 +1413,6 @@ def resolve_line_length(
             *ruff_args,
             "--show-settings",
         ],
-        capture_output=True,
-        text=True,
         check=False,
     )
     if completed.returncode != 0:
@@ -1355,9 +1479,13 @@ def _loaded_source(
     source: str = original.decode(encoding=encoding)
     parsed: Module = tree if tree is not None else parse(source=source)
     newline: str = (
-        "\r\n"
+        """\
+\r
+"""
         if b"\r\n" in original and b"\n" not in original.replace(b"\r\n", b"")
-        else "\n"
+        else """\
+
+"""
     )
     return (
         path,
@@ -1458,7 +1586,12 @@ def _eligible_span(
     if not original:
         return None
     if all(
-        len(line.rstrip("\r\n").expandtabs(tabsize=8)) <= context.width_limit
+        len(
+            line.rstrip("""\
+\r
+""").expandtabs(tabsize=8),
+        )
+        <= context.width_limit
         for line in context.lines[node.lineno - 1 : node.end_lineno]
     ):
         return None
@@ -1966,7 +2099,11 @@ def _interpolation_args(
         for kw in call.keywords
     )
     if any(
-        "\n" in arg or len(argument_indent + arg + ",") > width_limit
+        """\
+
+"""
+        in arg
+        or len(argument_indent + arg + ",") > width_limit
         for arg in args
     ):
         return None
@@ -2050,11 +2187,16 @@ def _interpolation_candidate(
             reason="comment-sensitive interpolation",
         )
     if (
-        "\n" in segment
+        """\
+
+"""
+        in segment
         or "\r" in segment
         or len(
             context.lines[call.lineno - 1]
-            .rstrip("\r\n")
+            .rstrip("""\
+\r
+""")
             .expandtabs(tabsize=8),
         )
         <= context.width_limit
@@ -2159,6 +2301,7 @@ class TransformResult:
         count: Total accepted replacements.
         changed: Whether any replacement was accepted.
         skipped: Diagnostics for untransformable oversized strings.
+        literal_issues: Diagnostics for nonrenderable embedded literals.
 
     """
 
@@ -2167,6 +2310,7 @@ class TransformResult:
     count: int
     changed: bool
     skipped: tuple[Skipped, ...]
+    literal_issues: tuple[LiteralIssue, ...] = ()
 
 
 def transform_strings(
@@ -2247,21 +2391,54 @@ def transform_strings(
             write=True,
             options=replace(resolved, line_length=resolved_width),
         )
+        literal_count: int = 0
+        literal_issues: tuple[LiteralIssue, ...] = ()
+        presented: LiteralRewrite | None = None
+        if resolved.rewrite_embedded_literals and encoding.lower().replace(
+            "_",
+            "-",
+        ) in ("utf-8", "utf-8-sig"):
+            presented = rewrite_multiline_literals(
+                source=staged.read_bytes().decode(encoding=encoding),
+                options=LiteralOptions(
+                    line_length=resolved_width,
+                    format_embedded=resolved.format_embedded,
+                    allow_value_changes=resolved.allow_value_changes,
+                ),
+                formatter=(
+                    partial(
+                        format_embedded_source,
+                        executable=resolved.ruff_executable,
+                    )
+                    if resolved.format_embedded
+                    else None
+                ),
+                tree=dedented.tree if not split.changed else None,
+            )
+            literal_count = presented.count
+            literal_issues = presented.issues
+            if presented.count:
+                staged.write_bytes(
+                    data=presented.source.encode(encoding=encoding),
+                )
         result_bytes: bytes = staged.read_bytes()
     result: str = result_bytes.decode(encoding=encoding)
     if result_bytes == original_bytes:
         transformed: Module = parsed
+    elif presented is not None:
+        transformed = presented.tree
     elif not split.changed:
         transformed = dedented.tree
     else:
         transformed = parse(source=result)
-    count: int = dedented.count + split.count
+    count: int = dedented.count + split.count + literal_count
     if count and write and (not dry_run) and (result_bytes != original_bytes):
-        atomic_write(path=path, content=result_bytes)
+        atomic_write(path=path, content=result_bytes, expected=original_bytes)
     return TransformResult(
         source=result,
         tree=transformed,
         count=count,
         changed=result_bytes != original_bytes,
         skipped=split.skipped,
+        literal_issues=literal_issues,
     )

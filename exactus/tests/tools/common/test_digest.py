@@ -66,7 +66,12 @@ def _fields() -> dict[str, JsonValue]:
         ],
         "test_execution": {
             "failed_tests": [
-                {"test": "t.py::test_a", "detail": "assert 1 == 2\nmore"},
+                {
+                    "test": "t.py::test_a",
+                    "detail": """\
+assert 1 == 2
+more""",
+                },
             ],
         },
         "coverage": {"totals": {"percent_covered_display": "88"}},
@@ -134,7 +139,9 @@ def test_render_failure_lists_tables_and_escapes_pipes() -> None:
         status="FAIL",
         resume="FAIL: exit 1",
     )
-    text: str = "\n".join(render_failure(digest=digest))
+    text: str = """\
+
+""".join(render_failure(digest=digest))
     for expected in (
         "### `demo` — FAIL",
         "| Rule | Count |",
@@ -158,7 +165,9 @@ def test_empty_report_yields_an_empty_digest() -> None:
     expect_equal(actual=digest_data(digest=digest)["tool"], expected="quiet")
     expect_in(
         member="No resume reported.",
-        container="\n".join(render_failure(digest=digest)),
+        container="""\
+
+""".join(render_failure(digest=digest)),
     )
     expect_in(
         member='"tool": "quiet"',

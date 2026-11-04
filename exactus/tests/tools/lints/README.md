@@ -21,6 +21,8 @@ Tests of the lints tool.
 - [`test_compliance.py`](test_compliance.py) — LINTS includes the canonical engineering rules and their source evidence.
 - [`test_css_naming.py`](test_css_naming.py) — Regression tests for numeric CSS custom-property naming.
 - [`test_css_tokens.py`](test_css_tokens.py) — The lints CSS token audit resolves one token graph across stylesheets.
+- [`test_embedded_strings.py`](test_embedded_strings.py) — Regression and randomized invariance tests for embedded string rendering.
+- [`test_javascript_pipeline.py`](test_javascript_pipeline.py) — Verify combined JavaScript preparation retains separate-stage findings.
 - [`test_js_delimiters.py`](test_js_delimiters.py) — Behavioral tests for the JavaScript delimiter simplifier.
 - [`test_js_function_blocks.py`](test_js_function_blocks.py) — Behavioral tests for the Python JavaScript block analyzer API.
 - [`test_lints.py`](test_lints.py) — In-process runs of the lints analyzer over generated projects.
@@ -33,6 +35,7 @@ Tests of the lints tool.
 - [`test_shebang.py`](test_shebang.py) — The lints shebang check reports and heals permission mismatches.
 - [`test_shebang_metrics.py`](test_shebang_metrics.py) — The lints shebang check counts executables, shebangs and interpreters.
 - [`test_source_cleaner.py`](test_source_cleaner.py) — Behavioral tests for the lints source cleaner.
+- [`test_source_transaction.py`](test_source_transaction.py) — Exercise source transaction isolation, rollback, and stale proposals.
 - [`test_string_transform.py`](test_string_transform.py) — Behavioral tests for source-preserving string conversion.
 
 ### Subdirectories

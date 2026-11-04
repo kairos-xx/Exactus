@@ -35,22 +35,44 @@ class Constants:
 
     source: Final[str] = dedent(
         text=(
-            '\n        class Example:\n            """Example demonstrating me'
-            'thod organization metrics."""\n\n            def _helper(self, *,'
-            ' value: int) -> int:\n                """Return a private result.'
-            "\n\n                Args:\n                    value: Value retur"
-            "ned unchanged.\n\n                Returns:\n                    T"
-            'he given value.\n\n                """\n                return va'
-            "lue\n\n            # Factory comment moves with the factory.\n   "
-            "         @classmethod\n            def create(cls, *, value: int)"
-            ' -> "Example":\n                """Create an example.\n\n        '
-            "        Args:\n                    value: Creation setting.\n\n  "
-            "              Returns:\n                    The new example.\n\n "
-            '               """\n                return cls()\n\n            d'
-            'ef __init__(self) -> None:\n                """Initialize the exa'
-            'mple."""\n        '
+            """\
+
+        class Example:
+            \"""Example demonstrating method organization metrics.\"""
+
+            def _helper(self, *, value: int) -> int:
+                \"""Return a private result.
+
+                Args:
+                    value: Value returned unchanged.
+
+                Returns:
+                    The given value.
+
+                \"""
+                return value
+
+            # Factory comment moves with the factory.
+            @classmethod
+            def create(cls, *, value: int) -> "Example":
+                \"""Create an example.
+
+                Args:
+                    value: Creation setting.
+
+                Returns:
+                    The new example.
+
+                \"""
+                return cls()
+
+            def __init__(self) -> None:
+                \"""Initialize the example.\"""
+        """
         ),
-    ).removeprefix("\n")
+    ).removeprefix("""\
+
+""")
 
 
 def main() -> int:
@@ -64,21 +86,17 @@ def main() -> int:
         source=Constants.source,
     )
     _ = stdout.write(
-        f"Before:\n\n"
-        f"{Constants.source}"
-        f"\nAfter:\n\n"
-        f"{result.source}"
-        f"\nMetrics: "
-        f"{result.metrics.methods_moved}"
-        f"/"
-        f"{result.metrics.methods_seen}"
-        f" methods moved across "
-        f"{result.metrics.classes_reordered}"
-        f"/"
-        f"{result.metrics.classes_seen}"
-        f" classes ("
-        f"{result.metrics.lines_moved}"
-        f" lines relocated)\n",
+        f"""\
+Before:
+
+{Constants.source}
+After:
+
+{result.source}
+Metrics: {result.metrics.methods_moved}/{result.metrics.methods_seen} methods \
+moved across {result.metrics.classes_reordered}/{result.metrics.classes_seen} \
+classes ({result.metrics.lines_moved} lines relocated)
+""",
     )
     return 0
 

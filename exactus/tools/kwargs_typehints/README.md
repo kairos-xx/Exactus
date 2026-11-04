@@ -8,10 +8,13 @@ observed by fuzzing builtin callables) next to the common `ARTIFACTS/stderr.log`
 and `@activity.json`. The inventory below documents every direct file and
 child directory.
 
-Assignments declaring `TypeVar` from `typing` or `typing_extensions` do
-not need a variable annotation. Direct imports, aliases and qualified
-module calls are recognized in both normal and strict modes. Ordinary
-variables still need annotations.
+Assignments declaring `TypeVar`, `ParamSpec`, `TypeVarTuple`,
+`TypeAliasType` or `NewType` from `typing` or `typing_extensions`, and
+implicit type aliases binding a type expression at module or class scope
+(`Alias = int`, `Alias = mod.Type`, `Alias = int | str`,
+`Alias = list[int]`), do not need a variable annotation. Direct imports,
+aliases and qualified module calls are recognized in both normal and
+strict modes. Ordinary variables still need annotations.
 
 ## Directory contents
 

@@ -42,7 +42,7 @@ def test_names_are_found_in_expressions_and_conditions() -> None:
     )
     expect_equal(
         actual=probe_names(condition="sel_a_other == 1"),
-        expected=frozenset(),
+        expected=frozenset[object](),
     )
 
 

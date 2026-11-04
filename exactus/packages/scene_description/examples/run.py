@@ -114,8 +114,10 @@ def main() -> None:
         encoding="utf-8",
     )
     _ = stdout.write(
-        f"enriched report: {root / 'report-described.json'}\n"
-        f"description:     {root / 'description.md'}\n",
+        f"""\
+enriched report: {root / "report-described.json"}
+description:     {root / "description.md"}
+""",
     )
 
 

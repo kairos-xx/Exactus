@@ -27,10 +27,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
-from typing import Final, Self, final
+from typing import TYPE_CHECKING, Final, Self, final
 
+if TYPE_CHECKING:
+    from exactus.tools.common.json_types import JsonValue
 type JsonScalar = bool | int | float | str | None
-type JsonValue = JsonScalar | list["JsonValue"] | dict[str, "JsonValue"]
 
 
 @final

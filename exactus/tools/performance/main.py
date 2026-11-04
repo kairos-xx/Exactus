@@ -15,7 +15,7 @@ from exactus.packages.performance.config import PerformanceConfig
 from exactus.packages.project_python import auto as _project_python_auto
 from exactus.packages.steps import step_log, trace
 from exactus.tools.common.cli import resolve_output
-from exactus.tools.common.config import resolve_arguments
+from exactus.tools.common.config import reports_root, resolve_arguments
 from exactus.tools.common.execution import run_exactus
 from exactus.tools.performance.arguments import create_parser as _create_parser
 from exactus.tools.reports.bundle import ReportBundle, ReportPaths
@@ -32,7 +32,6 @@ class Constants:
     """Hold the Exactus-specific performance defaults.
 
     Attributes:
-        default_sources: Result tree scanned for steps.txt traces.
         default_gap_threshold: Silent-gap threshold in seconds.
         default_repetition_threshold: Repeated-step count treated as a
             bottleneck.
@@ -40,7 +39,6 @@ class Constants:
 
     """
 
-    default_sources: tuple[str, ...] = ("EXACTUS_RESULTS",)
     default_gap_threshold: float = 0.25
     default_repetition_threshold: int = 10
     default_server_timeout: float = 10.0
@@ -101,7 +99,7 @@ def _data(
         "No steps.txt traces found."
         if slowest is None
         else (
-            f"{len(runs)} run{'s' if len(runs) != 1 else ''} profiled — "
+            f"{len(runs)} run{"s" if len(runs) != 1 else ""} profiled — "
             f"slowest {slowest.tool} {slowest.duration:.1f}s"
         )
     )
@@ -165,7 +163,7 @@ def main(*, arguments: tuple[str, ...] | None = None) -> int:
             project=root,
             sources=tuple(
                 cast(typ="list[str] | None", val=options.sources)
-                or Constants.default_sources,
+                or (str(object=reports_root(start=root)),),
             ),
             output=output_dir,
             serve=(
@@ -221,7 +219,7 @@ def main(*, arguments: tuple[str, ...] | None = None) -> int:
             data=_data(runs=runs, config=config, root=root),
         )
         trace(
-            step=(f"report: bundle written — {output_dir / 'result.md'}"),
+            step=(f"report: bundle written — {output_dir / "result.md"}"),
             depth=2,
         )
         trace(step=f"performance: run finished — status {status}")

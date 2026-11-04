@@ -111,7 +111,11 @@ def test_cli_field_override_preserves_other_pyproject_values(
 
     """
     (tmp_path / "pyproject.toml").write_text(
-        data='[tool.package.bundle]\nnode-version="23"\noptional=["jinja2"]\n',
+        data="""\
+[tool.package.bundle]
+node-version="23"
+optional=["jinja2"]
+""",
         encoding="utf-8",
     )
     captured: Capture = Capture()

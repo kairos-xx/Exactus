@@ -3,11 +3,14 @@
 
 from __future__ import annotations
 
+from concurrent.futures import ThreadPoolExecutor
 from importlib import import_module
 from os import getpid
+from pathlib import Path
 from subprocess import PIPE, Popen
 from sys import executable
 from textwrap import dedent
+from threading import Barrier
 from time import monotonic, sleep
 from typing import TYPE_CHECKING, cast
 
@@ -28,7 +31,6 @@ from exactus.tools.common import process_control as pc
 
 if TYPE_CHECKING:
     from collections.abc import Callable
-    from pathlib import Path
     from types import ModuleType
 
 
@@ -122,7 +124,12 @@ def test_parent_map_without_ps(monkeypatch: pytest.MonkeyPatch) -> None:
     class Done:
         """Canned ``ps`` result."""
 
-        stdout: str = "1 0\n 22 1\nbad line here\nx y\n"
+        stdout: str = """\
+1 0
+ 22 1
+bad line here
+x y
+"""
 
     monkeypatch.setattr(
         target=pc,
@@ -231,10 +238,19 @@ def test_parent_map_from_proc(
     """
     proc: Path = tmp_path / "proc"
     for name, status in {
-        "10": "Name: a\nPPid:\t1\n",
-        "11": "Name: b\n",
-        "12": "PPid: x\n",
-        "13": "PPid: 10\n",
+        "10": """\
+Name: a
+PPid:\t1
+""",
+        "11": """\
+Name: b
+""",
+        "12": """\
+PPid: x
+""",
+        "13": """\
+PPid: 10
+""",
     }.items():
         (proc / name).mkdir(parents=True)
         (proc / name / "status").write_text(data=status, encoding="utf-8")
@@ -268,9 +284,13 @@ def test_replaced_exactus_exits_with_notice() -> None:
     """
     script: str = dedent(
         text=(
-            "    import time\n    from exactus.__main__ import _install_signal"
-            "_handlers\n    _install_signal_handlers()\n    print('ready',flus"
-            "h=True)\n    time.sleep(60)\n    "
+            """\
+    import time
+    from exactus.__main__ import _install_signal_handlers
+    _install_signal_handlers()
+    print('ready',flush=True)
+    time.sleep(60)
+    """
         ),
     )
     process: Popen[bytes] = Popen(
@@ -319,3 +339,55 @@ def subsystem_contract(
         name="pc",
         value=implementation,
     )
+
+
+def test_atomic_json_writers_do_not_share_a_staging_file(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Concurrent owners keep independent staging files.
+
+    Args:
+        tmp_path: Isolated runtime state directory.
+        monkeypatch: Deterministic replace synchronization.
+
+    """
+    target: Path = tmp_path / "owner.json"
+    ready: Barrier = Barrier(parties=2, timeout=5.0)
+    staged: list[Path] = []
+    original: Callable[[Path, Path], Path] = Path.replace
+
+    def synchronized(self: Path, target: Path) -> Path:
+        """Synchronize both writers after each has flushed its payload.
+
+        Args:
+            self: Owned staging file.
+            target: Shared final state path.
+
+        Returns:
+            Replaced destination.
+
+        """
+        staged.append(self)
+        ready.wait()
+        return original(self, target)
+
+    def write(index: int, /) -> None:
+        """Write one competing state snapshot.
+
+        Args:
+            index: Writer identity.
+
+        """
+        pc.write_json(path=target, payload={"writer": index})
+
+    monkeypatch.setattr(target=Path, name="replace", value=synchronized)
+    pool: ThreadPoolExecutor
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        tuple(pool.map(write, range(2)))
+    expect_equal(actual=len(set(staged)), expected=2)
+    expect_in(
+        member=pc.read_json(path=target),
+        container=[{"writer": 0}, {"writer": 1}],
+    )
+    expect_false(condition=any(tmp_path.glob(pattern=".owner.json.*.tmp")))

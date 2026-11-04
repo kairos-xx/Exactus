@@ -36,54 +36,90 @@ class Constants:
     old: Final[str] = "abc_cde"
     new: Final[str] = "foo_bar"
     files: Final[dict[str, str]] = {
-        "pyproject.toml": '[project]\nname = "abc-cde"\n',
+        "pyproject.toml": """\
+[project]
+name = "abc-cde"
+""",
         "README.md": (
             dedent(
                 text=(
-                    "    # Abc Cde\n    \n    Install `abc-cde`, then run "
-                    "abc_cde.\n    AbcCde is the class.\n    "
+                    """\
+    # Abc Cde
+
+    Install `abc-cde`, then run abc_cde.
+    AbcCde is the class.
+    """
                 ),
             )
         ),
         "abc_cde/__init__.py": (
-            '"""abc_cde package."""\n\nABC_CDE = "abc-cde"\n'
+            """\
+\"""abc_cde package.\"""
+
+ABC_CDE = "abc-cde"
+"""
         ),
         "abc_cde/core.py": (
             dedent(
                 text=(
-                    "    from abc_cde import ABC_CDE\n    \n    \n    clas"
-                    's AbcCde:\n        """The abc_cde engine."""\n    \n '
-                    '       name = "abc_cde"\n    '
+                    """\
+    from abc_cde import ABC_CDE
+
+
+    class AbcCde:
+        \"""The abc_cde engine.\"""
+
+        name = "abc_cde"
+    """
                 ),
             )
         ),
         "web/index.html": (
             dedent(
                 text=(
-                    '    <title>Abc Cde</title>\n    <link rel="stylesheet'
-                    '" href="abc-cde.css">\n    <script src="/static/abc_c'
-                    'de.js"></script>\n    <p>abc cde documentation</p>\n '
-                    "   "
+                    """\
+    <title>Abc Cde</title>
+    <link rel="stylesheet" href="abc-cde.css">
+    <script src="/static/abc_cde.js"></script>
+    <p>abc cde documentation</p>
+    """
                 ),
             )
         ),
-        "web/abc-cde.css": ".abc-cde { color: red }\n/* abc cde */\n",
+        "web/abc-cde.css": """\
+.abc-cde { color: red }
+/* abc cde */
+""",
         "web/abc_cde.js": (
             dedent(
                 text=(
-                    "    const abcCde = new AbcCde();\n    // abc_cde clie"
-                    "nt\n    const url = 'https://example.com/abc-cde/api'"
-                    ";\n    "
+                    """\
+    const abcCde = new AbcCde();
+    // abc_cde client
+    const url = 'https://example.com/abc-cde/api';
+    """
                 ),
             )
         ),
-        "config/settings.json": '{"name": "abc-cde", "module": "abc_cde"}\n',
+        "config/settings.json": """\
+{"name": "abc-cde", "module": "abc_cde"}
+""",
         "config/settings.xml": (
-            "<project><name>Abc Cde</name><id>abc-cde</id></project>\n"
+            """\
+<project><name>Abc Cde</name><id>abc-cde</id></project>
+"""
         ),
-        "config/data.csv": "name,module\nabc cde,abc_cde\n",
-        "db/schema.sql": "-- abc_cde schema\nSELECT 1;\n",
-        "exactus/docs/abc_cde.md": "See abc_cde and ABC CDE.\n",
+        "config/data.csv": """\
+name,module
+abc cde,abc_cde
+""",
+        "db/schema.sql": """\
+-- abc_cde schema
+SELECT 1;
+""",
+        "exactus/docs/abc_cde.md": """\
+See abc_cde and ABC CDE.
+""",
     }
 
 

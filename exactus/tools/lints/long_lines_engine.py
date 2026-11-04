@@ -734,17 +734,17 @@ class LongLineFixer:
 
     @staticmethod
     def _syntax_valid(source: str) -> bool:
-        """Return whether source parses as Python.
+        """Return whether source compiles as Python.
 
         Args:
             source: Candidate Python source.
 
         Returns:
-            ``True`` when the source parses.
+            ``True`` when the source compiles, including future imports.
 
         """
         try:
-            parse(source=source)
+            compile(source=source, filename="<long-lines>", mode="exec")
         except SyntaxError:
             return False
         return True
@@ -1023,11 +1023,11 @@ class LongLineFixer:
 
         """
         return f"{quote}{
-            value.replace('\\', '\\\\')
-            .replace('\n', '\\n')
-            .replace('\r', '\\r')
-            .replace('\t', '\\t')
-            .replace(quote, f'\\{quote}')
+            value.replace("\\", "\\\\")
+            .replace("\n", "\\n")
+            .replace("\r", "\\r")
+            .replace("\t", "\\t")
+            .replace(quote, f"\\{quote}")
         }{quote}"
 
     @staticmethod
@@ -1212,7 +1212,12 @@ class LongLineFixer:
         """
         offsets: list[int] = [0]
         for index, char in enumerate(iterable=source):
-            if char == "\n":
+            if (
+                char
+                == """\
+
+"""
+            ):
                 offsets.append(index + 1)
         return tuple(offsets)
 
@@ -1368,11 +1373,13 @@ class LongLineFixer:
         return CandidateScore(
             syntax_error=0 if self._syntax_valid(source=candidate) else 1,
             semantic_change=0
-            if self._same_ast(before=original, after=candidate)
+            if original == candidate
+            or self._same_ast(before=original, after=candidate)
             or self._same_code_ast(before=original, after=candidate)
             else 1,
             protected_change=0
-            if self._protected_text(source=original)
+            if original == candidate
+            or self._protected_text(source=original)
             == self._protected_text(source=candidate)
             else 1,
             e501_count=len(diagnostics)
@@ -1386,8 +1393,12 @@ class LongLineFixer:
                 )
                 for line in candidate.splitlines()
             ),
-            explicit_continuations=candidate.count("\\\n"),
-            changed_characters=sum(
+            explicit_continuations=candidate.count("""\
+\\
+"""),
+            changed_characters=0
+            if original == candidate
+            else sum(
                 (
                     max(
                         sum((len(line) for line in original_lines[i1:i2])),
@@ -1610,7 +1621,9 @@ class LongLineFixer:
         for line_number in self._long_lines(source=source):
             index: int = line_number - 1
             line: str = lines[index]
-            body: str = line.rstrip("\r\n")
+            body: str = line.rstrip("""\
+\r
+""")
             newline: str = line[len(body) :]
             stripped: str = body.lstrip()
             indent: str = body[: len(body) - len(stripped)]
@@ -1634,7 +1647,10 @@ class LongLineFixer:
             if any(not part for part in parts):
                 continue
             lines[index] = (
-                "\n".join(f"{indent}{part}" for part in parts) + newline
+                """\
+
+""".join(f"{indent}{part}" for part in parts)
+                + newline
             )
             candidate: str = "".join(lines)
             if self._same_ast(before=source, after=candidate):
@@ -1696,7 +1712,9 @@ class LongLineFixer:
             code: str = line[: token.start[1]].rstrip()
             if not code or self._is_directive(comment=token.string):
                 continue
-            body: str = line.rstrip("\r\n")
+            body: str = line.rstrip("""\
+\r
+""")
             newline: str = line[len(body) :]
             indent: str = body[: len(body) - len(body.lstrip())]
             lines[index] = f"{indent}{token.string}{newline}{code}{newline}"
@@ -1720,7 +1738,9 @@ class LongLineFixer:
         for line_number in self._long_lines(source=source):
             index: int = line_number - 1
             line: str = lines[index]
-            body: str = line.rstrip("\r\n")
+            body: str = line.rstrip("""\
+\r
+""")
             newline: str = line[len(body) :]
             stripped: str = body.lstrip()
             indent: str = body[: len(body) - len(stripped)]
@@ -1738,7 +1758,10 @@ class LongLineFixer:
             if len(pieces) < Constants.min_split_parts:
                 continue
             lines[index] = (
-                "\n".join(f"{indent}# {piece}" for piece in pieces) + newline
+                """\
+
+""".join(f"{indent}# {piece}" for piece in pieces)
+                + newline
             )
             candidate: str = "".join(lines)
             if self._same_ast(before=source, after=candidate):
@@ -1845,9 +1868,17 @@ class LongLineFixer:
         rendered_content: str = rendered_lines[0]
         for rendered_line in rendered_lines[1:]:
             rendered_content += (
-                f"\n{base_indent}{rendered_line}" if rendered_line else "\n"
+                f"""\
+
+{base_indent}{rendered_line}"""
+                if rendered_line
+                else """\
+
+"""
             )
-        rendered_content += f"\n{base_indent}"
+        rendered_content += f"""\
+
+{base_indent}"""
         return Edit(
             start=start,
             end=end,
@@ -1911,7 +1942,9 @@ class LongLineFixer:
                     width=width,
                 )
             )
-        return "\n".join(result)
+        return """\
+
+""".join(result)
 
     def _reflow_structural(
         self,
@@ -2140,12 +2173,15 @@ class LongLineFixer:
                     edit=Edit(
                         start=offsets[token.start[0] - 1] + token.start[1],
                         end=offsets[token.end[0] - 1] + token.end[1],
-                        replacement="(\n"
-                        + "\n".join(
-                            f"""{indent}{self._quote(value=part, quote='"')}"""
-                            for part in parts
-                        )
-                        + f"\n{statement_indent})",
+                        replacement="""\
+(
+"""
+                        + """\
+
+""".join(f"""{indent}{self._quote(value=part, quote='"')}""" for part in parts)
+                        + f"""\
+
+{statement_indent})""",
                         reason="split-multiline-string",
                     ),
                 )
@@ -2193,9 +2229,15 @@ class LongLineFixer:
         return Edit(
             start=offsets[token.start[0] - 1] + token.start[1],
             end=offsets[token.end[0] - 1] + token.end[1],
-            replacement="(\n"
-            + "\n".join(f"{indent}{chunk!r}" for chunk in chunks)
-            + f"\n{statement_indent})",
+            replacement="""\
+(
+"""
+            + """\
+
+""".join(f"{indent}{chunk!r}" for chunk in chunks)
+            + f"""\
+
+{statement_indent})""",
             reason="split-multiline-bytes",
         )
 
@@ -2218,8 +2260,19 @@ class LongLineFixer:
         for line in value.splitlines(keepends=True):
             newline_length: int = (
                 2
-                if line.endswith("\r\n")
-                else int(line.endswith(("\n", "\r")))
+                if line.endswith("""\
+\r
+""")
+                else int(
+                    line.endswith(
+                        (
+                            """\
+
+""",
+                            "\r",
+                        ),
+                    ),
+                )
             )
             body: str = line[:-newline_length] if newline_length else line
             ending: str = line[-newline_length:] if newline_length else ""
@@ -2301,12 +2354,18 @@ class LongLineFixer:
         return Edit(
             start=offsets[token.start[0] - 1] + token.start[1],
             end=offsets[token.end[0] - 1] + token.end[1],
-            replacement="(\n"
-            + "\n".join(
+            replacement="""\
+(
+"""
+            + """\
+
+""".join(
                 f"{indent}    {self._quote(value=part, quote=quote)}"
                 for part in parts
             )
-            + f"\n{indent})",
+            + f"""\
+
+{indent})""",
             reason="split-string",
         )
 
@@ -2406,9 +2465,11 @@ class LongLineFixer:
             continuation: str = indent + " " * 4
             left: str = source[literal_start:absolute] + quote
             right: str = prefix + quote + source[absolute:literal_end]
-            replacement: str = (
-                f"(\n{continuation}{left}\n{continuation}{right}\n{indent})"
-            )
+            replacement: str = f"""\
+(
+{continuation}{left}
+{continuation}{right}
+{indent})"""
             candidate: str = (
                 source[:literal_start] + replacement + source[literal_end:]
             )
@@ -2603,7 +2664,9 @@ class LongLineFixer:
         for line_number in self._long_lines(source=source):
             index: int = line_number - 1
             line: str = lines[index]
-            body: str = line.rstrip("\r\n")
+            body: str = line.rstrip("""\
+\r
+""")
             newline: str = line[len(body) :]
             stripped: str = body.lstrip()
             indent: str = body[: len(body) - len(stripped)]
@@ -2629,9 +2692,15 @@ class LongLineFixer:
             pieces.append(chain[start:])
             continuation: str = indent + "    "
             lines[index] = (
-                f"{indent}{prefix}(\n"
-                + "\n".join(f"{continuation}{piece}" for piece in pieces)
-                + f"\n{indent}){newline}"
+                f"""\
+{indent}{prefix}(
+"""
+                + """\
+
+""".join(f"{continuation}{piece}" for piece in pieces)
+                + f"""\
+
+{indent}){newline}"""
             )
             candidate: str = "".join(lines)
             if self._same_ast(before=source, after=candidate):
@@ -2653,7 +2722,9 @@ class LongLineFixer:
         for line_number in self._long_lines(source=source):
             index: int = line_number - 1
             line: str = lines[index]
-            body: str = line.rstrip("\r\n")
+            body: str = line.rstrip("""\
+\r
+""")
             newline: str = line[len(body) :]
             stripped: str = body.lstrip()
             indent: str = body[: len(body) - len(stripped)]
@@ -2662,9 +2733,9 @@ class LongLineFixer:
                 right: str = stripped[boundary:].lstrip()
                 if not left or not right:
                     continue
-                lines[index] = (
-                    f"{indent}{left} \\\n{indent}    {right}{newline}"
-                )
+                lines[index] = f"""\
+{indent}{left} \\
+{indent}    {right}{newline}"""
                 candidate: str = "".join(lines)
                 if self._same_ast(before=source, after=candidate):
                     return candidate
@@ -2742,7 +2813,9 @@ class LongLineFixer:
         for line_number in self._long_lines(source=source):
             index: int = line_number - 1
             line: str = lines[index]
-            body: str = line.rstrip("\r\n")
+            body: str = line.rstrip("""\
+\r
+""")
             newline: str = line[len(body) :]
             stripped: str = body.lstrip()
             indent: str = body[: len(body) - len(stripped)]

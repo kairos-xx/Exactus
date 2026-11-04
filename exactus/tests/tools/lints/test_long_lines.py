@@ -41,6 +41,7 @@ from exactus.tests.common.support import (
     require_type,
 )
 from exactus.tools.lints import long_lines as long_lines_module
+from exactus.tools.lints import long_lines_engine as engine
 from exactus.tools.lints.long_lines import (
     BatchResult,
     LongLineFixer,
@@ -51,6 +52,7 @@ from exactus.tools.lints.long_lines import (
     Settings,
     TextResult,
 )
+from exactus.tools.lints.long_lines_engine import CandidateScore
 
 
 @final
@@ -69,11 +71,28 @@ class Constants:
 
     docstring_width: Final[int] = 70
     hook_width: Final[int] = 50
-    long_value: Final[str] = 'value = "' + "word " * 30 + '"\n'
-    nl: Final[str] = "\n"
+    long_value: Final[str] = (
+        'value = "'
+        + "word " * 30
+        + """\
+"
+"""
+    )
+    nl: Final[str] = """\
+
+"""
     repair_sources: Final[tuple[str, ...]] = (
-        'value = "' + "alpha beta gamma " * 5 + '"\n',
-        'value = """' + "alpha beta gamma " * 5 + '\nsecond"""\n',
+        'value = "'
+        + "alpha beta gamma " * 5
+        + """\
+"
+""",
+        'value = """'
+        + "alpha beta gamma " * 5
+        + """\
+
+second\"""
+""",
         nl.join(
             (
                 (
@@ -90,7 +109,9 @@ class Constants:
                 "",
             ),
         ),
-        "from package.long_name.subpackage.other_name import first, second\n",
+        """\
+from package.long_name.subpackage.other_name import first, second
+""",
         nl.join(
             (
                 (
@@ -111,8 +132,12 @@ class Constants:
                 "",
             ),
         ),
-        "a = 1; b = 2; c = 3; d = 4; e = 5; f = 6; g = 7; h = 8; i = 9\n",
-        "value: dict[str, tuple[int, str, bytes, float, complex, bool]]\n",
+        """\
+a = 1; b = 2; c = 3; d = 4; e = 5; f = 6; g = 7; h = 8; i = 9
+""",
+        """\
+value: dict[str, tuple[int, str, bytes, float, complex, bool]]
+""",
         nl.join(
             (
                 "@decorator_with_a_very_long_name(first_argument, second)",
@@ -138,13 +163,32 @@ class Constants:
                 "",
             ),
         ),
-        'value = b"""' + "abcdefghij" * 10 + '"""\n',
-        "value = first_value + second_value + third_value + fourth_value\n",
+        'value = b"""'
+        + "abcdefghij" * 10
+        + """\
+\"""
+""",
+        """\
+value = first_value + second_value + third_value + fourth_value
+""",
     )
     concat_sources: Final[tuple[str, ...]] = (
-        'value = "' + "alpha beta gamma " * 5 + '"\n',
-        'value = """' + "alpha beta gamma " * 5 + '\nsecond"""\n',
-        'value = b"""' + "abcdefghij" * 10 + '"""\n',
+        'value = "'
+        + "alpha beta gamma " * 5
+        + """\
+"
+""",
+        'value = """'
+        + "alpha beta gamma " * 5
+        + """\
+
+second\"""
+""",
+        'value = b"""'
+        + "abcdefghij" * 10
+        + """\
+\"""
+""",
         nl.join(
             (
                 (
@@ -156,7 +200,10 @@ class Constants:
         ),
         'result = some_function(argument_name="""'
         + "alpha beta gamma " * 5
-        + '\nsecond""", other=flag)\n',
+        + """\
+
+second\""", other=flag)
+""",
         nl.join(
             (
                 (
@@ -315,7 +362,13 @@ def test_every_repair_family_preserves_the_ast(source: str) -> None:
 
 def test_trailing_comment_is_hoisted_above_the_statement() -> None:
     """A comment that makes a line too long moves above its statement."""
-    source: str = "value = compute(argument)  # " + "explain " * 6 + "\n"
+    source: str = (
+        "value = compute(argument)  # "
+        + "explain " * 6
+        + """\
+
+"""
+    )
     result: TextResult = _fixer(width=50).transform_text(source=source)
     first: str = result.source.splitlines()[0]
     expect_true(condition=first.startswith("# explain"))
@@ -326,16 +379,27 @@ def test_trailing_comment_is_hoisted_above_the_statement() -> None:
 def test_directive_comments_stay_on_their_line() -> None:
     """Pragma comments are never hoisted or wrapped."""
     source: str = (
-        f"value = compute(argument)  # {'type'}: ignore[arg-type]  "
+        f"value = compute(argument)  # {"type"}: ignore[arg-type]  "
     ) + "x" * 40
-    result: TextResult = _fixer(width=40).transform_text(source=source + "\n")
-    expect_in(member=f"# {'type'}: ignore[arg-type]", container=result.source)
+    result: TextResult = _fixer(width=40).transform_text(
+        source=source
+        + """\
+
+""",
+    )
+    expect_in(member=f"# {"type"}: ignore[arg-type]", container=result.source)
     expect_equal(actual=len(result.source.splitlines()), expected=1)
 
 
 def test_standalone_comment_wraps() -> None:
     """A long standalone comment becomes several comment lines."""
-    source: str = "# " + "many words " * 10 + "\n"
+    source: str = (
+        "# "
+        + "many words " * 10
+        + """\
+
+"""
+    )
     result: TextResult = _fixer(width=40).transform_text(source=source)
     expect_true(condition=len(result.source.splitlines()) > 1)
     expect_true(
@@ -382,7 +446,19 @@ def test_docstring_reflow_keeps_summary_and_fields() -> None:
 def test_fmt_off_regions_are_protected() -> None:
     """Lines inside a fmt-off region are reported, never rewritten."""
     source: str = (
-        "# fmt: off\n" + ("x = " + "1 + " * 12 + "1\n") + "# fmt: on\n"
+        """\
+# fmt: off
+"""
+        + (
+            "x = "
+            + "1 + " * 12
+            + """\
+1
+"""
+        )
+        + """\
+# fmt: on
+"""
     )
     result: TextResult = _fixer(width=40).transform_text(source=source)
     expect_equal(actual=result.source, expected=source)
@@ -400,7 +476,13 @@ def test_fmt_off_regions_are_protected() -> None:
 
 def test_unbreakable_line_is_reported() -> None:
     """A single long name cannot be split and is classified as unfixable."""
-    source: str = "x = " + "a" * 60 + " + b\n"
+    source: str = (
+        "x = "
+        + "a" * 60
+        + """\
+ + b
+"""
+    )
     result: TextResult = _fixer(width=40).transform_text(source=source)
     expect_true(condition=bool(result.unresolved_lines))
     expect_equal(
@@ -414,11 +496,19 @@ def test_ruff_exempt_lines_are_not_reported() -> None:
     source: str = (
         "# https://example.com/"
         + "p" * 60
-        + (f"\nx = 1  # {'no'}qa: E501 ")
+        + (
+            f"""\
+
+x = 1  # {"no"}qa: E501 """
+        )
         + "y" * 60
-        + "\nword_"
+        + """\
+
+word_"""
         + "w" * 60
-        + "\n"
+        + """\
+
+"""
     )
     result: TextResult = _fixer(width=40).transform_text(source=source)
     expect_equal(actual=result.unresolved_lines, expected=())
@@ -486,11 +576,9 @@ def test_encoding_cookie_is_preserved(tmp_path: Path) -> None:
 
     """
     path: Path = tmp_path / "a.py"
-    source: str = "# -*- coding: latin-1 -*-\n" + Constants.long_value.replace(
-        "w",
-        "á",
-        count=1,
-    )
+    source: str = """\
+# -*- coding: latin-1 -*-
+""" + Constants.long_value.replace("w", "á", count=1)
     _ = path.write_bytes(data=source.encode(encoding="latin-1"))
     _ = LongLinesAPI.fix_file(
         path=path,
@@ -578,11 +666,21 @@ def test_discover_skips_hidden_and_build_directories(tmp_path: Path) -> None:
 
     """
     good: Path = tmp_path / "a.py"
-    _ = good.write_text(data="x = 1\n", encoding="utf-8")
+    _ = good.write_text(
+        data="""\
+x = 1
+""",
+        encoding="utf-8",
+    )
     for name in (".hidden", "build", "exactus/bundle"):
         folder: Path = tmp_path / name
         folder.mkdir(parents=True)
-        _ = (folder / "skip.py").write_text(data="x = 1\n", encoding="utf-8")
+        _ = (folder / "skip.py").write_text(
+            data="""\
+x = 1
+""",
+            encoding="utf-8",
+        )
     expect_equal(
         actual=LongLinesAPI.discover(paths=(tmp_path,)),
         expected=(good,),
@@ -605,14 +703,22 @@ def test_line_length_falls_back_to_pyproject(
     package: Path = tmp_path / "pkg"
     package.mkdir()
     path: Path = package / "a.py"
-    _ = path.write_text(data="x = 1\n", encoding="utf-8")
+    _ = path.write_text(
+        data="""\
+x = 1
+""",
+        encoding="utf-8",
+    )
     expect_equal(
         actual=LongLinesAPI.resolve_line_length(file_path=path),
         expected=79,
     )
     config: Path = tmp_path / "pyproject.toml"
     _ = config.write_text(
-        data="[tool.ruff]\nline-length = 101\n",
+        data="""\
+[tool.ruff]
+line-length = 101
+""",
         encoding="utf-8",
     )
     expect_equal(
@@ -624,14 +730,23 @@ def test_line_length_falls_back_to_pyproject(
         expected=101,
     )
     _ = config.write_text(
-        data="[tool.ruff.format]\nline-width = 93\n",
+        data="""\
+[tool.ruff.format]
+line-width = 93
+""",
         encoding="utf-8",
     )
     expect_equal(
         actual=LongLinesAPI.resolve_line_length(file_path=path),
         expected=93,
     )
-    _ = config.write_text(data="[tool]\nruff = 1\n", encoding="utf-8")
+    _ = config.write_text(
+        data="""\
+[tool]
+ruff = 1
+""",
+        encoding="utf-8",
+    )
     expect_equal(
         actual=LongLinesAPI.resolve_line_length(file_path=path),
         expected=79,
@@ -650,8 +765,16 @@ def test_line_length_reads_ruff_show_settings(
 
     """
     path: Path = tmp_path / "a.py"
-    _ = path.write_text(data="x = 1\n", encoding="utf-8")
-    output: str = "linter.line_length = 88\nlinter.other = 120\n"
+    _ = path.write_text(
+        data="""\
+x = 1
+""",
+        encoding="utf-8",
+    )
+    output: str = """\
+linter.line_length = 88
+linter.other = 120
+"""
     monkeypatch.setattr(
         target=long_lines_module,
         name="run",
@@ -682,7 +805,12 @@ def test_ruff_e501_rows_come_from_the_ruff_report(
 
     """
     path: Path = tmp_path / "a.py"
-    _ = path.write_text(data="x = 1\n", encoding="utf-8")
+    _ = path.write_text(
+        data="""\
+x = 1
+""",
+        encoding="utf-8",
+    )
     payload: str = dumps(
         obj=[
             {"code": "E501", "location": {"row": 4}},
@@ -743,7 +871,10 @@ def test_batch_fix_resolves_width_once_per_configuration(
     """
     _no_ruff(monkeypatch=monkeypatch)
     _ = (tmp_path / "pyproject.toml").write_text(
-        data="[tool.ruff]\nline-length = 50\n",
+        data="""\
+[tool.ruff]
+line-length = 50
+""",
         encoding="utf-8",
     )
     paths: list[Path] = []
@@ -792,7 +923,10 @@ def test_repair_hook_fixes_files_and_summarizes(
     """
     _no_ruff(monkeypatch=monkeypatch)
     _ = (tmp_path / "pyproject.toml").write_text(
-        data="[tool.ruff]\nline-length = 50\n",
+        data="""\
+[tool.ruff]
+line-length = 50
+""",
         encoding="utf-8",
     )
     fixable: Path = tmp_path / "fixable.py"
@@ -800,8 +934,20 @@ def test_repair_hook_fixes_files_and_summarizes(
     stuck: Path = tmp_path / "stuck.py"
     broken: Path = tmp_path / "broken.py"
     _ = fixable.write_text(data=Constants.long_value, encoding="utf-8")
-    _ = clean.write_text(data="x = 1\n", encoding="utf-8")
-    _ = stuck.write_text(data="x = " + "a" * 70 + " + b\n", encoding="utf-8")
+    _ = clean.write_text(
+        data="""\
+x = 1
+""",
+        encoding="utf-8",
+    )
+    _ = stuck.write_text(
+        data="x = "
+        + "a" * 70
+        + """\
+ + b
+""",
+        encoding="utf-8",
+    )
     _ = broken.write_bytes(data=b"# coding: nosuchcodec\nx = 1\n")
     repair: LongLineRepair = LongLineRepair()
     for path in (fixable, clean, stuck, broken):
@@ -883,7 +1029,9 @@ def _long_source() -> str:
     return (
         "value = "
         + " + ".join((f"first_operand_{index}") for index in range(12))
-        + "\n"
+        + """\
+
+"""
     )
 
 
@@ -897,7 +1045,12 @@ def test_batched_e501_rows_report_only_long_files(tmp_path: Path) -> None:
     long_file: Path = tmp_path / "long.py"
     clean_file: Path = tmp_path / "clean.py"
     _ = long_file.write_text(data=_long_source(), encoding="utf-8")
-    _ = clean_file.write_text(data="value = 1\n", encoding="utf-8")
+    _ = clean_file.write_text(
+        data="""\
+value = 1
+""",
+        encoding="utf-8",
+    )
     rows: dict[Path, frozenset[int]] = LongLinesAPI.ruff_e501_rows_many(
         paths=(long_file, clean_file),
         ruff_command=_ruff(),
@@ -938,7 +1091,12 @@ def test_batched_e501_rows_tolerate_bad_ruff_output(
 
     """
     source: Path = tmp_path / "a.py"
-    _ = source.write_text(data="x = 1\n", encoding="utf-8")
+    _ = source.write_text(
+        data="""\
+x = 1
+""",
+        encoding="utf-8",
+    )
     expect_equal(
         actual=LongLinesAPI.ruff_e501_rows_many(
             paths=(source,),
@@ -972,7 +1130,12 @@ def test_repair_many_rewrites_long_files_only(tmp_path: Path) -> None:
     long_file: Path = tmp_path / "long.py"
     clean_file: Path = tmp_path / "clean.py"
     _ = long_file.write_text(data=_long_source(), encoding="utf-8")
-    _ = clean_file.write_text(data="value = 1\n", encoding="utf-8")
+    _ = clean_file.write_text(
+        data="""\
+value = 1
+""",
+        encoding="utf-8",
+    )
     repair: LongLineRepair = LongLineRepair(ruff_command=_ruff())
     repair.repair_many(paths=(long_file, clean_file))
     summary: RepairSummary = repair.summary()
@@ -996,3 +1159,72 @@ def test_single_file_repair_records_changes_and_skips(tmp_path: Path) -> None:
     summary: RepairSummary = repair.summary()
     expect_in(member=long_file, container=summary.repaired)
     expect_in(member=missing, container=summary.skipped)
+
+
+def test_scoring_identical_source_avoids_diff(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """An unchanged baseline never invokes the quadratic diff matcher.
+
+    Args:
+        monkeypatch: Pytest patching helper.
+
+    """
+
+    def unexpected_diff(*_args: object, **_kwargs: object) -> NoReturn:
+        """Reject redundant comparison of identical sources.
+
+        Args:
+            _args: Unexpected positional arguments.
+            _kwargs: Unexpected keyword arguments.
+
+        Raises:
+            AssertionError: Whenever called.
+
+        """
+        msg: str = "identical source must not be diffed"
+        raise AssertionError(msg)
+
+    monkeypatch.setattr(
+        target=engine,
+        name="SequenceMatcher",
+        value=unexpected_diff,
+    )
+    fixer: LongLineFixer = LongLineFixer(settings=Settings(run_ruff=False))
+    source: str = (
+        """\
+value = 1
+"""
+        * 100
+    )
+    score: CandidateScore = require_type(
+        value=private_call(
+            owner=fixer,
+            name="_score",
+            original=source,
+            candidate=source,
+            path=Path("baseline.py"),
+        ),
+        kind=CandidateScore,
+    )
+    expect_equal(actual=score.changed_characters, expected=0)
+
+
+def test_repair_rejects_invalid_future_import_placement() -> None:
+    """AST parsing alone must not accept code that Python cannot compile."""
+    source: str = """\
+"first"
+"second"
+from __future__ import annotations
+"""
+    fixer: LongLineFixer = LongLineFixer(settings=Settings(run_ruff=False))
+    expect_false(
+        condition=require_type(
+            value=private_call(
+                owner=fixer,
+                name="_syntax_valid",
+                source=source,
+            ),
+            kind=bool,
+        ),
+    )

@@ -111,7 +111,7 @@ def _export_workspace(
                 flow_id=flow_id,
                 name=cast(typ="str", val=options.flow_name),
                 events=events,
-                notes=f"Recorded from {options.url or 'Exactus Record'}.",
+                notes=f"Recorded from {options.url or "Exactus Record"}.",
             ),
         ],
     )

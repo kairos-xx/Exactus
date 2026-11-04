@@ -18,7 +18,7 @@ from exactus.tools.common.cli import (
     match_path,
     resolve_output,
 )
-from exactus.tools.common.config import resolve_arguments
+from exactus.tools.common.config import ConfigResolver, resolve_arguments
 from exactus.tools.common.execution import run_exactus
 from exactus.tools.kwargs_typehints.arguments import (
     create_parser as _create_parser,
@@ -53,12 +53,14 @@ class PathScope:
         root: Project root the globs are relative to.
         includes: Globs a path must match, when any are given.
         excludes: Globs rejecting a path (the defaults always apply).
+        resolver: Per-run directory-scoped configuration owner.
 
     """
 
     root: Path
     includes: tuple[str, ...]
     excludes: tuple[str, ...]
+    resolver: ConfigResolver | None = None
 
     def __call__(self: Self, path: Path) -> bool:
         """Return whether a discovered file is in scope.
@@ -71,6 +73,8 @@ class PathScope:
 
         """
         return match_path(
+            resolver=self.resolver,
+            tool="kwargs_typehints",
             path=path,
             root=self.root,
             includes=self.includes,
@@ -168,6 +172,7 @@ def main(*, arguments: tuple[str, ...] | None = None) -> int:
                 *bare_import_args,
             ),
             path_filter=PathScope(
+                resolver=ConfigResolver(root=root),
                 root=root,
                 includes=includes,
                 excludes=excludes,

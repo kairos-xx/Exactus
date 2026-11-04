@@ -75,11 +75,16 @@ def _round_trip(*, directory: Path) -> None:
     compressed: Path = directory / "example.bin.zst"
     restored: Path = directory / "example.restored.bin"
     stdout.write(
-        f"Creating exactly {Constants.source_size // Constants.mib} MiB of"
-        " binary data...\n",
+        f"""\
+Creating exactly {Constants.source_size // Constants.mib} MiB of binary \
+data...
+""",
     )
     create_binary(target=source)
-    stdout.write(f"Source: {source} ({source.stat().st_size:,} bytes)\n\n")
+    stdout.write(f"""\
+Source: {source} ({source.stat().st_size:,} bytes)
+
+""")
     options: ZstdOptions = ZstdOptions(
         expected_size=source.stat().st_size,
         progress=progress,
@@ -90,9 +95,14 @@ def _round_trip(*, directory: Path) -> None:
     ):
         while chunk := input_stream.read(Constants.chunk_size):
             archive.write(chunk)
-    stdout.write("\n")
+    stdout.write("""\
+
+""")
     stdout.write(
-        f"Compressed: {compressed} ({compressed.stat().st_size:,} bytes)\n\n",
+        f"""\
+Compressed: {compressed} ({compressed.stat().st_size:,} bytes)
+
+""",
     )
     with (
         Zstd(
@@ -104,12 +114,18 @@ def _round_trip(*, directory: Path) -> None:
     ):
         while chunk := archive.read(size=Constants.chunk_size):
             output.write(chunk)
-    stdout.write("\n")
-    stdout.write(f"Restored: {restored} ({restored.stat().st_size:,} bytes)\n")
+    stdout.write("""\
+
+""")
+    stdout.write(f"""\
+Restored: {restored} ({restored.stat().st_size:,} bytes)
+""")
     if source.read_bytes() != restored.read_bytes():
         msg: str = "Round-trip verification failed."
         raise RuntimeError(msg)
-    stdout.write("Round-trip verification: PASS\n")
+    stdout.write("""\
+Round-trip verification: PASS
+""")
 
 
 def main(*, directory: Path | None = None) -> None:

@@ -17,8 +17,8 @@ from exactus.packages.completion.install import (
     InstallResult,
     InstallStatus,
     ShellDiagnosis,
-    _block_begin,
-    _block_end,
+    block_begin,
+    block_end,
     diagnose,
     install,
     uninstall,
@@ -59,17 +59,17 @@ class Constants:
     """Group module-level constants.
 
     Attributes:
-        block_begin: Grouped module constant.
-        block_end: Grouped module constant.
-        check_begin: Grouped module constant.
-        check_end: Grouped module constant.
+        block_begin_str: Grouped module constant.
+        block_end_str: Grouped module constant.
+        check_begin_str: Grouped module constant.
+        check_end_str: Grouped module constant.
 
     """
 
-    block_begin: Final[str] = _block_begin(command_name="exactus")
-    block_end: Final[str] = _block_end(command_name="exactus")
-    check_begin: Final[str] = _block_begin(command_name="check")
-    check_end: Final[str] = _block_end(command_name="check")
+    block_begin_str: Final[str] = block_begin(command_name="exactus")
+    block_end_str: Final[str] = block_end(command_name="exactus")
+    check_begin_str: Final[str] = block_begin(command_name="check")
+    check_end_str: Final[str] = block_end(command_name="check")
 
 
 if TYPE_CHECKING:
@@ -323,7 +323,7 @@ def test_install_and_uninstall_bash(tmp_path: Path) -> None:
     )
     expect_true(condition=removed.changed)
     expect_not_in(
-        member=Constants.check_begin,
+        member=Constants.check_begin_str,
         container=result.path.read_text(encoding="utf-8"),
     )
 
@@ -356,7 +356,12 @@ def test_install_refuses_foreign_file(tmp_path: Path) -> None:
     """
     target: Path = tmp_path / ".config" / "fish" / "completions" / "check.fish"
     target.parent.mkdir(parents=True)
-    _ = target.write_text(data="# user content\n", encoding="utf-8")
+    _ = target.write_text(
+        data="""\
+# user content
+""",
+        encoding="utf-8",
+    )
     result: InstallResult = install(
         shell=CompletionShell.FISH,
         command_name="check",
@@ -367,7 +372,9 @@ def test_install_refuses_foreign_file(tmp_path: Path) -> None:
     expect_equal(actual=result.status, expected=InstallStatus.BROKEN)
     expect_equal(
         actual=target.read_text(encoding="utf-8"),
-        expected="# user content\n",
+        expected="""\
+# user content
+""",
     )
 
 
@@ -380,7 +387,12 @@ def test_uninstall_refuses_foreign_file(tmp_path: Path) -> None:
     """
     target: Path = tmp_path / ".config" / "fish" / "completions" / "check.fish"
     target.parent.mkdir(parents=True)
-    _ = target.write_text(data="# user content\n", encoding="utf-8")
+    _ = target.write_text(
+        data="""\
+# user content
+""",
+        encoding="utf-8",
+    )
     result: InstallResult = uninstall(
         shell=CompletionShell.FISH,
         command_name="check",
@@ -405,7 +417,10 @@ def test_powershell_profile_block_lifecycle(tmp_path: Path) -> None:
     )
     profile.parent.mkdir(parents=True)
     _ = profile.write_text(
-        data="# my profile\nSet-StrictMode\n",
+        data="""\
+# my profile
+Set-StrictMode
+""",
         encoding="utf-8",
     )
     result: InstallResult = install(
@@ -416,7 +431,7 @@ def test_powershell_profile_block_lifecycle(tmp_path: Path) -> None:
     )
     expect_true(condition=result.changed)
     text: str = profile.read_text(encoding="utf-8")
-    expect_in(member=Constants.check_begin, container=text)
+    expect_in(member=Constants.check_begin_str, container=text)
     expect_in(member="Set-StrictMode", container=text)
     removed: InstallResult = uninstall(
         shell=CompletionShell.POWERSHELL,
@@ -425,7 +440,7 @@ def test_powershell_profile_block_lifecycle(tmp_path: Path) -> None:
     )
     expect_true(condition=removed.changed)
     text = profile.read_text(encoding="utf-8")
-    expect_not_in(member=Constants.check_begin, container=text)
+    expect_not_in(member=Constants.check_begin_str, container=text)
     expect_in(member="Set-StrictMode", container=text)
 
 
@@ -451,12 +466,14 @@ def test_install_idempotent_replaces_block(tmp_path: Path) -> None:
     )
     expect_equal(
         actual=profile.read_text(encoding="utf-8").count(
-            Constants.check_begin,
+            Constants.check_begin_str,
         ),
         expected=1,
     )
     expect_equal(
-        actual=profile.read_text(encoding="utf-8").count(Constants.check_end),
+        actual=profile.read_text(encoding="utf-8").count(
+            Constants.check_end_str,
+        ),
         expected=1,
     )
 
@@ -531,7 +548,12 @@ def test_diagnose_stale_protocol(tmp_path: Path) -> None:
     """
     target: Path = tmp_path / ".config" / "fish" / "completions" / "check.fish"
     target.parent.mkdir(parents=True)
-    _ = target.write_text(data="# Completion protocol: 99\n", encoding="utf-8")
+    _ = target.write_text(
+        data="""\
+# Completion protocol: 99
+""",
+        encoding="utf-8",
+    )
     results: tuple[ShellDiagnosis, ...] = diagnose(
         command_name="check",
         launcher=("check",),
@@ -640,17 +662,20 @@ def test_completion_launch_needs_only_standard_library(tmp_path: Path) -> None:
 
     """
     source: str = str(object=Path(__file__).resolve().parents[4])
-    code: str = (
-        f"\nimport sys\nsys.path.insert(0, "
-        f"{source!r}"
-        f")\nsys.argv = ['exactus', '__complete', '--shell=bash',\n       "
-        f"     '--active-word-index=1', '--prefix=--lin',\n            '--"
-        f"word=exactus', '--word=--lin']\nfrom exactus.__main__ import mai"
-        f"n\nstatus = main()\nblocked = ('playwright', 'PIL', 'jinja2', 'e"
-        f"xactus.tools.frontend.core',\n           'exactus.tools.lints.co"
-        f"re', 'exactus.tools.coverage_tests.core')\nassert not any(name i"
-        f"n sys.modules for name in blocked)\nraise SystemExit(status)\n"
-    )
+    code: str = f"""\
+
+import sys
+sys.path.insert(0, {source!r})
+sys.argv = ['exactus', '__complete', '--shell=bash',
+            '--active-word-index=1', '--prefix=--lin',
+            '--word=exactus', '--word=--lin']
+from exactus.__main__ import main
+status = main()
+blocked = ('playwright', 'PIL', 'jinja2', 'exactus.tools.frontend.core',
+           'exactus.tools.lints.core', 'exactus.tools.coverage_tests.core')
+assert not any(name in sys.modules for name in blocked)
+raise SystemExit(status)
+"""
     result: CompletedProcess[str] = run(
         args=[executable, "-S", "-c", code],
         cwd=tmp_path,
@@ -672,7 +697,10 @@ def test_canonical_registration_markers(tmp_path: Path) -> None:
 
     """
     profile: Path = tmp_path / ".bashrc"
-    foreign: str = "# custom provider\ncomplete -F custom other\n"
+    foreign: str = """\
+# custom provider
+complete -F custom other
+"""
     _ = profile.write_text(data=foreign, encoding="utf-8")
     installed: InstallResult = install(
         shell=CompletionShell.BASH,
@@ -692,7 +720,7 @@ def test_canonical_registration_markers(tmp_path: Path) -> None:
     expect_true(condition=removed.changed)
     content = profile.read_text(encoding="utf-8")
     expect_in(member=foreign, container=content)
-    expect_not_in(member=Constants.block_begin, container=content)
+    expect_not_in(member=Constants.block_begin_str, container=content)
 
 
 def test_default_tool_provider_uses_exactus_catalog() -> None:

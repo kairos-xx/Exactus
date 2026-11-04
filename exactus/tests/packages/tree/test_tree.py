@@ -34,14 +34,23 @@ def _fake_tree(root: Path) -> Path:
     demo: Path = root / "demo"
     (demo / "pkg" / "nested").mkdir(parents=True)
     _bytes: int = (demo / "pkg" / "mod.py").write_text(
-        data="X: int = 1\n",
+        data="""\
+X: int = 1
+""",
         encoding="utf-8",
     )
     _bytes = (demo / "pkg" / "nested" / "deep.py").write_text(
-        data="Y: int = 2\n",
+        data="""\
+Y: int = 2
+""",
         encoding="utf-8",
     )
-    _bytes = (demo / "README.md").write_text(data="# demo\n", encoding="utf-8")
+    _bytes = (demo / "README.md").write_text(
+        data="""\
+# demo
+""",
+        encoding="utf-8",
+    )
     with ZipFile(file=root / "demo.zip", mode="w") as archive:
         archive.write(demo / "pkg" / "mod.py", "pkg/mod.py")
         archive.write(
@@ -74,7 +83,11 @@ def test_render_tree_lists_directory_recursively(tmp_path: Path) -> None:
     expect_in(member="└── pkg/", container=text)
     expect_in(member="    ├── mod.py", container=text)
     expect_in(member="└── deep.py", container=text)
-    expect_true(condition=text.endswith("\n"))
+    expect_true(
+        condition=text.endswith("""\
+
+"""),
+    )
 
 
 def test_render_tree_lists_zip_members(tmp_path: Path) -> None:
@@ -154,7 +167,9 @@ def test_members_for_single_file(tmp_path: Path) -> None:
 
     """
     file: Path = tmp_path / "solo.txt"
-    content: str = "hi\n"
+    content: str = """\
+hi
+"""
     _bytes: int = file.write_text(data=content, encoding="utf-8")
     members: dict[str, tuple[int, float] | None] = members_for(source=file)
     expect_true(condition=tuple(members) == ("solo.txt",))

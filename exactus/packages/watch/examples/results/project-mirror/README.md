@@ -18,3 +18,5 @@ a file removes it only from `project-mirror`.
 - [`src/`](src/README.md) — Fixture source files for the watch example's `project/` tree.
 
 <!-- exactus:inventory:end -->
+
+- [`@activity.json`](%40activity.json) — Watcher activity and completion state.

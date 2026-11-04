@@ -1,5 +1,6 @@
 # Copyright (c) 2026
 """Maintain a managed, bottom-up directory inventory in README documents."""
+
 from __future__ import annotations
 
 from ast import get_docstring, parse
@@ -12,6 +13,8 @@ from urllib.parse import quote
 if TYPE_CHECKING:
     from pathlib import Path
     from re import Match, Pattern
+
+
 @final
 class Constants:
     """Group module-level constants.
@@ -34,6 +37,8 @@ class Constants:
         ),
         flags=DOTALL,
     )
+
+
 def description(*, path: Path) -> str:
     """Summarize a file's docstring or a child directory's README introduction.
 
@@ -87,6 +92,8 @@ def description(*, path: Path) -> str:
             else f"Provide {label} {suffix} content."
         )
     return summary.replace("[", "\\[").replace("]", "\\]")
+
+
 def entry_line(*, entry: Path) -> str:
     """Render one relative link and description in the standard list format.
 
@@ -103,6 +110,8 @@ def entry_line(*, entry: Path) -> str:
     )
     summary: str = description(path=entry)
     return f"- [`{entry.name}{suffix}`]({destination}) — {summary}"
+
+
 def heal_directory(*, directory: Path, entries: list[Path]) -> None:
     """Consolidate generated inventories while preserving authored prose.
 

@@ -374,21 +374,23 @@ class StartupWatcherManager:
         command: str = " ".join(
             self._systemd_quote(value=value) for value in program_arguments
         )
-        payload: str = (
-            "[Unit]\n"
-            "Description=Exactus MCP MantleDB wake watcher\n"
-            "Wants=network-online.target\n"
-            "After=network-online.target\n\n"
-            "[Service]\n"
-            "Type=simple\n"
-            f"ExecStart={command}\n"
-            "Restart=on-failure\n"
-            "RestartSec=5\n"
-            f"StandardOutput=append:{self.stdout_path}\n"
-            f"StandardError=append:{self.stderr_path}\n\n"
-            "[Install]\n"
-            "WantedBy=default.target\n"
-        )
+        payload: str = f"""\
+[Unit]
+Description=Exactus MCP MantleDB wake watcher
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStart={command}
+Restart=on-failure
+RestartSec=5
+StandardOutput=append:{self.stdout_path}
+StandardError=append:{self.stderr_path}
+
+[Install]
+WantedBy=default.target
+"""
         self._atomic_write(
             path=self.definition_path,
             payload=payload.encode(encoding="utf-8"),
@@ -413,13 +415,14 @@ class StartupWatcherManager:
 
         """
         self.definition_path.parent.mkdir(parents=True, exist_ok=True)
-        launcher: str = (
-            '"""Launch the installed Exactus MCP wake watcher."""\n'
-            "from subprocess import run\n\n"
-            f"arguments = {program_arguments!r}\n"
-            "result = run(args=arguments, check=False)\n"
-            "raise SystemExit(result.returncode)\n"
-        )
+        launcher: str = f"""\
+\"""Launch the installed Exactus MCP wake watcher.\"""
+from subprocess import run
+
+arguments = {program_arguments!r}
+result = run(args=arguments, check=False)
+raise SystemExit(result.returncode)
+"""
         self._atomic_write(
             path=self.definition_path,
             payload=launcher.encode(encoding="utf-8"),
@@ -586,7 +589,7 @@ class StartupWatcherManager:
         if result.returncode == 0:
             return
         detail: str = result.stderr.strip() or result.stdout.strip()
-        msg: str = f"{' '.join(arguments[:2])} failed: {detail}"
+        msg: str = f"{" ".join(arguments[:2])} failed: {detail}"
         raise RuntimeError(msg)
 
     def _run_optional(self, *, arguments: tuple[str, ...]) -> None:

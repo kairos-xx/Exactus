@@ -272,7 +272,11 @@ def test_crash_finalizes_activity_and_stderr(tmp_path: Path) -> None:
             events=log.events(),
         ),
     )
-    _ = (out / "stderr.log").write_text(data="Fatal Python error: boom\n")
+    _ = (out / "stderr.log").write_text(
+        data="""\
+Fatal Python error: boom
+""",
+    )
     _ = ent.crashed_exactus(
         request=ToolRequest(
             identifier="demo",
@@ -323,9 +327,17 @@ def test_nested_reports_stay_out_of_artifacts(tmp_path: Path) -> None:
     """
     out: Path = tmp_path / "COVERAGE_TESTS"
     (out / "COVERAGE").mkdir(parents=True)
-    _ = (out / "COVERAGE" / "result.md").write_text(data="# Coverage\n")
+    _ = (out / "COVERAGE" / "result.md").write_text(
+        data="""\
+# Coverage
+""",
+    )
     (out / "scratch").mkdir()
-    _ = (out / "raw.json").write_text(data="{}\n")
+    _ = (out / "raw.json").write_text(
+        data="""\
+{}
+""",
+    )
     _ = private_call(
         owner=ent,
         name="_organize_artifacts",

@@ -51,7 +51,11 @@ SECTIONS: Final[tuple[str, ...]] = (
     "## Analyzed code",
     "## Rules",
     "## Suggested documentation",
-    "\n---\n\nExactus · docs",
+    """\
+
+---
+
+Exactus · docs""",
 )
 LEGACY_KEYS: Final[tuple[str, ...]] = (
     "analyzer",
@@ -68,10 +72,22 @@ LEGACY_KEYS: Final[tuple[str, ...]] = (
 )
 DOCUMENTED: Final[str] = dedent(
     text=(
-        '    """Utilities."""\n    \n    \n    def double(value: int) -> int:'
-        '\n        """Double a value.\n    \n        Args:\n            value:'
-        " Number to double.\n    \n        Returns:\n            The doubled n"
-        'umber.\n    \n        """\n        return value * 2\n    '
+        """\
+    \"""Utilities.\"""
+
+
+    def double(value: int) -> int:
+        \"""Double a value.
+
+        Args:
+            value: Number to double.
+
+        Returns:
+            The doubled number.
+
+        \"""
+        return value * 2
+    """
     ),
 )
 
@@ -101,11 +117,24 @@ def _project(*, root: Path) -> None:
     """
     (root / "pkg").mkdir(parents=True)
     _ = (root / "pkg" / "util.py").write_text(
-        data="def load(path: str) -> str:\n    return path\n",
+        data="""\
+def load(path: str) -> str:
+    return path
+""",
     )
     _ = (root / "pkg" / "clean.py").write_text(data=DOCUMENTED)
-    _ = (root / "pkg" / "excluded.py").write_text(data="x = 1\n")
-    _ = (root / "README.md").write_text(data="# Demo\n\nA demo.\n")
+    _ = (root / "pkg" / "excluded.py").write_text(
+        data="""\
+x = 1
+""",
+    )
+    _ = (root / "README.md").write_text(
+        data="""\
+# Demo
+
+A demo.
+""",
+    )
 
 
 def _object(*, path: Path) -> dict[str, JsonValue]:
@@ -176,10 +205,22 @@ def test_crash_render_shows_error_and_na_blocks() -> None:
     for member in (
         "| Status | ERROR |",
         "N/A — the tool reported no findings list.",
-        "## Documentation statistics\n\nN/A — the tool reported no",
-        "## Analyzed code\n\nN/A — the tool reported no per-language",
-        "## Rules\n\nN/A — the tool reported no rule counts.",
-        "## Suggested documentation\n\nN/A — the tool reported no findings",
+        """\
+## Documentation statistics
+
+N/A — the tool reported no""",
+        """\
+## Analyzed code
+
+N/A — the tool reported no per-language""",
+        """\
+## Rules
+
+N/A — the tool reported no rule counts.""",
+        """\
+## Suggested documentation
+
+N/A — the tool reported no findings""",
     ):
         expect_in(member=member, container=text)
 
@@ -303,7 +344,11 @@ def test_execute_exactus_renders_docs_from_template(tmp_path: Path) -> None:
     markdown: str = (out / "result.md").read_text(encoding="utf-8")
     positions: list[int] = [markdown.index(part) for part in SECTIONS]
     expect_equal(actual=positions, expected=sorted(positions))
-    expect_true(condition=markdown.startswith("# Documentation Exactus\n"))
+    expect_true(
+        condition=markdown.startswith("""\
+# Documentation Exactus
+"""),
+    )
     expect_in(
         member="### DOCS-001 — Missing documentation: load",
         container=markdown,
@@ -384,8 +429,16 @@ def test_clean_docs_run_states_no_findings(tmp_path: Path) -> None:
         "| Status | PASS |",
         "> **Gate: PASS** — No blocking findings",
         "No blocking findings.",
-        "## Findings\n\nNo findings.\n",
-        "## Suggested documentation\n\nNo suggestions.\n",
+        """\
+## Findings
+
+No findings.
+""",
+        """\
+## Suggested documentation
+
+No suggestions.
+""",
         "| python | 1 | 1 | 0 | 2 | 2 | 100.0 | 0 |",
     ):
         expect_in(member=member, container=markdown)
@@ -403,25 +456,27 @@ def test_overload_signatures_need_no_docstring(tmp_path: Path) -> None:
     _ = (root / "api.py").write_text(
         data=dedent(
             text=(
-                '    """API."""\n'
-                "    from typing import overload\n"
-                "    \n"
-                "    \n"
-                "    @overload\n"
-                "    def pick(value: int) -> int: ...\n"
-                "    @overload\n"
-                "    def pick(value: str) -> str: ...\n"
-                "    def pick(value: int | str) -> int | str:\n"
-                '        """Pick a value.\n'
-                "    \n"
-                "        Args:\n"
-                "            value: Value to pick.\n"
-                "    \n"
-                "        Returns:\n"
-                "            The picked value.\n"
-                "    \n"
-                '        """\n'
-                "        return value\n"
+                """\
+    \"""API.\"""
+    from typing import overload
+
+
+    @overload
+    def pick(value: int) -> int: ...
+    @overload
+    def pick(value: str) -> str: ...
+    def pick(value: int | str) -> int | str:
+        \"""Pick a value.
+
+        Args:
+            value: Value to pick.
+
+        Returns:
+            The picked value.
+
+        \"""
+        return value
+"""
             ),
         ),
     )
@@ -431,7 +486,11 @@ def test_overload_signatures_need_no_docstring(tmp_path: Path) -> None:
     markdown: str = (out / "result.md").read_text(encoding="utf-8")
     for member in (
         "| Status | PASS |",
-        "## Findings\n\nNo findings.\n",
+        """\
+## Findings
+
+No findings.
+""",
         "| python | 1 | 1 | 0 | 2 | 2 | 100.0 | 0 |",
     ):
         expect_in(member=member, container=markdown)

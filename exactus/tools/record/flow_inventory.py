@@ -221,10 +221,17 @@ def render_matrix(*, inventory: ActionInventory) -> str:
         path: str = (
             "special" if kind in inventory.runner_special_kinds else "generic"
         )
-        lines.append(f"| `{kind}` | {ids or '—'} | {path} |")
+        lines.append(f"| `{kind}` | {ids or "—"} | {path} |")
     lines.extend(["", "## Controller commands", ""])
     lines.extend(f"- `{command}`" for command in inventory.controller_commands)
-    return "\n".join(lines) + "\n"
+    return (
+        """\
+
+""".join(lines)
+        + """\
+
+"""
+    )
 
 
 def main() -> None:

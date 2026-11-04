@@ -16,19 +16,61 @@ from exactus.tests.common.support import expect_equal
     ("output", "command", "expected"),
     [
         ("", "", None),
-        ("123\n456\n", "", None),
-        ("123\n", "node -m exactus.tools.record.studio", None),
-        ("123\n", "", None),
-        ("123\n", "python -m unrelated.studio", None),
-        ("123\n", "python -m exactus.tools.record.studio", 123),
         (
-            "123\n123\n",
+            """\
+123
+456
+""",
+            "",
+            None,
+        ),
+        (
+            """\
+123
+""",
+            "node -m exactus.tools.record.studio",
+            None,
+        ),
+        (
+            """\
+123
+""",
+            "",
+            None,
+        ),
+        (
+            """\
+123
+""",
+            "python -m unrelated.studio",
+            None,
+        ),
+        (
+            """\
+123
+""",
+            "python -m exactus.tools.record.studio",
+            123,
+        ),
+        (
+            """\
+123
+123
+""",
             "python /app/exactus/tools/record/studio/__main__.py",
             123,
         ),
-        ("123\n", "python 'broken", None),
         (
-            "123\n",
+            """\
+123
+""",
+            "python 'broken",
+            None,
+        ),
+        (
+            """\
+123
+""",
             "python -u -c from exactus.tools.record.studio.service "
             "import StudioService as S; s=S()",
             123,

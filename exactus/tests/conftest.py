@@ -62,6 +62,25 @@ def _no_reexec(_cls: type[Check]) -> None:
     """
 
 
+@pytest.fixture(autouse=True)
+def isolated_tool_environment(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Keep tool configuration and report exports local to each test.
+
+    Args:
+        monkeypatch: Restore inherited values and direct tool exports.
+
+    """
+    for name in (
+        "EXACTUS_CONFIG",
+        "EXACTUS_EXPLICIT_ARGUMENTS",
+        "EXACTUS_ORCHESTRATED",
+        "EXACTUS_REPORTS_ROOT",
+        "EXACTUS_ROOT",
+    ):
+        monkeypatch.setenv(name=name, value="")
+        monkeypatch.delenv(name=name)
+
+
 @pytest.fixture
 def repo_args() -> tuple[str, ...]:
     """Return the root plus exclusion arguments for self-exactuss.
@@ -95,11 +114,24 @@ def sample_project(tmp_path: Path) -> Path:
         data=(
             dedent(
                 text=(
-                    "    import os\n    from dataclasses import dataclass"
-                    "\n    \n    \n    @dataclass\n    class Box:\n       "
-                    " size: int = 0\n    \n    \n    def add(a, b):\n     "
-                    "   return a + b\n    \n    \n    def use():\n        "
-                    "x = add(1, 2)\n        return Box(3), x, os.sep\n    "
+                    """\
+    import os
+    from dataclasses import dataclass
+
+
+    @dataclass
+    class Box:
+        size: int = 0
+
+
+    def add(a, b):
+        return a + b
+
+
+    def use():
+        x = add(1, 2)
+        return Box(3), x, os.sep
+    """
                 ),
             )
         ),
@@ -109,23 +141,43 @@ def sample_project(tmp_path: Path) -> Path:
         data=(
             dedent(
                 text=(
-                    "    from pkg.mod import add\n    \n    \n    def test"
-                    "_add():\n        assert add(1, 2) == 3\n    "
+                    """\
+    from pkg.mod import add
+
+
+    def test_add():
+        assert add(1, 2) == 3
+    """
                 ),
             )
         ),
         encoding="utf-8",
     )
     (root / "app.js").write_text(
-        data="function f(a){var x=a;return x}\nconsole.log(f(1))\n",
+        data="""\
+function f(a){var x=a;return x}
+console.log(f(1))
+""",
         encoding="utf-8",
     )
-    (root / "app.css").write_text(data="a{color:red}\n", encoding="utf-8")
+    (root / "app.css").write_text(
+        data="""\
+a{color:red}
+""",
+        encoding="utf-8",
+    )
     (root / "index.html").write_text(
-        data="<html><body><img src='a.png'></body></html>\n",
+        data="""\
+<html><body><img src='a.png'></body></html>
+""",
         encoding="utf-8",
     )
-    (root / "README.md").write_text(data="# proj\n", encoding="utf-8")
+    (root / "README.md").write_text(
+        data="""\
+# proj
+""",
+        encoding="utf-8",
+    )
     return root
 
 
@@ -146,34 +198,65 @@ def defect_project(tmp_path: Path) -> Path:
         data=(
             dedent(
                 text=(
-                    "    import os, sys\n    import json\n    from typing "
-                    "import *\n    CACHE = []\n    \n    \n    def f(a, b="
-                    "[], *args, **kw):\n    \tglobal CACHE\n    \ttry:\n  "
-                    "  \t\tprint(a == None)  \n    \texcept:\n    \t\tpass"
-                    "\n    \treturn eval('1')\n    \n    \n    class K:\n "
-                    "       def m(self, x):\n            return lambda y: "
-                    "x+y\n    \n    \n    def g(x: int) -> int:\n        i"
-                    "f x:\n            return 1\n        else:\n          "
-                    "  return 2\n    async def h():\n        return [i for"
-                    " i in range(3) if i if i]\n    x = 1; y = 2\n    asse"
-                    "rt (x, 'msg')\n    open('f').read()\n    def very_lon"
-                    "g_function_name_for_testing(argument_one, argument_tw"
-                    "o, argument_three, argument_four):\n        pass\n   "
-                    " "
+                    """\
+    import os, sys
+    import json
+    from typing import *
+    CACHE = []
+
+
+    def f(a, b=[], *args, **kw):
+    \tglobal CACHE
+    \ttry:
+    \t\tprint(a == None)
+    \texcept:
+    \t\tpass
+    \treturn eval('1')
+
+
+    class K:
+        def m(self, x):
+            return lambda y: x+y
+
+
+    def g(x: int) -> int:
+        if x:
+            return 1
+        else:
+            return 2
+    async def h():
+        return [i for i in range(3) if i if i]
+    x = 1; y = 2
+    assert (x, 'msg')
+    open('f').read()
+    def very_long_function_name_for_testing(argument_one, argument_two, \
+argument_three, argument_four):
+        pass
+    """
                 ),
             )
         ),
         encoding="utf-8",
     )
-    (root / "src" / "broken.py").write_text(data="def (:\n", encoding="utf-8")
+    (root / "src" / "broken.py").write_text(
+        data="""\
+def (:
+""",
+        encoding="utf-8",
+    )
     (root / "web.js").write_text(
         data=(
             dedent(
                 text=(
-                    "    var a = 1\n    if (a == '1') { eval('x') }\n    f"
-                    "unction f(a, b) { return a + b }\n    const unused = "
-                    "3;\n    console.log(f(1))\n    document.write('x');\n"
-                    "    let q = [1,2];\n    "
+                    """\
+    var a = 1
+    if (a == '1') { eval('x') }
+    function f(a, b) { return a + b }
+    const unused = 3;
+    console.log(f(1))
+    document.write('x');
+    let q = [1,2];
+    """
                 ),
             )
         ),
@@ -183,9 +266,10 @@ def defect_project(tmp_path: Path) -> Path:
         data=(
             dedent(
                 text=(
-                    "    export const a = () => { debugger; };\n    export"
-                    " default function () { return undefined == null; }\n "
-                    "   "
+                    """\
+                    export const a = () => { debugger; };
+                    export default function () { return undefined == null; }
+"""
                 ),
             )
         ),
@@ -195,10 +279,13 @@ def defect_project(tmp_path: Path) -> Path:
         data=(
             dedent(
                 text=(
-                    "    a { color: #FFF; color: red !important; }\n    b "
-                    "{}\n    .x{margin:0px;padding:0 0 0 0}\n    @media (m"
-                    "ax-width:100px){c{display:none}}\n    d { colr: red; "
-                    "background: url(  x.png ) }\n    "
+                    """\
+    a { color: #FFF; color: red !important; }
+    b {}
+    .x{margin:0px;padding:0 0 0 0}
+    @media (max-width:100px){c{display:none}}
+    d { colr: red; background: url(  x.png ) }
+    """
                 ),
             )
         ),
@@ -208,11 +295,13 @@ def defect_project(tmp_path: Path) -> Path:
         data=(
             dedent(
                 text=(
-                    "    <html><head><title></title></head><body>\n    <im"
-                    "g src=a.png><div id=a></div><div id=a></div>\n    <a "
-                    "href=#>x</a><p style='color:red'>t</p>\n    <button o"
-                    "nclick='go()'>b</button>\n    <input type=text><scrip"
-                    "t>var z=1</script></body></html>\n    "
+                    """\
+    <html><head><title></title></head><body>
+    <img src=a.png><div id=a></div><div id=a></div>
+    <a href=#>x</a><p style='color:red'>t</p>
+    <button onclick='go()'>b</button>
+    <input type=text><script>var z=1</script></body></html>
+    """
                 ),
             )
         ),

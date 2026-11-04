@@ -60,6 +60,7 @@ Tests of `exactus/tools/common` leaf primitives and shared templates.
 - [`test_execution.py`](test_execution.py) — The shared exactus execution wrapper, fallbacks, and crash recording.
 - [`test_models_api.py`](test_models_api.py) — Result models, progress documents, the process API, and runtime.
 - [`test_output_tree.py`](test_output_tree.py) — Every tool run leaves ``@activity.json``, ``stderr.log``/``stdout.log``.
+- [`test_path_config.py`](test_path_config.py) — Verify scoped configuration, native carriers and public provenance.
 - [`test_pipeline_output.py`](test_pipeline_output.py) — Pipeline output lives under ``EXACTUS_RESULTS/PIPELINES/``.
 - [`test_pipeline_scope.py`](test_pipeline_scope.py) — Scope a joined pipeline reset to the tools a request asks to rerun.
 - [`test_pipeline_supervisor.py`](test_pipeline_supervisor.py) — Verify transactional pipeline ownership and observer generations.
@@ -70,6 +71,7 @@ Tests of `exactus/tools/common` leaf primitives and shared templates.
 - [`test_report_templates.py`](test_report_templates.py) — The shipped report templates render goldens and reach the bundle.
 - [`test_report_time.py`](test_report_time.py) — Verify readable report timestamps and recorded-time precedence.
 - [`test_snippets.py`](test_snippets.py) — Bounded, root-confined source excerpts around finding lines.
+- [`test_source_cache.py`](test_source_cache.py) — Verify cache ownership, content refresh and mutable-tree isolation.
 - [`test_sprint.py`](test_sprint.py) — Flushed printing helpers and the ``DEBUG.txt`` capture directives.
 - [`test_stderr_capture.py`](test_stderr_capture.py) — Standard-error capture: line counts, levels and the mirror.
 - [`test_terminal.py`](test_terminal.py) — ANSI terminal rendering, progress painting, and cursor probing.

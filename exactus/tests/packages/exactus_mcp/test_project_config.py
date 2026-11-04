@@ -31,11 +31,19 @@ def test_service_and_wake_defaults_are_typed(tmp_path: Path) -> None:
     """
     configuration: str = dedent(
         text=(
-            '    \n    [tool.exactus.mcp]\n    host = "127.0.0.1"\n    port = '
-            "6100\n    ngrok = true\n    tunnel-timeout = 12\n    \n    [tool."
-            "exactus.mcp.wakeup]\n    keep-service-running = true\n    state ="
-            ' ".state/last-id"\n    service-command = ["python", "-m", "servic'
-            'e"]\n    '
+            """\
+
+    [tool.exactus.mcp]
+    host = "127.0.0.1"
+    port = 6100
+    ngrok = true
+    tunnel-timeout = 12
+
+    [tool.exactus.mcp.wakeup]
+    keep-service-running = true
+    state = ".state/last-id"
+    service-command = ["python", "-m", "service"]
+    """
         ),
     )
     _ = (tmp_path / "pyproject.toml").write_text(
@@ -69,7 +77,10 @@ def test_unknown_setting_is_rejected(tmp_path: Path) -> None:
 
     """
     _ = (tmp_path / "pyproject.toml").write_text(
-        data="[tool.exactus.mcp]\nunknown = true\n",
+        data="""\
+[tool.exactus.mcp]
+unknown = true
+""",
         encoding="utf-8",
     )
     with pytest.raises(
@@ -93,15 +104,23 @@ def test_private_json_supports_service_and_wake_secrets(
         data=(
             dedent(
                 text=(
-                    '    \n    {\n      "service": {\n        "root": "wor'
-                    'kspace",\n        "access_token": "service-secret",\n'
-                    '        "mantledb_namespace": "private-namespace"\n  '
-                    '    },\n      "wakeup": {\n        "wake-key": "wake-'
-                    'secret",\n        "access-token": "service-secret",\n'
-                    '        "mantledb-namespace": "private-namespace",\n '
-                    '       "secrets-file": "private/watcher.json",\n     '
-                    '   "service-command": ["python", "-m", "service"]\n  '
-                    "    }\n    }\n    "
+                    """\
+
+    {
+      "service": {
+        "root": "workspace",
+        "access_token": "service-secret",
+        "mantledb_namespace": "private-namespace"
+      },
+      "wakeup": {
+        "wake-key": "wake-secret",
+        "access-token": "service-secret",
+        "mantledb-namespace": "private-namespace",
+        "secrets-file": "private/watcher.json",
+        "service-command": ["python", "-m", "service"]
+      }
+    }
+    """
                 ),
             )
         ),
@@ -159,7 +178,12 @@ def test_toml_rejects_secret_settings(tmp_path: Path) -> None:
 
     """
     _ = (tmp_path / "pyproject.toml").write_text(
-        data=('[tool.exactus.mcp.wakeup]\nwake-key = "must-not-live-here"\n'),
+        data=(
+            """\
+[tool.exactus.mcp.wakeup]
+wake-key = "must-not-live-here"
+"""
+        ),
         encoding="utf-8",
     )
     with pytest.raises(
@@ -245,7 +269,9 @@ def test_service_defaults_reject_invalid_toml(tmp_path: Path) -> None:
 
     """
     _ = (tmp_path / "pyproject.toml").write_text(
-        data="[tool.exactus.mcp\n",
+        data="""\
+[tool.exactus.mcp
+""",
         encoding="utf-8",
     )
     with pytest.raises(
@@ -263,7 +289,10 @@ def test_service_defaults_reject_non_table_section(tmp_path: Path) -> None:
 
     """
     _ = (tmp_path / "pyproject.toml").write_text(
-        data='[tool.exactus]\nmcp = "not-a-table"\n',
+        data="""\
+[tool.exactus]
+mcp = "not-a-table"
+""",
         encoding="utf-8",
     )
     with pytest.raises(
@@ -333,9 +362,11 @@ def test_service_defaults_reject_duplicate_setting(tmp_path: Path) -> None:
         tmp_path: Temporary project root.
 
     """
-    data: str = (
-        '[tool.exactus.mcp]\nngrok-endpoint = "a"\nngrok_endpoint = "b"\n'
-    )
+    data: str = """\
+[tool.exactus.mcp]
+ngrok-endpoint = "a"
+ngrok_endpoint = "b"
+"""
     _ = (tmp_path / "pyproject.toml").write_text(data=data, encoding="utf-8")
     with pytest.raises(
         expected_exception=ValueError,
@@ -352,7 +383,10 @@ def test_service_defaults_reject_invalid_value_type(tmp_path: Path) -> None:
 
     """
     _ = (tmp_path / "pyproject.toml").write_text(
-        data="[tool.exactus.mcp]\nhost = true\n",
+        data="""\
+[tool.exactus.mcp]
+host = true
+""",
         encoding="utf-8",
     )
     with pytest.raises(
@@ -378,10 +412,15 @@ def test_wakeup_cli_lists_json_configuration_with_secrets_redacted(
         data=(
             dedent(
                 text=(
-                    '    \n    {\n      "mantledb-namespace": "private-nam'
-                    'espace",\n      "wake-key": "private-wake-key",\n    '
-                    '  "access-token": "private-bearer",\n      "service-c'
-                    'ommand": ["python", "-m", "service"]\n    }\n    '
+                    """\
+
+    {
+      "mantledb-namespace": "private-namespace",
+      "wake-key": "private-wake-key",
+      "access-token": "private-bearer",
+      "service-command": ["python", "-m", "service"]
+    }
+    """
                 ),
             )
         ),

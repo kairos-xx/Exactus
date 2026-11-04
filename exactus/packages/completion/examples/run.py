@@ -49,7 +49,12 @@ def main() -> int:
         ("Tool flags", ("example", "--li"), "--li"),
         ("Pipeline names", ("example", "--pipeline", "un"), "un"),
     ):
-        _ = stdout.write(title + ":\n")
+        _ = stdout.write(
+            title
+            + """\
+:
+""",
+        )
         status: int = run_completion(
             arguments=(
                 "--shell=bash",

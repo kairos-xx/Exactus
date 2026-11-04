@@ -8,9 +8,13 @@ from exactus.tools.coverage_tests.report import CoverageTestsReport
 def test_missing_content_decodes_actual_markdown() -> None:
     """Decode a missing table row and the complete actual Markdown."""
     expected: str = "| docs | present | 170 | 1 | 1 | 0 |"
-    actual: str = (
-        "# README Exactus\n\n## Rules\n\n| RDM001 | Missing README.md | 0 |\n"
-    )
+    actual: str = """\
+# README Exactus
+
+## Rules
+
+| RDM001 | Missing README.md | 0 |
+"""
     message: str = f"AssertionError: {expected!r} not found in {actual!r}"
     expect_equal(
         actual=CoverageTestsReport.assertion_diff(message=message),
@@ -20,8 +24,13 @@ def test_missing_content_decodes_actual_markdown() -> None:
 
 def test_expected_actual_decodes_quotes_and_newlines() -> None:
     """Keep original quoting and whitespace in both assertion values."""
-    expected: str = "# Title\n\nAn apostrophe: ' and a backslash: \\"
-    actual: str = "# Other title\n"
+    expected: str = """\
+# Title
+
+An apostrophe: ' and a backslash: \\"""
+    actual: str = """\
+# Other title
+"""
     message: str = f"AssertionError: expected {expected!r}, got {actual!r}"
     expect_equal(
         actual=CoverageTestsReport.assertion_diff(message=message),

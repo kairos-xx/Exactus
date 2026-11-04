@@ -88,7 +88,12 @@ def emit(*, message: str) -> None:
         message: Text to write, without its trailing newline.
 
     """
-    _ = stdout.write(message + "\n")
+    _ = stdout.write(
+        message
+        + """\
+
+""",
+    )
     stdout.flush()
 
 
@@ -139,9 +144,12 @@ def prepare_project(*, file_count: int) -> Path:
         data=(
             dedent(
                 text=(
-                    '    [project]\n    name = "exactus-coordination-examp'
-                    'le"\n    version = "0.0.0"\n    requires-python = ">='
-                    '3.13"\n    '
+                    """\
+    [project]
+    name = "exactus-coordination-example"
+    version = "0.0.0"
+    requires-python = ">=3.13"
+    """
                 ),
             )
         ),
@@ -151,9 +159,12 @@ def prepare_project(*, file_count: int) -> Path:
         data=(
             dedent(
                 text=(
-                    "    # Exactus coordination fixture\n    \n    - `pypr"
-                    "oject.toml` — Minimal project metadata.\n    - `src/`"
-                    " — Generated Python modules.\n    "
+                    """\
+    # Exactus coordination fixture
+
+    - `pyproject.toml` — Minimal project metadata.
+    - `src/` — Generated Python modules.
+    """
                 ),
             )
         ),
@@ -166,18 +177,26 @@ def prepare_project(*, file_count: int) -> Path:
         _ = (source / name).write_text(
             data=dedent(
                 text=(
-                    f'\n                """Intentional analyzer fixture."""\n '
-                    f"               def add_"
-                    f"{index}"
-                    f"(left, right):\n                    return left + right"
-                    f"\n                "
+                    f"""\
+
+                \"""Intentional analyzer fixture.\"""
+                def add_{index}(left, right):
+                    return left + right
+                """
                 ),
-            ).removeprefix("\n"),
+            ).removeprefix("""\
+
+"""),
             encoding="utf-8",
         )
         inventory.append(f"- `{name}` — Intentional type-hint finding.")
     _ = (source / "README.md").write_text(
-        data="\n".join(inventory) + "\n",
+        data="""\
+
+""".join(inventory)
+        + """\
+
+""",
         encoding="utf-8",
     )
     return root
@@ -373,7 +392,11 @@ def run_demo(*, root: Path, plans: tuple[Invocation, ...]) -> int:
             )
         snapshot: tuple[str, ...] = registry_snapshot(root=root)
         if snapshot != previous:
-            emit(message=f"\n[{elapsed:6.2f}s] workspace state")
+            emit(
+                message=f"""\
+
+[{elapsed:6.2f}s] workspace state""",
+            )
             row: str
             for row in snapshot:
                 emit(message=f"  {row}")
@@ -417,8 +440,12 @@ def main() -> int:
         print_commands(plans=plans)
         return 0
     status: int = run_demo(root=root, plans=plans)
-    emit(message=f"\nreports: {root / 'EXACTUS_RESULTS'}")
-    emit(message=f"transcripts: {root / '.demo-logs'}")
+    emit(
+        message=f"""\
+
+reports: {root / "EXACTUS_RESULTS"}""",
+    )
+    emit(message=f"transcripts: {root / ".demo-logs"}")
     return status
 
 

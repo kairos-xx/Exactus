@@ -53,11 +53,16 @@ class Constants:
 
     html: Final[str] = dedent(
         text=(
-            '    \n    <button id="save" class="primary" data-testid="save"\n '
-            '           style="position:absolute;left:20px;top:30px;width:120p'
-            'x;height:40px">\n      Save order\n    </button>\n    <button cla'
-            'ss="extra" style="position:absolute;left:20px;top:100px">B</butto'
-            "n>\n    "
+            """\
+
+    <button id="save" class="primary" data-testid="save"
+            style="position:absolute;left:20px;top:30px;width:120px;\
+height:40px">
+      Save order
+    </button>
+    <button class="extra" style="position:absolute;left:20px;\
+top:100px">B</button>
+    """
         ),
     )
     save: Final[SelectorDef] = SelectorDef(

@@ -42,10 +42,15 @@ class Constants:
 
     golden: Final[Path] = Path(__file__).resolve().parent / "golden"
     tool_dir: Final[Path] = ReportTemplates.tool_dir(analyzer="docs")
-    doc: Final[str] = '"""Module."""\n'
-    js: Final[str] = (
-        "/** Add. */\nexport function add(a, b) {\n  return a;\n}\n"
-    )
+    doc: Final[str] = """\
+\"""Module.\"""
+"""
+    js: Final[str] = """\
+/** Add. */
+export function add(a, b) {
+  return a;
+}
+"""
 
 
 def _write(*, root: Path, name: str, text: str) -> None:
@@ -153,14 +158,43 @@ def _project(*, root: Path) -> None:
         root: Project directory.
 
     """
-    _write(root=root, name="README.md", text="# Root\n\nIntro.\n")
-    _write(root=root, name="app.py", text=Constants.doc + "x = 1\n")
+    _write(
+        root=root,
+        name="README.md",
+        text="""\
+# Root
+
+Intro.
+""",
+    )
+    _write(
+        root=root,
+        name="app.py",
+        text=Constants.doc
+        + """\
+x = 1
+""",
+    )
     _write(root=root, name="pkg/mod.py", text=Constants.doc)
     _write(root=root, name="pkg/inner/deep.py", text=Constants.doc)
     _write(root=root, name="pkg/inner/readme.md", text="tiny")
     _write(root=root, name="web/app.js", text=Constants.js)
-    _write(root=root, name="exactus/docs/README.md", text="# Docs\n" * 40)
-    _write(root=root, name="exactus/docs/guide.md", text="guide\nmore\n")
+    _write(
+        root=root,
+        name="exactus/docs/README.md",
+        text="""\
+# Docs
+"""
+        * 40,
+    )
+    _write(
+        root=root,
+        name="exactus/docs/guide.md",
+        text="""\
+guide
+more
+""",
+    )
     _write(root=root, name="exactus/docs/empty.md", text="")
 
 
@@ -195,7 +229,13 @@ def test_failed_and_excluded_sources_are_not_counted(tmp_path: Path) -> None:
     """
     root: Path = tmp_path / "project"
     _project(root=root)
-    _write(root=root, name="broken.py", text="def (:\n")
+    _write(
+        root=root,
+        name="broken.py",
+        text="""\
+def (:
+""",
+    )
     _write(root=root, name="gen/out.py", text=Constants.doc * 10)
     expect_equal(
         actual=dig(
@@ -309,7 +349,10 @@ def test_empty_metrics_say_why_nothing_is_listed() -> None:
         tool_dir=Constants.tool_dir,
     ).markdown
     for member in (
-        "## Analyzed code\n\nN/A — the tool reported no per-language metrics.",
+        """\
+## Analyzed code
+
+N/A — the tool reported no per-language metrics.""",
     ):
         expect_in(member=member, container=text)
     expect_not_in(member="| Largest |", container=text)
@@ -331,7 +374,10 @@ def test_missing_metrics_render_na() -> None:
         tool_dir=Constants.tool_dir,
     ).markdown
     for member in (
-        "## Analyzed code\n\nN/A — the tool reported no per-language metrics.",
+        """\
+## Analyzed code
+
+N/A — the tool reported no per-language metrics.""",
     ):
         expect_in(member=member, container=text)
 
@@ -347,9 +393,19 @@ def test_code_lines_count_line_feeds(tmp_path: Path) -> None:
 
     """
     root: Path = tmp_path / "project"
-    text: str = '"""Module."""\nx = "a\x0cb\x1cc"\n# d\u2028e'
+    text: str = """\
+\"""Module.\"""
+x = "a\x0cb\x1cc"
+# d\u2028e"""
     _write(root=root, name="mod.py", text=text)
-    _write(root=root, name="web/app.js", text="/** A\u2028B */\nlet a;\n")
+    _write(
+        root=root,
+        name="web/app.js",
+        text="""\
+/** A\u2028B */
+let a;
+""",
+    )
     _write(root=root, name="notes.md", text=text)
     metrics: object = _metrics(root=root)
     expect_equal(

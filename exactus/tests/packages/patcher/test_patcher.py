@@ -83,11 +83,18 @@ def _project(*, root: Path, version: str, obsolete: bool = False) -> None:
     """
     (root / "src").mkdir(parents=True)
     (root / "src/app.py").write_text(
-        data=f"VERSION = {version!r}\n",
+        data=f"""\
+VERSION = {version!r}
+""",
         encoding="utf-8",
     )
     if obsolete:
-        (root / "obsolete.txt").write_text(data="old\n", encoding="utf-8")
+        (root / "obsolete.txt").write_text(
+            data="""\
+old
+""",
+            encoding="utf-8",
+        )
 
 
 def test_resolve_relative_root_from_invocation_directory(
@@ -135,7 +142,12 @@ def test_folder_delta_and_relative_runtime_root(tmp_path: Path) -> None:
         path.mkdir()
     _project(root=before, version="1", obsolete=True)
     _project(root=after, version="2")
-    (after / "new.txt").write_text(data="new\n", encoding="utf-8")
+    (after / "new.txt").write_text(
+        data="""\
+new
+""",
+        encoding="utf-8",
+    )
     copytree(src=before, dst=target, dirs_exist_ok=True)
     patch: PyzProjectPatch = PyzProjectPatch.delta(
         a=before,
@@ -155,11 +167,17 @@ def test_folder_delta_and_relative_runtime_root(tmp_path: Path) -> None:
     new_content: str = (target / "new.txt").read_text(encoding="utf-8")
     _expect(condition=result.returncode == 0, message=result.stderr)
     _expect(
-        condition=app_content == "VERSION = '2'\n",
+        condition=app_content
+        == """\
+VERSION = '2'
+""",
         message="Application content was not updated.",
     )
     _expect(
-        condition=new_content == "new\n",
+        condition=new_content
+        == """\
+new
+""",
         message="New file content was not applied.",
     )
     _expect(
@@ -212,7 +230,10 @@ def test_zip_as_b_source(tmp_path: Path) -> None:
     content: str = (target / "src/app.py").read_text(encoding="utf-8")
     _expect(condition=result.returncode == 0, message=result.stderr)
     _expect(
-        condition=content == "VERSION = '2'\n",
+        condition=content
+        == """\
+VERSION = '2'
+""",
         message="ZIP-backed patch did not update the application.",
     )
 
@@ -265,7 +286,10 @@ def test_inverse_restores_before_state(tmp_path: Path) -> None:
         message="Reverse patch failed.",
     )
     _expect(
-        condition=restored == "VERSION = '1'\n",
+        condition=restored
+        == """\
+VERSION = '1'
+""",
         message="Inverse patch did not restore application content.",
     )
     _expect(
@@ -780,7 +804,9 @@ def test_generated_patch_backs_up_overlapping_removals(tmp_path: Path) -> None:
     nested: Path = before / "legacy" / "__pycache__"
     nested.mkdir(parents=True)
     (before / "legacy" / "module.py").write_text(
-        data="VALUE = 1\n",
+        data="""\
+VALUE = 1
+""",
         encoding="utf-8",
     )
     (nested / "module.pyc").write_bytes(data=b"cache")
@@ -856,7 +882,10 @@ def test_generated_binary_builds_delta(tmp_path: Path) -> None:
         message="Generated update failed to apply.",
     )
     _expect(
-        condition=content == "VERSION = '2'\n",
+        condition=content
+        == """\
+VERSION = '2'
+""",
         message="Generated binary produced an incorrect delta.",
     )
 

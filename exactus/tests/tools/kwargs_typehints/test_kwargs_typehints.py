@@ -131,6 +131,91 @@ def test_typevar_assignments_need_no_annotation(
     )
 
 
+@pytest.mark.parametrize("strict", [False, True])
+def test_type_alias_assignments_need_no_annotation(
+    tmp_path: Path,
+    *,
+    strict: bool,
+) -> None:
+    """Exempt implicit aliases and typing factories, keep real variables.
+
+    Args:
+        tmp_path: Per-test temporary directory.
+        strict: Whether unannotatable bindings are also checked.
+
+    """
+    path: Path = tmp_path / "aliases.py"
+    _ = path.write_text(
+        data=(
+            dedent(
+                text="""\
+    from typing import (
+        Literal,
+        NewType,
+        Optional,
+        ParamSpec,
+        TypeAliasType,
+        TypeVarTuple,
+        Union,
+        overload,
+    )
+    import typing as t
+    Alias = int
+    Cls = SomeClass
+    Dotted = mod.Type
+    Pair = tuple[int, str]
+    Tup = (int, str)
+    Variadic = (int, ...)
+    Opt = Optional[str]
+    Un = int | str | None
+    Ref = "Cls" | int
+    Lit = Literal["a", "b"]
+    Group = Union[int, "Cls"]
+    Marker = overload
+    Decl = TypeAliasType("Decl", int)
+    NT = NewType("NT", int)
+    P = ParamSpec("P")
+    Ts = TypeVarTuple("Ts")
+    Qual = t.ParamSpec("Q")
+    SINGLE = T
+    type Stmt = int
+    class Holder:
+        Sub = dict[str, int]
+    ordinary = 1
+    named = "value"
+    indexed = arr[0]
+    copied = counter
+    combined = READ | WRITE
+    member = Color.RED
+    sentinel = mod.CONSTANT
+    dual_a = dual_b = 1
+    def local() -> None:
+        inner = int
+    """,
+            )
+        ),
+        encoding="utf-8",
+    )
+    findings: tuple[kwargs_core.TypeHintFinding, ...] = (
+        kwargs_core.TypeHintExactusor(path=path, strict=strict).exactus()
+    )
+    expect_equal(
+        actual={item.name for item in findings},
+        expected={
+            "ordinary",
+            "named",
+            "indexed",
+            "copied",
+            "combined",
+            "member",
+            "sentinel",
+            "dual_a",
+            "dual_b",
+            "inner",
+        },
+    )
+
+
 def test_kwargs_exempts_positional_only_and_dynamic_callees(
     tmp_path: Path,
 ) -> None:
@@ -143,7 +228,10 @@ def test_kwargs_exempts_positional_only_and_dynamic_callees(
     project: Path = tmp_path / "proj"
     project.mkdir()
     _ = (project / "pyproject.toml").write_text(
-        data='[project]\nname = "proj"\n',
+        data="""\
+[project]
+name = "proj"
+""",
         encoding="utf-8",
     )
     _ = (project / "mod.py").write_text(
@@ -214,7 +302,10 @@ def test_kwargs_setsockopt_stays_positional_on_unknown_receiver(
     project: Path = tmp_path / "proj"
     project.mkdir()
     _ = (project / "pyproject.toml").write_text(
-        data='[project]\nname = "proj"\n',
+        data="""\
+[project]
+name = "proj"
+""",
         encoding="utf-8",
     )
     _ = (project / "mod.py").write_text(
@@ -260,10 +351,7 @@ def test_kwargs_setsockopt_stays_positional_on_unknown_receiver(
         ),
         expected=0,
     )
-    findings: list[object] = dig_list(
-        document=payload,
-        path=("findings",),
-    )
+    findings: list[object] = dig_list(document=payload, path=("findings",))
     flagged: list[object] = [
         finding
         for finding in findings
@@ -290,7 +378,10 @@ def test_import_roots_and_annotated_factories(tmp_path: Path) -> None:
     scripts: Path = tmp_path / "scripts"
     scripts.mkdir()
     (tmp_path / "pyproject.toml").write_text(
-        data='[tool.basedpyright]\nextraPaths = ["scripts"]\n',
+        data="""\
+[tool.basedpyright]
+extraPaths = ["scripts"]
+""",
     )
     module_path: Path = scripts / "factory.py"
     module_path.write_text(
@@ -368,7 +459,10 @@ def test_kwargs_writes_heuristics_under_artifacts(tmp_path: Path) -> None:
     project: Path = tmp_path / "proj"
     project.mkdir()
     _ = (project / "mod.py").write_text(
-        data="def one() -> int:\n    return 1\n",
+        data="""\
+def one() -> int:
+    return 1
+""",
         encoding="utf-8",
     )
     module: ModuleType = import_module(
@@ -465,9 +559,12 @@ def test_kwargs_dry_run_preserves_sources(tmp_path: Path) -> None:
     project: Path = tmp_path / "proj"
     project.mkdir()
     source: Path = project / "mod.py"
-    original: str = (
-        "def consume(value: int) -> None:\n    del value\n\nconsume(1)\n"
-    )
+    original: str = """\
+def consume(value: int) -> None:
+    del value
+
+consume(1)
+"""
     source.write_text(data=original, encoding="utf-8")
     module: ModuleType = import_module(
         name=_module_name(name="kwargs_typehints"),
@@ -506,9 +603,12 @@ def test_kwargs_pyproject_dry_reports_without_writing(tmp_path: Path) -> None:
     project: Path = tmp_path / "proj"
     project.mkdir()
     source: Path = project / "mod.py"
-    original: str = (
-        "def consume(value: int) -> None:\n    del value\n\nconsume(1)\n"
-    )
+    original: str = """\
+def consume(value: int) -> None:
+    del value
+
+consume(1)
+"""
     source.write_text(data=original, encoding="utf-8")
     (project / "pyproject.toml").write_text(
         data=(
@@ -600,7 +700,9 @@ def test_bare_imports_require_only_attribute_access(tmp_path: Path) -> None:
     finding: kwargs_core.BareImportFinding = both_findings[0]
     expect_true(condition=finding.safe)
     expect_in(
-        member="import sys\nfrom sys import argv",
+        member="""\
+import sys
+from sys import argv""",
         container=finding.suggestion,
     )
 
@@ -636,7 +738,12 @@ def test_bare_import_heal_keeps_module_value_uses(tmp_path: Path) -> None:
     out: Path = tmp_path / "out"
     _ = module.main(arguments=(str(object=project), "-o", str(object=out)))
     healed: str = source.read_text(encoding="utf-8")
-    expect_in(member="import sys\nfrom sys import argv", container=healed)
+    expect_in(
+        member="""\
+import sys
+from sys import argv""",
+        container=healed,
+    )
     expect_in(
         member='patch(target=sys, name="argv", value=["x"])',
         container=healed,
@@ -659,7 +766,11 @@ def _fake_interpreter(*, root: Path, answer: str, status: int = 0) -> Path:
     interpreter: Path = root / ".venv" / "bin" / "python"
     interpreter.parent.mkdir(parents=True)
     _ = interpreter.write_text(
-        data=f"#!/bin/sh\nprintf '%s\\n' '{answer}'\nexit {status}\n",
+        data=f"""\
+#!/bin/sh
+printf '%s\\n' '{answer}'
+exit {status}
+""",
         encoding="utf-8",
     )
     interpreter.chmod(mode=0o755)
@@ -817,7 +928,10 @@ def test_target_python_trusts_the_project_environment(tmp_path: Path) -> None:
         answer='[[3, 12, 1, "final", 0], "linux"]',
     )
     _ = (tmp_path / "pyproject.toml").write_text(
-        data='[project]\nrequires-python = ">=99.0"\n',
+        data="""\
+[project]
+requires-python = ">=99.0"
+""",
         encoding="utf-8",
     )
     target: kwargs_core.TargetPython = kwargs_core.target_python(root=tmp_path)
@@ -877,7 +991,10 @@ def test_requires_python_reads_the_declared_specifier(tmp_path: Path) -> None:
         expected="",
     )
     _ = (tmp_path / "pyproject.toml").write_text(
-        data='[project]\nrequires-python = ">=3.13"\n',
+        data="""\
+[project]
+requires-python = ">=3.13"
+""",
         encoding="utf-8",
     )
     expect_equal(

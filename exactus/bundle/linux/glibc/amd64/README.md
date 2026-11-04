@@ -6,4 +6,4 @@ Use `list-tools`, `--verify`, `--verify-deep`, or `TOOL [ARGS...]`. Components m
 
 Builds reuse unchanged staged recipes and packs. --only forces named selected components; --rebuild restages all. Incremental rebuilds emit a sibling `<leaf>.update/` directory holding the new catalog and only the changed packs. Apply with `--apply-update <dir>`; rollback with `--rollback`. Explicit GC is opt-in.
 
-Catalog root: `66ac3266e837bf072a421a89b907e9034c2aff13ddb1d80df9d7edeb58ce0804`
+Catalog root: `56bc9d734ec9f605f718fce705b2bdc46b2e923ea1e1650de3d8d3b8d0f90421`

@@ -106,7 +106,7 @@ def markdown(*, result: VisualCauseResult) -> str:
     lines: list[str] = [
         "# Visual Cause Exactus",
         "",
-        f"Verdict: **{'FAIL' if result.failed else 'PASS'}**",
+        f"Verdict: **{"FAIL" if result.failed else "PASS"}**",
         "",
         "## Targets",
         "",
@@ -148,8 +148,8 @@ def markdown(*, result: VisualCauseResult) -> str:
                     "",
                     f"- Rule: `{finding.rule}`",
                     "- Query: `"
-                    f"{finding.query or finding.css_path or 'target'}`",
-                    f"- Decision: `{finding.decided_by or 'default'}`",
+                    f"{finding.query or finding.css_path or "target"}`",
+                    f"- Decision: `{finding.decided_by or "default"}`",
                     f"- Changed pixels: {finding.changed_pixels:,}",
                     f"- Message: {finding.message}",
                     "",
@@ -165,9 +165,16 @@ def markdown(*, result: VisualCauseResult) -> str:
                     "",
                     "| A | B | Difference |",
                     "|---|---|---|",
-                    f"| ![]({artifacts['a']}) | ![]({artifacts['b']}) |"
-                    f" ![]({artifacts['diff']}) |",
+                    f"| ![]({artifacts["a"]}) | ![]({artifacts["b"]}) |"
+                    f" ![]({artifacts["diff"]}) |",
                     "",
                 ],
             )
-    return "\n".join(lines).rstrip() + "\n"
+    return (
+        """\
+
+""".join(lines).rstrip()
+        + """\
+
+"""
+    )

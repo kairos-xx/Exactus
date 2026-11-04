@@ -13,7 +13,7 @@ if __package__ in (None, ""):
 from exactus.packages.project_python import auto as _project_python_auto
 from exactus.packages.steps import step_log, trace
 from exactus.tools.common.cli import match_path, resolve_output
-from exactus.tools.common.config import resolve_arguments
+from exactus.tools.common.config import ConfigResolver, resolve_arguments
 from exactus.tools.common.execution import run_exactus
 from exactus.tools.docs.arguments import create_parser as _create_parser
 from exactus.tools.docs.core import (
@@ -102,9 +102,12 @@ def main(*, arguments: tuple[str, ...] | None = None) -> int:
         excludes=excludes,
         context_lines=cast(typ="int", val=options.context_lines),
     )
+    resolver: ConfigResolver = ConfigResolver(root=root)
     exactus: DocumentationExactus = DocumentationExactus(
         config=config,
         file_filter=lambda path: match_path(
+            resolver=resolver,
+            tool="docs",
             path=path,
             root=root,
             includes=includes,

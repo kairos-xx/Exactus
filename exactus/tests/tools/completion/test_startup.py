@@ -11,7 +11,7 @@ from typing import TYPE_CHECKING, Final, final
 import pytest
 
 from exactus.packages.completion import profiles
-from exactus.packages.completion.install import _block_begin
+from exactus.packages.completion.install import block_begin
 from exactus.packages.completion.model import CompletionShell
 from exactus.tests.common.support import (
     expect_equal,
@@ -32,7 +32,7 @@ class Constants:
 
     """
 
-    block_begin: Final[str] = _block_begin(command_name="exactus")
+    block_begin: Final[str] = block_begin(command_name="exactus")
 
 
 if TYPE_CHECKING:
@@ -112,7 +112,11 @@ def test_first_run_refresh_and_noop(
     bundle: Path = _isolate(home=tmp_path, monkeypatch=monkeypatch)
     monkeypatch.setattr(target=profiles, name="platform", value=platform)
     login: Path = tmp_path / ".profile"
-    login.write_text(data="# preserve my login config\n")
+    login.write_text(
+        data="""\
+# preserve my login config
+""",
+    )
     startup.ensure_completion(home=tmp_path)
     paths: list[Path] = [
         path
@@ -162,16 +166,33 @@ def test_foreign_and_broken_profiles_survive(
     )
     fish: Path = paths[CompletionShell.FISH]
     fish.parent.mkdir(parents=True)
-    fish.write_text(data="# my own completer\n")
+    fish.write_text(
+        data="""\
+# my own completer
+""",
+    )
     zsh: Path = paths[CompletionShell.ZSH]
     zsh.parent.mkdir(parents=True)
-    zsh.write_text(data=f"{Constants.block_begin}\n# incomplete\n")
+    zsh.write_text(
+        data=f"""\
+{Constants.block_begin}
+# incomplete
+""",
+    )
     (tmp_path / ".bashrc").mkdir()
     startup.ensure_completion(home=tmp_path)
-    expect_equal(actual=fish.read_text(), expected="# my own completer\n")
+    expect_equal(
+        actual=fish.read_text(),
+        expected="""\
+# my own completer
+""",
+    )
     expect_equal(
         actual=zsh.read_text(),
-        expected=f"{Constants.block_begin}\n# incomplete\n",
+        expected=f"""\
+{Constants.block_begin}
+# incomplete
+""",
     )
     expect_true(condition=paths[CompletionShell.POWERSHELL].is_file())
 

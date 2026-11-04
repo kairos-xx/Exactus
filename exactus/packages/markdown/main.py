@@ -116,17 +116,23 @@ class Cli:
             if args.context_output is not None:
                 args.context_output.write_text(
                     data=dumps(obj=context, ensure_ascii=False, indent=2)
-                    + "\n",
+                    + """\
+
+""",
                     encoding="utf-8",
                 )
             if args.validate_only:
-                sink.write("Template validation succeeded.\n")
+                sink.write("""\
+Template validation succeeded.
+""")
             elif args.output is not None:
                 args.output.write_text(data=rendered, encoding="utf-8")
             else:
                 sink.write(rendered)
         except (OSError, TemplateEngineError) as exc:
-            errors.write(f"error: {exc}\n")
+            errors.write(f"""\
+error: {exc}
+""")
             return 2
         return 0
 

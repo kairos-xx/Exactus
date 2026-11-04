@@ -50,6 +50,10 @@ explicit path and bypasses the scaffold entirely. Unknown component
 names exit through the parser with status `2`; invoking without any
 selection prints usage and returns `1`.
 
+`--include-results` adds each selected (and discovered) tool's
+`<reports-dir>/<TOOL>/` results directory to the archive; without it,
+`EXACTUS_RESULTS` content is omitted from component zips.
+
 `--list` / `-l` prints the resolved selection as JSON instead of
 writing an archive:
 
@@ -105,23 +109,24 @@ bundle's files are written at `exactus/bundle/<path>` instead.
 For every component in the final selection:
 
 - `exactus/tools/<name>/` or `exactus/packages/<name>/` — the full source tree
-- `exactus/tests/exactus/tools/<name>/` or `exactus/tests/packages/<name>/` — its tests
-- `exactus/docs/exactus/tools/<name>/` or `exactus/docs/packages/<name>/` — its docs
+- `exactus/tests/tools/<name>/` or `exactus/tests/packages/<name>/` — its tests
+- `exactus/docs/tools/<name>/` or `exactus/docs/packages/<name>/` — its docs
 
 Plus the skeleton needed for the bundle to keep working:
 
 - `pyproject.toml`, `exactus/tests/__init__.py`, `exactus/tests/conftest.py`,
   `exactus/tests/common/` — always
 - `exactus/__init__.py`, `exactus/__main__.py`,
-  `exactus/tools/__init__.py`, `exactus/tests/exactus/` package files and
-  `exactus/docs/exactus/tools/{DOCS,README}.md` — when exactus components are
+  `exactus/tools/__init__.py`, `exactus/tests/tools/` package files and
+  `exactus/docs/tools/{DOCS,README}.md` — when exactus components are
   bundled
 - `exactus/packages/__init__.py`, `exactus/packages/__main__.py`,
   `exactus/packages/README.md`, `exactus/tests/packages/` package files,
   `exactus/tests/packages/test_packages.py` and `exactus/docs/packages/{DOCS,README}.md` —
   when packages components are bundled
 - `<reports-dir>/<TOOL>/` — each selected (and discovered) exactus
-  tool's existing results directory; `<reports-dir>` resolves through
+  tool's existing results directory, **only when `--include-results`
+  is passed**; `<reports-dir>` resolves through
   `[tool.exactus] reports-dir` (default `EXACTUS_RESULTS`) instead of
   being hardcoded, and tool subfolders use the canonical uppercase
   output name (`EXACTUS_RESULTS/LINTS`, `EXACTUS_RESULTS/DOCS`, …).
@@ -163,12 +168,14 @@ from exactus.packages.zip_components import (
   catalog tools plus every `exactus/packages/` package present, sorted by name.
 - `discover_components(root=, exactus=, packages=) -> Selection` —
   requested + transitively discovered names.
-- `collect_files(root=, selection=) -> tuple[str, ...]` — sorted
-  unique archive member names.
+- `collect_files(root=, selection=, include_results=False) ->
+  tuple[str, ...]` — sorted unique archive member names; pass
+  `include_results=True` to add `<reports-dir>/<TOOL>/` directories.
 - `bundle_name(exactus=, packages=) -> str` — the derived archive name.
-- `create_bundle(root=, exactus=, packages=, output=None,
-  output_folder=None) -> BundleResult` — discovery, collection, zip
-  write and `README.md`/`TREE.txt` scaffold in one call;
+- `create_bundle(root=, exactus=, packages=, options=None) ->
+  BundleResult` — discovery, collection, zip write and
+  `README.md`/`TREE.txt` scaffold in one call; `BundleOptions`
+  carries `output`, `output_folder` and `include_results`, and
   `BundleResult` carries `path`, `files` and `selection`.
 - `create_project_archive(root=, output=None) -> BundleResult` — the
   whole-project release archive backing `--project`; replaces
@@ -205,6 +212,7 @@ Run it as a module: `python -m exactus.packages.zip_components`.
 | `--packages` | exactus/packages/<PACKAGE> components to bundle (``all``/``*`` selects every package). | dest='packages', nargs='+', default=(), metavar='PACKAGE' |
 | `--output, -o` | Destination archive (writes a bare zip, no bundle layout). | dest='output', type=Path, default=None, metavar='ZIP' |
 | `--output-folder` | Directory holding the bundle folder (defaults to <root>/artifacts/zip-components). | dest='output_folder', type=Path, default=None, metavar='DIR' |
+| `--include-results` | Bundle each selected tool's EXACTUS_RESULTS/<TOOL> reports directory (omitted by default). | dest='include_results', action='store_true' |
 | `--list, -l` | Print the resolved selection as JSON instead of bundling; without components lists every available package. | dest='listing', action='store_true' |
 | `--project` | Archive the whole project as a release ZIP: the regular exactus/bundle directory is replaced by the contents of build/exactus/bundle inside the archive. | dest='project', action='store_true' |
 | `--root` | Project root to bundle from (defaults to auto-detection). | dest='root', type=Path, default=None, metavar='DIR' |
@@ -244,14 +252,16 @@ Create source-bundle archives of exactus tools and packages packages.
   - `folder_readme` = `'# `artifacts/zip-components/`\n\nArchives produced by `exactus.packages....`
 - `class Selection` — Component names bundled by kind.
   - Fields: `tools: tuple[str, ...]`, `packages: tuple[str, ...]`
+- `class BundleOptions` — Optional destinations and payload switches for `create_bundle`.
+  - Fields: `output: Path | None`, `output_folder: Path | None`, `include_results: bool`
 - `class BundleResult` — Outcome of one bundle write.
   - Fields: `path: Path`, `files: tuple[str, ...]`, `selection: Selection`
 - `project_root() -> Path` — Return the repository root that owns this package.
 - `discover_components(*, root: Path, tools: Sequence[str]=(), packages: Sequence[str]=()) -> Selection` — Expand a selection with every transitively imported component.
 - `available_components(*, root: Path) -> Selection` — Return every bundleable component, sorted by name.
-- `collect_files(*, root: Path, selection: Selection) -> tuple[str, ...]` — List every repository-relative file a selection bundles.
+- `collect_files(*, root: Path, selection: Selection, include_results: bool=False) -> tuple[str, ...]` — List every repository-relative file a selection bundles.
 - `bundle_name(*, tools: Sequence[str]=(), packages: Sequence[str]=()) -> str` — Return the archive name derived from the requested components.
-- `create_bundle(*, root: Path, tools: Sequence[str]=(), packages: Sequence[str]=(), output: Path | None=None, output_folder: Path | None=None) -> BundleResult` — Write one source-bundle archive for the requested components.
+- `create_bundle(*, root: Path, tools: Sequence[str]=(), packages: Sequence[str]=(), options: BundleOptions | None=None) -> BundleResult` — Write one source-bundle archive for the requested components.
 - `create_project_archive(*, root: Path, output: Path | None=None) -> BundleResult` — Write the project release ZIP with the current built bundle.
 - `main(*, arguments: Sequence[str] | None=None) -> int` — Bundle the requested exactus tools and/or packages packages.
 
@@ -292,11 +302,12 @@ Files: `examples/README.md`, `examples/__init__.py`, `examples/__main__.py`, `ex
 
 Tests live in `exactus/tests/packages/zip_components/`.
 
-- `test_zip_components.py` — Tests for source-bundle archives of exactus tools and packages packages. (26 tests)
+- `test_zip_components.py` — Tests for source-bundle archives of exactus tools and packages packages. (28 tests)
   - `test_available_components_lists_every_package`
   - `test_bundle_name_joins_kinds_in_request_order`
   - `test_bundle_name_renders_wildcards_as_all`
   - `test_collect_files_adds_skeleton_skips_caches`
+  - `test_collect_files_excludes_results_by_default`
   - `test_collect_files_ignores_missing_results`
   - `test_collect_files_includes_results_directories`
   - `test_create_bundle_scaffolds_readme_and_tree`
@@ -308,6 +319,7 @@ Tests live in `exactus/tests/packages/zip_components/`.
   - `test_lints_selection_discovers_pipeline_components`
   - `test_main_accepts_both_component_kinds`
   - `test_main_bare_star_selects_everything`
+  - `test_main_include_results_flag_bundles_report_directories`
   - `test_main_list_outputs_every_component`
   - `test_main_list_resolves_a_named_selection`
   - `test_main_output_folder_overrides_the_default_directory`

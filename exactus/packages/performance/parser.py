@@ -82,7 +82,9 @@ class StepParser:
         """
         events: list[StepEvent] = []
         for raw in lines:
-            line: str = raw.rstrip("\r\n")
+            line: str = raw.rstrip("""\
+\r
+""")
             match: Match[str] | None = Constants.line.match(string=line)
             if match is None:
                 continue
@@ -192,7 +194,9 @@ class StepParser:
         samples: list[ResourceSample] = []
         for raw in lines:
             match: Match[str] | None = Constants.line.match(
-                string=raw.rstrip("\r\n"),
+                string=raw.rstrip("""\
+\r
+"""),
             )
             if match is None or not match.group("body").startswith("~sample "):
                 continue
@@ -212,7 +216,9 @@ class StepParser:
                         read=float(fields.get("read", "0")),
                         write=float(fields.get("write", "0")),
                         scope=fields.get("ioscope", "proc"),
-                        raw=raw.rstrip("\r\n"),
+                        raw=raw.rstrip("""\
+\r
+"""),
                     ),
                 )
             except (KeyError, ValueError):

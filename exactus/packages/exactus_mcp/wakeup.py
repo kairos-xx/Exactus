@@ -75,7 +75,9 @@ def _signature(*, key: str, fields: tuple[str, ...]) -> str:
         Lowercase hexadecimal HMAC-SHA256 digest.
 
     """
-    message: str = "\n".join(fields)
+    message: str = """\
+
+""".join(fields)
     return new(
         key=key.encode(encoding="utf-8"),
         msg=message.encode(encoding="utf-8"),
@@ -432,7 +434,12 @@ class WakeStateStore:
         temporary: Path = self.path.with_suffix(
             suffix=f"{self.path.suffix}.tmp",
         )
-        _ = temporary.write_text(data=f"{identifier}\n", encoding="utf-8")
+        _ = temporary.write_text(
+            data=f"""\
+{identifier}
+""",
+            encoding="utf-8",
+        )
         temporary.replace(target=self.path)
 
 
@@ -672,7 +679,9 @@ class WakeWatcher:
                 _ = await self.poll_once()
                 delay = self.poll_interval
             except (OSError, ValueError, WakeError) as exc:
-                _ = stderr.write(f"exactus-mcp-wakeup: {exc}\n")
+                _ = stderr.write(f"""\
+exactus-mcp-wakeup: {exc}
+""")
                 stderr.flush()
                 delay = min(delay * 2.0, self.retry_maximum)
             await sleep(delay=delay)

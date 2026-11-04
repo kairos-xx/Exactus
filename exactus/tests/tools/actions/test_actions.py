@@ -91,6 +91,7 @@ def test_actions_entrypoint_defaults_and_status(
         return {"status": "failed"}
 
     monkeypatch.setattr(target=actions_main, name="run_actions", value=run)
+    monkeypatch.delenv(name="EXACTUS_REPORTS_ROOT", raising=False)
     with patch(target="sys.argv", new=["actions", str(object=recipe)]):
         expect_equal(actual=actions_main.main(), expected=1)
     expect_equal(
@@ -99,7 +100,7 @@ def test_actions_entrypoint_defaults_and_status(
             (
                 specification,
                 tmp_path.resolve(),
-                Path("EXACTUS_RESULTS/ACTIONS"),
+                tmp_path.resolve() / "EXACTUS_RESULTS" / "ACTIONS",
             ),
         ],
     )
@@ -197,11 +198,19 @@ def test_toml_named_output_reference(tmp_path: Path) -> None:
     path.write_text(
         data=dedent(
             text=(
-                '    version = 1\n    [[actions]]\n    id = "discover"\n  '
-                '  tool = "record.crawl"\n    [actions.arguments]\n    url'
-                ' = "http://localhost/"\n    [[actions]]\n    id = "verify'
-                '"\n    tool = "frontend.run"\n    [actions.arguments]\n  '
-                '  projects = "$discover.projects"\n    '
+                """\
+    version = 1
+    [[actions]]
+    id = "discover"
+    tool = "record.crawl"
+    [actions.arguments]
+    url = "http://localhost/"
+    [[actions]]
+    id = "verify"
+    tool = "frontend.run"
+    [actions.arguments]
+    projects = "$discover.projects"
+    """
             ),
         ),
         encoding="utf-8",

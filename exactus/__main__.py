@@ -9,11 +9,11 @@ from contextlib import suppress
 from dataclasses import dataclass, replace
 from datetime import UTC, datetime
 from errno import ENOTEMPTY
-from fnmatch import fnmatch
 from hashlib import sha256
 from importlib.resources import files as resource_files
 from importlib.util import find_spec
 from json import JSONDecodeError, dumps, loads
+from math import isfinite
 from os import _exit, chdir, environ, getpid, stat_result, walk
 from os.path import relpath
 from pathlib import Path
@@ -40,8 +40,8 @@ from typing import (
 )
 from zipfile import is_zipfile
 
-from psutil import Error, process_iter
-
+if TYPE_CHECKING or argv[1:2] != ["__complete"]:
+    from psutil import Error, process_iter
 if __package__ in (None, ""):
     sys_path.insert(0, str(object=Path(__file__).resolve().parent.parent))
 from exactus.packages.argument_parser import (
@@ -55,9 +55,11 @@ from exactus.tools.common.cli import (
     is_reports_tree,
     match_path,
     resolve_exactus_tool_bundle,
+    resolve_output,
 )
 from exactus.tools.common.collect_files import Constants as CollectFilesTables
 from exactus.tools.common.collect_files import collect_report_files
+from exactus.tools.common.path_filters import glob_match
 
 if argv[1:2] != ["__complete"] and find_spec(name="jinja2") is None:
     _ = activate_exactus_tool_bundle(root=Path.cwd())
@@ -91,15 +93,16 @@ from exactus.tools.common.config import (
     ConfigError,
     ConfigFile,
     EffectiveRequest,
+    ShowConfigReport,
     argv_for,
     discovery_from_environment,
-    effective,
     orchestrator_arguments,
     reports_anchor,
     reports_directory,
+    show_config,
     stacked,
     tool_parser,
-    validate,
+    validate_nested,
 )
 from exactus.tools.common.conflict_copies import clear_conflict_copies
 from exactus.tools.common.digest import (
@@ -149,12 +152,20 @@ from exactus.tools.common.process_layer.process_control import (
     discover,
     identify,
 )
-from exactus.tools.common.process_layer.process_termination import (
-    ProcessTerminator,
-    TerminationResult,
-)
+
+if TYPE_CHECKING or argv[1:2] != ["__complete"]:
+    from exactus.tools.common.process_layer.process_termination import (
+        ProcessTerminator,
+        TerminationResult,
+    )
 from exactus.tools.common.progress import RunDocument, utc_now
-from exactus.tools.common.registry import RunBeat, RunClaim, RunRegistry
+from exactus.tools.common.registry import (
+    RunBeat,
+    RunClaim,
+    RunRegistry,
+    project_root_target,
+    record_project_root,
+)
 from exactus.tools.common.report_comparison import capture as capture_reports
 from exactus.tools.common.report_comparison import (
     previous_duration as previous_report_duration,
@@ -203,7 +214,7 @@ if TYPE_CHECKING:
     from collections.abc import Callable, Iterable, Sequence
     from types import FrameType
 
-    from exactus.tools.common.json_types import JsonValue
+    from exactus.tools.common.json_types import JsonDict, JsonValue
     from exactus.tools.common.registry import RunRecord
 _project_python_active: bool = _project_python_auto.Constants.activated
 
@@ -583,7 +594,8 @@ class Check:
         files: tuple[ConfigFile, ...] = discovery_from_environment(
             start=cls.root,
         )
-        validate(
+        validate_nested(
+            root=cls.root,
             files=files,
             parsers={
                 tool.identifier: tool_parser(module=tool.module)
@@ -869,8 +881,10 @@ class Check:
             stop_responder(responder=responder)
             ExactusTerminal.detach_mirrors(
                 note=(
-                    f"exactus · {pipeline.identifier} — shared pipeline "
-                    f"finished; every joined invocation observed this run.\n"
+                    f"""\
+exactus · {pipeline.identifier} — shared pipeline finished; every joined \
+invocation observed this run.
+"""
                 ),
             )
         cls._clear_conflict_copies()
@@ -905,23 +919,25 @@ class Check:
         if tool is None:
             msg: str = f"unknown exactus tool: {name}"
             raise ValueError(msg)
-        output: Path = cls.exactus_root / tool.output
+        forwarded: tuple[str, ...] = (
+            *cls._common_args(tool=tool, common=common),
+            *cls._collect_flags(tool=tool),
+            *cls._config_arguments(tool=tool, pipeline=None),
+            *arguments,
+        )
+        output: Path = cls._run_output(tool=tool, forwarded=forwarded)
         cls._enter_root()
         if tool.file_census:
             sprint(f"files · {cls._file_census(common=common)}", file=stdout)
-        cls._reset_progress(tool=tool)
+        cls._reset_progress(tool=tool, output=output)
         run_id: str = new_run_id()
         request: ToolRequest = ToolRequest(
             identifier=tool.identifier,
             output=output,
-            arguments=(
-                *cls._common_args(tool=tool, common=common),
-                *cls._collect_flags(tool=tool),
-                *cls._config_arguments(tool=tool, pipeline=None),
-                *arguments,
-            ),
+            arguments=forwarded,
             run_id=run_id,
             project_root=cls.root,
+            explicit_arguments=arguments,
         )
         ensure_worker_path()
         context: str = tool_context(root=cls.root, owner=run_id)
@@ -952,6 +968,7 @@ class Check:
                 fraction, step, issues, _ = cls._read_progress(
                     tool=tool,
                     run_id=run_id,
+                    output=output,
                 )
                 lines = ExactusTerminal.progress(
                     title=(f"exactus · {tool.identifier}"),
@@ -1063,7 +1080,9 @@ class Check:
         cls._dispatch_status(parser=parser, args=args)
         if cast(typ="bool", val=args.list_tools):
             sprint(
-                "\n".join(
+                """\
+
+""".join(
                     sorted(
                         tool.identifier
                         for tool in GroupFinalConstants.exactus_catalog.tools()
@@ -1076,7 +1095,9 @@ class Check:
             raise SystemExit(0)
         if cast(typ="bool", val=args.list_pipelines):
             sprint(
-                "\n".join(
+                """\
+
+""".join(
                     sorted(
                         pipeline.identifier
                         for pipeline in (
@@ -1360,6 +1381,39 @@ class Check:
         return reconciled.passed
 
     @classmethod
+    def _run_output(
+        cls,
+        *,
+        tool: ToolSpec,
+        forwarded: tuple[str, ...],
+    ) -> Path:
+        """Resolve a standalone run's output directory.
+
+        An explicit forwarded ``-o``/``--output-dir`` operand steers the
+        whole run tree — report bundle, ``ARTIFACTS`` and run-registry
+        records — to the requested directory. The last operand wins,
+        matching argparse precedence. Tools whose ``-o`` binds a
+        different option keep the canonical report directory.
+
+        Args:
+            tool: Catalog tool being run.
+            forwarded: Full forwarded token stream in argparse order.
+
+        Returns:
+            Resolved run output directory.
+
+        """
+        explicit: Path | None = (
+            cls._explicit_output(arguments=forwarded)
+            if tool_parser(module=tool.module).get_default(dest="output_dir")
+            is not None
+            else None
+        )
+        if explicit is not None:
+            return resolve_output(root=cls.root, output=explicit)
+        return cls.exactus_root / tool.output
+
+    @classmethod
     def _config_arguments(
         cls,
         *,
@@ -1449,8 +1503,14 @@ class Check:
                 if not is_reports_tree(directory=base / name)
                 and (
                     not any(
-                        fnmatch(name=(f"{prefix}{name}"), pat=pattern)
-                        or fnmatch(name=(f"{prefix}{name}/x"), pat=pattern)
+                        glob_match(
+                            relative=(f"{prefix}{name}"),
+                            pattern=pattern,
+                        )
+                        or glob_match(
+                            relative=(f"{prefix}{name}/x"),
+                            pattern=pattern,
+                        )
                         for pattern in patterns
                     )
                 )
@@ -1468,7 +1528,7 @@ class Check:
                 ):
                     counts[path.suffix] += 1
         return " · ".join(
-            (f"{counts[suffix]} {suffix.removeprefix('.')}")
+            (f"{counts[suffix]} {suffix.removeprefix(".")}")
             for suffix in Constants.counted_suffixes
         )
 
@@ -1807,11 +1867,7 @@ class Check:
             raise SystemExit(0)
 
     @classmethod
-    def _status(
-        cls,
-        *,
-        names: tuple[str, ...],
-    ) -> list[dict[str, JsonValue]]:
+    def _status(cls, *, names: tuple[str, ...]) -> list[dict[str, JsonValue]]:
         """List live run records in this project as JSON-ready dicts.
 
         Args:
@@ -1865,9 +1921,7 @@ class Check:
         return rows
 
     @classmethod
-    def _status_all(
-        cls,
-    ) -> list[dict[str, JsonValue]]:
+    def _status_all(cls) -> list[dict[str, JsonValue]]:
         """List every verified Exactus process on this host as dicts.
 
         Authenticated responders yield verified identities; each
@@ -2285,7 +2339,10 @@ class Check:
                 pipeline_run_id=None,
                 pid=getpid(),
                 output=output_dir,
-                targets=(str(object=output_dir),),
+                targets=(
+                    str(object=output_dir),
+                    project_root_target(root=cls.root),
+                ),
             ),
         )
         if conflicts is not None:
@@ -2328,11 +2385,11 @@ class Check:
         if not active:
             _ = path.write_text(
                 data=(
-                    f"#!/usr/bin/env bash\n# exactus "
-                    f"{pipeline}"
-                    f" run "
-                    f"{run_id}"
-                    f" already finished.\nexit 0\n"
+                    f"""\
+#!/usr/bin/env bash
+# exactus {pipeline} run {run_id} already finished.
+exit 0
+"""
                 ),
                 encoding="utf-8",
             )
@@ -2340,7 +2397,9 @@ class Check:
             return path
         runs_db: Path = cls.exactus_root / ".runtime" / "runs.db"
         _ = path.write_text(
-            data="\n".join(
+            data="""\
+
+""".join(
                 (
                     "#!/usr/bin/env bash",
                     (
@@ -2520,14 +2579,23 @@ class Check:
             )
 
     @classmethod
-    def _reset_progress(cls, *, tool: ToolSpec) -> None:
+    def _reset_progress(
+        cls,
+        *,
+        tool: ToolSpec,
+        output: Path | None = None,
+    ) -> None:
         """Drop stale progress artifacts left by an interrupted earlier run.
 
         Args:
             tool: Canonical tool specification about to launch.
+            output: Resolved run output directory; defaults to the
+                canonical report directory under ``exactus_root``.
 
         """
-        artifacts: Path = cls.exactus_root / tool.output / "ARTIFACTS"
+        artifacts: Path = (
+            output or cls.exactus_root / tool.output
+        ) / "ARTIFACTS"
         for name in (".progress.json", "@activity.json"):
             with suppress(OSError):
                 (artifacts / name).unlink(missing_ok=True)
@@ -2538,19 +2606,24 @@ class Check:
         *,
         tool: ToolSpec,
         run_id: str,
+        output: Path | None = None,
     ) -> tuple[float, str, int, dict[str, JsonValue] | None]:
         """Read one tool's live progress artifact without requiring it.
 
         Args:
             tool: Canonical tool specification.
             run_id: Current invocation whose activity may be displayed.
+            output: Resolved run output directory; defaults to the
+                canonical report directory under ``exactus_root``.
 
         Returns:
             The resulting value.
 
         """
         path: Path = (
-            cls.exactus_root / tool.output / "ARTIFACTS" / "@activity.json"
+            (output or cls.exactus_root / tool.output)
+            / "ARTIFACTS"
+            / "@activity.json"
         )
         try:
             value: JsonValue = cast(
@@ -2646,7 +2719,7 @@ class Check:
             digest for digest in digests if digest.status != "PASS"
         )
         lines: list[str] = [
-            (f"# {pipeline.replace('-', ' ').title()} Pipeline"),
+            (f"# {pipeline.replace("-", " ").title()} Pipeline"),
             "",
             (f"- Status: **{status}**"),
             (f"- Run UUID: `{run_id}`"),
@@ -2674,7 +2747,7 @@ class Check:
                             f"{digest.findings}"
                             f" | "
                         ),
-                        (f"{headline.replace('|', chr(92) + '|')} |"),
+                        (f"{headline.replace("|", chr(92) + "|")} |"),
                     ),
                 ),
             )
@@ -2750,7 +2823,9 @@ class Check:
         failing: tuple[ToolDigest, ...] = tuple(
             digest for digest in digests if digest.status != "PASS"
         )
-        markdown: str = "\n".join(
+        markdown: str = """\
+
+""".join(
             cls._pipeline_markdown(
                 pipeline=pipeline,
                 header=(status, run_id, duration_seconds),
@@ -2793,14 +2868,31 @@ class Check:
             "digests": [digest_data(digest=item) for item in digests],
             "failures": [digest_data(digest=item) for item in failing],
         }
-        _report: JsonValue = ReportBundle.write(
+        _report: JsonDict[
+            JsonDict[
+                bool
+                | dict[str, JsonValue]
+                | float
+                | int
+                | list[JsonValue]
+                | str
+                | None
+            ]
+            | bool
+            | dict[str, JsonValue]
+            | float
+            | int
+            | list[JsonValue]
+            | str
+            | None
+        ] = ReportBundle.write(
             paths=ReportPaths(
                 markdown=output / "result.md",
                 json=output / "result.json",
                 web=output / "result_web",
             ),
             analyzer=pipeline,
-            title=(f"{pipeline.replace('-', ' ').title()} Pipeline"),
+            title=(f"{pipeline.replace("-", " ").title()} Pipeline"),
             markdown=markdown,
             data=data,
         )
@@ -3166,25 +3258,12 @@ class Check:
             for group, wave in enumerate(iterable=waves, start=1)
             for tool in wave
         }
-        weights: dict[str, float] = {
-            identifier: 1.0 / len(order) for identifier in order
-        }
-        durations: dict[str, float] | None = previous_tool_durations(
-            path=cls._pipeline_output(pipeline=pipeline) / "result.json",
+        weights: dict[str, float] = cls._tool_weights(
+            order=order,
+            durations=previous_tool_durations(
+                path=cls._pipeline_output(pipeline=pipeline) / "result.json",
+            ),
         )
-        if durations is not None and order:
-            shares: dict[str, float] = {
-                identifier: durations.get(identifier, 0.0)
-                for identifier in order
-            }
-            total_seconds: float = sum(shares.values())
-            if total_seconds > 0 and all(
-                share > 0 for share in shares.values()
-            ):
-                weights = {
-                    identifier: share / total_seconds
-                    for identifier, share in shares.items()
-                }
         return PipelineRun(
             previous_duration_seconds=previous_report_duration(
                 path=cls._pipeline_output(pipeline=pipeline) / "result.json",
@@ -3308,6 +3387,10 @@ class Check:
                 requests=pending_requests,
                 generation=run.generation,
                 detail=detail,
+                fingerprint=cls._merged_fingerprint(
+                    run=run,
+                    tool_arguments=tool_arguments,
+                ),
             )
             return True
         active_descriptors, reset_count, failed_resets = (
@@ -4027,10 +4110,36 @@ class Check:
             Canonical worker request.
 
         """
+        explicit: tuple[str, ...] = arguments
+        preset: PipelineSpec | None = (
+            GroupFinalConstants.exactus_catalog.pipeline(
+                identifier=run.pipeline,
+            )
+        )
+        for defaults in (
+            preset.tool_arguments.get(tool.identifier, ())
+            if preset is not None
+            else (),
+            argv_for(
+                files=cls.config_files,
+                tool=tool.identifier,
+                parser=tool_parser(module=tool.module),
+                pipeline=run.pipeline,
+            ),
+        ):
+            if not defaults:
+                continue
+            for index in range(len(explicit)):
+                if explicit[index : index + len(defaults)] == defaults:
+                    explicit = (
+                        explicit[:index] + explicit[index + len(defaults) :]
+                    )
+                    break
         return ToolRequest(
             identifier=tool.identifier,
             output=cls.exactus_root / tool.output,
             arguments=arguments,
+            explicit_arguments=explicit,
             run_id=(f"{run.run_id}:{tool.identifier}"),
             pipeline_run_id=run.run_id,
             project_root=cls.root,
@@ -4134,6 +4243,11 @@ class Check:
     def _external_tools(cls, *, run: PipelineRun) -> dict[str, RunRecord]:
         """Return live member-tool runs this pipeline does not own.
 
+        Runs carrying a ``root://`` target marker for a different
+        project root are skipped: their reports describe a foreign
+        source tree and must never be adopted, paused, or counted as
+        this pipeline's stage verdict.
+
         Args:
             run: Mutable pipeline bookkeeping record.
 
@@ -4152,6 +4266,9 @@ class Check:
                 and record.identifier in run.groups
                 and (record.pipeline_run_id != run.run_id)
             ):
+                claim_root: Path | None = record_project_root(record=record)
+                if claim_root is not None and claim_root != cls.root:
+                    continue
                 found[record.identifier] = record
         return found
 
@@ -4450,11 +4567,7 @@ class Check:
         )
         killed: bool = external_status == "INTERRUPT" or (
             process_status is not None
-            and process_status.state
-            in (
-                State.KILLED,
-                State.CANCELLED,
-            )
+            and process_status.state in (State.KILLED, State.CANCELLED)
         )
         fallback: ToolRunResult = ToolRunResult(
             tool=identifier,
@@ -4545,7 +4658,7 @@ class Check:
             if pending != announced:
                 announced = pending
                 run.log.record(
-                    message=(f"waiting for {', '.join(pending)} to complete"),
+                    message=(f"waiting for {", ".join(pending)} to complete"),
                 )
             cls._touch_pipeline(pipeline=run.pipeline, run_id=run.run_id)
             cls._publish_activity(
@@ -4556,7 +4669,7 @@ class Check:
             cls._progress_lines = ExactusTerminal.progress(
                 title=(f"exactus · {run.pipeline}"),
                 global_fraction=cls._global_fraction(run=run),
-                stage=(f"waiting for {', '.join(pending)} to complete"),
+                stage=(f"waiting for {", ".join(pending)} to complete"),
                 tools=cls._progress_rows(run=run),
                 weights=tuple(
                     run.weights.get(identifier, 0.0)
@@ -5001,7 +5114,14 @@ class Check:
                 removed.append(target)
         if removed:
             sprint(
-                "".join((f"cleared {path}\n") for path in removed),
+                "".join(
+                    (
+                        f"""\
+cleared {path}
+"""
+                    )
+                    for path in removed
+                ),
                 end="",
                 file=stdout,
             )
@@ -5395,6 +5515,186 @@ class Check:
             arguments.update(cls._plan_arguments(plan=plan))
         return (roots, arguments, missing)
 
+    @classmethod
+    def _append_requested_tools(
+        cls,
+        *,
+        run: PipelineRun,
+        missing: set[str],
+    ) -> None:
+        """Append requested out-of-plan tools as trailing dependency waves.
+
+        Each merged tool lands after every wave the owner already runs,
+        ordered among themselves by dependency depth so a requested tool
+        never schedules ahead of a requested dependency. The GLOBAL-bar
+        weights are then rebuilt for the merged ordering so appended
+        tools carry a positive normalized share instead of the zero
+        weight a bare union would leave them.
+
+        Args:
+            run: Active owner pipeline state.
+            missing: Requested tool identifiers absent from the plan.
+
+        """
+        specs: dict[str, ToolSpec] = {}
+        for candidate in missing:
+            resolved: ToolSpec | None = (
+                GroupFinalConstants.exactus_catalog.tool(identifier=candidate)
+            )
+            if resolved is not None:
+                specs[candidate] = resolved
+        depths: dict[str, int] = {}
+        rest: set[str] = set(specs)
+        while rest:
+            ready: list[str] = [
+                identifier
+                for identifier in rest
+                if not any(
+                    dependency in rest
+                    for dependency in specs[identifier].dependencies
+                )
+            ]
+            if not ready:
+                ready = list(rest)
+            for identifier in ready:
+                depths[identifier] = 1 + max(
+                    (
+                        depths[dependency]
+                        for dependency in specs[identifier].dependencies
+                        if dependency in depths
+                    ),
+                    default=0,
+                )
+                rest.discard(identifier)
+        for identifier in sorted(specs):
+            spec: ToolSpec = specs[identifier]
+            run.tools[identifier] = spec
+            run.order = (*run.order, identifier)
+            run.groups[identifier] = run.group_count + depths[identifier]
+            run.pending[identifier] = spec
+            run.fractions[identifier] = 0.0
+            run.activities[identifier] = ToolActivity(
+                name=identifier,
+                run_id=(f"{run.run_id}:{identifier}"),
+                group=run.groups[identifier],
+                position=len(run.order),
+                status="WAIT",
+                progress=0.0,
+                step="queued by joined run",
+                started_at=None,
+                finished_at=None,
+                elapsed_seconds=0.0,
+                issues=0,
+            )
+        if specs:
+            run.weights = cls._tool_weights(
+                order=run.order,
+                durations=previous_tool_durations(
+                    path=cls._pipeline_output(pipeline=run.pipeline)
+                    / "result.json",
+                ),
+            )
+        if depths:
+            run.group_count += max(depths.values())
+            run.log.record(
+                message=(
+                    f"union plan grew by "
+                    f"{len(specs)}"
+                    f" tools: "
+                    f"{", ".join(sorted(specs))}"
+                ),
+            )
+
+    @classmethod
+    def _pipeline_fingerprint(
+        cls,
+        *,
+        pipeline: PipelineSpec,
+        waves: tuple[tuple[ToolSpec, ...], ...],
+        arguments: dict[str, tuple[str, ...]],
+    ) -> str:
+        """Hash the effective pipeline structure and tool arguments.
+
+        Args:
+            pipeline: Resolved pipeline specification.
+            waves: Participating dependency waves.
+            arguments: Effective arguments keyed by tool identifier.
+
+        Returns:
+            Stable SHA-256 configuration fingerprint.
+
+        """
+        return cls._fingerprint(
+            identifier=pipeline.identifier,
+            waves=tuple(
+                tuple(tool.identifier for tool in wave) for wave in waves
+            ),
+            arguments=arguments,
+        )
+
+    @classmethod
+    def _merged_fingerprint(
+        cls,
+        *,
+        run: PipelineRun,
+        tool_arguments: dict[str, tuple[str, ...]],
+    ) -> str:
+        """Hash the effective plan after a merged or retargeted reset.
+
+        Args:
+            run: Active owner pipeline state.
+            tool_arguments: Effective arguments keyed by tool ID.
+
+        Returns:
+            Stable SHA-256 fingerprint of the merged plan.
+
+        """
+        return cls._fingerprint(
+            identifier=run.pipeline,
+            waves=tuple(
+                tuple(
+                    identifier
+                    for identifier in run.order
+                    if run.groups[identifier] == group
+                )
+                for group in sorted(set(run.groups.values()))
+            ),
+            arguments=tool_arguments,
+        )
+
+    @staticmethod
+    def _explicit_output(
+        *,
+        arguments: tuple[str, ...],
+    ) -> Path | None:
+        """Extract the last forwarded ``-o``/``--output-dir`` operand.
+
+        Args:
+            arguments: Forwarded tool CLI tokens in argparse order.
+
+        Returns:
+            Requested report directory, or ``None`` when no explicit
+            output flag is present.
+
+        """
+        value: Path | None = None
+        index: int = 0
+        while index < len(arguments):
+            argument: str = arguments[index]
+            candidate: str | None = None
+            if argument in ("-o", "--output-dir"):
+                index += 1
+                if index < len(arguments):
+                    candidate = arguments[index]
+            elif argument.startswith("--output-dir="):
+                candidate = argument.removeprefix("--output-dir=")
+            elif argument.startswith("-o"):
+                candidate = argument[2:].removeprefix("=")
+            if candidate:
+                value = Path(candidate)
+            index += 1
+        return value
+
     @staticmethod
     def _status_record(
         *,
@@ -5500,85 +5800,6 @@ class Check:
             for identifier, candidate in overrides.items()
             if isinstance(candidate, list)
         }
-
-    @staticmethod
-    def _append_requested_tools(
-        *,
-        run: PipelineRun,
-        missing: set[str],
-    ) -> None:
-        """Append requested out-of-plan tools as trailing dependency waves.
-
-        Each merged tool lands after every wave the owner already runs,
-        ordered among themselves by dependency depth so a requested tool
-        never schedules ahead of a requested dependency.
-
-        Args:
-            run: Active owner pipeline state.
-            missing: Requested tool identifiers absent from the plan.
-
-        """
-        specs: dict[str, ToolSpec] = {}
-        for candidate in missing:
-            resolved: ToolSpec | None = (
-                GroupFinalConstants.exactus_catalog.tool(identifier=candidate)
-            )
-            if resolved is not None:
-                specs[candidate] = resolved
-        depths: dict[str, int] = {}
-        rest: set[str] = set(specs)
-        while rest:
-            ready: list[str] = [
-                identifier
-                for identifier in rest
-                if not any(
-                    dependency in rest
-                    for dependency in specs[identifier].dependencies
-                )
-            ]
-            if not ready:
-                ready = list(rest)
-            for identifier in ready:
-                depths[identifier] = 1 + max(
-                    (
-                        depths[dependency]
-                        for dependency in specs[identifier].dependencies
-                        if dependency in depths
-                    ),
-                    default=0,
-                )
-                rest.discard(identifier)
-        for identifier in sorted(specs):
-            spec: ToolSpec = specs[identifier]
-            run.tools[identifier] = spec
-            run.order = (*run.order, identifier)
-            run.groups[identifier] = run.group_count + depths[identifier]
-            run.pending[identifier] = spec
-            run.fractions[identifier] = 0.0
-            run.weights[identifier] = 0.0
-            run.activities[identifier] = ToolActivity(
-                name=identifier,
-                run_id=(f"{run.run_id}:{identifier}"),
-                group=run.groups[identifier],
-                position=len(run.order),
-                status="WAIT",
-                progress=0.0,
-                step="queued by joined run",
-                started_at=None,
-                finished_at=None,
-                elapsed_seconds=0.0,
-                issues=0,
-            )
-        if depths:
-            run.group_count += max(depths.values())
-            run.log.record(
-                message=(
-                    f"union plan grew by "
-                    f"{len(specs)}"
-                    f" tools: "
-                    f"{', '.join(sorted(specs))}"
-                ),
-            )
 
     @staticmethod
     def _exactus_processes() -> set[int]:
@@ -5982,6 +6203,54 @@ class Check:
         return tuple(rows)
 
     @staticmethod
+    def _tool_weights(
+        *,
+        order: tuple[str, ...],
+        durations: dict[str, float] | None,
+    ) -> dict[str, float]:
+        """Return positive GLOBAL-bar shares for one tool ordering.
+
+        Tools with a finite positive previous duration scale by their
+        share of the recorded total; tools without usable history share
+        the mean recorded duration, and an ordering with no usable
+        history falls back to a uniform split. Every returned weight is
+        therefore positive and the shares always sum to one, so the
+        bar stays aligned when a union join grows the ordering mid-run.
+
+        Args:
+            order: Canonical tool ordering to weight.
+            durations: Previous-run durations keyed by tool ID, when a
+                prior aggregate report recorded them.
+
+        Returns:
+            Positive normalized weights keyed by tool identifier.
+
+        """
+        if not order:
+            return {}
+        known: dict[str, float] = {}
+        if durations is not None:
+            known = {
+                identifier: duration
+                for identifier in order
+                if isinstance(
+                    (duration := durations.get(identifier)),
+                    (int, float),
+                )
+                and not isinstance(duration, bool)
+                and isfinite(duration)
+                and duration > 0
+            }
+        if not known:
+            return {identifier: 1.0 / len(order) for identifier in order}
+        mean: float = sum(known.values()) / len(known)
+        total: float = sum(known.values()) + mean * (len(order) - len(known))
+        return {
+            identifier: known.get(identifier, mean) / total
+            for identifier in order
+        }
+
+    @staticmethod
     def _global_fraction(*, run: PipelineRun) -> float:
         """Aggregate normalized task progress with duration weighting.
 
@@ -6006,17 +6275,17 @@ class Check:
         return min(max(completed, 0.0), 1.0)
 
     @staticmethod
-    def _pipeline_fingerprint(
+    def _fingerprint(
         *,
-        pipeline: PipelineSpec,
-        waves: tuple[tuple[ToolSpec, ...], ...],
+        identifier: str,
+        waves: tuple[tuple[str, ...], ...],
         arguments: dict[str, tuple[str, ...]],
     ) -> str:
-        """Hash the effective pipeline structure and tool arguments.
+        """Hash one effective plan structure and tool arguments.
 
         Args:
-            pipeline: Resolved pipeline specification.
-            waves: Participating dependency waves.
+            identifier: Canonical pipeline identifier.
+            waves: Participating dependency waves as tool IDs.
             arguments: Effective arguments keyed by tool identifier.
 
         Returns:
@@ -6025,13 +6294,11 @@ class Check:
         """
         payload: str = dumps(
             obj={
-                "pipeline": pipeline.identifier,
-                "waves": [
-                    [tool.identifier for tool in wave] for wave in waves
-                ],
+                "pipeline": identifier,
+                "waves": [list(wave) for wave in waves],
                 "arguments": {
-                    identifier: list(values)
-                    for identifier, values in sorted(arguments.items())
+                    tool: list(values)
+                    for tool, values in sorted(arguments.items())
                 },
             },
             sort_keys=True,
@@ -6216,7 +6483,7 @@ class Terminal:
             Styled or unmodified text.
 
         """
-        return f"{''.join(styles)}{text}{self.RESET}" if self.color else text
+        return f"{"".join(styles)}{text}{self.RESET}" if self.color else text
 
     def write(self, text: str = "") -> None:
         """Write a line to the terminal.
@@ -6497,14 +6764,14 @@ class HelpRenderer:
             )
             self.terminal.write()
             self.terminal.write(
-                text=(f"  {'ARGUMENT':<{syntax_width}}  DESCRIPTION"),
+                text=(f"  {"ARGUMENT":<{syntax_width}}  DESCRIPTION"),
             )
             self.terminal.write(
                 text=(
                     f"  "
-                    f"{'─' * syntax_width}"
+                    f"{"─" * syntax_width}"
                     f"  "
-                    f"{'─' * min(description_width, 50)}"
+                    f"{"─" * min(description_width, 50)}"
                 ),
             )
             for argument in arguments:
@@ -6537,7 +6804,7 @@ class HelpRenderer:
             text=(f"  {argument.syntax:<{syntax_width}}  {lines[0]}"),
         )
         for line in lines[1:]:
-            self.terminal.write(text=f"  {'':<{syntax_width}}  {line}")
+            self.terminal.write(text=f"  {"":<{syntax_width}}  {line}")
 
 
 class Application:
@@ -6658,62 +6925,84 @@ class Application:
             Always ``0``.
 
         """
-        items: list[str] = [
-            item
-            for item in arguments
-            if normalized_option(argument=item) != "--show_config"
-        ]
+        items: list[str] = list(arguments)
         cli: tuple[str, ...] = ()
         if "--" in items:
             split: int = items.index("--")
-            cli, items = (tuple(items[split + 1 :]), items[:split])
-        selected: list[str] = []
-        pipeline: str | None = None
-        collecting: bool = False
-        for index, item in enumerate(iterable=items):
-            if item in {"-t", "--tools", "--tool"}:
-                collecting = True
-            elif item.startswith("-"):
-                collecting = False
-                if item == "--pipeline" and index + 1 < len(items):
-                    pipeline = items[index + 1]
-            elif collecting:
-                named: ToolSpec | None = (
-                    GroupFinalConstants.exactus_catalog.tool(identifier=item)
-                )
-                selected.append(item if named is None else named.identifier)
+            cli, items = tuple(items[split + 1 :]), items[:split]
+        parser: ArgumentParser = ArgumentParser(prog="exactus --show-config")
+        parser.add_argument("path", nargs="?", type=Path)
+        parser.add_argument(
+            "--show-config",
+            "--show_config",
+            action="store_true",
+        )
+        parser.add_argument("--json", action="store_true")
+        parser.add_argument("--root", type=Path, default=Check.root)
+        parser.add_argument("-t", "--tools", "--tool", nargs="+", default=[])
+        parser.add_argument("--pipeline")
+        options: Namespace = parser.parse_args(args=items)
+        selected: tuple[str, ...] = tuple(options.tools)
         spec: PipelineSpec | None = (
-            GroupFinalConstants.exactus_catalog.pipeline(identifier=pipeline)
-            if pipeline is not None
+            GroupFinalConstants.exactus_catalog.pipeline(
+                identifier=options.pipeline,
+            )
+            if options.pipeline is not None
             else None
         )
-        tools: tuple[ToolSpec, ...] = tuple(
-            tool
+        requests: tuple[EffectiveRequest, ...] = tuple(
+            EffectiveRequest(
+                tool=tool.identifier,
+                module=tool.module,
+                preset=spec.tool_arguments.get(tool.identifier, ())
+                if spec is not None
+                else (),
+            )
             for tool in GroupFinalConstants.exactus_catalog.tools()
-            if not selected or tool.identifier in selected
+            if not selected
+            or tool.identifier in selected
+            or any(alias in selected for alias in tool.aliases)
         )
+        try:
+            report: ShowConfigReport = show_config(
+                root=cast(typ="Path", val=options.root),
+                path=cast(typ="Path | None", val=options.path),
+                tools=requests,
+                pipeline=options.pipeline,
+                cli=cli,
+            )
+        except ConfigError as error:
+            self.error.write(
+                text=f"{error}; use --root to select another root",
+            )
+            return 2
+        if options.json:
+            self.output.write(
+                text=dumps(obj=report.to_json(), indent=2, sort_keys=True),
+            )
+            return 0
         self.output.write(
             text="config files: "
             + (
-                ", ".join(str(object=item.path) for item in Check.config_files)
+                ", ".join(str(object=file) for file in report.files)
                 or "(none)"
             ),
         )
-        for tool in tools:
-            self.output.write(text=f"\n[{tool.identifier}]")
-            for option, value, layer in effective(
-                files=Check.config_files,
-                request=EffectiveRequest(
-                    tool=tool.identifier,
-                    module=tool.module,
-                    preset=spec.tool_arguments.get(tool.identifier, ())
-                    if spec is not None
-                    else (),
-                    cli=cli,
-                    pipeline=pipeline,
-                ),
-            ):
-                self.output.write(text=f"  {option:<28} {layer:<9} {value}")
+        self.output.write(text=f"path: {report.path}")
+        self.output.write(text=f"reports-dir: {report.reports_dir}")
+        for tool in report.tools:
+            self.output.write(
+                text=f"""\
+
+[{tool.identifier}]""",
+            )
+            for option in tool.options:
+                self.output.write(
+                    text=(
+                        f"  {option.name:<28} {option.layer:<9} "
+                        f"{option.value}  {option.source or "-"}"
+                    ),
+                )
         return 0
 
     def _configured(self, *, arguments: Sequence[str]) -> tuple[str, ...]:

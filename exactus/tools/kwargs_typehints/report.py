@@ -281,10 +281,10 @@ def _missing_kwargs(item: Mapping[str, JsonValue]) -> dict[str, JsonValue]:
         rule="positional-argument",
         title=f"Pass `{parameter}` by keyword to `{callee}`",
         message=(
-            f"`{callee}(…)` passes `{_text(value=item.get('argument'))}` "
+            f"`{callee}(…)` passes `{_text(value=item.get("argument"))}` "
             f"positionally to the keyword-capable parameter `{parameter}` "
-            f"(signature: {_text(value=item.get('confidence'))}). Write "
-            f"`{_text(value=item.get('suggestion'))}`."
+            f"(signature: {_text(value=item.get("confidence"))}). Write "
+            f"`{_text(value=item.get("suggestion"))}`."
         ),
     )
 
@@ -303,12 +303,12 @@ def _bare_import(item: Mapping[str, JsonValue]) -> dict[str, JsonValue]:
     safe: bool = item.get("safe") is True
     uses: int = len(_list(value=item.get("replacements")))
     message: str = (
-        f"Replace it with `{_text(value=item.get('suggestion'))}` and "
-        f"rewrite {uses} {'use' if uses == 1 else 'uses'} of the module."
+        f"Replace it with `{_text(value=item.get("suggestion"))}` and "
+        f"rewrite {uses} {"use" if uses == 1 else "uses"} of the module."
         if safe
         else (
             "No complete automatic rewrite is proposed because "
-            f"{_text(value=item.get('reason'))}."
+            f"{_text(value=item.get("reason"))}."
         )
     )
     return _finding(
@@ -333,7 +333,7 @@ def _missing_hint(item: Mapping[str, JsonValue]) -> dict[str, JsonValue]:
     kind: str = _text(value=item.get("kind")) or "variable"
     name: str = _text(value=item.get("name"))
     reason: str = _sentence(text=_text(value=item.get("reason")))
-    scope: str = f"`{_text(value=item.get('scope'))}`"
+    scope: str = f"`{_text(value=item.get("scope"))}`"
     where: str = "" if scope in reason else f" Scope: {scope}."
     return _finding(
         category="missing-hint",
@@ -341,7 +341,7 @@ def _missing_hint(item: Mapping[str, JsonValue]) -> dict[str, JsonValue]:
         rule=f"missing-{kind}-hint",
         title=f"Missing {kind} type hint for `{name}`",
         message=(
-            f"{reason}.{where} Add `{_text(value=item.get('suggestion'))}`."
+            f"{reason}.{where} Add `{_text(value=item.get("suggestion"))}`."
         ),
     )
 
@@ -389,7 +389,7 @@ def _ambiguous(item: Mapping[str, JsonValue]) -> dict[str, JsonValue]:
         title=f"Ambiguous call `{callee}`",
         message=(
             f"{len(candidates)} candidate definitions disagree on the "
-            f"signature: {', '.join(candidates)}. Review the call by hand."
+            f"signature: {", ".join(candidates)}. Review the call by hand."
         ),
     )
 
@@ -419,7 +419,7 @@ def _unresolved(
         rule=reason or "dynamic-expression",
         title=f"Unresolved callee `{callee}`",
         message=(
-            f"{explanation or 'No signature was found'}, so its "
+            f"{explanation or "No signature was found"}, so its "
             "positional arguments were not checked."
         ),
     )

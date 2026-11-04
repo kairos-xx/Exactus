@@ -127,8 +127,10 @@ def main() -> int:
         _ = stderr.write(
             dedent(
                 text=(
-                    "    Set EXACTUS_MCP_ACCESS_TOKEN to the token printed"
-                    " by exactus-mcp.\n    "
+                    """\
+                    Set EXACTUS_MCP_ACCESS_TOKEN to the token printed by \
+exactus-mcp.
+"""
                 ),
             ),
         )
@@ -136,12 +138,27 @@ def main() -> int:
     inspection: Inspection = run_async(
         main=inspect_service(url=arguments.url, access_token=access_token),
     )
-    tool_lines: str = "  - " + "\n  - ".join(inspection.tools)
-    resource_lines: str = "  - " + "\n  - ".join(inspection.resources)
+    tool_lines: str = (
+        "  - "
+        + """\
+
+  - """.join(inspection.tools)
+    )
+    resource_lines: str = (
+        "  - "
+        + """\
+
+  - """.join(inspection.resources)
+    )
     _ = stdout.write(
-        f"Tools:\n{tool_lines}\n"
-        f"Resources:\n{resource_lines}\n"
-        f"Status:\n{inspection.status_json}\n",
+        f"""\
+Tools:
+{tool_lines}
+Resources:
+{resource_lines}
+Status:
+{inspection.status_json}
+""",
     )
     return 0
 

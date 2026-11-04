@@ -171,7 +171,7 @@ class ResourceSampler:
             rss / Constants.mib:.1f} threads={threads} procs={len(seen)} read={
             read / Constants.mib / wall:.2f} write={
             write / Constants.mib / wall:.2f} ioscope={
-            ('proc' if per_process_io else 'system')
+            ("proc" if per_process_io else "system")
         }"
 
     def _system_io(self) -> tuple[int, int]:

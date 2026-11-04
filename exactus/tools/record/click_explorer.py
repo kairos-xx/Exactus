@@ -91,23 +91,39 @@ class ExplorerDefaults:
     PROBES_PER_STATE: ClassVar[int] = 2
     DESCRIBE: ClassVar[str] = dedent(
         text=(
-            "    element => {\n      const step = (node) => {\n        if (nod"
-            "e.id) {\n          return `#${CSS.escape(node.id)}`;\n        }\n"
-            "        const tag = node.tagName.toLowerCase();\n        const si"
-            "blings = node.parentElement\n          ? [...node.parentElement.c"
-            "hildren].filter(\n              (child) => child.tagName === node"
-            ".tagName,\n            )\n          : [];\n        return sibling"
-            "s.length > 1\n          ? `${tag}:nth-of-type(${siblings.indexOf("
-            "node) + 1})`\n          : tag;\n      };\n      const parts = [];"
-            "\n      for (let node = element; node; node = node.parentElement)"
-            " {\n        const part = step(node);\n        parts.unshift(part)"
-            ';\n        if (part.startsWith("#") || part === "body") {\n      '
-            "    break;\n        }\n      }\n      const box = element.getBoun"
-            "dingClientRect();\n      return {\n        tag: element.tagName.t"
-            'oLowerCase(),\n        href: element.getAttribute("href") || "",'
-            '\n        selector: parts.join(" > "),\n        x: Math.round(box'
-            ".left + window.scrollX + box.width / 2),\n        y: Math.round(b"
-            "ox.top + window.scrollY + box.height / 2),\n      };\n    }"
+            """\
+    element => {
+      const step = (node) => {
+        if (node.id) {
+          return `#${CSS.escape(node.id)}`;
+        }
+        const tag = node.tagName.toLowerCase();
+        const siblings = node.parentElement
+          ? [...node.parentElement.children].filter(
+              (child) => child.tagName === node.tagName,
+            )
+          : [];
+        return siblings.length > 1
+          ? `${tag}:nth-of-type(${siblings.indexOf(node) + 1})`
+          : tag;
+      };
+      const parts = [];
+      for (let node = element; node; node = node.parentElement) {
+        const part = step(node);
+        parts.unshift(part);
+        if (part.startsWith("#") || part === "body") {
+          break;
+        }
+      }
+      const box = element.getBoundingClientRect();
+      return {
+        tag: element.tagName.toLowerCase(),
+        href: element.getAttribute("href") || "",
+        selector: parts.join(" > "),
+        x: Math.round(box.left + window.scrollX + box.width / 2),
+        y: Math.round(box.top + window.scrollY + box.height / 2),
+      };
+    }"""
         ),
     )
     SETTLE_MS: ClassVar[float] = 500.0
@@ -593,7 +609,11 @@ class ClickExplorer:
                 ),
             ),
         )
-        return sha256(data=f"{page.url}\n{html}".encode()).hexdigest()
+        return sha256(
+            data=f"""\
+{page.url}
+{html}""".encode(),
+        ).hexdigest()
 
     @staticmethod
     async def _parallel[I, T](

@@ -29,10 +29,16 @@ class Constants:
 
     script: Final[str] = dedent(
         text=(
-            '    function reportProblem() {\n      console.error("console fail'
-            'ure");\n    }\n    function throwProblem() {\n      throw new Err'
-            'or("uncaught failure");\n    }\n    reportProblem();\n    setTime'
-            "out(throwProblem, 0);\n    "
+            """\
+    function reportProblem() {
+      console.error("console failure");
+    }
+    function throwProblem() {
+      throw new Error("uncaught failure");
+    }
+    reportProblem();
+    setTimeout(throwProblem, 0);
+    """
         ),
     )
     page: Final[str] = (

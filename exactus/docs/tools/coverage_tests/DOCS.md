@@ -506,3 +506,56 @@ Tests live in `exactus/tests/tools/coverage_tests/`.
   - `test_titles_for_failed_node`
 
 <!-- exactus:reference:end -->
+
+## Coverage scheduling and incremental baselines
+
+Full test execution remains the default. `--incremental` (or `incremental = true`
+in `[tool.exactus.coverage_tests]`) reuses passing isolated Python shards whose
+transitive local imports and test inputs have not changed. Isolation boundaries
+are retained when the selected node multiset matches. Fixture imports participate
+in every shard; dynamic imports conservatively invalidate against all owned
+Python sources. Shared assets, configuration, environment, installed dependency
+versions, Python and runner identity invalidate the entire baseline. JavaScript
+still runs and all coverage gates still apply.
+
+Content-addressed snapshots have verified SHA-256 hashes and are restored only
+after every payload verifies. Only a complete passing run with unchanged inputs
+can replace the baseline manifest. Failed runs retain the previous passing
+baseline. Invalid, missing, oversized or incompatible snapshots cause fresh
+execution. Runtime cache data is bounded to 256 MiB and 4096 files, with a 16 MiB
+metadata ceiling. Caches are regenerable; remove the coverage baseline directory
+to reclaim it. Cache files use atomic same-filesystem replacement. The
+`ARTIFACTS/COVERAGE/incremental.json` artifact and execution metadata distinguish
+reused shards from newly executed shards; completion counts list tests executed
+and tests reused separately. Coverage lines, arcs and totals are recombined and
+evaluated with the ordinary gates.
+
+The runtime cache lives below the reports parent's `.runtime`. Existing learned
+costs under `.exactus-cache/coverage-tests` remain readable for migration.
+Learned durations avoid static AST cost analysis on warm runs; missing costs are
+prepared concurrently and their calibration is retained. `--fail-first` schedules
+previously failing files first. Node tests receive `--test-concurrency` matching
+the configured jobs and overlap Python planning/execution.
+
+Node collection is cached by owned input content, pytest/config/plugin identity,
+selection and environment. Arbitrary collection hooks bypass the cache; use
+`--no-collect-cache` to force fresh isolated collection. Full execution does not
+reuse coverage data unless incremental mode is explicitly requested.
+
+Monitoring is capability-gated. Branch tracing requires Python 3.14; Python 3.13
+keeps the native tracer with branch measurement enabled. The explicitly selected
+monitoring implementation requires coverage 7.16.2 or newer, and green-thread or
+dynamic-context workloads retain the native tracer. This corrects the original
+plan's assumption that Python 3.13 could use monitoring for branch coverage.
+
+## Shard liveness and progress spans
+
+Each batch publishes a launch event immediately and a cancellable one-second
+liveness tick while subprocesses run. Completed/total remain actual process-exit
+counts. `Progress.share` carries a separately labeled duration estimate, bounded
+below completion until the process exits; per-worker lines expose running and
+finished shards. Learned per-file durations supply expected shard weights.
+Parallel and exclusive batches receive adjacent, non-overlapping spans within
+20–60%, allocated from expected wall time. Collection occupies 10–20%; indexing
+starts below that span. The ticker is cancelled and joined on success, failure
+and cancellation, so it cannot publish into a later phase.

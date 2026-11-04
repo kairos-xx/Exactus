@@ -17,6 +17,7 @@ Unified project build, bundle, and package pipeline.
 - [`install.py`](install.py) — Install the built ``exactus`` executable system-wide.
 - [`inventory.py`](inventory.py) — Share project-tree filtering between package and build_make scripts.
 - [`inventory_cli.py`](inventory_cli.py) — ANSI-styled ``--help``/``-h`` output shared by the root scripts.
+- [`musl_browser.py`](musl_browser.py) — Stage relocatable, signed Alpine Chromium packages for musl targets.
 - [`partition_fs.py`](partition_fs.py) — Deterministic, streaming content-addressed filesystem bundles.
 - [`partition_launcher.py`](partition_launcher.py) — Offline dependency-aware runtime for partitioned filesystem tools.
 - [`process_control.py`](process_control.py) — Cross-invocation exactus ownership and process termination primitives.

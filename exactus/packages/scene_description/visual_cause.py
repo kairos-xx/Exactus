@@ -33,8 +33,11 @@ class VisualCauseDescriber:
         if not isinstance(block, dict):
             return dedent(
                 text=(
-                    "    ## Rendered change description\n    \n    No scene de"
-                    "scription is available.\n    "
+                    """\
+    ## Rendered change description
+
+    No scene description is available.
+    """
                 ),
             )
         summary: JsonValue = block.get("summary")
@@ -47,11 +50,18 @@ class VisualCauseDescriber:
         ]
         if isinstance(elements, list):
             lines.extend(
-                f"- {item.get('summary')}"
+                f"- {item.get("summary")}"
                 for item in elements
                 if isinstance(item, dict) and item.get("summary")
             )
-        return "\n".join(lines) + "\n"
+        return (
+            """\
+
+""".join(lines)
+            + """\
+
+"""
+        )
 
     @staticmethod
     def strings(value: JsonValue) -> list[JsonValue]:

@@ -43,9 +43,15 @@ def test_public_names_drops_startup_hook_names(
     package: Path = tmp_path / "hookpkg"
     package.mkdir()
     package.joinpath("__init__.py").write_text(data="")
-    package.joinpath("helper.py").write_text(data="VALUE = 1\n")
+    package.joinpath("helper.py").write_text(
+        data="""\
+VALUE = 1
+""",
+    )
     package.joinpath("pth_file.py").write_text(
-        data='raise RuntimeError("startup hook imported")\n',
+        data="""\
+raise RuntimeError("startup hook imported")
+""",
     )
     syspath_prepend: Callable[..., None] = cast(
         typ="Callable[..., None]",

@@ -1,5 +1,6 @@
 # Copyright (c) 2026 Project contributors
 """Reconcile numbered sync copies without discarding unique project data."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -12,6 +13,8 @@ from uuid import uuid4
 
 if TYPE_CHECKING:
     from _hashlib import HASH
+
+
 @final
 class Constants:
     """Group module-level constants.
@@ -30,6 +33,8 @@ class Constants:
             "exactus/packages",
         },
     )
+
+
 @dataclass
 class ClearResult:
     """Describe reconciled sync copies and recoverable conflicts.
@@ -46,6 +51,8 @@ class ClearResult:
     merged_entries: int = 0
     preserved_conflicts: int = 0
     errors: int = 0
+
+
 def _digest(*, path: Path) -> bytes:
     """Hash a regular file with bounded memory.
 
@@ -62,6 +69,8 @@ def _digest(*, path: Path) -> bytes:
         while data := stream.read(1024 * 1024):
             digest.update(data)
     return digest.digest()
+
+
 def _same(*, source: Path, target: Path) -> bool:
     """Compare links or regular files without following directory links.
 
@@ -85,6 +94,8 @@ def _same(*, source: Path, target: Path) -> bool:
         and (source.stat().st_size == target.stat().st_size)
         and (_digest(path=source) == _digest(path=target))
     )
+
+
 def _merge(
     *,
     source: Path,
@@ -127,6 +138,8 @@ def _merge(
             recovery.parent.mkdir(parents=True, exist_ok=True)
             child.rename(target=recovery)
             result.preserved_conflicts += 1
+
+
 def _numbered_copy(*, name: str, parent: Path) -> Path | None:
     """Return the canonical directory for a numbered copy name.
 
@@ -148,6 +161,8 @@ def _numbered_copy(*, name: str, parent: Path) -> Path | None:
     if canonical.is_symlink() or not canonical.is_dir():
         return None
     return canonical
+
+
 def clear_conflict_copies(*, root: Path) -> ClearResult:
     """Reconcile numbered directories with existing canonical counterparts.
 

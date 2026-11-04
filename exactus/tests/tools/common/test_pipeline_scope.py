@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from hashlib import sha256
 from json import dumps
 from os import getpid
 from pathlib import Path
@@ -18,11 +19,13 @@ from exactus.tests.common.support import (
     expect_equal,
     expect_in,
     expect_not_in,
+    expect_true,
     private_call,
     require,
 )
 from exactus.tools.common.models import ToolRunResult
 from exactus.tools.common.pipeline_supervisor import (
+    PipelineClaim,
     PipelineOwner,
     PipelineRequest,
 )
@@ -154,11 +157,7 @@ def _run(*, root: Path, owner: PipelineOwner | None) -> _Run:
     )
 
 
-def _roots(
-    *,
-    run: _Run,
-    requests: tuple[PipelineRequest, ...],
-) -> object:
+def _roots(*, run: _Run, requests: tuple[PipelineRequest, ...]) -> object:
     """Call the private scoping helper.
 
     Args:
@@ -234,9 +233,7 @@ def test_scoped_reset_needs_an_owner(tmp_path: Path) -> None:
     )
 
 
-def test_same_fingerprint_requests_reset_the_full_plan(
-    tmp_path: Path,
-) -> None:
+def test_same_fingerprint_requests_reset_the_full_plan(tmp_path: Path) -> None:
     """A request matching the owner configuration is not scoped.
 
     Args:
@@ -258,9 +255,7 @@ def test_same_fingerprint_requests_reset_the_full_plan(
     )
 
 
-def test_inline_plans_union_and_ignore_unknown_tools(
-    tmp_path: Path,
-) -> None:
+def test_inline_plans_union_and_ignore_unknown_tools(tmp_path: Path) -> None:
     """Roots are the union of requested tools the owner actually runs.
 
     Args:
@@ -283,11 +278,7 @@ def test_inline_plans_union_and_ignore_unknown_tools(
                 ),
             ),
         ),
-        expected=(
-            {"lints", "docs"},
-            dict[str, tuple[str, ...]](),
-            set[str](),
-        ),
+        expected=({"lints", "docs"}, dict[str, tuple[str, ...]](), set[str]()),
     )
 
 
@@ -314,11 +305,7 @@ def test_requested_scope_collects_arguments_and_missing_tools(
                 ),
             ),
         ),
-        expected=(
-            {"lints"},
-            {"lints": ("--verbose",)},
-            {"readme"},
-        ),
+        expected=({"lints"}, {"lints": ("--verbose",)}, {"readme"}),
     )
 
 
@@ -342,11 +329,7 @@ def test_requested_scope_survives_missing_arguments_block(
                 ),
             ),
         ),
-        expected=(
-            {"docs"},
-            dict[str, tuple[str, ...]](),
-            set[str](),
-        ),
+        expected=({"docs"}, dict[str, tuple[str, ...]](), set[str]()),
     )
 
 
@@ -370,11 +353,7 @@ def test_plan_is_read_from_the_materialized_request_file(
             run=_run(root=tmp_path, owner=_owner(fingerprint="owner")),
             requests=(_request(request_id="a", fingerprint="one", plan=None),),
         ),
-        expected=(
-            {"docs"},
-            dict[str, tuple[str, ...]](),
-            set[str](),
-        ),
+        expected=({"docs"}, dict[str, tuple[str, ...]](), set[str]()),
     )
 
 
@@ -432,11 +411,7 @@ def test_observer_scope_result_falls_back_without_tools(
         monkeypatch: Pytest patching helper.
 
     """
-    monkeypatch.setattr(
-        target=Check,
-        name="exactus_root",
-        value=tmp_path,
-    )
+    monkeypatch.setattr(target=Check, name="exactus_root", value=tmp_path)
     plans: tuple[dict[str, JsonValue] | None, ...] = (
         None,
         {"tools": "lints"},
@@ -448,11 +423,7 @@ def test_observer_scope_result_falls_back_without_tools(
             actual=private_call(
                 owner=Check,
                 name="_observer_scope_result",
-                request=_request(
-                    request_id="a",
-                    fingerprint="one",
-                    plan=plan,
-                ),
+                request=_request(request_id="a", fingerprint="one", plan=plan),
             ),
             expected=None,
         )
@@ -469,11 +440,7 @@ def test_observer_scope_result_aggregates_requested_reports(
         monkeypatch: Pytest patching helper.
 
     """
-    monkeypatch.setattr(
-        target=Check,
-        name="exactus_root",
-        value=tmp_path,
-    )
+    monkeypatch.setattr(target=Check, name="exactus_root", value=tmp_path)
     for tool, status, passed in (
         ("LINTS", "PASS", True),
         ("DOCS", "FAIL", False),
@@ -596,9 +563,236 @@ def test_append_requested_tools_grows_the_plan_by_dependency(
         expected=["docs", "lints", "readme"],
     )
     expect_equal(
-        actual=(run.weights["docs"], run.weights["readme"]),
-        expected=(0.0, 0.0),
+        actual=sorted(set(run.weights.values())),
+        expected=[1.0 / len(run.order)],
     )
+
+
+def test_union_growth_during_active_work_normalizes_weights(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Appended tools gain positive shares renormalized with history.
+
+    Args:
+        tmp_path: Disposable results root.
+        monkeypatch: Pytest patching helper.
+
+    """
+
+    def _previous_tool_durations(*, path: Path) -> dict[str, float] | None:
+        """Return per-tool durations from the report that preceded ``path``.
+
+        The lookup mirrors :func:`previous_duration`: the captured document is
+        consulted first, then the shared baseline snapshot directory inherited
+        through ``EXACTUS_COMPARISON_BASELINE``.
+
+        Args:
+            path: Canonical ``result.json`` path of the current run.
+
+        Returns:
+            Tool identifiers mapped to their previous durations in seconds, or
+            ``None`` when no previous aggregate report exists or it recorded
+            no per-tool durations.
+
+        """
+        _ = path
+        return {"lints": 6.0, "docs": 2.0}
+
+    monkeypatch.setattr(target=Check, name="exactus_root", value=tmp_path)
+    monkeypatch.setattr(
+        target=exactus_main,
+        name="previous_tool_durations",
+        value=_previous_tool_durations,
+    )
+    run: PipelineRun = cast(
+        typ="PipelineRun",
+        val=private_call(
+            owner=Check,
+            name="_new_pipeline_run",
+            pipeline="unified",
+            run_id="r",
+            waves=(
+                (_catalog_tool(identifier="lints"),),
+                (_catalog_tool(identifier="docs"),),
+            ),
+        ),
+    )
+    run.fractions["lints"] = 1.0
+    run.fractions["docs"] = 0.5
+    private_call(
+        owner=Check,
+        name="_append_requested_tools",
+        run=run,
+        missing={"readme"},
+    )
+    expect_equal(actual=run.order, expected=("lints", "docs", "readme"))
+    weights: dict[str, float] = run.weights
+    expect_true(condition=all(weight > 0 for weight in weights.values()))
+    expect_equal(
+        actual=round(number=sum(weights.values()), ndigits=9),
+        expected=1.0,
+    )
+    expect_equal(
+        actual=weights["readme"],
+        expected=4.0 / 12.0,
+    )
+    fraction: float = cast(
+        typ="float",
+        val=private_call(owner=Check, name="_global_fraction", run=run),
+    )
+    expect_equal(
+        actual=fraction,
+        expected=weights["lints"] + weights["docs"] * 0.5,
+    )
+
+
+@pytest.mark.parametrize(
+    ("order", "durations", "expected"),
+    [
+        (("a", "b"), None, {"a": 0.5, "b": 0.5}),
+        (("a", "b"), {}, {"a": 0.5, "b": 0.5}),
+        (
+            ("a", "b"),
+            {"a": 0.0, "b": 0.0},
+            {"a": 0.5, "b": 0.5},
+        ),
+        (
+            ("a", "b"),
+            {"a": -1.0, "b": float("nan"), "c": float("inf")},
+            {"a": 0.5, "b": 0.5},
+        ),
+        (
+            ("a", "b"),
+            {"a": "5", "b": True},
+            {"a": 0.5, "b": 0.5},
+        ),
+        (
+            ("a", "b", "c"),
+            {"a": 6.0, "b": 2.0},
+            {"a": 0.5, "b": 1.0 / 6.0, "c": 1.0 / 3.0},
+        ),
+    ],
+    ids=[
+        "no-history",
+        "empty-history",
+        "zero-durations",
+        "negative-nan-inf",
+        "non-numeric-durations",
+        "partial-history",
+    ],
+)
+def test_tool_weights_normalize_positive_shares(
+    *,
+    order: tuple[str, ...],
+    durations: dict[str, object] | None,
+    expected: dict[str, float],
+) -> None:
+    """Weights stay positive and sum to one for any history shape.
+
+    Args:
+        order: Canonical tool ordering.
+        durations: Previous-run durations, when recorded.
+        expected: Normalized weights keyed by tool identifier.
+
+    """
+    weights: dict[str, float] = cast(
+        typ="dict[str, float]",
+        val=private_call(
+            owner=Check,
+            name="_tool_weights",
+            order=order,
+            durations=cast(typ="object", val=durations),
+        ),
+    )
+    expect_equal(actual=weights, expected=expected)
+    expect_true(condition=all(weight > 0 for weight in weights.values()))
+    expect_equal(
+        actual=round(number=sum(weights.values()), ndigits=9),
+        expected=1.0,
+    )
+
+
+def test_scoped_reset_updates_the_owner_fingerprint(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """A merged/retargeted join stores the new plan hash and generation.
+
+    Args:
+        tmp_path: Disposable results root.
+        monkeypatch: Pytest patching helper.
+
+    """
+    monkeypatch.setattr(target=Check, name="exactus_root", value=tmp_path)
+    run: PipelineRun = cast(
+        typ="PipelineRun",
+        val=private_call(
+            owner=Check,
+            name="_new_pipeline_run",
+            pipeline="unified",
+            run_id="owner-run",
+            waves=((_catalog_tool(identifier="lints"),),),
+        ),
+    )
+    claim: PipelineClaim = run.coordinator.claim(
+        pipeline="unified",
+        run_id="owner-run",
+        pid=getpid(),
+        fingerprint="owner-plan",
+        tty=None,
+    )
+    expect_equal(actual=claim.mode, expected="owner")
+    joined: PipelineClaim = run.coordinator.claim(
+        pipeline="unified",
+        run_id="observer",
+        pid=getpid(),
+        fingerprint="observer-plan",
+        tty=None,
+    )
+    expect_equal(actual=joined.mode, expected="observer")
+    request: PipelineRequest | None = joined.request
+    expect_true(condition=request is not None)
+    if request is None:
+        return
+    run.coordinator.record_plan(
+        request=request,
+        plan={
+            "tools": ["lints", "readme"],
+            "arguments": {"lints": ["--verbose"]},
+        },
+    )
+    tool_arguments: dict[str, tuple[str, ...]] = {"lints": ()}
+    applied: bool = cast(
+        typ="bool",
+        val=private_call(
+            owner=Check,
+            name="_apply_pipeline_requests",
+            run=run,
+            results={},
+            tool_arguments=tool_arguments,
+        ),
+    )
+    expect_true(condition=applied)
+    expect_equal(actual=run.order, expected=("lints", "readme"))
+    expect_equal(actual=tool_arguments["lints"], expected=("--verbose",))
+    owner: PipelineOwner | None = run.coordinator.owner(pipeline="unified")
+    expect_true(condition=owner is not None)
+    if owner is None:
+        return
+    expected_fingerprint: str = sha256(
+        data=dumps(
+            obj={
+                "pipeline": "unified",
+                "waves": [["lints"], ["readme"]],
+                "arguments": {"lints": ["--verbose"]},
+            },
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode(encoding="utf-8"),
+    ).hexdigest()
+    expect_equal(actual=owner.fingerprint, expected=expected_fingerprint)
+    expect_equal(actual=owner.generation, expected=2)
 
 
 def test_scoped_apply_requeues_roots_dependents_and_retargets(
@@ -649,10 +843,7 @@ def test_scoped_apply_requeues_roots_dependents_and_retargets(
     )
     expect_equal(actual=sorted(results), expected=["readme"])
     expect_equal(actual=sorted(run.pending), expected=["docs", "lints"])
-    expect_equal(
-        actual=tool_arguments["lints"],
-        expected=("--verbose",),
-    )
+    expect_equal(actual=tool_arguments["lints"], expected=("--verbose",))
 
 
 def test_invalidate_releases_dependents_for_a_fresh_rerun(
@@ -686,14 +877,9 @@ def test_invalidate_releases_dependents_for_a_fresh_rerun(
     )
     _ = run.pending.pop("lints")
     _ = run.pending.pop("docs")
-    run.handles["docs"] = cast(
-        typ="ProcessHandle",
-        val=object(),
-    )
+    run.handles["docs"] = cast(typ="ProcessHandle", val=object())
     run.fractions["docs"] = 0.5
-    results: dict[str, ToolRunResult] = {
-        "lints": _result(identifier="lints"),
-    }
+    results: dict[str, ToolRunResult] = {"lints": _result(identifier="lints")}
     private_call(
         owner=Check,
         name="_invalidate_tools",
@@ -706,10 +892,7 @@ def test_invalidate_releases_dependents_for_a_fresh_rerun(
     expect_equal(actual=sorted(run.pending), expected=["docs", "lints"])
     expect_equal(actual=sorted(run.handles), expected=[])
     expect_equal(actual=run.fractions["docs"], expected=0.0)
-    expect_equal(
-        actual=run.activities["docs"].status,
-        expected="WAIT",
-    )
+    expect_equal(actual=run.activities["docs"].status, expected="WAIT")
     expect_equal(
         actual=run.activities["docs"].step,
         expected="waiting for rerun of lints",
@@ -780,10 +963,7 @@ def test_invalidate_holds_dependents_of_an_external_rerun(
         roots={"lints"},
         descriptors=(),
     )
-    expect_equal(
-        actual=run.activities["docs"].status,
-        expected="HELD",
-    )
+    expect_equal(actual=run.activities["docs"].status, expected="HELD")
     expect_in(member="docs", container=run.held)
     expect_in(member="docs", container=run.redo)
     rows: tuple[tuple[str, str, float, str, float | None], ...] = cast(
@@ -841,13 +1021,7 @@ def test_invalidate_keeps_reset_workers_out_of_pending(
                     scheduler respawns it, rather than reset in place.
 
             """
-            _ = (
-                cls,
-                run,
-                identifier,
-                descriptors,
-                respawn,
-            )
+            _ = (cls, run, identifier, descriptors, respawn)
 
     monkeypatch.setattr(target=Check, name="exactus_root", value=tmp_path)
     monkeypatch.setattr(
@@ -870,10 +1044,7 @@ def test_invalidate_keeps_reset_workers_out_of_pending(
     )
     _ = run.pending.pop("lints")
     _ = run.pending.pop("docs")
-    run.handles["docs"] = cast(
-        typ="ProcessHandle",
-        val=object(),
-    )
+    run.handles["docs"] = cast(typ="ProcessHandle", val=object())
     private_call(
         owner=Check,
         name="_invalidate_tools",
@@ -918,11 +1089,7 @@ def test_pause_waiting_external_excludes_the_worker_subtree(
         _ = (descriptor, owner)
         return True
 
-    def _pause_tree(
-        *,
-        pid: int,
-        exclude: Iterable[int] = (),
-    ) -> None:
+    def _pause_tree(*, pid: int, exclude: Iterable[int] = ()) -> None:
         """Suspend a process tree until ``resume_tree`` releases it.
 
         Unlike ``terminate_tree`` the tree stays registered and alive —
@@ -1011,10 +1178,7 @@ def test_pause_waiting_external_excludes_the_worker_subtree(
         record=record,
         descriptor=descriptor,
     )
-    expect_equal(
-        actual=captured["exclude"],
-        expected=(5555, 7777, 8888),
-    )
+    expect_equal(actual=captured["exclude"], expected=(5555, 7777, 8888))
     expect_equal(actual=run.paused["lints"], expected=4321)
 
 
@@ -1049,10 +1213,7 @@ def test_retire_worker_releases_retargeted_and_ignores_pending(
         respawn=False,
     )
     expect_equal(actual=sorted(run.handles), expected=[])
-    run.handles["lints"] = cast(
-        typ="ProcessHandle",
-        val=object(),
-    )
+    run.handles["lints"] = cast(typ="ProcessHandle", val=object())
     private_call(
         owner=Check,
         name="_retire_worker",
@@ -1240,11 +1401,7 @@ def test_status_all_embeds_live_runs(
         _ = (authkey, timeout, workers, full_scan)
         return [identity]
 
-    monkeypatch.setattr(
-        target=exactus_main,
-        name="discover",
-        value=_discover,
-    )
+    monkeypatch.setattr(target=exactus_main, name="discover", value=_discover)
     rows: list[dict[str, JsonValue]] = cast(
         typ="list[dict[str, JsonValue]]",
         val=private_call(owner=Check, name="_status_all"),

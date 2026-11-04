@@ -17,7 +17,11 @@ if __package__ in {None, ""}:
         import_module(
             name="exactus.packages.project_python",
         ).switch_to_project_venv()
-from exactus.packages.zip_components.core import BundleResult, create_bundle
+from exactus.packages.zip_components.core import (
+    BundleOptions,
+    BundleResult,
+    create_bundle,
+)
 
 
 def main() -> int:
@@ -32,7 +36,7 @@ def main() -> int:
         result: BundleResult = create_bundle(
             root=root,
             packages=("steps",),
-            output=Path(scratch) / "packages_steps.zip",
+            options=BundleOptions(output=Path(scratch) / "packages_steps.zip"),
         )
         discovered: str = (
             ", ".join(
@@ -43,10 +47,12 @@ def main() -> int:
             or "none"
         )
         _written: int = stdout.write(
-            f"Bundle: {result.path.name}\n"
-            f"Files: {len(result.files)}\n"
-            f"Discovered dependencies: {discovered}\n"
-            f"First members: {', '.join(result.files[:5])}\n",
+            f"""\
+Bundle: {result.path.name}
+Files: {len(result.files)}
+Discovered dependencies: {discovered}
+First members: {", ".join(result.files[:5])}
+""",
         )
     return 0
 

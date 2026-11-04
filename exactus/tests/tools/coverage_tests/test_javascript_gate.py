@@ -76,12 +76,24 @@ def test_package_named_javascript_sources_are_measured(tmp_path: Path) -> None:
     source: Path = tmp_path / "exactus" / "packages" / "maintained"
     source.mkdir(parents=True)
     script: Path = source / "dashboard.js"
-    script.write_text(data="export const ready = true;\n", encoding="utf-8")
+    script.write_text(
+        data="""\
+export const ready = true;
+""",
+        encoding="utf-8",
+    )
     generated: Path = source / "node_modules" / "dependency.js"
     generated.parent.mkdir()
-    generated.write_text(data="export const ready = true;\n", encoding="utf-8")
+    generated.write_text(
+        data="""\
+export const ready = true;
+""",
+        encoding="utf-8",
+    )
     (tmp_path / "exactus" / "packages" / "other.js").write_text(
-        data="export const ignored = true;\n",
+        data="""\
+export const ignored = true;
+""",
         encoding="utf-8",
     )
     test_path: Path = tmp_path / "tests" / "dashboard.test.mjs"
@@ -89,10 +101,12 @@ def test_package_named_javascript_sources_are_measured(tmp_path: Path) -> None:
     test_path.write_text(
         data=dedent(
             text=(
-                "    import test from 'node:test';\n    import assert from"
-                " 'node:assert/strict';\n    import {ready} from '../exact"
-                "us/packages/maintained/dashboard.js';\n    test('ready', "
-                "() => assert.equal(ready, true));\n    "
+                """\
+    import test from 'node:test';
+    import assert from 'node:assert/strict';
+    import {ready} from '../exactus/packages/maintained/dashboard.js';
+    test('ready', () => assert.equal(ready, true));
+    """
             ),
         ),
         encoding="utf-8",
@@ -142,20 +156,30 @@ def test_javascript_only_project_runs_tests_and_fails_low_coverage(
     (root / "app.mjs").write_text(
         data=dedent(
             text=(
-                "    export function loaded() { return true; }\n    export"
-                " function unused() {\n    "
+                """\
+                     export function loaded() { return true; }
+                     export function unused() {
+"""
             ),
         )
-        + "\n".join(f"  const n{i} = {i};" for i in range(20))
-        + "\n  return n19;\n}\n",
+        + """\
+
+""".join(f"  const n{i} = {i};" for i in range(20))
+        + """\
+
+  return n19;
+}
+""",
     )
     (root / "tests/app.test.mjs").write_text(
         data=dedent(
             text=(
-                "    import test from 'node:test';\n    import assert from"
-                " 'node:assert/strict';\n    import {loaded} from '../app."
-                "mjs';\n    test('loaded', () => assert.equal(loaded(), tr"
-                "ue));\n    "
+                """\
+    import test from 'node:test';
+    import assert from 'node:assert/strict';
+    import {loaded} from '../app.mjs';
+    test('loaded', () => assert.equal(loaded(), true));
+    """
             ),
         ),
     )

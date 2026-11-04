@@ -60,7 +60,9 @@ class GuardExamples:
     @classmethod
     def run(cls) -> None:
         """Run every safe, self-cleaning example."""
-        _ = stdout.write("Process Guard examples\n")
+        _ = stdout.write("""\
+Process Guard examples
+""")
         cls.in_process()
         cls.external_tree()
         cls.exit_code()
@@ -74,14 +76,18 @@ class GuardExamples:
                 args=(executable, "-c", "import time; time.sleep(60)"),
             )
             sleep(0.05)
-            _ = stdout.write(f"in-process child started: {process.pid}\n")
+            _ = stdout.write(f"""\
+in-process child started: {process.pid}
+""")
         if guard.result is not None:
             _ = stdout.write(
                 "".join(
                     (
                         "in-process cleanup: ",
                         f"{len(guard.result.observed)} observed, ",
-                        f"{len(guard.result.survivors)} survivors\n",
+                        f"""\
+{len(guard.result.survivors)} survivors
+""",
                     ),
                 ),
             )
@@ -98,12 +104,25 @@ class GuardExamples:
         _ = stdout.write(
             "".join(
                 (
-                    f"\n{title}\n",
-                    f"  exit code: {result.exit_code}\n",
-                    f"  observed: {len(result.cleanup.observed)}\n",
-                    f"  terminated: {len(result.cleanup.terminated)}\n",
-                    f"  force-killed: {len(result.cleanup.killed)}\n",
-                    f"  survivors: {len(result.cleanup.survivors)}\n",
+                    f"""\
+
+{title}
+""",
+                    f"""\
+  exit code: {result.exit_code}
+""",
+                    f"""\
+  observed: {len(result.cleanup.observed)}
+""",
+                    f"""\
+  terminated: {len(result.cleanup.terminated)}
+""",
+                    f"""\
+  force-killed: {len(result.cleanup.killed)}
+""",
+                    f"""\
+  survivors: {len(result.cleanup.survivors)}
+""",
                 ),
             ),
         )

@@ -14,6 +14,21 @@ Run project linters and merge their diagnostics into one JSON report.
   exit-code convention, so warn-level findings (e.g. pyrefly
   `--min-severity info`) fail the audit deterministically.
 - Optional `stabilize` runs Ruff format/fix cycles before the lint passes.
+  Every Ruff subprocess is checked: launch failures, timeouts, signal
+  termination and exit codes above `1` raise `RuffExecutionError`,
+  while exit code `1` from `check` or `format --check` reports
+  findings without failing execution. Formatter and fixer fixed
+  points are verified independently — byte-identical cycle output is
+  not enough; read-only `format --check` must also pass. Repeated
+  per-file source states abort with an oscillation diagnostic, except
+  files with a proven format-then-revert signature (a fix or repair
+  provably undoes the formatter's output): those are format-locked —
+  the formatter's canonical output is kept, the file leaves the loop,
+  `metrics.format_locked` counts them and the unsatisfiable lint rule
+  surfaces as a normal diagnostic. Any other failure restores every
+  owned file's original bytes and permissions (external edits detected
+  during rollback are preserved and reported). `time_limit_seconds`
+  bounds the whole run and `subprocess_timeout` bounds each process.
 - `AuditRunner.use_repair()` installs a `FileRepair` called for each file
   after every Ruff cycle; a change triggers another cycle, so repairs end up
   formatted and fixed.
@@ -74,7 +89,7 @@ Run project linters in parallel and merge diagnostics into one report.
   - `activity_interval_seconds` = `1.0`
   - `activity_event_limit` = `50`
   - `log_escape_pattern` = `compile_regex(pattern='\\x1b\\[[0-9;?]*[A-Za-z]')`
-  - `report_readme` = `dedent(text='    # `ALL_LINTS_RESULTS/`\n    \n    Standalone `exactus/pa...`
+  - `report_readme` = `dedent(text='            # `ALL_LINTS_RESULTS/`\n\n            Standalone...`
   - `artifacts_readme` = `dedent(text='    # `ARTIFACTS/`\n    \n    Execution evidence of the stan...`
   - `files_readme` = `dedent(text='    # `FILES/`\n    \n    Every file that produced diagnosti...`
   - `project_root` = `Path(__file__).resolve().parents[3]`
@@ -150,8 +165,46 @@ Run project linters in parallel and merge diagnostics into one report.
   - `unsafe_fixes` = `False`
   - `repair` = `None`
   - `batch_repair` = `None`
+  - `subprocess_timeout` = `None`
+  - `time_limit_seconds` = `None`
+  - `project_root` = `None`
+  - `capture_version` = `False`
+  - `isolated` = `False`
+  - `verify` = `True`
+- `class ResolvedRuffPolicy` — Ruff policy resolved once and shared by every stage.
+  - `command_prefix` = `('ruff',)`
+  - `rule_flags` = `('--select', 'ALL', '--ignore', 'D203,D213')`
+  - `unsafe_fixes` = `False`
+  - `compact_config` = compact ``format`` ``--config`` overrides
+  - `fallback_config` = `('--config', 'target-version = "py313"')` emitted only when the effective carrier leaves `target-version` unset
+  - `isolated` = `False`
+  - `ruff_version` = captured `ruff --version` output recorded by the stabilizer
+  - `carrier` = root-level native carrier (`ruff.toml`, `.ruff.toml`, or `pyproject.toml` declaring `[tool.ruff]`), else `None`
+  - `settings` = sorted flattened keys the carrier declares (`format.quote-style`, `line-length`, `extend-exclude`, ...)
+  - `target_version` = carrier value, or `py313` when supplied as the fallback
+  - `line_length` = carrier `line-length`, when configured
+  - `preview` = carrier `preview` flag, when configured
+  - `exclusions` = carrier `exclude` and `extend-exclude` patterns
+  - `fingerprint` — short stable digest over the executable vector, emitted flags, captured carrier settings and probed version
+  - `resolve(cls, *, options: RuffStabilizerOptions) -> ResolvedRuffPolicy` — Resolve the effective policy for one invocation.
+  - `rule_flags_for(cls, *, root: Path | None) -> tuple[str, ...]` — Return rule-selection flags honoring project configuration.
+  - `native_carrier(cls, *, root: Path) -> Path | None` — Return the root-level native Ruff carrier, when present.
+  - `carrier_settings(cls, *, path: Path | None) -> dict[str, JsonValue]` — Return one carrier's explicit Ruff settings, merging bounded `extend` bases.
+  - `explicit_keys(cls, *, settings: dict[str, JsonValue]) -> frozenset[str]` — Flatten a carrier table to explicit option keys.
+  - `suppressed(cls, *, overrides: tuple[str, ...], explicit: frozenset[str]) -> tuple[str, ...]` — Drop `--config` pairs whose key a carrier explicitly sets.
+  - `verify_argv(self, *, path: Path) -> tuple[str, ...]` — Build the capability probe exercising every emitted override.
+  - `format_argv(self, *, paths: tuple[Path, ...], compact: bool=False, check: bool=False) -> tuple[str, ...]` — Build one ``ruff format`` argument vector.
+  - `fix_argv(self, *, paths: tuple[Path, ...]) -> tuple[str, ...]` — Build one ``ruff check --fix`` argument vector.
+  - `check_argv(self, *, paths: tuple[Path, ...]) -> tuple[str, ...]` — Build one read-only JSON ``ruff check`` argument vector.
+- `class RuffRunResult` — Outcome of one registered Ruff subprocess.
+  - Fields: `argv: tuple[str, ...]`, `returncode: int`, `stdout: bytes`, `stderr: bytes`, `duration_seconds: float`
+- `class RuffExecutionError(RuntimeError)` — Ruff subprocess execution failure; lint findings reported via exit code 1 are not execution errors.
+- `class RuffPolicyError(RuntimeError)` — Resolved Ruff policy rejected by the executable; raised by the capability probe before stabilization work starts.
+- `class StabilizationMetrics` — Structured outcome of one stabilization run.
+  - Fields: `files: int`, `invocations: int`, `iterations: int`, `per_step_changes: dict[str, int]`, `oscillated: bool`, `format_locked: int`, `converged: bool`, `rolled_back: bool`, `restored: int`, `conflicts: int`, `duration_seconds: float`, `diagnostics: int`, `policy_fingerprint: str`, `ruff_version: str | None`
 - `class RuffStabilizer` — Format and fix Python files with Ruff in parallel until stable.
   - `__init__(self, *, paths: list[Path], callback: FinishCallback | None=None, max_workers: int | None=None, max_iterations: int=20, options: RuffStabilizerOptions | None=None) -> None` — Stabilize multiple Python files concurrently.
+  - `metrics` — Snapshot the structured outcome of the completed run.
   - `ruff_format_until_stable(self, *, path: Path) -> int` — Run Ruff format until a file stops changing.
   - `ruff_fix_until_stable(self, *, path: Path) -> int` — Run Ruff check --fix until a file stops changing.
 - `class ProgressDisplay` — Render one global and one per-tool live progress bar.
@@ -227,7 +280,8 @@ Files: `examples/README.md`, `examples/__init__.py`, `examples/__main__.py`, `ex
 
 Tests live in `exactus/tests/packages/all_lints/`.
 
-- `test_all_lints.py` — Exercise the merged linter audit: parsers, excludes, specs and report. (63 tests)
+- `test_all_lints.py` — Exercise the merged linter audit: parsers, excludes, specs and report. (75 tests)
+  - `test_batch_stabilizer_rejects_oscillation`
   - `test_batched_tool_paces_progress_against_the_estimated_duration`
   - `test_batched_tool_paces_progress_during_the_run`
   - `test_batched_warning_diagnostic_fails_its_file`
@@ -271,16 +325,27 @@ Tests live in `exactus/tests/packages/all_lints/`.
   - `test_run_all_stabilize_without_python_files`
   - `test_run_all_stabilize_without_ruff_spec`
   - `test_run_all_tool_durations_reflect_process_spans`
+  - `test_run_kills_timed_out_process`
+  - `test_run_raises_on_fatal_exit`
+  - `test_run_raises_on_launch_failure`
+  - `test_run_raises_on_signal_termination`
+  - `test_run_rejects_findings_exit_for_format`
+  - `test_run_returns_findings_result`
   - `test_runner_exposes_the_repair_installer`
   - `test_severity_normalization`
   - `test_shared_discovery_preserves_each_tool_scope`
   - `test_specs_build_single_file_commands`
+  - `test_stabilizer_enforces_time_budget`
   - `test_stabilizer_fails_when_never_stable`
   - `test_stabilizer_forwards_unsafe_fixes`
+  - `test_stabilizer_preserves_external_edits_on_rollback`
   - `test_stabilizer_rechecks_after_mutation`
   - `test_stabilizer_rejects_missing_files`
+  - `test_stabilizer_rejects_oscillation`
+  - `test_stabilizer_reports_remaining_diagnostics`
   - `test_stabilizer_reports_stable_file`
   - `test_stabilizer_reruns_ruff_after_a_repair`
+  - `test_stabilizer_rolls_back_owned_changes`
   - `test_stabilizer_tracks_batch_progress`
   - `test_stream_tee_mirrors_and_strips_escapes`
   - `test_summary_table`
@@ -299,3 +364,65 @@ Tests live in `exactus/tests/packages/all_lints/`.
   - `test_refurb_output_parses`
 
 <!-- exactus:reference:end -->
+
+## Native subtree configuration
+
+Audits group files by the nearest native carrier and effective argument vector.
+Ruff uses `.ruff.toml`, `ruff.toml`, or `[tool.ruff]`; nested formatter settings
+are preserved during compact stabilization. BasedPyright recognizes
+basedpyrightconfig.json, pyrightconfig.json and both supported pyproject tables;
+TypeScript uses the nearest tsconfig.json/jsconfig.json. Pyrefly is explicitly
+grouped with `-c`, without relying on implicit per-file discovery. ESLint and
+Stylelint retain their native cascades. Nested Exactus `*-arg` options are
+forwarded only to their owning analyzer. Native includes/excludes are scoped to
+their declaring folders. Analysis starts after Python mutations settle.
+
+### Resolved Ruff policy reconciliation
+
+`ResolvedRuffPolicy.resolve` captures the root carrier, its flattened explicit
+settings (`settings`, `target_version`, `line_length`, `preview`, `exclusions`),
+the `isolated` flag and a provenance `fingerprint`, then reconciles Exactus
+defaults against them:
+
+- **Per-key precedence at the root carrier**: compact `format.*` `--config`
+  pairs are suppressed individually when the root carrier sets the same key —
+  `format.quote-style` in `[tool.ruff.format]` drops only the matching compact
+  pair while the remaining overrides still apply.
+- **Nested carriers keep their own style wholesale**: files grouped under a
+  non-root `ruff.toml`/`.ruff.toml`/`[tool.ruff]` receive no compact overrides
+  and no `target-version` fallback at all; the nested project owns every
+  setting, matching its own cascade.
+- **`target-version` fallback**: `py313` is emitted via `--config` for
+  unconfigured files and for the root carrier group only when the carrier does
+  not set `target-version`; a carrier-set value removes the pair entirely.
+- **`isolated`**: emits `--isolated`, drops the carrier (settings, rule flags
+  and grouping revert to the strict `--select ALL --ignore D203,D213`
+  defaults) and still applies the fallback where no explicit key survives.
+- **Capability probe**: before any file work, the stabilizer runs
+  `verify_argv` (`ruff check --exit-zero` carrying every emitted `--config`
+  pair through the patched-`_run` seam) once per instance; an executable that
+  rejects a resolved option fails fast with `RuffPolicyError`. `verify=False`
+  opts out for hermetic argv tests; the probe is counted in
+  `metrics.invocations`, and `metrics.policy_fingerprint`/`ruff_version`
+  record the resolved identity.
+- **`format.skip-magic-trailing-comma = false`**: the compact policy lets the
+  formatter honor the magic trailing comma — expanding calls that carry one
+  and leaving compact calls alone — so the format/fix fixed point is
+  deterministic and `COM812` stays satisfied; carriers that explicitly set the
+  key keep their own value.
+
+### PYS capability map
+
+Python simplification splits by owner rather than by convenience:
+
+- `python_simplify` (the `PYS` lane) owns `PYS000`–`PYS006`: one-use-local
+  inlining, adjacent walrus folding, provably-pure dead-store removal and the
+  shared safety guard.
+- The resolved Ruff policy owns the overlapping territory via `--select ALL`:
+  `SIM`, `C4` and `UP` already cover nested control flow, comprehension
+  intermediates, redundant temporaries and opt-in rewrites, so `PYS007`–`PYS010`
+  stay reserved rather than duplicating rules the policy runs natively.
+
+Ordinary formatting checks revisit touched files and externally changed files;
+unchanged files that already reached a fixed point need no duplicate check.
+Persistent Ruff LSP processing remains a future architecture option.

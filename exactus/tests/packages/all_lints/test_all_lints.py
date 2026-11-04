@@ -9,7 +9,10 @@ from io import StringIO
 from json import dumps, loads
 from pathlib import Path
 from runpy import run_module
+from shutil import which
 from signal import SIG_DFL, Signals, getsignal
+from subprocess import CompletedProcess, TimeoutExpired
+from subprocess import run as run_process
 from sys import executable
 from textwrap import dedent
 from threading import Event
@@ -29,10 +32,16 @@ from exactus.packages.all_lints import (
     Diagnostic,
     FileResult,
     ReportBuilder,
+    ResolvedRuffPolicy,
+    RuffExecutionError,
+    RuffPolicyError,
+    RuffRunResult,
     RuffStabilizer,
     RuffStabilizerOptions,
+    StabilizationMetrics,
     ToolResult,
     ToolSpec,
+    resolve_tool_command,
 )
 from exactus.packages.all_lints import core as core_module
 from exactus.packages.all_lints.examples import run as example_module
@@ -45,11 +54,13 @@ from exactus.tests.common.support import (
     fail,
     private,
     private_call,
+    private_result,
     require_type,
     set_private,
 )
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
     from types import ModuleType
 
     from exactus.packages.all_lints.core import (
@@ -142,13 +153,20 @@ class FakeProcess:
         self.returncode: int = 0
 
     @staticmethod
-    def communicate() -> tuple[str, str]:
+    def communicate(
+        *,
+        timeout: float | None = None,
+    ) -> tuple[str, str]:
         """Return empty captured stdout and stderr.
+
+        Args:
+            timeout: Ignored fake timeout value.
 
         Returns:
             Empty stdout and stderr strings.
 
         """
+        _ = timeout
         return "", ""
 
     def poll(self) -> int:
@@ -164,15 +182,25 @@ class FakeProcess:
         """Pretend to kill an already finished process."""
 
 
-def noop_run(_self: RuffStabilizer, *, args: tuple[str, ...]) -> None:
+def noop_run(_self: RuffStabilizer, *, args: tuple[str, ...]) -> RuffRunResult:
     """Pretend one Ruff invocation succeeded without touching the file.
 
     Args:
         _self: Stabilizer instance the patched method is bound to.
         args: Complete argument vector the subprocess was launched with.
 
+    Returns:
+        A successful typed run result with empty output.
+
     """
     expect_true(condition=bool(args), message="argument vector required")
+    return RuffRunResult(
+        argv=args,
+        returncode=0,
+        stdout=b"",
+        stderr=b"",
+        duration_seconds=0.0,
+    )
 
 
 def fail_run(_self: RuffStabilizer, *, args: tuple[str, ...]) -> NoReturn:
@@ -195,6 +223,55 @@ def fail_popen(*_args: object, **_kwargs: object) -> NoReturn:
 
     """
     fail(message=f"unexpected Popen call: {_args} {_kwargs}")
+
+
+def capable_ruff(tmp_path: Path) -> str:
+    """Resolve a Ruff executable that supports the compact policy.
+
+    Args:
+        tmp_path: Scratch directory for the capability probe file.
+
+    Returns:
+        Executable path that accepts the nested quote-style override;
+        the test skips when no candidate is capable.
+
+    """
+    probe: Path = tmp_path / "capability_probe.py"
+    probe.write_text(
+        data="""\
+x = 1
+""",
+        encoding="utf-8",
+    )
+    candidates: list[str] = [
+        str(object=Path(executable).with_name(name="ruff")),
+        str(
+            object=(Path(__file__).parents[4] / ".venv" / "bin" / "ruff"),
+        ),
+    ]
+    found: str | None = which(cmd="ruff")
+    if found is not None:
+        candidates.append(found)
+    for candidate in candidates:
+        try:
+            completed: CompletedProcess[bytes] = run_process(
+                args=(
+                    candidate,
+                    "format",
+                    "--config",
+                    'format.nested-string-quote-style = "preferred"',
+                    "--check",
+                    str(object=probe),
+                ),
+                capture_output=True,
+                timeout=30,
+                check=False,
+            )
+        except (OSError, TimeoutExpired):
+            continue
+        if completed.returncode == 0:
+            return candidate
+    pytest.skip(reason="no ruff executable supports the required flags")
 
 
 class PendingProcess:
@@ -375,10 +452,10 @@ def test_typescript_parser(tmp_path: Path) -> None:
 
     """
     runner: AuditRunner = make_runner(tmp_path=tmp_path)
-    text: str = (
-        f"{tmp_path}/src/main.ts(12,4): error TS2322: type mismatch\n"
-        "not a diagnostic line\n"
-    )
+    text: str = f"""\
+{tmp_path}/src/main.ts(12,4): error TS2322: type mismatch
+not a diagnostic line
+"""
     diagnostics: list[Diagnostic] = cast(
         typ="list[Diagnostic]",
         val=private_call(
@@ -417,10 +494,14 @@ def test_excludes_merge_pyproject(tmp_path: Path) -> None:
         data=(
             dedent(
                 text=(
-                    '    [tool.ruff]\n    extend-exclude = ["fixtures", "d'
-                    'ist"]\n    [tool.basedpyright]\n    exclude = ["**/st'
-                    'ubs"]\n    [tool.pyrefly]\n    project-excludes = ["*'
-                    '*/gen/**"]\n    '
+                    """\
+    [tool.ruff]
+    extend-exclude = ["fixtures", "dist"]
+    [tool.basedpyright]
+    exclude = ["**/stubs"]
+    [tool.pyrefly]
+    project-excludes = ["**/gen/**"]
+    """
                 ),
             )
         ),
@@ -428,7 +509,7 @@ def test_excludes_merge_pyproject(tmp_path: Path) -> None:
     )
     configuration: Configuration = Configuration(root=tmp_path)
     ruff: list[str] = configuration.excludes(tool="ruff")
-    expect_in(member="**/node_modules", container=ruff)
+    expect_in(member="**/node_modules/**", container=ruff)
     expect_in(member="fixtures", container=ruff)
     expect_equal(
         actual=len([item for item in ruff if item == "dist"]),
@@ -753,7 +834,11 @@ def test_run_all_parallel(tmp_path: Path) -> None:
 
     """
     for index in range(3):
-        (tmp_path / f"file{index}.py").write_text(data="x = 1\n")
+        (tmp_path / f"file{index}.py").write_text(
+            data="""\
+x = 1
+""",
+        )
     specs: list[ToolSpec] = [
         ToolSpec(
             name=f"tool{index}",
@@ -794,7 +879,11 @@ def test_run_all_tool_durations_reflect_process_spans(tmp_path: Path) -> None:
         tmp_path: Per-test temporary directory.
 
     """
-    (tmp_path / "file.py").write_text(data="x = 1\n")
+    (tmp_path / "file.py").write_text(
+        data="""\
+x = 1
+""",
+    )
     specs: list[ToolSpec] = [
         ToolSpec(
             name="quick",
@@ -845,7 +934,11 @@ def test_run_all_forwards_progress_to_listener(tmp_path: Path) -> None:
         tmp_path: Per-test temporary directory.
 
     """
-    (tmp_path / "file.py").write_text(data="x = 1\n")
+    (tmp_path / "file.py").write_text(
+        data="""\
+x = 1
+""",
+    )
     snapshots: list[tuple[int, int, str]] = []
 
     def _listener(*, completed: int, total: int, detail: str) -> None:
@@ -897,11 +990,23 @@ def test_shared_discovery_preserves_each_tool_scope(tmp_path: Path) -> None:
     """
     source: Path = tmp_path / "src"
     source.mkdir()
-    _ = (source / "app.py").write_text(data="value = 1\n")
-    _ = (source / "app.js").write_text(data="const value = 1;\n")
+    _ = (source / "app.py").write_text(
+        data="""\
+value = 1
+""",
+    )
+    _ = (source / "app.js").write_text(
+        data="""\
+const value = 1;
+""",
+    )
     ignored: Path = tmp_path / "node_modules"
     ignored.mkdir()
-    _ = (ignored / "hidden.py").write_text(data="hidden = 1\n")
+    _ = (ignored / "hidden.py").write_text(
+        data="""\
+hidden = 1
+""",
+    )
     specs: list[ToolSpec] = [
         ToolSpec(
             name="python",
@@ -981,7 +1086,12 @@ def test_typechecker_batches_keep_diagnostics(tmp_path: Path) -> None:
 
     """
     for name in ("a.py", "b.py"):
-        _ = (tmp_path / name).write_text(data="x = 1\n", encoding="utf-8")
+        _ = (tmp_path / name).write_text(
+            data="""\
+x = 1
+""",
+            encoding="utf-8",
+        )
     spec: ToolSpec = ToolSpec(
         name="basedpyright",
         executable=executable,
@@ -1020,7 +1130,12 @@ def test_batched_tool_paces_progress_during_the_run(tmp_path: Path) -> None:
 
     """
     for name in ("a.py", "b.py", "c.py"):
-        _ = (tmp_path / name).write_text(data="x = 1\n", encoding="utf-8")
+        _ = (tmp_path / name).write_text(
+            data="""\
+x = 1
+""",
+            encoding="utf-8",
+        )
     spec: ToolSpec = ToolSpec(
         name="basedpyright",
         executable=executable,
@@ -1080,7 +1195,12 @@ def test_batched_tool_paces_progress_against_the_estimated_duration(
 
     """
     for name in ("a.py", "b.py", "c.py", "d.py", "e.py"):
-        _ = (tmp_path / name).write_text(data="x = 1\n", encoding="utf-8")
+        _ = (tmp_path / name).write_text(
+            data="""\
+x = 1
+""",
+            encoding="utf-8",
+        )
     sleep_seconds: Final = 0.4
     spec: ToolSpec = ToolSpec(
         name="basedpyright",
@@ -1185,7 +1305,12 @@ def test_batched_warning_diagnostic_fails_its_file(tmp_path: Path) -> None:
 
     """
     for name in ("a.py", "b.py"):
-        _ = (tmp_path / name).write_text(data="x = 1\n", encoding="utf-8")
+        _ = (tmp_path / name).write_text(
+            data="""\
+x = 1
+""",
+            encoding="utf-8",
+        )
     spec: ToolSpec = ToolSpec(
         name="pyrefly",
         executable=executable,
@@ -1222,9 +1347,19 @@ def test_typescript_project_run_attributes_findings(tmp_path: Path) -> None:
         tmp_path: Per-test temporary directory.
 
     """
-    _ = (tmp_path / "jsconfig.json").write_text(data="{}\n", encoding="utf-8")
+    _ = (tmp_path / "jsconfig.json").write_text(
+        data="""\
+{}
+""",
+        encoding="utf-8",
+    )
     for name in ("a.js", "b.js"):
-        _ = (tmp_path / name).write_text(data="let x = 1;\n", encoding="utf-8")
+        _ = (tmp_path / name).write_text(
+            data="""\
+let x = 1;
+""",
+            encoding="utf-8",
+        )
     spec: ToolSpec = ToolSpec(
         name="typescript",
         executable=executable,
@@ -1255,8 +1390,10 @@ def test_typescript_project_run_attributes_findings(tmp_path: Path) -> None:
     )
     expect_in(member="--project", container=results[0].files[0].command)
     expect_true(
-        condition=results[0].files[0].command[-1].endswith("jsconfig.json"),
-        message="tsc must run against the discovered project config",
+        condition=Path(results[0].files[0].command[-1]).name.startswith(
+            ".exactus-typescript-",
+        ),
+        message="tsc must run against the scoped project config",
     )
 
 
@@ -1267,7 +1404,12 @@ def test_typescript_skips_without_project_config(tmp_path: Path) -> None:
         tmp_path: Per-test temporary directory.
 
     """
-    _ = (tmp_path / "a.js").write_text(data="let x = 1;\n", encoding="utf-8")
+    _ = (tmp_path / "a.js").write_text(
+        data="""\
+let x = 1;
+""",
+        encoding="utf-8",
+    )
     spec: ToolSpec = ToolSpec(
         name="typescript",
         executable=executable,
@@ -1372,7 +1514,12 @@ def test_stabilizer_reports_stable_file(
 
     """
     target: Path = tmp_path / "app.py"
-    target.write_text(data="x = 1\n", encoding="utf-8")
+    target.write_text(
+        data="""\
+x = 1
+""",
+        encoding="utf-8",
+    )
     monkeypatch.setattr(target=RuffStabilizer, name="_run", value=noop_run)
     results: list[FileResult] = []
     RuffStabilizer(paths=[target], callback=collect_into(results=results))
@@ -1413,7 +1560,12 @@ class RecordingRepair:
         """
         self.paths.append(path)
         if len(self.paths) == 1:
-            _ = path.write_text(data="x = 2\n", encoding="utf-8")
+            _ = path.write_text(
+                data="""\
+x = 2
+""",
+                encoding="utf-8",
+            )
 
 
 def test_stabilizer_reruns_ruff_after_a_repair(
@@ -1428,7 +1580,12 @@ def test_stabilizer_reruns_ruff_after_a_repair(
 
     """
     target: Path = tmp_path / "app.py"
-    _ = target.write_text(data="x = 1\n", encoding="utf-8")
+    _ = target.write_text(
+        data="""\
+x = 1
+""",
+        encoding="utf-8",
+    )
     monkeypatch.setattr(target=RuffStabilizer, name="_run", value=noop_run)
     repair: RecordingRepair = RecordingRepair()
     results: list[FileResult] = []
@@ -1469,7 +1626,12 @@ def test_stabilizer_tracks_batch_progress(
     paths: list[Path] = []
     for index in range(3):
         path: Path = tmp_path / f"file{index}.py"
-        path.write_text(data="x = 1\n", encoding="utf-8")
+        path.write_text(
+            data="""\
+x = 1
+""",
+            encoding="utf-8",
+        )
         paths.append(path)
     monkeypatch.setattr(target=RuffStabilizer, name="_run", value=noop_run)
     results: list[FileResult] = []
@@ -1495,21 +1657,40 @@ def test_stabilizer_rechecks_after_mutation(
 
     """
     target: Path = tmp_path / "app.py"
-    target.write_text(data="x = 1\n", encoding="utf-8")
+    target.write_text(
+        data="""\
+x = 1
+""",
+        encoding="utf-8",
+    )
     start_size: int = target.stat().st_size
     calls: list[tuple[str, ...]] = []
 
-    def fake_run(_self: RuffStabilizer, *, args: tuple[str, ...]) -> None:
+    def fake_run(
+        _self: RuffStabilizer,
+        *,
+        args: tuple[str, ...],
+    ) -> RuffRunResult:
         """Append a comment on the first invocation only.
 
         Args:
             _self: Stabilizer instance the patched method is bound to.
             args: Complete argument vector.
 
+        Returns:
+            A successful typed run result.
+
         """
         calls.append(args)
         if len(calls) == 1:
             target.write_bytes(data=target.read_bytes() + b"# stabilized\n")
+        return RuffRunResult(
+            argv=args,
+            returncode=0,
+            stdout=b"",
+            stderr=b"",
+            duration_seconds=0.0,
+        )
 
     monkeypatch.setattr(target=RuffStabilizer, name="_run", value=fake_run)
     results: list[FileResult] = []
@@ -1517,6 +1698,7 @@ def test_stabilizer_rechecks_after_mutation(
         paths=[target],
         callback=collect_into(results=results),
         max_workers=1,
+        options=RuffStabilizerOptions(verify=False),
     )
     expect_equal(actual=len(results), expected=1)
     result: FileResult = results[0]
@@ -1542,18 +1724,37 @@ def test_stabilizer_forwards_unsafe_fixes(
 
     """
     target: Path = tmp_path / "app.py"
-    target.write_text(data="x = 1\n", encoding="utf-8")
+    target.write_text(
+        data="""\
+x = 1
+""",
+        encoding="utf-8",
+    )
     calls: list[tuple[str, ...]] = []
 
-    def fake_run(_self: RuffStabilizer, *, args: tuple[str, ...]) -> None:
+    def fake_run(
+        _self: RuffStabilizer,
+        *,
+        args: tuple[str, ...],
+    ) -> RuffRunResult:
         """Record each Ruff invocation without touching the file.
 
         Args:
             _self: Stabilizer instance the patched method is bound to.
             args: Complete argument vector.
 
+        Returns:
+            A successful typed run result.
+
         """
         calls.append(args)
+        return RuffRunResult(
+            argv=args,
+            returncode=0,
+            stdout=b"",
+            stderr=b"",
+            duration_seconds=0.0,
+        )
 
     monkeypatch.setattr(target=RuffStabilizer, name="_run", value=fake_run)
     RuffStabilizer(
@@ -1562,7 +1763,7 @@ def test_stabilizer_forwards_unsafe_fixes(
         max_workers=1,
     )
     fix_calls: list[tuple[str, ...]] = [
-        call for call in calls if "check" in call
+        call for call in calls if "--fix" in call
     ]
     expect_true(condition=bool(fix_calls))
     expect_true(condition=all("--unsafe-fixes" in call for call in fix_calls))
@@ -1580,20 +1781,39 @@ def test_stabilizer_fails_when_never_stable(
 
     """
     target: Path = tmp_path / "app.py"
-    target.write_text(data="x = 1\n", encoding="utf-8")
+    target.write_text(
+        data="""\
+x = 1
+""",
+        encoding="utf-8",
+    )
     calls: list[tuple[str, ...]] = []
 
-    def fake_run(_self: RuffStabilizer, *, args: tuple[str, ...]) -> None:
+    def fake_run(
+        _self: RuffStabilizer,
+        *,
+        args: tuple[str, ...],
+    ) -> RuffRunResult:
         """Mutate the file on every other invocation.
 
         Args:
             _self: Stabilizer instance the patched method is bound to.
             args: Complete argument vector.
 
+        Returns:
+            A successful typed run result.
+
         """
         calls.append(args)
         if len(calls) % 2:
             target.write_bytes(data=target.read_bytes() + b"x")
+        return RuffRunResult(
+            argv=args,
+            returncode=0,
+            stdout=b"",
+            stderr=b"",
+            duration_seconds=0.0,
+        )
 
     monkeypatch.setattr(target=RuffStabilizer, name="_run", value=fake_run)
     with pytest.raises(expected_exception=RuntimeError, match="stabilize"):
@@ -1611,8 +1831,18 @@ def test_run_all_stabilize_skips_without_ruff(
         monkeypatch: Pytest patching helper.
 
     """
-    (tmp_path / "app.py").write_text(data="x = 1\n", encoding="utf-8")
+    (tmp_path / "app.py").write_text(
+        data="""\
+x = 1
+""",
+        encoding="utf-8",
+    )
     monkeypatch.setattr(target=core_module, name="which", value=missing_which)
+    monkeypatch.setattr(
+        target=core_module,
+        name="sys_executable",
+        value=str(object=tmp_path / "no-venv" / "bin" / "python"),
+    )
     monkeypatch.setattr(target=RuffStabilizer, name="_run", value=fail_run)
     monkeypatch.setattr(target=core_module, name="Popen", value=fail_popen)
     results: list[ToolResult] = make_runner(tmp_path=tmp_path).run_all(
@@ -1636,7 +1866,12 @@ def test_run_all_stabilize_without_ruff_spec(
         monkeypatch: Pytest patching helper.
 
     """
-    (tmp_path / "app.py").write_text(data="x = 1\n", encoding="utf-8")
+    (tmp_path / "app.py").write_text(
+        data="""\
+x = 1
+""",
+        encoding="utf-8",
+    )
     monkeypatch.setattr(target=core_module, name="which", value=present_which)
     monkeypatch.setattr(target=RuffStabilizer, name="_run", value=fail_run)
     monkeypatch.setattr(target=core_module, name="Popen", value=fail_popen)
@@ -1691,21 +1926,40 @@ def test_run_all_stabilize_runs_ruff_on_discovered_files(
 
     """
     target: Path = tmp_path / "app.py"
-    target.write_text(data="x = 1\n", encoding="utf-8")
+    target.write_text(
+        data="""\
+x = 1
+""",
+        encoding="utf-8",
+    )
     specs: list[ToolSpec] = Cli.specs()
     calls: list[tuple[str, ...]] = []
     displays: list[dict[str, int]] = []
     real_display: type = core_module.ProgressDisplay
 
-    def fake_run(_self: RuffStabilizer, *, args: tuple[str, ...]) -> None:
+    def fake_run(
+        _self: RuffStabilizer,
+        *,
+        args: tuple[str, ...],
+    ) -> RuffRunResult:
         """Record each stabilize invocation without touching the file.
 
         Args:
             _self: Stabilizer instance the patched method is bound to.
             args: Complete argument vector.
 
+        Returns:
+            A successful typed run result.
+
         """
         calls.append(args)
+        return RuffRunResult(
+            argv=args,
+            returncode=0,
+            stdout=b"",
+            stderr=b"",
+            duration_seconds=0.0,
+        )
 
     def fake_popen(*, args: object, **_kwargs: object) -> FakeProcess:
         """Record each linter invocation and return a fake process.
@@ -1798,8 +2052,18 @@ def test_run_all_stabilize_lets_other_tools_start(
         monkeypatch: Pytest patching helper.
 
     """
-    (tmp_path / "app.py").write_text(data="x = 1\n", encoding="utf-8")
-    (tmp_path / "a.js").write_text(data="const x = 1\n", encoding="utf-8")
+    (tmp_path / "app.py").write_text(
+        data="""\
+x = 1
+""",
+        encoding="utf-8",
+    )
+    (tmp_path / "a.js").write_text(
+        data="""\
+const x = 1
+""",
+        encoding="utf-8",
+    )
     specs: list[ToolSpec] = [
         ToolSpec(
             name="eslint",
@@ -1819,16 +2083,30 @@ def test_run_all_stabilize_lets_other_tools_start(
     released: Event = Event()
     observed: list[bool] = []
 
-    def gated_run(_self: RuffStabilizer, *, args: tuple[str, ...]) -> None:
+    def gated_run(
+        _self: RuffStabilizer,
+        *,
+        args: tuple[str, ...],
+    ) -> RuffRunResult:
         """Record whether eslint already ran when stabilization ran.
 
         Args:
             _self: Stabilizer instance the patched method is bound to.
             args: Complete argument vector.
 
+        Returns:
+            A successful typed run result.
+
         """
         if "format" in args or "--fix" in args:
             observed.append(released.wait(timeout=10.0))
+        return RuffRunResult(
+            argv=args,
+            returncode=0,
+            stdout=b"",
+            stderr=b"",
+            duration_seconds=0.0,
+        )
 
     def gated_popen(*, args: object, **_kwargs: object) -> FakeProcess:
         """Release the stabilization gate once eslint starts.
@@ -2214,11 +2492,21 @@ def test_main_files_bundle_archives_flagged_files(
         monkeypatch: Pytest patching helper.
 
     """
-    _ = (tmp_path / "b.py").write_text(data="b = 1\n", encoding="utf-8")
+    _ = (tmp_path / "b.py").write_text(
+        data="""\
+b = 1
+""",
+        encoding="utf-8",
+    )
     package: Path = tmp_path / "pkg"
     package.mkdir()
     module: Path = package / "mod.py"
-    _ = module.write_text(data="mod = 1\n", encoding="utf-8")
+    _ = module.write_text(
+        data="""\
+mod = 1
+""",
+        encoding="utf-8",
+    )
     diagnostic: Diagnostic = Diagnostic(
         tool="ruff",
         file="b.py",
@@ -2302,7 +2590,9 @@ def test_main_files_bundle_archives_flagged_files(
     )
     expect_equal(
         actual=(restored / "pkg" / "mod.py").read_text(encoding="utf-8"),
-        expected="mod = 1\n",
+        expected="""\
+mod = 1
+""",
     )
 
 
@@ -2334,8 +2624,11 @@ def test_pyproject_configures_report_dir_and_collect_files(
     _ = (tmp_path / "pyproject.toml").write_text(
         data=dedent(
             text=(
-                '    [tool.all_lint]\n    output-dir = "CUSTOM_RESULTS"\n '
-                "   collect-files = true\n    "
+                """\
+    [tool.all_lint]
+    output-dir = "CUSTOM_RESULTS"
+    collect-files = true
+    """
             ),
         ),
         encoding="utf-8",
@@ -2416,14 +2709,42 @@ def test_stream_tee_mirrors_and_strips_escapes() -> None:
         stream=stream,
         log=log,
     )
-    _ = private_call(owner=tee, name="write", text="\x1b[31mred\x1b[0m\n")
-    private_call(owner=tee, name="writelines", lines=["a\n", "\x1b[2Kb\n"])
+    _ = private_call(
+        owner=tee,
+        name="write",
+        text="""\
+\x1b[31mred\x1b[0m
+""",
+    )
+    private_call(
+        owner=tee,
+        name="writelines",
+        lines=[
+            """\
+a
+""",
+            """\
+\x1b[2Kb
+""",
+        ],
+    )
     private_call(owner=tee, name="flush")
     expect_equal(
         actual=stream.getvalue(),
-        expected="\x1b[31mred\x1b[0m\na\n\x1b[2Kb\n",
+        expected="""\
+\x1b[31mred\x1b[0m
+a
+\x1b[2Kb
+""",
     )
-    expect_equal(actual=log.getvalue(), expected="red\na\nb\n")
+    expect_equal(
+        actual=log.getvalue(),
+        expected="""\
+red
+a
+b
+""",
+    )
     expect_true(
         condition=private_call(owner=tee, name="isatty") is False,
         message="expected the StringIO stream to report non-tty",
@@ -2759,27 +3080,46 @@ def test_final_compact_pass_uses_expected_ruff_settings(
 
     """
     target: Path = tmp_path / "compact.py"
-    target.write_text(data="x = 1\n", encoding="utf-8")
+    target.write_text(
+        data="""\
+x = 1
+""",
+        encoding="utf-8",
+    )
     calls: list[tuple[str, ...]] = []
 
-    def record(_self: RuffStabilizer, *, args: tuple[str, ...]) -> None:
+    def record(
+        _self: RuffStabilizer,
+        *,
+        args: tuple[str, ...],
+    ) -> RuffRunResult:
         """Record Ruff arguments.
 
         Args:
             _self: Stabilizer instance.
             args: Ruff invocation.
 
+        Returns:
+            A successful typed run result.
+
         """
         calls.append(args)
+        return RuffRunResult(
+            argv=args,
+            returncode=0,
+            stdout=b"",
+            stderr=b"",
+            duration_seconds=0.0,
+        )
 
     monkeypatch.setattr(target=RuffStabilizer, name="_run", value=record)
     RuffStabilizer(
         paths=[target],
-        options=RuffStabilizerOptions(unsafe_fixes=True),
+        options=RuffStabilizerOptions(unsafe_fixes=True, verify=False),
     )
-    expect_equal(actual=len(calls), expected=4)
+    expect_equal(actual=len(calls), expected=5)
     expect_true(
-        condition="format.skip-magic-trailing-comma = true" in calls[2],
+        condition="format.skip-magic-trailing-comma = false" in calls[2],
     )
     expect_true(condition="format.docstring-code-format = true" in calls[2])
     expect_true(
@@ -2801,24 +3141,1232 @@ def test_final_compact_pass_retries_after_final_fix(
 
     """
     target: Path = tmp_path / "compact.py"
-    target.write_text(data="x = 1\n", encoding="utf-8")
+    target.write_text(
+        data="""\
+x = 1
+""",
+        encoding="utf-8",
+    )
     calls: list[tuple[str, ...]] = []
 
-    def mutate(_self: RuffStabilizer, *, args: tuple[str, ...]) -> None:
+    def mutate(
+        _self: RuffStabilizer,
+        *,
+        args: tuple[str, ...],
+    ) -> RuffRunResult:
         """Change the source on the first final fix.
 
         Args:
             _self: Stabilizer instance.
             args: Ruff invocation.
 
+        Returns:
+            A successful typed run result.
+
         """
         calls.append(args)
         if len(calls) == MAX_CALLS:
-            target.write_text(data="x = 2\n", encoding="utf-8")
+            target.write_text(
+                data="""\
+x = 2
+""",
+                encoding="utf-8",
+            )
+        return RuffRunResult(
+            argv=args,
+            returncode=0,
+            stdout=b"",
+            stderr=b"",
+            duration_seconds=0.0,
+        )
 
     monkeypatch.setattr(target=RuffStabilizer, name="_run", value=mutate)
     results: list[FileResult] = []
-    RuffStabilizer(paths=[target], callback=collect_into(results=results))
-    expect_equal(actual=len(calls), expected=6)
+    RuffStabilizer(
+        paths=[target],
+        callback=collect_into(results=results),
+        options=RuffStabilizerOptions(verify=False),
+    )
+    expect_equal(actual=len(calls), expected=7)
     expect_equal(actual=results[0].format_calls, expected=3)
     expect_equal(actual=results[0].fix_calls, expected=3)
+
+
+class StubProcess:
+    """Configurable ``Popen`` stand-in for ``_run`` unit tests."""
+
+    def __init__(
+        self,
+        *,
+        returncode: int = 0,
+        stdout: bytes = b"",
+        stderr: bytes = b"",
+        fail_first: bool = False,
+    ) -> None:
+        """Store the scripted outcome.
+
+        Args:
+            returncode: Exit code reported after ``communicate``.
+            stdout: Captured standard output bytes.
+            stderr: Captured standard error bytes.
+            fail_first: Whether the first ``communicate`` call raises
+                ``TimeoutExpired``.
+
+        """
+        self.returncode: int = returncode
+        self.stdout: bytes = stdout
+        self.stderr: bytes = stderr
+        self.fail_first: bool = fail_first
+        self.killed: bool = False
+        self.calls: int = 0
+
+    def communicate(
+        self,
+        *,
+        timeout: float | None = None,
+    ) -> tuple[bytes, bytes]:
+        """Return the scripted output or simulate a timeout.
+
+        Args:
+            timeout: Ignored fake timeout value.
+
+        Returns:
+            Scripted stdout and stderr bytes.
+
+        Raises:
+            TimeoutExpired: When scripted to hang on the first call.
+
+        """
+        self.calls += 1
+        if self.fail_first and self.calls == 1:
+            raise TimeoutExpired(cmd="ruff", timeout=timeout or 0.0)
+        return self.stdout, self.stderr
+
+    def poll(self) -> int:
+        """Report the scripted return code.
+
+        Returns:
+            Process exit status.
+
+        """
+        return self.returncode
+
+    def kill(self) -> None:
+        """Record the kill request."""
+        self.killed = True
+
+
+def idle_stabilize(_self: RuffStabilizer, _path: Path) -> None:
+    """Skip stabilization entirely for direct method tests.
+
+    Args:
+        _self: Stabilizer instance the patched method is bound to.
+        _path: File the cycle would have processed.
+
+    """
+    return
+
+
+def popen_to(*, process: StubProcess) -> Callable[..., StubProcess]:
+    """Return a ``Popen`` substitute yielding one scripted process.
+
+    Args:
+        process: Fake process every call returns.
+
+    Returns:
+        A callable matching the ``Popen`` invocation shape.
+
+    """
+
+    def spawn(**_kwargs: object) -> StubProcess:
+        """Return the scripted process.
+
+        Args:
+            _kwargs: Keyword arguments handed to ``Popen``.
+
+        Returns:
+            The same fake process for every launch.
+
+        """
+        return process
+
+    return spawn
+
+
+def idle_stabilizer_instance(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    *,
+    options: RuffStabilizerOptions | None = None,
+) -> RuffStabilizer:
+    """Construct a stabilizer whose cycle never launches.
+
+    Args:
+        tmp_path: Per-test temporary directory.
+        monkeypatch: Pytest patching helper.
+        options: Optional stabilizer configuration.
+
+    Returns:
+        A stabilizer instance for direct method tests.
+
+    """
+    target: Path = tmp_path / "app.py"
+    target.write_text(
+        data="""\
+x = 1
+""",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(
+        target=RuffStabilizer,
+        name="_stabilize",
+        value=idle_stabilize,
+    )
+    idle_options: RuffStabilizerOptions = (
+        RuffStabilizerOptions(verify=False)
+        if options is None
+        else replace(options, verify=False)
+    )
+    return RuffStabilizer(paths=[target], options=idle_options)
+
+
+def test_run_raises_on_fatal_exit(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """A Ruff exit code above one becomes a typed execution error.
+
+    Args:
+        tmp_path: Per-test temporary directory.
+        monkeypatch: Pytest patching helper.
+
+    """
+    process: StubProcess = StubProcess(returncode=2, stderr=b"boom")
+    monkeypatch.setattr(
+        target=core_module,
+        name="Popen",
+        value=popen_to(process=process),
+    )
+    stabilizer: RuffStabilizer = idle_stabilizer_instance(
+        tmp_path=tmp_path,
+        monkeypatch=monkeypatch,
+    )
+    with pytest.raises(
+        expected_exception=RuffExecutionError,
+        match="exited 2",
+    ):
+        _ = private_call(
+            owner=stabilizer,
+            name="_run",
+            args=("ruff", "format", "app.py"),
+        )
+
+
+def test_run_returns_findings_result(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Exit code ``1`` from ``check`` reports findings, not a crash.
+
+    Args:
+        tmp_path: Per-test temporary directory.
+        monkeypatch: Pytest patching helper.
+
+    """
+    process: StubProcess = StubProcess(
+        returncode=1,
+        stdout=b"[]",
+        stderr=b"warnings",
+    )
+    monkeypatch.setattr(
+        target=core_module,
+        name="Popen",
+        value=popen_to(process=process),
+    )
+    stabilizer: RuffStabilizer = idle_stabilizer_instance(
+        tmp_path=tmp_path,
+        monkeypatch=monkeypatch,
+    )
+    result: RuffRunResult = private_result(
+        owner=stabilizer,
+        name="_run",
+        kind=RuffRunResult,
+        args=("ruff", "check", "app.py"),
+    )
+    expect_equal(actual=result.returncode, expected=1)
+    expect_equal(actual=result.stderr, expected=b"warnings")
+
+
+def test_run_rejects_findings_exit_for_format(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """A nonzero write-mode ``format`` exit is an execution error.
+
+    Args:
+        tmp_path: Per-test temporary directory.
+        monkeypatch: Pytest patching helper.
+
+    """
+    process: StubProcess = StubProcess(returncode=1, stderr=b"bad")
+    monkeypatch.setattr(
+        target=core_module,
+        name="Popen",
+        value=popen_to(process=process),
+    )
+    stabilizer: RuffStabilizer = idle_stabilizer_instance(
+        tmp_path=tmp_path,
+        monkeypatch=monkeypatch,
+    )
+    with pytest.raises(expected_exception=RuffExecutionError):
+        _ = private_call(
+            owner=stabilizer,
+            name="_run",
+            args=("ruff", "format", "app.py"),
+        )
+
+
+def test_run_raises_on_signal_termination(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """A negative exit code surfaces as an execution error.
+
+    Args:
+        tmp_path: Per-test temporary directory.
+        monkeypatch: Pytest patching helper.
+
+    """
+    process: StubProcess = StubProcess(returncode=-9)
+    monkeypatch.setattr(
+        target=core_module,
+        name="Popen",
+        value=popen_to(process=process),
+    )
+    stabilizer: RuffStabilizer = idle_stabilizer_instance(
+        tmp_path=tmp_path,
+        monkeypatch=monkeypatch,
+    )
+    with pytest.raises(
+        expected_exception=RuffExecutionError,
+        match="signal 9",
+    ):
+        _ = private_call(
+            owner=stabilizer,
+            name="_run",
+            args=("ruff", "format", "app.py"),
+        )
+
+
+def test_run_raises_on_launch_failure(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """A missing Ruff executable surfaces as an execution error.
+
+    Args:
+        tmp_path: Per-test temporary directory.
+        monkeypatch: Pytest patching helper.
+
+    """
+
+    def absent(**_kwargs: object) -> NoReturn:
+        """Raise the platform launch error.
+
+        Args:
+            _kwargs: Keyword arguments handed to ``Popen``.
+
+        Raises:
+            FileNotFoundError: Always, mimicking a missing binary.
+
+        """
+        msg: str = "no such file"
+        raise FileNotFoundError(msg)
+
+    monkeypatch.setattr(target=core_module, name="Popen", value=absent)
+    stabilizer: RuffStabilizer = idle_stabilizer_instance(
+        tmp_path=tmp_path,
+        monkeypatch=monkeypatch,
+    )
+    with pytest.raises(
+        expected_exception=RuffExecutionError,
+        match="Cannot launch Ruff",
+    ):
+        _ = private_call(
+            owner=stabilizer,
+            name="_run",
+            args=("ruff-missing", "format", "app.py"),
+        )
+
+
+def test_run_kills_timed_out_process(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """A process exceeding its timeout is killed and reported.
+
+    Args:
+        tmp_path: Per-test temporary directory.
+        monkeypatch: Pytest patching helper.
+
+    """
+    process: StubProcess = StubProcess(fail_first=True)
+    monkeypatch.setattr(
+        target=core_module,
+        name="Popen",
+        value=popen_to(process=process),
+    )
+    stabilizer: RuffStabilizer = idle_stabilizer_instance(
+        tmp_path=tmp_path,
+        monkeypatch=monkeypatch,
+        options=RuffStabilizerOptions(subprocess_timeout=0.01),
+    )
+    with pytest.raises(
+        expected_exception=RuffExecutionError,
+        match="timed out",
+    ):
+        _ = private_call(
+            owner=stabilizer,
+            name="_run",
+            args=("ruff", "format", "app.py"),
+        )
+    expect_true(condition=process.killed)
+
+
+def test_stabilizer_rejects_oscillation(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Alternating formatter states fail instead of converging.
+
+    Args:
+        tmp_path: Per-test temporary directory.
+        monkeypatch: Pytest patching helper.
+
+    """
+    target: Path = tmp_path / "app.py"
+    target.write_text(
+        data="""\
+x = 1
+""",
+        encoding="utf-8",
+    )
+
+    def flip(_self: RuffStabilizer, *, args: tuple[str, ...]) -> RuffRunResult:
+        """Toggle the file between two states on every format call.
+
+        Args:
+            _self: Stabilizer instance the patched method is bound to.
+            args: Complete argument vector.
+
+        Returns:
+            A successful typed run result.
+
+        """
+        if "format" in args and "--check" not in args:
+            current: bytes = target.read_bytes()
+            target.write_bytes(
+                data=b"x = 1\n" if current != b"x = 1\n" else b"x = 2\n",
+            )
+        return RuffRunResult(
+            argv=args,
+            returncode=0,
+            stdout=b"",
+            stderr=b"",
+            duration_seconds=0.0,
+        )
+
+    monkeypatch.setattr(target=RuffStabilizer, name="_run", value=flip)
+    with pytest.raises(
+        expected_exception=RuntimeError,
+        match=r"oscillates|stabilize",
+    ):
+        RuffStabilizer(paths=[target], max_iterations=6)
+
+
+def test_stabilizer_rolls_back_owned_changes(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """A failed stabilization restores every owned file's bytes.
+
+    Args:
+        tmp_path: Per-test temporary directory.
+        monkeypatch: Pytest patching helper.
+
+    """
+    first: Path = tmp_path / "a.py"
+    second: Path = tmp_path / "b.py"
+    first.write_text(
+        data="""\
+a = 1
+""",
+        encoding="utf-8",
+    )
+    second.write_text(
+        data="""\
+b = 1
+""",
+        encoding="utf-8",
+    )
+
+    def corrupt(
+        _self: RuffStabilizer,
+        *,
+        args: tuple[str, ...],
+    ) -> RuffRunResult:
+        """Rewrite every owned file then crash on the fix step.
+
+        Args:
+            _self: Stabilizer instance the patched method is bound to.
+            args: Complete argument vector.
+
+        Returns:
+            A successful typed run result for the format step.
+
+        Raises:
+            RuffExecutionError: On the first ``--fix`` invocation.
+
+        """
+        if "--fix" in args:
+            raise RuffExecutionError(argv=args, message="fix crashed")
+        for member in args:
+            candidate: Path = Path(member)
+            if candidate.suffix == ".py" and candidate.is_file():
+                candidate.write_bytes(data=b"corrupted\n")
+        return RuffRunResult(
+            argv=args,
+            returncode=0,
+            stdout=b"",
+            stderr=b"",
+            duration_seconds=0.0,
+        )
+
+    monkeypatch.setattr(target=RuffStabilizer, name="_run", value=corrupt)
+    with pytest.raises(expected_exception=RuffExecutionError):
+        RuffStabilizer(paths=[first, second])
+    expect_equal(actual=first.read_bytes(), expected=b"a = 1\n")
+    expect_equal(actual=second.read_bytes(), expected=b"b = 1\n")
+
+
+def test_stabilizer_preserves_external_edits_on_rollback(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Bytes written by an external editor survive the rollback.
+
+    Args:
+        tmp_path: Per-test temporary directory.
+        monkeypatch: Pytest patching helper.
+
+    """
+    target: Path = tmp_path / "app.py"
+    target.write_text(
+        data="""\
+x = 1
+""",
+        encoding="utf-8",
+    )
+    calls: list[tuple[str, ...]] = []
+
+    def external(
+        _self: RuffStabilizer,
+        *,
+        args: tuple[str, ...],
+    ) -> RuffRunResult:
+        """Simulate an outside writer then fail the next step.
+
+        Args:
+            _self: Stabilizer instance the patched method is bound to.
+            args: Complete argument vector.
+
+        Returns:
+            A successful typed run result.
+
+        Raises:
+            RuffExecutionError: Once the external write has landed.
+
+        """
+        calls.append(args)
+        if len(calls) == 1:
+            target.write_bytes(data=b"# external edit\n")
+            raise RuffExecutionError(argv=args, message="process crashed")
+        return RuffRunResult(
+            argv=args,
+            returncode=0,
+            stdout=b"",
+            stderr=b"",
+            duration_seconds=0.0,
+        )
+
+    monkeypatch.setattr(target=RuffStabilizer, name="_run", value=external)
+    with pytest.raises(expected_exception=RuffExecutionError):
+        RuffStabilizer(
+            paths=[target],
+            options=RuffStabilizerOptions(verify=False),
+        )
+    expect_equal(actual=target.read_bytes(), expected=b"# external edit\n")
+
+
+def test_stabilizer_enforces_time_budget(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """An exhausted wall-clock budget aborts before mutation.
+
+    Args:
+        tmp_path: Per-test temporary directory.
+        monkeypatch: Pytest patching helper.
+
+    """
+    target: Path = tmp_path / "app.py"
+    target.write_text(
+        data="""\
+x = 1
+""",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(target=RuffStabilizer, name="_run", value=noop_run)
+    with pytest.raises(expected_exception=RuntimeError, match="time budget"):
+        RuffStabilizer(
+            paths=[target],
+            options=RuffStabilizerOptions(time_limit_seconds=0.0),
+        )
+    expect_equal(actual=target.read_bytes(), expected=b"x = 1\n")
+
+
+def test_stabilizer_reports_remaining_diagnostics(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Unresolved Ruff findings reach the per-file result.
+
+    Args:
+        tmp_path: Per-test temporary directory.
+        monkeypatch: Pytest patching helper.
+
+    """
+    target: Path = tmp_path / "app.py"
+    target.write_text(
+        data="""\
+x = 1
+""",
+        encoding="utf-8",
+    )
+    payload: bytes = (
+        b'[{"filename": "'
+        + str(object=target).encode(encoding="utf-8")
+        + b'", "code": "E501", "message": "too long", '
+        b'"location": {"row": 1, "column": 80}, '
+        b'"end_location": {"row": 1, "column": 90}}]'
+    )
+
+    def findings(
+        _self: RuffStabilizer,
+        *,
+        args: tuple[str, ...],
+    ) -> RuffRunResult:
+        """Return one diagnostic for the read-only JSON check.
+
+        Args:
+            _self: Stabilizer instance the patched method is bound to.
+            args: Complete argument vector.
+
+        Returns:
+            A findings result for JSON checks, success otherwise.
+
+        """
+        if "--output-format" in args:
+            return RuffRunResult(
+                argv=args,
+                returncode=1,
+                stdout=payload,
+                stderr=b"",
+                duration_seconds=0.0,
+            )
+        return RuffRunResult(
+            argv=args,
+            returncode=0,
+            stdout=b"",
+            stderr=b"",
+            duration_seconds=0.0,
+        )
+
+    monkeypatch.setattr(target=RuffStabilizer, name="_run", value=findings)
+    results: list[FileResult] = []
+    RuffStabilizer(paths=[target], callback=collect_into(results=results))
+    expect_equal(actual=len(results[0].diagnostics), expected=1)
+    expect_equal(actual=results[0].diagnostics[0].code, expected="E501")
+    expect_equal(actual=results[0].diagnostics[0].line, expected=1)
+
+
+def test_batch_stabilizer_rejects_oscillation(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """The batch loop fails alternating file states explicitly.
+
+    Args:
+        tmp_path: Per-test temporary directory.
+        monkeypatch: Pytest patching helper.
+
+    """
+    first: Path = tmp_path / "a.py"
+    second: Path = tmp_path / "b.py"
+    first.write_text(
+        data="""\
+a = 1
+""",
+        encoding="utf-8",
+    )
+    second.write_text(
+        data="""\
+b = 1
+""",
+        encoding="utf-8",
+    )
+
+    def flip(_self: RuffStabilizer, *, args: tuple[str, ...]) -> RuffRunResult:
+        """Toggle the first file between two states per format call.
+
+        Args:
+            _self: Stabilizer instance the patched method is bound to.
+            args: Complete argument vector.
+
+        Returns:
+            A successful typed run result.
+
+        """
+        if "format" in args and "--check" not in args:
+            current: bytes = first.read_bytes()
+            first.write_bytes(
+                data=b"a = 1\n" if current != b"a = 1\n" else b"a = 2\n",
+            )
+        return RuffRunResult(
+            argv=args,
+            returncode=0,
+            stdout=b"",
+            stderr=b"",
+            duration_seconds=0.0,
+        )
+
+    monkeypatch.setattr(target=RuffStabilizer, name="_run", value=flip)
+    with pytest.raises(
+        expected_exception=RuntimeError,
+        match=r"oscillates|stabilize",
+    ):
+        RuffStabilizer(paths=[first, second], max_iterations=8)
+    expect_equal(actual=first.read_bytes(), expected=b"a = 1\n")
+    expect_equal(actual=second.read_bytes(), expected=b"b = 1\n")
+
+
+def test_stabilizer_records_structured_metrics(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """A converged run exposes invocations, steps and policy identity.
+
+    Args:
+        tmp_path: Per-test temporary directory.
+        monkeypatch: Pytest patching helper.
+
+    """
+    target: Path = tmp_path / "app.py"
+    target.write_text(
+        data="""\
+x=1
+""",
+        encoding="utf-8",
+    )
+    calls: list[tuple[str, ...]] = []
+
+    def succeed(
+        _self: RuffStabilizer,
+        *,
+        args: tuple[str, ...],
+    ) -> RuffRunResult:
+        """Rewrite the file once on the first mutating format call.
+
+        Args:
+            _self: Stabilizer instance the patched method is bound to.
+            args: Complete argument vector.
+
+        Returns:
+            A successful typed run result.
+
+        """
+        calls.append(args)
+        if (
+            "format" in args
+            and "--check" not in args
+            and target.read_bytes() == b"x=1\n"
+        ):
+            target.write_bytes(data=b"x = 1\n")
+        return RuffRunResult(
+            argv=args,
+            returncode=0,
+            stdout=b"",
+            stderr=b"",
+            duration_seconds=0.0,
+        )
+
+    monkeypatch.setattr(target=RuffStabilizer, name="_run", value=succeed)
+    stabilizer: RuffStabilizer = RuffStabilizer(paths=[target])
+    metrics: StabilizationMetrics = stabilizer.metrics
+    expect_equal(actual=metrics.files, expected=1)
+    expect_true(condition=metrics.converged)
+    expect_false(condition=metrics.rolled_back)
+    expect_false(condition=metrics.oscillated)
+    expect_true(condition=metrics.invocations == len(calls) > 0)
+    expect_equal(actual=metrics.per_step_changes.get("format"), expected=1)
+    expect_equal(actual=metrics.diagnostics, expected=0)
+    expect_true(condition=bool(metrics.policy_fingerprint))
+    expect_true(condition=metrics.duration_seconds >= 0.0)
+    expect_true(condition=metrics.ruff_version is None)
+
+
+def test_batch_stabilizer_format_locks_conflicting_file(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """A fix that provably reverts formatting loses to the formatter.
+
+    Args:
+        tmp_path: Per-test temporary directory.
+        monkeypatch: Pytest patching helper.
+
+    """
+    conflicted: Path = tmp_path / "conflicted.py"
+    clean: Path = tmp_path / "clean.py"
+    original: bytes = b"a=1\n"
+    formatted_state: bytes = b"a = 1\n"
+    conflicted.write_bytes(data=original)
+    clean.write_bytes(data=b"b = 1\n")
+
+    def fight(
+        _self: RuffStabilizer,
+        *,
+        args: tuple[str, ...],
+    ) -> RuffRunResult:
+        """Revert every format with the matching fix pass.
+
+        Args:
+            _self: Stabilizer instance the patched method is bound to.
+            args: Complete argument vector.
+
+        Returns:
+            A typed run result; ``format --check`` reports the
+            conflicted file until it holds formatted output.
+
+        """
+        returncode: int = 0
+        stdout: bytes = b""
+        targeted: bool = str(object=conflicted) in args
+        if "format" in args and "--check" in args:
+            if targeted and conflicted.read_bytes() != formatted_state:
+                returncode = 1
+                stdout = f"""\
+Would reformat: {conflicted}
+""".encode()
+        elif "format" in args:
+            if targeted and conflicted.read_bytes() != formatted_state:
+                conflicted.write_bytes(data=formatted_state)
+        elif "--fix" in args:
+            if targeted and conflicted.read_bytes() == formatted_state:
+                conflicted.write_bytes(data=original)
+        elif "check" in args:
+            stdout = b"[]"
+        return RuffRunResult(
+            argv=args,
+            returncode=returncode,
+            stdout=stdout,
+            stderr=b"",
+            duration_seconds=0.0,
+        )
+
+    monkeypatch.setattr(target=RuffStabilizer, name="_run", value=fight)
+    stabilizer: RuffStabilizer = RuffStabilizer(
+        paths=[conflicted, clean],
+        max_iterations=8,
+    )
+    metrics: StabilizationMetrics = stabilizer.metrics
+    expect_equal(actual=conflicted.read_bytes(), expected=formatted_state)
+    expect_equal(actual=metrics.format_locked, expected=1)
+    expect_true(condition=metrics.oscillated)
+    expect_true(condition=metrics.converged)
+    expect_false(condition=metrics.rolled_back)
+    expect_equal(
+        actual=metrics.per_step_changes.get("format-locked"),
+        expected=1,
+    )
+
+
+def test_stabilizer_captures_version_when_requested(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """``capture_version`` probes the executable once for the record.
+
+    Args:
+        tmp_path: Per-test temporary directory.
+        monkeypatch: Pytest patching helper.
+
+    """
+    target: Path = tmp_path / "app.py"
+    target.write_text(
+        data="""\
+x = 1
+""",
+        encoding="utf-8",
+    )
+
+    def succeed(
+        _self: RuffStabilizer,
+        *,
+        args: tuple[str, ...],
+    ) -> RuffRunResult:
+        """Answer ``--version`` and succeed everywhere else.
+
+        Args:
+            _self: Stabilizer instance the patched method is bound to.
+            args: Complete argument vector.
+
+        Returns:
+            Version output for the probe, success otherwise.
+
+        """
+        if "--version" in args:
+            return RuffRunResult(
+                argv=args,
+                returncode=0,
+                stdout=b"ruff 0.12.0\n",
+                stderr=b"",
+                duration_seconds=0.0,
+            )
+        return RuffRunResult(
+            argv=args,
+            returncode=0,
+            stdout=b"",
+            stderr=b"",
+            duration_seconds=0.0,
+        )
+
+    monkeypatch.setattr(target=RuffStabilizer, name="_run", value=succeed)
+    stabilizer: RuffStabilizer = RuffStabilizer(
+        paths=[target],
+        options=RuffStabilizerOptions(capture_version=True),
+    )
+    expect_equal(
+        actual=stabilizer.metrics.ruff_version,
+        expected="ruff 0.12.0",
+    )
+
+
+def test_stabilizer_converges_a_real_ruff_project(tmp_path: Path) -> None:
+    """Integration: the real Ruff binary converges a temp project.
+
+    Runs the resolved ``ruff`` executable end to end — formatting,
+    fixing and read-only verification — then proves a second run is a
+    no-op (§7.2 real-binary requirement). Skipped when Ruff is absent.
+
+    Args:
+        tmp_path: Per-test temporary directory.
+
+    """
+    ruff: str = capable_ruff(tmp_path=tmp_path)
+    project: Path = tmp_path / "proj"
+    project.mkdir()
+    (project / "pyproject.toml").write_text(
+        data=(
+            """\
+[tool.ruff]
+line-length = 79
+[tool.ruff.lint]
+select = ["I"]
+"""
+        ),
+        encoding="utf-8",
+    )
+    target: Path = project / "app.py"
+    target.write_text(
+        data="""\
+import sys
+import os
+x   =   sys.argv
+print(  x,os.name  )
+""",
+        encoding="utf-8",
+    )
+    options: RuffStabilizerOptions = RuffStabilizerOptions(
+        command_prefix=(ruff,),
+        project_root=project,
+        capture_version=True,
+    )
+    first: RuffStabilizer = RuffStabilizer(paths=[target], options=options)
+    expect_true(condition=first.metrics.converged)
+    expect_false(condition=first.metrics.rolled_back)
+    expect_true(condition=first.metrics.invocations > 0)
+    expect_true(condition=first.metrics.ruff_version is not None)
+    converged_source: bytes = target.read_bytes()
+    expect_true(condition=b"import os" in converged_source)
+    expect_true(condition=b"import sys" in converged_source)
+    second: RuffStabilizer = RuffStabilizer(
+        paths=[target],
+        options=replace(options, capture_version=False),
+    )
+    expect_true(condition=second.metrics.converged)
+    expect_true(condition=not any(second.metrics.per_step_changes.values()))
+    expect_equal(actual=target.read_bytes(), expected=converged_source)
+
+
+def test_resolve_tool_command_prefers_the_running_venv(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """An interpreter-adjacent binary outranks an older PATH entry.
+
+    Args:
+        tmp_path: Per-test temporary directory.
+        monkeypatch: Pytest patching helper.
+
+    """
+    fake_bin: Path = tmp_path / "bin"
+    fake_bin.mkdir()
+    tool: Path = fake_bin / "ruff"
+    tool.write_text(
+        data="""\
+#!/bin/sh
+""",
+        encoding="utf-8",
+    )
+    tool.chmod(mode=0o755)
+
+    def on_path(cmd: str) -> str:
+        """Report every tool as installed under ``/usr/bin``.
+
+        Args:
+            cmd: Tool name.
+
+        Returns:
+            Fixed ``/usr/bin`` path for the tool.
+
+        """
+        return f"/usr/bin/{cmd}"
+
+    monkeypatch.setattr(
+        target=core_module,
+        name="sys_executable",
+        value=str(object=fake_bin / "python"),
+    )
+    monkeypatch.setattr(target=core_module, name="which", value=on_path)
+    expect_equal(
+        actual=resolve_tool_command(name="ruff"),
+        expected=(str(object=tool),),
+    )
+
+
+def test_resolve_tool_command_falls_back_to_path(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Without a venv sibling the PATH lookup decides.
+
+    Args:
+        monkeypatch: Pytest patching helper.
+
+    """
+
+    def selective(cmd: str) -> str | None:
+        """Resolve only ``ruff`` on ``PATH``.
+
+        Args:
+            cmd: Tool name.
+
+        Returns:
+            Path for ``ruff``, ``None`` otherwise.
+
+        """
+        return "/usr/local/bin/ruff" if cmd == "ruff" else None
+
+    monkeypatch.setattr(
+        target=core_module,
+        name="sys_executable",
+        value="/nonexistent-venv/bin/python",
+    )
+    monkeypatch.setattr(target=core_module, name="which", value=selective)
+    expect_equal(
+        actual=resolve_tool_command(name="ruff"),
+        expected=("/usr/local/bin/ruff",),
+    )
+    expect_equal(actual=resolve_tool_command(name="missing"), expected=None)
+
+
+def test_stabilizer_preserves_required_trailing_commas(tmp_path: Path) -> None:
+    """Formatting and fixing converge without introducing COM812.
+
+    Args:
+        tmp_path: Isolated source directory.
+
+    """
+    target: Path = tmp_path / "commas.py"
+    source: str = dedent(
+        text="""\
+    \"""Exercise multiline trailing commas.\"""
+    values: list[str] = [
+        "a reasonably long first value for this multiline list",
+        "a reasonably long second value for this multiline list",
+    ]
+    """,
+    )
+    target.write_text(data=source, encoding="utf-8")
+    launcher: str = capable_ruff(tmp_path=tmp_path)
+    RuffStabilizer(
+        paths=[target],
+        options=RuffStabilizerOptions(command_prefix=(launcher,)),
+    )
+    first: bytes = target.read_bytes()
+    RuffStabilizer(
+        paths=[target],
+        options=RuffStabilizerOptions(command_prefix=(launcher,)),
+    )
+    expect_equal(actual=target.read_bytes(), expected=first)
+    checked: CompletedProcess[str] = run_process(
+        args=[launcher, "check", "--select", "COM812", str(object=target)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    expect_equal(actual=checked.returncode, expected=0)
+
+
+def test_stabilizer_rejects_incapable_ruff(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """A probe rejection surfaces as a policy error before work runs.
+
+    Args:
+        tmp_path: Per-test temporary directory.
+        monkeypatch: Pytest patching helper.
+
+    """
+    target: Path = tmp_path / "app.py"
+    target.write_text(
+        data="""\
+x = 1
+""",
+        encoding="utf-8",
+    )
+    seen: list[tuple[str, ...]] = []
+
+    def reject(
+        _self: RuffStabilizer,
+        *,
+        args: tuple[str, ...],
+    ) -> NoReturn:
+        """Reject the capability probe like an outdated Ruff.
+
+        Args:
+            _self: Stabilizer instance the patched method is bound to.
+            args: Complete argument vector.
+
+        Raises:
+            RuffExecutionError: Always, simulating an option rejection.
+
+        """
+        seen.append(args)
+        raise RuffExecutionError(argv=args, message="unknown field")
+
+    monkeypatch.setattr(target=RuffStabilizer, name="_run", value=reject)
+    with pytest.raises(expected_exception=RuffPolicyError):
+        RuffStabilizer(paths=[target])
+    expect_equal(actual=len(seen), expected=1)
+    expect_in(member="--exit-zero", container=seen[0])
+
+
+def test_stabilizer_skips_verification_when_disabled(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """``verify=False`` suppresses the capability probe entirely.
+
+    Args:
+        tmp_path: Per-test temporary directory.
+        monkeypatch: Pytest patching helper.
+
+    """
+    target: Path = tmp_path / "app.py"
+    target.write_text(
+        data="""\
+x = 1
+""",
+        encoding="utf-8",
+    )
+    seen: list[tuple[str, ...]] = []
+
+    def record(
+        _self: RuffStabilizer,
+        *,
+        args: tuple[str, ...],
+    ) -> RuffRunResult:
+        """Record each invocation without touching the file.
+
+        Args:
+            _self: Stabilizer instance the patched method is bound to.
+            args: Complete argument vector.
+
+        Returns:
+            A successful typed run result with empty output.
+
+        """
+        seen.append(args)
+        return RuffRunResult(
+            argv=args,
+            returncode=0,
+            stdout=b"",
+            stderr=b"",
+            duration_seconds=0.0,
+        )
+
+    monkeypatch.setattr(target=RuffStabilizer, name="_run", value=record)
+    RuffStabilizer(
+        paths=[target],
+        options=RuffStabilizerOptions(verify=False),
+    )
+    expect_false(
+        condition=any("--exit-zero" in args for args in seen),
+    )
+
+
+def test_metrics_carry_policy_fingerprint(tmp_path: Path) -> None:
+    """Structured metrics expose the resolved policy identity.
+
+    Args:
+        tmp_path: Per-test temporary directory.
+
+    """
+    target: Path = tmp_path / "app.py"
+    target.write_text(
+        data="""\
+x = 1
+""",
+        encoding="utf-8",
+    )
+    launcher: str = capable_ruff(tmp_path=tmp_path)
+    options: RuffStabilizerOptions = RuffStabilizerOptions(
+        command_prefix=(launcher,),
+        capture_version=True,
+    )
+    stabilizer: RuffStabilizer = RuffStabilizer(
+        paths=[target],
+        options=options,
+    )
+    metrics: StabilizationMetrics = stabilizer.metrics
+    resolved: ResolvedRuffPolicy = ResolvedRuffPolicy.resolve(
+        options=options,
+    )
+    expect_equal(
+        actual=metrics.policy_fingerprint,
+        expected=resolved.fingerprint,
+    )
+    expect_true(condition=metrics.ruff_version is not None)
+    expect_true(condition="ruff" in (metrics.ruff_version or ""))

@@ -153,8 +153,10 @@ def run(
                 InstallStatus.MISSING,
             )
             _ = stream.write(
-                f"{diagnosis.shell.value:<11} {diagnosis.status.value:<16}"
-                f" {diagnosis.path} — {diagnosis.detail}\n",
+                f"""\
+{diagnosis.shell.value:<11} {diagnosis.status.value:<16} {diagnosis.path} — \
+{diagnosis.detail}
+""",
             )
         return 0 if not unhealthy else 1
     shells: tuple[CompletionShell, ...] = _shells(argument=options.shell)
@@ -191,7 +193,9 @@ def run(
                     profile=profile,
                 )
             )
-            _ = stream.write(f"{result.detail}\n")
+            _ = stream.write(f"""\
+{result.detail}
+""")
             if result.status in (
                 InstallStatus.BROKEN,
                 InstallStatus.LAUNCHER_MISSING,

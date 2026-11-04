@@ -40,10 +40,17 @@ def _project(*, root: Path) -> Path:
     exactus: Path = root / "exactus"
     exactus.mkdir(parents=True)
     _ = (exactus / "__main__.py").write_text(
-        data="print('x')\n",
+        data="""\
+print('x')
+""",
         encoding="utf-8",
     )
-    _ = (exactus / "tool.py").write_text(data="VALUE = 1\n", encoding="utf-8")
+    _ = (exactus / "tool.py").write_text(
+        data="""\
+VALUE = 1
+""",
+        encoding="utf-8",
+    )
     package: Path = root / "exactus" / "packages" / "package"
     package.mkdir(parents=True)
     _ = (package / "build.py").write_text(data="", encoding="utf-8")
@@ -78,7 +85,9 @@ def _stamped_zipapp(*, bundle: Path, root: Path) -> None:
 
     """
     members: dict[str, str] = {
-        "__main__.py": "from exactus.__main__ import main\n",
+        "__main__.py": """\
+from exactus.__main__ import main
+""",
         f"exactus/{SIGNATURE_NAME}": render_signature(
             exactus_dir=root / "exactus",
         ).decode(encoding="utf-8"),
@@ -160,9 +169,24 @@ def test_tree_signature_fingerprints_sources(tmp_path: Path) -> None:
     """
     exactus: Path = tmp_path / "exactus"
     exactus.mkdir(parents=True)
-    _ = (exactus / "__main__.py").write_text(data="x = 1\n", encoding="utf-8")
-    _ = (exactus / ".hidden").write_text(data="x\n", encoding="utf-8")
-    _ = (exactus / SIGNATURE_NAME).write_text(data="{}\n", encoding="utf-8")
+    _ = (exactus / "__main__.py").write_text(
+        data="""\
+x = 1
+""",
+        encoding="utf-8",
+    )
+    _ = (exactus / ".hidden").write_text(
+        data="""\
+x
+""",
+        encoding="utf-8",
+    )
+    _ = (exactus / SIGNATURE_NAME).write_text(
+        data="""\
+{}
+""",
+        encoding="utf-8",
+    )
     cache: Path = exactus / "__pycache__"
     cache.mkdir()
     _ = (cache / "__main__.cpython-313.pyc").write_bytes(data=b"\x00")
@@ -196,8 +220,18 @@ def test_tree_signature_skips_generated_reports(tmp_path: Path) -> None:
     exactus: Path = tmp_path / "exactus"
     reports: Path = exactus / "EXACTUS_RESULTS" / "LINTS"
     reports.mkdir(parents=True)
-    _ = (reports / "result.md").write_text(data="# report\n", encoding="utf-8")
-    _ = (exactus / "__main__.py").write_text(data="x = 1\n", encoding="utf-8")
+    _ = (reports / "result.md").write_text(
+        data="""\
+# report
+""",
+        encoding="utf-8",
+    )
+    _ = (exactus / "__main__.py").write_text(
+        data="""\
+x = 1
+""",
+        encoding="utf-8",
+    )
     expect_equal(
         actual=sorted(tree_signature(exactus_dir=exactus)),
         expected=["__main__.py"],
@@ -212,7 +246,14 @@ def test_bundle_signature_absent(tmp_path: Path) -> None:
 
     """
     bundle: Path = tmp_path / "check"
-    _write_zipapp(bundle=bundle, members={"__main__.py": "x = 1\n"})
+    _write_zipapp(
+        bundle=bundle,
+        members={
+            "__main__.py": """\
+x = 1
+""",
+        },
+    )
     expect_none(value=bundle_signature(bundle=bundle))
 
 
@@ -249,7 +290,9 @@ def test_warn_if_stale_after_source_edit(
     bundle: Path = _project(root=tmp_path)
     _stamped_zipapp(bundle=bundle, root=tmp_path)
     _ = (tmp_path / "exactus" / "tool.py").write_text(
-        data="VALUE = 2\n",
+        data="""\
+VALUE = 2
+""",
         encoding="utf-8",
     )
     expect_in(
@@ -272,7 +315,9 @@ def test_warn_if_stale_after_source_addition(
     bundle: Path = _project(root=tmp_path)
     _stamped_zipapp(bundle=bundle, root=tmp_path)
     _ = (tmp_path / "exactus" / "fresh.py").write_text(
-        data="x = 1\n",
+        data="""\
+x = 1
+""",
         encoding="utf-8",
     )
     output: str = _stale_warning(bundle=bundle, monkeypatch=monkeypatch)
@@ -291,7 +336,14 @@ def test_warn_if_stale_missing_stamp(
 
     """
     bundle: Path = _project(root=tmp_path)
-    _write_zipapp(bundle=bundle, members={"__main__.py": "x = 1\n"})
+    _write_zipapp(
+        bundle=bundle,
+        members={
+            "__main__.py": """\
+x = 1
+""",
+        },
+    )
     expect_in(
         member="exactus is outdated",
         container=_stale_warning(bundle=bundle, monkeypatch=monkeypatch),
@@ -311,7 +363,14 @@ def test_warn_if_stale_outside_project(
     """
     bundle: Path = tmp_path / "tools" / "check"
     bundle.parent.mkdir(parents=True)
-    _write_zipapp(bundle=bundle, members={"__main__.py": "x = 1\n"})
+    _write_zipapp(
+        bundle=bundle,
+        members={
+            "__main__.py": """\
+x = 1
+""",
+        },
+    )
     expect_equal(
         actual=_stale_warning(bundle=bundle, monkeypatch=monkeypatch),
         expected="",
@@ -330,7 +389,13 @@ def test_warn_if_stale_script_invocation(
 
     """
     script: Path = _project(root=tmp_path)
-    _ = script.write_text(data="#!x\nprint('x')\n", encoding="utf-8")
+    _ = script.write_text(
+        data="""\
+#!x
+print('x')
+""",
+        encoding="utf-8",
+    )
     expect_equal(
         actual=_stale_warning(bundle=script, monkeypatch=monkeypatch),
         expected="",
@@ -384,7 +449,12 @@ def test_bundle_stale_ignores_staged_vendor(tmp_path: Path) -> None:
     bundle: Path = _project(root=tmp_path)
     vendor: Path = tmp_path / "exactus" / "vendor" / "_vendor" / "pkg"
     vendor.mkdir(parents=True)
-    _ = (vendor / "mod.py").write_text(data="x = 1\n", encoding="utf-8")
+    _ = (vendor / "mod.py").write_text(
+        data="""\
+x = 1
+""",
+        encoding="utf-8",
+    )
     _stamped_zipapp(bundle=bundle, root=tmp_path)
     rmtree(path=tmp_path / "exactus" / "vendor")
     expect_true(
@@ -411,7 +481,9 @@ def test_bundle_stale_flags_every_drift(tmp_path: Path) -> None:
         ),
     )
     _ = (tmp_path / "exactus" / "tool.py").write_text(
-        data="VALUE = 2\n",
+        data="""\
+VALUE = 2
+""",
         encoding="utf-8",
     )
     expect_true(
@@ -420,7 +492,14 @@ def test_bundle_stale_flags_every_drift(tmp_path: Path) -> None:
             exactus_dir=tmp_path / "exactus",
         ),
     )
-    _write_zipapp(bundle=bundle, members={"__main__.py": "x = 1\n"})
+    _write_zipapp(
+        bundle=bundle,
+        members={
+            "__main__.py": """\
+x = 1
+""",
+        },
+    )
     expect_true(
         condition=bundle_stale(
             bundle=bundle,
@@ -438,7 +517,12 @@ def test_render_signature_deterministic(tmp_path: Path) -> None:
     """
     exactus: Path = tmp_path / "exactus"
     exactus.mkdir(parents=True)
-    _ = (exactus / "x.py").write_text(data="x = 1\n", encoding="utf-8")
+    _ = (exactus / "x.py").write_text(
+        data="""\
+x = 1
+""",
+        encoding="utf-8",
+    )
     expect_equal(
         actual=render_signature(exactus_dir=exactus),
         expected=dumps(

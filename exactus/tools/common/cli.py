@@ -8,7 +8,6 @@ from argparse import ArgumentParser, ArgumentTypeError, Namespace
 from concurrent.futures import ThreadPoolExecutor
 from contextlib import suppress
 from datetime import UTC, datetime
-from fnmatch import fnmatch
 from hashlib import sha256
 from importlib import invalidate_caches
 from importlib.resources import files as resource_files
@@ -27,14 +26,53 @@ from typing import (
     NotRequired,
     Protocol,
     TypedDict,
+    Unpack,
     cast,
     final,
 )
 from uuid import uuid4
 
 from exactus.packages.argument_parser import ExactusArgumentParser
+from exactus.tools.common.path_filters import (
+    PathFilters,
+    PathFilterTables,
+    ScopedMatcher,
+    default_excluded_dirs,
+    default_excludes,
+    glob_match,
+)
 from exactus.tools.common.snippets import SnippetLimits
 
+__all__: list[str] = [
+    "Constants",
+    "ExactusCommonTables",
+    "PathFilters",
+    "ScopedMatcher",
+    "activate_exactus_tool_bundle",
+    "add_common_arguments",
+    "consume",
+    "context_lines",
+    "default_excluded_dirs",
+    "default_excludes",
+    "exactus_bundle_cache",
+    "exactus_bundle_python_paths",
+    "exactus_tool_command",
+    "exactus_tool_prefix",
+    "expand_paths",
+    "glob_match",
+    "heartbeat_timestamp",
+    "is_reports_tree",
+    "linter_command",
+    "linter_platform_supported",
+    "map_lanes",
+    "match_path",
+    "parse_common_arguments",
+    "resolve_exactus_tool_bundle",
+    "resolve_linter_toolchain",
+    "resolve_output",
+    "resolve_report_output",
+    "resolve_source_scope",
+]
 if TYPE_CHECKING:
     from _hashlib import HASH
     from collections.abc import Callable, Sequence
@@ -42,6 +80,8 @@ if TYPE_CHECKING:
     from importlib.machinery import ModuleSpec
     from importlib.resources.abc import Traversable
     from types import ModuleType
+
+    from exactus.tools.common.config import ConfigResolver
 
 
 @final
@@ -124,44 +164,12 @@ class ExactusCommonTables:
     """
 
     DEFAULT_EXCLUDES: ClassVar[tuple[str, ...]] = (
-        ".*/**",
-        "**/.*/**",
+        *PathFilterTables.patterns,
         "EXACTUS_RESULTS/**",
         "**/EXACTUS_RESULTS/**",
-        "node_modules/**",
-        "build/**",
-        "dist/**",
-        "*.egg-info/**",
-        "**/__pycache__/**",
     )
-    DEFAULT_EXCLUDED_DIRS: ClassVar[frozenset[str]] = frozenset(
-        {
-            ".agents",
-            ".build-cache",
-            ".cache",
-            ".claude",
-            ".cursor",
-            ".devin",
-            ".eggs",
-            ".git",
-            ".history",
-            ".mypy_cache",
-            ".pytest_cache",
-            ".ruff_cache",
-            ".tox",
-            ".venv",
-            "EXACTUS_RESULTS",
-            "__pycache__",
-            "build",
-            "coverage_report",
-            "dist",
-            "env",
-            "htmlcov",
-            "mutants",
-            "node_modules",
-            "site-packages",
-            "venv",
-        },
+    DEFAULT_EXCLUDED_DIRS: ClassVar[frozenset[str]] = (
+        PathFilterTables.directories | {"EXACTUS_RESULTS"}
     )
     LINTER_TOOLCHAIN: ClassVar[str] = "linters-linux-amd64"
     LINTER_TOOLCHAIN_ENV: ClassVar[str] = "EXACTUS_LINTER_TOOLCHAIN"
@@ -231,8 +239,7 @@ def add_common_arguments(
             type=Path,
             default=Path("EXACTUS_RESULTS") / default_output,
             help=(
-                "Output directory (default:"
-                f" EXACTUS_RESULTS/{default_output})."
+                f"Output directory (default: <reports-dir>/{default_output})."
             ),
         ),
     )
@@ -401,6 +408,19 @@ def is_reports_tree(directory: Path) -> bool:
     )
 
 
+class ScopedPathOptions(TypedDict, total=False):
+    """Optional scoped selection context for the stable matching API.
+
+    Attributes:
+        resolver: Per-run configuration owner.
+        tool: Tool table supplying local include/exclude rules.
+
+    """
+
+    resolver: ConfigResolver | None
+    tool: str | None
+
+
 def match_path(
     *,
     path: Path,
@@ -408,6 +428,7 @@ def match_path(
     includes: tuple[str, ...],
     excludes: tuple[str, ...],
     defaults: bool = True,
+    **options: Unpack[ScopedPathOptions],
 ) -> bool:
     """Return whether a path passes normalized glob filters.
 
@@ -421,31 +442,29 @@ def match_path(
         includes: Glob patterns the path must match, when supplied.
         excludes: Additional glob patterns rejecting the path.
         defaults: Whether ``DEFAULT_EXCLUDES`` participates in matching.
+        **options: Optional resolver and tool selection context.
 
     Returns:
         ``True`` when the path survives the include/exclude filters.
 
     """
-    relative: str = path.resolve().relative_to(root.resolve()).as_posix()
-    patterns: tuple[str, ...] = (
-        *(ExactusCommonTables.DEFAULT_EXCLUDES if defaults else ()),
-        *excludes,
-    )
-    included: bool = not includes
-    pattern: str
-    if not included:
-        for pattern in includes:
-            if fnmatch(name=relative, pat=pattern):
-                included = True
-                break
-    if not included:
+    resolved: Path = path.resolve()
+    if not resolved.is_relative_to(root.resolve()):
         return False
-    excluded: bool = False
-    for pattern in patterns:
-        if fnmatch(name=relative, pat=pattern):
-            excluded = True
-            break
-    return not excluded
+    resolver: ConfigResolver | None = options.get("resolver")
+    scoped: PathFilters = (
+        resolver.filters(path=path, tool=options.get("tool"))
+        if resolver is not None
+        else PathFilters()
+    )
+    return PathFilters(
+        includes=(*includes, *scoped.includes),
+        excludes=(
+            *(default_excludes(root=root) if defaults else ()),
+            *excludes,
+            *scoped.excludes,
+        ),
+    ).matches(relative=resolved.relative_to(root.resolve()).as_posix())
 
 
 def linter_platform_supported() -> bool:
@@ -1062,7 +1081,7 @@ def activate_exactus_tool_bundle(*, root: Path) -> bool:
     _ = environ.setdefault("PYTHONPYCACHEPREFIX", str(object=pycache))
     invalidate_caches()
     browsers: Path = cache / "chromium" / "playwright-browsers"
-    if browsers.is_dir():
+    if browsers.is_dir() and not environ.get("PLAYWRIGHT_BROWSERS_PATH"):
         environ["PLAYWRIGHT_BROWSERS_PATH"] = str(object=browsers)
         _ = environ.setdefault("PLAYWRIGHT_SKIP_VALIDATE_DEPENDENCIES", "1")
     return True

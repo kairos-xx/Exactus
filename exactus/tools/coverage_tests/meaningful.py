@@ -509,9 +509,9 @@ def analyze_unreached(
     trace(
         step=(
             f"meaningful: {len(rows)} rows — "
-            f"{status_counts['actionable']} actionable, "
-            f"{status_counts['filtered']} filtered, "
-            f"{status_counts['unclassified']} unclassified"
+            f"{status_counts["actionable"]} actionable, "
+            f"{status_counts["filtered"]} filtered, "
+            f"{status_counts["unclassified"]} unclassified"
         ),
         depth=2,
     )
@@ -604,7 +604,10 @@ def write_artifact(*, path: Path, result: MeaningfulResult) -> None:
     """
     path.parent.mkdir(parents=True, exist_ok=True)
     _ = path.write_text(
-        data=dumps(obj=result.artifact, indent=2, sort_keys=True) + "\n",
+        data=dumps(obj=result.artifact, indent=2, sort_keys=True)
+        + """\
+
+""",
         encoding="utf-8",
     )
     trace(

@@ -14,8 +14,9 @@ def main() -> int:
 
     """
     _ = stdout.write(
-        f"Project {Constants.project_version} — "
-        f"{Project().greet(name='world')}\n",
+        f"""\
+Project {Constants.project_version} — {Project().greet(name="world")}
+""",
     )
     return 0
 

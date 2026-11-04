@@ -69,7 +69,10 @@ def _configure(*, root: Path, text: str) -> None:
 
     """
     _ = (root / "pyproject.toml").write_text(
-        data=f"[tool.exactus]\nroot = true\n{text}",
+        data=f"""\
+[tool.exactus]
+root = true
+{text}""",
         encoding="utf-8",
     )
 
@@ -108,7 +111,12 @@ def test_common_table_sets_every_tool(project: Path) -> None:
         project: Project directory.
 
     """
-    _configure(root=project, text="context-lines = 5\n")
+    _configure(
+        root=project,
+        text="""\
+context-lines = 5
+""",
+    )
     for parse in Constants.parsers:
         expect_equal(actual=_lines(parse=parse, arguments=()), expected=5)
 
@@ -122,7 +130,12 @@ def test_tool_table_overrides_common_and_cli_wins(project: Path) -> None:
     """
     _configure(
         root=project,
-        text="context-lines = 5\n\n[tool.exactus.lints]\ncontext-lines = 1\n",
+        text="""\
+context-lines = 5
+
+[tool.exactus.lints]
+context-lines = 1
+""",
     )
     expect_equal(actual=_lines(parse=lints_args, arguments=()), expected=1)
     expect_equal(actual=_lines(parse=readme_args, arguments=()), expected=5)
@@ -148,9 +161,15 @@ def test_pipeline_table_sits_between_tool_table_and_cli(project: Path) -> None:
         text=(
             dedent(
                 text=(
-                    "    context-lines = 5\n    \n    [tool.exactus.lints]"
-                    "\n    context-lines = 1\n    \n    [tool.exactus.pipe"
-                    "line.self.lints]\n    context-lines = 9\n    "
+                    """\
+    context-lines = 5
+
+    [tool.exactus.lints]
+    context-lines = 1
+
+    [tool.exactus.pipeline.self.lints]
+    context-lines = 9
+    """
                 ),
             )
         ),
@@ -197,7 +216,12 @@ def test_negative_values_are_rejected(
     with pytest.raises(expected_exception=SystemExit) as cli:
         _ = lints_args(arguments=("--context-lines", "-1"))
     expect_equal(actual=cli.value.code, expected=2)
-    _configure(root=project, text="context-lines = -2\n")
+    _configure(
+        root=project,
+        text="""\
+context-lines = -2
+""",
+    )
     with pytest.raises(expected_exception=SystemExit) as config:
         _ = lints_args(arguments=())
     expect_equal(actual=config.value.code, expected=2)

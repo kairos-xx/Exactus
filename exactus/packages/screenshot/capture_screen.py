@@ -53,70 +53,106 @@ class Js(StrEnum):
 
     EXPAND = dedent(
         text=(
-            "\n        root => {\n            const state = window.__snapshotC"
-            "apture ??= {\n                styles: [], scrolls: [], expanded: "
-            "new Set(),\n                winX: scrollX, winY: scrollY,\n      "
-            "      };\n            let changed = false;\n            for (cons"
-            't element of [root, ...root.querySelectorAll("*")]) {\n          '
-            "      if (\n                    !(\n                        eleme"
-            "nt instanceof HTMLElement\n                        || element ins"
-            "tanceof SVGElement\n                    )\n                    ||"
-            " element.scrollHeight <= element.clientHeight + 1\n              "
-            "      || state.expanded.has(element)\n                )\n        "
-            "            continue;\n                state.expanded.add(element"
-            ");\n                state.styles.push([element, element.getAttrib"
-            'ute("style")]);\n                if (element instanceof HTMLEleme'
-            "nt)\n                    state.scrolls.push([\n                  "
-            "      element, element.scrollLeft, element.scrollTop,\n          "
-            "          ]);\n                for (const [property, value] of ["
-            '\n                    ["height", "auto"],\n                    ["'
-            'max-height", "none"],\n                    ["overflow-y", "visibl'
-            'e"],\n                ])\n                    element.style.setPr'
-            'operty(property, value, "important");\n                changed = '
-            "true;\n            }\n            return changed;\n        }\n   "
-            "     "
+            """\
+
+        root => {
+            const state = window.__snapshotCapture ??= {
+                styles: [], scrolls: [], expanded: new Set(),
+                winX: scrollX, winY: scrollY,
+            };
+            let changed = false;
+            for (const element of [root, ...root.querySelectorAll("*")]) {
+                if (
+                    !(
+                        element instanceof HTMLElement
+                        || element instanceof SVGElement
+                    )
+                    || element.scrollHeight <= element.clientHeight + 1
+                    || state.expanded.has(element)
+                )
+                    continue;
+                state.expanded.add(element);
+                state.styles.push([element, element.getAttribute("style")]);
+                if (element instanceof HTMLElement)
+                    state.scrolls.push([
+                        element, element.scrollLeft, element.scrollTop,
+                    ]);
+                for (const [property, value] of [
+                    ["height", "auto"],
+                    ["max-height", "none"],
+                    ["overflow-y", "visible"],
+                ])
+                    element.style.setProperty(property, value, "important");
+                changed = true;
+            }
+            return changed;
+        }
+        """
         ),
     ).strip()
     MEASURE = dedent(
         text=(
-            "\n        root => {\n            const {top, bottom} = root.getBo"
-            "undingClientRect();\n            return {\n                height"
-            ": Math.ceil(\n                    top\n                    + root"
-            ".scrollHeight\n                    + Math.max(\n                 "
-            "       document.documentElement.scrollHeight,\n                  "
-            "      document.body?.scrollHeight ?? 0,\n                    )\n "
-            "                   - bottom\n                ),\n                "
-            "width: Math.max(\n                    document.documentElement.sc"
-            "rollWidth,\n                    document.body?.scrollWidth ?? 0,"
-            "\n                ),\n                innerHeight,\n             "
-            '   signature: [root, ...root.querySelectorAll("*")].map(\n       '
-            "             element => {\n                    const {top, height"
-            "} = element.getBoundingClientRect();\n                    return "
-            "`${Math.round(top)}:${Math.round(height)}:`\n                    "
-            "    + `${element.scrollHeight ?? 0}:`\n                        + "
-            "`${element.clientHeight ?? 0}`;\n                    },\n        "
-            '        ).join("|"),\n            };\n        }\n        '
+            """\
+
+        root => {
+            const {top, bottom} = root.getBoundingClientRect();
+            return {
+                height: Math.ceil(
+                    top
+                    + root.scrollHeight
+                    + Math.max(
+                        document.documentElement.scrollHeight,
+                        document.body?.scrollHeight ?? 0,
+                    )
+                    - bottom
+                ),
+                width: Math.max(
+                    document.documentElement.scrollWidth,
+                    document.body?.scrollWidth ?? 0,
+                ),
+                innerHeight,
+                signature: [root, ...root.querySelectorAll("*")].map(
+                    element => {
+                    const {top, height} = element.getBoundingClientRect();
+                    return `${Math.round(top)}:${Math.round(height)}:`
+                        + `${element.scrollHeight ?? 0}:`
+                        + `${element.clientHeight ?? 0}`;
+                    },
+                ).join("|"),
+            };
+        }
+        """
         ),
     ).strip()
     SETTLE = dedent(
         text=(
-            "\n        () => new Promise(resolve =>\n            requestAnimat"
-            "ionFrame(() => requestAnimationFrame(resolve))\n        )\n      "
-            "  "
+            """\
+
+        () => new Promise(resolve =>
+            requestAnimationFrame(() => requestAnimationFrame(resolve))
+        )
+        """
         ),
     ).strip()
     RESTORE = dedent(
         text=(
-            "\n        () => {\n            const state = window.__snapshotCap"
-            "ture;\n            if (!state)\n                return;\n        "
-            "    for (const [element, style] of state.styles)\n               "
-            ' style === null\n                    ? element.removeAttribute("s'
-            'tyle")\n                    : element.setAttribute("style", style'
-            ");\n            for (const [element, left, top] of state.scrolls)"
-            "\n                Object.assign(element, {scrollLeft: left, scrol"
-            "lTop: top});\n            if (state.winX !== undefined)\n        "
-            "        scrollTo(state.winX, state.winY);\n            delete win"
-            "dow.__snapshotCapture;\n        }\n        "
+            """\
+
+        () => {
+            const state = window.__snapshotCapture;
+            if (!state)
+                return;
+            for (const [element, style] of state.styles)
+                style === null
+                    ? element.removeAttribute("style")
+                    : element.setAttribute("style", style);
+            for (const [element, left, top] of state.scrolls)
+                Object.assign(element, {scrollLeft: left, scrollTop: top});
+            if (state.winX !== undefined)
+                scrollTo(state.winX, state.winY);
+            delete window.__snapshotCapture;
+        }
+        """
         ),
     ).strip()
 
@@ -351,7 +387,7 @@ class SnapshotCapture:
             doc_width = int(measurement["width"])
             delta: int = abs(target - int(measurement["innerHeight"]))
             if (
-                (current := f"{needed}|{measurement['signature']}") == previous
+                (current := f"{needed}|{measurement["signature"]}") == previous
                 and not changed
                 and delta <= CaptureScreenDefaults.tolerance
             ):

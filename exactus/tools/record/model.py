@@ -784,7 +784,7 @@ class Profile:
             msg = f"{name} is not a media feature."
             raise ValueError(msg)
         if value not in allowed:
-            msg = f"{name} accepts: {', '.join(allowed)}."
+            msg = f"{name} accepts: {", ".join(allowed)}."
             raise ValueError(msg)
 
     def __post_init__(self) -> None:
@@ -924,7 +924,7 @@ class Target:
         """
         if self.mode is TargetMode.SERVICE:
             return (
-                f"{service_url.rstrip('/')}{self.path}"
+                f"{service_url.rstrip("/")}{self.path}"
                 if service_url
                 else "about:blank"
             )

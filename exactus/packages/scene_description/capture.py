@@ -99,53 +99,54 @@ class SceneDescriptor:
             expression=(
                 dedent(
                     text=(
-                        "    async ({selector, options}) => {\n           "
-                        "         const element = document.querySelector(s"
-                        "elector);\n                    if (!element)\n   "
-                        "                     throw new Error(`Scene root "
-                        "not found: ${selector}`);\n                    co"
-                        "nst scene = await globalThis.Descriptor\n        "
-                        "                .describe(element, options);\n   "
-                        "                 const visualCauseSelector = node"
-                        " => {\n                        if (node.id) retur"
-                        "n `#${CSS.escape(node.id)}`;\n                   "
-                        "     const parts = [];\n                        l"
-                        "et current = node;\n                        while"
-                        " (current && current.nodeType === Node.ELEMENT_NO"
-                        "DE &&\n                               current !=="
-                        " document.documentElement) {\n                   "
-                        "         const localName = current.localName;\n  "
-                        "                          let part = localName;\n"
-                        "                            if (current.classList"
-                        ".length)\n                                part +="
-                        " `.${[...current.classList].slice(0, 3)\n        "
-                        "                            .map(value => CSS.esc"
-                        'ape(value)).join(".")}`;\n                       '
-                        "     if (current.parentElement) {\n              "
-                        "                  const siblings =\n             "
-                        "                       [...current.parentElement."
-                        "children]\n                                      "
-                        "  .filter(sibling =>\n                           "
-                        "                 sibling.localName === localName)"
-                        ";\n                                if (siblings.l"
-                        "ength > 1)\n                                    p"
-                        'art += ":nth-of-type(" +\n                       '
-                        "                 (siblings.indexOf(current) + 1) "
-                        '+ ")";\n                            }\n          '
-                        "                  parts.unshift(part);\n         "
-                        "                   current = current.parentElemen"
-                        "t;\n                        }\n                  "
-                        '      return parts.join(" > ");\n                '
-                        "    };\n                    for (const item of Ob"
-                        "ject.values(scene.elements ?? {})) {\n           "
-                        "             const node = item.selector\n        "
-                        "                    ? document.querySelector(item"
-                        ".selector)\n                            : null;\n"
-                        "                        item.visualCauseSelector "
-                        "=\n                            node ? visualCause"
-                        "Selector(node) : null;\n                    }\n  "
-                        "                  return scene;\n                "
-                        "}"
+                        """\
+    async ({selector, options}) => {
+                    const element = document.querySelector(selector);
+                    if (!element)
+                        throw new Error(`Scene root not found: ${selector}`);\
+
+                    const scene = await globalThis.Descriptor
+                        .describe(element, options);
+                    const visualCauseSelector = node => {
+                        if (node.id) return `#${CSS.escape(node.id)}`;
+                        const parts = [];
+                        let current = node;
+                        while (current && current.nodeType === \
+Node.ELEMENT_NODE &&
+                               current !== document.documentElement) {
+                            const localName = current.localName;
+                            let part = localName;
+                            if (current.classList.length)
+                                part += `.${[...current.classList].slice(0, 3)\
+
+                                    .map(value => CSS.escape(value)).join(".")\
+}`;
+                            if (current.parentElement) {
+                                const siblings =
+                                    [...current.parentElement.children]
+                                        .filter(sibling =>
+                                            sibling.localName === localName);\
+
+                                if (siblings.length > 1)
+                                    part += ":nth-of-type(" +
+                                        (siblings.indexOf(current) + 1) + ")";\
+
+                            }
+                            parts.unshift(part);
+                            current = current.parentElement;
+                        }
+                        return parts.join(" > ");
+                    };
+                    for (const item of Object.values(scene.elements ?? {})) \
+{
+                        const node = item.selector
+                            ? document.querySelector(item.selector)
+                            : null;
+                        item.visualCauseSelector =
+                            node ? visualCauseSelector(node) : null;
+                    }
+                    return scene;
+                }"""
                     ),
                 )
             ),

@@ -234,6 +234,6 @@ def restore_assets(
             temporary.unlink(missing_ok=True)
     for shot in shots:
         if isinstance(shot, dict):
-            shot["path"] = str(object=root / f"{shot['sha256']}.png")
+            shot["path"] = str(object=root / f"{shot["sha256"]}.png")
     result.pop("assets", None)
     return result

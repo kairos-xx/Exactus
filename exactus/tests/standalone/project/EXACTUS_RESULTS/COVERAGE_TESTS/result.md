@@ -1,24 +1,24 @@
 # Coverage
 
-**Run time:** 02 November 2026, 06:48:32 UTC
+**Run time:** 04 November 2026, 07:55:26 UTC
 
 ## Identity
 
 | Field | Value |
 |---|---|
-| Tool | coverage_tests 0.6.1 |
-| Run ID | 7906d1edd1a543c7894fd4387463792d:coverage_tests |
-| Pipeline run | 7906d1edd1a543c7894fd4387463792d |
+| Tool | coverage_tests 0.7.1 |
+| Run ID | 514ec66fc2624d32b23c563ae81bb010:coverage_tests |
+| Pipeline run | 514ec66fc2624d32b23c563ae81bb010 |
 | Status | PASS |
 | Exit code | 0 |
-| Started | 02 November 2026, 06:48:32 UTC |
-| Finished | 02 November 2026, 06:48:55 UTC |
-| Duration | 23.0 s |
-| Previous duration | 13.166s |
+| Started | 04 November 2026, 07:55:26 UTC |
+| Finished | 04 November 2026, 07:55:35 UTC |
+| Duration | 9.9 s |
+| Previous duration | 4.909s |
 
 ## What was checked
 
-**Result: PASS** — 2 tests from 1 test file across 5 measured source files; Python coverage 100.0% (minimum 90.0%); 0 findings.
+**Result: PASS** — 2 tests from 1 test file across 4 measured source files; Python coverage 100.0% (minimum 90.0%); 0 findings.
 
 | Severity | Count |
 |---|---:|
@@ -37,9 +37,9 @@
 | Skipped | 0 |
 | Expected failures (xfail) | 0 |
 | Unexpected passes (xpass) | 0 |
-| Duration (s) | 3.008 |
+| Duration (s) | 4.057 |
 | Python test files | 1 |
-| JavaScript test files | 1 |
+| JavaScript test files | 0 |
 | JavaScript failed tests | 0 |
 
 ### Coverage
@@ -47,7 +47,6 @@
 | Language | Coverage | Measurement | Files |
 |---|---:|---|---:|
 | Python | 100.0% | Lines | 4 |
-| JavaScript | 100.0% | Lines | 1 |
 
 The Python gate includes branches when branch measurement is enabled. JavaScript measures executable lines.
 
@@ -56,7 +55,7 @@ The Python gate includes branches when branch measurement is enabled. JavaScript
 | Metric | Current | Previous | Delta |
 |---|---:|---:|---:|
 | Findings | 0 | 0 | 0 |
-| Previous duration | 13.166s | | |
+| Previous duration | 4.909s | | |
 
 | Finding change | Count |
 |---|---:|
@@ -85,13 +84,13 @@ The Python gate includes branches when branch measurement is enabled. JavaScript
 ### Invocation
 
 ~~~~shell
-/Users/joaolopes/Exactus/bin/release/exactus_macos_arm64/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=55960 --orchestrator-control-token=[redacted] --orchestrator-worker-port=55938 --orchestrator-worker-token=[redacted] '--orchestrator-call={"args":[],"kwargs":{"request":{"identifier":"coverage_tests","module":"exactus.tools.coverage_tests.main","output":"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS","arguments":[],"run_id":"7906d1edd1a543c7894fd4387463792d:coverage_tests","pipeline_run_id":"7906d1edd1a543c7894fd4387463792d","project_root":"/Users/joaolopes/Exactus/exactus/tests/standalone/project"}}}'
+/Users/joaolopes/Exactus/bin/release/exactus_macos_arm64/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=54832 --orchestrator-control-token=[redacted] --orchestrator-worker-port=54811 --orchestrator-worker-token=[redacted] '--orchestrator-call={"args":[],"kwargs":{"request":{"identifier":"coverage_tests","module":"exactus.tools.coverage_tests.main","output":"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS","arguments":[],"explicit_arguments":[],"run_id":"514ec66fc2624d32b23c563ae81bb010:coverage_tests","pipeline_run_id":"514ec66fc2624d32b23c563ae81bb010","project_root":"/Users/joaolopes/Exactus/exactus/tests/standalone/project"}}}'
 ~~~~
 
 | Property | Value |
 |---|---|
 | Working directory | [/Users/joaolopes/Exactus/exactus/tests/standalone/project](../..) |
-| Arguments | `exactus.tools.common.tool_worker` `ExactusTool` `--orchestrator-control-port=55960` `--orchestrator-control-token=[redacted]` `--orchestrator-worker-port=55938` `--orchestrator-worker-token=[redacted]` `--orchestrator-call={"args":[],"kwargs":{"request":{"identifier":"coverage_tests","module":"exactus.tools.coverage_tests.main","output":"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS","arguments":[],"run_id":"7906d1edd1a543c7894fd4387463792d:coverage_tests","pipeline_run_id":"7906d1edd1a543c7894fd4387463792d","project_root":"/Users/joaolopes/Exactus/exactus/tests/standalone/project"}}}` |
+| Arguments | `exactus.tools.common.tool_worker` `ExactusTool` `--orchestrator-control-port=54832` `--orchestrator-control-token=[redacted]` `--orchestrator-worker-port=54811` `--orchestrator-worker-token=[redacted]` `--orchestrator-call={"args":[],"kwargs":{"request":{"identifier":"coverage_tests","module":"exactus.tools.coverage_tests.main","output":"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS","arguments":[],"explicit_arguments":[],"run_id":"514ec66fc2624d32b23c563ae81bb010:coverage_tests","pipeline_run_id":"514ec66fc2624d32b23c563ae81bb010","project_root":"/Users/joaolopes/Exactus/exactus/tests/standalone/project"}}}` |
 
 ### Environment
 
@@ -105,20 +104,21 @@ The Python gate includes branches when branch measurement is enabled. JavaScript
 | Variable | Value |
 | --- | --- |
 | EXACTUS_ORCHESTRATED | 1 |
-| EXACTUS_PIPELINE_RUN_ID | 7906d1edd1a543c7894fd4387463792d |
+| EXACTUS_PIPELINE_RUN_ID | 514ec66fc2624d32b23c563ae81bb010 |
 | EXACTUS_REGISTRY | [/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/.runtime/runs.db](../.runtime/runs.db) |
 | EXACTUS_ROOT | [/Users/joaolopes/Exactus/exactus/tests/standalone/project](../..) |
-| EXACTUS_RUN_ID | 7906d1edd1a543c7894fd4387463792d:coverage_tests |
+| EXACTUS_RUN_ID | 514ec66fc2624d32b23c563ae81bb010:coverage_tests |
 | EXACTUS_TOOL | coverage_tests |
-| LANG | C.UTF-8 |
+| LANG | en_US.UTF-8 |
+| TERM | xterm-256color |
 
 ## Gate
 
-> **Gate: PASS** — 2 of 2 tests passed; 1 JavaScript test file passed; Total 100.0% meets the 90.0% minimum; every file meets 80.0%
+> **Gate: PASS** — 2 of 2 tests passed; Total 100.0% meets the 90.0% minimum; every file meets 80.0%
 
 | Part | Status | Reason |
 |---|---|---|
-| Tests | PASS | 2 of 2 tests passed; 1 JavaScript test file passed |
+| Tests | PASS | 2 of 2 tests passed |
 | Coverage | PASS | Total 100.0% meets the 90.0% minimum; every file meets 80.0% |
 
 ### Coverage requirements
@@ -126,8 +126,7 @@ The Python gate includes branches when branch measurement is enabled. JavaScript
 | Requirement | Minimum | Measured | Result |
 | --- | --- | --- | --- |
 | Total coverage | 90.0% | 100.0% | PASS |
-| JavaScript total coverage | 90.0% | 100.0% | PASS |
-| Per-file minimum | 80.0% | 0 of 5 files below | PASS |
+| Per-file minimum | 80.0% | 0 of 4 files below | PASS |
 | Untested meaningful sources | >= TEST-2 | 0 actionable, 0 analysis errors | PASS |
 | Evidence check | complete, unchanged evidence | valid | PASS |
 
@@ -145,17 +144,16 @@ Every coverage gate is met.
 
 | Artifact | Path | Bytes |
 |---|---|---:|
-| @activity.json | [ARTIFACTS/@activity.json](ARTIFACTS/%40activity.json) | 2288 |
-| completion.json | [ARTIFACTS/COVERAGE/completion.json](ARTIFACTS/COVERAGE/completion.json) | 1505 |
-| coverage_raw_js.json | [ARTIFACTS/COVERAGE/coverage_raw_js.json](ARTIFACTS/COVERAGE/coverage_raw_js.json) | 688 |
+| @activity.json | [ARTIFACTS/@activity.json](ARTIFACTS/%40activity.json) | 2158 |
+| completion.json | [ARTIFACTS/COVERAGE/completion.json](ARTIFACTS/COVERAGE/completion.json) | 1526 |
 | coverage_raw_py.json | [ARTIFACTS/COVERAGE/coverage_raw_py.json](ARTIFACTS/COVERAGE/coverage_raw_py.json) | 8328 |
 | import_graph.json | [ARTIFACTS/COVERAGE/import_graph.json](ARTIFACTS/COVERAGE/import_graph.json) | 2789 |
-| meaningful.json | [ARTIFACTS/COVERAGE/meaningful.json](ARTIFACTS/COVERAGE/meaningful.json) | 7277 |
-| test-costs.json | [ARTIFACTS/COVERAGE/test-costs.json](ARTIFACTS/COVERAGE/test-costs.json) | 117 |
+| meaningful.json | [ARTIFACTS/COVERAGE/meaningful.json](ARTIFACTS/COVERAGE/meaningful.json) | 7276 |
+| test-costs.json | [ARTIFACTS/COVERAGE/test-costs.json](ARTIFACTS/COVERAGE/test-costs.json) | 171 |
 | validation.json | [ARTIFACTS/COVERAGE/validation.json](ARTIFACTS/COVERAGE/validation.json) | 234 |
 | stderr.log | [ARTIFACTS/stderr.log](ARTIFACTS/stderr.log) | 0 |
 | stdout.log | [ARTIFACTS/stdout.log](ARTIFACTS/stdout.log) | 0 |
-| steps.txt | [ARTIFACTS/steps.txt](ARTIFACTS/steps.txt) | 6652 |
+| steps.txt | [ARTIFACTS/steps.txt](ARTIFACTS/steps.txt) | 6773 |
 
 ## Test groups
 
@@ -174,4 +172,4 @@ One report per group of Python test files.
 
 ---
 
-Exactus · coverage_tests 0.6.1 · Run 7906d1edd1a543c7894fd4387463792d:coverage_tests · Result PASS · Duration 23.0 s
+Exactus · coverage_tests 0.7.1 · Run 514ec66fc2624d32b23c563ae81bb010:coverage_tests · Result PASS · Duration 9.9 s

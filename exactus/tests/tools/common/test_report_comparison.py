@@ -218,10 +218,14 @@ def test_baseline_survives_cleanup_and_reaches_worker(tmp_path: Path) -> None:
     rmtree(path=output)
     script: str = dedent(
         text=(
-            "    import json,sys\n    from pathlib import Path\n    from exact"
-            "us.tools.common.report_comparison import apply\n    payload={'fin"
-            "dings': []}\n    apply(payload=payload,path=Path(sys.argv[1]))\n "
-            "   sys.stdout.write(json.dumps(payload['comparison']))\n    "
+            """\
+    import json,sys
+    from pathlib import Path
+    from exactus.tools.common.report_comparison import apply
+    payload={'findings': []}
+    apply(payload=payload,path=Path(sys.argv[1]))
+    sys.stdout.write(json.dumps(payload['comparison']))
+    """
         ),
     )
     for name in ("result.json", "README.json"):

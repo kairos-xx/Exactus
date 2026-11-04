@@ -947,7 +947,10 @@ def _line_spans_from_offsets(
         (
             index + 1
             for index, character in enumerate(iterable=text)
-            if character == "\n"
+            if character
+            == """\
+
+"""
         ),
     )
     result: dict[int, list[tuple[int, int]]] = {}
@@ -1945,7 +1948,11 @@ def _comment_spans(*, line: str, suffix: str) -> tuple[tuple[int, int], ...]:
         Half-open column ranges that may be rewritten.
 
     """
-    end: int = len(line.rstrip("\r\n"))
+    end: int = len(
+        line.rstrip("""\
+\r
+"""),
+    )
     if not end:
         return ()
     if suffix in Constants.prose or suffix in Constants.data:
@@ -3253,7 +3260,11 @@ def _check_collisions(
     ):
         problems.append(f"{root_target} already exists")
     if problems:
-        msg: str = "rename would collide:\n  " + "\n  ".join(problems)
+        msg: str = """\
+rename would collide:
+  """ + """\
+
+  """.join(problems)
         raise RenameError(msg)
 
 
@@ -3961,9 +3972,10 @@ class _Transaction:
         for schema_edit in self.plan.sqlite_schema_edits:
             shown: Path = schema_edit.database.relative_to(self.plan.root)
             _ = stdout.write(
-                f"{_paint(code='36', text='sqlite-schema:')} {shown} {
-                    schema_edit.kind
-                } {schema_edit.old!r} -> {schema_edit.new!r}\n",
+                f"""\
+{_paint(code="36", text="sqlite-schema:")} {shown} {schema_edit.kind} \
+{schema_edit.old!r} -> {schema_edit.new!r}
+""",
             )
 
     def rename_paths(self) -> None:
@@ -4062,19 +4074,18 @@ def _report_github(*, plan: Plan) -> None:
     if plan.remote is not None:
         change: RemoteRename = plan.remote
         _ = stdout.write(
-            f"{_paint(code='35', text='github: ')} {change.owner}/{
-                change.old
-            } -> {change.owner}/{change.new} (remote {change.remote!r} -> {
-                change.new_url
-            })\n",
+            f"""\
+{_paint(code="35", text="github: ")} {change.owner}/{change.old} -> \
+{change.owner}/{change.new} (remote {change.remote!r} -> {change.new_url})
+""",
         )
     elif plan.candidate is not None:
         found: RemoteRename = plan.candidate
         _ = stdout.write(
-            f"{_paint(code='35', text='github: ')} found {found.owner}/{
-                found.old
-            }; you will be asked whether to rename "
-            f"it to {found.owner}/{found.new}\n",
+            f"""\
+{_paint(code="35", text="github: ")} found {found.owner}/{found.old}; you \
+will be asked whether to rename it to {found.owner}/{found.new}
+""",
         )
 
 
@@ -4089,9 +4100,10 @@ def _report_rewrites(*, plan: Plan, diff: bool) -> None:
     for edit in plan.edits:
         shown: Path = edit.path.relative_to(plan.root)
         _ = stdout.write(
-            f"{_paint(code='32', text='rewrite:')} {shown} {
-                _paint(code='2', text=f'({edit.matches})')
-            }\n",
+            f"""\
+{_paint(code="32", text="rewrite:")} {shown} \
+{_paint(code="2", text=f"({edit.matches})")}
+""",
         )
         if diff:
             stdout.writelines(
@@ -4105,11 +4117,11 @@ def _report_rewrites(*, plan: Plan, diff: bool) -> None:
     for sqlite_edit in plan.sqlite_edits:
         shown_db: Path = sqlite_edit.database.relative_to(plan.root)
         _ = stdout.write(
-            f"{_paint(code='32', text='sqlite: ')} {shown_db} {
-                sqlite_edit.table
-            }.{sqlite_edit.column}: {sqlite_edit.before!r} -> {
-                sqlite_edit.after!r
-            }\n",
+            f"""\
+{_paint(code="32", text="sqlite: ")} {shown_db} \
+{sqlite_edit.table}.{sqlite_edit.column}: {sqlite_edit.before!r} -> \
+{sqlite_edit.after!r}
+""",
         )
 
 
@@ -4122,15 +4134,16 @@ def _report_renames(*, plan: Plan) -> None:
     """
     for source, destination in plan.renames:
         _ = stdout.write(
-            f"{_paint(code='36', text='rename: ')} {
-                source.relative_to(plan.root)
-            } -> {destination.name}\n",
+            f"""\
+{_paint(code="36", text="rename: ")} {source.relative_to(plan.root)} -> \
+{destination.name}
+""",
         )
     if plan.root_target is not None:
         _ = stdout.write(
-            f"{_paint(code='36', text='rename: ')} {plan.root} -> {
-                plan.root_target
-            }\n",
+            f"""\
+{_paint(code="36", text="rename: ")} {plan.root} -> {plan.root_target}
+""",
         )
 
 
@@ -4143,23 +4156,25 @@ def _report_findings(*, plan: Plan) -> None:
     """
     for path, reason in plan.skipped:
         _ = stdout.write(
-            f"{_paint(code='33', text=f'skipped ({reason}):')} {
-                path.relative_to(plan.root)
-            }\n",
+            f"""\
+{_paint(code="33", text=f"skipped ({reason}):")} \
+{path.relative_to(plan.root)}
+""",
         )
     for symbol, definitions, references in plan.web_links:
         _ = stdout.write(
-            f"{_paint(code='36', text='web-link:')} {symbol!r} ({
-                definitions
-            } HTML definition file(s), "
-            f"{references} CSS/JS reference file(s))\n",
+            f"""\
+{_paint(code="36", text="web-link:")} {symbol!r} ({definitions} HTML \
+definition file(s), {references} CSS/JS reference file(s))
+""",
         )
     for reference in plan.sql_references:
         shown_sql: Path = reference.path.relative_to(plan.root)
         _ = stdout.write(
-            f"{_paint(code='36', text='sql-ref:')} {shown_sql}:{
-                reference.line
-            } {reference.kind} {reference.symbol!r}\n",
+            f"""\
+{_paint(code="36", text="sql-ref:")} {shown_sql}:{reference.line} \
+{reference.kind} {reference.symbol!r}
+""",
         )
 
 
@@ -4172,14 +4187,17 @@ def _report_warnings(*, plan: Plan) -> None:
     """
     for path, number, text, reason in plan.guarded:
         _ = stderr.write(
-            f"{_paint(code='33', text='guarded:')} {reason} at {
-                path.relative_to(plan.root)
-            }:{number}: {text}\n",
+            f"""\
+{_paint(code="33", text="guarded:")} {reason} at \
+{path.relative_to(plan.root)}:{number}: {text}
+""",
         )
     for path, number, text in plan.leftovers:
         _ = stderr.write(
-            f"{_paint(code='33', text='warning:')} unrecognized spelling at "
-            f"{path.relative_to(plan.root)}:{number}: {text}\n",
+            f"""\
+{_paint(code="33", text="warning:")} unrecognized spelling at \
+{path.relative_to(plan.root)}:{number}: {text}
+""",
         )
 
 
@@ -4200,19 +4218,19 @@ def _report(*, plan: Plan, options: Options, diff: bool, quiet: bool) -> None:
         _report_github(plan=plan)
     _report_warnings(plan=plan)
     _ = stdout.write(
-        f"{len(plan.edits)} file(s) rewritten, "
-        f"{len(plan.sqlite_edits)} SQLite cell(s) rewritten, {
-            len(plan.sqlite_schema_edits)
-        } SQLite schema rename(s), {len(plan.renames)} renamed, {
-            len(plan.skipped)
-        } skipped, {len(plan.guarded)} guarded, {
-            len(plan.leftovers)
-        } unrecognized -> {options.new_name}\n",
+        f"""\
+{len(plan.edits)} file(s) rewritten, {len(plan.sqlite_edits)} SQLite cell(s) \
+rewritten, {len(plan.sqlite_schema_edits)} SQLite schema rename(s), \
+{len(plan.renames)} renamed, {len(plan.skipped)} skipped, {len(plan.guarded)} \
+guarded, {len(plan.leftovers)} unrecognized -> {options.new_name}
+""",
     )
     module: str = _styled(words=_words(name=options.new_name), style="snake")
     if not _identifier(text=module):
         _ = stderr.write(
-            f"warning: {module!r} is not a valid Python module name\n",
+            f"""\
+warning: {module!r} is not a valid Python module name
+""",
         )
 
 
@@ -4228,35 +4246,37 @@ def _parser() -> ArgumentParser:
         description=(
             dedent(
                 text=(
-                    "    Rename a project: its root directory, the files a"
-                    "nd folders\n    named after it, and its name inside t"
-                    "ext files, restyled to\n    match how each occurrence"
-                    " was written (snake_case, kebab-case,\n    PascalCase"
-                    ", camelCase, SCREAMING_CASE, Title Case...).\n    Opt"
-                    "ionally renames the GitHub repository too.\n    \n   "
-                    " Every change is planned first, shown, confirmed, and"
-                    " applied\n    as one transaction that is rolled back "
-                    "on failure. Start with\n    --dry-run --diff."
+                    """\
+    Rename a project: its root directory, the files and folders
+    named after it, and its name inside text files, restyled to
+    match how each occurrence was written (snake_case, kebab-case,
+    PascalCase, camelCase, SCREAMING_CASE, Title Case...).
+    Optionally renames the GitHub repository too.
+
+    Every change is planned first, shown, confirmed, and applied
+    as one transaction that is rolled back on failure. Start with
+    --dry-run --diff."""
                 ),
             )
         ),
         epilog=(
             dedent(
                 text=(
-                    "    examples:\n      rename_project.py --name foo_bar"
-                    " --dry-run --diff\n          preview every change wit"
-                    "hout touching anything\n      rename_project.py --nam"
-                    "e foo_bar --yes\n          apply without the confirma"
-                    "tion question\n      rename_project.py --name foo_bar"
-                    " --from exactus-tools --abbrev AT\n          also ren"
-                    "ame an earlier name and its abbreviation\n      renam"
-                    "e_project.py --name foo_bar --github\n          also "
-                    "rename the GitHub repository (no question asked)\n   "
-                    "   rename_project.py --name foo_bar --exclude '*.lock"
-                    "' --boundary loose\n          skip lockfiles; rename "
-                    "inside identifiers too\n    \n    exit status: 0 succ"
-                    "ess or dry run; 1 refused, declined, or rolled back."
-                    "\n    full guide: README_RENAME_PROJECT.md"
+                    """\
+    examples:
+      rename_project.py --name foo_bar --dry-run --diff
+          preview every change without touching anything
+      rename_project.py --name foo_bar --yes
+          apply without the confirmation question
+      rename_project.py --name foo_bar --from exactus-tools --abbrev AT
+          also rename an earlier name and its abbreviation
+      rename_project.py --name foo_bar --github
+          also rename the GitHub repository (no question asked)
+      rename_project.py --name foo_bar --exclude '*.lock' --boundary loose
+          skip lockfiles; rename inside identifiers too
+
+    exit status: 0 success or dry run; 1 refused, declined, or rolled back.
+    full guide: README_RENAME_PROJECT.md"""
                 ),
             )
         ),
@@ -4518,9 +4538,14 @@ def ask(
 
     """
     mark: str = _paint(code="1;36", text="?")
-    _ = stdout.write(f"\n{mark} {_paint(code='1', text=question)}\n")
+    _ = stdout.write(f"""\
+
+{mark} {_paint(code="1", text=question)}
+""")
     for detail in details:
-        _ = stdout.write(f"  {_paint(code='2', text=detail)}\n")
+        _ = stdout.write(f"""\
+  {_paint(code="2", text=detail)}
+""")
     choices: str = "Y/n" if default else "y/N"
     hint: str = _paint(code="2", text=f"[{choices}]")
     for _attempt in range(Constants.ask_attempts):
@@ -4537,7 +4562,9 @@ def ask(
         if reply in {"n", "no"}:
             return False
         _ = stdout.write(
-            f"  {_paint(code='33', text='Please answer y or n.')}\n",
+            f"""\
+  {_paint(code="33", text="Please answer y or n.")}
+""",
         )
     return False
 
@@ -4588,13 +4615,11 @@ def _offer_github(*, plan: Plan) -> None:
         return
     if not stdin.isatty():
         _ = stdout.write(
-            f"{_paint(code='33', text='note:')}"
-            f" GitHub repository "
-            f"{change.owner}"
-            f"/"
-            f"{change.old}"
-            f" left unchanged (pass --github to rename it non-interact"
-            f"ively)\n",
+            f"""\
+{_paint(code="33", text="note:")} GitHub repository \
+{change.owner}/{change.old} left unchanged (pass --github to rename it \
+non-interactively)
+""",
         )
         return
     agreed: bool = ask(
@@ -4643,18 +4668,24 @@ def main(*, arguments: Sequence[str] | None = None) -> int:
             quiet=cast(typ="bool", val=args.quiet),
         )
         if cast(typ="bool", val=args.dry_run):
-            _ = stdout.write("dry run: nothing was changed\n")
+            _ = stdout.write("""\
+dry run: nothing was changed
+""")
             return 0
         if not _confirmed(
             assume_yes=cast(typ="bool", val=args.yes),
             plan=plan,
         ):
-            _ = stdout.write("aborted: nothing was changed\n")
+            _ = stdout.write("""\
+aborted: nothing was changed
+""")
             return 1
         _offer_github(plan=plan)
         apply_plan(plan=plan)
     except RenameError as exc:
-        _ = stderr.write(f"{_paint(code='1;31', text='error:')} {exc}\n")
+        _ = stderr.write(f"""\
+{_paint(code="1;31", text="error:")} {exc}
+""")
         return 1
     return 0
 

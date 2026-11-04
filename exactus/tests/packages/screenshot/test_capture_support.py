@@ -65,10 +65,12 @@ class Constants:
     max_distinct: Final[float] = 0.95
     page: Final[str] = dedent(
         text=(
-            '    <!doctype html><html><body style="margin:0">\n    <div id="t"'
-            ' style="height:100px;overflow:auto;width:200px">\n    <div style='
-            '"height:1200px;background:linear-gradient(red,blue)">\n    long</'
-            'div></div>\n    <div style="height:5000px"></div></body></html>'
+            """\
+    <!doctype html><html><body style="margin:0">
+    <div id="t" style="height:100px;overflow:auto;width:200px">
+    <div style="height:1200px;background:linear-gradient(red,blue)">
+    long</div></div>
+    <div style="height:5000px"></div></body></html>"""
         ),
     )
 

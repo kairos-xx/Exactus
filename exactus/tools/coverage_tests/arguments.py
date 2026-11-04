@@ -125,6 +125,14 @@ def create_parser() -> ArgumentParser:
         description="Run combined coverage for recursively discovered tests.",
     )
     add_common_arguments(parser=parser, default_output="COVERAGE_TESTS")
+    parser.add_argument(
+        "--incremental",
+        action="store_true",
+        help=(
+            "Reuse passing Python coverage shards "
+            "whose transitive inputs match; full runs remain the default."
+        ),
+    )
     _ = consume(
         value=parser.add_argument(
             "--source-root",
@@ -135,6 +143,16 @@ def create_parser() -> ArgumentParser:
     _ = consume(value=parser.add_argument("--no-branch", action="store_true"))
     _ = consume(
         value=parser.add_argument("--no-js-coverage", action="store_true"),
+    )
+    parser.add_argument(
+        "--no-collect-cache",
+        action="store_true",
+        help="Always collect pytest nodes in fresh subprocesses",
+    )
+    parser.add_argument(
+        "--fail-first",
+        action="store_true",
+        help="Schedule previously failed files before other tests",
     )
     _ = consume(value=parser.add_argument("--jobs", type=_positive))
     _ = consume(

@@ -197,7 +197,7 @@ def test_menu_renders_lifecycle_and_action_availability(
     expect_equal(
         actual=_item(application=application, name="_public").title,
         expected=f"Public tunnel: {
-            expected_public.get(phase, 'Not available')
+            expected_public.get(phase, "Not available")
         }",
     )
     if phase == "running":

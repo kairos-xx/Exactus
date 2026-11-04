@@ -232,6 +232,7 @@ def _with_inputs(*, workspace: Workspace, inputs: dict[str, str]) -> Workspace:
         A workspace whose actions carry the answers.
 
     """
+    flows_tuple: tuple[Flow, ...] = workspace.flows
     flows: list[Flow] = [
         replace(
             flow,
@@ -251,7 +252,7 @@ def _with_inputs(*, workspace: Workspace, inputs: dict[str, str]) -> Workspace:
                 for event in flow.events
             ),
         )
-        for flow in workspace.flows
+        for flow in flows_tuple
     ]
     return replace(workspace, flows=tuple(flows))
 

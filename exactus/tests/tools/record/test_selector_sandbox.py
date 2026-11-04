@@ -67,9 +67,12 @@ class Constants:
     parallel_budget_s: Final[float] = 0.5
     html: Final[str] = dedent(
         text=(
-            '    \n    <p class="card" id="c1">one</p><p class="card" id="c2">'
-            'two</p>\n    <p class="card" id="c3">three</p>\n    <script>windo'
-            "w.appState = 1;</script>\n    "
+            """\
+
+    <p class="card" id="c1">one</p><p class="card" id="c2">two</p>
+    <p class="card" id="c3">three</p>
+    <script>window.appState = 1;</script>
+    """
         ),
     )
     cards: Final[SelectorDef] = SelectorDef(

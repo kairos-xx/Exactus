@@ -100,7 +100,8 @@ from json import dump, load
 from json import loads as json_loads
 from operator import eq, ge, gt, le, lt, ne
 from pathlib import Path
-from re import Match, fullmatch, search
+from re import Match, Pattern, fullmatch, search
+from re import compile as compile_regex
 from shutil import which
 from subprocess import TimeoutExpired, run
 from sys import executable, version, version_info
@@ -129,6 +130,7 @@ from exactus.tools.common.cli import (
     context_lines,
     is_reports_tree,
 )
+from exactus.tools.common.config import ConfigResolver
 from exactus.tools.common.runtime import (
     Progress,
     publish_progress,
@@ -956,7 +958,9 @@ class CapabilityIndex:
         }
         with path.open(mode="w", encoding="utf-8") as file:
             dump(obj=payload, fp=file, ensure_ascii=False, indent=2)
-            _ = file.write("\n")
+            _ = file.write("""\
+
+""")
 
 
 @dataclass(slots=True)
@@ -2593,12 +2597,14 @@ class BareImportExactusor:
                         (use.line, use.column, use.original, replacement),
                     )
                 suggestion = (
-                    f"from {plan.module} import {', '.join(import_parts)}"
+                    f"from {plan.module} import {", ".join(import_parts)}"
                 )
                 if plan.value_uses:
                     kept: str = self.preserved_import(plan=plan)
                     indent: str = " " * (plan.column - 1)
-                    suggestion = f"{kept}\n{indent}{suggestion}"
+                    suggestion = f"""\
+{kept}
+{indent}{suggestion}"""
             findings.append(
                 BareImportFinding(
                     path=plan.path,
@@ -2809,12 +2815,52 @@ class TypeHintExactusor:
     Attributes:
         RECEIVERS: Method receiver names exempt from annotation findings.
         ENUM_BASES: Enum base classes whose members skip annotations.
+        TYPING_DECLARATIONS: Non-TypeVar typing factories whose call
+            bindings declare types rather than variables.
+        BUILTIN_TYPES: Builtin class names treated as type references.
+        type_reference: Pattern matching quoted forward references.
 
     """
 
     RECEIVERS: frozenset[str] = frozenset({"self", "cls"})
     ENUM_BASES: frozenset[str] = frozenset(
         {"Enum", "IntEnum", "Flag", "IntFlag", "StrEnum", "ReprEnum"},
+    )
+    TYPING_DECLARATIONS: frozenset[str] = frozenset(
+        {
+            "typing.NewType",
+            "typing.ParamSpec",
+            "typing.TypeAliasType",
+            "typing.TypeVarTuple",
+            "typing_extensions.NewType",
+            "typing_extensions.ParamSpec",
+            "typing_extensions.TypeAliasType",
+            "typing_extensions.TypeVarTuple",
+        },
+    )
+    BUILTIN_TYPES: frozenset[str] = frozenset(
+        {
+            "bool",
+            "bytearray",
+            "bytes",
+            "complex",
+            "dict",
+            "float",
+            "frozenset",
+            "int",
+            "list",
+            "memoryview",
+            "object",
+            "range",
+            "set",
+            "slice",
+            "str",
+            "tuple",
+            "type",
+        },
+    )
+    type_reference: Pattern[str] = compile_regex(
+        pattern=r"[A-Za-z_]\w*(?:\.[A-Za-z_]\w*)*",
     )
 
     def __init__(
@@ -3011,8 +3057,54 @@ class TypeHintExactusor:
         ):
             class_state.annotations |= {target.attr}
 
-    @staticmethod
-    def typevar_declaration(*, node: Assign, scope: TypeScope) -> bool:
+    @classmethod
+    def alias_declaration(
+        cls: type[Self],
+        *,
+        node: Assign,
+        scope: TypeScope,
+    ) -> bool:
+        """Recognize implicit type aliases without exempting variables.
+
+        A ``name = <type expression>`` binding in module or class scope
+        declares an alias: the assigned value is the type itself, so
+        requiring an annotation would rewrite the alias into a
+        class-instance variable. Bindings in function scopes stay
+        ordinary variables; ``type name = ...`` statements and
+        ``name: TypeAlias`` annotations never reach this check.
+
+        Args:
+            node: Assignment being checked.
+            scope: Lexical scope holding the binding.
+
+        Returns:
+            Whether a single name binds a type expression or a typing
+            factory call.
+
+        """
+        if (
+            len(node.targets) != 1
+            or not isinstance(node.targets[0], Name)
+            or scope.kind not in {"module", "class"}
+        ):
+            return False
+        if isinstance(node.value, Call):
+            return (
+                cls._resolve_typing(
+                    name=annotation_name(node=node.value.func),
+                    scope=scope,
+                )
+                in cls.TYPING_DECLARATIONS
+            )
+        return cls._type_expression(node=node.value, scope=scope, nested=False)
+
+    @classmethod
+    def typevar_declaration(
+        cls,
+        *,
+        node: Assign,
+        scope: TypeScope,
+    ) -> bool:
         """Recognize TypeVar factories without exempting ordinary variables.
 
         Args:
@@ -3030,22 +3122,10 @@ class TypeHintExactusor:
         ):
             return False
         name: str | None = annotation_name(node=node.value.func)
-        if name is None:
-            return False
-        root, _, suffix = name.partition(".")
-        current: TypeScope | None = scope
-        while current is not None:
-            imported: str | None = current.imports.get(root)
-            if imported is not None:
-                qualified: str = imported + (f".{suffix}" if suffix else "")
-                return qualified in {
-                    "typing.TypeVar",
-                    "typing_extensions.TypeVar",
-                }
-            if root in current.bindings:
-                return False
-            current = current.parent
-        return False
+        return cls._resolve_typing(name=name, scope=scope) in {
+            "typing.TypeVar",
+            "typing_extensions.TypeVar",
+        }
 
     @staticmethod
     def collect_walrus_bindings(*, body: list[stmt]) -> set[str]:
@@ -3244,9 +3324,10 @@ class TypeHintExactusor:
 
         """
         if isinstance(node, Assign):
-            if not self.typevar_declaration(node=node, scope=scope) and (
-                self.strict or is_name_assign(node=node)
-            ):
+            if not (
+                self.typevar_declaration(node=node, scope=scope)
+                or self.alias_declaration(node=node, scope=scope)
+            ) and (self.strict or is_name_assign(node=node)):
                 target: expr
                 for target in node.targets:
                     if not (
@@ -3889,6 +3970,104 @@ class TypeHintExactusor:
         )
 
     @classmethod
+    def _type_name(cls: type[Self], *, name: str, scope: TypeScope) -> bool:
+        """Report whether a bare name reads as a type reference.
+
+        Args:
+            name: Identifier used as a type expression.
+            scope: Lexical scope carrying local typing imports.
+
+        Returns:
+            Whether the name is a builtin type, a type-styled
+            identifier, or an imported typing symbol.
+
+        """
+        return (
+            name in cls.BUILTIN_TYPES
+            or (name[:1].isupper() and (not name.isupper() or len(name) == 1))
+            or cls._resolve_typing(name=name, scope=scope) is not None
+        )
+
+    @classmethod
+    def _type_head(cls: type[Self], *, node: expr, scope: TypeScope) -> bool:
+        """Report whether an expression heads a generic type form.
+
+        Args:
+            node: Subscripted object or attribute type reference.
+            scope: Lexical scope carrying local typing imports.
+
+        Returns:
+            Whether the expression names a type container.
+
+        """
+        if isinstance(node, Name):
+            return cls._type_name(name=node.id, scope=scope)
+        if isinstance(node, Attribute):
+            return (
+                node.attr[:1].isupper() and not node.attr.isupper()
+            ) or cls._resolve_typing(
+                name=annotation_name(node=node),
+                scope=scope,
+            ) is not None
+        return False
+
+    @classmethod
+    def _type_expression(
+        cls: type[Self],
+        *,
+        node: expr,
+        scope: TypeScope,
+        nested: bool,
+    ) -> bool:
+        """Report whether an expression is a syntactically valid type form.
+
+        Args:
+            node: Expression under the assignment target.
+            scope: Lexical scope carrying local typing imports.
+            nested: Whether the expression sits inside a union or tuple
+                where ``None``, ``...`` and quoted references remain
+                type forms.
+
+        Returns:
+            Whether the expression declares a type rather than a value.
+
+        """
+        if isinstance(node, Name):
+            return cls._type_name(name=node.id, scope=scope)
+        if isinstance(node, Attribute):
+            return cls._type_head(node=node, scope=scope)
+        if isinstance(node, Subscript):
+            return cls._type_head(node=node.value, scope=scope)
+        if isinstance(node, BinOp) and isinstance(node.op, BitOr):
+            return cls._type_expression(
+                node=node.left,
+                scope=scope,
+                nested=True,
+            ) and cls._type_expression(
+                node=node.right,
+                scope=scope,
+                nested=True,
+            )
+        if isinstance(node, Tuple):
+            return bool(node.elts) and all(
+                cls._type_expression(node=element, scope=scope, nested=True)
+                for element in node.elts
+            )
+        return (
+            nested
+            and isinstance(node, Constant)
+            and (
+                node.value is None
+                or node.value is Ellipsis
+                or (
+                    isinstance(node.value, str)
+                    and cls.type_reference.fullmatch(string=node.value)
+                    is not None
+                )
+            )
+        )
+
+    @classmethod
     def _record_scope_declaration(
         cls: type[Self],
         *,
@@ -3921,6 +4100,32 @@ class TypeHintExactusor:
             annotations.add(node.target.id)
         cls._record_typing_imports(node=node, imports=imports)
         return False
+
+    @staticmethod
+    def _resolve_typing(*, name: str | None, scope: TypeScope) -> str | None:
+        """Resolve a callee to its typing or typing_extensions origin.
+
+        Args:
+            name: Dotted factory name as written in the source.
+            scope: Lexical scope carrying local typing imports.
+
+        Returns:
+            Qualified typing path, or ``None`` when the name is not an
+            imported typing symbol.
+
+        """
+        if name is None:
+            return None
+        root, _, suffix = name.partition(".")
+        current: TypeScope | None = scope
+        while current is not None:
+            imported: str | None = current.imports.get(root)
+            if imported is not None:
+                return imported + (f".{suffix}" if suffix else "")
+            if root in current.bindings:
+                return None
+            current = current.parent
+        return None
 
     @staticmethod
     def _record_typing_imports(*, node: AST, imports: dict[str, str]) -> None:
@@ -7616,12 +7821,7 @@ class CallExactusor:
             frozenset(),
         )
 
-    def is_exempt(
-        self: Self,
-        *,
-        callee_text: str,
-        node: Call,
-    ) -> bool:
+    def is_exempt(self: Self, *, callee_text: str, node: Call) -> bool:
         """Return whether an unresolved call cannot take keyword arguments.
 
         Dynamic ``pytest.mark.*`` factories, methods that are positional-only
@@ -12089,12 +12289,30 @@ def _scan_sources(
         step="checking imports and hints",
         span=(0.3, 0.5),
     )
+    resolver: ConfigResolver = ConfigResolver(root=project.root)
     source_path: Path
     for source_path in source_paths:
+        local: dict[str, JsonValue] = resolver.options(
+            path=source_path,
+            tool="kwargs_typehints",
+        )
+        extra: JsonValue = local.get("allow-bare-import", [])
+        permitted: frozenset[str] = (
+            allowed
+            | frozenset(item for item in extra if isinstance(item, str))
+            if isinstance(extra, list)
+            else allowed
+        )
+        local_strict: bool = resolver.boolean(
+            path=source_path,
+            tool="kwargs_typehints",
+            name="strict",
+            default=strict,
+        )
         source_bare, source_hints, source_checked = _scan_source_lane(
             source_path=source_path,
-            allowed=allowed,
-            strict=strict,
+            allowed=permitted,
+            strict=local_strict,
             progress=lanes,
             tree=(
                 project.by_path[source_path].tree

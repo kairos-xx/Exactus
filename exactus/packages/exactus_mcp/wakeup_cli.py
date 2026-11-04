@@ -529,11 +529,13 @@ def _show_status(*, status: StartupStatus) -> None:
         else str(object=status.process_identifier)
     )
     _ = stdout.write(
-        f"Backend: {status.backend}\n"
-        f"Installed: {'yes' if status.installed else 'no'}\n"
-        f"Loaded: {'yes' if status.loaded else 'no'}\n"
-        f"Running: {'yes' if status.running else 'no'}\n"
-        f"PID: {process_text}\n",
+        f"""\
+Backend: {status.backend}
+Installed: {("yes" if status.installed else "no")}
+Loaded: {("yes" if status.loaded else "no")}
+Running: {("yes" if status.running else "no")}
+PID: {process_text}
+""",
     )
 
 
@@ -628,7 +630,9 @@ def _show_effective_config(*, arguments: Namespace) -> None:
         "keep-service-running": arguments.keep_service_running,
         "service-command": service_command,
     }
-    _ = stdout.write(f"{dumps(obj=payload, indent=2, sort_keys=True)}\n")
+    _ = stdout.write(f"""\
+{dumps(obj=payload, indent=2, sort_keys=True)}
+""")
 
 
 def _execute(*, namespace: Namespace) -> int:
@@ -699,7 +703,9 @@ def main(*, arguments: tuple[str, ...] | None = None) -> int:
     except KeyboardInterrupt:
         return 0
     except (OSError, RuntimeError, TypeError, ValueError) as exc:
-        _ = stderr.write(f"exactus-mcp-wakeup: {exc}\n")
+        _ = stderr.write(f"""\
+exactus-mcp-wakeup: {exc}
+""")
         return 1
     else:
         return result

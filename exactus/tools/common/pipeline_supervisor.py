@@ -191,6 +191,27 @@ class PipelineClaim:
     detail: str
 
 
+@dataclass(frozen=True, slots=True, kw_only=True)
+class PipelineSettlement:
+    """Describe one settled request-batch outcome.
+
+    Attributes:
+        state: New lifecycle state applied to the batch.
+        generation: Applied generation, when available.
+        detail: Observer timeline detail.
+        error: Reset error, when applicable.
+        fingerprint: Effective plan hash persisted with an applied
+            generation, when the reset merged or retargeted the plan.
+
+    """
+
+    state: str
+    generation: int | None
+    detail: str
+    error: str | None = None
+    fingerprint: str | None = None
+
+
 class PipelineCoordinator:
     """Serialize pipeline claims and finalization through SQLite."""
 
@@ -398,6 +419,7 @@ class PipelineCoordinator:
         requests: tuple[PipelineRequest, ...],
         generation: int,
         detail: str,
+        fingerprint: str | None = None,
     ) -> None:
         """Commit a coalesced request batch to a work generation.
 
@@ -405,14 +427,18 @@ class PipelineCoordinator:
             requests: Pending requests included in the generation.
             generation: New shared generation.
             detail: Observer timeline detail.
+            fingerprint: Effective plan hash after a merged or retargeted
+                reset, persisted with the generation when supplied.
 
         """
         self._settle(
             requests=requests,
-            state=Constants.applied,
-            generation=generation,
-            detail=detail,
-            error=None,
+            settlement=PipelineSettlement(
+                state=Constants.applied,
+                generation=generation,
+                detail=detail,
+                fingerprint=fingerprint,
+            ),
         )
 
     def fail_requests(
@@ -430,10 +456,12 @@ class PipelineCoordinator:
         """
         self._settle(
             requests=requests,
-            state=Constants.failed,
-            generation=None,
-            detail="owner could not apply the shared reset",
-            error=error,
+            settlement=PipelineSettlement(
+                state=Constants.failed,
+                generation=None,
+                detail="owner could not apply the shared reset",
+                error=error,
+            ),
         )
 
     def settle_observer(
@@ -741,19 +769,13 @@ class PipelineCoordinator:
         self: Self,
         *,
         requests: tuple[PipelineRequest, ...],
-        state: str,
-        generation: int | None,
-        detail: str,
-        error: str | None,
+        settlement: PipelineSettlement,
     ) -> None:
         """Update one request batch atomically.
 
         Args:
             requests: Requests to update.
-            state: New lifecycle state.
-            generation: Applied generation, when available.
-            detail: Observer timeline detail.
-            error: Reset error, when applicable.
+            settlement: Outcome applied to the batch.
 
         """
         now: str = utc_now()
@@ -769,26 +791,39 @@ class PipelineCoordinator:
                     connection=connection,
                     statement=Queries.settle_request,
                     parameters=(
-                        state,
-                        generation,
+                        settlement.state,
+                        settlement.generation,
                         now,
-                        detail,
-                        error,
+                        settlement.detail,
+                        settlement.error,
                         request.request_id,
                         Constants.pending,
                     ),
                 )
-            if requests and state == Constants.applied:
-                _ = _execute(
-                    connection=connection,
-                    statement=Queries.bump_owner_generation,
-                    parameters=(
-                        generation,
-                        now,
-                        requests[0].pipeline_run_id,
-                        Constants.running,
-                    ),
-                )
+            if requests and settlement.state == Constants.applied:
+                if settlement.fingerprint is None:
+                    _ = _execute(
+                        connection=connection,
+                        statement=Queries.bump_owner_generation,
+                        parameters=(
+                            settlement.generation,
+                            now,
+                            requests[0].pipeline_run_id,
+                            Constants.running,
+                        ),
+                    )
+                else:
+                    _ = _execute(
+                        connection=connection,
+                        statement=Queries.bump_owner_plan,
+                        parameters=(
+                            settlement.generation,
+                            settlement.fingerprint,
+                            now,
+                            requests[0].pipeline_run_id,
+                            Constants.running,
+                        ),
+                    )
             _ = _execute(connection=connection, statement=Queries.commit)
         for request in requests:
             current: PipelineRequest | None = self.get(

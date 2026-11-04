@@ -882,7 +882,7 @@ class StudioHandler(BaseHTTPRequestHandler):
                     ensure_ascii=False,
                     indent=2,
                 ).encode(),
-                download=f"{slug.lstrip('@') or 'flows'}.pwflow.json",
+                download=f"{slug.lstrip("@") or "flows"}.pwflow.json",
             )
         elif route.startswith("/reports/actions/"):
             relative: Path = Path(route.removeprefix("/reports/actions/"))
@@ -1034,7 +1034,11 @@ class StudioHandler(BaseHTTPRequestHandler):
                     "instance_id": self._service.events.instance_id,
                 }
                 self.wfile.write(
-                    f"id: {after}\ndata: {dumps(obj=event)}\n\n".encode(),
+                    f"""\
+id: {after}
+data: {dumps(obj=event)}
+
+""".encode(),
                 )
                 self.wfile.flush()
                 while self._service.running:
@@ -1049,12 +1053,20 @@ class StudioHandler(BaseHTTPRequestHandler):
                         }
                         data: str = dumps(obj=event)
                         self.wfile.write(
-                            f"id: {after}\ndata: {data}\n\n".encode(),
+                            f"""\
+id: {after}
+data: {data}
+
+""".encode(),
                         )
                     else:
                         for after, value in rows:
                             self.wfile.write(
-                                f"id: {after}\ndata: {value}\n\n".encode(),
+                                f"""\
+id: {after}
+data: {value}
+
+""".encode(),
                             )
                     self.wfile.write(b": heartbeat\n\n")
                     self.wfile.flush()

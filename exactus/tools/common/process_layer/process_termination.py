@@ -243,13 +243,18 @@ class ProcessTerminator:
         ) as connection:
             rows: list[tuple[int]] = connection.execute(
                 (
-                    "\n                    SELECT DISTINCT pid\n              "
-                    "      FROM runs\n                    WHERE status = 'RUNN"
-                    "ING'\n                      AND (\n                      "
-                    "    run_id = ?\n                          OR pipeline_run"
-                    "_id = ?\n                      )\n                      A"
-                    "ND pid IS NOT NULL\n                      AND pid > 0\n  "
-                    "              "
+                    """\
+
+                    SELECT DISTINCT pid
+                    FROM runs
+                    WHERE status = 'RUNNING'
+                      AND (
+                          run_id = ?
+                          OR pipeline_run_id = ?
+                      )
+                      AND pid IS NOT NULL
+                      AND pid > 0
+                """
                 ),
                 (identity.run_id, identity.run_id),
             ).fetchall()

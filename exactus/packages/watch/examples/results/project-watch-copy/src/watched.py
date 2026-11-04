@@ -4,4 +4,6 @@
 from sys import stdout
 
 if __name__ == "__main__":
-    _ = stdout.write("watch example fixture\n")
+    _ = stdout.write("""\
+watch example fixture
+""")

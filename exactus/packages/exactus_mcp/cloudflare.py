@@ -222,8 +222,10 @@ class CloudflareBootstrapper:
         self._values[Constants.oauth_secret_key] = oauth_secret
         self._write_env()
         _ = stdout.write(
-            f"Cloudflare bootstrap complete. OAuth "
-            f"login credential was saved securely in {self._env}.\n",
+            f"""\
+Cloudflare bootstrap complete. OAuth login credential was saved securely in \
+{self._env}.
+""",
         )
         stdout.flush()
 
@@ -335,13 +337,17 @@ class CloudflareBootstrapper:
             arguments=("kv", "namespace", "create", "ROUTING"),
         )
         if code != 0:
-            msg: str = f"Unable to create Cloudflare KV namespace:\n{output}"
+            msg: str = f"""\
+Unable to create Cloudflare KV namespace:
+{output}"""
             raise RuntimeError(msg)
         match: Match[str] | None = Constants.kv_id_pattern.search(
             string=output,
         )
         if match is None:
-            msg = f"Wrangler did not return a KV namespace ID:\n{output}"
+            msg = f"""\
+Wrangler did not return a KV namespace ID:
+{output}"""
             raise RuntimeError(msg)
         content: str = self._wrangler.read_text(encoding="utf-8")
         if Constants.kv_placeholder not in content:
@@ -368,7 +374,9 @@ class CloudflareBootstrapper:
         """
         code, output = await self._run_wrangler(arguments=("deploy",))
         if code != 0:
-            msg: str = f"Cloudflare Worker deployment failed:\n{output}"
+            msg: str = f"""\
+Cloudflare Worker deployment failed:
+{output}"""
             raise RuntimeError(msg)
         match: Match[str] | None = Constants.worker_url_pattern.search(
             string=output,
@@ -380,7 +388,9 @@ class CloudflareBootstrapper:
             ).rstrip("/")
             if configured.startswith("https://"):
                 return configured
-            msg = f"Wrangler did not report the Worker URL:\n{output}"
+            msg = f"""\
+Wrangler did not report the Worker URL:
+{output}"""
             raise RuntimeError(msg)
         return match.group(0).rstrip("/")
 
@@ -397,10 +407,14 @@ class CloudflareBootstrapper:
         """
         code, output = await self._run_wrangler(
             arguments=("secret", "put", name),
-            input_text=f"{value}\n",
+            input_text=f"""\
+{value}
+""",
         )
         if code != 0:
-            msg: str = f"Unable to configure Worker secret {name}:\n{output}"
+            msg: str = f"""\
+Unable to configure Worker secret {name}:
+{output}"""
             raise RuntimeError(msg)
 
     async def _run_wrangler(
@@ -457,7 +471,12 @@ class CloudflareBootstrapper:
             },
         )
         content: str = "".join(
-            (f"{key}={value}\n" for key, value in sorted(existing.items())),
+            (
+                f"""\
+{key}={value}
+"""
+                for key, value in sorted(existing.items())
+            ),
         )
         self._env.write_text(data=content, encoding="utf-8")
         self._env.chmod(mode=384)
@@ -529,7 +548,9 @@ class PublicationSupervisor:
                 tunnel = await self.start_tunnel(cloudflared=cloudflared)
                 backend_url: str = await self.read_tunnel_url(tunnel=tunnel)
                 await self.publish(backend_url=backend_url)
-                _ = stdout.write(f"Ready: {self._config.worker_url}/mcp\n")
+                _ = stdout.write(f"""\
+Ready: {self._config.worker_url}/mcp
+""")
                 stdout.flush()
                 _ = await tunnel.wait()
                 if server.returncode is None:
@@ -648,7 +669,7 @@ class PublicationSupervisor:
 
         """
         if server.returncode is not None:
-            msg:str = "Exactus MCP exited during startup"
+            msg: str = "Exactus MCP exited during startup"
             raise RuntimeError(msg)
         deadline: float = monotonic() + self._config.startup_timeout_seconds
         health_url: str = f"http://127.0.0.1:{self._port}/health"
@@ -712,7 +733,9 @@ def main() -> int:
     """
     loaded: Path | None = EnvironmentLoader.load(values=environ)
     if loaded is not None:
-        _ = stdout.write(f"Loaded configuration: {loaded}\n")
+        _ = stdout.write(f"""\
+Loaded configuration: {loaded}
+""")
         stdout.flush()
     root: Path = Path.cwd().resolve()
 

@@ -293,10 +293,7 @@ def test_main_headless_loads_page_then_exits(
     monkeypatch.setattr(target=run, name="start_demo", value=_fixed_demo)
     monkeypatch.setattr(target=run, name="BrowserSession", value=_Session)
     monkeypatch.setattr(target=run, name="stdout", value=sink)
-    expect_equal(
-        actual=run.main(arguments=("--headless",)),
-        expected=0,
-    )
+    expect_equal(actual=run.main(arguments=("--headless",)), expected=0)
     expect_equal(actual=headless_modes, expected=[True])
     expect_equal(
         actual=opened,

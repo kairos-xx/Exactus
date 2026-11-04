@@ -40,7 +40,12 @@ def _fake_leaf(*, root: Path) -> Path:
     leaf: Path = root / "leaf"
     (leaf / "data").mkdir(parents=True)
     launcher: Path = leaf / "__main__.py"
-    _ = launcher.write_text(data="print('launcher')\n", encoding="utf-8")
+    _ = launcher.write_text(
+        data="""\
+print('launcher')
+""",
+        encoding="utf-8",
+    )
     _ = (leaf / "data" / "bundle.json").write_text(
         data=dumps(
             obj={
@@ -246,17 +251,25 @@ def test_inventory_groups_versions(
     expect_equal(actual=external.run(arguments=[]), expected=0)
     out: str = stream.getvalue()
     for entry in (
-        "OS:\n",
+        """\
+OS:
+""",
         "- chromium [141.0.7390.37]",
         "- node [22.21.1]",
-        "- payloadless\n",
+        """\
+- payloadless
+""",
         "- pyrefly [1.4.0]",
         "- ruff [0.17.1]",
         "- zstd-cli [1.5.7]",
-        "Python:\n",
+        """\
+Python:
+""",
         "- basedpyright [1.40.2]",
         "- pytest [9.1.1]",
-        "Node:\n",
+        """\
+Node:
+""",
         "- eslint [10.13.0]",
         "- prettier [3.9.10]",
     ):
@@ -404,7 +417,12 @@ def test_missing_manifest_lists_error(
     leaf: Path = tmp_path / "leaf"
     leaf.mkdir()
     launcher: Path = leaf / "__main__.py"
-    _ = launcher.write_text(data="print('x')\n", encoding="utf-8")
+    _ = launcher.write_text(
+        data="""\
+print('x')
+""",
+        encoding="utf-8",
+    )
     _use_leaf(monkeypatch=monkeypatch, launcher=launcher)
     stream: StringIO = _captured_stream(monkeypatch=monkeypatch, name="stderr")
     expect_equal(actual=external.run(arguments=[]), expected=2)
@@ -428,7 +446,12 @@ def test_missing_manifest_defers_to_launcher(
     leaf: Path = tmp_path / "leaf"
     leaf.mkdir()
     launcher: Path = leaf / "__main__.py"
-    _ = launcher.write_text(data="print('x')\n", encoding="utf-8")
+    _ = launcher.write_text(
+        data="""\
+print('x')
+""",
+        encoding="utf-8",
+    )
     _use_leaf(monkeypatch=monkeypatch, launcher=launcher)
     commands: list[list[str]] = []
     _use_spawn(monkeypatch=monkeypatch, commands=commands)

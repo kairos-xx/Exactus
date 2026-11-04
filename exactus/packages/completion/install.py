@@ -29,7 +29,7 @@ if TYPE_CHECKING:
     from pathlib import Path
 
 
-def _block_begin(*, command_name: str) -> str:
+def block_begin(*, command_name: str) -> str:
     """Return the managed-block opening marker for one command.
 
     Args:
@@ -42,7 +42,7 @@ def _block_begin(*, command_name: str) -> str:
     return f"# >>> {command_name} completion >>>"
 
 
-def _block_end(*, command_name: str) -> str:
+def block_end(*, command_name: str) -> str:
     """Return the managed-block closing marker for one command.
 
     Args:
@@ -249,8 +249,8 @@ def _extract_block(*, text: str, command_name: str) -> str | None:
         The block including its markers, or ``None`` when absent.
 
     """
-    begin_marker: str = _block_begin(command_name=command_name)
-    end_marker: str = _block_end(command_name=command_name)
+    begin_marker: str = block_begin(command_name=command_name)
+    end_marker: str = block_end(command_name=command_name)
     begin: int = text.find(begin_marker)
     end: int = text.find(end_marker)
     if begin == -1 or end == -1 or end < begin:
@@ -323,7 +323,7 @@ def _classify(
     if content is None:
         if layout.path.is_file() and (
             layout.kind == ShellInstallKind.PROVIDER_FILE
-            or _block_begin(command_name=command_name)
+            or block_begin(command_name=command_name)
             in layout.path.read_text(encoding="utf-8")
         ):
             return ShellDiagnosis(
@@ -404,7 +404,9 @@ def _registration_script(
                     launcher=launcher,
                 )
         if registration.revision:
-            script += f"# Completion bundle: {registration.revision}\n"
+            script += f"""\
+# Completion bundle: {registration.revision}
+"""
     return script
 
 
@@ -469,18 +471,24 @@ def install(
             detail=f"installed {layout.path}",
         )
     prelude: str = (
-        "autoload -Uz compinit && compinit\n"
+        """\
+autoload -Uz compinit && compinit
+"""
         if shell == CompletionShell.ZSH
         else ""
     )
     if shell == CompletionShell.BASH:
-        script = (
-            f'if [ -n "${{BASH_VERSION:-}}" ]; then\neval '
-            f"{quote(s=script)}\nfi\n"
-        )
-    block_start: str = _block_begin(command_name=command_name)
-    block_end: str = _block_end(command_name=command_name)
-    block: str = f"{block_start}\n{prelude}{script}{block_end}\n"
+        script = f"""\
+if [ -n "${{BASH_VERSION:-}}" ]; then
+eval {quote(s=script)}
+fi
+"""
+    block_start_str: str = block_begin(command_name=command_name)
+    block_end_str: str = block_end(command_name=command_name)
+    block: str = f"""\
+{block_start_str}
+{prelude}{script}{block_end_str}
+"""
     encoding: str = (
         "utf-8-sig" if shell == CompletionShell.POWERSHELL else "utf-8"
     )
@@ -491,8 +499,8 @@ def install(
     )
     managed: str | None = _extract_block(text=prior, command_name=command_name)
     if managed is None and (
-        _block_begin(command_name=command_name) in prior
-        or _block_end(command_name=command_name) in prior
+        block_begin(command_name=command_name) in prior
+        or block_end(command_name=command_name) in prior
     ):
         return InstallResult(
             shell=shell,
@@ -502,10 +510,29 @@ def install(
             detail="refusing to replace an incomplete managed block",
         )
     updated: str = (
-        prior.replace(managed, block.rstrip("\n"))
+        prior.replace(
+            managed,
+            block.rstrip("""\
+
+"""),
+        )
         if managed is not None
         else prior
-        + (("\n" if prior and (not prior.endswith("\n")) else "") + block)
+        + (
+            (
+                """\
+
+"""
+                if prior
+                and (
+                    not prior.endswith("""\
+
+""")
+                )
+                else ""
+            )
+            + block
+        )
     )
     layout.path.parent.mkdir(parents=True, exist_ok=True)
     if changed := prior != updated:
@@ -589,7 +616,17 @@ def uninstall(
             changed=False,
             detail="no managed block present",
         )
-    updated: str = prior.replace(managed, "").replace("\n\n\n", "\n\n")
+    updated: str = prior.replace(managed, "").replace(
+        """\
+
+
+
+""",
+        """\
+
+
+""",
+    )
     layout.path.write_text(data=updated, encoding="utf-8")
     return InstallResult(
         shell=shell,

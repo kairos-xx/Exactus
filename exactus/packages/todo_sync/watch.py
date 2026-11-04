@@ -168,7 +168,10 @@ def watch(*, path: Path, interval: float = 0.5, html: bool = True) -> int:
             state["heartbeat"] = time()
             atomic_write(
                 path=lock / "state.json",
-                text=dumps(obj=state, indent=2) + "\n",
+                text=dumps(obj=state, indent=2)
+                + """\
+
+""",
             )
             sleep(interval)
     except KeyboardInterrupt:

@@ -43,7 +43,11 @@ SECTIONS: Final[tuple[str, ...]] = (
     "## Artifacts",
     "## Session",
     "## Rules",
-    "\n---\n\nExactus · record",
+    """\
+
+---
+
+Exactus · record""",
 )
 LEGACY_KEYS: Final[tuple[str, ...]] = (
     "analyzer",
@@ -134,14 +138,22 @@ def test_empty_session_state_why_nothing_is_listed() -> None:
     text: str = ReportTemplates.render(model=model, tool_dir=TOOL_DIR).markdown
     for member in (
         "| Mode | record |",
-        "### Actions by type\n\nN/A — no replayable actions were recorded.",
+        """\
+### Actions by type
+
+N/A — no replayable actions were recorded.""",
         dedent(
             text=(
-                "    ### Exactus Record session\n    \n    N/A — no Exactu"
-                "s Record session facts were reported."
+                """\
+    ### Exactus Record session
+
+    N/A — no Exactus Record session facts were reported."""
             ),
         ),
-        "### Produced files\n\nN/A — the session produced no files.",
+        """\
+### Produced files
+
+N/A — the session produced no files.""",
     ):
         expect_in(member=member, container=text)
 
@@ -160,8 +172,14 @@ def test_crash_render_shows_error_and_na_blocks() -> None:
         "N/A — the tool reported no summary.",
         "N/A — the tool reported no scope.",
         "N/A — the tool reported no findings list.",
-        "## Session\n\nN/A — the tool reported no session facts.",
-        "## Rules\n\nN/A — the tool reported no rule counts.",
+        """\
+## Session
+
+N/A — the tool reported no session facts.""",
+        """\
+## Rules
+
+N/A — the tool reported no rule counts.""",
     ):
         expect_in(member=member, container=text)
 
@@ -208,7 +226,7 @@ def _payload(*, out: Path) -> dict[str, JsonValue]:
         s=(out / "result.json").read_text(encoding="utf-8"),
     )
     if not isinstance(loaded, dict):
-        fail(message=f"{out / 'result.json'} is not a JSON object")
+        fail(message=f"{out / "result.json"} is not a JSON object")
     return loaded
 
 
@@ -230,7 +248,11 @@ def test_execute_exactus_renders_record_from_template(tmp_path: Path) -> None:
     markdown: str = (out / "result.md").read_text(encoding="utf-8")
     positions: list[int] = [markdown.index(part) for part in SECTIONS]
     expect_equal(actual=positions, expected=sorted(positions))
-    expect_true(condition=markdown.startswith("# Record Exactus\n"))
+    expect_true(
+        condition=markdown.startswith("""\
+# Record Exactus
+"""),
+    )
     expect_in(
         member="> **Gate: FAIL** — 1 blocking finding",
         container=markdown,

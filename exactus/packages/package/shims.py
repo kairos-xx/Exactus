@@ -244,41 +244,65 @@ class Constants:
     startup_hooks: Final[frozenset[str]] = frozenset(
         {"pth_file", "sitecustomize", "usercustomize"},
     )
-    header: Final[str] = "# Copyright (c) 2026\n"
+    header: Final[str] = """\
+# Copyright (c) 2026
+"""
     base_imports: Final[str] = dedent(
         text=(
-            "    from importlib import import_module\n    from importlib.machi"
-            "nery import PathFinder\n    from importlib.util import module_fro"
-            "m_spec\n    from pathlib import Path\n    from sys import modules"
-            " as _modules\n    from sys import path as _path\n    from types i"
-            "mport ModuleType\n    "
+            """\
+    from importlib import import_module
+    from importlib.machinery import PathFinder
+    from importlib.util import module_from_spec
+    from pathlib import Path
+    from sys import modules as _modules
+    from sys import path as _path
+    from types import ModuleType
+    """
         ),
     )
     loader_head: Final[str] = dedent(
         text=(
-            "    if (\n        _existing := _modules.get(\n            {name}"
-            "\n        )\n    ) is not None and Path(\n        getattr(_existi"
-            'ng, "__file__", "") or "",\n    ).resolve() != _file:\n        _p'
-            "ackage: ModuleType = _existing\n    elif (\n        _spec := Path"
-            "Finder.find_spec(\n            fullname=_name,\n            path="
-            "[\n                entry\n                for entry in _path\n   "
-            '             if Path(entry or ".").resolve() != _file.parent\n   '
-            "         ],\n        )\n    ) is not None and (_loader := _spec.l"
-            "oader) is not None:\n        _modules[_name] = _package = module_"
-            "from_spec(spec=_spec)\n        try:\n            _loader.exec_mod"
-            "ule(module=_package)\n        except BaseException:\n            "
-            "if _modules.get(_name) is _package:\n                _ = _modules"
-            ".pop(_name, None)\n            raise\n    else:\n        _modules"
-            '[_name] = _package = import_module(\n            name=f"{__packag'
-            'e__}._vendor.{_name}",\n        )\n    _modules[(_alias := __name'
-            "__)] = _package\n    "
+            """\
+    if (
+        _existing := _modules.get(
+            {name}
+        )
+    ) is not None and Path(
+        getattr(_existing, "__file__", "") or "",
+    ).resolve() != _file:
+        _package: ModuleType = _existing
+    elif (
+        _spec := PathFinder.find_spec(
+            fullname=_name,
+            path=[
+                entry
+                for entry in _path
+                if Path(entry or ".").resolve() != _file.parent
+            ],
+        )
+    ) is not None and (_loader := _spec.loader) is not None:
+        _modules[_name] = _package = module_from_spec(spec=_spec)
+        try:
+            _loader.exec_module(module=_package)
+        except BaseException:
+            if _modules.get(_name) is _package:
+                _ = _modules.pop(_name, None)
+            raise
+    else:
+        _modules[_name] = _package = import_module(
+            name=f"{__package__}._vendor.{_name}",
+        )
+    _modules[(_alias := __name__)] = _package
+    """
         ),
     )
     name_stem: Final[str] = (
         "_name := (_file := Path(__file__).resolve()).stem,"
     )
     name_literal: Final[str] = '_name := "{module}",'
-    file_literal: Final[str] = "_file: Path = Path(__file__).resolve()\n"
+    file_literal: Final[str] = """\
+_file: Path = Path(__file__).resolve()
+"""
 
 
 def bundled_distributions(*, bundle: Path) -> list[str]:
@@ -464,7 +488,9 @@ def _render(
         Complete Python source for the shim file.
 
     """
-    doc: str = f'"""Use installed ``{dist}`` or the bundled copy."""\n'
+    doc: str = f"""\
+\"""Use installed ``{dist}`` or the bundled copy.\"""
+"""
     dropped: frozenset[str] = (
         Constants.drop_names.get(module, frozenset()) | Constants.drop_common
     )
@@ -475,22 +501,56 @@ def _render(
         else Constants.any_names.get(module, frozenset()) & frozenset(kept)
     )
     typed: list[str] = [name for name in kept if name not in untyped]
-    source: str = Constants.header + doc + "\n" + Constants.base_imports
+    source: str = (
+        Constants.header
+        + doc
+        + """\
+
+"""
+        + Constants.base_imports
+    )
     if shim == module.rsplit(sep=".", maxsplit=1)[-1]:
         name: str = Constants.name_stem
         preamble: str = ""
     else:
         name = Constants.name_literal.format(module=module)
         preamble = Constants.file_literal
-    source += "\n" + preamble + Constants.loader_head.replace("{name}", name)
+    source += (
+        """\
+
+"""
+        + preamble
+        + Constants.loader_head.replace("{name}", name)
+    )
     if typed:
-        imported: str = "".join(f"        {name},\n" for name in typed)
-        source += (
-            f"\nif __name__ != "
-            f'"{module}":\n    from {module} import (\n{imported}    )\n'
+        imported: str = "".join(
+            f"""\
+        {name},
+"""
+            for name in typed
         )
-        exported: str = "".join(f'        "{name}",\n' for name in typed)
-        source += "\n    __all__: list[str] = [\n" + exported + "    ]\n"
+        source += f"""\
+
+if __name__ != "{module}":
+    from {module} import (
+{imported}    )
+"""
+        exported: str = "".join(
+            f"""\
+        "{name}",
+"""
+            for name in typed
+        )
+        source += (
+            """\
+
+    __all__: list[str] = [
+"""
+            + exported
+            + """\
+    ]
+"""
+        )
     return source
 
 
@@ -540,7 +600,12 @@ def _package_init(*, directory: Path) -> Path | None:
     init: Path = directory / "__init__.py"
     if init.is_file():
         return None
-    init.write_text(data=Constants.header + '"""Vendored package copy."""\n')
+    init.write_text(
+        data=Constants.header
+        + """\
+\"""Vendored package copy.\"""
+""",
+    )
     return init
 
 
@@ -666,12 +731,16 @@ def generate(*, package: Path) -> list[Path]:
     init: Path = shim_dir / "__init__.py"
     init.write_text(
         data=Constants.header
-        + '"""Generated import shims for bundled distributions."""\n',
+        + """\
+\"""Generated import shims for bundled distributions.\"""
+""",
     )
     vendor_init: Path = vendor_dir / "__init__.py"
     vendor_init.write_text(
         data=Constants.header
-        + '"""Vendored fallback copies of bundled distributions."""\n',
+        + """\
+\"""Vendored fallback copies of bundled distributions.\"""
+""",
     )
     written: list[Path] = [init, vendor_init]
     for shim, (dist, module) in sorted(shims.items()):
@@ -700,9 +769,13 @@ def main() -> int:
 
     """
     written: list[Path] = generate(package=Constants.package)
-    _ = stdout.write(f"wrote {len(written)} shim files\n")
+    _ = stdout.write(f"""\
+wrote {len(written)} shim files
+""")
     for path in written:
-        _ = stdout.write(f"{path}\n")
+        _ = stdout.write(f"""\
+{path}
+""")
     stdout.flush()
     return 0
 

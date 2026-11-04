@@ -28,6 +28,7 @@ from exactus.tools.common.cli import (
 from exactus.tools.common.runtime import Progress, publish_progress
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
     from io import BufferedReader
     from pathlib import Path
 
@@ -529,7 +530,12 @@ def _insert_shebang(*, path: Path, line: str) -> None:
         line: Shebang text without the trailing newline.
 
     """
-    path.write_bytes(data=f"{line}\n".encode() + path.read_bytes())
+    path.write_bytes(
+        data=f"""\
+{line}
+""".encode()
+        + path.read_bytes(),
+    )
 
 
 def _strip_shebang(*, path: Path) -> None:
@@ -690,6 +696,7 @@ def scan_shebang(
     *,
     inputs: ShebangInput,
     progress_span: tuple[float, float] = (0.0, 1.0),
+    settings_for: Callable[[Path], ShebangSettings] | None = None,
 ) -> ShebangResult:
     """Exactus executable permissions for every owned Python source.
 
@@ -702,6 +709,7 @@ def scan_shebang(
         inputs: Exactus inputs carrying the root, glob filters and
             heal policies.
         progress_span: Overall progress slice used when embedded in lints.
+        settings_for: Optional per-file policy resolver.
 
     Returns:
         Scanned-file count, every permission finding, the applied
@@ -736,12 +744,15 @@ def scan_shebang(
         inspected: FileFacts = inspect_file(path=path, root=inputs.root)
         facts.append(inspected)
         repair: ShebangHeal | None = None
-        if inputs.settings.heal:
+        settings: ShebangSettings = (
+            settings_for(path) if settings_for is not None else inputs.settings
+        )
+        if settings.heal:
             try:
                 repair = heal_file(
                     path=path,
                     facts=inspected,
-                    settings=inputs.settings,
+                    settings=settings,
                 )
             except OSError:
                 repair = None

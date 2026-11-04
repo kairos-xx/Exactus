@@ -23,21 +23,23 @@ from contextlib import (
     redirect_stdout,
     suppress,
 )
-from dataclasses import dataclass, field, replace
+from dataclasses import asdict, dataclass, field, replace
 from datetime import UTC, datetime
-from fnmatch import fnmatch
 from functools import partial
+from hashlib import sha256
 from json import JSONDecodeError, dumps, loads
-from os import cpu_count, environ, getpid, walk
+from os import X_OK, access, cpu_count, environ, getpid, walk
 from pathlib import Path
 from re import Match
 from re import compile as compile_regex
 from shutil import get_terminal_size, rmtree, which
 from signal import Handlers, Signals, signal
-from subprocess import PIPE, Popen
+from subprocess import PIPE, Popen, TimeoutExpired
+from sys import executable as sys_executable
 from textwrap import dedent
 from threading import Event, Lock, Thread
 from time import monotonic
+from tomllib import TOMLDecodeError
 from tomllib import load as load_toml
 from typing import (
     TYPE_CHECKING,
@@ -55,6 +57,12 @@ from zipfile import ZIP_DEFLATED, ZipFile
 from exactus.packages.argument_parser import ExactusArgumentParser
 from exactus.packages.steps import step_log, trace
 from exactus.packages.tree import render_tree
+from exactus.tools.common.config import ConfigResolver
+from exactus.tools.common.path_filters import (
+    PathFilterTables,
+    default_excludes,
+    glob_match,
+)
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Generator, Iterable, Mapping
@@ -115,6 +123,8 @@ class Constants:
         html_suffixes: Grouped module constant.
         eslint_severity_error: Grouped module constant.
         ruff_conflict_ignores: Grouped module constant.
+        ruff_compact_config: Grouped module constant.
+        ruff_fallback_config: Grouped module constant.
         batch_pace_seconds: Grouped module constant.
         batch_pace_floor_seconds: Grouped module constant.
         tsc_pattern: Grouped module constant.
@@ -145,51 +155,66 @@ class Constants:
     )
     report_readme: ClassVar[str] = dedent(
         text=(
-            "    # `ALL_LINTS_RESULTS/`\n    \n    Standalone `exactus/package"
-            "s/all_lints` run report.\n    \n    ## Contents\n    \n    - [`re"
-            "sult.json`](result.json) — merged linter diagnostics report.\n   "
-            " - [`ARTIFACTS/`](ARTIFACTS/README.md) — execution evidence: step"
-            " trace, activity heartbeat and captured output.\n    - [`FILES/`]"
-            "(FILES/README.md) — archive of every file with issues plus its `e"
-            "xactus/packages/tree` listing, present when `--collect-files` was"
-            " used.\n    "
+            """\
+            # `ALL_LINTS_RESULTS/`
+
+            Standalone `exactus/packages/all_lints` run report.
+
+            ## Contents
+
+            - [`result.json`](result.json) — merged linter diagnostics \
+report.
+            - [`ARTIFACTS/`](ARTIFACTS/README.md) — execution evidence: \
+step trace, activity heartbeat and captured output.
+            - [`FILES/`](FILES/README.md) — archive of every file with \
+issues plus its `exactus/packages/tree` listing, present when \
+`--collect-files` was used.
+"""
         ),
     )
     artifacts_readme: ClassVar[str] = dedent(
         text=(
-            "    # `ARTIFACTS/`\n    \n    Execution evidence of the standalon"
-            "e `exactus/packages/all_lints` run.\n    \n    ## Contents\n    "
-            "\n    - [`@activity.json`](%40activity.json) — `exactus/activity/"
-            "v1` liveness document with heartbeat, progress and recent events."
-            "\n    - [`steps.txt`](steps.txt) — timestamped step trace.\n    -"
-            " [`stdout.log`](stdout.log) — captured standard output, ANSI esca"
-            "pes stripped.\n    - [`stderr.log`](stderr.log) — captured standa"
-            "rd error.\n    "
+            """\
+    # `ARTIFACTS/`
+
+    Execution evidence of the standalone `exactus/packages/all_lints` run.
+
+    ## Contents
+
+    - [`@activity.json`](%40activity.json) — `exactus/activity/v1` \
+liveness document with heartbeat, progress and recent events.
+    - [`steps.txt`](steps.txt) — timestamped step trace.
+    - [`stdout.log`](stdout.log) — captured standard output, ANSI \
+escapes stripped.
+    - [`stderr.log`](stderr.log) — captured standard error.
+    """
         ),
     )
     files_readme: ClassVar[str] = dedent(
         text=(
-            "    # `FILES/`\n    \n    Every file that produced diagnostics in"
-            " `../result.json`, packaged in report order.\n    \n    ## Conten"
-            "ts\n    \n    - [`files.zip`](files.zip) — project-relative archi"
-            "ve; running `unzip -o ALL_LINTS_RESULTS/FILES/files.zip -d .` fro"
-            "m the project root restores the flagged files in place.\n    - [`"
-            "TREE.txt`](TREE.txt) — `exactus/packages/tree` listing of the arc"
-            "hive members.\n    "
+            """\
+    # `FILES/`
+
+    Every file that produced diagnostics in `../result.json`, packaged in \
+report order.
+
+    ## Contents
+
+    - [`files.zip`](files.zip) — project-relative archive; running \
+`unzip -o ALL_LINTS_RESULTS/FILES/files.zip -d .` from the project root \
+restores the flagged files in place.
+    - [`TREE.txt`](TREE.txt) — `exactus/packages/tree` listing of the \
+archive members.
+    """
         ),
     )
     project_root: ClassVar[Path] = Path(__file__).resolve().parents[3]
     pyproject: ClassVar[str] = "pyproject.toml"
     excludes: ClassVar[tuple[str, ...]] = (
-        "**/node_modules",
-        "**/__pycache__",
-        "**/.*",
-        "mutants",
-        "**/mutants",
-        "dist",
-        "build",
-        ".build-cache",
-        "exactus/bundle",
+        *PathFilterTables.patterns,
+        "EXACTUS_RESULTS/**",
+        "**/EXACTUS_RESULTS/**",
+        "exactus/bundle/**",
     )
     python_suffixes: ClassVar[frozenset[str]] = frozenset({".py", ".pyi"})
     javascript_suffixes: ClassVar[frozenset[str]] = frozenset(
@@ -208,6 +233,26 @@ class Constants:
     html_suffixes: ClassVar[frozenset[str]] = frozenset({".html", ".htm"})
     eslint_severity_error: ClassVar[int] = 2
     ruff_conflict_ignores: ClassVar[str] = "D203,D213"
+    ruff_compact_config: ClassVar[tuple[str, ...]] = (
+        "--config",
+        "format.skip-magic-trailing-comma = false",
+        "--config",
+        "format.docstring-code-format = true",
+        "--config",
+        'format.docstring-code-line-length = "dynamic"',
+        "--config",
+        'format.quote-style = "double"',
+        "--config",
+        'format.nested-string-quote-style = "preferred"',
+        "--config",
+        'format.line-ending = "lf"',
+        "--config",
+        'format.indent-style = "space"',
+    )
+    ruff_fallback_config: ClassVar[tuple[str, ...]] = (
+        "--config",
+        'target-version = "py313"',
+    )
     batch_pace_seconds: ClassVar[float] = 0.15
     batch_pace_floor_seconds: ClassVar[float] = 0.005
     tsc_pattern: ClassVar[Pattern[str]] = compile_regex(
@@ -251,7 +296,12 @@ def _print(*args: str, file: TextIO | None = None, flush: bool = True) -> None:
 
     """
     target: TextIO = sys.stdout if file is None else file
-    _ = target.write(" ".join(str(object=arg) for arg in args) + "\n")
+    _ = target.write(
+        " ".join(str(object=arg) for arg in args)
+        + """\
+
+""",
+    )
     if flush:
         _ = target.flush()
 
@@ -670,6 +720,18 @@ class RuffStabilizerOptions:
         repair: Optional per-file repair run after every Ruff format/fix cycle.
         batch_repair: Optional batch repair run once after every Ruff
             format/fix cycle.
+        subprocess_timeout: Optional per-process timeout in seconds.
+        time_limit_seconds: Optional wall-clock budget for the complete
+            stabilization run.
+        project_root: Optional project root whose own Ruff
+            configuration wins over the strict ``ALL`` default.
+        capture_version: Probe ``ruff --version`` once for the
+            structured metrics record.
+        isolated: Emit ``--isolated`` so Ruff ignores discovered
+            project configuration entirely.
+        verify: Probe the resolved executable once before
+            stabilization so an outdated or incompatible Ruff fails
+            fast instead of erroring mid-run.
 
     """
 
@@ -677,6 +739,546 @@ class RuffStabilizerOptions:
     unsafe_fixes: bool = False
     repair: FileRepair | None = None
     batch_repair: BatchFileRepair | None = None
+    subprocess_timeout: float | None = None
+    time_limit_seconds: float | None = None
+    project_root: Path | None = None
+    capture_version: bool = False
+    isolated: bool = False
+    verify: bool = True
+
+
+def resolve_tool_command(*, name: str) -> tuple[str, ...] | None:
+    """Resolve a tool binary, preferring the interpreter's own env.
+
+    The running interpreter's sibling binary (for example
+    ``<venv>/bin/ruff``) carries the version Exactus pins, which may be
+    newer than an unrelated executable found earlier on ``PATH`` —
+    an older PATH-resolved Ruff can reject ``--config`` keys the
+    resolved policy legitimately emits.
+
+    Args:
+        name: Executable name to resolve.
+
+    Returns:
+        Single-element command prefix, or ``None`` when absent.
+
+    """
+    sibling: Path = Path(sys_executable).with_name(name=name)
+    if sibling.is_file() and access(path=sibling, mode=X_OK):
+        return (str(object=sibling),)
+    found: str | None = which(cmd=name)
+    return (found,) if found is not None else None
+
+
+class RuffPolicyError(RuntimeError):
+    """Resolved Ruff policy rejected by the bundled executable."""
+
+
+@dataclass(frozen=True, slots=True)
+class ResolvedRuffPolicy:
+    """Ruff policy resolved once and shared by every stage.
+
+    Attributes:
+        command_prefix: Executable vector used to invoke Ruff.
+        rule_flags: Rule-selection and conflict-ignore flags shared by
+            the fixer and the read-only checker.
+        unsafe_fixes: Whether ``--unsafe-fixes`` is applied.
+        compact_config: Compact ``format`` ``--config`` overrides.
+        fallback_config: ``--config`` defaults emitted only when the
+            effective native carrier does not already set the key.
+        isolated: Whether ``--isolated`` ignores discovered
+            configuration entirely.
+        ruff_version: Captured ``ruff --version`` output recorded by
+            the stabilizer after the capability probe succeeds.
+        carrier: Root-level native configuration carrier, when found.
+        settings: Sorted explicit option keys the carrier declares,
+            flattened one level (``format.quote-style``).
+        target_version: Effective ``target-version`` — the carrier's
+            value, or ``py313`` when supplied as the fallback.
+        line_length: Carrier ``line-length`` when configured.
+        preview: Carrier ``preview`` flag when configured.
+        exclusions: Carrier ``exclude`` and ``extend-exclude`` patterns.
+
+    """
+
+    command_prefix: tuple[str, ...] = ("ruff",)
+    rule_flags: tuple[str, ...] = (
+        "--select",
+        "ALL",
+        "--ignore",
+        Constants.ruff_conflict_ignores,
+    )
+    unsafe_fixes: bool = False
+    compact_config: tuple[str, ...] = Constants.ruff_compact_config
+    fallback_config: tuple[str, ...] = Constants.ruff_fallback_config
+    isolated: bool = False
+    ruff_version: str | None = None
+    carrier: Path | None = None
+    settings: tuple[str, ...] = ()
+    target_version: str | None = None
+    line_length: int | None = None
+    preview: bool | None = None
+    exclusions: tuple[str, ...] = ()
+
+    @classmethod
+    def resolve(cls, *, options: RuffStabilizerOptions) -> ResolvedRuffPolicy:
+        """Resolve the effective policy for one invocation.
+
+        Args:
+            options: Stabilizer configuration.
+
+        Returns:
+            The immutable policy shared by format, fix and check
+            stages; a configured project keeps its own selection.
+
+        """
+        carrier: Path | None = (
+            None
+            if options.project_root is None or options.isolated
+            else cls.native_carrier(root=options.project_root)
+        )
+        settings: dict[str, JsonValue] = cls.carrier_settings(
+            path=carrier,
+        )
+        fallback: tuple[str, ...] = (
+            ()
+            if "target-version" in settings
+            else Constants.ruff_fallback_config
+        )
+        target_version: JsonValue = settings.get("target-version")
+        line_length: JsonValue = settings.get("line-length")
+        preview: JsonValue = settings.get("preview")
+        exclusions: tuple[str, ...] = tuple(
+            pattern
+            for key in ("exclude", "extend-exclude")
+            for pattern in cast(
+                typ="tuple[object,...] | list[object]",
+                val=settings.get(key)
+                if isinstance(settings.get(key), list)
+                else [settings[key]]
+                if isinstance(settings.get(key), str)
+                else (),
+            )
+            if isinstance(pattern, str)
+        )
+        return cls(
+            command_prefix=options.command_prefix,
+            rule_flags=cls.rule_flags_for(
+                root=None if options.isolated else options.project_root,
+            ),
+            unsafe_fixes=options.unsafe_fixes,
+            fallback_config=fallback,
+            isolated=options.isolated,
+            carrier=carrier,
+            settings=tuple(sorted(cls.explicit_keys(settings=settings))),
+            target_version=(
+                target_version
+                if isinstance(target_version, str)
+                else "py313"
+                if fallback
+                else None
+            ),
+            line_length=(
+                line_length if isinstance(line_length, int) else None
+            ),
+            preview=preview if isinstance(preview, bool) else None,
+            exclusions=exclusions,
+        )
+
+    @classmethod
+    def rule_flags_for(cls, *, root: Path | None) -> tuple[str, ...]:
+        """Return rule-selection flags honoring project configuration.
+
+        Args:
+            root: Optional project root; a root carrying
+                ``[tool.ruff]`` keeps its own selection and only gets
+                the conflict ignores extended.
+
+        Returns:
+            ``--select ALL --ignore`` flags for unconfigured projects,
+            ``--extend-ignore`` flags for configured ones, and the
+            strict default when no root is supplied.
+
+        """
+        configured: bool = (
+            root is not None and cls.native_carrier(root=root) is not None
+        )
+        if configured:
+            return ("--extend-ignore", "D203", "--extend-ignore", "D213")
+        return ("--select", "ALL", "--ignore", Constants.ruff_conflict_ignores)
+
+    @classmethod
+    def carrier_settings(
+        cls,
+        *,
+        path: Path | None,
+        _depth: int = 0,
+    ) -> dict[str, JsonValue]:
+        """Return one carrier's explicit Ruff settings, extend-aware.
+
+        Args:
+            path: ``ruff.toml``, ``.ruff.toml`` or ``pyproject.toml``.
+            _depth: Bounded ``extend`` recursion guard.
+
+        Returns:
+            Merged settings table, child keys winning over inherited
+            ``extend`` bases.
+
+        """
+        max_depth: int = 4
+        if path is None or _depth > max_depth or not path.is_file():
+            return {}
+        try:
+            with path.open(mode="rb") as stream:
+                document: dict[str, JsonValue] = load_toml(stream)
+        except (OSError, TOMLDecodeError):
+            return {}
+        raw: JsonValue | None
+        raw = document or None
+        if path.name == "pyproject.toml":
+            tool: JsonValue = (
+                raw.get("tool") if isinstance(raw, dict) else None
+            )
+            raw = tool.get("ruff") if isinstance(tool, dict) else None
+        if not isinstance(raw, dict):
+            return {}
+        merged: dict[str, JsonValue] = {}
+        extend: JsonValue = raw.get("extend")
+        if isinstance(extend, str):
+            merged = cls.carrier_settings(
+                path=(path.parent / extend).resolve(),
+                _depth=_depth + 1,
+            )
+        merged.update(raw)
+        merged.pop("extend", None)
+        return merged
+
+    @classmethod
+    def suppressed(
+        cls,
+        *,
+        overrides: tuple[str, ...],
+        explicit: frozenset[str],
+    ) -> tuple[str, ...]:
+        """Drop ``--config`` pairs whose key a carrier explicitly sets.
+
+        Args:
+            overrides: Flat ``--config, KEY = VALUE`` override vector.
+            explicit: Flattened carrier option keys.
+
+        Returns:
+            Overrides surviving explicit carrier precedence.
+
+        """
+        kept: list[str] = []
+        index: int = 0
+        while index + 1 < len(overrides):
+            flag, override = overrides[index], overrides[index + 1]
+            index += 2
+            if (
+                flag == "--config"
+                and cls._config_key(override=override) in explicit
+            ):
+                continue
+            kept.extend((flag, override))
+        return tuple(kept)
+
+    @property
+    def fingerprint(self) -> str:
+        """Identity hash over every captured policy input.
+
+        Returns:
+            Short stable digest covering the executable, effective
+            flags, captured carrier settings and probed version.
+
+        """
+        payload: str = "|".join(
+            (
+                *self.command_prefix,
+                *self.rule_flags,
+                *self.compact_config,
+                *self.fallback_config,
+                str(object=self.unsafe_fixes),
+                str(object=self.isolated),
+                self.ruff_version or "",
+                str(object=self.carrier or ""),
+                *self.settings,
+                self.target_version or "",
+                str(object=self.line_length or ""),
+                str(object=self.preview),
+                ",".join(self.exclusions),
+            ),
+        )
+        return sha256(data=payload.encode()).hexdigest()[:16]
+
+    @staticmethod
+    def native_carrier(*, root: Path) -> Path | None:
+        """Return the root-level native Ruff carrier, when present.
+
+        Args:
+            root: Project root to inspect.
+
+        Returns:
+            ``ruff.toml``, ``.ruff.toml`` or a ``pyproject.toml``
+            declaring ``[tool.ruff]``, else ``None``.
+
+        """
+        for name in ("ruff.toml", ".ruff.toml"):
+            candidate: Path = root / name
+            if candidate.is_file():
+                return candidate
+        pyproject: Path = root / "pyproject.toml"
+        if pyproject.is_file() and "[tool.ruff" in pyproject.read_text(
+            encoding="utf-8",
+        ):
+            return pyproject
+        return None
+
+    @staticmethod
+    def explicit_keys(
+        *,
+        settings: dict[str, JsonValue],
+    ) -> frozenset[str]:
+        """Flatten a carrier settings table to explicit option keys.
+
+        Args:
+            settings: Merged carrier table.
+
+        Returns:
+            Top-level keys plus one level of dotted sub-keys such as
+            ``format.quote-style`` and ``lint.select``.
+
+        """
+        keys: set[str] = set()
+        for key, value in settings.items():
+            keys.add(key)
+            if isinstance(value, dict):
+                keys.update(f"{key}.{sub}" for sub in value)
+        return frozenset(keys)
+
+    def verify_argv(self, *, path: Path) -> tuple[str, ...]:
+        """Build the capability probe for the resolved overrides.
+
+        Args:
+            path: Existing file handed to ``ruff check`` so the probe
+                exercises the supplied ``--config`` pairs without
+                reporting findings.
+
+        Returns:
+            Command line that exits ``0`` when the resolved executable
+            accepts every compact and fallback override.
+
+        """
+        return (
+            *self.command_prefix,
+            "check",
+            *self.compact_config,
+            *self.fallback_config,
+            *(("--isolated",) if self.isolated else ()),
+            "--exit-zero",
+            str(object=path),
+        )
+
+    def format_argv(
+        self,
+        *,
+        paths: tuple[Path, ...],
+        compact: bool = False,
+        check: bool = False,
+    ) -> tuple[str, ...]:
+        """Build one ``ruff format`` argument vector.
+
+        Args:
+            paths: Target files.
+            compact: Apply the compact formatter overrides.
+            check: Run read-only verification instead of writing.
+
+        Returns:
+            Complete argument vector.
+
+        """
+        return (
+            *self.command_prefix,
+            "format",
+            *(("--check",) if check else ()),
+            *(("--isolated",) if self.isolated else ()),
+            *(self.compact_config if compact else ()),
+            *self.fallback_config,
+            *tuple(str(object=path) for path in paths),
+        )
+
+    def fix_argv(self, *, paths: tuple[Path, ...]) -> tuple[str, ...]:
+        """Build one ``ruff check --fix`` argument vector.
+
+        Args:
+            paths: Target files.
+
+        Returns:
+            Complete argument vector.
+
+        """
+        return (
+            *self.command_prefix,
+            "check",
+            *self.rule_flags,
+            "--fix",
+            *(("--isolated",) if self.isolated else ()),
+            *self.fallback_config,
+            *(("--unsafe-fixes",) if self.unsafe_fixes else ()),
+            *tuple(str(object=path) for path in paths),
+        )
+
+    def check_argv(self, *, paths: tuple[Path, ...]) -> tuple[str, ...]:
+        """Build one read-only JSON ``ruff check`` argument vector.
+
+        Args:
+            paths: Target files.
+
+        Returns:
+            Complete argument vector.
+
+        """
+        return (
+            *self.command_prefix,
+            "check",
+            *self.rule_flags,
+            *(("--isolated",) if self.isolated else ()),
+            *self.fallback_config,
+            "--output-format",
+            "json",
+            *tuple(str(object=path) for path in paths),
+        )
+
+    @staticmethod
+    def _config_key(*, override: str) -> str:
+        """Return the option name one ``--config`` pair value sets.
+
+        Args:
+            override: ``KEY = VALUE`` TOML pair operand.
+
+        Returns:
+            The stripped option key.
+
+        """
+        return override.split(sep="=", maxsplit=1)[0].strip()
+
+
+@dataclass(frozen=True, slots=True)
+class RuffRunResult:
+    """Outcome of one registered Ruff subprocess.
+
+    Attributes:
+        argv: Complete argument vector the process was launched with.
+        returncode: Process exit code.
+        stdout: Captured standard output bytes.
+        stderr: Captured standard error bytes.
+        duration_seconds: Wall-clock runtime of the process.
+
+    """
+
+    argv: tuple[str, ...]
+    returncode: int
+    stdout: bytes
+    stderr: bytes
+    duration_seconds: float
+
+
+class RuffExecutionError(RuntimeError):
+    """Ruff subprocess execution failure.
+
+    Lint findings reported via exit code ``1`` are not execution
+    errors; launch failures, timeouts, signal termination and fatal
+    exit statuses are.
+
+
+    Attributes:
+        argv: Complete argument vector that failed.
+        returncode: Process exit code when one was produced.
+        stdout: Captured standard output bytes.
+        stderr: Captured standard error bytes.
+
+    """
+
+    def __init__(
+        self,
+        *,
+        argv: tuple[str, ...],
+        message: str,
+        returncode: int | None = None,
+        stdout: bytes = b"",
+        stderr: bytes = b"",
+    ) -> None:
+        """Record the failing command context.
+
+        Args:
+            argv: Complete argument vector that failed.
+            message: Human-readable failure description.
+            returncode: Process exit code when one was produced.
+            stdout: Captured standard output bytes.
+            stderr: Captured standard error bytes.
+
+        """
+        self.argv: tuple[str, ...] = argv
+        self.returncode: int | None = returncode
+        self.stdout: bytes = stdout
+        self.stderr: bytes = stderr
+        super().__init__(message)
+
+
+@dataclass(frozen=True, slots=True)
+class StabilizationMetrics:
+    """Structured outcome of one stabilization run.
+
+    Attributes:
+        files: Owned files the run covered.
+        invocations: Ruff subprocess launches across every stage.
+        iterations: Convergence-loop passes executed in total.
+        per_step_changes: Owned files each pipeline step rewrote.
+        oscillated: Whether a repeated intermediate state was detected.
+        format_locked: Owned files whose lint fixes provably reverted
+            formatting; the formatter's output was kept as canonical.
+        converged: Whether the pipeline reached verified fixed points.
+        rolled_back: Whether owned files were restored.
+        restored: Files restored by rollback.
+        conflicts: Owned files skipped because of external edits.
+        duration_seconds: Wall-clock runtime of the whole run.
+        diagnostics: Unfixed findings from the final read-only check.
+        policy_fingerprint: Digest of the resolved Ruff policy.
+        ruff_version: Captured executable version, when requested.
+
+    """
+
+    files: int
+    invocations: int
+    iterations: int
+    per_step_changes: dict[str, int]
+    oscillated: bool
+    format_locked: int
+    converged: bool
+    rolled_back: bool
+    restored: int
+    conflicts: int
+    duration_seconds: float
+    diagnostics: int
+    policy_fingerprint: str
+    ruff_version: str | None
+
+
+@final
+@dataclass(frozen=True, slots=True)
+class _StateHistory:
+    """Keep stabilization state histories together.
+
+    Attributes:
+        seen: Previously observed file contents.
+        last: Most recently observed file contents.
+        formatter_states: Contents previously produced by formatting.
+
+    """
+
+    seen: dict[Path, set[bytes]]
+    last: dict[Path, bytes]
+    formatter_states: dict[Path, set[bytes]] | None = None
 
 
 class RuffStabilizer:
@@ -702,6 +1304,8 @@ class RuffStabilizer:
 
         Raises:
             FileNotFoundError: If any target file does not exist.
+            RuffPolicyError: If the resolved executable rejects the
+                compact or fallback ``--config`` overrides.
 
         """
         self._paths: tuple[Path, ...] = tuple(paths)
@@ -709,32 +1313,89 @@ class RuffStabilizer:
         self._max_workers: int | None = max_workers
         self._max_iterations: int = max_iterations
         resolved: RuffStabilizerOptions = options or RuffStabilizerOptions()
-        self._command_prefix: tuple[str, ...] = resolved.command_prefix
-        self._unsafe_fixes: bool = resolved.unsafe_fixes
+        self._policy: ResolvedRuffPolicy = ResolvedRuffPolicy.resolve(
+            options=resolved,
+        )
+        self._resolver: ConfigResolver | None = (
+            ConfigResolver(root=resolved.project_root)
+            if resolved.project_root is not None
+            else None
+        )
+        self._verify: bool = resolved.verify
         self._repair: FileRepair | None = resolved.repair
         self._batch_repair: BatchFileRepair | None = resolved.batch_repair
+        self._subprocess_timeout: float | None = resolved.subprocess_timeout
         self._lock: Lock = Lock()
         self._processes: set[Popen[bytes]] = set()
         self._processes_lock: Lock = Lock()
         self._current: int = 0
+        self._time_limit: float | None = resolved.time_limit_seconds
+        self._deadline: float | None = (
+            monotonic() + resolved.time_limit_seconds
+            if resolved.time_limit_seconds is not None
+            else None
+        )
+        self._originals: dict[Path, tuple[bytes, int]] = {}
+        self._last_seen: dict[Path, bytes] = {}
+        self._diagnostics: dict[Path, list[Diagnostic]] = {}
+        self._init_metrics(resolved=resolved)
         for path in self._paths:
             if not path.is_file():
                 msg: str = f"File does not exist: {path}"
                 raise FileNotFoundError(msg)
-        if len(self._paths) > 1:
-            self._stabilize_batch()
-        else:
-            executor: ThreadPoolExecutor = ThreadPoolExecutor(
-                max_workers=self._max_workers,
-            )
-            try:
-                tuple(executor.map(self._stabilize, self._paths))
-            except BaseException:
-                self._terminate_processes()
-                executor.shutdown(wait=False, cancel_futures=True)
-                raise
+            self._originals[path] = (path.read_bytes(), path.stat().st_mode)
+        self._verify_policy()
+        try:
+            if len(self._paths) > 1:
+                self._stabilize_batch()
             else:
-                executor.shutdown(wait=True)
+                executor: ThreadPoolExecutor = ThreadPoolExecutor(
+                    max_workers=self._max_workers,
+                )
+                try:
+                    tuple(executor.map(self._stabilize, self._paths))
+                except BaseException:
+                    self._terminate_processes()
+                    executor.shutdown(wait=False, cancel_futures=True)
+                    raise
+                else:
+                    executor.shutdown(wait=True)
+        except BaseException:
+            self._rollback()
+            raise
+        else:
+            self._converged = True
+
+    @property
+    def metrics(self) -> StabilizationMetrics:
+        """Snapshot the structured outcome of the completed run.
+
+        Returns:
+            Immutable counters, convergence state and policy identity
+            collected across every stabilization stage.
+
+        """
+        return StabilizationMetrics(
+            files=len(self._paths),
+            invocations=self._invocations,
+            iterations=self._iterations,
+            per_step_changes={
+                step: len(paths)
+                for step, paths in sorted(self._step_changes.items())
+            },
+            oscillated=self._oscillated,
+            format_locked=len(self._format_locked),
+            converged=self._converged,
+            rolled_back=self._rolled_back,
+            restored=self._restored,
+            conflicts=self._conflicts,
+            duration_seconds=monotonic() - self._started,
+            diagnostics=sum(
+                len(found) for found in self._diagnostics.values()
+            ),
+            policy_fingerprint=self._fingerprint,
+            ruff_version=self._ruff_version,
+        )
 
     def ruff_format_until_stable(self, *, path: Path) -> int:
         """Run Ruff format until a file stops changing.
@@ -749,12 +1410,24 @@ class RuffStabilizer:
             RuntimeError: If formatting does not stabilize.
 
         """
+        seen: set[bytes] = set()
         for iteration in range(1, self._max_iterations + 1):
-            before: bytes = path.read_bytes()
-            self._run(args=(*self._command_prefix, "format", str(object=path)))
-            if path.read_bytes() == before:
+            self._check_budget()
+            self._iterations += 1
+            before: bytes = self._read(path=path)
+            if before in seen:
+                self._oscillated = True
+                msg: str = (
+                    f"Ruff format oscillates on {path}; "
+                    "repeated source state detected."
+                )
+                raise RuntimeError(msg)
+            seen.add(before)
+            self._invoke(args=self._policy.format_argv(paths=(path,)))
+            if self._read(path=path) == before:
                 return iteration
-        msg: str = " ".join(
+            self._record_step(step="format", changed=(path,))
+        msg = " ".join(
             (
                 f"Ruff format did not stabilize {path} after",
                 f"{self._max_iterations} iterations.",
@@ -775,30 +1448,223 @@ class RuffStabilizer:
             RuntimeError: If fixing does not stabilize.
 
         """
+        seen: set[bytes] = set()
         for iteration in range(1, self._max_iterations + 1):
-            before: bytes = path.read_bytes()
-            self._run(
-                args=(
-                    *self._command_prefix,
-                    "check",
-                    "--select",
-                    "ALL",
-                    "--ignore",
-                    Constants.ruff_conflict_ignores,
-                    "--fix",
-                    *(("--unsafe-fixes",) if self._unsafe_fixes else ()),
-                    str(object=path),
-                ),
-            )
-            if path.read_bytes() == before:
+            self._check_budget()
+            self._iterations += 1
+            before: bytes = self._read(path=path)
+            if before in seen:
+                self._oscillated = True
+                msg: str = (
+                    f"Ruff check oscillates on {path}; "
+                    "repeated source state detected."
+                )
+                raise RuntimeError(msg)
+            seen.add(before)
+            self._invoke(args=self._policy.fix_argv(paths=(path,)))
+            if self._read(path=path) == before:
                 return iteration
-        msg: str = " ".join(
+            self._record_step(step="fix", changed=(path,))
+        msg = " ".join(
             (
                 f"Ruff check did not stabilize {path} after",
                 f"{self._max_iterations} iterations.",
             ),
         )
         raise RuntimeError(msg)
+
+    def _verify_policy(self) -> None:
+        """Probe the resolved executable before any real work runs.
+
+        The probe exercises every compact and fallback ``--config``
+        pair against one existing target so an outdated Ruff that does
+        not know an emitted option fails fast with a policy error.
+
+        Raises:
+            RuffPolicyError: If the probe exits nonzero, meaning the
+                resolved executable cannot honor the policy.
+
+        """
+        if not self._verify or not self._paths:
+            return
+        probe: tuple[str, ...] = self._policy.verify_argv(
+            path=self._paths[0],
+        )
+        try:
+            self._invocations += 1
+            _ = self._run(args=probe)
+        except RuffExecutionError as error:
+            msg: str = (
+                "resolved Ruff rejects the emitted policy "
+                f"configuration: {error}"
+            )
+            raise RuffPolicyError(msg) from error
+
+    def _init_metrics(self, *, resolved: RuffStabilizerOptions) -> None:
+        """Initialise run counters and the policy fingerprint.
+
+        Args:
+            resolved: Stabilizer configuration; ``capture_version``
+                triggers one ``ruff --version`` probe.
+
+        """
+        self._fingerprint: str = self._policy.fingerprint
+        self._invocations: int = 0
+        self._iterations: int = 0
+        self._step_changes: dict[str, set[Path]] = {}
+        self._ordinary_verified: dict[Path, bytes] = {}
+        self._oscillated: bool = False
+        self._format_locked: set[Path] = set()
+        self._converged: bool = False
+        self._rolled_back: bool = False
+        self._restored: int = 0
+        self._conflicts: int = 0
+        self._started: float = monotonic()
+        self._ruff_version: str | None = self._policy.ruff_version or (
+            self._version_probe() if resolved.capture_version else None
+        )
+
+    def _version_probe(self) -> str | None:
+        """Capture the resolved executable's version once.
+
+        Returns:
+            Decoded ``ruff --version`` output, or nothing when the
+            probe does not produce text.
+
+        """
+        result: RuffRunResult = self._invoke(
+            args=(*self._policy.command_prefix, "--version"),
+        )
+        text: str = result.stdout.decode(
+            encoding="utf-8",
+            errors="replace",
+        ).strip()
+        return text or None
+
+    def _invoke(self, *, args: tuple[str, ...]) -> RuffRunResult:
+        """Count and launch one Ruff subprocess.
+
+        Args:
+            args: Full Ruff command line to execute.
+
+        Returns:
+            Captured stdout, stderr, exit code and duration.
+
+        """
+        commands: tuple[tuple[str, ...], ...] = self._group_commands(args=args)
+        results: list[RuffRunResult] = []
+        for command in commands:
+            self._invocations += 1
+            results.append(self._run(args=command))
+        if len(results) == 1:
+            return results[0]
+        json_output: bool = "--output-format" in args and "json" in args
+        payload: list[JsonValue] = []
+        if json_output:
+            for result in results:
+                parsed: JsonValue = loads(s=result.stdout or b"[]")
+                if isinstance(parsed, list):
+                    payload.extend(parsed)
+        return RuffRunResult(
+            argv=args,
+            returncode=max(result.returncode for result in results),
+            stdout=dumps(obj=payload).encode()
+            if json_output
+            else b"\n".join(result.stdout for result in results),
+            stderr=b"\n".join(result.stderr for result in results),
+            duration_seconds=sum(
+                result.duration_seconds for result in results
+            ),
+        )
+
+    def _group_commands(
+        self,
+        *,
+        args: tuple[str, ...],
+    ) -> tuple[tuple[str, ...], ...]:
+        """Partition Ruff work by the nearest native configuration carrier.
+
+        Args:
+            args: Root-policy command before native grouping.
+
+        Returns:
+            Commands preserving nested style and per-group rule selection.
+
+        """
+        if self._resolver is None:
+            return (args,)
+        paths: tuple[Path, ...] = tuple(
+            path for path in self._paths if str(object=path) in args
+        )
+        if not paths:
+            return (args,)
+        groups: dict[Path | None, list[Path]] = {}
+        for path in paths:
+            carrier: Path | None = (
+                None
+                if self._policy.isolated
+                else self._resolver.nearest_native(
+                    path=path,
+                    sections=("ruff",),
+                )
+            )
+            groups.setdefault(carrier, []).append(path)
+        commands: list[tuple[str, ...]] = []
+        explicit_cache: dict[Path, frozenset[str]] = {}
+        for carrier, members in groups.items():
+            explicit: frozenset[str] = frozenset()
+            if carrier is not None:
+                if carrier not in explicit_cache:
+                    explicit_cache[carrier] = ResolvedRuffPolicy.explicit_keys(
+                        settings=ResolvedRuffPolicy.carrier_settings(
+                            path=carrier,
+                        ),
+                    )
+                explicit = explicit_cache[carrier]
+            policy: ResolvedRuffPolicy = replace(
+                self._policy,
+                rule_flags=ResolvedRuffPolicy.rule_flags_for(
+                    root=carrier.parent if carrier is not None else None,
+                ),
+                compact_config=ResolvedRuffPolicy.suppressed(
+                    overrides=self._policy.compact_config,
+                    explicit=explicit,
+                )
+                if carrier is None or carrier.parent == self._resolver.root
+                else (),
+                fallback_config=(
+                    ()
+                    if carrier is not None
+                    and (
+                        carrier.parent != self._resolver.root
+                        or "target-version" in explicit
+                    )
+                    else self._policy.fallback_config
+                ),
+            )
+            if "format" in args:
+                commands.append(
+                    policy.format_argv(
+                        paths=tuple(members),
+                        compact="--config" in args,
+                        check="--check" in args,
+                    ),
+                )
+            elif "--fix" in args:
+                commands.append(policy.fix_argv(paths=tuple(members)))
+            else:
+                commands.append(policy.check_argv(paths=tuple(members)))
+        return tuple(commands)
+
+    def _record_step(self, *, step: str, changed: Iterable[Path]) -> None:
+        """Union changed files into one pipeline step's metric.
+
+        Args:
+            step: Pipeline step that rewrote the files.
+            changed: Owned files the step rewrote.
+
+        """
+        self._step_changes.setdefault(step, set()).update(changed)
 
     def _final_compact_pass(
         self,
@@ -820,52 +1686,263 @@ class RuffStabilizer:
         """
         if not paths:
             return (0, 0)
-        format_args: tuple[str, ...] = (
-            *self._command_prefix,
-            "format",
-            "--config",
-            "format.skip-magic-trailing-comma = true",
-            "--config",
-            "format.docstring-code-format = true",
-            "--config",
-            'format.docstring-code-line-length = "dynamic"',
-            "--config",
-            'format.quote-style = "double"',
-            "--config",
-            'format.nested-string-quote-style = "preferred"',
-            "--config",
-            'format.line-ending = "lf"',
-            "--config",
-            'format.indent-style = "space"',
-            *tuple(str(object=path) for path in paths),
+        active: list[Path] = list(paths)
+        history: _StateHistory = _StateHistory(
+            seen={},
+            last={},
+            formatter_states={},
         )
-        fix_args: tuple[str, ...] = (
-            *self._command_prefix,
-            "check",
-            "--select",
-            "ALL",
-            "--ignore",
-            Constants.ruff_conflict_ignores,
-            "--fix",
-            *(("--unsafe-fixes",) if self._unsafe_fixes else ()),
-            *tuple(str(object=path) for path in paths),
-        )
+        conflicted: set[Path] = set()
+        reverted: set[Path] = set()
         for iteration in range(1, self._max_iterations + 1):
-            before: tuple[bytes, ...] = tuple(
-                path.read_bytes() for path in paths
+            self._check_budget()
+            self._iterations += 1
+            before: dict[Path, bytes] = {
+                path: self._read(path=path) for path in active
+            }
+            self._track_states(
+                history=history,
+                states=before,
+                conflicted=conflicted,
+                resolvable=reverted,
             )
-            self._run(args=format_args)
-            self._run(args=fix_args)
-            if all(
-                path.read_bytes() == previous
-                for path, previous in zip(paths, before, strict=True)
-            ):
+            active = self._lock_conflicted(
+                active=active,
+                conflicted=conflicted,
+            )
+            formatted: dict[Path, bytes] = {}
+            fixed: dict[Path, bytes] = {}
+            if active:
+                self._invoke(
+                    args=self._policy.format_argv(
+                        paths=tuple(active),
+                        compact=True,
+                    ),
+                )
+                formatted = {path: self._read(path=path) for path in active}
+                self._track_states(
+                    history=history,
+                    states=formatted,
+                    conflicted=conflicted,
+                    resolvable=reverted,
+                    formatter=True,
+                )
+                active = self._lock_conflicted(
+                    active=active,
+                    conflicted=conflicted,
+                )
+            if active:
+                self._invoke(args=self._policy.fix_argv(paths=tuple(active)))
+                fixed = {path: self._read(path=path) for path in active}
+                reverted.update(
+                    path
+                    for path in active
+                    if fixed[path] == before[path]
+                    and formatted[path] != before[path]
+                )
+                self._track_states(
+                    history=history,
+                    states=fixed,
+                    conflicted=conflicted,
+                    resolvable=reverted,
+                )
+                active = self._lock_conflicted(
+                    active=active,
+                    conflicted=conflicted,
+                )
+            format_dirty: list[Path] = [
+                path for path in active if formatted[path] != before[path]
+            ]
+            fix_dirty: list[Path] = [
+                path for path in active if fixed[path] != formatted[path]
+            ]
+            self._record_step(step="compact-format", changed=format_dirty)
+            self._record_step(step="compact-fix", changed=fix_dirty)
+            if not format_dirty and not fix_dirty:
+                return (iteration, iteration)
+            active = sorted(
+                path
+                for path in {*format_dirty, *fix_dirty}
+                if path not in self._format_locked
+            )
+            if not active:
                 return (iteration, iteration)
         msg: str = (
             "Final Ruff compact pass did not converge "
-            f"after {self._max_iterations} cycles."
+            f"after {self._max_iterations} cycles; still changing: "
+            f"{", ".join(path.as_posix() for path in active)}"
         )
         raise RuntimeError(msg)
+
+    def _track_states(
+        self,
+        *,
+        history: _StateHistory,
+        states: dict[Path, bytes],
+        conflicted: set[Path] | None = None,
+        resolvable: set[Path] | None = None,
+        formatter: bool = False,
+    ) -> None:
+        """Detect repeated per-file source states between steps.
+
+        Args:
+            history: Previously observed states and formatter outputs.
+            states: States observed at the current step boundary.
+            conflicted: Optional set collecting files whose fixes
+                provably revert formatting; when supplied, eligible
+                files are format-locked instead of raising.
+            resolvable: Files with a proven format-then-revert
+                signature eligible for format-locking; ``None`` makes
+                every detected file eligible while ``conflicted`` is
+                supplied.
+            formatter: Whether ``states`` are fresh formatter output.
+
+        Raises:
+            RuntimeError: If a file revisits a non-adjacent prior
+                state without reaching a fixed point and is not
+                eligible for format-locking.
+
+        """
+        for path, data in states.items():
+            if (
+                data in history.seen.get(path, ())
+                and history.last.get(path) != data
+            ):
+                self._oscillated = True
+                eligible: bool = resolvable is None or path in resolvable
+                if not eligible and history.formatter_states is not None:
+                    produced: set[bytes] = history.formatter_states.get(
+                        path,
+                        set(),
+                    )
+                    eligible = (
+                        data in produced
+                        and history.last.get(path) not in produced
+                    )
+                if conflicted is not None and eligible:
+                    conflicted.add(path)
+                    continue
+                msg: str = (
+                    "Ruff stabilization oscillates on "
+                    f"{path.as_posix()}; repeated source state "
+                    "detected between passes."
+                )
+                raise RuntimeError(msg)
+            history.seen.setdefault(path, set()).add(data)
+            history.last[path] = data
+            if formatter and history.formatter_states is not None:
+                history.formatter_states.setdefault(path, set()).add(data)
+
+    def _lock_conflicted(
+        self,
+        *,
+        active: list[Path],
+        conflicted: set[Path],
+    ) -> list[Path]:
+        """Keep the formatter's output for files whose fixes revert it.
+
+        A conflicted file can never satisfy ``format`` and a conflicting
+        ``check --fix``/repair rule simultaneously; formatting is the
+        canonical layout, so it is applied once under the compact policy
+        and the file leaves the loop. Diagnostics collected afterwards
+        report the unsatisfiable rule.
+
+        Args:
+            active: Files still cycling through the pipeline.
+            conflicted: Files detected revisiting earlier states.
+
+        Returns:
+            ``active`` without newly format-locked files.
+
+        """
+        newly: list[Path] = sorted(
+            path for path in active if path in conflicted
+        )
+        if not newly:
+            return active
+        self._invoke(
+            args=self._policy.format_argv(paths=tuple(newly), compact=True),
+        )
+        self._format_locked.update(newly)
+        self._record_step(step="format-locked", changed=newly)
+        trace(
+            step=(
+                f"stabilize: format-locked {len(newly)} files whose "
+                "fixes revert formatting (formatter output kept): "
+                + ", ".join(path.as_posix() for path in newly[:5])
+            ),
+            depth=3,
+        )
+        return [path for path in active if path not in conflicted]
+
+    def _apply_batch_repairs(
+        self,
+        *,
+        active: list[Path],
+        cycle: int,
+        format_calls: dict[Path, int],
+        fix_calls: dict[Path, int],
+    ) -> None:
+        """Apply configured repairs and count completed Ruff invocations.
+
+        Args:
+            active: Files in the current stabilization cycle.
+            cycle: One-based stabilization cycle number.
+            format_calls: Per-file formatting invocation counts.
+            fix_calls: Per-file fixing invocation counts.
+
+        """
+        if self._batch_repair is not None:
+            trace(
+                step=(
+                    f"stabilize: cycle {cycle} — batch file repair "
+                    f"({len(active)} files)"
+                ),
+                depth=3,
+            )
+            self._batch_repair.repair_many(paths=tuple(active))
+        elif self._repair is not None:
+            trace(
+                step=(
+                    f"stabilize: cycle {cycle} — file repair "
+                    f"({len(active)} files)"
+                ),
+                depth=3,
+            )
+        for path in active:
+            format_calls[path] += 1
+            fix_calls[path] += 1
+            if self._batch_repair is None and self._repair is not None:
+                self._repair(path=path)
+
+    def _complete_batch_stabilization(
+        self,
+        *,
+        starts: dict[Path, StabilizationStart],
+        format_calls: dict[Path, int],
+        fix_calls: dict[Path, int],
+    ) -> None:
+        """Finalize formatting and record each file's completed run.
+
+        Args:
+            starts: Initial metadata for each stabilized file.
+            format_calls: Per-file formatting invocation counts.
+            fix_calls: Per-file fixing invocation counts.
+
+        """
+        extra_format, extra_fix = self._final_compact_pass(
+            paths=tuple(
+                path for path in self._paths if path not in self._format_locked
+            ),
+        )
+        self._collect_diagnostics()
+        for completed in self._paths:
+            self._finish(
+                path=completed,
+                format_calls=format_calls[completed] + extra_format,
+                fix_calls=fix_calls[completed] + extra_fix,
+                started=starts[completed],
+            )
 
     def _stabilize_batch(self) -> None:
         """Stabilize many files with one Ruff process per complete cycle.
@@ -890,74 +1967,96 @@ class RuffStabilizer:
         }
         format_calls: dict[Path, int] = dict.fromkeys(active, 0)
         fix_calls: dict[Path, int] = dict.fromkeys(active, 0)
+        history: _StateHistory = _StateHistory(seen={}, last={})
+        conflicted: set[Path] = set()
+        reverted: set[Path] = set()
         for _iteration in range(self._max_iterations):
+            self._check_budget()
+            self._iterations += 1
             cycle: int = _iteration + 1
             before: dict[Path, bytes] = {
-                path: path.read_bytes() for path in active
+                path: self._read(path=path) for path in active
             }
-            trace(
-                step=(
-                    f"stabilize: cycle "
-                    f"{cycle} — ruff format ({len(active)} files)"
-                ),
-                depth=3,
+            self._track_states(
+                history=history,
+                states=before,
+                conflicted=conflicted,
+                resolvable=reverted,
             )
-            self._run(
-                args=(
-                    *self._command_prefix,
-                    "format",
-                    *(str(object=path) for path in active),
-                ),
+            active = self._lock_conflicted(
+                active=active,
+                conflicted=conflicted,
             )
-            trace(
-                step=(
-                    f"stabilize: cycle "
-                    f"{cycle} — ruff check --fix ({len(active)} files)"
-                ),
-                depth=3,
-            )
-            self._run(
-                args=(
-                    *self._command_prefix,
-                    "check",
-                    "--select",
-                    "ALL",
-                    "--ignore",
-                    Constants.ruff_conflict_ignores,
-                    "--fix",
-                    *(("--unsafe-fixes",) if self._unsafe_fixes else ()),
-                    *(str(object=path) for path in active),
-                ),
-            )
-            path: Path
-            if self._batch_repair is not None:
+            formatted: dict[Path, bytes] = {}
+            after: dict[Path, bytes] = {}
+            if active:
                 trace(
                     step=(
                         f"stabilize: cycle "
-                        f"{cycle} — batch file repair ({len(active)} files)"
+                        f"{cycle} — ruff format ({len(active)} files)"
                     ),
                     depth=3,
                 )
-                self._batch_repair.repair_many(paths=tuple(active))
-            elif self._repair is not None:
+                self._invoke(
+                    args=self._policy.format_argv(paths=tuple(active)),
+                )
+                formatted = {path: self._read(path=path) for path in active}
+                self._track_states(
+                    history=history,
+                    states=formatted,
+                    conflicted=conflicted,
+                    resolvable=reverted,
+                )
+                active = self._lock_conflicted(
+                    active=active,
+                    conflicted=conflicted,
+                )
+            if active:
                 trace(
                     step=(
                         f"stabilize: cycle "
-                        f"{cycle} — file repair ({len(active)} files)"
+                        f"{cycle}"
+                        f" — ruff check --fix ("
+                        f"{len(active)}"
+                        f" files)"
                     ),
                     depth=3,
                 )
-            for path in active:
-                format_calls[path] += 1
-                fix_calls[path] += 1
-                if self._batch_repair is None and self._repair is not None:
-                    self._repair(path=path)
-            changed: list[Path] = []
-            for path in active:
-                if path.read_bytes() != before[path]:
-                    changed.append(path)
-                    continue
-                continue
+                self._invoke(args=self._policy.fix_argv(paths=tuple(active)))
+                self._apply_batch_repairs(
+                    active=active,
+                    cycle=cycle,
+                    format_calls=format_calls,
+                    fix_calls=fix_calls,
+                )
+                after = {path: self._read(path=path) for path in active}
+                reverted.update(
+                    path
+                    for path in active
+                    if after[path] == before[path]
+                    and formatted[path] != before[path]
+                )
+                self._track_states(
+                    history=history,
+                    states=after,
+                    conflicted=conflicted,
+                    resolvable=reverted,
+                )
+                active = self._lock_conflicted(
+                    active=active,
+                    conflicted=conflicted,
+                )
+            format_dirty: list[Path] = [
+                path for path in active if formatted[path] != before[path]
+            ]
+            fix_dirty: list[Path] = [
+                path for path in active if after[path] != formatted[path]
+            ]
+            self._record_step(step="format", changed=format_dirty)
+            self._record_step(step="fix-repair", changed=fix_dirty)
+            changed: list[Path] = [
+                path for path in active if after[path] != before[path]
+            ]
             trace(
                 step=(
                     f"stabilize: cycle "
@@ -965,31 +2064,93 @@ class RuffStabilizer:
                 ),
                 depth=3,
             )
+            self._ordinary_verified.update(
+                {
+                    path: after[path]
+                    for path in active
+                    if before[path] == formatted[path] == after[path]
+                },
+            )
             if not changed:
-                extra_format, extra_fix = self._final_compact_pass(
-                    paths=self._paths,
+                unformatted: list[Path] = [
+                    path
+                    for path in self._ordinary_unformatted()
+                    if path not in self._format_locked
+                ]
+                if unformatted:
+                    active = sorted(unformatted)
+                    continue
+                self._complete_batch_stabilization(
+                    starts=starts,
+                    format_calls=format_calls,
+                    fix_calls=fix_calls,
                 )
-                for completed in self._paths:
-                    self._finish(
-                        path=completed,
-                        format_calls=format_calls[completed] + extra_format,
-                        fix_calls=fix_calls[completed] + extra_fix,
-                        started=starts[completed],
-                    )
                 return
-            active = changed
+            active = sorted(
+                path
+                for path in {*format_dirty, *changed}
+                if path not in self._format_locked
+            )
         trace(
-            step=f"stabilize: failed — {len(active)} files did not converge",
+            step=(f"stabilize: failed — {len(active)} files did not converge"),
             depth=3,
         )
         msg: str = " ".join(
             (
                 "Ruff did not stabilize",
                 f"{len(active)} files after",
-                f"{self._max_iterations} complete cycles.",
+                f"{self._max_iterations} complete cycles:",
+                ", ".join(path.as_posix() for path in active),
             ),
         )
         raise RuntimeError(msg)
+
+    def _ordinary_unformatted(self) -> list[Path]:
+        """Verify the ordinary formatter reached a fixed point.
+
+        Returns:
+            Every owned path ``ruff format --check`` would still
+            reformat.
+
+        """
+        touched: set[Path] = set()
+        for changed_paths in self._step_changes.values():
+            touched.update(changed_paths)
+        paths: tuple[Path, ...] = tuple(
+            path
+            for path in self._paths
+            if path in touched
+            or self._read(path=path) != self._ordinary_verified.get(path)
+        )
+        if not paths:
+            return []
+        result: RuffRunResult = self._invoke(
+            args=self._policy.format_argv(paths=paths, check=True),
+        )
+        if result.returncode == 0:
+            return []
+        return [
+            Path(line.removeprefix("Would reformat: ").strip())
+            for line in result.stdout.decode(
+                encoding="utf-8",
+                errors="replace",
+            ).splitlines()
+            if line.startswith("Would reformat: ")
+        ]
+
+    def _collect_diagnostics(self) -> None:
+        """Record remaining Ruff diagnostics for owned files.
+
+        Runs one read-only ``ruff check`` over the complete batch and
+        stores decoded diagnostics per file for the finish callback.
+        A nonzero exit here means unresolved lint findings, which are
+        reported rather than treated as execution failures.
+
+        """
+        result: RuffRunResult = self._invoke(
+            args=self._policy.check_argv(paths=self._paths),
+        )
+        self._record_diagnostics(stdout=result.stdout)
 
     def _terminate_processes(self) -> None:
         """Kill every in-flight Ruff process owned by the stabilizer."""
@@ -999,21 +2160,220 @@ class RuffStabilizer:
             if process.poll() is None:
                 process.kill()
 
-    def _run(self, *, args: tuple[str, ...]) -> None:
+    def _read(self, *, path: Path) -> bytes:
+        """Read file bytes and record them as the latest known state.
+
+        Args:
+            path: Owned file to read.
+
+        Returns:
+            Current file bytes.
+
+        """
+        data: bytes = path.read_bytes()
+        with self._lock:
+            self._last_seen[path] = data
+        return data
+
+    def _check_budget(self) -> None:
+        """Enforce the optional wall-clock stabilization budget.
+
+        Raises:
+            RuntimeError: If the configured time limit elapsed.
+
+        """
+        if self._deadline is not None and monotonic() >= self._deadline:
+            msg: str = (
+                "Ruff stabilization exceeded its time budget of "
+                f"{self._time_limit:.0f}s; "
+                "aborting for transactional rollback."
+            )
+            raise RuntimeError(msg)
+
+    def _rollback(self) -> None:
+        """Restore original bytes for every owned file.
+
+        Files changed externally since the last observed state are
+        reported as conflicts and left untouched; everything else is
+        restored atomically with its original permissions.
+
+        """
+        conflicts: list[str] = []
+        restored: int = 0
+        for entry_path, snapshot in self._originals.items():
+            path: Path = entry_path
+            original: bytes = snapshot[0]
+            mode: int = snapshot[1]
+            current: bytes | None = (
+                path.read_bytes() if path.is_file() else None
+            )
+            if current == original:
+                continue
+            last: bytes | None = self._last_seen.get(path)
+            if last is not None and current != last:
+                conflicts.append(path.as_posix())
+                continue
+            if last is None and current is not None:
+                conflicts.append(path.as_posix())
+                continue
+            try:
+                temporary: Path = path.with_name(
+                    name=f".{path.name}.{uuid4().hex}.rollback",
+                )
+                temporary.write_bytes(data=original)
+                temporary.replace(target=path)
+                path.chmod(mode=mode)
+            except OSError as error:
+                conflicts.append(f"{path.as_posix()} ({error})")
+                continue
+            restored += 1
+        self._rolled_back = bool(restored)
+        self._restored = restored
+        self._conflicts = len(conflicts)
+        if restored or conflicts:
+            trace(
+                step=(
+                    f"stabilize: rollback — restored {restored} "
+                    f"files; conflicts: "
+                    f"{", ".join(conflicts) if conflicts else "none"}"
+                ),
+                depth=3,
+            )
+
+    def _record_diagnostics(self, *, stdout: bytes) -> None:
+        """Store decoded Ruff JSON diagnostics per owned file.
+
+        Args:
+            stdout: Raw JSON array emitted by a read-only check.
+
+        """
+        try:
+            entries: JsonValue = loads(s=stdout)
+        except JSONDecodeError:
+            return
+        if not isinstance(entries, list):
+            return
+        grouped: dict[Path, list[Diagnostic]] = {}
+        for value in entries:
+            if not isinstance(value, dict):
+                continue
+            filename: object = value.get("filename")
+            location: object = value.get("location")
+            end_location: object = value.get("end_location")
+            if not isinstance(filename, str):
+                continue
+            start: dict[str, JsonValue] = (
+                location if isinstance(location, dict) else {}
+            )
+            end: dict[str, JsonValue] = (
+                end_location if isinstance(end_location, dict) else {}
+            )
+            code: JsonValue = value.get("code")
+            message: JsonValue = value.get("message")
+            row: JsonValue = start.get("row")
+            column: JsonValue = start.get("column")
+            end_row: JsonValue = end.get("row")
+            end_column: JsonValue = end.get("column")
+            grouped.setdefault(Path(filename), []).append(
+                Diagnostic(
+                    tool="ruff",
+                    file=filename,
+                    line=row if isinstance(row, int) else None,
+                    column=column if isinstance(column, int) else None,
+                    end_line=(end_row if isinstance(end_row, int) else None),
+                    end_column=(
+                        end_column if isinstance(end_column, int) else None
+                    ),
+                    severity="error",
+                    code=code if isinstance(code, str) else None,
+                    message=(message if isinstance(message, str) else ""),
+                ),
+            )
+        for path, diagnostics in grouped.items():
+            self._diagnostics[path] = diagnostics
+
+    def _run(self, *, args: tuple[str, ...]) -> RuffRunResult:
         """Run one registered Ruff subprocess to completion.
 
         Args:
             args: Full Ruff command line to execute.
 
+        Returns:
+            Captured stdout, stderr, exit code and duration.
+
+        Raises:
+            RuffExecutionError: If the process cannot launch, exceeds
+                the configured timeout, is terminated externally, or
+                exits with a fatal status. Exit code ``1`` from
+                ``check`` or ``format --check`` reports findings and is
+                returned, not raised.
+
         """
-        process: Popen[bytes] = Popen(args=args, stdout=PIPE, stderr=PIPE)
+        try:
+            process: Popen[bytes] = Popen(args=args, stdout=PIPE, stderr=PIPE)
+        except OSError as error:
+            msg: str = f"Cannot launch Ruff ({args[0]}): {error}"
+            raise RuffExecutionError(argv=args, message=msg) from error
         with self._processes_lock:
             self._processes.add(process)
+        started: float = monotonic()
         try:
-            _ = process.communicate()
+            try:
+                stdout, stderr = process.communicate(
+                    timeout=self._subprocess_timeout,
+                )
+            except TimeoutExpired as error:
+                process.kill()
+                _ = process.communicate()
+                msg = (
+                    f"Ruff subprocess timed out after "
+                    f"{self._subprocess_timeout}s: "
+                    f"{" ".join(args)}"
+                )
+                raise RuffExecutionError(argv=args, message=msg) from error
         finally:
             with self._processes_lock:
                 _ = self._processes.discard(process)
+        result: RuffRunResult = RuffRunResult(
+            argv=args,
+            returncode=process.returncode,
+            stdout=stdout,
+            stderr=stderr,
+            duration_seconds=monotonic() - started,
+        )
+        if result.returncode < 0:
+            msg = (
+                f"Ruff subprocess was terminated by signal "
+                f"{-result.returncode}: {" ".join(args)}"
+            )
+            raise RuffExecutionError(
+                argv=args,
+                message=msg,
+                returncode=result.returncode,
+                stdout=result.stdout,
+                stderr=result.stderr,
+            )
+        findings_allowed: bool = "check" in args or "--check" in args
+        if result.returncode > 1 or (
+            result.returncode == 1 and not findings_allowed
+        ):
+            detail: str = result.stderr.decode(
+                encoding="utf-8",
+                errors="replace",
+            ).strip()
+            msg = (
+                f"Ruff exited {result.returncode}: "
+                f"{" ".join(args)}"
+                f"{f" — {detail}" if detail else ""}"
+            )
+            raise RuffExecutionError(
+                argv=args,
+                message=msg,
+                returncode=result.returncode,
+                stdout=result.stdout,
+                stderr=result.stderr,
+            )
+        return result
 
     def _stabilize(self, path: Path) -> None:
         """Run complete Ruff cycles until a file stabilizes.
@@ -1033,21 +2393,26 @@ class RuffStabilizer:
         format_calls: int = 0
         fix_calls: int = 0
         for _iteration in range(self._max_iterations):
+            self._check_budget()
+            self._iterations += 1
             trace(
-                step=f"stabilize: {path.as_posix()} — cycle {_iteration + 1}",
+                step=(
+                    f"stabilize: {path.as_posix()} — cycle {_iteration + 1}"
+                ),
                 depth=4,
             )
-            before: bytes = path.read_bytes()
+            before: bytes = self._read(path=path)
             format_calls += self.ruff_format_until_stable(path=path)
             fix_calls += self.ruff_fix_until_stable(path=path)
             if self._batch_repair is not None:
                 self._batch_repair.repair_many(paths=(path,))
             elif self._repair is not None:
                 self._repair(path=path)
-            if path.read_bytes() == before:
+            if self._read(path=path) == before:
                 extra_format, extra_fix = self._final_compact_pass(
                     paths=(path,),
                 )
+                self._collect_diagnostics()
                 self._finish(
                     path=path,
                     format_calls=format_calls + extra_format,
@@ -1110,7 +2475,7 @@ class RuffStabilizer:
                     status="passed",
                     exit_code=None,
                     duration_seconds=duration,
-                    diagnostics=[],
+                    diagnostics=self._diagnostics.get(path, []),
                     stdout="",
                     stderr="",
                     format_calls=format_calls,
@@ -1332,7 +2697,7 @@ class ProgressDisplay:
                 ),
             )
             if colored
-            else f"[{'█' * filled}{unfilled}]"
+            else f"[{"█" * filled}{unfilled}]"
         )
         return f"{bar} {ratio * 100:6.2f}% {completed}/{total}"
 
@@ -1352,7 +2717,7 @@ class ProgressDisplay:
         )
         return [
             _paint(
-                text=f"{'TOTAL'.ljust(width)}",
+                text=f"{"TOTAL".ljust(width)}",
                 color=Constants.ansi_bold,
                 enabled=self._colored,
             )
@@ -1394,7 +2759,12 @@ class ProgressDisplay:
         parts: list[str] = []
         if self._rendered:
             parts.append(f"\x1b[{self._rows}F")
-        parts.extend(f"\x1b[2K{line}\n" for line in lines)
+        parts.extend(
+            f"""\
+\x1b[2K{line}
+"""
+            for line in lines
+        )
         _ = sys.stdout.write("".join(parts))
         _ = sys.stdout.flush()
         self._rows = len(lines)
@@ -1426,6 +2796,7 @@ class IgnoreMatcher:
         value: str = path.as_posix()
         candidates: tuple[str, ...] = (
             value,
+            f"{value}/",
             *[
                 parent.as_posix()
                 for parent in path.parents
@@ -1433,8 +2804,7 @@ class IgnoreMatcher:
             ],
         )
         return any(
-            fnmatch(name=candidate, pat=pattern)
-            or fnmatch(name=candidate, pat=pattern.removeprefix("**/"))
+            glob_match(relative=candidate, pattern=pattern)
             for pattern in self._patterns
             for candidate in candidates
         )
@@ -1469,7 +2839,10 @@ class Configuration:
             Deduplicated default, audit-specific, and native exclusions.
 
         """
-        patterns: list[str] = list(Constants.excludes)
+        patterns: list[str] = [
+            *Constants.excludes,
+            *default_excludes(root=self._root),
+        ]
         audit: JsonObject = self._tool(name="audit_linters_json")
         patterns.extend(self._strings(value=audit.get("exclude")))
         patterns.extend(self._strings(value=audit.get("extend-exclude")))
@@ -1569,6 +2942,20 @@ class Configuration:
         return section if isinstance(section, dict) else {}
 
 
+@dataclass(frozen=True, slots=True)
+class AuditScope:
+    """File-selection scope for one audit run.
+
+    Attributes:
+        targets: Relative files, directories or globs to include.
+        excludes: Additional relative glob patterns to exclude.
+
+    """
+
+    targets: tuple[str, ...] = (".",)
+    excludes: tuple[str, ...] = ()
+
+
 class AuditRunner:
     """Batch type checkers and run remaining checks per discovered file."""
 
@@ -1577,31 +2964,39 @@ class AuditRunner:
         *,
         root: Path,
         workers: int,
-        targets: tuple[str, ...] = (".",),
-        excludes: tuple[str, ...] = (),
+        scope: AuditScope | None = None,
         pace_estimates: Mapping[str, float] | None = None,
+        timeout_seconds: float | None = None,
     ) -> None:
         """Initialize the runner.
 
         Args:
             root: Audited project root.
             workers: Maximum concurrent file processes.
-            targets: Relative files, directories or globs to include.
-            excludes: Additional relative glob patterns to exclude.
+            scope: File-selection scope for the audited paths.
             pace_estimates: Expected per-tool durations in seconds, used to
                 spread batch progress across the real runtime; missing tools
                 fall back to a fixed per-file pace.
+            timeout_seconds: Maximum runtime in seconds before cancellation.
 
         """
         self._repair: FileRepair | None = None
+        self._deadline: float | None = (
+            monotonic() + timeout_seconds
+            if timeout_seconds is not None
+            else None
+        )
+        self._cancelled: Event = Event()
         self._batch_repair: BatchFileRepair | None = None
         self._root: Path = root.resolve()
         self._workers: int = workers
         self._processes: set[Popen[str]] = set()
         self._processes_lock: Lock = Lock()
         self._configuration: Configuration = Configuration(root=self._root)
-        self._targets: tuple[str, ...] = targets or (".",)
-        self._excludes: tuple[str, ...] = excludes
+        self._resolver: ConfigResolver = ConfigResolver(root=self._root)
+        resolved_scope: AuditScope = scope or AuditScope()
+        self._targets: tuple[str, ...] = resolved_scope.targets or (".",)
+        self._excludes: tuple[str, ...] = resolved_scope.excludes
         self._pace_estimates: dict[str, float] = dict(pace_estimates or {})
 
     def use_repair(self, *, repair: FileRepair | None) -> None:
@@ -1652,7 +3047,8 @@ class AuditRunner:
             dirnames[:] = [
                 name
                 for name in dirnames
-                if not matcher.matches(path=relative_dir / name)
+                if not name.startswith(".")
+                and not matcher.matches(path=relative_dir / name)
             ]
             found.extend(
                 relative_dir / name
@@ -1660,6 +3056,14 @@ class AuditRunner:
                 if Path(name).suffix.lower() in spec.suffixes
                 and (not matcher.matches(path=relative_dir / name))
                 and self._targeted(path=relative_dir / name)
+                and self._resolver.native_filters(
+                    path=self._root / relative_dir / name,
+                    tool=spec.name,
+                ).matches(relative=(relative_dir / name).as_posix())
+                and self._resolver.filters(
+                    path=self._root / relative_dir / name,
+                    tool="lints",
+                ).matches(relative=(relative_dir / name).as_posix())
             )
         return sorted(found, key=lambda path: path.as_posix())
 
@@ -1675,10 +3079,16 @@ class AuditRunner:
             Completed single-file result carrying parsed diagnostics; an
             ``error`` result when the process cannot be spawned.
 
+        Raises:
+            RuntimeError: If the audit was cancelled before the process
+                finished.
+
         """
         command: list[str] = spec.command(file=file)
         trace(
-            step=f"{spec.name}: exec {file.as_posix()} — {len(command)} argv",
+            step=(
+                f"{spec.name}: exec {file.as_posix()} — {len(command)} argv"
+            ),
             depth=4,
         )
         started: float = monotonic()
@@ -1693,7 +3103,9 @@ class AuditRunner:
             )
         except OSError as error:
             trace(
-                step=f"{spec.name}: {file.as_posix()} — spawn failed: {error}",
+                step=(
+                    f"{spec.name}: {file.as_posix()} — spawn failed: {error}"
+                ),
                 depth=4,
             )
             return FileResult(
@@ -1713,7 +3125,19 @@ class AuditRunner:
         with self._processes_lock:
             self._processes.add(process)
         try:
-            process_stdout, process_stderr = process.communicate()
+            if self._cancelled.is_set():
+                process.kill()
+                msg: str = "Lint audit was cancelled."
+                raise RuntimeError(msg)
+            try:
+                process_stdout, process_stderr = process.communicate(
+                    timeout=self._remaining_seconds(),
+                )
+            except BaseException:
+                if process.poll() is None:
+                    process.kill()
+                process.communicate()
+                raise
         finally:
             with self._processes_lock:
                 _ = self._processes.discard(process)
@@ -1727,7 +3151,9 @@ class AuditRunner:
         )
         stderr_text: str = process_stderr
         if spec.parser == "ruff":
-            stderr_text = "\n".join(
+            stderr_text = """\
+
+""".join(
                 line
                 for line in stderr_text.splitlines()
                 if "D203" not in line
@@ -1741,10 +3167,16 @@ class AuditRunner:
         duration: float = round(number=monotonic() - started, ndigits=6)
         trace(
             step=(
-                f"{spec.name}: {file.as_posix()} — exit {process.returncode}, {
-                    len(diagnostics)
-                } diagnostics, "
-                f"{duration}s"
+                f"{spec.name}"
+                f": "
+                f"{file.as_posix()}"
+                f" — exit "
+                f"{process.returncode}"
+                f", "
+                f"{len(diagnostics)}"
+                f" diagnostics, "
+                f"{duration}"
+                f"s"
             ),
             depth=4,
         )
@@ -1801,7 +3233,7 @@ class AuditRunner:
             step=(
                 f"all lints: start — "
                 f"{len(specs)} tools, {self._workers} workers, stabilize={
-                    ('on' if stabilize else 'off')
+                    ("on" if stabilize else "off")
                 }"
             ),
             depth=1,
@@ -1819,27 +3251,15 @@ class AuditRunner:
             effective: ToolSpec = spec
             discovered: list[Path] = files_by_tool[spec.name]
             if spec.project:
-                config: Path | None = self._project_config()
-                trace(
-                    step=(
-                        f"all lints: {spec.name} project config — "
-                        f"{(config.name if config is not None else 'none')}"
-                    ),
-                    depth=3,
-                )
-                effective = (
-                    replace(
-                        spec,
-                        arguments=(
-                            *spec.arguments,
-                            "--project",
-                            str(object=config),
-                        ),
+                discovered = [
+                    file
+                    for file in discovered
+                    if self._resolver.nearest_native(
+                        path=self._root / file,
+                        sections=("typescript",),
                     )
-                    if config is not None
-                    else spec
-                )
-                discovered = discovered if config is not None else []
+                    is not None
+                ]
             resolved[spec.name] = effective
             files_by_tool[spec.name] = discovered
             trace(
@@ -1871,7 +3291,9 @@ class AuditRunner:
                     enabled=stabilize,
                     command_prefix=next(
                         (
-                            spec.command_prefix or (spec.executable,)
+                            spec.command_prefix
+                            or resolve_tool_command(name=spec.executable)
+                            or (spec.executable,)
                             for spec in specs
                             if spec.name == "ruff"
                         ),
@@ -2285,13 +3707,21 @@ class AuditRunner:
             Whether ``path`` matches any configured target or glob.
 
         """
+        candidate: Path = self._root / path
+        if candidate.is_symlink() or not candidate.is_file():
+            return False
+        if not self._resolver.filters(
+            path=candidate,
+            tool="lints",
+        ).matches(relative=path.as_posix()):
+            return False
         value: str = path.as_posix()
         for target in self._targets:
             normalized: str = target.removeprefix("./").rstrip("/") or "."
             if normalized == ".":
                 return True
             if any(char in normalized for char in "*?["):
-                if fnmatch(name=value, pat=normalized):
+                if glob_match(relative=value, pattern=normalized):
                     return True
                 continue
             if value == normalized or value.startswith(f"{normalized}/"):
@@ -2353,7 +3783,8 @@ class AuditRunner:
             dirnames[:] = [
                 name
                 for name in dirnames
-                if not all(
+                if not name.startswith(".")
+                and not all(
                     matcher.matches(path=relative_dir / name)
                     for matcher in matchers.values()
                 )
@@ -2366,8 +3797,13 @@ class AuditRunner:
                 suffix: str = Path(name).suffix.lower()
                 spec: ToolSpec
                 for spec in specs:
-                    if suffix in spec.suffixes and (
-                        not matchers[spec.name].matches(path=path)
+                    if (
+                        suffix in spec.suffixes
+                        and (not matchers[spec.name].matches(path=path))
+                        and self._resolver.native_filters(
+                            path=self._root / path,
+                            tool=spec.name,
+                        ).matches(relative=path.as_posix())
                     ):
                         found[spec.name].append(path)
         return {
@@ -2662,7 +4098,7 @@ class AuditRunner:
                         end_line=None,
                         end_column=None,
                         severity=self._severity(value=match.group("severity")),
-                        code=f"TS{match.group('code')}",
+                        code=f"TS{match.group("code")}",
                         message=match.group("message"),
                     ),
                 )
@@ -2785,7 +4221,10 @@ class AuditRunner:
                 python=True,
                 progress=progress,
             )
-            for future in as_completed(fs=futures):
+            for future in as_completed(
+                fs=futures,
+                timeout=self._remaining_seconds(),
+            ):
                 name: str = futures[future]
                 results: list[FileResult] = future.result()
                 trace(
@@ -2797,10 +4236,11 @@ class AuditRunner:
                 )
                 collected.setdefault(name, []).extend(results)
         except BaseException:
+            self._cancelled.set()
             self._terminate_processes()
             for pending in futures:
                 _ = pending.cancel()
-            pool.shutdown(wait=False, cancel_futures=True)
+            pool.shutdown(wait=True, cancel_futures=True)
             raise
         else:
             pool.shutdown(wait=True)
@@ -2816,6 +4256,25 @@ class AuditRunner:
         for process in running:
             if process.poll() is None:
                 process.kill()
+
+    def _remaining_seconds(self) -> float | None:
+        """Return the bounded remaining audit runtime.
+
+        Returns:
+            Seconds left before the audit deadline, or ``None`` when no
+            deadline was configured.
+
+        Raises:
+            TimeoutError: If the audit deadline has already passed.
+
+        """
+        if self._deadline is None:
+            return None
+        remaining: float = self._deadline - monotonic()
+        if remaining <= 0:
+            msg: str = "Lint audit exhausted its time budget."
+            raise TimeoutError(msg)
+        return remaining
 
     def _stabilize_files(
         self,
@@ -2850,7 +4309,10 @@ class AuditRunner:
                 if not files
                 else f"{command} not installed"
             )
-            trace(step=f"all lints: stabilization skipped — {reason}", depth=2)
+            trace(
+                step=(f"all lints: stabilization skipped — {reason}"),
+                depth=2,
+            )
             return
         trace(
             step=(
@@ -2875,7 +4337,7 @@ class AuditRunner:
                 issues=result.status != "passed" or bool(result.diagnostics),
             )
 
-        RuffStabilizer(
+        stabilizer: RuffStabilizer = RuffStabilizer(
             paths=paths,
             callback=_finished,
             max_workers=self._workers,
@@ -2884,7 +4346,17 @@ class AuditRunner:
                 unsafe_fixes=unsafe_fixes,
                 repair=self._repair,
                 batch_repair=self._batch_repair,
+                project_root=self._root,
+                subprocess_timeout=self._remaining_seconds(),
+                time_limit_seconds=self._remaining_seconds(),
             ),
+        )
+        trace(
+            step=(
+                "all lints: stabilization metrics — "
+                + dumps(obj=asdict(obj=stabilizer.metrics), sort_keys=True)
+            ),
+            depth=2,
         )
         trace(step="all lints: stabilization complete", depth=2)
 
@@ -2912,7 +4384,10 @@ class AuditRunner:
             progress: Sink updated immediately when each task completes.
 
         """
-        batches: dict[str, tuple[ToolSpec, list[Path]]] = {}
+        batches: dict[
+            tuple[str, tuple[str, ...]],
+            tuple[ToolSpec, list[Path]],
+        ] = {}
         for key in sorted(specs_by_file):
             file, file_specs = specs_by_file[key]
             is_python: bool = any(
@@ -2921,9 +4396,13 @@ class AuditRunner:
             )
             if is_python != python:
                 continue
-            for spec in file_specs:
+            for original in file_specs:
+                spec: ToolSpec = self._scoped_spec(spec=original, file=file)
                 if spec.project or spec.batch:
-                    batches.setdefault(spec.name, (spec, []))[1].append(file)
+                    batches.setdefault(
+                        (spec.name, spec.arguments),
+                        (spec, []),
+                    )[1].append(file)
                 else:
                     self._queue_check(
                         pool=pool,
@@ -2941,6 +4420,81 @@ class AuditRunner:
                     files=chunk,
                     progress=progress,
                 )
+
+    def _scoped_spec(self, *, spec: ToolSpec, file: Path) -> ToolSpec:
+        """Bind a tool batch to its nearest native project.
+
+        Args:
+            spec: Root tool configuration.
+            file: Root-relative source candidate.
+
+        Returns:
+            Tool configuration retaining the file's native project context.
+
+        """
+        values: dict[str, JsonValue] = self._resolver.options(
+            path=self._root / file,
+            tool="lints",
+        )
+        option: str = f"{spec.name.removesuffix("_docs")}-arg"
+        extra: JsonValue = values.get(option, [])
+        if isinstance(extra, str):
+            extra = [extra]
+        if isinstance(extra, list):
+            spec = replace(
+                spec,
+                arguments=(
+                    *spec.arguments,
+                    *(item for item in extra if isinstance(item, str)),
+                ),
+            )
+        native: str | None = {
+            "ruff": "ruff",
+            "ruff_docs": "ruff",
+            "basedpyright": "basedpyright",
+            "pyrefly": "pyrefly",
+            "tsc": "typescript",
+            "typescript": "typescript",
+        }.get(spec.name)
+        if native is None:
+            return spec
+        carrier: Path | None = self._resolver.nearest_native(
+            path=self._root / file,
+            sections=(native,),
+        )
+        arguments: tuple[str, ...] = spec.arguments
+        if native == "ruff":
+            default_flags: tuple[str, ...] = (
+                "--select",
+                "ALL",
+                "--ignore",
+                Constants.ruff_conflict_ignores,
+            )
+            for index in range(len(arguments)):
+                if (
+                    arguments[index : index + len(default_flags)]
+                    == default_flags
+                ):
+                    arguments = (
+                        arguments[:index]
+                        + arguments[index + len(default_flags) :]
+                    )
+                    break
+            rule_flags: tuple[str, ...] = ResolvedRuffPolicy.rule_flags_for(
+                root=carrier.parent if carrier is not None else None,
+            )
+            command_index: int = (
+                arguments.index("check") + 1 if "check" in arguments else 0
+            )
+            arguments = (
+                *arguments[:command_index],
+                *rule_flags,
+                *arguments[command_index:],
+            )
+        elif carrier is not None:
+            flag: str = "-c" if native == "pyrefly" else "--project"
+            arguments = (*arguments, flag, str(object=carrier))
+        return replace(spec, arguments=arguments)
 
     def _chunks(
         self,
@@ -3112,7 +4666,14 @@ class AuditRunner:
                 daemon=True,
             ).start()
         try:
-            result: FileResult = self.run_file(spec=batch, file=files[0])
+            with self._project_files_scope(
+                spec=batch,
+                files=files,
+            ) as scoped:
+                result: FileResult = self.run_file(
+                    spec=scoped,
+                    file=files[0],
+                )
         finally:
             done.set()
             if display is not None:
@@ -3145,6 +4706,99 @@ class AuditRunner:
             )
             for name in names
         ]
+
+    @contextmanager
+    def _project_files_scope(
+        self,
+        *,
+        spec: ToolSpec,
+        files: list[Path],
+    ) -> Generator[ToolSpec]:
+        """Scope a project-mode analyzer program to the discovered files.
+
+        Project-mode analyzers (``tsc --project``) honor the carrier
+        configuration's own ``include`` globs, which sweep every matching
+        file in the tree — generated report bundles, scratch copies and
+        vendored trees that ``[tool.exactus] exclude`` and per-tool
+        excludes intentionally keep out of discovery. Pointing the
+        ``--project`` selector at a synthesized sibling configuration
+        whose ``include`` list is the discovered set keeps the analyzer's
+        cross-file resolution while confining diagnostics to linted
+        targets. ``include`` (not ``files``) carries the scope because
+        the carrier's own ``exclude`` still filters it — entries in
+        ``files`` bypass ``exclude`` entirely — so project exclusions
+        like ``dev/**`` or ``**/eslint.config.*`` keep working without
+        duplicating them into exactus configuration. When no carrier
+        configuration exists the file list is forwarded explicitly so
+        the program is still discovery-scoped.
+
+        Args:
+            spec: Batched tool specification.
+            files: Discovered files covered by this process.
+
+        Yields:
+            Tool specification whose program is scoped to ``files``.
+
+        """
+        if not spec.project:
+            yield spec
+            return
+        arguments: tuple[str, ...] = spec.arguments
+        index: int = -1
+        for flag in ("--project", "-p"):
+            if flag in arguments:
+                index = arguments.index(flag)
+                break
+        carrier: Path | None = (
+            Path(arguments[index + 1])
+            if 0 <= index < len(arguments) - 1
+            else None
+        )
+        if carrier is None:
+            yield replace(
+                spec,
+                arguments=(
+                    *arguments,
+                    *(str(object=file) for file in files),
+                ),
+            )
+            return
+        scoped: Path = carrier.parent / (
+            f".exactus-{spec.name}-{getpid()}.json"
+        )
+        payload: JsonObject = {
+            "extends": f"./{carrier.name}",
+            "files": [],
+            "include": [
+                (self._root / file).relative_to(carrier.parent).as_posix()
+                for file in files
+            ],
+        }
+        scoped.write_text(
+            data=dumps(obj=payload, indent=2)
+            + """\
+
+""",
+            encoding="utf-8",
+        )
+        trace(
+            step=(
+                f"{spec.name}: scoped project — {len(files)} files via "
+                f"{scoped.name} (extends {carrier.name})"
+            ),
+            depth=3,
+        )
+        try:
+            yield replace(
+                spec,
+                arguments=(
+                    *arguments[: index + 1],
+                    str(object=scoped),
+                    *arguments[index + 2 :],
+                ),
+            )
+        finally:
+            scoped.unlink(missing_ok=True)
 
     def _pace_interval(self, *, spec: ToolSpec, count: int) -> float:
         """Return the per-file progress publish interval for one batch.
@@ -3670,7 +5324,10 @@ class _CliActivity:
         )
         try:
             _ = temporary.write_text(
-                data=dumps(obj=payload, indent=2, sort_keys=True) + "\n",
+                data=dumps(obj=payload, indent=2, sort_keys=True)
+                + """\
+
+""",
                 encoding="utf-8",
             )
             _ = temporary.replace(target=self._path)
@@ -3852,7 +5509,10 @@ class Cli:
                     previous=previous_report,
                 )
                 text: str = (
-                    dumps(obj=report, indent=2, ensure_ascii=False) + "\n"
+                    dumps(obj=report, indent=2, ensure_ascii=False)
+                    + """\
+
+"""
                 )
                 _ = output.write_text(data=text, encoding="utf-8")
                 canonical: Path = report_dir / "result.json"
@@ -3874,13 +5534,20 @@ class Cli:
                         rmtree(path=files_dir)
                 trace(step="all lints: report written")
                 _print(cls._summary(results=results, previous=previous_report))
-                _print(f"{output}\n")
+                _print(f"""\
+{output}
+""")
                 activity.finish(
                     status="DONE" if report["ok"] is True else "FAIL",
                     exit_code=0 if report["ok"] is True else 1,
                 )
         except KeyboardInterrupt:
-            _print("\nInterrupted.", file=sys.stderr)
+            _print(
+                """\
+
+Interrupted.""",
+                file=sys.stderr,
+            )
             return 130
         finally:
             cls._restore_signals(previous=previous)
@@ -3960,6 +5627,7 @@ class Cli:
             ToolSpec(
                 name="ruff",
                 executable="ruff",
+                command_prefix=resolve_tool_command(name="ruff") or (),
                 parser="ruff",
                 suffixes=Constants.python_suffixes,
                 arguments=(
@@ -3976,6 +5644,7 @@ class Cli:
             ToolSpec(
                 name="refurb",
                 executable="refurb",
+                command_prefix=resolve_tool_command(name="refurb") or (),
                 optional=True,
                 parser="refurb",
                 suffixes=Constants.python_suffixes,
@@ -3986,6 +5655,7 @@ class Cli:
             ToolSpec(
                 name="ruff_docs",
                 executable="ruff",
+                command_prefix=resolve_tool_command(name="ruff") or (),
                 parser="ruff",
                 suffixes=Constants.python_suffixes,
                 arguments=(
@@ -4004,6 +5674,7 @@ class Cli:
             ToolSpec(
                 name="basedpyright",
                 executable="basedpyright",
+                command_prefix=resolve_tool_command(name="basedpyright") or (),
                 parser="basedpyright",
                 suffixes=Constants.python_suffixes,
                 arguments=("--outputjson",),
@@ -4014,6 +5685,7 @@ class Cli:
             ToolSpec(
                 name="pyrefly",
                 executable="pyrefly",
+                command_prefix=resolve_tool_command(name="pyrefly") or (),
                 parser="pyrefly",
                 suffixes=Constants.python_suffixes,
                 arguments=(
@@ -4209,7 +5881,14 @@ class Cli:
             _paint(text=line, color=Constants.ansi_bold, enabled=enabled)
             for line in wrapped
         )
-        return "\n".join(rows) + "\n"
+        return (
+            """\
+
+""".join(rows)
+            + """\
+
+"""
+        )
 
     @staticmethod
     def _delta(*, delta: int, enabled: bool) -> str:
@@ -4295,7 +5974,12 @@ def main() -> int:
     try:
         return Cli.main()
     except KeyboardInterrupt:
-        _print("\nInterrupted.", file=sys.stderr)
+        _print(
+            """\
+
+Interrupted.""",
+            file=sys.stderr,
+        )
         return 130
 
 

@@ -50,26 +50,43 @@ def test_codeblock_bullets_numbered() -> None:
     """Fences and lists render one line per item."""
     expect_equal(
         actual=MarkdownFilters.codeblock(value="x", language="py"),
-        expected="```py\nx\n```",
+        expected="""\
+```py
+x
+```""",
     )
     expect_equal(
         actual=MarkdownFilters.bullets(value=["a", "b"]),
-        expected="- a\n- b",
+        expected="""\
+- a
+- b""",
     )
     expect_equal(actual=MarkdownFilters.bullets(value="a"), expected="- a")
     expect_equal(
         actual=MarkdownFilters.bullets(value=[{"n": 1}, {"n": 2}], path="n"),
-        expected="- 1\n- 2",
+        expected="""\
+- 1
+- 2""",
     )
     expect_equal(
         actual=MarkdownFilters.numbered(value=["a", "b"]),
-        expected="1. a\n2. b",
+        expected="""\
+1. a
+2. b""",
     )
 
 
 def test_table_with_columns_escapes_cells() -> None:
     """Pipes and newlines in cells cannot break the table."""
-    rows: list[JsonValue] = [{"name": "a|b", "score": 1, "note": "x\ny"}]
+    rows: list[JsonValue] = [
+        {
+            "name": "a|b",
+            "score": 1,
+            "note": """\
+x
+y""",
+        },
+    ]
     expect_equal(
         actual=MarkdownFilters.render_table(
             value=rows,
@@ -78,8 +95,10 @@ def test_table_with_columns_escapes_cells() -> None:
         expected=(
             dedent(
                 text=(
-                    "    | Name | Score | note |\n    | --- | --- | --- |"
-                    "\n    | a\\|b | 1 | x<br>y |"
+                    """\
+    | Name | Score | note |
+    | --- | --- | --- |
+    | a\\|b | 1 | x<br>y |"""
                 ),
             )
         ),
@@ -93,7 +112,10 @@ def test_table_defaults_and_empty() -> None:
             value=[{"a": 1, "b": 2}],
             columns=(),
         ),
-        expected="| a | b |\n| --- | --- |\n| 1 | 2 |",
+        expected="""\
+| a | b |
+| --- | --- |
+| 1 | 2 |""",
     )
     expect_equal(
         actual=MarkdownFilters.render_table(value=[], columns=()),
@@ -109,7 +131,10 @@ def test_json_filters_and_registration() -> None:
     """JSON filters keep unicode; ``register`` installs every filter."""
     expect_equal(
         actual=MarkdownFilters.to_json(value={"a": "é"}),
-        expected='{\n  "a": "é"\n}',
+        expected="""\
+{
+  "a": "é"
+}""",
     )
     expect_equal(
         actual=MarkdownFilters.compact_json(value={"a": [1, 2]}),
@@ -141,13 +166,24 @@ def test_table_filter_accepts_positional_columns_from_templates() -> None:
     rendered: str = env.from_string(
         source='{{ rows | md_table("Name:name") }}',
     ).render(rows=[{"name": "a"}])
-    expect_equal(actual=rendered, expected="| Name |\n| --- |\n| a |")
+    expect_equal(
+        actual=rendered,
+        expected="""\
+| Name |
+| --- |
+| a |""",
+    )
 
 
 def test_cell_escapes_pipes_and_every_line_break() -> None:
     """``md_cell`` escapes ``|`` and turns CR, LF and CRLF into ``<br>``."""
     expect_equal(
-        actual=MarkdownFilters.cell(value="a|b\r\nc\rd\ne"),
+        actual=MarkdownFilters.cell(
+            value="""\
+a|b\r
+c\rd
+e""",
+        ),
         expected="a\\|b<br>c<br>d<br>e",
     )
     env: Environment = Environment(autoescape=select_autoescape(default=False))
@@ -161,7 +197,19 @@ def test_cell_escapes_pipes_and_every_line_break() -> None:
 def test_table_normalizes_crlf_cells_and_pipe_headers() -> None:
     """Table cells and headers are single-line and pipe-safe."""
     table: str = MarkdownFilters.render_table(
-        value=[{"a": "one\r\ntwo"}],
+        value=[
+            {
+                "a": """\
+one\r
+two""",
+            },
+        ],
         columns=("A|B:a",),
     )
-    expect_equal(actual=table, expected="| A\\|B |\n| --- |\n| one<br>two |")
+    expect_equal(
+        actual=table,
+        expected="""\
+| A\\|B |
+| --- |
+| one<br>two |""",
+    )

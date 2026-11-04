@@ -17,6 +17,7 @@ from playwright.sync_api import Browser, BrowserContext, Page, sync_playwright
 from playwright.sync_api import Error as PlaywrightError
 
 from exactus.packages.argument_parser import ExactusArgumentParser
+from exactus.tools.common.config import reports_root
 from exactus.tools.record.diagnostics import DiagnosticCollector
 from exactus.tools.record.execution import (
     ExecutionDecision,
@@ -124,7 +125,7 @@ class ReplayProgress:
         if event.get("type") != "action_result":
             return
         record: JsonValue = event.get("action_record")
-        identity: str = f"{event.get('run_id')}/{event.get('flow_id')}/"
+        identity: str = f"{event.get("run_id")}/{event.get("flow_id")}/"
         if isinstance(record, dict):
             identity += str(object=record.get("event_id"))
         with self.lock:
@@ -248,7 +249,7 @@ class WorkflowProgress:
                             f"{len(self.finished)}/{len(self.budgets)}"
                             f" workflows finished; {entry}:"
                             f" {completed}/{budget}"
-                            f" steps; {self.active.get(entry, 'waiting')}"
+                            f" steps; {self.active.get(entry, "waiting")}"
                         ),
                     },
                 )
@@ -413,7 +414,7 @@ def _run_chain(
         if message.get("type") == "action_started":
             capture.diagnostics.phase(
                 phase="action",
-                action=f"{message.get('flow_id')}/{message.get('event_id')}",
+                action=f"{message.get("flow_id")}/{message.get("event_id")}",
             )
 
     while state is not None:
@@ -730,7 +731,10 @@ def run_workspace(
         "evidence": evidence,
     }
     (output / "result.json").write_text(
-        data=dumps(obj=report, indent=2) + "\n",
+        data=dumps(obj=report, indent=2)
+        + """\
+
+""",
         encoding="utf-8",
     )
     suite: Element[str] = Element(
@@ -755,7 +759,10 @@ def run_workspace(
                 message=str(object=result.get("error") or "Flow failed"),
             ).text = dumps(obj=result, indent=2)
     (output / "junit.xml").write_text(
-        data=tostring(element=suite, encoding="unicode") + "\n",
+        data=tostring(element=suite, encoding="unicode")
+        + """\
+
+""",
         encoding="utf-8",
     )
     return report
@@ -781,7 +788,8 @@ def main() -> int:
     parser.add_argument(
         "--output",
         type=Path,
-        default=Path("EXACTUS_RESULTS/FLOWS"),
+        default=None,
+        help="results destination (default: <reports-dir>/FLOWS)",
     )
     parser.add_argument("--width", type=int, default=1440)
     parser.add_argument("--height", type=int, default=900)
@@ -799,7 +807,7 @@ def main() -> int:
         parser.error(message="Viewport dimensions must be positive.")
     report: Event = run_workspace(
         path=args.workspace,
-        output=args.output,
+        output=args.output or reports_root(start=Path.cwd()) / "FLOWS",
         flow_id=args.flow,
         url=args.url,
         browser=BrowserOptions(

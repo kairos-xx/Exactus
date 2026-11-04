@@ -116,7 +116,9 @@ class DiffRenderer:
                     context=context,
                 ),
             )
-        return "\n".join(section for section in sections if section)
+        return """\
+
+""".join(section for section in sections if section)
 
     @classmethod
     def write(
@@ -191,7 +193,10 @@ class DiffRenderer:
         new_bytes: bytes = b"" if after is None else after.content
         if b"\x00" in old_bytes or b"\x00" in new_bytes:
             return cls._paint(
-                text=f"diff --git a/{path} b/{path}\nBinary files differ\n",
+                text=f"""\
+diff --git a/{path} b/{path}
+Binary files differ
+""",
                 color=Constants.yellow,
                 enabled=color,
             )
@@ -200,11 +205,18 @@ class DiffRenderer:
             new_text: str = new_bytes.decode(encoding="utf-8")
         except UnicodeDecodeError:
             return cls._paint(
-                text=f"diff --git a/{path} b/{path}\nBinary files differ\n",
+                text=f"""\
+diff --git a/{path} b/{path}
+Binary files differ
+""",
                 color=Constants.yellow,
                 enabled=color,
             )
-        lines: list[str] = [f"diff --git a/{path} b/{path}\n"]
+        lines: list[str] = [
+            f"""\
+diff --git a/{path} b/{path}
+""",
+        ]
         lines.extend(
             unified_diff(
                 a=old_text.splitlines(keepends=True),
@@ -245,7 +257,10 @@ class DiffRenderer:
         if after is not None and after.kind is EntryKind.SYMLINK:
             details += f" ({after.link_target})"
         return cls._paint(
-            text=f"diff --git a/{path} b/{path}\n{details}\n",
+            text=f"""\
+diff --git a/{path} b/{path}
+{details}
+""",
             color=Constants.yellow,
             enabled=color,
         )

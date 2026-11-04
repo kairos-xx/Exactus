@@ -152,20 +152,11 @@ class Example:
 
         """
         _ = stdout.write(
-            f"{event.timestamp.isoformat()}"
-            f" "
-            f"{event.backend.value}"
-            f":"
-            f"{event.event.value}"
-            f" pid="
-            f"{event.pid}"
-            f" url="
-            f"{event.url!r}"
-            f" title="
-            f"{event.title!r}"
-            f" exit="
-            f"{event.exit_code!r}"
-            f"\n",
+            f"""\
+{event.timestamp.isoformat()} {event.backend.value}:{event.event.value} \
+pid={event.pid} url={event.url!r} title={event.title!r} \
+exit={event.exit_code!r}
+""",
         )
 
     @staticmethod

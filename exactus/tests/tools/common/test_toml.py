@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, cast
 import pytest
 
 from exactus.tests.common.support import expect_equal, expect_true
-from exactus.tools.common.toml import TomlDocument, TomlSerializer
+from exactus.tools.common.toml import TomlDocument, TomlSerializer, TomlValue
 
 if TYPE_CHECKING:
     from collections.abc import Mapping
@@ -31,13 +31,16 @@ def _roundtrip(*, document: TomlDocument) -> Mapping[str, object]:
 
 def test_scalars_roundtrip() -> None:
     """Primitive values survive a serialize/parse round trip."""
-    document: TomlDocument = {
-        "name": "exactus",
-        "count": 7,
-        "ratio": 1.5,
-        "enabled": True,
-        "disabled": False,
-    }
+    document: TomlDocument = cast(
+        typ="dict[str, TomlValue]",
+        val={
+            "name": "exactus",
+            "count": 7,
+            "ratio": 1.5,
+            "enabled": True,
+            "disabled": False,
+        },
+    )
     parsed: Mapping[str, object] = _roundtrip(document=document)
     expect_equal(actual=parsed["name"], expected="exactus")
     expect_equal(actual=parsed["count"], expected=7)
@@ -57,11 +60,14 @@ def test_temporal_scalars_roundtrip() -> None:
         second=5,
         tzinfo=UTC,
     )
-    document: TomlDocument = {
-        "stamp": stamp,
-        "day": date(year=2026, month=1, day=2),
-        "moment": time(hour=3, minute=4, second=5),
-    }
+    document: TomlDocument = cast(
+        typ="dict[str, TomlValue]",
+        val={
+            "stamp": stamp,
+            "day": date(year=2026, month=1, day=2),
+            "moment": time(hour=3, minute=4, second=5),
+        },
+    )
     parsed: Mapping[str, object] = _roundtrip(document=document)
     expect_equal(actual=parsed["stamp"], expected=stamp)
     expect_equal(
@@ -76,12 +82,24 @@ def test_temporal_scalars_roundtrip() -> None:
 
 def test_nested_tables_emit_dotted_headers() -> None:
     """Nested dictionaries serialize under dotted table headers."""
-    document: TomlDocument = {
-        "tool": {
-            "ruff": {"line-length": 79},
-            "basedpyright": {"typeCheckingMode": "strict"},
+    document: TomlDocument = cast(
+        typ="dict[str, TomlValue]",
+        val={
+            "tool": cast(
+                typ="dict[str, TomlValue]",
+                val={
+                    "ruff": cast(
+                        typ="dict[str, TomlValue]",
+                        val={"line-length": 79},
+                    ),
+                    "basedpyright": cast(
+                        typ="dict[str, TomlValue]",
+                        val={"typeCheckingMode": "strict"},
+                    ),
+                },
+            ),
         },
-    }
+    )
     text: str = TomlSerializer.dumps(value=document)
     expect_true(condition="[tool.ruff]" in text, message="ruff header")
     expect_true(
@@ -96,7 +114,12 @@ def test_nested_tables_emit_dotted_headers() -> None:
 
 def test_empty_table_keeps_header() -> None:
     """A table without entries still emits its header."""
-    text: str = TomlSerializer.dumps(value={"empty": {}})
+    text: str = TomlSerializer.dumps(
+        value=cast(
+            typ="dict[str, TomlValue]",
+            val={"empty": cast(typ="dict[str, TomlValue]", val={})},
+        ),
+    )
     expect_true(condition="[empty]" in text, message="empty header")
     parsed: Mapping[str, object] = _roundtrip(document={"empty": {}})
     expect_true(condition=isinstance(parsed["empty"], dict))
@@ -104,10 +127,13 @@ def test_empty_table_keeps_header() -> None:
 
 def test_scalar_arrays_roundtrip() -> None:
     """Arrays of scalars serialize inline."""
-    document: TomlDocument = {
-        "include": ["a.py", "b.py"],
-        "numbers": [1, 2, 3],
-    }
+    document: TomlDocument = cast(
+        typ="dict[str, TomlValue]",
+        val={
+            "include": cast(typ="list[TomlValue]", val=["a.py", "b.py"]),
+            "numbers": cast(typ="list[TomlValue]", val=[1, 2, 3]),
+        },
+    )
     parsed: Mapping[str, object] = _roundtrip(document=document)
     expect_equal(actual=parsed["include"], expected=["a.py", "b.py"])
     expect_equal(actual=parsed["numbers"], expected=[1, 2, 3])
@@ -115,12 +141,24 @@ def test_scalar_arrays_roundtrip() -> None:
 
 def test_array_of_tables_roundtrip() -> None:
     """Arrays of dictionaries serialize as ``[[table]]`` blocks."""
-    document: TomlDocument = {
-        "items": [
-            {"name": "first", "weight": 1},
-            {"name": "second", "weight": 2},
-        ],
-    }
+    document: TomlDocument = cast(
+        typ="dict[str, TomlValue]",
+        val={
+            "items": cast(
+                typ="list[TomlValue]",
+                val=[
+                    cast(
+                        typ="dict[str, TomlValue]",
+                        val={"name": "first", "weight": 1},
+                    ),
+                    cast(
+                        typ="dict[str, TomlValue]",
+                        val={"name": "second", "weight": 2},
+                    ),
+                ],
+            ),
+        },
+    )
     text: str = TomlSerializer.dumps(value=document)
     expect_true(condition="[[items]]" in text, message="array header")
     parsed: Mapping[str, object] = _roundtrip(document=document)
@@ -130,9 +168,26 @@ def test_array_of_tables_roundtrip() -> None:
 
 def test_array_of_tables_with_nested_tables() -> None:
     """Array-of-table entries keep nested sub-tables."""
-    document: TomlDocument = {
-        "items": [{"meta": {"level": 1}, "name": "entry"}],
-    }
+    document: TomlDocument = cast(
+        typ="dict[str, TomlValue]",
+        val={
+            "items": cast(
+                typ="list[TomlValue]",
+                val=[
+                    cast(
+                        typ="dict[str, TomlValue]",
+                        val={
+                            "meta": cast(
+                                typ="dict[str, TomlValue]",
+                                val={"level": 1},
+                            ),
+                            "name": "entry",
+                        },
+                    ),
+                ],
+            ),
+        },
+    )
     parsed: Mapping[str, object] = _roundtrip(document=document)
     items: object = parsed["items"]
     expect_true(condition=isinstance(items, list), message="items list")
@@ -140,7 +195,15 @@ def test_array_of_tables_with_nested_tables() -> None:
 
 def test_mixed_array_rejects_tables() -> None:
     """An array holding dictionaries inside scalars is rejected."""
-    document: TomlDocument = {"bad": ["a", {"b": 1}]}
+    document: TomlDocument = cast(
+        typ="dict[str, TomlValue]",
+        val={
+            "bad": cast(
+                typ="list[TomlValue]",
+                val=["a", cast(typ="dict[str, TomlValue]", val={"b": 1})],
+            ),
+        },
+    )
     with pytest.raises(expected_exception=TypeError):
         _ = TomlSerializer.dumps(value=document)
 
@@ -154,36 +217,66 @@ def test_unsupported_type_rejected() -> None:
 
 def test_non_finite_float_rejected() -> None:
     """NaN and infinity cannot be serialized."""
-    document: TomlDocument = {"bad": float("inf")}
+    document: TomlDocument = cast(
+        typ="dict[str, TomlValue]",
+        val={"bad": float("inf")},
+    )
     with pytest.raises(expected_exception=ValueError, match="finite"):
         _ = TomlSerializer.dumps(value=document)
 
 
 def test_non_bare_key_is_quoted() -> None:
     """Keys outside the bare-key pattern serialize quoted."""
-    text: str = TomlSerializer.dumps(value={"project-includes": ["a"]})
+    text: str = TomlSerializer.dumps(
+        value=cast(
+            typ="dict[str, TomlValue]",
+            val={"project-includes": cast(typ="list[TomlValue]", val=["a"])},
+        ),
+    )
     expect_true(
         condition='"project-includes" = ' not in text,
         message="bare hyphenated key stays bare",
     )
-    quoted: str = TomlSerializer.dumps(value={"weird key": "v"})
+    quoted: str = TomlSerializer.dumps(
+        value=cast(typ="dict[str, TomlValue]", val={"weird key": "v"}),
+    )
     expect_true(condition='"weird key" = "v"' in quoted, message="quoted key")
 
 
 def test_string_escaping() -> None:
     """Escapes serialize inside basic TOML strings."""
-    document: TomlDocument = {"text": 'a"b\\c\n'}
+    document: TomlDocument = cast(
+        typ="dict[str, TomlValue]",
+        val={
+            "text": """\
+a"b\\c
+""",
+        },
+    )
     parsed: Mapping[str, object] = _roundtrip(document=document)
-    expect_equal(actual=parsed["text"], expected='a"b\\c\n')
+    expect_equal(
+        actual=parsed["text"],
+        expected="""\
+a"b\\c
+""",
+    )
 
 
 def test_generated_pyproject_shape() -> None:
     """The lints template serializes into a valid lint config."""
     document: TomlDocument = toml_loads(
-        "\n        [tool.ruff]\n        line-length = 79\n\n        [tool."
-        'basedpyright]\n        typeCheckingMode = "strict"\n        inclu'
-        'de = ["a.py"]\n\n        [tool.pyrefly]\n        project-includes'
-        ' = ["a.py"]\n        ',
+        """\
+
+        [tool.ruff]
+        line-length = 79
+
+        [tool.basedpyright]
+        typeCheckingMode = "strict"
+        include = ["a.py"]
+
+        [tool.pyrefly]
+        project-includes = ["a.py"]
+        """,
     )
     parsed: Mapping[str, object] = _roundtrip(document=document)
     expect_equal(actual=parsed, expected=document)
@@ -191,17 +284,35 @@ def test_generated_pyproject_shape() -> None:
 
 def test_array_of_tables_with_nested_array_of_tables() -> None:
     """Nested arrays of tables serialize recursively and round-trip."""
-    document: TomlDocument = {
-        "groups": [
-            {
-                "name": "parent",
-                "children": [
-                    {"name": "first", "weight": 1},
-                    {"name": "second", "weight": 2},
+    document: TomlDocument = cast(
+        typ="dict[str, TomlValue]",
+        val={
+            "groups": cast(
+                typ="list[TomlValue]",
+                val=[
+                    cast(
+                        typ="dict[str, TomlValue]",
+                        val={
+                            "name": "parent",
+                            "children": cast(
+                                typ="list[TomlValue]",
+                                val=[
+                                    cast(
+                                        typ="dict[str, TomlValue]",
+                                        val={"name": "first", "weight": 1},
+                                    ),
+                                    cast(
+                                        typ="dict[str, TomlValue]",
+                                        val={"name": "second", "weight": 2},
+                                    ),
+                                ],
+                            ),
+                        },
+                    ),
                 ],
-            },
-        ],
-    }
+            ),
+        },
+    )
     text: str = TomlSerializer.dumps(value=document)
     expect_true(condition="[[groups]]" in text, message="parent array header")
     expect_true(

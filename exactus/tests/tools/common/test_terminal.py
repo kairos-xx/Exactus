@@ -74,7 +74,9 @@ def tty(monkeypatch: pytest.MonkeyPatch) -> Iterator[Tty]:
 
     def sprint_stub(
         *values: object,
-        end: str = "\n",
+        end: str = """\
+
+""",
         **options: object,
     ) -> None:
         """Write printed values straight into the fake stream.
@@ -116,7 +118,9 @@ def plain(monkeypatch: pytest.MonkeyPatch) -> StringIO:
 
     def sprint_stub(
         *values: object,
-        end: str = "\n",
+        end: str = """\
+
+""",
         **options: object,
     ) -> None:
         """Write printed values straight into the fake stream.
@@ -427,8 +431,18 @@ def test_progress_paints_and_repaints(tty: Tty) -> None:
     ExactusTerminal.clear_progress(lines=0)
     expect_none(value=private(owner=ExactusTerminal, name="_rendered_lines"))
     out: StringIO = StringIO()
-    ExactusTerminal.emit(text="direct\n", stream=out)
-    expect_equal(actual=out.getvalue(), expected="direct\n")
+    ExactusTerminal.emit(
+        text="""\
+direct
+""",
+        stream=out,
+    )
+    expect_equal(
+        actual=out.getvalue(),
+        expected="""\
+direct
+""",
+    )
 
 
 def test_progress_marks_failure_cells(tty: Tty) -> None:
@@ -905,7 +919,11 @@ def test_mirror_tty_attaches_and_detaches(plain: StringIO) -> None:
         expect_in(member="note", container=text)
         expect_in(member="75.00%", container=text)
         detach_mark: int = len(chunks)
-        ExactusTerminal.detach_mirrors(note="moved\n")
+        ExactusTerminal.detach_mirrors(
+            note="""\
+moved
+""",
+        )
         text = _pty_until(
             chunks=chunks,
             members=(Constants.show_cursor, "moved"),

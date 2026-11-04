@@ -112,7 +112,12 @@ def test_collect_report_files_bundles_findings(tmp_path: Path) -> None:
     root: Path = tmp_path / "project"
     source: Path = root / "pkg" / "mod.py"
     source.parent.mkdir(parents=True)
-    _ = source.write_text(data="x = 1\n", encoding="utf-8")
+    _ = source.write_text(
+        data="""\
+x = 1
+""",
+        encoding="utf-8",
+    )
     output: Path = tmp_path / "report"
     _report(
         output=output,
@@ -145,8 +150,18 @@ def test_collect_report_files_reads_snapshots(tmp_path: Path) -> None:
     """
     root: Path = tmp_path / "project"
     root.mkdir()
-    _ = (root / "a.py").write_text(data="a = 1\n", encoding="utf-8")
-    _ = (root / "b.py").write_text(data="b = 1\n", encoding="utf-8")
+    _ = (root / "a.py").write_text(
+        data="""\
+a = 1
+""",
+        encoding="utf-8",
+    )
+    _ = (root / "b.py").write_text(
+        data="""\
+b = 1
+""",
+        encoding="utf-8",
+    )
     output: Path = tmp_path / "report"
     _report(
         output=output,

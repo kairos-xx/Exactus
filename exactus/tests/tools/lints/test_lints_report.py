@@ -46,14 +46,26 @@ GOLDEN: Final[Path] = Path(__file__).resolve().parent / "golden"
 TOOL_DIR: Final[Path] = ReportTemplates.tool_dir(analyzer="lints")
 APP: Final[str] = dedent(
     text=(
-        '    """Demo application."""\n    \n    import os\n    LIMIT = 3\n    '
-        '\n    \n    def load(path):\n        """Load one file."""\n        re'
-        "turn open(path).read()\n    \n    \n    print(os.sep, LIMIT)\n    "
+        """\
+    \"""Demo application.\"""
+
+    import os
+    LIMIT = 3
+
+
+    def load(path):
+        \"""Load one file.\"""
+        return open(path).read()
+
+
+    print(os.sep, LIMIT)
+    """
     ),
 )
-SCRIPT: Final[str] = (
-    'const box = document.querySelector("#box");\nbox.style.color = "red";\n'
-)
+SCRIPT: Final[str] = """\
+const box = document.querySelector("#box");
+box.style.color = "red";
+"""
 COMMANDS: Final[tuple[str, ...]] = (
     "ruff",
     "basedpyright",
@@ -75,7 +87,11 @@ def write_sources(*, root: Path) -> None:
     """
     (root / "pkg").mkdir(parents=True, exist_ok=True)
     (root / "web").mkdir(exist_ok=True)
-    (root / "pyproject.toml").write_text(data="[tool.ruff]\n")
+    (root / "pyproject.toml").write_text(
+        data="""\
+[tool.ruff]
+""",
+    )
     _ = (root / "pkg" / "app.py").write_text(data=APP, encoding="utf-8")
     _ = (root / "web" / "app.js").write_text(data=SCRIPT, encoding="utf-8")
 
@@ -218,8 +234,9 @@ def fake_report(*, root: Path) -> dict[str, JsonValue]:
             message=(
                 dedent(
                     text=(
-                        '    Type annotation is missing for parameter "pat'
-                        'h"\n      Parameter "path" is unannotated'
+                        """\
+                        Type annotation is missing for parameter "path"
+                          Parameter "path" is unannotated"""
                     ),
                 )
             ),
@@ -638,7 +655,12 @@ def test_findings_carry_excerpts(tmp_path: Path) -> None:
         ("", "R1"),
         ("One. Two.", "One."),
         ("Use `a. b` here. Then more.", "Use `a. b` here."),
-        ("first\nsecond", "first"),
+        (
+            """\
+first
+second""",
+            "first",
+        ),
         ("x" * 130, "x" * 119 + "…"),
     ],
 )
@@ -750,8 +772,14 @@ def test_crash_render_shows_na_blocks() -> None:
     text: str = ReportTemplates.render(model=model, tool_dir=TOOL_DIR).markdown
     for member in (
         "> **Gate: ERROR** — RuntimeError: boom",
-        "## Findings\n\nN/A — the tool reported no findings list.",
-        "## Lint metrics\n\nN/A — the tool reported no metrics.",
+        """\
+## Findings
+
+N/A — the tool reported no findings list.""",
+        """\
+## Lint metrics
+
+N/A — the tool reported no metrics.""",
     ):
         expect_in(member=member, container=text)
 
@@ -771,9 +799,18 @@ def test_empty_findings_state_why_nothing_is_listed(tmp_path: Path) -> None:
         model[key] = clean[key]
     text: str = ReportTemplates.render(model=model, tool_dir=TOOL_DIR).markdown
     for member in (
-        "## Findings\n\nNo findings.",
-        "### Top rules\n\nN/A — no rule reported a finding.",
-        "### Files with the most findings\n\nN/A — no file has a finding.",
+        """\
+## Findings
+
+No findings.""",
+        """\
+### Top rules
+
+N/A — no rule reported a finding.""",
+        """\
+### Files with the most findings
+
+N/A — no file has a finding.""",
         "| custom_python | ran | built-in | 1 | 0 |",
     ):
         expect_in(member=member, container=text)
@@ -845,7 +882,12 @@ def test_execute_exactus_renders_lints_from_template(
         actual=stamped_markdown(model=payload, tool_dir=TOOL_DIR, base=out),
         expected=markdown,
     )
-    expect_not_in(member="## Summary\n", container=markdown)
+    expect_not_in(
+        member="""\
+## Summary
+""",
+        container=markdown,
+    )
     for member in (
         "### custom_python — 2 findings",
         "### custom_javascript — 1 finding",

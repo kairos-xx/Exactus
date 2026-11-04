@@ -512,10 +512,12 @@ class VisualDomDiff:
             expression=(
                 dedent(
                     text=(
-                        "    () => {\n                    for (const eleme"
-                        'nt of document.querySelectorAll("video"))\n      '
-                        "                  element.pause();\n             "
-                        "   }"
+                        """\
+    () => {
+                    for (const element of document.querySelectorAll("video"))\
+
+                        element.pause();
+                }"""
                     ),
                 )
             ),
@@ -727,10 +729,11 @@ def main(*, arguments: Sequence[str] | None = None) -> int:
         settings=_settings(arguments=arguments),
     ).run()
     stdout.write(
-        f"Changed pixels: {report.changed_pixels} "
-        f"({report.changed_ratio:.4%})\n"
-        f"Regions: {len(report.regions)}\n"
-        f"Report: {Path(report.diff_image).with_name(name='report.json')}\n",
+        f"""\
+Changed pixels: {report.changed_pixels} ({report.changed_ratio:.4%})
+Regions: {len(report.regions)}
+Report: {Path(report.diff_image).with_name(name="report.json")}
+""",
     )
     return 0
 

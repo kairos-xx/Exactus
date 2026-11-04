@@ -6,12 +6,12 @@ from __future__ import annotations
 
 from contextlib import suppress
 from json import JSONDecodeError, dumps, loads
-from os import _exit, getpid, isatty, kill, write
+from os import _exit, fsync, getpid, isatty, kill, write
 from pathlib import Path
 from signal import SIGKILL, SIGTERM, Signals
 from subprocess import CompletedProcess, TimeoutExpired
 from subprocess import run as subprocess_run
-from tempfile import gettempdir
+from tempfile import NamedTemporaryFile, gettempdir
 from time import monotonic, sleep, time
 from typing import TYPE_CHECKING, Final, cast, final
 from uuid import uuid4
@@ -281,9 +281,27 @@ def write_json(*, path: Path, payload: dict[str, JsonValue]) -> None:
 
     """
     path.parent.mkdir(parents=True, exist_ok=True)
-    temporary: Path = path.with_suffix(suffix=path.suffix + ".tmp")
-    _ = temporary.write_text(
-        data=dumps(obj=payload, indent=2, sort_keys=True) + "\n",
-        encoding="utf-8",
-    )
-    _ = temporary.replace(target=path)
+    temporary: Path | None = None
+    try:
+        with NamedTemporaryFile(
+            mode="w",
+            encoding="utf-8",
+            dir=path.parent,
+            prefix=f".{path.name}.",
+            suffix=".tmp",
+            delete=False,
+        ) as output:
+            temporary = Path(output.name)
+            _ = output.write(
+                dumps(obj=payload, indent=2, sort_keys=True)
+                + """\
+
+""",
+            )
+            output.flush()
+            fsync(fd=output.fileno())
+        _ = temporary.replace(target=path)
+    finally:
+        if temporary is not None:
+            with suppress(OSError):
+                temporary.unlink(missing_ok=True)

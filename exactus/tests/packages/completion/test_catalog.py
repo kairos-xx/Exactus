@@ -3,7 +3,7 @@
 
 from __future__ import annotations
 
-from argparse import SUPPRESS, ArgumentParser, _MutuallyExclusiveGroup
+from argparse import SUPPRESS, ArgumentParser
 from pathlib import Path
 
 from exactus.packages.completion.catalog import (
@@ -107,8 +107,10 @@ def test_spec_from_parser_collects_choices() -> None:
 def test_spec_from_parser_marks_mutex_groups() -> None:
     """Mutually exclusive members share a group identifier."""
     parser: ArgumentParser = ArgumentParser()
-    group: _MutuallyExclusiveGroup = parser.add_mutually_exclusive_group()
-    _ = group.add_argument("--left", action="store_true")
+    _ = (group := parser.add_mutually_exclusive_group()).add_argument(
+        "--left",
+        action="store_true",
+    )
     _ = group.add_argument("--right", action="store_true")
     spec: CommandSpec = spec_from_parser(
         name="x",

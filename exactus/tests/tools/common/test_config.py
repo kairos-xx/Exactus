@@ -35,10 +35,19 @@ class Constants:
 
     tool_toml: Final[str] = dedent(
         text=(
-            '    \n    [tool.exactus]\n    include = ["a/**"]\n    [tool.exact'
-            "us.demo]\n    fail-under = 90\n    no-branch = true\n    quiet = "
-            'false\n    pytest-arg = ["-x", "-q"]\n    jobs = 0\n    [tool.exa'
-            "ctus.pipeline.self.demo]\n    fail-under = 95\n    "
+            """\
+
+    [tool.exactus]
+    include = ["a/**"]
+    [tool.exactus.demo]
+    fail-under = 90
+    no-branch = true
+    quiet = false
+    pytest-arg = ["-x", "-q"]
+    jobs = 0
+    [tool.exactus.pipeline.self.demo]
+    fail-under = 95
+    """
         ),
     )
 
@@ -103,10 +112,19 @@ def test_discover_walks_upward_nearest_first(tmp_path: Path) -> None:
         tmp_path: Per-test temporary directory.
 
     """
-    outer: Path = _write(directory=tmp_path, text="[tool.exactus]\na = 1\n")
+    outer: Path = _write(
+        directory=tmp_path,
+        text="""\
+[tool.exactus]
+a = 1
+""",
+    )
     inner: Path = _write(
         directory=tmp_path / "pkg",
-        text="[tool.exactus]\nb = 2\n",
+        text="""\
+[tool.exactus]
+b = 2
+""",
     )
     found: tuple[cfg.ConfigFile, ...] = cfg.discover(start=tmp_path / "pkg")
     expect_equal(actual=[item.path for item in found], expected=[inner, outer])
@@ -119,10 +137,19 @@ def test_discover_stops_at_root_marker(tmp_path: Path) -> None:
         tmp_path: Per-test temporary directory.
 
     """
-    _ = _write(directory=tmp_path, text="[tool.exactus]\na = 1\n")
+    _ = _write(
+        directory=tmp_path,
+        text="""\
+[tool.exactus]
+a = 1
+""",
+    )
     inner: Path = _write(
         directory=tmp_path / "pkg",
-        text="[tool.exactus]\nroot = true\n",
+        text="""\
+[tool.exactus]
+root = true
+""",
     )
     found: tuple[cfg.ConfigFile, ...] = cfg.discover(start=tmp_path / "pkg")
     expect_equal(actual=[item.path for item in found], expected=[inner])
@@ -135,7 +162,13 @@ def test_discover_skips_files_without_exactus_table(tmp_path: Path) -> None:
         tmp_path: Per-test temporary directory.
 
     """
-    _ = _write(directory=tmp_path, text="[tool.ruff]\nline-length = 80\n")
+    _ = _write(
+        directory=tmp_path,
+        text="""\
+[tool.ruff]
+line-length = 80
+""",
+    )
     expect_equal(actual=cfg.discover(start=tmp_path), expected=())
 
 
@@ -146,9 +179,21 @@ def test_explicit_and_disabled(tmp_path: Path) -> None:
         tmp_path: Per-test temporary directory.
 
     """
-    _ = _write(directory=tmp_path, text="[tool.exactus]\na = 1\n")
+    _ = _write(
+        directory=tmp_path,
+        text="""\
+[tool.exactus]
+a = 1
+""",
+    )
     other: Path = tmp_path / "other.toml"
-    _ = other.write_text(data="[tool.exactus]\nb = 2\n", encoding="utf-8")
+    _ = other.write_text(
+        data="""\
+[tool.exactus]
+b = 2
+""",
+        encoding="utf-8",
+    )
     found: tuple[cfg.ConfigFile, ...] = cfg.discover(
         start=tmp_path,
         explicit=other,
@@ -169,7 +214,12 @@ def test_invalid_toml_names_the_file(tmp_path: Path) -> None:
         tmp_path: Per-test temporary directory.
 
     """
-    path: Path = _write(directory=tmp_path, text="[tool.exactus\n")
+    path: Path = _write(
+        directory=tmp_path,
+        text="""\
+[tool.exactus
+""",
+    )
     with pytest.raises(expected_exception=cfg.ConfigError) as caught:
         _ = cfg.discover(start=tmp_path)
     expect_in(member=str(object=path), container=str(object=caught.value))
@@ -186,7 +236,13 @@ def test_environment_variable_controls_discovery(
         monkeypatch: Pytest patching helper.
 
     """
-    _ = _write(directory=tmp_path, text="[tool.exactus]\na = 1\n")
+    _ = _write(
+        directory=tmp_path,
+        text="""\
+[tool.exactus]
+a = 1
+""",
+    )
     monkeypatch.setenv(name=cfg.Constants.environment_variable, value="off")
     expect_equal(
         actual=cfg.discovery_from_environment(start=tmp_path),
@@ -209,10 +265,19 @@ def test_discover_boundary_contains_the_walk(tmp_path: Path) -> None:
         tmp_path: Per-test temporary directory.
 
     """
-    _ = _write(directory=tmp_path, text="[tool.exactus]\na = 1\n")
+    _ = _write(
+        directory=tmp_path,
+        text="""\
+[tool.exactus]
+a = 1
+""",
+    )
     inner: Path = _write(
         directory=tmp_path / "pkg",
-        text="[tool.exactus]\nb = 2\n",
+        text="""\
+[tool.exactus]
+b = 2
+""",
     )
     found: tuple[cfg.ConfigFile, ...] = cfg.discover(
         start=tmp_path / "pkg" / "deep",
@@ -228,10 +293,19 @@ def test_discover_boundary_relocates_outside_start(tmp_path: Path) -> None:
         tmp_path: Per-test temporary directory.
 
     """
-    _ = _write(directory=tmp_path, text="[tool.exactus]\na = 1\n")
+    _ = _write(
+        directory=tmp_path,
+        text="""\
+[tool.exactus]
+a = 1
+""",
+    )
     inner: Path = _write(
         directory=tmp_path / "pkg",
-        text="[tool.exactus]\nb = 2\n",
+        text="""\
+[tool.exactus]
+b = 2
+""",
     )
     found: tuple[cfg.ConfigFile, ...] = cfg.discover(
         start=tmp_path,
@@ -251,7 +325,13 @@ def test_exactus_root_bounds_discovery(
         monkeypatch: Pytest patching helper.
 
     """
-    _ = _write(directory=tmp_path, text="[tool.exactus]\na = 1\n")
+    _ = _write(
+        directory=tmp_path,
+        text="""\
+[tool.exactus]
+a = 1
+""",
+    )
     project: Path = tmp_path / "project"
     project.mkdir()
     monkeypatch.setenv(name="EXACTUS_ROOT", value=str(object=project))
@@ -314,7 +394,10 @@ def test_negative_values_survive(tmp_path: Path) -> None:
     """
     files: tuple[cfg.ConfigFile, ...] = _files(
         tmp_path=tmp_path,
-        text="[tool.exactus.demo]\nfail-under = -1\n",
+        text="""\
+[tool.exactus.demo]
+fail-under = -1
+""",
     )
     argv: tuple[str, ...] = cfg.argv_for(
         files=files,
@@ -359,19 +442,28 @@ def test_unknown_key_and_wrong_type(tmp_path: Path) -> None:
     """
     bad_key: tuple[cfg.ConfigFile, ...] = _files(
         tmp_path=tmp_path,
-        text="[tool.exactus.demo]\nfail-undr = 1\n",
+        text="""\
+[tool.exactus.demo]
+fail-undr = 1
+""",
     )
     with pytest.raises(expected_exception=cfg.ConfigError, match="fail-undr"):
         _ = cfg.argv_for(files=bad_key, tool="demo", parser=_parser())
     bad_type: tuple[cfg.ConfigFile, ...] = _files(
         tmp_path=tmp_path,
-        text='[tool.exactus.demo]\nfail-under = "high"\n',
+        text="""\
+[tool.exactus.demo]
+fail-under = "high"
+""",
     )
     with pytest.raises(expected_exception=cfg.ConfigError, match="fail-under"):
         _ = cfg.argv_for(files=bad_type, tool="demo", parser=_parser())
     bad_flag: tuple[cfg.ConfigFile, ...] = _files(
         tmp_path=tmp_path,
-        text='[tool.exactus.demo]\nno-branch = "yes"\n',
+        text="""\
+[tool.exactus.demo]
+no-branch = "yes"
+""",
     )
     with pytest.raises(expected_exception=cfg.ConfigError, match="no-branch"):
         _ = cfg.argv_for(files=bad_flag, tool="demo", parser=_parser())
@@ -386,7 +478,10 @@ def test_common_key_unknown_to_a_tool_is_skipped(tmp_path: Path) -> None:
     """
     files: tuple[cfg.ConfigFile, ...] = _files(
         tmp_path=tmp_path,
-        text="[tool.exactus]\nfail-under = 5\n",
+        text="""\
+[tool.exactus]
+fail-under = 5
+""",
     )
     bare: ArgumentParser = ArgumentParser()
     expect_equal(
@@ -404,11 +499,19 @@ def test_nested_files_merge(tmp_path: Path) -> None:
     """
     _ = _write(
         directory=tmp_path,
-        text='[tool.exactus.demo]\nfail-under = 10\npytest-arg = ["-x"]\n',
+        text="""\
+[tool.exactus.demo]
+fail-under = 10
+pytest-arg = ["-x"]
+""",
     )
     _ = _write(
         directory=tmp_path / "pkg",
-        text='[tool.exactus.demo]\nfail-under = 20\npytest-arg = ["-q"]\n',
+        text="""\
+[tool.exactus.demo]
+fail-under = 20
+pytest-arg = ["-q"]
+""",
     )
     merged: dict[str, JsonValue] = cfg.stacked(
         files=cfg.discover(start=tmp_path / "pkg"),
@@ -427,11 +530,41 @@ def test_validate_rejects_unknown_table_and_common_key(tmp_path: Path) -> None:
     """
     parsers: dict[str, ArgumentParser] = {"demo": _parser()}
     for text, needle in (
-        ("[tool.exactus.nope]\na = 1\n", "nope"),
-        ("[tool.exactus]\nbogus = 1\n", "bogus"),
-        ("[tool.exactus.pipeline.ghost]\na = 1\n", "ghost"),
-        ("[tool.exactus.pipeline.self.nope]\na = 1\n", "nope"),
-        ("[tool.exactus.demo]\nbogus = 1\n", "bogus"),
+        (
+            """\
+[tool.exactus.nope]
+a = 1
+""",
+            "nope",
+        ),
+        (
+            """\
+[tool.exactus]
+bogus = 1
+""",
+            "bogus",
+        ),
+        (
+            """\
+[tool.exactus.pipeline.ghost]
+a = 1
+""",
+            "ghost",
+        ),
+        (
+            """\
+[tool.exactus.pipeline.self.nope]
+a = 1
+""",
+            "nope",
+        ),
+        (
+            """\
+[tool.exactus.demo]
+bogus = 1
+""",
+            "bogus",
+        ),
     ):
         files: tuple[cfg.ConfigFile, ...] = _files(
             tmp_path=tmp_path,
@@ -461,9 +594,12 @@ def test_validate_accepts_package_owned_mcp_configuration(
         text=(
             dedent(
                 text=(
-                    "    [tool.exactus.mcp]\n    port = 6100\n    [tool.ex"
-                    "actus.mcp.wakeup]\n    keep-service-running = true\n "
-                    "   "
+                    """\
+    [tool.exactus.mcp]
+    port = 6100
+    [tool.exactus.mcp.wakeup]
+    keep-service-running = true
+    """
                 ),
             )
         ),
@@ -484,7 +620,10 @@ def test_orchestrator_injection_rules(tmp_path: Path) -> None:
     """
     files: tuple[cfg.ConfigFile, ...] = _files(
         tmp_path=tmp_path,
-        text="[tool.exactus]\nclear = true\n",
+        text="""\
+[tool.exactus]
+clear = true
+""",
     )
     parser: ArgumentParser = check.Check.create_parser()
 
@@ -529,7 +668,11 @@ def test_effective_reports_the_winning_layer(tmp_path: Path) -> None:
     """
     files: tuple[cfg.ConfigFile, ...] = _files(
         tmp_path=tmp_path,
-        text="[tool.exactus.coverage_tests]\nfail-under = 95\njobs = 2\n",
+        text="""\
+[tool.exactus.coverage_tests]
+fail-under = 95
+jobs = 2
+""",
     )
 
     def layers(cli: tuple[str, ...]) -> dict[str, str]:
@@ -574,10 +717,15 @@ def test_canonical_section_precedence(tmp_path: Path) -> None:
         text=(
             dedent(
                 text=(
-                    "    [tool.exactus]\n    fail-under = 10\n    jobs = 3"
-                    "\n    [tool.exactus.coverage_tests]\n    fail-under ="
-                    " 20\n    [tool.exactus.pipeline.self.coverage_tests]"
-                    "\n    jobs = 4\n    "
+                    """\
+    [tool.exactus]
+    fail-under = 10
+    jobs = 3
+    [tool.exactus.coverage_tests]
+    fail-under = 20
+    [tool.exactus.pipeline.self.coverage_tests]
+    jobs = 4
+    """
                 ),
             )
         ),
@@ -622,9 +770,12 @@ def test_canonical_tool_list_extends_common_list(tmp_path: Path) -> None:
         text=(
             dedent(
                 text=(
-                    '    [tool.exactus]\n    pytest-arg = ["-x"]\n    [too'
-                    'l.exactus.coverage_tests]\n    pytest-arg = ["-q"]\n '
-                    "   "
+                    """\
+    [tool.exactus]
+    pytest-arg = ["-x"]
+    [tool.exactus.coverage_tests]
+    pytest-arg = ["-q"]
+    """
                 ),
             )
         ),
@@ -648,7 +799,10 @@ def test_validate_rejects_legacy_sections(tmp_path: Path) -> None:
     for section in ("coverage", "coverage-tests"):
         files: tuple[cfg.ConfigFile, ...] = _files(
             tmp_path=tmp_path,
-            text=f"[tool.exactus.{section}]\nfail-under = 10\n",
+            text=f"""\
+[tool.exactus.{section}]
+fail-under = 10
+""",
         )
         with pytest.raises(
             expected_exception=cfg.ConfigError,
@@ -661,7 +815,10 @@ def test_validate_rejects_legacy_sections(tmp_path: Path) -> None:
             )
 
 
-@pytest.mark.parametrize("directory", ["reports/exactus", "EXACTUS_RESULTS"])
+@pytest.mark.parametrize(
+    "directory",
+    ["reports/exactus", "EXACTUS_RESULTS", "artifacts/EXACTUS_RESULTS"],
+)
 def test_reports_directory_setting(tmp_path: Path, directory: str) -> None:
     """Read the project-relative reports base without forwarding a flag.
 
@@ -672,7 +829,10 @@ def test_reports_directory_setting(tmp_path: Path, directory: str) -> None:
     """
     files: tuple[ConfigFile, ...] = _files(
         tmp_path=tmp_path,
-        text=f'[tool.exactus]\nreports-dir = "{directory}"\n',
+        text=f"""\
+[tool.exactus]
+reports-dir = "{directory}"
+""",
     )
     expect_equal(
         actual=cfg.reports_directory(files=files),
@@ -706,7 +866,10 @@ def test_reports_directory_rejects_project_escape(
     """
     files: tuple[ConfigFile, ...] = _files(
         tmp_path=tmp_path,
-        text=f'[tool.exactus]\nreports-dir = "{directory}"\n',
+        text=f"""\
+[tool.exactus]
+reports-dir = "{directory}"
+""",
     )
     with pytest.raises(
         expected_exception=cfg.ConfigError,
@@ -728,7 +891,11 @@ def test_standalone_reports_directory_and_cli_override(
     """
     _ = _files(
         tmp_path=tmp_path,
-        text='[tool.exactus]\nroot = true\nreports-dir = "reports/exactus"\n',
+        text="""\
+[tool.exactus]
+root = true
+reports-dir = "reports/exactus"
+""",
     )
     monkeypatch.chdir(path=tmp_path)
     monkeypatch.delenv(name="EXACTUS_ORCHESTRATED", raising=False)
@@ -760,6 +927,66 @@ def test_standalone_reports_directory_and_cli_override(
     )
 
 
+def test_reports_root_prefers_environment(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """``EXACTUS_REPORTS_ROOT`` wins over configuration and defaults.
+
+    Args:
+        tmp_path: Temporary project.
+        monkeypatch: Test patch manager.
+
+    """
+    _ = _write(
+        directory=tmp_path,
+        text="""\
+[tool.exactus]
+reports-dir = "artifacts/EXACTUS_RESULTS"
+""",
+    )
+    override: Path = tmp_path / "elsewhere"
+    monkeypatch.setenv(name="EXACTUS_REPORTS_ROOT", value=str(object=override))
+    expect_equal(
+        actual=cfg.reports_root(start=tmp_path),
+        expected=override.resolve(),
+    )
+
+
+def test_reports_root_resolves_configured_and_default(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Configuration wins over the ``EXACTUS_RESULTS`` default.
+
+    Args:
+        tmp_path: Temporary project.
+        monkeypatch: Test patch manager.
+
+    """
+    monkeypatch.delenv(name="EXACTUS_REPORTS_ROOT", raising=False)
+    monkeypatch.delenv(name="EXACTUS_CONFIG", raising=False)
+    monkeypatch.delenv(name="EXACTUS_ROOT", raising=False)
+    _ = _write(
+        directory=tmp_path,
+        text="""\
+[tool.exactus]
+reports-dir = "artifacts/EXACTUS_RESULTS"
+""",
+    )
+    expect_equal(
+        actual=cfg.reports_root(start=tmp_path),
+        expected=tmp_path / "artifacts" / "EXACTUS_RESULTS",
+    )
+    monkeypatch.setenv(name="EXACTUS_CONFIG", value="off")
+    bare: Path = tmp_path / "bare"
+    bare.mkdir()
+    expect_equal(
+        actual=cfg.reports_root(start=bare),
+        expected=bare / "EXACTUS_RESULTS",
+    )
+
+
 def test_path_keys_resolve_against_declaring_file(tmp_path: Path) -> None:
     """``actions``/``workspace`` resolve beside the file that set them.
 
@@ -769,11 +996,17 @@ def test_path_keys_resolve_against_declaring_file(tmp_path: Path) -> None:
     """
     parent: Path = _write(
         directory=tmp_path,
-        text='[tool.exactus.demo]\nworkspace = "parent/ws"\n',
+        text="""\
+[tool.exactus.demo]
+workspace = "parent/ws"
+""",
     )
     child: Path = _write(
         directory=tmp_path / "pkg",
-        text='[tool.exactus.demo]\nactions = "child/recipe.json"\n',
+        text="""\
+[tool.exactus.demo]
+actions = "child/recipe.json"
+""",
     )
     files: tuple[ConfigFile, ...] = cfg.discover(start=tmp_path / "pkg")
     parser: ArgumentParser = _parser()
@@ -799,8 +1032,11 @@ def test_path_keys_resolve_against_declaring_file(tmp_path: Path) -> None:
         text=(
             dedent(
                 text=(
-                    '    [tool.exactus.demo]\n    workspace = "child/ws"\n'
-                    '    actions = "child/recipe.json"\n    '
+                    """\
+    [tool.exactus.demo]
+    workspace = "child/ws"
+    actions = "child/recipe.json"
+    """
                 ),
             )
         ),

@@ -263,7 +263,12 @@ def test_bundled_runtime_rejects_source_entries(
         ),
     )
     script: Path = tmp_path / "runner.py"
-    _ = script.write_text(data="print(1)\n", encoding="utf-8")
+    _ = script.write_text(
+        data="""\
+print(1)
+""",
+        encoding="utf-8",
+    )
     monkeypatch.setattr(target=check, name="argv", value=[str(object=script)])
     expect_false(
         condition=private_result(
@@ -395,7 +400,12 @@ def test_source_tools_keep_self_test(
 
     """
     launcher: Path = tmp_path / "exactus"
-    _ = launcher.write_text(data="print('x')\n", encoding="utf-8")
+    _ = launcher.write_text(
+        data="""\
+print('x')
+""",
+        encoding="utf-8",
+    )
     monkeypatch.setattr(
         target=check,
         name="argv",

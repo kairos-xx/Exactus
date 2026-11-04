@@ -46,10 +46,34 @@ class Constants:
 @pytest.mark.parametrize(
     ("source", "rule"),
     [
-        ("def (:\n", "CMP000"),
-        ("import os " + Constants.marker + "\n", "CMP001"),
-        ("from typing import Any\nx: Any = None\n", "CMP002"),
-        ("def load(value: object) -> int:\n    return 0\n", "CMP003"),
+        (
+            """\
+def (:
+""",
+            "CMP000",
+        ),
+        (
+            "import os "
+            + Constants.marker
+            + """\
+
+""",
+            "CMP001",
+        ),
+        (
+            """\
+from typing import Any
+x: Any = None
+""",
+            "CMP002",
+        ),
+        (
+            """\
+def load(value: object) -> int:
+    return 0
+""",
+            "CMP003",
+        ),
     ],
 )
 def test_source_rules_preserve_findings(
@@ -65,7 +89,11 @@ def test_source_rules_preserve_findings(
         rule: Expected rule identifier.
 
     """
-    (tmp_path / "pyproject.toml").write_text(data="[tool.ruff]\n")
+    (tmp_path / "pyproject.toml").write_text(
+        data="""\
+[tool.ruff]
+""",
+    )
     (tmp_path / "app.py").write_text(data=source)
     result: ComplianceResult = scan_compliance(
         inputs=ComplianceInput(root=tmp_path, includes=(), excludes=()),
@@ -80,8 +108,20 @@ def test_source_rules_preserve_findings(
 @pytest.mark.parametrize(
     ("settings", "rule"),
     [
-        ('[tool.ruff.lint]\nignore = ["F401"]\n', "CMP004"),
-        ("[tool.basedpyright]\nreportUnusedImport = false\n", "CMP005"),
+        (
+            """\
+[tool.ruff.lint]
+ignore = ["F401"]
+""",
+            "CMP004",
+        ),
+        (
+            """\
+[tool.basedpyright]
+reportUnusedImport = false
+""",
+            "CMP005",
+        ),
         (None, "CMP006"),
     ],
 )
@@ -151,9 +191,19 @@ def test_engineering_findings_are_part_of_lints(
     """
     root: Path = tmp_path / "project"
     root.mkdir()
-    (root / "pyproject.toml").write_text(data="[tool.ruff]\n")
+    (root / "pyproject.toml").write_text(
+        data="""\
+[tool.ruff]
+""",
+    )
     (root / "app.py").write_text(
-        data='"""Application."""\nimport os ' + Constants.marker + "\n",
+        data="""\
+\"""Application.\"""
+import os """
+        + Constants.marker
+        + """\
+
+""",
     )
     monkeypatch.setattr(
         target=LintExactus,

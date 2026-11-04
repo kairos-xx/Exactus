@@ -72,6 +72,25 @@ rows, files below the per-file minimum) and the sub-report links.
 
 ## Configuration
 
+During pytest execution, each subprocess writes an optional, private JSONL
+events sidecar beside its timing file. Worker rows show the current test node
+and real finished/collected counts. Completion is recorded after teardown,
+including setup skips and errors. The outer completed/total counters still
+count subprocess exits.
+
+For node shards the phase fraction weights real completion by the known test
+totals. File shards use fixed shard weights and each shard's measured fraction,
+so later collection cannot move the bar backwards. Reused incremental shards
+retain their verified completion; executed shards receive fresh sidecars.
+Regular and exclusive passes keep their existing non-overlapping spans.
+
+An unavailable events channel falls back to bounded duration estimates and is
+labelled accordingly. A healthy channel does not time out because one test or
+collection takes a long time. Failed subprocess rows retain the last test node.
+Event reads, line buffers, and final draining are bounded; malformed records and
+writer I/O failures cannot change pytest outcomes. Captured stdout/stderr and
+the final report schema remain unchanged.
+
 Settings live in `[tool.exactus.coverage_tests]`. Resolution order is
 explicit command line, tool table, common/pipeline configuration, then built-in
 defaults.
@@ -118,10 +137,16 @@ Run the project's tests once for combined coverage and test reports. Public API:
 
 - [`__init__.py`](__init__.py) — Coverage and tests exactus tool.
 - [`arguments.py`](arguments.py) — Declare the coverage_tests CLI grammar.
+- [`backend.py`](backend.py) — Select monitoring only where the installed tracer supports the workload.
 - [`core.py`](core.py) — Run recursive tests with coverage derived from their local import graph.
+- [`event_progress.py`](event_progress.py) — Compose measured per-test events with the existing shard lifecycle.
+- [`event_stream.py`](event_stream.py) — Tail bounded pytest event records without influencing test execution.
+- [`incremental.py`](incremental.py) — Reuse verified passing coverage shards with content-addressed snapshots.
 - [`main.py`](main.py) — Run the project's tests once for combined coverage and test reports.
 - [`meaningful.py`](meaningful.py) — Classify unreached and sub-minimum sources with Meaningful.
+- [`progress_plugin.py`](progress_plugin.py) — Publish optional pytest events without affecting test outcomes.
 - [`report.py`](report.py) — Build the normalized root report of the ``coverage-tests`` tool.
+- [`shard_progress.py`](shard_progress.py) — Publish honest shard counts with bounded, explicitly estimated liveness.
 - [`skip_plugin.py`](skip_plugin.py) — Preserve pytest skip identities and capture per-file execution timings.
 - [`tracebacks.py`](tracebacks.py) — Locate where and why each failing test failed.
 

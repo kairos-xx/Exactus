@@ -50,7 +50,9 @@ class Cli:
                         indent=2,
                         default=str,
                     )
-                    + "\n",
+                    + """\
+
+""",
                 )
             finally:
                 inspector.stop()
@@ -64,7 +66,10 @@ class Cli:
             port=arguments.port,
         )
         stdout.write(
-            dumps(obj=cls._inspection_data(result=result), indent=2) + "\n",
+            dumps(obj=cls._inspection_data(result=result), indent=2)
+            + """\
+
+""",
         )
         return 0 if result.http else 1
 

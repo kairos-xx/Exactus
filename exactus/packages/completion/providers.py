@@ -47,7 +47,7 @@ class Constants:
 
 
 @dataclass(frozen=True, slots=True)
-class _PathPrefix:
+class PathPrefix:
     """A user path prefix split into lookup and display parts.
 
     Attributes:
@@ -64,7 +64,7 @@ class _PathPrefix:
     name_prefix: str
 
 
-def _split_prefix(*, raw: str, cwd: Path) -> _PathPrefix:
+def split_prefix(*, raw: str, cwd: Path) -> PathPrefix:
     """Split a path prefix into a lookup directory and a name filter.
 
     Args:
@@ -87,7 +87,7 @@ def _split_prefix(*, raw: str, cwd: Path) -> _PathPrefix:
         lookup = Path("/")
     else:
         lookup = cwd / directory if directory else cwd
-    return _PathPrefix(
+    return PathPrefix(
         lookup=lookup,
         display_base=display_base,
         name_prefix=name,
@@ -110,7 +110,7 @@ def _path_candidates(
         File and/or directory candidates in deterministic order.
 
     """
-    prefix: _PathPrefix = _split_prefix(
+    prefix: PathPrefix = split_prefix(
         raw=context.prefix,
         cwd=context.working_directory,
     )

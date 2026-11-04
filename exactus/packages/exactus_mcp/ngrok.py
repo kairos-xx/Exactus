@@ -175,8 +175,12 @@ class NgrokTunnel:
             line_bytes: bytes = await process.stdout.readline()
             if not line_bytes:
                 exit_code: int = await process.wait()
-                tail: str = "\n".join(logs[-Constants.log_tail :])
-                msg = f"ngrok exited with status {exit_code}\n{tail}"
+                tail: str = """\
+
+""".join(logs[-Constants.log_tail :])
+                msg = f"""\
+ngrok exited with status {exit_code}
+{tail}"""
                 raise RuntimeError(msg)
             line: str = line_bytes.decode(errors="replace").strip()
             logs.append(line)

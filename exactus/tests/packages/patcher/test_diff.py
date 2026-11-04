@@ -43,13 +43,76 @@ def _expect(*, condition: bool, message: str) -> None:
 @pytest.mark.parametrize(
     ("suffix", "old", "new", "token"),
     [
-        (".py", "value = 1\n", "value = 2\n", "\033["),
-        (".js", "const x = 1;\n", "const x = 2;\n", "\033["),
-        (".css", "a { color: #fff; }\n", "a { color: #000; }\n", "\033["),
-        (".html", "<p>old</p>\n", "<p>new</p>\n", "\033["),
-        (".json", '{"a": 1}\n', '{"a": 2}\n', "\033["),
-        (".toml", 'a = "old"\n', 'a = "new"\n', "\033["),
-        (".xml", "<a>old</a>\n", "<a>new</a>\n", "\033["),
+        (
+            ".py",
+            """\
+value = 1
+""",
+            """\
+value = 2
+""",
+            "\033[",
+        ),
+        (
+            ".js",
+            """\
+const x = 1;
+""",
+            """\
+const x = 2;
+""",
+            "\033[",
+        ),
+        (
+            ".css",
+            """\
+a { color: #fff; }
+""",
+            """\
+a { color: #000; }
+""",
+            "\033[",
+        ),
+        (
+            ".html",
+            """\
+<p>old</p>
+""",
+            """\
+<p>new</p>
+""",
+            "\033[",
+        ),
+        (
+            ".json",
+            """\
+{"a": 1}
+""",
+            """\
+{"a": 2}
+""",
+            "\033[",
+        ),
+        (
+            ".toml",
+            """\
+a = "old"
+""",
+            """\
+a = "new"
+""",
+            "\033[",
+        ),
+        (
+            ".xml",
+            """\
+<a>old</a>
+""",
+            """\
+<a>new</a>
+""",
+            "\033[",
+        ),
     ],
 )
 def test_highlighted_text_diff(
@@ -124,8 +187,18 @@ def test_builder_diff_is_read_only(
     after: Path = tmp_path / "after"
     before.mkdir()
     after.mkdir()
-    (before / "a.py").write_text(data="x = 1\n", encoding="utf-8")
-    (after / "a.py").write_text(data="x = 2\n", encoding="utf-8")
+    (before / "a.py").write_text(
+        data="""\
+x = 1
+""",
+        encoding="utf-8",
+    )
+    (after / "a.py").write_text(
+        data="""\
+x = 2
+""",
+        encoding="utf-8",
+    )
     output: Path = tmp_path / "must-not-exist.pyz"
     status: int = PatcherCli.run(
         arguments=(
@@ -177,9 +250,24 @@ def test_generated_update_diff_is_read_only(tmp_path: Path) -> None:
     paths: tuple[Path, ...] = (before, after, target)
     for path in paths:
         path.mkdir()
-    (before / "a.py").write_text(data="x = 1\n", encoding="utf-8")
-    (after / "a.py").write_text(data="x = 2\n", encoding="utf-8")
-    (target / "a.py").write_text(data="x = 1\n", encoding="utf-8")
+    (before / "a.py").write_text(
+        data="""\
+x = 1
+""",
+        encoding="utf-8",
+    )
+    (after / "a.py").write_text(
+        data="""\
+x = 2
+""",
+        encoding="utf-8",
+    )
+    (target / "a.py").write_text(
+        data="""\
+x = 1
+""",
+        encoding="utf-8",
+    )
     update: Path = tmp_path / "update.pyz"
     patch: PyzProjectPatch = PyzProjectPatch.delta(
         a=before,
@@ -204,7 +292,10 @@ def test_generated_update_diff_is_read_only(tmp_path: Path) -> None:
         message="Generated update diff omitted the added line.",
     )
     _expect(
-        condition=target_content == "x = 1\n",
+        condition=target_content
+        == """\
+x = 1
+""",
         message="Generated update diff mutated the configured target.",
     )
 

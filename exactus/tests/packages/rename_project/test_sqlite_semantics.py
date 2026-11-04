@@ -85,7 +85,10 @@ def _project(tmp_path: Path) -> Path:
     root: Path = tmp_path / "abc_cde"
     root.mkdir()
     (root / "pyproject.toml").write_text(
-        data='[project]\nname = "abc-cde"\n',
+        data="""\
+[project]
+name = "abc-cde"
+""",
         encoding="utf-8",
     )
     return root
@@ -445,7 +448,9 @@ def test_sqlite_schema_table_column_dependencies_are_propagated(
     apply_plan(plan=plan)
     connection = connect(database=database)
     schema_table: Table = Table(name="sqlite_schema")
-    schema: str = "\n".join(
+    schema: str = """\
+
+""".join(
         str(object=row[0])
         for row in execute(
             connection=connection,

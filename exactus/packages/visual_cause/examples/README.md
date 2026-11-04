@@ -20,7 +20,7 @@ Runnable demo for the CSS visual cause analyzer.
 
 ### Subdirectories
 
-- [`results/`](results/README.md) — Provide a png content.
+- [`results/`](results/README.md) — Contain results resources and their directory inventory.
 - [`web/`](web/README.md) — Minimal static demo for the CSS visual-cause analyzer.
 
 <!-- exactus:inventory:end -->

@@ -64,10 +64,13 @@ def test_meaningful_pyproject_and_cli_precedence(
         data=(
             dedent(
                 text=(
-                    '    [tool.exactus.coverage_tests]\n    meaningful = "'
-                    'classify"\n    meaningful-minimum-level = "TEST-3"\n '
-                    "   meaningful-workers = 2\n    meaningful-weight-beha"
-                    "vior = 1.7\n    "
+                    """\
+    [tool.exactus.coverage_tests]
+    meaningful = "classify"
+    meaningful-minimum-level = "TEST-3"
+    meaningful-workers = 2
+    meaningful-weight-behavior = 1.7
+    """
                 ),
             )
         ),
@@ -160,8 +163,18 @@ def test_adapter_preserves_successes_and_failures(tmp_path: Path) -> None:
     """
     structural: Path = tmp_path / "structural.py"
     broken: Path = tmp_path / "broken.py"
-    structural.write_text(data='"""Only structure."""\n', encoding="utf-8")
-    broken.write_text(data="def broken(:\n", encoding="utf-8")
+    structural.write_text(
+        data="""\
+\"""Only structure.\"""
+""",
+        encoding="utf-8",
+    )
+    broken.write_text(
+        data="""\
+def broken(:
+""",
+        encoding="utf-8",
+    )
     result: MeaningfulResult = analyze_unreached(
         root=tmp_path,
         paths=(structural, broken),
@@ -194,7 +207,12 @@ def test_adapter_respects_configured_level_boundary(tmp_path: Path) -> None:
 
     """
     structural: Path = tmp_path / "structural.py"
-    structural.write_text(data='"""Only structure."""\n', encoding="utf-8")
+    structural.write_text(
+        data="""\
+\"""Only structure.\"""
+""",
+        encoding="utf-8",
+    )
     result: MeaningfulResult = analyze_unreached(
         root=tmp_path,
         paths=(structural,),
@@ -219,10 +237,14 @@ def test_meaningful_detects_javascript_not_covered_by_tests(
         data=(
             dedent(
                 text=(
-                    "    async context => {\n      try {\n        if (cont"
-                    "ext.targets.length) context.log('running');\n        "
-                    "return await Promise.all(context.targets);\n      } c"
-                    "atch (error) { throw error; }\n    };\n    "
+                    """\
+    async context => {
+      try {
+        if (context.targets.length) context.log('running');
+        return await Promise.all(context.targets);
+      } catch (error) { throw error; }
+    };
+    """
                 ),
             )
         ),
@@ -264,7 +286,12 @@ def test_adapter_applies_unclassified_policy(
 
     """
     broken: Path = tmp_path / "broken.py"
-    broken.write_text(data="def broken(:\n", encoding="utf-8")
+    broken.write_text(
+        data="""\
+def broken(:
+""",
+        encoding="utf-8",
+    )
     result: MeaningfulResult = analyze_unreached(
         root=tmp_path,
         paths=(broken,),
@@ -294,19 +321,29 @@ def _project(*, root: Path) -> None:
     tests.mkdir()
     (package / "__init__.py").write_text(data="", encoding="utf-8")
     (package / "reached.py").write_text(
-        data="def value():\n    return 1\n",
+        data="""\
+def value():
+    return 1
+""",
         encoding="utf-8",
     )
     (package / "unreached.py").write_text(
-        data="def choose(value):\n    return 1 if value else 2\n",
+        data="""\
+def choose(value):
+    return 1 if value else 2
+""",
         encoding="utf-8",
     )
     (tests / "test_reached.py").write_text(
         data=(
             dedent(
                 text=(
-                    "    from app.reached import value\n    \n    def test"
-                    "_value():\n        assert value() == 1\n    "
+                    """\
+    from app.reached import value
+
+    def test_value():
+        assert value() == 1
+    """
                 ),
             )
         ),
@@ -578,7 +615,13 @@ def test_shortfall_rows_carry_origin_and_reason(tmp_path: Path) -> None:
 
     """
     source: Path = tmp_path / "partial.py"
-    source.write_text(data="def value():\n    return 1\n", encoding="utf-8")
+    source.write_text(
+        data="""\
+def value():
+    return 1
+""",
+        encoding="utf-8",
+    )
     result: MeaningfulResult = analyze_unreached(
         root=tmp_path,
         paths=(source,),
@@ -670,13 +713,24 @@ def _partial_project(*, root: Path) -> None:
     tests.mkdir()
     (package / "__init__.py").write_text(data="", encoding="utf-8")
     (package / "covered.py").write_text(
-        data="def value():\n    return 1\n",
+        data="""\
+def value():
+    return 1
+""",
         encoding="utf-8",
     )
     (package / "partial.py").write_text(
-        data="def used():\n    return 1\n\n"
+        data="""\
+def used():
+    return 1
+
+"""
         + "".join(
-            f"def unused_{index}():\n    return {index}\n\n"
+            f"""\
+def unused_{index}():
+    return {index}
+
+"""
             for index in range(2, 8)
         ),
         encoding="utf-8",
@@ -685,10 +739,16 @@ def _partial_project(*, root: Path) -> None:
         data=(
             dedent(
                 text=(
-                    "    from app.covered import value\n    from app.parti"
-                    "al import used\n    \n    def test_value():\n        "
-                    "assert value() == 1\n    \n    def test_used():\n    "
-                    "    assert used() == 1\n    "
+                    """\
+    from app.covered import value
+    from app.partial import used
+
+    def test_value():
+        assert value() == 1
+
+    def test_used():
+        assert used() == 1
+    """
                 ),
             )
         ),

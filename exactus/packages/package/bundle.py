@@ -9,6 +9,7 @@ from contextlib import contextmanager, suppress
 from dataclasses import asdict, dataclass, field, replace
 from datetime import UTC, datetime
 from errno import ENOTEMPTY
+from importlib.metadata import distributions
 from inspect import getsource
 from json import dumps, loads
 from os import environ, getpid
@@ -46,6 +47,10 @@ from exactus.bundle.content import write_content
 from exactus.packages.argument_parser import ExactusArgumentParser
 from exactus.tools.common.conflict_copies import clear_conflict_copies
 
+from .musl_browser import Constants as MuslBrowserConstants
+from .musl_browser import install as install_musl_browser
+from .musl_browser import install_node as install_musl_node
+from .musl_browser import install_packages as install_musl_packages
 from .process_control import new_run_id
 from .progress import RunDocument, RunItem, utc_now
 
@@ -195,9 +200,8 @@ class BrowserDistribution:
 
     Attributes:
         archives: Downloads looked up in the bundled ``browsers.json``
-            catalog; empty when the platform has no Playwright browser
-            builds (musl and Windows ARM64 targets rely on a system
-            Chromium via ``executable_path``).
+            catalog. Windows ARM64 uses the x64 browser under Windows
+            emulation; musl uses signed native Alpine packages instead.
         cft_dir: Chrome-for-Testing platform directory, or ``None`` when
             CFT publishes no build for the target. CFT covers
             ``linux64``, ``mac-x64``, ``mac-arm64``, ``win32``, ``win64``.
@@ -207,6 +211,8 @@ class BrowserDistribution:
         locale_parent: Directory name locale entries must live under;
             ``None`` matches the suffix anywhere (macOS ``.lproj``).
         locale_keep: Locale entry names retained.
+        apk_image: Digest-pinned Alpine build image for native musl browsers.
+        apk_chromium: Exact APK version for Chromium and its headless shell.
 
     """
 
@@ -216,6 +222,8 @@ class BrowserDistribution:
     locale_suffix: str
     locale_parent: str | None
     locale_keep: tuple[str, ...]
+    apk_image: str | None = None
+    apk_chromium: str = ""
 
 
 @dataclass(frozen=True, slots=True)
@@ -297,17 +305,17 @@ def _mac_browsers(*, arm64: bool) -> BrowserDistribution:
         archives=(
             BrowserArchive(
                 name="chromium",
-                cdn_file=f"chromium{suffix}.zip",
-                cft_file=f"chrome-mac-{flavor}.zip",
+                cdn_file=(f"chromium{suffix}.zip"),
+                cft_file=(f"chrome-mac-{flavor}.zip"),
             ),
             BrowserArchive(
                 name="chromium-headless-shell",
-                cdn_file=f"chromium-headless-shell{suffix}.zip",
-                cft_file=f"chrome-headless-shell-mac-{flavor}.zip",
+                cdn_file=(f"chromium-headless-shell{suffix}.zip"),
+                cft_file=(f"chrome-headless-shell-mac-{flavor}.zip"),
             ),
-            BrowserArchive(name="ffmpeg", cdn_file=f"ffmpeg{suffix}.zip"),
+            BrowserArchive(name="ffmpeg", cdn_file=(f"ffmpeg{suffix}.zip")),
         ),
-        cft_dir=f"mac-{flavor}",
+        cft_dir=(f"mac-{flavor}"),
         prune_names=frozenset({"WidevineCdm", "chrome_crashpad_handler"}),
         locale_suffix=".lproj",
         locale_parent=None,
@@ -347,6 +355,7 @@ class Constants:
         linux_browsers: Grouped module constant.
         windows_browsers: Grouped module constant.
         no_browsers: Grouped module constant.
+        musl_browsers: Grouped module constant.
         mac_wheels_arm64: Grouped module constant.
         mac_wheels_x64: Grouped module constant.
         targets: Grouped module constant.
@@ -422,36 +431,40 @@ class Constants:
     fetch_user_agent: Final[str] = "exactus"
     max_line_length: Final[int] = 79
     zstd_probe: Final[str] = (
-        "import subprocess,sys;from pathlib import Path;from platform "
-        "import machine,system;from tempfile import gettempdir;from zstd"
-        "_portable import export_binary;p=export_binary(os"
-        "_name=system().lower(),machine=machine(),target=Path(gettempdir()"
-        ")/'exactus-zstd-cli');import "
+        "import subprocess,sys;from pathlib import Path;from platform import "
+        "machine,system;from tempfile import gettempdir;from zstd_portable "
+        "import export_binary;p=export_binary(os_name=system().lower(),machine"
+        "=machine(),target=Path(gettempdir())/'exactus-zstd-cli');import "
         "os;sys.exit(subprocess.run([str(p),*sys.argv[1:]]).returncode)"
     )
     browser_probe: Final[str] = (
-        "import glob,os,subprocess,sys;b=os.environ['PLAYWRIGHT_BROWSERS"
-        "_PATH'];c=[x for q in '{0}'.split(',') for x in "
+        "import glob,os,subprocess,sys;b=os.environ['PLAYWRIGHT_BROWSERS_PATH'"
+        "];c=[x for q in '{0}'.split(',') for x in "
         "sorted(glob.glob(os.path.join(b,q),recursive=True)) if "
-        "os.path.isfile(x)];sys.exit(subprocess.run([c[0],*sys.argv[1:]])."
-        "returncode) if c else sys.exit('no bundled browser executable "
-        "found')"
+        "os.path.isfile(x)];sys.exit(subprocess.run([c[0],*sys.argv[1:]]).retu"
+        "rncode) if c else sys.exit('no bundled browser executable found')"
     )
     chromium_patterns: Final[str] = (
-        "chromium-*/chrome-linux/chrome,chromium-*/chrome-mac*"
-        "/Chromium.app/Contents/MacOS/Chromium,chromium-*/chrome-mac*"
-        "/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for "
-        "Testing,chromium-*/chrome-win*/chrome.exe,chromium_headless_shell"
-        "-*/chrome-headless-shell-*/chrome-headless-shell,chromium"
-        "_headless_shell-*/chrome-headless-shell-*/headless_shell,chromium"
-        "_headless_shell-*/chrome-linux/headless_shell,chromium_headless"
-        "_shell-*/chrome-win*/headless_shell.exe"
+        "chromium-*/chrome-linux/chrome,chromium-*/chrome-mac*/Chromium.app/Co"
+        "ntents/MacOS/Chromium,chromium-*/chrome-mac*/Google Chrome for "
+        "Testing.app/Contents/MacOS/Google Chrome for "
+        "Testing,chromium-*/chrome-win*/chrome.exe,chromium_headless_shell-*/c"
+        "hrome-headless-shell-*/chrome-headless-shell,chromium_headless_shell-"
+        "*/chrome-headless-shell-*/headless_shell,chromium_headless_shell-*/ch"
+        "rome-linux/headless_shell,chromium_headless_shell-*/chrome-win*/headl"
+        "ess_shell.exe"
     )
     headless_patterns: Final[str] = (
-        "chromium_headless_shell-*/chrome-headless-shell-*/chrome-headless-shell,chromium_headless_shell-*/chrome-headless-shell-*/headless_shell,chromium_headless_shell-*/chrome-linux/headless_shell,chromium_headless_shell-*/chrome-win*/headless_shell.exe,chromium-*/chrome-linux/chrome,chromium-*/chrome-mac*/Chromium.app/Contents/MacOS/Chromium,chromium-*/chrome-win*/chrome.exe"
+        "chromium_headless_shell-*/chrome-headless-shell-*/chrome-headless-she"
+        "ll,chromium_headless_shell-*/chrome-headless-shell-*/headless_shell,c"
+        "hromium_headless_shell-*/chrome-linux/headless_shell,chromium_headles"
+        "s_shell-*/chrome-win*/headless_shell.exe,chromium-*/chrome-linux/chro"
+        "me,chromium-*/chrome-mac*/Chromium.app/Contents/MacOS/Chromium,chromi"
+        "um-*/chrome-win*/chrome.exe"
     )
     ffmpeg_patterns: Final[str] = (
-        "ffmpeg-*/ffmpeg-linux,ffmpeg-*/ffmpeg-mac,ffmpeg-*/ffmpeg-mac-arm64,ffmpeg-*/ffmpeg-win64.exe,ffmpeg-*/ffmpeg.exe,ffmpeg-*/ffmpeg"
+        "ffmpeg-*/ffmpeg-linux,ffmpeg-*/ffmpeg-mac,ffmpeg-*/ffmpeg-mac-arm64,f"
+        "fmpeg-*/ffmpeg-win64.exe,ffmpeg-*/ffmpeg.exe,ffmpeg-*/ffmpeg"
     )
     components: Final[dict[str, ComponentSpec]] = {
         "zstd-cli": ComponentSpec(
@@ -824,8 +837,8 @@ class Constants:
                     name="rst2pseudoxml",
                     kind="probe",
                     target=(
-                        "from docutils.core import "
-                        "rst2pseudoxml;rst2pseudoxml()"
+                        "from docutils.core import rst2pseudoxml;"
+                        "rst2pseudoxml()"
                     ),
                 ),
                 ToolSpec(
@@ -1050,6 +1063,14 @@ class Constants:
         locale_parent=None,
         locale_keep=(),
     )
+    musl_browsers: Final[BrowserDistribution] = replace(
+        no_browsers,
+        apk_image=(
+            "alpine:3.24@sha256:be2656061b536c1883c4034790e21d0a09c5aaaf51"
+            "968b89368a3c0371ea2c9a"
+        ),
+        apk_chromium="156.0.8078.79-r0",
+    )
     mac_wheels_arm64: Final[tuple[str, ...]] = (
         "macosx_14_0_arm64",
         "macosx_13_0_arm64",
@@ -1150,7 +1171,7 @@ class Constants:
                 prune=node_prune_posix,
             ),
             wheel_platforms=("musllinux_1_2_x86_64", "musllinux_1_1_x86_64"),
-            browsers=no_browsers,
+            browsers=musl_browsers,
         ),
         "linux-musl-arm64": BuildTarget(
             name="linux-musl-arm64",
@@ -1166,7 +1187,7 @@ class Constants:
                 prune=node_prune_posix,
             ),
             wheel_platforms=("musllinux_1_2_aarch64", "musllinux_1_1_aarch64"),
-            browsers=no_browsers,
+            browsers=musl_browsers,
         ),
         "macos-arm64": BuildTarget(
             name="macos-arm64",
@@ -1231,7 +1252,7 @@ class Constants:
                 prune=node_prune_windows,
             ),
             wheel_platforms=("win_arm64",),
-            browsers=no_browsers,
+            browsers=windows_browsers,
         ),
     }
     target_groups: Final[dict[str, tuple[str, ...]]] = {
@@ -1266,11 +1287,7 @@ class Constants:
     }
     distribution: Final[Distribution] = Distribution()
     target_unavailable: Final[dict[str, tuple[str, ...]]] = {
-        "linux-musl-amd64": ("browser",),
-        "linux-musl-arm64": (
-            "browser",
-            "tree-sitter_tree-sitter-language-pack",
-        ),
+        "linux-musl-arm64": ("tree-sitter_tree-sitter-language-pack",),
         "windows-arm64": ("hypothesis_mutmut",),
     }
 
@@ -1376,7 +1393,7 @@ def size_label(*, size: int) -> str:
         unit = candidate
     if unit == "B":
         return f"{size}B"
-    return f"{f'{value:.1f}'.removesuffix('.0')}{unit}"
+    return f"{f"{value:.1f}".removesuffix(".0")}{unit}"
 
 
 class FetchError(RuntimeError):
@@ -2107,7 +2124,7 @@ class BundleBuilder:
                 str,
             ):
                 name: str = (
-                    f"{manifest_dir.parent.name}/{manifest_dir.name}"
+                    (f"{manifest_dir.parent.name}/{manifest_dir.name}")
                     if manifest_dir.parent.name.startswith("@")
                     else manifest_dir.name
                 )
@@ -2254,6 +2271,42 @@ class BundleBuilder:
             spec: Component whose packages are installed.
 
         """
+        packages: tuple[str, ...] = spec.python_packages
+        if self._target.libc == "musl" and "playwright" in packages:
+            platform: str = (
+                "manylinux1_x86_64"
+                if self._target.arch == "amd64"
+                else "manylinux_2_17_aarch64"
+            )
+            self._run(
+                args=(
+                    "python3",
+                    "-m",
+                    "pip",
+                    "install",
+                    "--no-deps",
+                    "--only-binary=:all:",
+                    (f"--platform={platform}"),
+                    "--implementation=cp",
+                    "--python-version=3.13",
+                    "--target",
+                    str(object=stage / "python"),
+                    "playwright",
+                ),
+                cwd=stage,
+            )
+            requirements: tuple[str, ...] = tuple(
+                requirement
+                for distribution in distributions(
+                    path=[str(object=stage / "python")],
+                )
+                if distribution.metadata["Name"] == "playwright"
+                for requirement in distribution.requires or ()
+            )
+            packages = (
+                *tuple(name for name in packages if name != "playwright"),
+                *requirements,
+            )
         self._run(
             args=(
                 "python3",
@@ -2262,14 +2315,14 @@ class BundleBuilder:
                 "install",
                 "--only-binary=:all:",
                 *(
-                    f"--platform={platform}"
-                    for platform in self._target.wheel_platforms
+                    (f"--platform={tag}")
+                    for tag in self._target.wheel_platforms
                 ),
                 "--implementation=cp",
                 "--python-version=3.13",
                 "--target",
                 str(object=stage / "python"),
-                *spec.python_packages,
+                *packages,
                 *(self._target.python_extras if spec.python_extras else ()),
             ),
             cwd=stage,
@@ -2280,6 +2333,9 @@ class BundleBuilder:
 
         Args:
             stage: Component staging root.
+
+        Raises:
+            ValueError: When a musl target lacks its Alpine runtime image.
 
         """
         node: NodeDistribution = self._target.node
@@ -2301,6 +2357,12 @@ class BundleBuilder:
         archive.unlink()
         for relative in node.prune:
             self._remove(path=node_root / relative)
+        if self._target.libc == "musl":
+            image: str | None = self._target.browsers.apk_image
+            if image is None:
+                msg: str = "musl Node requires an Alpine runtime image"
+                raise ValueError(msg)
+            install_musl_node(stage=stage, image=image, arch=self._target.arch)
 
     def _install_node_packages(
         self,
@@ -2340,8 +2402,9 @@ class BundleBuilder:
             npm = host_npm
         else:
             msg: str = (
-                f"host npm is required to install JavaScript "
-                f"tools when the build host is not {self._target.name}"
+                f"host npm is required to install JavaScript tools when the bu"
+                f"ild host is not "
+                f"{self._target.name}"
             )
             raise ValueError(msg)
         self._run(
@@ -2391,7 +2454,7 @@ class BundleBuilder:
 
         """
         spec: BrowserDistribution = self._target.browsers
-        if not spec.archives:
+        if not spec.archives and spec.apk_image is None:
             heartbeat.state["detail"] = (
                 f"no Playwright browser builds for {self._target.name}"
             )
@@ -2414,27 +2477,46 @@ class BundleBuilder:
         browsers: Json = (
             catalog.get("browsers") if isinstance(catalog, dict) else None
         )
-        if isinstance(browsers, list):
-            for entry in browsers:
-                if not isinstance(entry, dict):
-                    continue
-                name: Json = entry.get("name")
-                revision: Json = entry.get("revision")
-                version: Json = entry.get("browserVersion")
-                if isinstance(name, str) and isinstance(revision, str):
-                    entries[name] = (
-                        revision,
-                        version if isinstance(version, str) else None,
-                    )
+        for entry in browsers if isinstance(browsers, list) else []:
+            if not isinstance(entry, dict):
+                continue
+            name: Json = entry.get("name")
+            revision: Json = entry.get("revision")
+            version: Json = entry.get("browserVersion")
+            if isinstance(name, str) and isinstance(revision, str):
+                entries[name] = (
+                    revision,
+                    version if isinstance(version, str) else None,
+                )
+        if spec.apk_image is not None:
+            revisions: dict[str, str] = {}
+            for name in ("chromium", "chromium-headless-shell", "ffmpeg"):
+                if name not in entries:
+                    msg: str = f"bundled playwright catalog is missing {name}"
+                    raise ValueError(msg)
+                revisions[name] = entries[name][0]
+            install_musl_browser(
+                stage=stage,
+                image=spec.apk_image,
+                version=spec.apk_chromium,
+                arch=self._target.arch,
+                revisions=revisions,
+            )
+            return {
+                name: {
+                    "revision": revision,
+                    "version": spec.apk_chromium if name != "ffmpeg" else "",
+                    "source": spec.apk_image,
+                }
+                for name, revision in revisions.items()
+            }
         browsers_root: Path = stage / "playwright-browsers"
         installed: dict[str, dict[str, str]] = {}
         for archive in spec.archives:
             descriptor: str = archive.name
             resolved: tuple[str, str | None] | None = entries.get(descriptor)
             if resolved is None:
-                msg: str = (
-                    f"bundled playwright catalog is missing {descriptor}"
-                )
+                msg = f"bundled playwright catalog is missing {descriptor}"
                 raise ValueError(msg)
             revision, browser_version = resolved
             heartbeat.state["detail"] = f"{descriptor}-{revision}"
@@ -2446,7 +2528,7 @@ class BundleBuilder:
             )
             archive_file: Path = stage.parent / f"{descriptor}-{revision}.zip"
             _ = archive_file.write_bytes(data=downloaded)
-            directory: str = f"{descriptor.replace('-', '_')}-{revision}"
+            directory: str = f"{descriptor.replace("-", "_")}-{revision}"
             self._extract_zip(
                 archive=archive_file,
                 destination=browsers_root / directory,
@@ -2491,13 +2573,25 @@ class BundleBuilder:
             and (browser_version is not None)
         ):
             urls.append(
-                f"{Constants.cft_cdn}/{browser_version}/{spec.cft_dir}/{archive.cft_file}",
+                f"{Constants.cft_cdn}"
+                f"/"
+                f"{browser_version}"
+                f"/"
+                f"{spec.cft_dir}"
+                f"/"
+                f"{archive.cft_file}",
             )
         family: str = (
             "chromium" if descriptor.startswith("chromium") else descriptor
         )
         urls.append(
-            f"{BuildToolsDefaults.playwright_cdn}/dbazure/download/playwright/builds/{family}/{revision}/{archive.cdn_file}",
+            f"{BuildToolsDefaults.playwright_cdn}"
+            f"/dbazure/download/playwright/builds/"
+            f"{family}"
+            f"/"
+            f"{revision}"
+            f"/"
+            f"{archive.cdn_file}",
         )
         for url in urls:
             try:
@@ -2573,7 +2667,7 @@ class BundleBuilder:
             self._remove(path=entry)
         for entry in tuple(
             path
-            for path in root.rglob(pattern=f"*{browsers.locale_suffix}")
+            for path in root.rglob(pattern=(f"*{browsers.locale_suffix}"))
             if path.name not in browsers.locale_keep
             and (
                 browsers.locale_parent is None
@@ -2619,7 +2713,7 @@ class BundleBuilder:
         for tool in spec.tools:
             entry: dict[str, str] = {
                 "kind": tool.kind,
-                "target": f"node/{self._target.node.binary}"
+                "target": (f"node/{self._target.node.binary}")
                 if spec.node_runtime
                 else tool.target,
             }
@@ -2656,11 +2750,14 @@ class BundleBuilder:
             document: Status document written to ``@activity.json``.
 
         """
-        temporary: Path = (
-            self._parts_dir / f"{Constants.distribution.status_name}.tmp"
+        temporary: Path = self._parts_dir / (
+            f"{Constants.distribution.status_name}.tmp"
         )
         _ = temporary.write_text(
-            data=dumps(obj=document, indent=2, sort_keys=True) + "\n",
+            data=dumps(obj=document, indent=2, sort_keys=True)
+            + """\
+
+""",
             encoding="utf-8",
         )
         _ = temporary.replace(
@@ -2873,7 +2970,7 @@ class BundleBuilder:
                 document=self._document(
                     heartbeat=heartbeat,
                     status="FAIL",
-                    extra={"error": f"{type(error).__name__}: {error}"},
+                    extra={"error": (f"{type(error).__name__}: {error}")},
                 ),
             )
             raise
@@ -3023,6 +3120,9 @@ class BundleBuilder:
                 "prune": getsource(object=self.prune),
                 "browser_prune": getsource(object=self._prune_browsers),
                 "dedupe": getsource(object=self._dedupe_node),
+                "musl_packages": getsource(object=install_musl_packages),
+                "musl_node": getsource(object=install_musl_node),
+                "musl_settings": getsource(object=MuslBrowserConstants),
             },
         )
         ctx.recipes = {}
@@ -3074,6 +3174,8 @@ class BundleBuilder:
                         )
                         + (
                             getsource(object=self._install_chromium)
+                            + getsource(object=install_musl_browser)
+                            + getsource(object=MuslBrowserConstants)
                             if spec.browsers
                             else ""
                         )
@@ -3223,9 +3325,16 @@ class BundleBuilder:
             ctx.heartbeat.state["fraction"] = (
                 str(object=(built + reused_count) / total) if total else "1"
             )
-            ctx.heartbeat.state["detail"] = f"{built + reused_count}/{
-                total
-            } packs ({built} built, {reused_count} reused)"
+            ctx.heartbeat.state["detail"] = (
+                f"{built + reused_count}"
+                f"/"
+                f"{total}"
+                f" packs ("
+                f"{built}"
+                f" built, "
+                f"{reused_count}"
+                f" reused)"
+            )
 
         ctx.catalog = ctx.store.build(
             recipes=ctx.recipes,
@@ -3264,28 +3373,33 @@ class BundleBuilder:
         ).as_posix()
         ctx.launcher = dedent(
             text=(
-                f"\n            #!/usr/bin/env python3\n  "
-                f"          # {stub_marker()}\n            "
-                f'"""Offline partitioned filesystem dispatcher."""\n'
-                f"            from pathlib import Path\n            "
-                f"from typing import TYPE_CHECKING\n\n            "
-                f"if TYPE_CHECKING or __package__:\n                "
-                f"from .partition_launcher import main\n            "
-                f"else:\n                "
-                f"from partition_launcher import main\n\n            "
-                f'if __name__ == "__main__":\n                '
-                f"catalog: Path = Path(__file__)"
-                f".resolve().parent\n                "
-                f"catalog /= {dumps(obj=ctx.parts_relative)}\n"
-                f"                raise SystemExit("
-                f"main(catalog_path=catalog))\n            "
+                f"""\
+
+            #!/usr/bin/env python3
+            # {stub_marker()}
+            \"""Offline partitioned filesystem dispatcher.\"""
+            from pathlib import Path
+            from typing import TYPE_CHECKING
+
+            if TYPE_CHECKING or __package__:
+                from .partition_launcher import main
+            else:
+                from partition_launcher import main
+
+            if __name__ == "__main__":
+                catalog: Path = Path(__file__).resolve().parent
+                catalog /= {dumps(obj=ctx.parts_relative)}
+                raise SystemExit(main(catalog_path=catalog))
+            """
             ),
-        ).removeprefix("\n")
+        ).removeprefix("""\
+
+""")
         atomic_bytes(
             path=self._output.parent / "__init__.py",
             data=(
-                b'"""Provide the generated partitioned offline tool runtim'
-                b'e."""\n'
+                b'"""Provide the generated partitioned offline tool '
+                b'runtime."""\n'
             ),
         )
         ancestor: Path = self._output.parent.parent
@@ -3364,28 +3478,29 @@ class BundleBuilder:
         }
         module: str = "exactus.bundle." + self._target.name.replace("-", ".")
         relative: str = "exactus/bundle/" + self._target.name.replace("-", "/")
-        ctx.readme = (
-            f"# Offline partitioned tools\n\nRun this "
-            f"package with `python -m {module}` or `python {relative}`. "
-            f"Keep __init__.py, __main__.py, partition_fs.py, "
-            f"partition_launcher.py, conflict_copies.py, zstd_portable/, "
-            f"and data/ together. JSON metadata is in data/bundle.json "
-            f"and data/metrics.json; the catalog and packs are in "
-            f"data/parts/fs/. Runtime is offline.\n\n"
-            f"Use `list-tools`, `--verify`, `--verify-deep`, or `TOOL "
-            f"[ARGS...]`. Components materialize lazily with their "
-            f"dependencies. Cache: EXACTUS_TOOLS_CACHE or "
-            f"${{XDG_CACHE_HOME:-~/.cache}}/exactus-tools/<catalog-root>. "
-            f"Set EXACTUS_TOOLS_OBJECT_CACHE=discard to discard decoded "
-            f"objects after materialization.\n\n"
-            f"Builds reuse unchanged staged recipes and packs. --only "
-            f"forces named selected components; --rebuild restages all. "
-            f"Incremental rebuilds emit a sibling `<leaf>.update/` "
-            f"directory holding the new catalog and only the changed "
-            f"packs. Apply with `--apply-update <dir>`; rollback with "
-            f"`--rollback`. Explicit GC is opt-in.\n\n"
-            f"Catalog root: `{ctx.root}`\n"
-        )
+        ctx.readme = f"""\
+# Offline partitioned tools
+
+Run this package with `python -m {module}` or `python {relative}`. Keep \
+__init__.py, __main__.py, partition_fs.py, partition_launcher.py, \
+conflict_copies.py, zstd_portable/, and data/ together. JSON metadata is in \
+data/bundle.json and data/metrics.json; the catalog and packs are in \
+data/parts/fs/. Runtime is offline.
+
+Use `list-tools`, `--verify`, `--verify-deep`, or `TOOL [ARGS...]`. \
+Components materialize lazily with their dependencies. Cache: \
+EXACTUS_TOOLS_CACHE or ${{XDG_CACHE_HOME:-~/.cache}}/exactus-tools/<catalog-ro\
+ot>. Set EXACTUS_TOOLS_OBJECT_CACHE=discard to discard decoded objects after \
+materialization.
+
+Builds reuse unchanged staged recipes and packs. --only forces named selected \
+components; --rebuild restages all. Incremental rebuilds emit a sibling \
+`<leaf>.update/` directory holding the new catalog and only the changed \
+packs. Apply with `--apply-update <dir>`; rollback with `--rollback`. \
+Explicit GC is opt-in.
+
+Catalog root: `{ctx.root}`
+"""
 
     def _partition_delta(self, ctx: _PartitionBuild) -> None:
         """Delta the incremental filesystem build phase.
@@ -3429,20 +3544,22 @@ class BundleBuilder:
             path.parent.mkdir(parents=True, exist_ok=True)
             if not path.exists() or hash_file(path=path) != pack["sha256"]:
                 sibling: Path = path.with_name(
-                    name=f".{path.name}.{uuid4().hex}.tmp",
+                    name=(f".{path.name}.{uuid4().hex}.tmp"),
                 )
                 copyfile(src=ctx.snapshot / pack["path"], dst=sibling)
                 sibling.replace(target=path)
         PartitionStore.verify(catalog=ctx.catalog, root=live)
         if ctx.previous is not None:
             atomic_bytes(
-                path=live / "catalogs" / f"{ctx.previous['root_sha256']}.json",
+                path=live
+                / "catalogs"
+                / (f"{ctx.previous["root_sha256"]}.json"),
                 data=canonical(
                     value=cast(typ="PartitionJson", val=ctx.previous),
                 ),
             )
         atomic_bytes(
-            path=live / "catalogs" / f"{ctx.root}.json",
+            path=live / "catalogs" / (f"{ctx.root}.json"),
             data=canonical(value=cast(typ="PartitionJson", val=ctx.catalog)),
         )
         atomic_bytes(
@@ -3525,8 +3642,8 @@ def _build_parser() -> ArgumentParser:
         type=Path,
         default=None,
         help=(
-            "Destination launcher for a single target. Default: PROJECT"
-            "_ROOT/exactus/bundle/<target>/__main__.py."
+            "Destination launcher for a single target. Default: "
+            "PROJECT_ROOT/exactus/bundle/<target>/__main__.py."
         ),
     )
     _ = parser.add_argument("--node-version", default="22.21.1")
@@ -3569,8 +3686,8 @@ def _build_parser() -> ArgumentParser:
         )
         + ", ".join(sorted(Constants.groups))
         + (
-            ", all (every optional component). This project's bundle "
-            "requires `browser`, `jinja2`, and `pillow`."
+            ", all (every optional component). This project's bundle requires "
+            "`browser`, `jinja2`, and `pillow`."
         ),
     )
     _ = parser.add_argument(

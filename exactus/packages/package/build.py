@@ -130,59 +130,96 @@ class Constants:
     )
     main_stub: Final[str] = dedent(
         text=(
-            '\n        """Pyz entry point dispatching to the exactus."""\n\n '
-            "       from os import environ, execv, pathsep\n        from "
-            "pathlib import Path\n        from shutil import which\n        "
-            "from sys import argv, executable\n\n        archive: str = "
-            "str(object=Path(argv[0]).resolve())\n        python_path: "
-            "list[str] = [archive]\n        if existing_python_path := "
-            'environ.get("PYTHONPATH", ""):\n            python'
-            "_path.extend(existing_python_path.split(sep=pathsep))\n       "
-            ' environ["PYTHONPATH"] = pathsep.join(dict.fromkeys(python'
-            "_path))\n\n        from exactus.__main__ import main\n        "
-            "from exactus.tools.common.cli import resolve_exactus_tool"
-            "_bundle\n\n\n        def preferred_python() -> str:\n            "
-            '"""Return an interpreter matching the bundled wheels\' ABI.\n\n '
-            "           Bundled components ship CPython-tagged "
-            "extensions, so tool\n            dispatch must run under the "
-            "project interpreter when known,\n            else a PATH "
-            "python matching the build tag, else whatever\n            "
-            'launched this archive.\n\n            """\n            if '
-            'candidate := environ.get("EXACTUS_PROJECT_PYTHON"):\n         '
-            "       return candidate\n            return "
-            'which(cmd="python3.13") or executable\n\n        BUNDLED'
-            "_TOOLS: frozenset[str] = frozenset({\n            "
-            '"basedpyright",\n            "build",\n            '
-            '"coverage",\n            "eslint",\n            "exactus'
-            '-mcp",\n            "exactus-mcp-wakeup",\n            '
-            '"htmlhint",\n            "jinja2",\n            "jslint",\n     '
-            '       "mutmut",\n            "node",\n            "pillow",\n  '
-            '          "playwright",\n            "prettier",\n            '
-            '"pyrefly",\n            "pytest",\n            "ruff",\n        '
-            '    "stylelint",\n            "tsc",\n            "twine",\n    '
-            '        "uvicorn",\n        })\n\n        if len(argv) > 1 and '
-            "argv[1] in BUNDLED_TOOLS:\n            bundle: Path | None = "
-            "resolve_exactus_tool_bundle(root=Path.cwd())\n            if "
-            'bundle is None:\n                message: str = "No '
-            'compatible bundled toolchain is available"\n                '
-            "raise SystemExit(message)\n            interpreter: str = "
-            "preferred_python()\n            execv(interpreter, "
-            "[interpreter, str(bundle), *argv[1:]])\n\n        raise "
-            "SystemExit(main())\n        "
+            """\
+
+        \"""Pyz entry point dispatching to the exactus.\"""
+
+        from os import environ, execv, pathsep
+        from pathlib import Path
+        from shutil import which
+        from sys import argv, executable
+
+        archive: str = str(object=Path(argv[0]).resolve())
+        python_path: list[str] = [archive]
+        if existing_python_path := environ.get("PYTHONPATH", ""):
+            python_path.extend(existing_python_path.split(sep=pathsep))
+        environ["PYTHONPATH"] = pathsep.join(dict.fromkeys(python_path))
+
+        from exactus.__main__ import main
+        from exactus.tools.common.cli import resolve_exactus_tool_bundle
+
+
+        def preferred_python() -> str:
+            \"""Return an interpreter matching the bundled wheels' ABI.
+
+            Bundled components ship CPython-tagged extensions, so tool
+            dispatch must run under the project interpreter when known,
+            else a PATH python matching the build tag, else whatever
+            launched this archive.
+
+            \"""
+            if candidate := environ.get("EXACTUS_PROJECT_PYTHON"):
+                return candidate
+            return which(cmd="python3.13") or executable
+
+        BUNDLED_TOOLS: frozenset[str] = frozenset({
+            "basedpyright",
+            "build",
+            "coverage",
+            "eslint",
+            "exactus-mcp",
+            "exactus-mcp-wakeup",
+            "htmlhint",
+            "jinja2",
+            "jslint",
+            "mutmut",
+            "node",
+            "pillow",
+            "playwright",
+            "prettier",
+            "pyrefly",
+            "pytest",
+            "ruff",
+            "stylelint",
+            "tsc",
+            "twine",
+            "uvicorn",
+        })
+
+        if len(argv) > 1 and argv[1] in BUNDLED_TOOLS:
+            bundle: Path | None = resolve_exactus_tool_bundle(root=Path.cwd())\
+
+            if bundle is None:
+                message: str = "No compatible bundled toolchain is \
+available"
+                raise SystemExit(message)
+            interpreter: str = preferred_python()
+            execv(interpreter, [interpreter, str(bundle), *argv[1:]])
+
+        raise SystemExit(main())
+        """
         ),
-    ).removeprefix("\n")
+    ).removeprefix("""\
+
+""")
     check_readme_template: Final[Path] = (
         Path(__file__).resolve().parent / "templates" / "readme_template.md"
     )
     dist_readme: Final[str] = dedent(
         text=(
-            "    # `build/`\n    \n    Generated dist directory produced by `p"
-            "ython exactus.packages.package --build --build`.\n    \n    The `"
-            "bin/release/exactus_all/exactus` zipapp unzipped — the `exactus/`"
-            " package plus\n    the `__main__.py` entry stub, runnable without"
-            " bundling:\n    \n    - `python build/` — same CLI as the `bin/re"
-            "lease` pyz.\n    - `python -m exactus` — works from inside this d"
-            "irectory.\n    "
+            """\
+    # `build/`
+
+    Generated dist directory produced by `python exactus.packages.package \
+--build --build`.
+
+    The `bin/release/exactus_all/exactus` zipapp unzipped — the `exactus/` \
+package plus
+    the `__main__.py` entry stub, runnable without bundling:
+
+    - `python build/` — same CLI as the `bin/release` pyz.
+    - `python -m exactus` — works from inside this directory.
+    """
         ),
     )
 
@@ -669,7 +706,9 @@ def _stage_package(
     )
     if self_test:
         _ = (staging / "exactus" / "SELF_TEST").write_text(
-            data="enabled\n",
+            data="""\
+enabled
+""",
             encoding="utf-8",
         )
     _ = (staging / "__main__.py").write_text(
@@ -983,7 +1022,12 @@ def _write_manifest(
                 )
                 if isinstance(configured, str):
                     node_version = configured
-    rows: str = "".join(f"- `{leaf}`\n" for leaf in leaves)
+    rows: str = "".join(
+        f"""\
+- `{leaf}`
+"""
+        for leaf in leaves
+    )
     tools: dict[str, str] = _bundled_tools(
         leaves=leaves,
         node_version=node_version,
@@ -991,30 +1035,50 @@ def _write_manifest(
     )
     tool_rows: str = "".join(
         (
-            f"| `{tool}` | `{version or '—'}` |\n"
+            f"""\
+| `{tool}` | `{version or "—"}` |
+"""
             for tool, version in sorted(tools.items())
         ),
     )
     _ = (target.parent / "MANIFEST.md").write_text(
         data=(
-            f"# `{target.name}` — {
-                target.parent.name
-            }\n\n| Field | Value |\n| --- | --- |\n| Version | `{
-                version
-            }` |\n| File | `{target.name}` |\n| Size | {
-                target.stat().st_size
-            } bytes |\n| SHA-256 | `{
-                _hash_file(path=target)
-            }` |\n| Self-test | {
-                ('enabled' if self_test else 'disabled')
-            } |\n\n## Embedded bundle targets\n\n"
+            f"""\
+# `{target.name}` — {target.parent.name}
+
+| Field | Value |
+| --- | --- |
+| Version | `{version}` |
+| File | `{target.name}` |
+| Size | {target.stat().st_size} bytes |
+| SHA-256 | `{_hash_file(path=target)}` |
+| Self-test | {("enabled" if self_test else "disabled")} |
+
+## Embedded bundle targets
+
+"""
         )
-        + (rows or "- none\n")
-        + "\n## Bundled tools\n\n"
         + (
-            "| Tool | Version |\n| --- | --- |\n" + tool_rows
+            rows
+            or """\
+- none
+"""
+        )
+        + """\
+
+## Bundled tools
+
+"""
+        + (
+            """\
+| Tool | Version |
+| --- | --- |
+"""
+            + tool_rows
             if tool_rows
-            else "- none\n"
+            else """\
+- none
+"""
         ),
         encoding="utf-8",
     )
@@ -1171,15 +1235,15 @@ def create_parser() -> ArgumentParser:
         epilog=(
             dedent(
                 text=(
-                    "    examples:\n      python -m exactus.packages.packa"
-                    "ge --build\n      python -m exactus.packages.package "
-                    "--build --no-exactus\n      python -m exactus.package"
-                    "s.package --build --check\n      python -m exactus.pa"
-                    "ckages.package --build --build\n      python -m exact"
-                    "us.packages.package --build --tree\n      python -m e"
-                    "xactus.packages.package --build --build --target amd6"
-                    "4\n      python -m exactus.packages.package --build -"
-                    "-tree --no-exactus"
+                    """\
+    examples:
+      python -m exactus.packages.package --build
+      python -m exactus.packages.package --build --no-exactus
+      python -m exactus.packages.package --build --check
+      python -m exactus.packages.package --build --build
+      python -m exactus.packages.package --build --tree
+      python -m exactus.packages.package --build --build --target amd64
+      python -m exactus.packages.package --build --tree --no-exactus"""
                 ),
             )
         ),

@@ -346,7 +346,12 @@ def test_provisional_release_opens_dependent_file_lane(
     database: Path = tmp_path / "runs.db"
     registry: RunRegistry = RunRegistry(path=database)
     source: Path = tmp_path / "source.py"
-    source.write_text(data="value: int = 1\n", encoding="utf-8")
+    source.write_text(
+        data="""\
+value: int = 1
+""",
+        encoding="utf-8",
+    )
     expect_equal(
         actual=registry.claim(
             request=RunClaim(
@@ -403,7 +408,11 @@ def worker_env(
         "PLAYWRIGHT_BROWSERS_PATH",
     ):
         monkeypatch.setenv(name=name, value="")
-    _ = (tmp_path / "README.md").write_text(data="# x\n")
+    _ = (tmp_path / "README.md").write_text(
+        data="""\
+# x
+""",
+    )
     with patch(target="sys.path", new=list(sys_path)):
         yield tmp_path
 

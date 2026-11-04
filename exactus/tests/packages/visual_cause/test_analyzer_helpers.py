@@ -598,15 +598,19 @@ def test_rule_and_element_payload_validation(tmp_path: Path) -> None:
         private_call(CssVisualCause, "_parse_elements", raw='{"bad": true}')
     raw: str = dedent(
         text=(
-            '    [{\n            "selector":".a","domPath":"html/body/div","pa'
-            'rentPath":"html/body",\n            "tag":"div","text":"A","ownTe'
-            'xt":"A","x":1,"y":2,"width":3,\n            "height":4,"position"'
-            ':"static","zIndex":"auto","computed":{"display":"block"},\n      '
-            '      "typedComputed":{"width":{"type":"CSSUnitValue","text":"3px'
-            '"}},\n            "beforeContent":"none","afterContent":"none","c'
-            'hildCount":0,\n            "scrollWidth":3,"scrollHeight":4,"clie'
-            'ntWidth":3,"clientHeight":4,\n            "overflowX":"visible","'
-            'overflowY":"visible"\n        }]'
+            """\
+    [{
+            "selector":".a","domPath":"html/body/div",\
+"parentPath":"html/body",
+            "tag":"div","text":"A","ownText":"A","x":1,"y":2,"width":3,
+            "height":4,"position":"static","zIndex":"auto",\
+"computed":{"display":"block"},
+            "typedComputed":{"width":{"type":"CSSUnitValue","text":"3px"}},
+            "beforeContent":"none","afterContent":"none","childCount":0,
+            "scrollWidth":3,"scrollHeight":4,"clientWidth":3,"clientHeight":4,\
+
+            "overflowX":"visible","overflowY":"visible"
+        }]"""
         ),
     )
     elements: tuple[ElementInfo, ...] = cast(

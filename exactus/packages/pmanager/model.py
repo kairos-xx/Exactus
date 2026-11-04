@@ -1206,7 +1206,7 @@ class ProcessDefinition:
         if unknown:
             msg: str = (
                 "__init__() got unexpected keyword argument(s): "
-                f"{', '.join(repr(name) for name in unknown)}"
+                f"{", ".join(repr(name) for name in unknown)}"
             )
             raise TypeError(msg)
         self.extends = fields.get("extends")
@@ -1950,7 +1950,13 @@ class Specification:
 
         """
         destination: Path = Path(path).resolve()
-        destination.write_text(encoding="utf-8", data=self.to_json() + "\n")
+        destination.write_text(
+            encoding="utf-8",
+            data=self.to_json()
+            + """\
+
+""",
+        )
         return destination
 
     @staticmethod

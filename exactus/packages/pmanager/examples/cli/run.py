@@ -34,7 +34,9 @@ def main() -> int:
 
     """
     spec: Path = Constants.spec
-    stdout.write(f"spec: {spec}\n")
+    stdout.write(f"""\
+spec: {spec}
+""")
     stdout.flush()
     commands: tuple[tuple[str, ...], ...] = (
         (
@@ -63,7 +65,13 @@ def main() -> int:
         ),
     )
     for command in commands:
-        stdout.write("$ " + " ".join(command) + "\n")
+        stdout.write(
+            "$ "
+            + " ".join(command)
+            + """\
+
+""",
+        )
         stdout.flush()
         completed: CompletedProcess[bytes] = run(check=False, args=command)
         if completed.returncode != 0:

@@ -222,6 +222,75 @@ def test_incompatible_and_sealed_claims_wait(
     expect_equal(actual=sealed.detail, expected="owner is finalizing")
 
 
+def test_acknowledge_persists_a_merged_plan_fingerprint(
+    coordinator: PipelineCoordinator,
+) -> None:
+    """A merged/retargeted reset stores the new owner plan hash.
+
+    Args:
+        coordinator: Isolated transactional supervisor.
+
+    """
+    _claim_owner(coordinator=coordinator)
+    observer: PipelineClaim = coordinator.claim(
+        pipeline="unified",
+        run_id="observer",
+        pid=202,
+        fingerprint="merged",
+        tty=None,
+    )
+    request: PipelineRequest | None = observer.request
+    expect_true(condition=request is not None)
+    if request is None:
+        return
+    coordinator.acknowledge(
+        requests=(request,),
+        generation=2,
+        detail="generation 2 started",
+        fingerprint="merged-plan-hash",
+    )
+    stored: PipelineOwner | None = coordinator.owner(pipeline="unified")
+    expect_true(condition=stored is not None)
+    if stored is None:
+        return
+    expect_equal(actual=stored.fingerprint, expected="merged-plan-hash")
+    expect_equal(actual=stored.generation, expected=2)
+
+
+def test_acknowledge_without_a_plan_keeps_the_fingerprint(
+    coordinator: PipelineCoordinator,
+) -> None:
+    """A generation-only reset leaves the owner plan hash untouched.
+
+    Args:
+        coordinator: Isolated transactional supervisor.
+
+    """
+    _ = _claim_owner(coordinator=coordinator)
+    observer: PipelineClaim = coordinator.claim(
+        pipeline="unified",
+        run_id="observer",
+        pid=202,
+        fingerprint="same",
+        tty=None,
+    )
+    request: PipelineRequest | None = observer.request
+    expect_true(condition=request is not None)
+    if request is None:
+        return
+    coordinator.acknowledge(
+        requests=(request,),
+        generation=2,
+        detail="generation 2 started",
+    )
+    stored: PipelineOwner | None = coordinator.owner(pipeline="unified")
+    expect_true(condition=stored is not None)
+    if stored is None:
+        return
+    expect_equal(actual=stored.fingerprint, expected="same")
+    expect_equal(actual=stored.generation, expected=2)
+
+
 def test_terminal_owner_is_observable_and_replaceable(
     coordinator: PipelineCoordinator,
 ) -> None:

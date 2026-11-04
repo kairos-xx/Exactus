@@ -38,6 +38,7 @@ from pathlib import Path
 from re import Match, Pattern
 from re import compile as compile_regex
 from sys import stdout
+from textwrap import dedent
 from typing import TYPE_CHECKING, Final, final
 from zipfile import ZIP_DEFLATED, ZipFile
 
@@ -93,7 +94,10 @@ class Constants:
     """
 
     component_import: Final[Pattern[str]] = compile_regex(
-        pattern="^\\s*(?:from|import)\\s+exactus\\.(packages|tools)\\.([a-z_][a-z0-9_]*)",
+        pattern=(
+            "^\\s*(?:from|import)\\s+exactus\\.(packages|tools)\\.([a-z_][a-z0"
+            "-9_]*)"
+        ),
     )
     quoted_module: Final[Pattern[str]] = compile_regex(
         pattern="[\"\\']exactus\\.(packages|tools)\\.([a-z_][a-z0-9_]*)",
@@ -143,18 +147,22 @@ class Constants:
     project_bundle: Final[Path] = Path("exactus", "bundle")
     project_build_bundle: Final[Path] = Path("build", "exactus", "bundle")
     project_archive: Final[str] = "exactus-release.zip"
-    folder_readme: Final[str] = (
-        "# `artifacts/zip-components/`\n"
-        "\n"
-        "Archives produced by `exactus.packages.zip_components` "
-        "(`python exactus/packages/zip_components …`).\n"
-        "\n"
-        "Each subdirectory is named after its `.zip` and contains the\n"
-        "archive, a `README.md` describing the bundle, and a `TREE.txt`\n"
-        "listing every member. Extract with `unzip -o <name>.zip -d .`\n"
-        "at a repository root to restore the files in place.\n"
-        "\n"
-        "This directory is git-ignored: bundles are build artifacts.\n"
+    folder_readme: Final[str] = dedent(
+        text=(
+            """\
+    # `artifacts/zip-components/`
+
+    Archives produced by `exactus.packages.zip_components` (`python \
+exactus/packages/zip_components …`).
+
+    Each subdirectory is named after its `.zip` and contains the
+    archive, a `README.md` describing the bundle, and a `TREE.txt`
+    listing every member. Extract with `unzip -o <name>.zip -d .`
+    at a repository root to restore the files in place.
+
+    This directory is git-ignored: bundles are build artifacts.
+    """
+        ),
     )
 
 
@@ -170,6 +178,25 @@ class Selection:
 
     tools: tuple[str, ...]
     packages: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class BundleOptions:
+    """Optional destinations and payload switches for ``create_bundle``.
+
+    Attributes:
+        output: Explicit archive path; writes a bare zip, bypassing the
+            scaffolded bundle layout.
+        output_folder: Directory holding the bundle folder; defaults to
+            ``<root>/artifacts/zip-components``.
+        include_results: Also bundle each selected tool's
+            ``<reports-dir>/<TOOL>`` reports directory.
+
+    """
+
+    output: Path | None = None
+    output_folder: Path | None = None
+    include_results: bool = False
 
 
 @dataclass(frozen=True)
@@ -497,12 +524,19 @@ def _results_directories(*, root: Path, names: Sequence[str]) -> list[str]:
     ]
 
 
-def collect_files(*, root: Path, selection: Selection) -> tuple[str, ...]:
+def collect_files(
+    *,
+    root: Path,
+    selection: Selection,
+    include_results: bool = False,
+) -> tuple[str, ...]:
     """List every repository-relative file a selection bundles.
 
     Args:
         root: Repository root.
         selection: Components to bundle after dependency discovery.
+        include_results: Also bundle each selected tool's
+            ``<reports-dir>/<TOOL>`` reports directory.
 
     Returns:
         Sorted unique archive member names.
@@ -515,7 +549,8 @@ def collect_files(*, root: Path, selection: Selection) -> tuple[str, ...]:
     if selection.packages:
         roots.extend(Constants.package_paths)
     name: str
-    roots.extend(_results_directories(root=root, names=selection.tools))
+    if include_results:
+        roots.extend(_results_directories(root=root, names=selection.tools))
     for name in selection.tools:
         roots.extend(
             (
@@ -566,7 +601,7 @@ def bundle_name(
         parts.append("_".join(("tools", *tools_names)))
     if package_names:
         parts.append("_".join(("packages", *package_names)))
-    return f"{'_'.join(parts)}.zip"
+    return f"{"_".join(parts)}.zip"
 
 
 def _bundle_readme(
@@ -600,37 +635,41 @@ def _bundle_readme(
         if entry not in requested.packages
     ]
     requested_lines: str = "".join(
-        f"- `exactus.tools.{entry}`\n" for entry in requested.tools
+        f"""\
+- `exactus.tools.{entry}`
+"""
+        for entry in requested.tools
     ) + "".join(
-        f"- `exactus.packages.{entry}`\n" for entry in requested.packages
+        f"""\
+- `exactus.packages.{entry}`
+"""
+        for entry in requested.packages
     )
-    return (
-        f"# `{name.removesuffix('.zip')}/`\n"
-        "\n"
-        "Source bundle produced by `exactus.packages.zip_components`.\n"
-        "\n"
-        "## Contents\n"
-        "\n"
-        f"- `{name}` — the archive ({len(files)} files, "
-        f"{_human_size(size=size)})\n"
-        "- `TREE.txt` — the archive's members as a size/date tree\n"
-        "- `README.md` — this file\n"
-        "\n"
-        "## Selection\n"
-        "\n"
-        f"{requested_lines}"
-        "\n"
-        f"Discovered transitively: "
-        f"{', '.join(f'`{item}`' for item in discovered) or 'none'}\n"
-        "\n"
-        "## Usage\n"
-        "\n"
-        "```bash\n"
-        f"unzip -o {name} -d .\n"
-        "```\n"
-        "\n"
-        "Run at a repository root to restore every member in place.\n"
-    )
+    return f"""\
+# `{name.removesuffix(".zip")}/`
+
+Source bundle produced by `exactus.packages.zip_components`.
+
+## Contents
+
+- `{name}` — the archive ({len(files)} files, {_human_size(size=size)})
+- `TREE.txt` — the archive's members as a size/date tree
+- `README.md` — this file
+
+## Selection
+
+{requested_lines}
+Discovered transitively: \
+{", ".join(f"`{item}`" for item in discovered) or "none"}
+
+## Usage
+
+```bash
+unzip -o {name} -d .
+```
+
+Run at a repository root to restore every member in place.
+"""
 
 
 def create_bundle(
@@ -638,8 +677,7 @@ def create_bundle(
     root: Path,
     tools: Sequence[str] = (),
     packages: Sequence[str] = (),
-    output: Path | None = None,
-    output_folder: Path | None = None,
+    options: BundleOptions | None = None,
 ) -> BundleResult:
     """Write one source-bundle archive for the requested components.
 
@@ -649,15 +687,16 @@ def create_bundle(
             or ``*`` selects every tool in the catalog.
         packages: Requested ``exactus/packages/<name>`` components; ``all`` or
             ``*`` selects every packages package.
-        output: Explicit archive path; writes a bare zip, bypassing the
-            scaffolded bundle layout.
-        output_folder: Directory holding the bundle folder; defaults to
-            ``<root>/artifacts/zip-components``.
+        options: Optional destinations and payload switches; defaults
+            write the scaffolded bundle without results reports.
 
     Returns:
         The written archive path, its members and the full selection.
 
     """
+    resolved: BundleOptions = (
+        options if options is not None else BundleOptions()
+    )
     selection: Selection = Selection(
         tools=_expand_names(root=root, kind="tools", names=tools),
         packages=_expand_names(root=root, kind="packages", names=packages),
@@ -667,15 +706,19 @@ def create_bundle(
         tools=selection.tools,
         packages=selection.packages,
     )
-    files: tuple[str, ...] = collect_files(root=root, selection=discovered)
+    files: tuple[str, ...] = collect_files(
+        root=root,
+        selection=discovered,
+        include_results=resolved.include_results,
+    )
     name: str = bundle_name(tools=tools, packages=packages)
     bundle_dir: Path | None = None
-    if output is not None:
-        destination: Path = output
+    if resolved.output is not None:
+        destination: Path = resolved.output
     else:
         folder: Path = (
-            output_folder
-            if output_folder is not None
+            resolved.output_folder
+            if resolved.output_folder is not None
             else root / Constants.bundles_folder
         )
         folder.mkdir(parents=True, exist_ok=True)
@@ -881,8 +924,10 @@ def _project_release(
         else result.path
     )
     _written: int = stdout.write(
-        f"zip components: {shown} — {len(result.files)} files, "
-        f"{result.path.stat().st_size} bytes\n",
+        f"""\
+zip components: {shown} — {len(result.files)} files, \
+{result.path.stat().st_size} bytes
+""",
     )
     return 0
 
@@ -958,6 +1003,15 @@ def main(*, arguments: Sequence[str] | None = None) -> int:
         ),
     )
     parser.add_argument(
+        "--include-results",
+        dest="include_results",
+        action="store_true",
+        help=(
+            "Bundle each selected tool's <reports-dir>/<TOOL> "
+            "reports directory (omitted by default)."
+        ),
+    )
+    parser.add_argument(
         "--list",
         "-l",
         dest="listing",
@@ -1020,11 +1074,7 @@ def main(*, arguments: Sequence[str] | None = None) -> int:
         selection: Selection = (
             discover_components(
                 root=root,
-                tools=_expand_names(
-                    root=root,
-                    kind="tools",
-                    names=tools,
-                ),
+                tools=_expand_names(root=root, kind="tools", names=tools),
                 packages=_expand_names(
                     root=root,
                     kind="packages",
@@ -1042,7 +1092,9 @@ def main(*, arguments: Sequence[str] | None = None) -> int:
                 },
                 indent=2,
             )
-            + "\n",
+            + """\
+
+""",
         )
         return 0
     kind: str
@@ -1056,8 +1108,11 @@ def main(*, arguments: Sequence[str] | None = None) -> int:
         root=root,
         tools=tools,
         packages=packages,
-        output=options.output,
-        output_folder=options.output_folder,
+        options=BundleOptions(
+            output=options.output,
+            output_folder=options.output_folder,
+            include_results=options.include_results,
+        ),
     )
     requested: Selection = Selection(
         tools=_expand_names(root=root, kind="tools", names=tools),
@@ -1077,12 +1132,14 @@ def main(*, arguments: Sequence[str] | None = None) -> int:
         if result.path.is_relative_to(root)
         else result.path
     )
-    message: str = (
-        f"zip components: {shown} — {len(result.files)} "
-        f"files, {result.path.stat().st_size} bytes\n"
-    )
+    message: str = f"""\
+zip components: {shown} — {len(result.files)} files, \
+{result.path.stat().st_size} bytes
+"""
     if discovered:
-        message += f"zip components: discovered — {', '.join(discovered)}\n"
+        message += f"""\
+zip components: discovered — {", ".join(discovered)}
+"""
     _written: int = stdout.write(message)
     return 0
 

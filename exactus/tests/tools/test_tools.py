@@ -328,7 +328,11 @@ def test_show_prints_status_and_failure_log_tail(
 
     """
     log: Path = tmp_path / "demo-module.log"
-    _ = log.write_text(data="\n".join(f"line{i}" for i in range(20)))
+    _ = log.write_text(
+        data="""\
+
+""".join(f"line{i}" for i in range(20)),
+    )
     out: StringIO = StringIO()
     monkeypatch.setattr(target=tools_main, name="stdout", value=out)
     report: tools_main.Report = tools_main.Report(

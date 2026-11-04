@@ -32,7 +32,7 @@ def create_parser() -> ArgumentParser:
         metavar="PATH",
         help=(
             "trace file, directory, or glob to scan; repeatable "
-            "(default: EXACTUS_RESULTS)"
+            "(default: the configured reports directory)"
         ),
     )
     _ = parser.add_argument(

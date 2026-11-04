@@ -25,7 +25,9 @@ def main() -> None:
     try:
         for server in runner.wait_for_http():
             server_result: HttpServer = server
-            stdout.write(f"{server_result}\n")
+            stdout.write(f"""\
+{server_result}
+""")
     finally:
         runner.stop()
 

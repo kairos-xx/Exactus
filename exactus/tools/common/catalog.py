@@ -26,7 +26,7 @@ class ToolSpec:
         identifier: Stable CLI/catalog identifier.
         module: Importable Python module used by the internal API.
         script: Repository-relative standalone CLI script.
-        output: Canonical child directory under ``EXACTUS_RESULTS``.
+        output: Canonical child directory under the reports directory.
         aliases: Accepted compatibility names.
         dependencies: Canonical tools that must pass first.
         streaming_dependencies: Whether file activities may begin as each
@@ -343,7 +343,7 @@ class Catalog:
 
         """
         if identifier in stack:
-            msg: str = f"pipeline cycle: {' -> '.join((*stack, identifier))}"
+            msg: str = f"pipeline cycle: {" -> ".join((*stack, identifier))}"
             raise ValueError(msg)
         pipeline: PipelineSpec | None = self._pipelines.get(identifier)
         if pipeline is None:

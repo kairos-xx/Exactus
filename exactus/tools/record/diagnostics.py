@@ -425,9 +425,9 @@ class DiagnosticCollector:
         first: dict[str, JsonValue] = locations[0] if locations else {}
         source_line: JsonValue = first.get("lineNumber")
         source_column: JsonValue = first.get("columnNumber")
-        stack: str = "\n".join(
-            self._stack_frame(frame=frame) for frame in locations
-        )
+        stack: str = """\
+
+""".join(self._stack_frame(frame=frame) for frame in locations)
         self._add(
             draft=EventDraft(
                 category="console",
@@ -560,8 +560,12 @@ class DiagnosticCollector:
         )
         stack: str = (
             message
-            + "\n"
-            + "\n".join(self._stack_frame(frame=frame) for frame in locations)
+            + """\
+
+"""
+            + """\
+
+""".join(self._stack_frame(frame=frame) for frame in locations)
         )
         self._add(
             draft=EventDraft(

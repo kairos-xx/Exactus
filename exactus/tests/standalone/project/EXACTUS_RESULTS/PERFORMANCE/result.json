@@ -14,10 +14,10 @@
   "analyzer": "performance",
   "comparison": {
     "available": true,
-    "previous_generated_at": "2026-11-02T06:19:19.574909+00:00",
-    "previous_run_id": "ca892f99f2a643d3be26908062de1af7:performance",
+    "previous_generated_at": "2026-11-04T07:29:05.428666+00:00",
+    "previous_run_id": "31d9c7856e1548c08c21c2613f4835b4:performance",
     "previous_status": "PASS",
-    "previous_duration_seconds": 1.407,
+    "previous_duration_seconds": 1.558,
     "current_total": 0,
     "previous_total": 0,
     "delta": 0,
@@ -30,7 +30,7 @@
     "subsections": [],
     "categories": []
   },
-  "duration_seconds": 1.539,
+  "duration_seconds": 1.37,
   "extension": {
     "output": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/PERFORMANCE",
     "serve": false,
@@ -39,43 +39,43 @@
     "runs": [
       {
         "tool": "coverage_tests",
-        "duration": 23.004,
-        "events": 66,
-        "events_per_second": 2.8690662493479393,
-        "largest_gap": 13.186999999999998,
-        "silent": 22.241999999999997,
-        "actors": 24,
+        "duration": 9.852,
+        "events": 67,
+        "events_per_second": 6.8006496142915145,
+        "largest_gap": 2.7270000000000003,
+        "silent": 9.252999999999998,
+        "actors": 22,
         "threads": 3
       },
       {
         "tool": "docs",
-        "duration": 1.223,
+        "duration": 2.035,
         "events": 18,
-        "events_per_second": 14.717906786590351,
-        "largest_gap": 1.123,
-        "silent": 1.123,
+        "events_per_second": 8.845208845208845,
+        "largest_gap": 1.8980000000000001,
+        "silent": 1.8980000000000001,
         "actors": 4,
         "threads": 1
       },
       {
         "tool": "kwargs_typehints",
-        "duration": 2.605,
+        "duration": 3.851,
         "events": 31,
-        "events_per_second": 11.900191938579654,
-        "largest_gap": 1.548,
-        "silent": 2.355,
+        "events_per_second": 8.049857179953259,
+        "largest_gap": 2.573,
+        "silent": 3.7640000000000002,
         "actors": 7,
-        "threads": 4
+        "threads": 5
       },
       {
         "tool": "lints",
-        "duration": 21.209,
-        "events": 340,
-        "events_per_second": 16.030930265453346,
-        "largest_gap": 2.8150000000000013,
-        "silent": 18.696,
+        "duration": 16.695,
+        "events": 588,
+        "events_per_second": 35.22012578616352,
+        "largest_gap": 1.8370000000000006,
+        "silent": 12.097000000000003,
         "actors": 28,
-        "threads": 20
+        "threads": 41
       },
       {
         "tool": "performance",
@@ -89,11 +89,11 @@
       },
       {
         "tool": "readme",
-        "duration": 1.771,
+        "duration": 0.766,
         "events": 19,
-        "events_per_second": 10.728402032749859,
-        "largest_gap": 1.753,
-        "silent": 1.753,
+        "events_per_second": 24.804177545691907,
+        "largest_gap": 0.745,
+        "silent": 0.745,
         "actors": 6,
         "threads": 1
       },
@@ -111,18 +111,18 @@
   },
   "findings": [],
   "fingerprint": {
-    "commit": "8acd5332d8bb9132a3f9464fe58d265059b6ef39",
-    "tree": "894ba3dd961790939accb258297593340dbeb862",
+    "commit": "68b43a4bd4691257a6e48e3cb87a96edf2139868",
+    "tree": "8037996a0c49bff489a24efc566e2091d89e425b",
     "dirty": true,
     "python": "3.13.9",
     "ruff": "ruff 0.12.0",
     "basedpyright": "basedpyright 1.40.2"
   },
-  "generated_at": "2026-11-02T06:49:19.588198+00:00",
-  "generated_at_human": "02 November 2026, 06:49:19 UTC",
+  "generated_at": "2026-11-04T07:55:55.622560+00:00",
+  "generated_at_human": "04 November 2026, 07:55:55 UTC",
   "passed": true,
-  "pipeline_run_id": "7906d1edd1a543c7894fd4387463792d",
-  "previous_duration_seconds": 1.407,
+  "pipeline_run_id": "514ec66fc2624d32b23c563ae81bb010",
+  "previous_duration_seconds": 1.558,
   "project_href": "../../..",
   "project_root": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
   "report_bundle": {
@@ -131,13 +131,13 @@
     "web": "result_web"
   },
   "resume": "7 runs profiled — slowest self_test 603.2s",
-  "run_at": "2026-11-02T06:49:19.588198+00:00",
-  "run_at_human": "02 November 2026, 06:49:19 UTC",
-  "run_id": "7906d1edd1a543c7894fd4387463792d:performance",
+  "run_at": "2026-11-04T07:55:55.622560+00:00",
+  "run_at_human": "04 November 2026, 07:55:55 UTC",
+  "run_id": "514ec66fc2624d32b23c563ae81bb010:performance",
   "schema": "project-exactus-report/v1",
   "scope": {
     "include": [
-      "EXACTUS_RESULTS"
+      "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS"
     ],
     "exclude": []
   },

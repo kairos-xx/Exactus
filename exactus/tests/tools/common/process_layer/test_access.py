@@ -71,10 +71,41 @@ def test_runtime_dir_defaults_to_cwd_reports(
 
     """
     monkeypatch.delenv(name=Constants.reports, raising=False)
+    monkeypatch.setenv(name="EXACTUS_CONFIG", value="off")
     monkeypatch.chdir(path=tmp_path)
     expect_equal(
         actual=runtime_dir(),
-        expected=tmp_path / Constants.default_reports / Constants.directory,
+        expected=tmp_path / "EXACTUS_RESULTS" / Constants.directory,
+    )
+
+
+def test_runtime_dir_uses_configured_reports(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    """A configured ``reports-dir`` resolves without env or output.
+
+    Args:
+        monkeypatch: Pytest monkeypatch fixture.
+        tmp_path: Isolated filesystem root.
+
+    """
+    monkeypatch.delenv(name=Constants.reports, raising=False)
+    monkeypatch.delenv(name="EXACTUS_CONFIG", raising=False)
+    monkeypatch.delenv(name="EXACTUS_ROOT", raising=False)
+    _ = (tmp_path / "pyproject.toml").write_text(
+        data="""\
+[tool.exactus]
+reports-dir = "artifacts/EXACTUS_RESULTS"
+""",
+        encoding="utf-8",
+    )
+    monkeypatch.chdir(path=tmp_path)
+    expect_equal(
+        actual=runtime_dir(),
+        expected=(
+            tmp_path / "artifacts" / "EXACTUS_RESULTS" / Constants.directory
+        ),
     )
 
 

@@ -67,7 +67,7 @@ class ProcessTracker:
                     identity=identity,
                     parent_pid=process.ppid(),
                     name=process.name(),
-                    command=tuple(process.cmdline()),
+                    command=self._command(process=process),
                     first_seen=self._clock(),
                     depth=self._depth(process=process),
                 )
@@ -103,6 +103,23 @@ class ProcessTracker:
         if self._thread is not None:
             self._thread.join(timeout=max(1.0, self._poll_interval * 4.0))
         return self.snapshot()
+
+    @staticmethod
+    def _command(*, process: Process) -> tuple[str, ...]:
+        """Read optional command metadata without losing process ownership.
+
+        Args:
+            process: Descendant whose native command metadata is queried.
+
+        Returns:
+            Command arguments, or no metadata when psutil's native reader
+            raises SystemError while a macOS process is changing state.
+
+        """
+        try:
+            return tuple(process.cmdline())
+        except SystemError:
+            return ()
 
     @staticmethod
     def _utc_now() -> datetime:

@@ -11,7 +11,12 @@ from typing import Final, final
 
 import pytest
 
+from exactus.packages import project_python
 from exactus.tests.common.support import expect_equal, expect_in
+
+
+def _no_venv_switch() -> None:
+    """Keep the example inside the running interpreter."""
 
 
 @final
@@ -44,6 +49,11 @@ def test_example_module_runs_as_a_script(
     """
     output: StringIO = StringIO()
     monkeypatch.setattr(target=modules["sys"], name="stdout", value=output)
+    monkeypatch.setattr(
+        target=project_python,
+        name="switch_to_project_venv",
+        value=_no_venv_switch,
+    )
     with pytest.raises(expected_exception=SystemExit) as raised:
         run_path(path_name=str(object=Constants.example), run_name="__main__")
     expect_equal(actual=raised.value.code, expected=0)

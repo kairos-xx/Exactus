@@ -89,10 +89,18 @@ def test_inheritance_includes_and_filters(tmp_path: Path) -> None:
         root=tmp_path,
         name="layouts/base.md",
         text=(
-            "# {% block title %}{% endblock %}\n{% block body %}{% endblock %}"
+            """\
+# {% block title %}{% endblock %}
+{% block body %}{% endblock %}"""
         ),
     )
-    _write(root=tmp_path, name="partials/item.md", text="- {{ t.t }}\n")
+    _write(
+        root=tmp_path,
+        name="partials/item.md",
+        text="""\
+- {{ t.t }}
+""",
+    )
     page: Path = _write(
         root=tmp_path,
         name="page.md",
@@ -110,7 +118,12 @@ def test_inheritance_includes_and_filters(tmp_path: Path) -> None:
         mapping=None,
     )
     expect_in(member="# `Exactus`", container=out)
-    expect_in(member="- A\n- B", container=out)
+    expect_in(
+        member="""\
+- A
+- B""",
+        container=out,
+    )
 
 
 def test_strict_undefined_raises_and_lenient_renders(tmp_path: Path) -> None:

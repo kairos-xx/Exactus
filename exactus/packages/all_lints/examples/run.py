@@ -58,8 +58,13 @@ class Constants:
     work: ClassVar[Path] = here / ".scratch" / "demo_project"
     pyproject: ClassVar[str] = dedent(
         text=(
-            '    [tool.ruff]\n    extend-exclude = ["fixtures", "generated"]\n'
-            '    \n    [tool.basedpyright]\n    exclude = ["**/stubs"]\n    '
+            """\
+    [tool.ruff]
+    extend-exclude = ["fixtures", "generated"]
+
+    [tool.basedpyright]
+    exclude = ["**/stubs"]
+    """
         ),
     )
 
@@ -72,7 +77,12 @@ def _print(*args: str, file: TextIO = stdout) -> None:
         file: Stream receiving the message.
 
     """
-    _ = file.write(" ".join(str(object=arg) for arg in args) + "\n")
+    _ = file.write(
+        " ".join(str(object=arg) for arg in args)
+        + """\
+
+""",
+    )
     _ = file.flush()
 
 
@@ -88,8 +98,12 @@ def _seed() -> None:
     (Constants.work / "app.py").write_text(
         data=dedent(
             text=(
-                '\n        """Demonstration module for the all_lints example."'
-                '""\n\n        x = 1\n        '
+                """\
+
+        \"""Demonstration module for the all_lints example.\"""
+
+        x = 1
+        """
             ),
         ),
         encoding="utf-8",
@@ -104,16 +118,28 @@ def main() -> int:
 
     """
     _seed()
-    _ = _print(f"scratch project: {Constants.work}\n\n")
+    _ = _print(f"""\
+scratch project: {Constants.work}
+
+""")
     configuration: Configuration = Configuration(root=Constants.work)
     for tool in ("ruff", "basedpyright"):
-        _ = _print(f"merged {tool} excludes:\n")
+        _ = _print(f"""\
+merged {tool} excludes:
+""")
         for pattern in configuration.excludes(tool=tool):
-            _ = _print(f"  {pattern}\n")
-    _ = _print("\ncommands for app.py:\n")
+            _ = _print(f"""\
+  {pattern}
+""")
+    _ = _print("""\
+
+commands for app.py:
+""")
     file: Path = Path("app.py")
     for spec in Cli.specs():
-        _ = _print(f"  {spec.name}: {' '.join(spec.command(file=file))}\n")
+        _ = _print(f"""\
+  {spec.name}: {" ".join(spec.command(file=file))}
+""")
     diagnostic: Diagnostic = Diagnostic(
         tool="ruff",
         file="app.py",
@@ -151,7 +177,11 @@ def main() -> int:
         duration_seconds=0.01,
         results=[result],
     )
-    _ = _print(f"\nreport:\n{dumps(obj=report, indent=2)}\n")
+    _ = _print(f"""\
+
+report:
+{dumps(obj=report, indent=2)}
+""")
     return 0
 
 

@@ -28,10 +28,14 @@ def test_dashboard_controls(tmp_path: Path, width: int) -> None:
     path.write_text(
         data=dedent(
             text=(
-                "    # Plan\n    ## Work\n    - [ ] **R01 — Record browser"
-                "** P0\n    - [x] **R02 — Graph connections** P1\n    - [ "
-                "] **UI-O03 — Dock panels** P1\n    - [ ] </script><img sr"
-                "c=x onerror=alert(1)>\n    "
+                """\
+    # Plan
+    ## Work
+    - [ ] **R01 — Record browser** P0
+    - [x] **R02 — Graph connections** P1
+    - [ ] **UI-O03 — Dock panels** P1
+    - [ ] </script><img src=x onerror=alert(1)>
+    """
             ),
         ),
         encoding="utf-8",

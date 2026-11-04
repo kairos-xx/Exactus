@@ -1,73 +1,78 @@
 {
   "activity": {
-    "count": 9,
+    "count": 10,
     "dropped": 0,
     "events": [
       {
-        "at": "2026-11-02T06:48:00.729116+00:00",
+        "at": "2026-11-04T07:55:00.217863+00:00",
         "level": "info",
         "message": "started: Lints"
       },
       {
-        "at": "2026-11-02T06:48:00.729938+00:00",
+        "at": "2026-11-04T07:55:00.218537+00:00",
         "level": "info",
         "message": "step: starting (Lints)"
       },
       {
-        "at": "2026-11-02T06:48:01.751402+00:00",
-        "level": "info",
-        "message": "step: organize"
-      },
-      {
-        "at": "2026-11-02T06:48:02.787473+00:00",
-        "level": "info",
-        "message": "step: toolchain"
-      },
-      {
-        "at": "2026-11-02T06:48:03.824631+00:00",
+        "at": "2026-11-04T07:55:01.231891+00:00",
         "level": "info",
         "message": "step: clean"
       },
       {
-        "at": "2026-11-02T06:48:07.990732+00:00",
+        "at": "2026-11-04T07:55:03.254684+00:00",
         "level": "info",
-        "message": "step: all lints"
+        "message": "step: all lints (typescript: eslint.config.mjs)"
       },
       {
-        "at": "2026-11-02T06:48:17.109754+00:00",
+        "at": "2026-11-04T07:55:06.273821+00:00",
         "level": "info",
         "message": "step: infer (pyrefly infer)"
       },
       {
-        "at": "2026-11-02T06:48:18.122474+00:00",
+        "at": "2026-11-04T07:55:07.280339+00:00",
         "level": "info",
         "message": "step: compliance and report"
       },
       {
-        "at": "2026-11-02T06:48:22.588648+00:00",
+        "at": "2026-11-04T07:55:09.298398+00:00",
         "level": "info",
-        "message": "finished: DONE (exit status 0) in 21.860s"
+        "message": "step: toolchain"
+      },
+      {
+        "at": "2026-11-04T07:55:10.303145+00:00",
+        "level": "info",
+        "message": "step: all lints (ruff: python/calc.py)"
+      },
+      {
+        "at": "2026-11-04T07:55:14.328134+00:00",
+        "level": "info",
+        "message": "step: compliance and report"
+      },
+      {
+        "at": "2026-11-04T07:55:17.540948+00:00",
+        "level": "info",
+        "message": "finished: DONE (exit status 0) in 17.323s"
       }
     ],
     "limit": 50
   },
-  "elapsed_seconds": 21.86,
+  "elapsed_seconds": 17.323,
   "extra": {
     "exit_code": 0,
-    "previous_duration_seconds": 16.607
+    "previous_duration_seconds": 4.262
   },
-  "finished_at": "2026-11-02T06:48:22.588712+00:00",
+  "finished_at": "2026-11-04T07:55:17.541000+00:00",
   "heartbeat": {
     "alive": false,
     "interval_seconds": 1.0,
-    "last_beat": "2026-11-02T06:48:22.588717+00:00",
+    "last_beat": "2026-11-04T07:55:17.541007+00:00",
     "phase": "finished",
-    "pid": 73668
+    "pid": 29140
   },
   "items": [],
   "kind": "tool",
   "name": "lints",
-  "pipeline_run_id": "7906d1edd1a543c7894fd4387463792d",
+  "pipeline_run_id": "514ec66fc2624d32b23c563ae81bb010",
   "progress": {
     "completed": 8,
     "current": "Lints",
@@ -101,9 +106,9 @@
     "step": "complete",
     "total": 8
   },
-  "run_id": "7906d1edd1a543c7894fd4387463792d:lints",
+  "run_id": "514ec66fc2624d32b23c563ae81bb010:lints",
   "schema": "exactus/activity/v1",
-  "started_at": "2026-11-02T06:48:00.728979+00:00",
+  "started_at": "2026-11-04T07:55:00.217730+00:00",
   "status": "DONE",
-  "updated_at": "2026-11-02T06:48:22.588717+00:00"
+  "updated_at": "2026-11-04T07:55:17.541007+00:00"
 }

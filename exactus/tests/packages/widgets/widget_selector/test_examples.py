@@ -386,10 +386,7 @@ def test_main_headless_loads_then_exits(
         name="BrowserSession",
         value=session_factory,
     )
-    expect_equal(
-        actual=run.main(arguments=("--headless",)),
-        expected=0,
-    )
+    expect_equal(actual=run.main(arguments=("--headless",)), expected=0)
     expect_equal(actual=headless_modes, expected=[True])
     expect_equal(
         actual=events,

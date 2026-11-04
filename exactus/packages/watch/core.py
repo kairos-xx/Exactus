@@ -271,7 +271,9 @@ class ActivityRecorder:
             name=f".{Constants.activity_name}.tmp",
         )
         temporary.write_text(
-            data=f"{dumps(obj=payload, indent=2, sort_keys=True)}\n",
+            data=f"""\
+{dumps(obj=payload, indent=2, sort_keys=True)}
+""",
             encoding="utf-8",
         )
         temporary.replace(target=self._path)
@@ -659,10 +661,12 @@ class FolderWatchCopy:
                 refresh_metrics=True,
             )
         self._write(
-            message=f"Watching {self.source}\n"
-            f"Copying changes to {self.destination}\n"
-            f"Activity: {self.destination / Constants.activity_name}\n"
-            "Press Ctrl+C to stop.\n",
+            message=f"""\
+Watching {self.source}
+Copying changes to {self.destination}
+Activity: {self.destination / Constants.activity_name}
+Press Ctrl+C to stop.
+""",
         )
         try:
             while True:
@@ -685,7 +689,11 @@ class FolderWatchCopy:
                     self._last_prune = now
                 previous = current
         except KeyboardInterrupt:
-            self._write(message="Stopped.\n")
+            self._write(
+                message="""\
+Stopped.
+""",
+            )
             return False
 
     def __post_init__(self) -> None:
@@ -849,7 +857,9 @@ class FolderWatchCopy:
             error: Filesystem exception raised by the operation.
 
         """
-        stderr.write(f"ERROR {relative}: {error}\n")
+        stderr.write(f"""\
+ERROR {relative}: {error}
+""")
         stderr.flush()
 
     def _validate_configuration(self) -> None:
@@ -1068,7 +1078,11 @@ class FolderWatchCopy:
                     ),
                     source_snapshot=source_snapshot,
                 )
-                self._write(message=f"DIR   {relative}\n")
+                self._write(
+                    message=f"""\
+DIR   {relative}
+""",
+                )
                 return
             destination.parent.mkdir(parents=True, exist_ok=True)
             if state.is_symlink:
@@ -1091,7 +1105,11 @@ class FolderWatchCopy:
                     ),
                     source_snapshot=source_snapshot,
                 )
-                self._write(message=f"LINK  {relative}\n")
+                self._write(
+                    message=f"""\
+LINK  {relative}
+""",
+                )
                 return
             if destination.is_dir() and (not destination.is_symlink()):
                 rmtree(path=destination)
@@ -1113,7 +1131,11 @@ class FolderWatchCopy:
                 ),
                 source_snapshot=source_snapshot,
             )
-            self._write(message=f"COPY  {relative}\n")
+            self._write(
+                message=f"""\
+COPY  {relative}
+""",
+            )
         except (FileNotFoundError, PermissionError, OSError) as error:
             self._write_error(relative=relative, error=error)
 
@@ -1292,7 +1314,11 @@ class FolderWatchCopy:
                 ),
                 source_snapshot=source_snapshot,
             )
-            self._write(message=f"DELETE {relative}\n")
+            self._write(
+                message=f"""\
+DELETE {relative}
+""",
+            )
         except (PermissionError, OSError) as error:
             self._write_error(relative=relative, error=error)
 
@@ -1760,29 +1786,39 @@ class FolderWatchCopyCli:
             stderr.write(
                 dedent(
                     text=(
-                        "    Configuration error: Choose only one autostar"
-                        "t management operation.\n    "
+                        """\
+                        Configuration error: Choose only one autostart \
+management operation.
+"""
                     ),
                 ),
             )
             return 2
         try:
             if arguments.autostart_status:
-                stdout.write(f"{dumps(obj=MacAutostart.status(), indent=2)}\n")
+                stdout.write(f"""\
+{dumps(obj=MacAutostart.status(), indent=2)}
+""")
                 return 0
             if arguments.uninstall_autostart:
                 removed: bool = MacAutostart.uninstall()
                 stdout.write(
-                    "Autostart removed.\n"
+                    """\
+Autostart removed.
+"""
                     if removed
-                    else "Autostart was not installed.\n",
+                    else """\
+Autostart was not installed.
+""",
                 )
                 return 0
             settings: WatchSettings = cls._settings(arguments=arguments)
             if arguments.install_autostart:
                 MacAutostart.install_package(settings=settings)
                 stdout.write(
-                    f"Autostart installed: {MacAutostart.plist_path()}\n",
+                    f"""\
+Autostart installed: {MacAutostart.plist_path()}
+""",
                 )
                 return 0
             return cls._supervise(
@@ -1790,7 +1826,9 @@ class FolderWatchCopyCli:
                 initial_settings=settings,
             )
         except (RuntimeError, TypeError, ValueError) as error:
-            stderr.write(f"Configuration error: {error}\n")
+            stderr.write(f"""\
+Configuration error: {error}
+""")
             return 2
 
     @staticmethod
@@ -1916,10 +1954,10 @@ class FolderWatchCopyCli:
                         stdout.write(
                             dedent(
                                 text=(
-                                    "    Watcher paused by [tool.watch].ru"
-                                    "n = false.\n    Watching pyproject.to"
-                                    "ml for configuration changes. Press C"
-                                    "trl+C to stop.\n    "
+                                    """\
+    Watcher paused by [tool.watch].run = false.
+    Watching pyproject.toml for configuration changes. Press Ctrl+C to stop.
+    """
                                 ),
                             ),
                         )
@@ -1942,7 +1980,9 @@ class FolderWatchCopyCli:
                             workers=settings.workers,
                         )
                     except ValueError as error:
-                        stderr.write(f"Configuration error: {error}\n")
+                        stderr.write(f"""\
+Configuration error: {error}
+""")
                         stderr.flush()
                         cls._wait_for_configuration(
                             pyproject=pyproject,
@@ -1982,11 +2022,15 @@ class FolderWatchCopyCli:
                     pyproject=pyproject,
                 )
                 if not settings.quiet:
-                    stdout.write("Watch configuration changed; reloading.\n")
+                    stdout.write("""\
+Watch configuration changed; reloading.
+""")
                     stdout.flush()
             except KeyboardInterrupt:
                 if not settings.quiet:
-                    stdout.write("Stopped.\n")
+                    stdout.write("""\
+Stopped.
+""")
                     stdout.flush()
                 return 0
 
@@ -2016,7 +2060,9 @@ class FolderWatchCopyCli:
             try:
                 return (cls._settings(arguments=arguments), fingerprint)
             except (TypeError, ValueError) as error:
-                stderr.write(f"Configuration error: {error}\n")
+                stderr.write(f"""\
+Configuration error: {error}
+""")
                 stderr.flush()
                 cls._wait_for_configuration(
                     pyproject=pyproject,

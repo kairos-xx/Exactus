@@ -71,7 +71,9 @@ def test_browser_js_parses(path: Path) -> None:
     source: str = path.read_text(encoding="utf-8")
     completed: CompletedProcess[str] = run(
         args=["node", "--check", "--input-type=commonjs"],
-        input=f"const __exactusBrowserProgram = {source};\n",
+        input=f"""\
+const __exactusBrowserProgram = {source};
+""",
         text=True,
         capture_output=True,
         check=False,

@@ -46,8 +46,10 @@ def main() -> int:
         stderr.write(
             dedent(
                 text=(
-                    "    usage: python -m exactus.packages.project_python "
-                    "<script> [args...]\n    "
+                    """\
+                    usage: python -m exactus.packages.project_python <script> \
+[args...]
+"""
                 ),
             ),
         )

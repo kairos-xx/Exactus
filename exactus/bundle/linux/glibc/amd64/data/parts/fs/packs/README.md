@@ -54,6 +54,7 @@ No direct files besides this README.
 - [`39/`](39/README.md) — Immutable compressed payload packs for this hash prefix.
 - [`3a/`](3a/README.md) — Immutable compressed payload packs for this hash prefix.
 - [`3d/`](3d/README.md) — Immutable compressed payload packs for this hash prefix.
+- [`40/`](40/README.md) — Immutable compressed payload packs for this hash prefix.
 - [`41/`](41/README.md) — Immutable compressed payload packs for this hash prefix.
 - [`42/`](42/README.md) — Immutable compressed payload packs for this hash prefix.
 - [`43/`](43/README.md) — Immutable compressed payload packs for this hash prefix.
@@ -98,6 +99,7 @@ No direct files besides this README.
 - [`7d/`](7d/README.md) — Immutable compressed payload packs for this hash prefix.
 - [`7e/`](7e/README.md) — Immutable compressed payload packs for this hash prefix.
 - [`7f/`](7f/README.md) — Immutable compressed payload packs for this hash prefix.
+- [`80/`](80/README.md) — Immutable compressed payload packs for this hash prefix.
 - [`81/`](81/README.md) — Immutable compressed payload packs for this hash prefix.
 - [`82/`](82/README.md) — Provide 8269afb9642538ed0c280ef906289f1e260928aec695cba400d57512a88c443d zst content.
 - [`85/`](85/README.md) — Immutable compressed payload packs for this hash prefix.

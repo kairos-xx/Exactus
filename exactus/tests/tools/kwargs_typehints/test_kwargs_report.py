@@ -44,18 +44,45 @@ GOLDEN: Final[Path] = Path(__file__).resolve().parent / "golden"
 TOOL_DIR: Final[Path] = ReportTemplates.tool_dir(analyzer="kwargs_typehints")
 MODULE: Final[str] = dedent(
     text=(
-        '    """Demo module."""\n    \n    import json\n    \n    \n    def sc'
-        'ale(value: int, factor: int = 2) -> int:\n        """Scale a value.""'
-        '"\n        return value * factor\n    \n    \n    def total(items):\n'
-        '        """Sum items."""\n        return sum(items)\n    \n    \n    '
-        'class Gamma:\n        """First walker."""\n    \n        def walk(sel'
-        'f, pace: int) -> int:\n            """Walk."""\n            return pa'
-        'ce\n    \n    \n    class Delta:\n        """Second walker."""\n    '
-        '\n        def walk(self, pace: int, /) -> int:\n            """Walk."'
-        '""\n            return pace\n    \n    \n    def dispatch(registry: d'
-        'ict[str, object]) -> str:\n        """Dispatch dynamically."""\n     '
-        '   registry["go"](7)\n        found = registry["w"]\n        found.wa'
-        "lk(3)\n        return json.dumps(obj=scale(3))\n    "
+        """\
+    \"""Demo module.\"""
+
+    import json
+
+
+    def scale(value: int, factor: int = 2) -> int:
+        \"""Scale a value.\"""
+        return value * factor
+
+
+    def total(items):
+        \"""Sum items.\"""
+        return sum(items)
+
+
+    class Gamma:
+        \"""First walker.\"""
+
+        def walk(self, pace: int) -> int:
+            \"""Walk.\"""
+            return pace
+
+
+    class Delta:
+        \"""Second walker.\"""
+
+        def walk(self, pace: int, /) -> int:
+            \"""Walk.\"""
+            return pace
+
+
+    def dispatch(registry: dict[str, object]) -> str:
+        \"""Dispatch dynamically.\"""
+        registry["go"](7)
+        found = registry["w"]
+        found.walk(3)
+        return json.dumps(obj=scale(3))
+    """
     ),
 )
 CATEGORIES: Final[list[str]] = [
@@ -83,7 +110,10 @@ def write_project(*, root: Path) -> None:
     """
     (root / "pkg").mkdir(parents=True)
     _ = (root / "pyproject.toml").write_text(
-        data='[project]\nname = "demo"\n',
+        data="""\
+[project]
+name = "demo"
+""",
         encoding="utf-8",
     )
     _ = (root / "pkg" / "__init__.py").write_text(data="", encoding="utf-8")
@@ -449,12 +479,30 @@ def test_crash_render_shows_na_blocks() -> None:
     text: str = ReportTemplates.render(model=model, tool_dir=TOOL_DIR).markdown
     for member in (
         "> **Gate: ERROR** — RuntimeError: boom",
-        "### Metrics\n\nN/A — the tool reported no metrics.",
-        "## Findings\n\nN/A — the tool reported no findings list.",
-        "## Unresolved callees\n\nN/A — the tool reported no unresolved",
-        "## Ambiguous call sites\n\nN/A — the tool reported no ambiguous",
-        "## Bare imports\n\nN/A — the tool reported no bare imports.",
-        "## Methodology and caveats\n\nN/A — the tool reported no",
+        """\
+### Metrics
+
+N/A — the tool reported no metrics.""",
+        """\
+## Findings
+
+N/A — the tool reported no findings list.""",
+        """\
+## Unresolved callees
+
+N/A — the tool reported no unresolved""",
+        """\
+## Ambiguous call sites
+
+N/A — the tool reported no ambiguous""",
+        """\
+## Bare imports
+
+N/A — the tool reported no bare imports.""",
+        """\
+## Methodology and caveats
+
+N/A — the tool reported no""",
     ):
         expect_in(member=member, container=text)
 
@@ -469,11 +517,23 @@ def test_clean_run_states_why_tables_are_empty() -> None:
         model[key] = clean[key]
     text: str = ReportTemplates.render(model=model, tool_dir=TOOL_DIR).markdown
     for member in (
-        "## Findings\n\nNo findings.",
-        "## Unresolved callees\n\nCallees with no known signature",
+        """\
+## Findings
+
+No findings.""",
+        """\
+## Unresolved callees
+
+Callees with no known signature""",
         "No unresolved callees: every checked call site resolved",
-        "## Ambiguous call sites\n\nNo ambiguous call sites.",
-        "## Bare imports\n\nNo bare imports.",
+        """\
+## Ambiguous call sites
+
+No ambiguous call sites.""",
+        """\
+## Bare imports
+
+No bare imports.""",
         "| Parse failures | error | Yes | 0 |",
         "| Resolved (%) |  |",
     ):

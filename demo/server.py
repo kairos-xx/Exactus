@@ -109,7 +109,9 @@ def main() -> int:
         RequestHandlerClass=DemoHandler,
     )
     _ = stdout.write(
-        f"Demo server listening on http://{args.host}:{args.port}/\n",
+        f"""\
+Demo server listening on http://{args.host}:{args.port}/
+""",
     )
     stdout.flush()
     try:

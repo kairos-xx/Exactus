@@ -242,7 +242,11 @@ def test_bundle_readmes_preserve_existing_prose_and_detect_catalogs(
 
     """
     _ = (tmp_path / "README.md").write_text(
-        data="# Custom assets\n\nKeep this prose.\n",
+        data="""\
+# Custom assets
+
+Keep this prose.
+""",
         encoding="utf-8",
     )
     catalog: Path = tmp_path / "renamed-filesystem"
@@ -756,10 +760,18 @@ def test_bundle_component_and_target_selection() -> None:
     "text",
     [
         "tool=1",
-        "[tool]\nbundle=1",
-        "[tool.bundle]\ntargets=1",
-        "[tool.bundle]\noptional=[1]",
-        '[tool.bundle]\nrebuild="yes"',
+        """\
+[tool]
+bundle=1""",
+        """\
+[tool.bundle]
+targets=1""",
+        """\
+[tool.bundle]
+optional=[1]""",
+        '''\
+[tool.bundle]
+rebuild="yes"''',
     ],
 )
 def test_bundle_file_config_rejects_invalid_types(
@@ -1837,7 +1849,15 @@ def test_build_file_config_parses_tables_and_flags(tmp_path: Path) -> None:
         path=tmp_path / "pyproject.toml",
     )
     expect_equal(actual=missing, expected=package_build.BuildFileConfig())
-    for document in ('tool = "x"\n', "[tool]\nbuild = 1\n"):
+    for document in (
+        """\
+tool = "x"
+""",
+        """\
+[tool]
+build = 1
+""",
+    ):
         path: Path = tmp_path / f"doc{len(document)}.toml"
         _ = path.write_text(data=document, encoding="utf-8")
         expect_equal(
@@ -1883,12 +1903,30 @@ def test_build_file_config_parses_tables_and_flags(tmp_path: Path) -> None:
 @pytest.mark.parametrize(
     "document",
     [
-        "[tool.build]\nexec = 1\n",
-        "[tool.build]\ncheck = 1\n",
-        '[tool.build]\ntargets = "amd64"\n',
-        "[tool.build]\ntargets = [1]\n",
-        "[tool.build]\ntarget = 1\n",
-        "[tool.build.exec]\ntargets = 1\n",
+        """\
+[tool.build]
+exec = 1
+""",
+        """\
+[tool.build]
+check = 1
+""",
+        """\
+[tool.build]
+targets = "amd64"
+""",
+        """\
+[tool.build]
+targets = [1]
+""",
+        """\
+[tool.build]
+target = 1
+""",
+        """\
+[tool.build.exec]
+targets = 1
+""",
     ],
 )
 def test_build_file_config_rejects_bad_types(
@@ -2226,7 +2264,12 @@ def test_build_artifacts_stage_full_pipeline(
     root: Path = tmp_path / "project"
     root.mkdir()
     package: Path = make_fake_package(root=root)
-    _ = (root / "marker.py").write_text(data="x = 1\n", encoding="utf-8")
+    _ = (root / "marker.py").write_text(
+        data="""\
+x = 1
+""",
+        encoding="utf-8",
+    )
     archives: Path = tmp_path / "zstd"
     archives.mkdir()
     _ = (archives / "linux-x86_64.zip").write_bytes(data=b"payload")
@@ -2333,7 +2376,9 @@ def test_build_main_dispatches_selected_artifacts(
     root: Path = tmp_path / "project"
     root.mkdir()
     _ = (root / "pyproject.toml").write_text(
-        data="[tool.build]\n",
+        data="""\
+[tool.build]
+""",
         encoding="utf-8",
     )
     monkeypatch.setattr(target=Constants, name="root", value=root)
@@ -2395,13 +2440,19 @@ def test_build_main_dispatches_selected_artifacts(
         value=["exactus-build", "--check"],
     )
     _ = (root / "pyproject.toml").write_text(
-        data='[tool.build]\ntargets = ["bogus"]\n',
+        data="""\
+[tool.build]
+targets = ["bogus"]
+""",
         encoding="utf-8",
     )
     with pytest.raises(expected_exception=SystemExit):
         _ = private_call(owner=package_build, name="main")
     _ = (root / "pyproject.toml").write_text(
-        data="[tool.build]\ncheck = 1\n",
+        data="""\
+[tool.build]
+check = 1
+""",
         encoding="utf-8",
     )
     with pytest.raises(expected_exception=SystemExit):

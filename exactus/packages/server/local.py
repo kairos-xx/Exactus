@@ -53,44 +53,70 @@ class Constants:
     server_token: Final[bytes] = b"exactus-check-server"
     server_snippet: Final[str] = dedent(
         text=(
-            f'\n        """Loopback file server answering the exactus identity'
-            f' ping."""\n\n        from functools import partial\n        from'
-            f" http.server import (\n            SimpleHTTPRequestHandler,\n  "
-            f"          ThreadingHTTPServer,\n        )\n        from sys impo"
-            f"rt argv\n\n\n        class Handler(SimpleHTTPRequestHandler):\n "
-            f'           """Serve files and answer the predictable identity pi'
-            f'ng."""\n\n            def do_GET(self) -> None:\n               '
-            f' """Answer the identity ping or serve the requested file.\n\n   '
-            f"             Returns:\n                    Nothing; the response"
-            f' is written to ``self.wfile``.\n\n                """\n         '
-            f'       if self.path == "'
-            f"{ping_path}"
-            f'":\n                    body: bytes = '
-            f"{server_token!r}"
-            f"\n                    self.send_response(code=200)\n            "
-            f'        self.send_header(\n                        keyword="Cont'
-            f'ent-Type",\n                        value="text/plain",\n       '
-            f"             )\n                    self.send_header(\n         "
-            f'               keyword="Content-Length",\n                      '
-            f"  value=str(object=len(body)),\n                    )\n         "
-            f"           self.end_headers()\n                    self.wfile.wr"
-            f"ite(body)\n                    return\n                super().d"
-            f"o_GET()\n\n            def log_message(self, format: str, *args:"
-            f' object) -> None:\n                """Write standard access logs'
-            f" for exactus correlation.\n\n                Args:\n            "
-            f"        format: Printf-style access-log format string.\n        "
-            f"            args: Values interpolated into the format string.\n"
-            f'\n                """\n                super().log_message(forma'
-            f't, *args)\n\n\n        def _serve() -> None:\n            """Bin'
-            f"d the loopback port and serve the directory forever.\n\n        "
-            f"    The port and served directory arrive as ``argv[1]`` and\n   "
-            f"         ``argv[2]`` because this program runs through ``python "
-            f'-c``.\n            """\n            server: ThreadingHTTPServer '
-            f'= ThreadingHTTPServer(\n                server_address=("127.0.0'
-            f'.1", int(argv[1])),\n                RequestHandlerClass=partial'
-            f"(Handler, directory=argv[2]),\n            )\n            server"
-            f'.serve_forever()\n\n\n        if __name__ == "__main__":\n      '
-            f"      _serve()"
+            f"""\
+
+        \"""Loopback file server answering the exactus identity ping.\"""
+
+        from functools import partial
+        from http.server import (
+            SimpleHTTPRequestHandler,
+            ThreadingHTTPServer,
+        )
+        from sys import argv
+
+
+        class Handler(SimpleHTTPRequestHandler):
+            \"""Serve files and answer the predictable identity ping.\"""
+
+            def do_GET(self) -> None:
+                \"""Answer the identity ping or serve the requested file.
+
+                Returns:
+                    Nothing; the response is written to ``self.wfile``.
+
+                \"""
+                if self.path == "{ping_path}":
+                    body: bytes = {server_token!r}
+                    self.send_response(code=200)
+                    self.send_header(
+                        keyword="Content-Type",
+                        value="text/plain",
+                    )
+                    self.send_header(
+                        keyword="Content-Length",
+                        value=str(object=len(body)),
+                    )
+                    self.end_headers()
+                    self.wfile.write(body)
+                    return
+                super().do_GET()
+
+            def log_message(self, format: str, *args: object) -> None:
+                \"""Write standard access logs for exactus correlation.
+
+                Args:
+                    format: Printf-style access-log format string.
+                    args: Values interpolated into the format string.
+
+                \"""
+                super().log_message(format, *args)
+
+
+        def _serve() -> None:
+            \"""Bind the loopback port and serve the directory forever.
+
+            The port and served directory arrive as ``argv[1]`` and
+            ``argv[2]`` because this program runs through ``python -c``.
+            \"""
+            server: ThreadingHTTPServer = ThreadingHTTPServer(
+                server_address=("127.0.0.1", int(argv[1])),
+                RequestHandlerClass=partial(Handler, directory=argv[2]),
+            )
+            server.serve_forever()
+
+
+        if __name__ == "__main__":
+            _serve()"""
         ),
     )
     log_lock: Final[Lock] = Lock()
@@ -111,7 +137,9 @@ def _capture_stream(*, stream: TextIO, name: str, log: Path) -> None:
 
     """
     for line in stream:
-        record: str = f"[{name}] {line.rstrip()}\n"
+        record: str = f"""\
+[{name}] {line.rstrip()}
+"""
         with Constants.log_lock:
             log.parent.mkdir(parents=True, exist_ok=True)
             with log.open(mode="a", encoding="utf-8") as handle:
@@ -353,7 +381,9 @@ def serve(*, path: Path, log: Path) -> tuple[int, str, bool]:
         with suppress(OSError):
             state.parent.mkdir(parents=True, exist_ok=True)
             _ = state.write_text(
-                data=f'{{"pid": {process.pid}, "port": {port}}}\n',
+                data=f"""\
+{{"pid": {process.pid}, "port": {port}}}
+""",
                 encoding="utf-8",
             )
         if process.poll() is None:

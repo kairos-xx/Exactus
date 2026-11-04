@@ -69,7 +69,7 @@ class StubRenderer:
             ``name|item|index`` for assertions.
 
         """
-        return f"{name}|{context['item']}|{context.get('index', '-')}"
+        return f"{name}|{context["item"]}|{context.get("index", "-")}"
 
 
 def _map(*, spec: JsonValue) -> JsonValue:

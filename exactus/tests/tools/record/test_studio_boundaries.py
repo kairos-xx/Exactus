@@ -6,6 +6,7 @@ from __future__ import annotations
 from http import HTTPStatus
 from json import loads
 from sys import executable
+from threading import Event
 from time import monotonic, sleep
 from typing import TYPE_CHECKING, Final, cast, final
 
@@ -23,7 +24,10 @@ from exactus.tests.tools.record.test_studio_http_contract import (
 from exactus.tools.record.studio.demo import demo_site
 from exactus.tools.record.studio.service import StudioService
 from exactus.tools.record.studio.target_inspection import inspect_target
-from exactus.tools.record.studio.worker import validate_target_url
+from exactus.tools.record.studio.worker import (
+    ManagedBrowserWorker,
+    validate_target_url,
+)
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -54,7 +58,10 @@ def test_preview_survives_missing_screencast_frames(
         monkeypatch: Restore the transport method after this regression test.
 
     """
-    original_send: Callable[..., object] = CDPSession.send
+    original_send: Callable[..., object] = cast(
+        typ="Callable[..., object]",
+        val=vars(CDPSession)["send"],
+    )
 
     def send(
         session: CDPSession,
@@ -194,7 +201,7 @@ def _expect_hit_contains_point(
         expect_true(
             condition=left - 1 <= x <= left + bounds["width"] + 1
             and top - 1 <= y <= top + bounds["height"] + 1,
-            message=f"{element['selector']} does not contain {x},{y}",
+            message=f"{element["selector"]} does not contain {x},{y}",
         )
 
 
@@ -473,13 +480,31 @@ def test_command_guards_reject_invalid_and_busy_operations(
 
 def test_input_backpressure_is_reported_and_leaves_document_unchanged(
     tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     """Report a full worker queue as a retryable conflict, not a failure.
 
     Args:
         tmp_path: Isolated service storage directory.
+        monkeypatch: Restore the controlled worker entry point.
 
     """
+    release: Event = Event()
+
+    def hold_queue(_worker: ManagedBrowserWorker) -> None:
+        """Hold the consumer while HTTP requests fill the real bounded queue.
+
+        Args:
+            _worker: Browser worker whose queue is under test.
+
+        """
+        _ = release.wait(timeout=30)
+
+    monkeypatch.setattr(
+        target=ManagedBrowserWorker,
+        name="_run",
+        value=hold_queue,
+    )
     service: StudioService = StudioService(root=tmp_path, headless=True)
     service.start()
     try:
@@ -519,6 +544,7 @@ def test_input_backpressure_is_reported_and_leaves_document_unchanged(
         expect_true(condition=0 < accepted < max_attempts)
         expect_equal(actual=service.snapshot()["revision"], expected=revision)
     finally:
+        release.set()
         service.stop()
 
 
@@ -793,11 +819,11 @@ def test_selected_profile_reaches_the_real_page_and_bad_ones_are_refused(
         ]
         seen: dict[str, object] = next(
             (
-                item
+                cast(typ="dict[str, object]", val=item)
                 for item in responses
                 if isinstance(item, dict) and "dpr" in item
             ),
-            {},
+            dict[str, object](),
         )
         expect_equal(
             actual=seen,
@@ -926,7 +952,7 @@ def test_target_is_configured_started_and_opened_through_studio(
             condition=str(object=service.snapshot()["target_url"]).startswith(
                 str(object=detected),
             ),
-            message=f"Opened {service.snapshot()['target_url']}.",
+            message=f"Opened {service.snapshot()["target_url"]}.",
         )
         edit(
             service=service,
@@ -1069,7 +1095,7 @@ def test_a_new_project_suggests_the_demo_server_and_start_opens_its_page(
             condition=str(object=service.snapshot()["target_url"]).startswith(
                 base,
             ),
-            message=f"Opened {service.snapshot()['target_url']}, not {base}.",
+            message=f"Opened {service.snapshot()["target_url"]}, not {base}.",
         )
     finally:
         service.stop()

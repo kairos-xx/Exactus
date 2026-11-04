@@ -19,14 +19,9 @@ from exactus.tools.lints.arguments import create_parser as _create_parser
 if TYPE_CHECKING:
     from argparse import ArgumentParser, Namespace
     from collections.abc import Mapping
-
-    from exactus.tools.lints.shebang import (
-        ExecWithoutShebang,
-        ShebangWithoutExec,
-    )
 from exactus.packages.steps import step_log, trace
 from exactus.tools.common.cli import ExactusCommonTables, resolve_output
-from exactus.tools.common.config import resolve_arguments
+from exactus.tools.common.config import reports_root, resolve_arguments
 from exactus.tools.common.registry import RegistryTables
 from exactus.tools.common.snippets import with_excerpts
 from exactus.tools.common.sprint import sprint
@@ -35,10 +30,10 @@ from exactus.tools.lints.core import (
     LintExactus,
     LintExactusConfig,
     LintExactusRequest,
+    config_from_options,
 )
-from exactus.tools.lints.css_naming import CssNamingSettings
 from exactus.tools.lints.report import report_data
-from exactus.tools.lints.shebang import ShebangSettings
+from exactus.tools.lints.workspace import TransactionLimits
 from exactus.tools.reports.bundle import ReportBundle, ReportPaths
 
 _project_python_active: bool = _project_python_auto.Constants.activated
@@ -110,6 +105,16 @@ def main(*, arguments: tuple[str, ...] | None = None) -> int:
 
     """
     options: Namespace = parse_args(arguments=arguments)
+    if cast(typ="bool", val=options.format_embedded) and not cast(
+        typ="bool",
+        val=options.allow_value_changes,
+    ):
+        stderr.write(
+            """\
+lints: --format-embedded requires --allow-value-changes
+""",
+        )
+        return 2
     runtime_max_runs: int | None = cast(
         typ="int | None",
         val=options.runtime_max_runs,
@@ -133,48 +138,13 @@ def main(*, arguments: tuple[str, ...] | None = None) -> int:
     excludes: tuple[str, ...] = tuple(
         cast(typ="list[str]", val=options.exclude),
     )
-    dry: bool = cast(typ="bool", val=options.dry)
-    config: LintExactusConfig = LintExactusConfig(
-        clean=not (dry or cast(typ="bool", val=options.no_clean)),
-        fix=not (dry or cast(typ="bool", val=options.no_fix)),
-        long_lines=not cast(typ="bool", val=options.no_long_lines),
-        delimiters=not cast(typ="bool", val=options.no_delimiters),
-        notation=not cast(typ="bool", val=options.no_notation),
-        infer=not (dry or cast(typ="bool", val=options.no_infer)),
-        install_tools=not (
-            dry or cast(typ="bool", val=options.no_install_tools)
-        ),
-        group_final=not cast(typ="bool", val=options.no_group_final),
-        organize=not cast(typ="bool", val=options.no_organize),
-        unsafe_fixes=not dry and cast(typ="bool", val=options.unsafe_fixes),
-        workers=cast(typ="int | None", val=options.workers),
-        shebang=ShebangSettings(
-            heal=not (dry or cast(typ="bool", val=options.no_shebang_heal)),
-            exec_no_shebang=cast(
-                typ="ExecWithoutShebang",
-                val=options.exec_no_shebang,
-            ),
-            shebang_no_exec=cast(
-                typ="ShebangWithoutExec",
-                val=options.shebang_no_exec,
-            ),
-        ),
-        simple=cast(typ="bool", val=options.simple),
-        python_simplify=not cast(typ="bool", val=options.no_python_simplify),
-        css_naming=CssNamingSettings(
-            enabled=not cast(typ="bool", val=options.no_css_naming),
-            registered_scales=frozenset(
-                cast(typ="list[str]", val=options.css_naming_scale),
-            ),
-            check_extended=cast(typ="bool", val=options.css_naming_extended),
-        ),
-    )
+    cast(typ="bool", val=options.dry)
+    config: LintExactusConfig = config_from_options(options=options)
     generated_ignores: tuple[str, ...] = ()
     output_parent: Path = output_dir.parent
-    if (
-        output_parent.name == "EXACTUS_RESULTS"
-        and output_parent.is_relative_to(root)
-    ):
+    if output_parent == reports_root(
+        start=root,
+    ) and output_parent.is_relative_to(root):
         output_relative: str = output_parent.relative_to(root).as_posix()
         generated_ignores = (output_relative, f"{output_relative}/**")
     with step_log(path=output_dir / "ARTIFACTS" / "steps.txt"):
@@ -183,9 +153,49 @@ def main(*, arguments: tuple[str, ...] | None = None) -> int:
                 step=f"lints: arguments — root {root}, output {output_dir}",
                 depth=0,
             )
+
+            def publish(report: dict[str, JsonValue]) -> None:
+                """Publish reports before sealing the source transaction.
+
+                Args:
+                    report: Verified report payload sealed by the commit.
+
+                """
+                trace(step="lints: write report bundle", depth=0)
+                _ = ReportBundle.write(
+                    paths=ReportPaths(
+                        markdown=output_dir / "LINTS.md",
+                        json=output_dir / "LINTS.json",
+                        web=output_dir / "LINTS_web",
+                    ),
+                    analyzer="lints",
+                    title="Lint Exactus",
+                    markdown="",
+                    data=with_excerpts(
+                        payload=report_data(report=report, root=root),
+                        root=root,
+                        context=cast(typ="int", val=options.context_lines),
+                    ),
+                )
+                trace(
+                    step="lints: wrote LINTS.md, LINTS.json, LINTS_web",
+                    depth=1,
+                )
+
             report, status = LintExactus.run(
                 request=LintExactusRequest(
                     cwd=root,
+                    publisher=publish,
+                    transaction_limits=TransactionLimits(
+                        max_passes=cast(
+                            typ="int",
+                            val=options.transaction_passes,
+                        ),
+                        timeout_seconds=cast(
+                            typ="int",
+                            val=options.transaction_timeout,
+                        ),
+                    ),
                     targets=includes or (".",),
                     report_path=output_dir / "LINTS.json",
                     ignores=(
@@ -216,23 +226,6 @@ def main(*, arguments: tuple[str, ...] | None = None) -> int:
                     },
                 ),
             )
-            trace(step="lints: write report bundle", depth=0)
-            _ = ReportBundle.write(
-                paths=ReportPaths(
-                    markdown=output_dir / "LINTS.md",
-                    json=output_dir / "LINTS.json",
-                    web=output_dir / "LINTS_web",
-                ),
-                analyzer="lints",
-                title="Lint Exactus",
-                markdown="",
-                data=with_excerpts(
-                    payload=report_data(report=report, root=root),
-                    root=root,
-                    context=cast(typ="int", val=options.context_lines),
-                ),
-            )
-            trace(step="lints: wrote LINTS.md, LINTS.json, LINTS_web", depth=1)
             exit_status: int = _exit_status(report=report, status=status)
             trace(step=f"lints: finished — exit status {exit_status}", depth=0)
         except RuntimeError as error:

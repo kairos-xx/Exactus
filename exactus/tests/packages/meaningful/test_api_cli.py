@@ -86,8 +86,10 @@ def test_parallel_run_metadata_and_progress(*, tmp_path: Path) -> None:
         _write(
             path=tmp_path / f"m{index}.py",
             source=(
-                f"def f{index}(value: int) -> int:\n    "
-                "return value + {index}\n"
+                f"""\
+def f{index}(value: int) -> int:
+    return value + {{index}}
+"""
             ),
         )
     updates: list[ProgressSnapshot] = []
@@ -146,12 +148,17 @@ def test_javascript_behavior_is_classified_as_needing_tests(
         source=(
             dedent(
                 text=(
-                    "    async context => {\n      try {\n        const it"
-                    "ems = context.targets.map(value => value + 1);\n     "
-                    "   if (items.length > 1) context.log(items);\n       "
-                    " return await Promise.all(items);\n      } catch (err"
-                    "or) {\n        throw new Error(String(error));\n     "
-                    " }\n    };\n    "
+                    """\
+    async context => {
+      try {
+        const items = context.targets.map(value => value + 1);
+        if (items.length > 1) context.log(items);
+        return await Promise.all(items);
+      } catch (error) {
+        throw new Error(String(error));
+      }
+    };
+    """
                 ),
             )
         ),
@@ -193,10 +200,14 @@ def test_policy_thresholds_evidence_and_context(*, tmp_path: Path) -> None:
         source=(
             dedent(
                 text=(
-                    "    def compute(value: int) -> int:\n        total: i"
-                    "nt = 0\n        for item in range(value):\n          "
-                    "  if item % 2:\n                total += item\n      "
-                    "  return total\n    "
+                    """\
+    def compute(value: int) -> int:
+        total: int = 0
+        for item in range(value):
+            if item % 2:
+                total += item
+        return total
+    """
                 ),
             )
         ),
@@ -245,11 +256,15 @@ def test_resolution_inputs_and_filters(*, tmp_path: Path) -> None:
     """
     keep: Path = _write(
         path=tmp_path / "src" / "keep.py",
-        source="VALUE = 1\n",
+        source="""\
+VALUE = 1
+""",
     )
     skip: Path = _write(
         path=tmp_path / "src" / "skip.py",
-        source="VALUE = 2\n",
+        source="""\
+VALUE = 2
+""",
     )
     expect(
         condition=Meaningful.resolve(
@@ -277,8 +292,18 @@ def test_failures_are_accounted_and_callback_isolated(
         tmp_path: Value supplied for ``tmp_path``.
 
     """
-    _write(path=tmp_path / "good.py", source="VALUE = 1\n")
-    _write(path=tmp_path / "bad.py", source="def broken(:\n")
+    _write(
+        path=tmp_path / "good.py",
+        source="""\
+VALUE = 1
+""",
+    )
+    _write(
+        path=tmp_path / "bad.py",
+        source="""\
+def broken(:
+""",
+    )
     calls: list[ProgressSnapshot] = []
 
     def callback(snapshot: ProgressSnapshot) -> None:
@@ -311,7 +336,12 @@ def test_functional_api_and_overrides(*, tmp_path: Path) -> None:
         tmp_path: Value supplied for ``tmp_path``.
 
     """
-    path: Path = _write(path=tmp_path / "a.py", source="VALUE = 1\n")
+    path: Path = _write(
+        path=tmp_path / "a.py",
+        source="""\
+VALUE = 1
+""",
+    )
     run: AnalysisRun = analyze(paths=str(object=path), max_workers=1)
     expect(condition=run.metadata.workers_used == 1)
     overridden: AnalysisRun = Meaningful(max_workers=4).analyze(
@@ -362,7 +392,12 @@ def test_cli_json_output_file_and_errors(
         capfd: Value supplied for ``capfd``.
 
     """
-    source: Path = _write(path=tmp_path / "a.py", source="VALUE = 1\n")
+    source: Path = _write(
+        path=tmp_path / "a.py",
+        source="""\
+VALUE = 1
+""",
+    )
     expect(
         condition=MeaningfulCli.run(
             arguments=(str(object=source), "--workers", "1"),

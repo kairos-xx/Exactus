@@ -35,7 +35,12 @@ from exactus.tools.common.activity import (
 )
 from exactus.tools.common.envelope import RunFacts
 from exactus.tools.common.models import ToolRequest, ToolRunResult
-from exactus.tools.common.registry import RunClaim, RunRecord, RunRegistry
+from exactus.tools.common.registry import (
+    RunClaim,
+    RunRecord,
+    RunRegistry,
+    project_root_target,
+)
 from exactus.tools.common.stderr_capture import StderrRecorder
 
 if TYPE_CHECKING:
@@ -431,7 +436,13 @@ def test_analyzer_written_reports_are_kept(tmp_path: Path) -> None:
 
         """
         out.mkdir(parents=True, exist_ok=True)
-        (out / "result.md").write_text(data="# Mine\n\n- Status: **PASS**\n")
+        (out / "result.md").write_text(
+            data="""\
+# Mine
+
+- Status: **PASS**
+""",
+        )
         (out / "result.json").write_text(data=dumps(obj={"title": "Mine"}))
         (out / "extra.json").write_text(data='{"k": 1}')
         (out / "note.txt").write_text(data="hello")
@@ -470,7 +481,13 @@ def test_web_data_payload_is_stamped(tmp_path: Path) -> None:
 
         """
         out.mkdir(parents=True, exist_ok=True)
-        (out / "result.md").write_text(data="# T\n\n- Status: **PASS**\n")
+        (out / "result.md").write_text(
+            data="""\
+# T
+
+- Status: **PASS**
+""",
+        )
         (out / "result.json").write_text(data="{}")
         (out / "result_web").mkdir()
         (out / "result_web" / "data.json").write_text(
@@ -511,7 +528,13 @@ def test_failed_analyzer_stamps_existing_reports(tmp_path: Path) -> None:
 
         """
         out.mkdir(parents=True, exist_ok=True)
-        (out / "result.md").write_text(data="# T\n\n- Status: **PASS**\n")
+        (out / "result.md").write_text(
+            data="""\
+# T
+
+- Status: **PASS**
+""",
+        )
         (out / "result.json").write_text(data="{}")
         (out / "result_web").mkdir()
         (out / "result_web" / "index.html").write_text(
@@ -760,9 +783,7 @@ def test_report_snapshot_and_emitted(tmp_path: Path) -> None:
     )
 
 
-def test_observe_live_run_ignores_missing_or_finished(
-    tmp_path: Path,
-) -> None:
+def test_observe_live_run_ignores_missing_or_finished(tmp_path: Path) -> None:
     """Only RUNNING activity documents with live pids are waited upon.
 
     Args:
@@ -833,6 +854,90 @@ def test_conflicting_run_is_joined_then_terminated(
         run_id="a" * 32,
         pipeline_run_id=None,
     )
+    expect_equal(actual=killed, expected=[getppid()])
+
+
+def test_foreign_project_conflict_is_never_adopted(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """A conflict rooted in another project is never report-adopted.
+
+    The foreign run is still waited out and terminated — it holds this
+    output claim — but its report describes another source tree, so
+    this run proceeds with its own analysis instead.
+
+    Args:
+        tmp_path: Per-test temporary directory.
+        monkeypatch: Pytest patching helper.
+
+    """
+    killed: list[int] = []
+
+    def record_kill(*, pid: int, replaced: bool) -> None:
+        """Record a terminate request instead of killing anything.
+
+        Args:
+            pid: Process id that would have been terminated.
+            replaced: Whether another exactus claimed the output.
+
+        """
+        expect_true(condition=replaced)
+        killed.append(pid)
+
+    observed: list[str] = []
+
+    def record_observe(*, run_id: str, **_fields: object) -> None:
+        """Record an adoption attempt instead of observing a run.
+
+        Args:
+            run_id: Conflicting run identifier.
+            **_fields: Remaining observe call fields.
+
+        """
+        observed.append(run_id)
+
+    monkeypatch.setattr(target=ent, name="terminate_tree", value=record_kill)
+    monkeypatch.setattr(
+        target=ent,
+        name="_observe_tool_run",
+        value=record_observe,
+    )
+    monkeypatch.setenv(name="EXACTUS_PROJECT_ROOT", value=str(object=tmp_path))
+    out: Path = tmp_path / "out"
+    out.mkdir(parents=True)
+    _ = (out / "result.json").write_text(
+        data=dumps(obj={"status": "PASS"}),
+        encoding="utf-8",
+    )
+    first: RunRegistry = RunRegistry.for_output(output=out)
+    expect_equal(
+        actual=first.claim(
+            request=RunClaim(
+                kind="tool",
+                identifier="demo",
+                run_id="b" * 32,
+                pipeline_run_id=None,
+                pid=getppid(),
+                output=out,
+                targets=(
+                    str(object=out.resolve()),
+                    project_root_target(root=tmp_path / "foreign"),
+                ),
+            ),
+        ),
+        expected=(),
+    )
+    joined: object = private_call(
+        owner=ent,
+        name="_join_or_reset_conflicts",
+        analyzer="demo",
+        output=out,
+        run_id="a" * 32,
+        pipeline_run_id=None,
+    )
+    _ = require_type(value=joined, kind=RunRegistry)
+    expect_equal(actual=observed, expected=[])
     expect_equal(actual=killed, expected=[getppid()])
 
 
@@ -1130,17 +1235,20 @@ def test_signal_during_run_records_interrupt(tmp_path: Path) -> None:
     # (``exactus-replaced-<pid>.json`` survives PID reuse) would make the
     # signal handler exit before recording INTERRUPT, so the subprocess
     # drops any marker addressed to its own PID before running.
-    script: str = (
-        f"import os, signal, sys\nsys.path[:0] = [{str(object=root)!r}]\n"
-        "import pathlib, tempfile\n"
-        "marker = pathlib.Path(tempfile.gettempdir()) /"
-        " f'exactus-replaced-{os.getpid()}.json'\n"
-        "marker.unlink(missing_ok=True)\n"
-        "from exactus.tools.common.execution import execute_exactus\ndef"
-        " main():\n    os.kill(os.getpid(), signal.SIGTERM)\n    import time;"
-        " time.sleep(30)\n    return 0\nexecute_exactus(analyzer='sig',"
-        " title='Sig', main=main)\n"
-    )
+    script: str = f"""\
+import os, signal, sys
+sys.path[:0] = [{str(object=root)!r}]
+import pathlib, tempfile
+marker = pathlib.Path(tempfile.gettempdir()) / \
+f'exactus-replaced-{{os.getpid()}}.json'
+marker.unlink(missing_ok=True)
+from exactus.tools.common.execution import execute_exactus
+def main():
+    os.kill(os.getpid(), signal.SIGTERM)
+    import time; time.sleep(30)
+    return 0
+execute_exactus(analyzer='sig', title='Sig', main=main)
+"""
     # Inside a pipeline or tool run the ambient ``EXACTUS_*`` variables point
     # at the live shared registry; the child must not inherit them or its
     # ``execute_exactus`` run would claim another run's identity and be
@@ -1202,7 +1310,11 @@ def test_previous_duration_propagates_to_reports_and_activity(
 
         """
         out.mkdir(parents=True, exist_ok=True)
-        (out / "result.md").write_text(data="# T\n")
+        (out / "result.md").write_text(
+            data="""\
+# T
+""",
+        )
         (out / "result.json").write_text(data=dumps(obj={"title": "T"}))
         (out / "result_web").mkdir(exist_ok=True)
         (out / "result_web" / "data.json").write_text(

@@ -166,7 +166,7 @@ def _dispatch_option(*, name: str, tool: Tool) -> OptionSpec:
     flags: tuple[str, ...] = tool.flags
     return OptionSpec(
         names=flags,
-        dest=f"dispatch_{name.replace('-', '_')}",
+        dest=f"dispatch_{name.replace("-", "_")}",
         cardinality=_GroupFinalConstants.no_value,
         description=Constants.tool_descriptions.get(name, ""),
         context=name,
@@ -213,6 +213,12 @@ def check_catalog(
             dest="show_config",
             cardinality=_GroupFinalConstants.no_value,
             description="Show each tool's effective configuration",
+        ),
+        OptionSpec(
+            names=("--json",),
+            dest="json",
+            cardinality=_GroupFinalConstants.no_value,
+            description="Emit path-scoped configuration as versioned JSON",
         ),
     )
     return CompletionCatalog(

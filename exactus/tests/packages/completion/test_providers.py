@@ -17,11 +17,11 @@ from exactus.packages.completion.model import (
 from exactus.packages.completion.providers import (
     Constants,
     PathCompletionProvider,
+    PathPrefix,
     ScopedArgumentProvider,
     StaticNameProvider,
-    _PathPrefix,
-    _split_prefix,
     default_providers,
+    split_prefix,
 )
 from exactus.tests.common.support import (
     expect_equal,
@@ -208,15 +208,15 @@ def test_directory_candidates_do_not_append_space(tmp_path: Path) -> None:
 
 def test_split_prefix_shapes() -> None:
     """``_split_prefix`` separates display base from name filter."""
-    split: _PathPrefix = _split_prefix(raw="src/ma", cwd=Path("/cwd"))
+    split: PathPrefix = split_prefix(raw="src/ma", cwd=Path("/cwd"))
     expect_equal(actual=str(object=split.lookup), expected="/cwd/src")
     expect_equal(actual=split.display_base, expected="src/")
     expect_equal(actual=split.name_prefix, expected="ma")
-    split = _split_prefix(raw="/etc/ho", cwd=Path("/cwd"))
+    split = split_prefix(raw="/etc/ho", cwd=Path("/cwd"))
     expect_equal(actual=str(object=split.lookup), expected="/etc")
-    split = _split_prefix(raw="~/pr", cwd=Path("/cwd"))
+    split = split_prefix(raw="~/pr", cwd=Path("/cwd"))
     expect_equal(actual=split.display_base, expected="~/")
-    split = _split_prefix(raw="ma", cwd=Path("/cwd"))
+    split = split_prefix(raw="ma", cwd=Path("/cwd"))
     expect_equal(actual=split.display_base, expected="")
 
 

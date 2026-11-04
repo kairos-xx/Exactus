@@ -1,6 +1,26 @@
-# `evidence/`
+# Generated visual-cause evidence
 
-Provide r0 element html   body   main demo a png content.
+- [`r0-element-html___body___main_demo-a.png`](r0-element-html___body___main_demo-a.png)
+- [`r0-element-html___body___main_demo-b.png`](r0-element-html___body___main_demo-b.png)
+- [`r0-element-html___body___main_demo-diff.png`](r0-element-html___body___main_demo-diff.png)
+- [`r0-element-html___body___main_demo___button_action-a.png`](r0-element-html___body___main_demo___button_action-a.png)
+- [`r0-element-html___body___main_demo___button_action-b.png`](r0-element-html___body___main_demo___button_action-b.png)
+- [`r0-element-html___body___main_demo___button_action-diff.png`](r0-element-html___body___main_demo___button_action-diff.png)
+- [`r0-element-html___body___main_demo___section_cards-a.png`](r0-element-html___body___main_demo___section_cards-a.png)
+- [`r0-element-html___body___main_demo___section_cards-b.png`](r0-element-html___body___main_demo___section_cards-b.png)
+- [`r0-element-html___body___main_demo___section_cards-diff.png`](r0-element-html___body___main_demo___section_cards-diff.png)
+- [`r0-element-html___body___main_demo___section_cards___article_card_primary_nth-of-type_1_-a.png`](r0-element-html___body___main_demo___section_cards___article_card_primary_nth-of-type_1_-a.png)
+- [`r0-element-html___body___main_demo___section_cards___article_card_primary_nth-of-type_1_-b.png`](r0-element-html___body___main_demo___section_cards___article_card_primary_nth-of-type_1_-b.png)
+- [`r0-element-html___body___main_demo___section_cards___article_card_primary_nth-of-type_1_-diff.png`](r0-element-html___body___main_demo___section_cards___article_card_primary_nth-of-type_1_-diff.png)
+- [`r0-element-html___body___main_demo___section_cards___article_card_primary_nth-of-type_1____h2-a.png`](r0-element-html___body___main_demo___section_cards___article_card_primary_nth-of-type_1____h2-a.png)
+- [`r0-element-html___body___main_demo___section_cards___article_card_primary_nth-of-type_1____h2-b.png`](r0-element-html___body___main_demo___section_cards___article_card_primary_nth-of-type_1____h2-b.png)
+- [`r0-element-html___body___main_demo___section_cards___article_card_primary_nth-of-type_1____h2-diff.png`](r0-element-html___body___main_demo___section_cards___article_card_primary_nth-of-type_1____h2-diff.png)
+- [`r0-element-html___body___main_demo___section_cards___article_card_primary_nth-of-type_1____p-a.png`](r0-element-html___body___main_demo___section_cards___article_card_primary_nth-of-type_1____p-a.png)
+- [`r0-element-html___body___main_demo___section_cards___article_card_primary_nth-of-type_1____p-b.png`](r0-element-html___body___main_demo___section_cards___article_card_primary_nth-of-type_1____p-b.png)
+- [`r0-element-html___body___main_demo___section_cards___article_card_primary_nth-of-type_1____p-diff.png`](r0-element-html___body___main_demo___section_cards___article_card_primary_nth-of-type_1____p-diff.png)
+- [`r0-element-html___body___main_demo___section_cards___article_card_secondary_nth-of-type_2_-a.png`](r0-element-html___body___main_demo___section_cards___article_card_secondary_nth-of-type_2_-a.png)
+- [`r0-element-html___body___main_demo___section_cards___article_card_secondary_nth-of-type_2_-b.png`](r0-element-html___body___main_demo___section_cards___article_card_secondary_nth-of-type_2_-b.png)
+- [`r0-element-html___body___main_demo___section_cards___article_card_secondary_nth-of-type_2_-diff.png`](r0-element-html___body___main_demo___section_cards___article_card_secondary_nth-of-type_2_-diff.png)
 
 <!-- exactus:inventory:start -->
 ## Directory contents

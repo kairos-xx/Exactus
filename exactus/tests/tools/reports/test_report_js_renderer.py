@@ -49,15 +49,21 @@ class Constants:
     )
     harness: Final[str] = dedent(
         text=(
-            '    \n    const { readFileSync } = require("node:fs");\n    const'
-            ' { runInNewContext } = require("node:vm");\n    const [script, me'
-            "thod, payload] = process.argv.slice(1);\n    const context = { do"
-            "cument: { addEventListener() {} } };\n    const source =\n      r"
-            'eadFileSync(script, "utf8") +\n      "\\nglobalThis.ExactusReport'
-            ' = ExactusReport;";\n    runInNewContext(source, context);\n    c'
-            "onst inputs = JSON.parse(payload);\n    const outputs = inputs.ma"
-            "p((input) => context.ExactusReport[method](input));\n    process."
-            "stdout.write(JSON.stringify(outputs));\n    "
+            """\
+
+    const { readFileSync } = require("node:fs");
+    const { runInNewContext } = require("node:vm");
+    const [script, method, payload] = process.argv.slice(1);
+    const context = { document: { addEventListener() {} } };
+    const source =
+      readFileSync(script, "utf8") +
+      "\\nglobalThis.ExactusReport = ExactusReport;";
+    runInNewContext(source, context);
+    const inputs = JSON.parse(payload);
+    const outputs = inputs.map((input) => context.ExactusReport[method](input)\
+);
+    process.stdout.write(JSON.stringify(outputs));
+    """
         ),
     )
     node: Final[str | None] = which(cmd="node")
@@ -103,7 +109,12 @@ def render(*, method: str, inputs: list[str]) -> list[str]:
 
 def test_tilde_fence_renders_escaped_code() -> None:
     """``~~~`` blocks are code: no emphasis, every character escaped."""
-    source: str = "~~~python\ndef f(*args, **kwargs):\n    return '<b>'\n~~~\n"
+    source: str = """\
+~~~python
+def f(*args, **kwargs):
+    return '<b>'
+~~~
+"""
     (html,) = render(method="markdown", inputs=[source])
     expect_in(member="def f(*args, **kwargs):", container=html)
     expect_in(member="&lt;b&gt;", container=html)
@@ -114,15 +125,34 @@ def test_tilde_fence_renders_escaped_code() -> None:
 
 def test_backtick_fence_and_longer_closer() -> None:
     """A fence closes only on the same character, at least as long."""
-    source: str = "````\n~~~\n```\n*x*\n````\nafter *y*"
+    source: str = """\
+````
+~~~
+```
+*x*
+````
+after *y*"""
     (html,) = render(method="markdown", inputs=[source])
-    expect_in(member="<pre><code>~~~\n```\n*x*</code></pre>", container=html)
+    expect_in(
+        member="""\
+<pre><code>~~~
+```
+*x*</code></pre>""",
+        container=html,
+    )
     expect_in(member="<p>after <em>y</em></p>", container=html)
 
 
 def test_unclosed_fence_is_closed() -> None:
     """A fence left open at the end still yields balanced markup."""
-    (html,) = render(method="markdown", inputs=["~~~\n[a](javascript:x)"])
+    (html,) = render(
+        method="markdown",
+        inputs=[
+            """\
+~~~
+[a](javascript:x)""",
+        ],
+    )
     expect_equal(
         actual=html,
         expected="<pre><code>[a](javascript:x)</code></pre>",
@@ -267,7 +297,9 @@ def _finding(*, number: int, source: str, rule: str) -> dict[str, object]:
     return {
         "id": f"LINTS-{number:03d}",
         "title": "Line too long",
-        "message": "Line too long\n  limit is 79",
+        "message": """\
+Line too long
+  limit is 79""",
         "severity": "warning",
         "rule": rule,
         "path": "pkg/a.py",
@@ -436,7 +468,9 @@ def test_anchor_lines_pass_through_unescaped() -> None:
     outputs: list[str] = render(
         method="markdown",
         inputs=[
-            '<a id="finding-f-001"></a>\n### F-001 — Title',
+            """\
+<a id="finding-f-001"></a>
+### F-001 — Title""",
             '<a href="x">y</a>',
         ],
     )
@@ -450,8 +484,12 @@ def test_diagnostic_callouts_have_distinct_colors() -> None:
     outputs: list[str] = render(
         method="markdown",
         inputs=[
-            "> [!WARNING]\n> **Browser console error** <script>bad()</script>",
-            "> [!CAUTION]\n> **Server error**",
+            """\
+> [!WARNING]
+> **Browser console error** <script>bad()</script>""",
+            """\
+> [!CAUTION]
+> **Server error**""",
         ],
     )
     expect_in(member="ds-badge-warn", container=outputs[0])

@@ -727,19 +727,28 @@ def test_self_test_stays_available_inside_the_exactus_repository(
         encoding="utf-8",
     )
     _ = (checkout / "pyproject.toml").write_text(
-        data='[project]\nname = "exactus"\n',
+        data="""\
+[project]
+name = "exactus"
+""",
         encoding="utf-8",
     )
     foreign: Path = tmp_path / "foreign"
     foreign.mkdir()
     _ = (foreign / "pyproject.toml").write_text(
-        data='[project]\nname = "exactus"\n',
+        data="""\
+[project]
+name = "exactus"
+""",
         encoding="utf-8",
     )
     other: Path = tmp_path / "other"
     other.mkdir()
     _ = (other / "pyproject.toml").write_text(
-        data='[project]\nname = "other"\n',
+        data="""\
+[project]
+name = "other"
+""",
         encoding="utf-8",
     )
     monkeypatch.setattr(
@@ -755,9 +764,7 @@ def test_self_test_stays_available_inside_the_exactus_repository(
     monkeypatch.setattr(target=main_module.Check, name="root", value=checkout)
     expect_true(condition="self_test" in tools_named())
     monkeypatch.setattr(target=main_module.Check, name="root", value=other)
-    expect_true(
-        condition="self_test" not in tools_named(),
-    )
+    expect_true(condition="self_test" not in tools_named())
     monkeypatch.setattr(target=main_module.Check, name="root", value=foreign)
     expect_true(
         condition="self_test" not in tools_named(),

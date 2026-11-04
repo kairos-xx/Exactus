@@ -29,18 +29,31 @@ class Constants:
     """
 
     sources: Final[dict[str, str]] = {
-        "__init__.py": '"""Demonstration package for group_final."""\n',
+        "__init__.py": """\
+\"""Demonstration package for group_final.\"""
+""",
         "app.py": (
             dedent(
                 text=(
-                    '    """Demonstration module containing Final constant'
-                    's."""\n    \n    from typing import Final\n    \n    '
-                    '\n    def make_name() -> str:\n        """Build a dem'
-                    'onstration value."""\n        return "Exactus"\n    '
-                    "\n    \n    NAME: Final[str] = make_name()\n    COUNT"
-                    ": Final[int] = 3\n    \n    \n    def describe() -> s"
-                    'tr:\n        """Return text that references both cons'
-                    'tants."""\n        return f"{NAME}: {COUNT}"\n    '
+                    """\
+    \"""Demonstration module containing Final constants.\"""
+
+    from typing import Final
+
+
+    def make_name() -> str:
+        \"""Build a demonstration value.\"""
+        return "Exactus"
+
+
+    NAME: Final[str] = make_name()
+    COUNT: Final[int] = 3
+
+
+    def describe() -> str:
+        \"""Return text that references both constants.\"""
+        return f"{NAME}: {COUNT}"
+    """
                 ),
             )
         ),

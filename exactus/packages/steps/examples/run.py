@@ -62,7 +62,12 @@ def _print(*args: str, file: TextIO | None = None) -> None:
 
     """
     stream: TextIO = file if file is not None else stdout
-    _ = stream.write(" ".join(str(object=arg) for arg in args) + "\n")
+    _ = stream.write(
+        " ".join(str(object=arg) for arg in args)
+        + """\
+
+""",
+    )
     _ = stream.flush()
 
 
@@ -120,12 +125,15 @@ def main() -> int:
         with step_log(path=nested):
             trace(step="demo: nested step_log reused the active log", depth=2)
         trace(step="demo: run finished")
-    _ = _print(f"step trace: {Constants.destination}\n")
+    _ = _print(f"""\
+step trace: {Constants.destination}
+""")
     _ = _print(Constants.destination.read_text(encoding="utf-8"))
     _ = _print(
-        "nested step_log reuse: "
-        f"{nested.name} was never created — "
-        f"nested exists: {nested.exists()}\n",
+        f"""\
+nested step_log reuse: {nested.name} was never created — nested exists: \
+{nested.exists()}
+""",
     )
     return 0
 

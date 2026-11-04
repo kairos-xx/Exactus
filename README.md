@@ -394,7 +394,7 @@ capture records — see `exactus/tools/common/sprint.py` for the directive synta
 
 - [`EXACTUS_RESULTS_RELEASE/`](EXACTUS_RESULTS_RELEASE/README.md) — No direct files besides this README.
 - [`STUDIO_SCREENSHOTS/`](STUDIO_SCREENSHOTS/README.md) — Provide 01 welcome png content.
-- [`artifacts/`](artifacts/README.md) — No direct files besides this README.
+- [`artifacts/`](artifacts/README.md) — Contain artifacts resources and their directory inventory.
 - [`bin/`](bin/README.md) — Project executables and native tool archives.
 - [`demo/`](demo/README.md) — This fixture exercises the relocatable `exec/exactus` artifact with Python, JavaScript, CSS, HTML, Python tests, JavaScript tests, browser diagnostics and server diagnostics.
 - [`dev/`](dev/README.md) — Provide README txt content.

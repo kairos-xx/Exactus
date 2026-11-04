@@ -56,12 +56,17 @@ class Constants:
     minimum_gap_ms: Final[int] = 120
     html: Final[str] = dedent(
         text=(
-            '    \n    <button class="b" data-p="2" id="b1">one</button>\n    '
-            '<button class="b" data-p="3" id="b2">two</button>\n    <button cl'
-            'ass="b" data-p="1" id="b3">three</button>\n    <script>\n      wi'
-            'ndow.log = [];\n      document.querySelectorAll(".b").forEach((b)'
-            ' =>\n        b.addEventListener("click", () => window.log.push(b.'
-            "id)));\n    </script>\n    "
+            """\
+
+    <button class="b" data-p="2" id="b1">one</button>
+    <button class="b" data-p="3" id="b2">two</button>
+    <button class="b" data-p="1" id="b3">three</button>
+    <script>
+      window.log = [];
+      document.querySelectorAll(".b").forEach((b) =>
+        b.addEventListener("click", () => window.log.push(b.id)));
+    </script>
+    """
         ),
     )
     buttons: Final[SelectorDef] = SelectorDef(

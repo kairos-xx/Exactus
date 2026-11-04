@@ -220,7 +220,12 @@ def visible_lines(text: str) -> Iterator[str]:
     if (bounds := _dashboard_bounds(text=text)) is not None:
         text = (
             text[: bounds[0]]
-            + "\n" * text[bounds[0] : bounds[1]].count("\n")
+            + """\
+
+"""
+            * text[bounds[0] : bounds[1]].count("""\
+
+""")
             + text[bounds[1] :]
         )
     fence: str = ""
@@ -498,7 +503,7 @@ def _matrix_rows(sections: list[Counts], anchors: list[str]) -> list[str]:
                             f"{SyncTodoTables.CATEGORY_LABELS[task.category]}]"
                             f"(#{anchors[index]}) | "
                         ),
-                        f"{' | '.join(cells)} | ",
+                        f"{" | ".join(cells)} | ",
                         f"{mark} |",
                     ),
                 ),
@@ -635,7 +640,9 @@ def _render(text: str) -> str:
             defaults.end,
         ],
     )
-    return "\n".join(lines)
+    return """\
+
+""".join(lines)
 
 
 def render_html(text: str) -> str:
@@ -827,18 +834,44 @@ def update(text: str) -> str:
         details: str
         summary, separator, details = block.partition("### Priority progress")
         summary = summary.removeprefix(defaults.start).strip()
-        replacement: str = (
-            f"{defaults.summary_start}\n\n{summary}\n\n{defaults.summary_end}"
-        )
+        replacement: str = f"""\
+{defaults.summary_start}
+
+{summary}
+
+{defaults.summary_end}"""
         text = (
             text[:start]
             + replacement
             + text[end + len(defaults.summary_end) :]
         )
-        block = f"{defaults.start}\n\n{separator}{details}"
+        block = f"""\
+{defaults.start}
+
+{separator}{details}"""
     if (bounds := _dashboard_bounds(text=text)) is not None:
         return text[: bounds[0]] + block + text[bounds[1] :]
     insertion: int = (
-        text.find("\n") + 1 if text.startswith("# ") and "\n" in text else 0
+        text.find("""\
+
+""")
+        + 1
+        if text.startswith("# ")
+        and """\
+
+"""
+        in text
+        else 0
     )
-    return text[:insertion] + "\n" + block + "\n\n" + text[insertion:]
+    return (
+        text[:insertion]
+        + """\
+
+"""
+        + block
+        + """\
+
+
+"""
+        + text[insertion:]
+    )

@@ -156,6 +156,7 @@ Markdown report template, partials, base mapping and examples
 - [`execution.py`](execution.py) — Shared standalone exactus entry-point reporting.
 - [`json_types.py`](json_types.py) — JSON value types shared by the exactus tools.
 - [`models.py`](models.py) — Shared exactus orchestration models.
+- [`path_filters.py`](path_filters.py) — Match portable project globs and directory-scoped selection rules.
 - [`pipeline_supervisor.py`](pipeline_supervisor.py) — Provide transactional ownership and reset coordination for pipelines.
 - [`process_control.py`](process_control.py) — Cross-invocation exactus ownership and process termination primitives.
 - [`progress.py`](progress.py) — Uniform ``exactus-run/v1`` live-run progress document schema.
@@ -164,6 +165,8 @@ Markdown report template, partials, base mapping and examples
 - [`report_time.py`](report_time.py) — Format recorded report times without changing their machine values.
 - [`runtime.py`](runtime.py) — Shared exactus runtime state, progress, and summary protocol.
 - [`snippets.py`](snippets.py) — Capture numbered source excerpts around report findings.
+- [`source_cache.py`](source_cache.py) — Own content-identified source and AST reuse within one lint run.
+- [`source_transaction.py`](source_transaction.py) — Commit validated source proposals with durable, conflict-safe recovery.
 - [`sprint.py`](sprint.py) — Shared flushed-writer printing helpers for scripts and examples.
 - [`stderr_capture.py`](stderr_capture.py) — Standard-error capture: ``stderr.log`` transcripts with line counts.
 - [`terminal.py`](terminal.py) — Responsive ANSI terminal presentation for exactus execution.

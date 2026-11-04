@@ -474,7 +474,10 @@ class NormalizedStamp:
             required_blocks=required,
         )
         _ = (output / "result.json").write_text(
-            data=JsonDict(payload).tojson + "\n",
+            data=JsonDict(payload).tojson
+            + """\
+
+""",
             encoding="utf-8",
         )
         _ = (output / "result.md").write_text(
