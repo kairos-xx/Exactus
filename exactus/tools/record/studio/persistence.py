@@ -93,7 +93,7 @@ class WorkspaceFiles:
             if result.get("secret") is True:
                 result["value"] = None
             if artifact_links and "path" in result:
-                result["path"] = f"/artifacts/{result.get("id", "")}"
+                result["path"] = f"/artifacts/{result.get('id', '')}"
             return result
         return value
 

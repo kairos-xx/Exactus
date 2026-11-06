@@ -304,7 +304,7 @@ def test_actions_are_well_formed() -> None:
             expect_in(member=slot["type"], container=vocabulary)
             expect_true(
                 condition=isinstance(slot["required"], bool),
-                message=f"{name}.{slot["slot"]}: required must be boolean",
+                message=f"{name}.{slot['slot']}: required must be boolean",
             )
             expect_equal(
                 actual="item_type" in slot,
@@ -457,7 +457,7 @@ def test_secret_rules_are_destination_based() -> None:
     for action in _actions():
         for slot in _rows(parent=action, key="inputs"):
             if "exposes_to" in slot:
-                exposed[f"{action["id"]}.{slot["slot"]}"] = cast(
+                exposed[f"{action['id']}.{slot['slot']}"] = cast(
                     typ="list[str]",
                     val=slot["exposes_to"],
                 )

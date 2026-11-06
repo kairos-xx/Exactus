@@ -103,7 +103,7 @@ directory. Regenerate with `python exactus/scripts/bundle_make`
 | `concat-map` | `0.0.1` | all |
 | `core-util-is` | `1.0.3` | all |
 | `cosmiconfig` | `9.0.2` | all |
-| `coverage` | `7.17.0` | all |
+| `coverage` | `7.17.1` | all |
 | `cross-spawn` | `7.0.6` | all |
 | `cryptography` | `46.0.3` | windows-arm64 |
 | `cryptography` | `48.0.1` | macos-amd64 |
@@ -120,7 +120,7 @@ directory. Regenerate with `python exactus/scripts/bundle_make`
 | `error-ex` | `1.3.4` | all |
 | `escape-string-regexp` | `4.0.0` | all |
 | `eslint` | `10.14.0` | all |
-| `eslint-plugin-jsdoc` | `65.4.2` | all |
+| `eslint-plugin-jsdoc` | `65.4.3` | all |
 | `eslint-scope` | `9.1.2` | all |
 | `eslint-visitor-keys` | `4.2.1` | all |
 | `espree` | `10.4.0` | all |
@@ -210,7 +210,6 @@ directory. Regenerate with `python exactus/scripts/bundle_make`
 | `lines-and-columns` | `1.2.4` | all |
 | `linkify_it_py` | `2.2.0` | linux-glibc-amd64, linux-glibc-arm64, linux-musl-amd64, linux-musl-arm64, macos-amd64, macos-arm64, windows-amd64 |
 | `locate-path` | `6.0.0` | all |
-| `lodash.truncate` | `4.4.2` | all |
 | `lru-cache` | `11.5.3` | all |
 | `markdown_it_py` | `4.2.0` | all |
 | `markupsafe` | `3.0.4` | all |
@@ -262,8 +261,7 @@ directory. Regenerate with `python exactus/scripts/bundle_make`
 | `picomatch` | `4.0.7` | all |
 | `pillow` | `12.2.0` | linux-glibc-amd64, linux-glibc-arm64 |
 | `pillow` | `13.0.0` | linux-musl-amd64, linux-musl-arm64, macos-amd64, macos-arm64, windows-amd64, windows-arm64 |
-| `platformdirs` | `4.14.2` | macos-arm64 |
-| `platformdirs` | `4.14.3` | linux-glibc-amd64, linux-glibc-arm64, linux-musl-amd64, linux-musl-arm64, macos-amd64, windows-amd64 |
+| `platformdirs` | `4.14.4` | linux-glibc-amd64, linux-glibc-arm64, linux-musl-amd64, linux-musl-arm64, macos-amd64, macos-arm64, windows-amd64 |
 | `playwright` | `1.64.1` | all |
 | `playwright-core` | `1.64.1` | all |
 | `pluggy` | `1.7.0` | all |
@@ -305,7 +303,7 @@ directory. Regenerate with `python exactus/scripts/bundle_make`
 | `rpds_py` | `2026.9.1` | all |
 | `ruff` | `0.17.3` | all |
 | `run-parallel` | `1.2.0` | all |
-| `semver` | `7.8.5` | all |
+| `semver` | `7.8.6` | all |
 | `setproctitle` | `1.3.8` | linux-glibc-amd64, linux-glibc-arm64, linux-musl-amd64, linux-musl-arm64, macos-amd64, macos-arm64, windows-amd64 |
 | `shebang-command` | `2.0.0` | all |
 | `shebang-regex` | `3.0.0` | all |
@@ -329,7 +327,7 @@ directory. Regenerate with `python exactus/scripts/bundle_make`
 | `supports-color` | `7.2.0` | all |
 | `supports-hyperlinks` | `4.6.0` | all |
 | `svg-tags` | `1.0.0` | all |
-| `table` | `6.9.0` | all |
+| `table` | `6.10.1` | all |
 | `textual` | `8.2.8` | linux-glibc-amd64, linux-glibc-arm64, linux-musl-amd64, linux-musl-arm64, macos-amd64, macos-arm64, windows-amd64 |
 | `tinyglobby` | `0.2.17` | all |
 | `to-regex-range` | `5.0.1` | all |
@@ -338,8 +336,7 @@ directory. Regenerate with `python exactus/scripts/bundle_make`
 | `tree_sitter_c_sharp` | `0.23.5` | linux-glibc-arm64, linux-musl-amd64 |
 | `tree_sitter_embedded_template` | `0.25.0` | linux-glibc-arm64, linux-musl-amd64 |
 | `tree_sitter_language_pack` | `0.13.0` | linux-glibc-arm64, linux-musl-amd64 |
-| `tree_sitter_language_pack` | `1.22.1` | macos-arm64 |
-| `tree_sitter_language_pack` | `1.23.1` | linux-glibc-amd64, macos-amd64, windows-amd64, windows-arm64 |
+| `tree_sitter_language_pack` | `1.23.1` | linux-glibc-amd64, macos-amd64, macos-arm64, windows-amd64, windows-arm64 |
 | `tree_sitter_yaml` | `0.7.2` | linux-glibc-arm64, linux-musl-amd64 |
 | `truststore` | `0.10.5` | all |
 | `ts-api-utils` | `2.5.0` | all |
@@ -348,7 +345,8 @@ directory. Regenerate with `python exactus/scripts/bundle_make`
 | `typer` | `0.27.3` | all |
 | `typescript` | `6.0.3` | all |
 | `typing_extensions` | `4.16.0` | all |
-| `typing_inspection` | `0.4.4` | all |
+| `typing_inspection` | `0.4.4` | linux-glibc-amd64, linux-glibc-arm64, macos-amd64, macos-arm64, windows-amd64, windows-arm64 |
+| `typing_inspection` | `0.4.5` | linux-musl-amd64, linux-musl-arm64 |
 | `unicorn-magic` | `0.4.1` | all |
 | `universalify` | `2.0.1` | all |
 | `uri-js` | `4.4.1` | all |

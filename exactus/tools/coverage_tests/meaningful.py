@@ -509,9 +509,9 @@ def analyze_unreached(
     trace(
         step=(
             f"meaningful: {len(rows)} rows — "
-            f"{status_counts["actionable"]} actionable, "
-            f"{status_counts["filtered"]} filtered, "
-            f"{status_counts["unclassified"]} unclassified"
+            f"{status_counts['actionable']} actionable, "
+            f"{status_counts['filtered']} filtered, "
+            f"{status_counts['unclassified']} unclassified"
         ),
         depth=2,
     )

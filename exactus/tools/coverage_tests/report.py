@@ -727,11 +727,11 @@ class CoverageTestsReport:
         problems: list[str] = []
         if python:
             noun: str = "test" if counts["total"] == 1 else "tests"
-            problems.append(f"{", ".join(python)} of {counts["total"]} {noun}")
+            problems.append(f"{', '.join(python)} of {counts['total']} {noun}")
         if js_failed:
             problems.append(
                 f"{js_failed} JavaScript "
-                f"{"test" if js_failed == 1 else "tests"} failed",
+                f"{'test' if js_failed == 1 else 'tests'} failed",
             )
         status: int = Values.count(value=execution.get("status"))
         js_status: int = Values.count(value=javascript.get("status"))
@@ -762,8 +762,8 @@ class CoverageTestsReport:
                 "position": 1,
             }
         passed: str = (
-            f"{counts["passed"]} of {counts["total"]} "
-            f"{"test" if counts["total"] == 1 else "tests"} passed"
+            f"{counts['passed']} of {counts['total']} "
+            f"{'test' if counts['total'] == 1 else 'tests'} passed"
             if counts["total"]
             else "No Python tests ran"
         )
@@ -775,7 +775,7 @@ class CoverageTestsReport:
         if js_files := len(Values.items(value=javascript.get("tests"))):
             extras.append(
                 f"{js_files} JavaScript test "
-                f"{"file" if js_files == 1 else "files"} passed",
+                f"{'file' if js_files == 1 else 'files'} passed",
             )
         return {
             "status": "PASS",
@@ -820,7 +820,7 @@ class CoverageTestsReport:
         if rules["coverage-per-file"]:
             count: int = rules["coverage-per-file"]
             problems.append(
-                f"{count} {"file" if count == 1 else "files"} below the "
+                f"{count} {'file' if count == 1 else 'files'} below the "
                 f"{cls.percent(value=gates.per_file_minimum)} per-file "
                 "minimum",
             )
@@ -1228,7 +1228,7 @@ class CoverageTestsReport:
                 ],
             },
             "gate": gate,
-            "resume": f"{gate["status"]}: {gate["reason"]}",
+            "resume": f"{gate['status']}: {gate['reason']}",
         }
 
     @classmethod
@@ -1259,7 +1259,7 @@ class CoverageTestsReport:
             data={**legacy, **cls.report_data(inputs=inputs)},
         )
         trace(
-            step=(f"report: result bundle written — {output / "result.md"}"),
+            step=(f"report: result bundle written — {output / 'result.md'}"),
             depth=2,
         )
 
@@ -1484,7 +1484,7 @@ class CoverageTestsReport:
         ]
         if failed:
             reasons: list[str] = [
-                f"{part.get("label", "part")}: {part.get("reason", "")}"
+                f"{part.get('label', 'part')}: {part.get('reason', '')}"
                 for part in failed
             ]
             return {

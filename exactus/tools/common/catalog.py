@@ -343,7 +343,7 @@ class Catalog:
 
         """
         if identifier in stack:
-            msg: str = f"pipeline cycle: {" -> ".join((*stack, identifier))}"
+            msg: str = f"pipeline cycle: {' -> '.join((*stack, identifier))}"
             raise ValueError(msg)
         pipeline: PipelineSpec | None = self._pipelines.get(identifier)
         if pipeline is None:

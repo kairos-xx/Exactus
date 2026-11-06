@@ -341,6 +341,47 @@ a = 1
     expect_equal(actual=found, expected=())
 
 
+def test_discovery_start_bounds_walk_without_exactus_root(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Without ``EXACTUS_ROOT`` the explicit start bounds the walk.
+
+    An explicit run target — CLI positional root, ``--root``, or the
+    Python API ``start``/``cwd`` argument — cannot inherit an enclosing
+    project's configuration or reports anchor.
+
+    Args:
+        tmp_path: Per-test temporary directory.
+        monkeypatch: Pytest patching helper.
+
+    """
+    monkeypatch.delenv(name="EXACTUS_ROOT", raising=False)
+    monkeypatch.delenv(name="EXACTUS_REPORTS_ROOT", raising=False)
+    monkeypatch.delenv(
+        name=cfg.Constants.environment_variable,
+        raising=False,
+    )
+    _ = _write(
+        directory=tmp_path,
+        text="""\
+[tool.exactus]
+root = true
+reports-dir = "artifacts/EXACTUS_RESULTS"
+""",
+    )
+    target: Path = tmp_path / "stress"
+    target.mkdir()
+    expect_equal(
+        actual=cfg.discovery_from_environment(start=target),
+        expected=(),
+    )
+    expect_equal(
+        actual=cfg.reports_root(start=target),
+        expected=target / "EXACTUS_RESULTS",
+    )
+
+
 def test_render_kinds(tmp_path: Path) -> None:
     """Scalars, flags, repeats and zero are rendered exactly.
 

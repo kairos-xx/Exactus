@@ -329,31 +329,51 @@ def _debug_selector(*, entry: str) -> _DebugSelector:
     )
 
 
-def _debug_spec(*, marker: Path) -> _DebugSpec | None:
-    """Resolve every directive inside a ``DEBUG.txt`` marker.
+@final
+@dataclass(frozen=True, slots=True)
+class _ParsedDirectives:
+    """Directives accumulated from one ``DEBUG.txt`` marker.
 
-    Args:
-        marker: Marker file path at the project root.
-
-    Returns:
-        The resolved spec, or ``None`` when the marker is absent or
-        requests neither saving nor clearing.
+    Attributes:
+        save: Whether a save directive was present.
+        target: Resolved save destination path.
+        max_age: Optional clear threshold in seconds.
+        streams: Selected output stream labels.
+        include: Include selectors in declaration order.
+        exclude: Exclude selectors in declaration order.
+        retired: Unsupported directive spellings for reporting.
 
     """
-    if not marker.is_file():
-        return None
-    root: Path = marker.parent
+
+    save: bool
+    target: Path
+    max_age: float | None
+    streams: set[str]
+    include: list[_DebugSelector]
+    exclude: list[_DebugSelector]
+    retired: list[str]
+
+
+def _debug_directives(*, root: Path, text: str) -> _ParsedDirectives:
+    """Parse every directive line inside a ``DEBUG.txt`` marker.
+
+    Args:
+        root: Project root containing the marker.
+        text: Raw marker contents.
+
+    Returns:
+        Accumulated directive state.
+
+    """
     save: bool = False
     target: Path = _debug_save_target(root=root, value=None)
     max_age: float | None = None
     streams: set[str] = set()
     include: list[_DebugSelector] = []
     exclude: list[_DebugSelector] = []
+    retired: list[str] = []
     raw: str
-    for raw in marker.read_text(
-        encoding="utf-8",
-        errors="replace",
-    ).splitlines():
+    for raw in text.splitlines():
         line: str = raw.strip()
         if not line:
             continue
@@ -384,8 +404,56 @@ def _debug_spec(*, marker: Path) -> _DebugSpec | None:
                 selectors.extend(
                     _debug_selector(entry=entry) for entry in value.split()
                 )
+            case "clean":
+                retired.append(line)
             case _:
                 continue
+    return _ParsedDirectives(
+        save=save,
+        target=target,
+        max_age=max_age,
+        streams=streams,
+        include=include,
+        exclude=exclude,
+        retired=retired,
+    )
+
+
+def _debug_spec(*, marker: Path) -> _DebugSpec | None:
+    """Resolve every directive inside a ``DEBUG.txt`` marker.
+
+    Args:
+        marker: Marker file path at the project root.
+
+    Returns:
+        The resolved spec, or ``None`` when the marker is absent or
+        requests neither saving nor clearing. Retired ``clean`` and
+        ``clean::<age>`` directives are reported on ``stderr`` as
+        unsupported and never clear records.
+
+    """
+    if not marker.is_file():
+        return None
+    root: Path = marker.parent
+    parsed: _ParsedDirectives = _debug_directives(
+        root=root,
+        text=marker.read_text(encoding="utf-8", errors="replace"),
+    )
+    save: bool = parsed.save
+    target: Path = parsed.target
+    max_age: float | None = parsed.max_age
+    streams: set[str] = parsed.streams
+    include: list[_DebugSelector] = parsed.include
+    exclude: list[_DebugSelector] = parsed.exclude
+    retired: list[str] = parsed.retired
+    if retired:
+        _ = stderr.write(
+            "DEBUG.txt: unsupported directive(s) ignored without effect: "
+            + ", ".join(retired)
+            + """\
+ (the retired spelling is 'clear')
+""",
+        )
     if not save and max_age is None:
         return None
     return _DebugSpec(

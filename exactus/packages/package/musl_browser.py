@@ -227,7 +227,7 @@ def install(
             msg: str = f"Wrong {arch} browser ABI: {binary}"
             raise ValueError(msg)
         launcher: Path = (
-            root / f"{name.replace("-", "_")}-{revisions[name]}" / relative
+            root / f"{name.replace('-', '_')}-{revisions[name]}" / relative
         )
         launcher.parent.mkdir(parents=True, exist_ok=True)
         _ = launcher.write_text(
@@ -240,6 +240,6 @@ def install(
         launcher.chmod(mode=0o755)
         (
             root
-            / f"{name.replace("-", "_")}-{revisions[name]}"
+            / f"{name.replace('-', '_')}-{revisions[name]}"
             / "INSTALLATION_COMPLETE"
         ).touch()

@@ -125,7 +125,7 @@ class ReplayProgress:
         if event.get("type") != "action_result":
             return
         record: JsonValue = event.get("action_record")
-        identity: str = f"{event.get("run_id")}/{event.get("flow_id")}/"
+        identity: str = f"{event.get('run_id')}/{event.get('flow_id')}/"
         if isinstance(record, dict):
             identity += str(object=record.get("event_id"))
         with self.lock:
@@ -249,7 +249,7 @@ class WorkflowProgress:
                             f"{len(self.finished)}/{len(self.budgets)}"
                             f" workflows finished; {entry}:"
                             f" {completed}/{budget}"
-                            f" steps; {self.active.get(entry, "waiting")}"
+                            f" steps; {self.active.get(entry, 'waiting')}"
                         ),
                     },
                 )
@@ -414,7 +414,7 @@ def _run_chain(
         if message.get("type") == "action_started":
             capture.diagnostics.phase(
                 phase="action",
-                action=f"{message.get("flow_id")}/{message.get("event_id")}",
+                action=f"{message.get('flow_id')}/{message.get('event_id')}",
             )
 
     while state is not None:

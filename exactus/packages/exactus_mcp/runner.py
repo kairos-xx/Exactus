@@ -320,7 +320,7 @@ class ExactusCommandRunner:
         process_environment: dict[str, str] = sanitized_environ()
         process_environment["PATH"] = (
             f"{Path(executable).parent}{pathsep}"
-            f"{process_environment.get("PATH", "")}"
+            f"{process_environment.get('PATH', '')}"
         )
         process: Process = await create_subprocess_exec(
             *command,

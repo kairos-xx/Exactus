@@ -324,8 +324,8 @@ class FlowStore:
         ]
         if users:
             msg = (
-                f"{", ".join(users)} {
-                    ("is" if len(users) == 1 else "are")
+                f"{', '.join(users)} {
+                    ('is' if len(users) == 1 else 'are')
                 } scoped to this profile. Change their "
                 f"scope first."
             )
@@ -2134,7 +2134,7 @@ class WorkspaceCodec:
                 continue
             name: str | None = cls._variable_of(event=earlier)
             if name is None:
-                base: str = f"{earlier.get("label") or "Action"} Result"
+                base: str = f"{earlier.get('label') or 'Action'} Result"
                 name = base
                 count: int = 2
                 while name in taken:

@@ -3015,7 +3015,7 @@ class JavaScriptFiles:
         """
         normalized: str = path.as_posix()
         return any(
-            f"/{exclude.strip("/")}/" in f"/{normalized}/"
+            f"/{exclude.strip('/')}/" in f"/{normalized}/"
             if "/" in exclude
             else exclude in path.parts
             for exclude in self._excludes

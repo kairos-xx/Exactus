@@ -110,7 +110,7 @@ def listener_owner(
         return None
     if not tokens or not Path(tokens[0]).name.lower().startswith("python"):
         return None
-    script_suffix: str = f"/{module.replace(".", "/")}/__main__.py"
+    script_suffix: str = f"/{module.replace('.', '/')}/__main__.py"
     if (
         (
             len(tokens) > 1

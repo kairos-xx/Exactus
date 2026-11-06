@@ -12,6 +12,7 @@ project interpreter is already active.
 from __future__ import annotations
 
 from importlib import import_module
+from importlib.util import find_spec
 from pathlib import Path
 from sys import path
 from tempfile import TemporaryDirectory
@@ -21,8 +22,8 @@ if TYPE_CHECKING:
     from collections.abc import Callable
     from types import ModuleType
 file_path: Path = Path(__file__).resolve()
-path.insert(0, str(object=file_path.parent.parent.parent))
-path.insert(0, str(object=file_path.parent.parent.parent.parent.parent))
+if find_spec(name="exactus") is None:
+    path.insert(0, str(object=file_path.parents[4]))
 
 
 class _BuildConstants(Protocol):

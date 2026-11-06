@@ -10,10 +10,10 @@
   "analyzer": "unified",
   "comparison": {
     "available": true,
-    "previous_generated_at": "2026-11-04T11:56:24.494744+00:00",
-    "previous_run_id": "4f11bb392321406fba06a95f800a8d2a",
+    "previous_generated_at": "2026-11-06T02:17:31.173076+00:00",
+    "previous_run_id": "8fda18e03ec84ab384f411f9b1ee69f6",
     "previous_status": "PASS",
-    "previous_duration_seconds": 66.158,
+    "previous_duration_seconds": 56.812,
     "current_total": 0,
     "previous_total": 0,
     "delta": 0,
@@ -428,7 +428,7 @@
     {
       "tool": "performance",
       "status": "PASS",
-      "resume": "6 runs profiled — slowest lints 11.4s",
+      "resume": "6 runs profiled — slowest lints 16.7s",
       "findings": 0,
       "rules": [],
       "files": [],
@@ -438,22 +438,22 @@
       "failed_tests": []
     }
   ],
-  "duration_seconds": 48.024,
+  "duration_seconds": 113.377,
   "failures": [],
   "findings": [],
   "fingerprint": {
-    "commit": "ce47630806edce94544dfaacf41b56473c05c3f7",
-    "tree": "c1f5559cd1439149d0c11b1e214b6b7d96a57f7a",
+    "commit": "539634be50497c4b27a9d77f25f2676beeb62dd6",
+    "tree": "93f4670ed623afe431475759aade5383959821e9",
     "dirty": true,
     "python": "3.13.9",
     "ruff": "ruff 0.12.0",
     "basedpyright": "basedpyright 1.40.2"
   },
-  "generated_at": "2026-11-04T12:37:03.548168+00:00",
-  "generated_at_human": "04 November 2026, 12:37:03 UTC",
+  "generated_at": "2026-11-06T02:42:14.542465+00:00",
+  "generated_at_human": "06 November 2026, 02:42:14 UTC",
   "kind": "pipeline",
   "pipeline": "unified",
-  "previous_duration_seconds": 66.158,
+  "previous_duration_seconds": 56.812,
   "project_href": "../../../..",
   "project_root": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
   "report_bundle": {
@@ -466,11 +466,11 @@
       "status": "PASS",
       "summary": {
         "timing": {
-          "date_time": "04/11/2026 12:36:25",
-          "finished_date_time": "04/11/2026 12:36:29",
+          "date_time": "06/11/2026 02:41:06",
+          "finished_date_time": "06/11/2026 02:41:13",
           "timezone": "WET",
-          "duration_seconds": 4.473163,
-          "duration_human": "00:00:04.473163"
+          "duration_seconds": 6.205927,
+          "duration_human": "00:00:06.205927"
         },
         "host": {
           "hostname": "Mac",
@@ -524,9 +524,10 @@
           }
         },
         "tools": {
-          "configured": 17,
-          "executed": 17,
+          "configured": 18,
+          "executed": 18,
           "names": [
+            "format",
             "custom_compliance",
             "custom_shebang",
             "custom_python",
@@ -555,7 +556,7 @@
       "extension": {
         "metrics": {
           "overview": {
-            "linters_run": 17,
+            "linters_run": 18,
             "linters_unavailable": 0,
             "files_analyzed": 10,
             "files_with_findings": 0,
@@ -563,6 +564,18 @@
             "findings": 0
           },
           "linters": [
+            {
+              "linter": "format",
+              "status": "ran",
+              "version": null,
+              "files": null,
+              "findings": 0,
+              "errors": 0,
+              "warnings": 0,
+              "information": 0,
+              "exit_code": 0,
+              "duration_seconds": 1.24
+            },
             {
               "linter": "custom_compliance",
               "status": "ran",
@@ -573,7 +586,7 @@
               "warnings": 0,
               "information": 0,
               "exit_code": 0,
-              "duration_seconds": 0.0012783330166712403
+              "duration_seconds": 0.0030996249988675117
             },
             {
               "linter": "custom_shebang",
@@ -585,7 +598,7 @@
               "warnings": 0,
               "information": 0,
               "exit_code": 0,
-              "duration_seconds": 0.003667250042781234
+              "duration_seconds": 0.004899833002127707
             },
             {
               "linter": "custom_python",
@@ -597,7 +610,7 @@
               "warnings": 0,
               "information": 0,
               "exit_code": 0,
-              "duration_seconds": 0.006
+              "duration_seconds": 0.005
             },
             {
               "linter": "custom_python_long_lines",
@@ -609,7 +622,7 @@
               "warnings": 0,
               "information": 0,
               "exit_code": 0,
-              "duration_seconds": 5.5917014833539724e-05
+              "duration_seconds": 7.862500206101686e-05
             },
             {
               "linter": "custom_javascript",
@@ -621,7 +634,7 @@
               "warnings": 0,
               "information": 0,
               "exit_code": 0,
-              "duration_seconds": 0.0
+              "duration_seconds": 0.001
             },
             {
               "linter": "custom_javascript_delimiters",
@@ -633,7 +646,7 @@
               "warnings": 0,
               "information": 0,
               "exit_code": 0,
-              "duration_seconds": 0.0002464170102030039
+              "duration_seconds": 5.1458002417348325e-05
             },
             {
               "linter": "custom_javascript_notation",
@@ -645,7 +658,7 @@
               "warnings": 0,
               "information": 0,
               "exit_code": 0,
-              "duration_seconds": 3.6999990697950125e-05
+              "duration_seconds": 2.5667002773843706e-05
             },
             {
               "linter": "custom_css",
@@ -657,7 +670,7 @@
               "warnings": 0,
               "information": 0,
               "exit_code": 0,
-              "duration_seconds": 0.003
+              "duration_seconds": 0.005
             },
             {
               "linter": "custom_html",
@@ -681,7 +694,7 @@
               "warnings": 0,
               "information": 0,
               "exit_code": 0,
-              "duration_seconds": 0.071641
+              "duration_seconds": 0.087576
             },
             {
               "linter": "ruff_docs",
@@ -693,7 +706,7 @@
               "warnings": 0,
               "information": 0,
               "exit_code": 0,
-              "duration_seconds": 0.071641
+              "duration_seconds": 0.087576
             },
             {
               "linter": "basedpyright",
@@ -705,7 +718,7 @@
               "warnings": 0,
               "information": 0,
               "exit_code": 0,
-              "duration_seconds": 1.661184
+              "duration_seconds": 2.356816
             },
             {
               "linter": "pyrefly",
@@ -717,7 +730,7 @@
               "warnings": 0,
               "information": 0,
               "exit_code": 0,
-              "duration_seconds": 0.276
+              "duration_seconds": 0.345
             },
             {
               "linter": "eslint",
@@ -729,7 +742,7 @@
               "warnings": 0,
               "information": 0,
               "exit_code": 0,
-              "duration_seconds": 1.150793
+              "duration_seconds": 1.614548
             },
             {
               "linter": "typescript",
@@ -741,7 +754,7 @@
               "warnings": 0,
               "information": 0,
               "exit_code": 0,
-              "duration_seconds": 2.145754
+              "duration_seconds": 3.125213
             },
             {
               "linter": "stylelint",
@@ -753,7 +766,7 @@
               "warnings": 0,
               "information": 0,
               "exit_code": 0,
-              "duration_seconds": 1.200203
+              "duration_seconds": 1.690574
             },
             {
               "linter": "htmlhint",
@@ -765,7 +778,7 @@
               "warnings": 0,
               "information": 0,
               "exit_code": 0,
-              "duration_seconds": 0.187376
+              "duration_seconds": 0.320688
             }
           ],
           "top_rules": [],
@@ -846,8 +859,8 @@
       "coverage": {
         "meta": {
           "format": 3,
-          "version": "7.17.0",
-          "timestamp": "2026-11-04T12:36:41.162899",
+          "version": "7.17.1",
+          "timestamp": "2026-11-06T02:41:31.627047",
           "branch_coverage": true,
           "show_contexts": false
         },
@@ -1249,7 +1262,7 @@
           "xfailed": 0,
           "xpassed": 0,
           "total": 2,
-          "duration_seconds": 2.54,
+          "duration_seconds": 5.087,
           "test_files": 1,
           "shards": 1,
           "javascript_test_files": 0,
@@ -1481,7 +1494,7 @@
             {
               "language": "javascript",
               "files_analyzed": 2,
-              "lines_analyzed": 37
+              "lines_analyzed": 38
             },
             {
               "language": "python",
@@ -1705,61 +1718,61 @@
         "runs": [
           {
             "tool": "coverage_tests",
-            "duration": 6.559,
-            "events": 66,
-            "events_per_second": 10.0625095288916,
-            "largest_gap": 1.2590000000000003,
-            "silent": 6.024000000000001,
+            "duration": 11.69,
+            "events": 68,
+            "events_per_second": 5.8169375534645,
+            "largest_gap": 2.2439999999999998,
+            "silent": 11.355,
             "actors": 22,
             "threads": 3
           },
           {
             "tool": "docs",
-            "duration": 0.99,
+            "duration": 1.217,
             "events": 18,
-            "events_per_second": 18.181818181818183,
-            "largest_gap": 0.895,
-            "silent": 0.895,
+            "events_per_second": 14.790468364831552,
+            "largest_gap": 1.115,
+            "silent": 1.115,
             "actors": 4,
             "threads": 1
           },
           {
             "tool": "kwargs_typehints",
-            "duration": 3.092,
+            "duration": 5.068,
             "events": 31,
-            "events_per_second": 10.025873221216042,
-            "largest_gap": 2.1050000000000004,
-            "silent": 2.8130000000000006,
+            "events_per_second": 6.11681136543015,
+            "largest_gap": 3.5329999999999995,
+            "silent": 4.933999999999999,
             "actors": 7,
-            "threads": 3
+            "threads": 4
           },
           {
             "tool": "lints",
-            "duration": 11.37,
-            "events": 582,
-            "events_per_second": 51.18733509234829,
-            "largest_gap": 1.1600000000000001,
-            "silent": 6.685,
+            "duration": 16.676,
+            "events": 588,
+            "events_per_second": 35.26025425761574,
+            "largest_gap": 1.8199999999999994,
+            "silent": 11.286999999999997,
             "actors": 28,
-            "threads": 38
+            "threads": 39
           },
           {
             "tool": "performance",
-            "duration": 0.001,
+            "duration": 0.002,
             "events": 2,
-            "events_per_second": 2000.0,
-            "largest_gap": 0.0,
+            "events_per_second": 1000.0,
+            "largest_gap": 0.001,
             "silent": 0,
             "actors": 1,
             "threads": 1
           },
           {
             "tool": "readme",
-            "duration": 0.71,
+            "duration": 1.05,
             "events": 19,
-            "events_per_second": 26.760563380281692,
-            "largest_gap": 0.6749999999999999,
-            "silent": 0.6749999999999999,
+            "events_per_second": 18.095238095238095,
+            "largest_gap": 1.0050000000000001,
+            "silent": 1.0050000000000001,
             "actors": 6,
             "threads": 1
           }
@@ -1768,9 +1781,9 @@
       "findings": []
     }
   },
-  "run_at": "2026-11-04T12:37:03.548168+00:00",
-  "run_at_human": "04 November 2026, 12:37:03 UTC",
-  "run_id": "aa9f5f9f35a74d85857a1b2dfecca441",
+  "run_at": "2026-11-06T02:42:14.542465+00:00",
+  "run_at_human": "06 November 2026, 02:42:14 UTC",
+  "run_id": "0aff3ce389f246459ce96ab2e4d75298",
   "schema": "project-exactus-report/v1",
   "sections": [
     {
@@ -1801,12 +1814,12 @@
   "tools": {
     "lints": {
       "tool": "lints",
-      "run_id": "aa9f5f9f35a74d85857a1b2dfecca441:lints",
-      "pipeline_run_id": "aa9f5f9f35a74d85857a1b2dfecca441",
+      "run_id": "0aff3ce389f246459ce96ab2e4d75298:lints",
+      "pipeline_run_id": "0aff3ce389f246459ce96ab2e4d75298",
       "report_replaced_after_execution": true,
       "status": "PASS",
       "passed": true,
-      "duration_seconds": 11.381,
+      "duration_seconds": 16.731,
       "resume": "PASS: analyzer completed with exit status 0.",
       "report": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/LINTS/result.md",
       "report_json": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/LINTS/result.json",
@@ -1815,12 +1828,12 @@
     },
     "coverage_tests": {
       "tool": "coverage_tests",
-      "run_id": "aa9f5f9f35a74d85857a1b2dfecca441:coverage_tests",
-      "pipeline_run_id": "aa9f5f9f35a74d85857a1b2dfecca441",
+      "run_id": "0aff3ce389f246459ce96ab2e4d75298:coverage_tests",
+      "pipeline_run_id": "0aff3ce389f246459ce96ab2e4d75298",
       "report_replaced_after_execution": true,
       "status": "PASS",
       "passed": true,
-      "duration_seconds": 6.568,
+      "duration_seconds": 11.725,
       "resume": "PASS: 2 of 2 tests passed; Total 100.0% meets the 90.0% minimum; every file meets 80.0%",
       "report": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS/result.md",
       "report_json": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS/result.json",
@@ -1829,12 +1842,12 @@
     },
     "docs": {
       "tool": "docs",
-      "run_id": "aa9f5f9f35a74d85857a1b2dfecca441:docs",
-      "pipeline_run_id": "aa9f5f9f35a74d85857a1b2dfecca441",
+      "run_id": "0aff3ce389f246459ce96ab2e4d75298:docs",
+      "pipeline_run_id": "0aff3ce389f246459ce96ab2e4d75298",
       "report_replaced_after_execution": true,
       "status": "PASS",
       "passed": true,
-      "duration_seconds": 0.998,
+      "duration_seconds": 1.245,
       "resume": "PASS: analyzer completed with exit status 0.",
       "report": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/DOCS/result.md",
       "report_json": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/DOCS/result.json",
@@ -1843,12 +1856,12 @@
     },
     "kwargs_typehints": {
       "tool": "kwargs_typehints",
-      "run_id": "aa9f5f9f35a74d85857a1b2dfecca441:kwargs_typehints",
-      "pipeline_run_id": "aa9f5f9f35a74d85857a1b2dfecca441",
+      "run_id": "0aff3ce389f246459ce96ab2e4d75298:kwargs_typehints",
+      "pipeline_run_id": "0aff3ce389f246459ce96ab2e4d75298",
       "report_replaced_after_execution": true,
       "status": "PASS",
       "passed": true,
-      "duration_seconds": 3.101,
+      "duration_seconds": 5.104,
       "resume": "PASS: analyzer completed with exit status 0.",
       "report": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/KWARGS_TYPEHINTS/result.md",
       "report_json": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/KWARGS_TYPEHINTS/result.json",
@@ -1857,12 +1870,12 @@
     },
     "readme": {
       "tool": "readme",
-      "run_id": "aa9f5f9f35a74d85857a1b2dfecca441:readme",
-      "pipeline_run_id": "aa9f5f9f35a74d85857a1b2dfecca441",
+      "run_id": "0aff3ce389f246459ce96ab2e4d75298:readme",
+      "pipeline_run_id": "0aff3ce389f246459ce96ab2e4d75298",
       "report_replaced_after_execution": true,
       "status": "PASS",
       "passed": true,
-      "duration_seconds": 0.732,
+      "duration_seconds": 1.132,
       "resume": "PASS: analyzer completed with exit status 0.",
       "report": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/README/result.md",
       "report_json": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/README/result.json",
@@ -1871,13 +1884,13 @@
     },
     "performance": {
       "tool": "performance",
-      "run_id": "aa9f5f9f35a74d85857a1b2dfecca441:performance",
-      "pipeline_run_id": "aa9f5f9f35a74d85857a1b2dfecca441",
+      "run_id": "0aff3ce389f246459ce96ab2e4d75298:performance",
+      "pipeline_run_id": "0aff3ce389f246459ce96ab2e4d75298",
       "report_replaced_after_execution": true,
       "status": "PASS",
       "passed": true,
-      "duration_seconds": 1.078,
-      "resume": "6 runs profiled — slowest lints 11.4s",
+      "duration_seconds": 1.685,
+      "resume": "6 runs profiled — slowest lints 16.7s",
       "report": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/PERFORMANCE/result.md",
       "report_json": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/PERFORMANCE/result.json",
       "report_web": "/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/PERFORMANCE/result_web/index.html",

@@ -59,6 +59,7 @@ Tests of `exactus/tools/common` leaf primitives and shared templates.
 - [`test_examples_run.py`](test_examples_run.py) — Cover the bundled ``common`` examples entry points.
 - [`test_execution.py`](test_execution.py) — The shared exactus execution wrapper, fallbacks, and crash recording.
 - [`test_models_api.py`](test_models_api.py) — Result models, progress documents, the process API, and runtime.
+- [`test_nesting_guard.py`](test_nesting_guard.py) — Exercise the recursive-launch containment guard.
 - [`test_output_tree.py`](test_output_tree.py) — Every tool run leaves ``@activity.json``, ``stderr.log``/``stdout.log``.
 - [`test_path_config.py`](test_path_config.py) — Verify scoped configuration, native carriers and public provenance.
 - [`test_pipeline_output.py`](test_pipeline_output.py) — Pipeline output lives under ``EXACTUS_RESULTS/PIPELINES/``.
@@ -70,6 +71,7 @@ Tests of `exactus/tools/common` leaf primitives and shared templates.
 - [`test_report_comparison.py`](test_report_comparison.py) — Exercise baseline retention and per-section report comparisons.
 - [`test_report_templates.py`](test_report_templates.py) — The shipped report templates render goldens and reach the bundle.
 - [`test_report_time.py`](test_report_time.py) — Verify readable report timestamps and recorded-time precedence.
+- [`test_retired_clean.py`](test_retired_clean.py) — Verify the hard cut: retired ``clean`` spellings are rejected.
 - [`test_run_environment.py`](test_run_environment.py) — Exercise the canonical run-scoped environment boundary.
 - [`test_snippets.py`](test_snippets.py) — Bounded, root-confined source excerpts around finding lines.
 - [`test_source_cache.py`](test_source_cache.py) — Verify cache ownership, content refresh and mutable-tree isolation.

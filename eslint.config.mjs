@@ -26,7 +26,8 @@ export default [
       "**/.git/**",
       "**/.venv/**",
       "**/.history/**",
-      "exactus/bundle/**"
+      "exactus/bundle/**",
+      "dev/stress_test/**"
     ]
   },
   {

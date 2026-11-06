@@ -320,6 +320,45 @@ clear
     expect_false(condition=cleared.save)
 
 
+def test_retired_clean_directive_is_reported_and_never_clears(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """``clean`` and ``clean::<age>`` are unsupported, not translated.
+
+    Args:
+        tmp_path: Per-test temporary directory.
+        monkeypatch: Replaces the module's bound standard error.
+
+    """
+    errors: StringIO = StringIO()
+    monkeypatch.setattr(target=sp, name="stderr", value=errors)
+    marker: Path = tmp_path / "DEBUG.txt"
+    marker.write_text(
+        data="""\
+clean
+clean::1d
+""",
+        encoding="utf-8",
+    )
+    expect_none(
+        value=private_call(owner=sp, name="_debug_spec", marker=marker),
+    )
+    reported: str = errors.getvalue()
+    expect_in(member="unsupported directive", container=reported)
+    expect_in(member="clean::1d", container=reported)
+    marker.write_text(
+        data="""\
+save::cap
+clean::1d
+""",
+        encoding="utf-8",
+    )
+    spec: SpecShape = require(value=_spec(marker=marker))
+    expect_true(condition=spec.save)
+    expect_none(value=spec.max_age)
+
+
 def test_selector_matching() -> None:
     """File and function globs both constrain matches."""
     site: object = private_call(

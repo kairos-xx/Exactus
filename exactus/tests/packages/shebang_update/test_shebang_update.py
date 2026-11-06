@@ -66,7 +66,7 @@ def test_settings_builds_the_project_interpreter_shebang(
     root: Path = _project(tmp_path=tmp_path)
     expect_equal(
         actual=Settings(root=root).shebang,
-        expected=f"#!{(root / ".venv/bin/python").resolve()}".encode(),
+        expected=f"#!{(root / '.venv/bin/python').resolve()}".encode(),
     )
     custom: Settings = Settings(
         root=root,
@@ -75,7 +75,7 @@ def test_settings_builds_the_project_interpreter_shebang(
     )
     expect_equal(
         actual=custom.shebang,
-        expected=f"#!{(root / "env/bin/python3").resolve()}".encode(),
+        expected=f"#!{(root / 'env/bin/python3').resolve()}".encode(),
     )
 
 

@@ -1662,7 +1662,7 @@ class Cli:
         filled: int = round(number=Constants.bar_width * progress / 100)
         empty: int = Constants.bar_width - filled
         state: JsonValue = info.get("state", "")
-        return f"[{"█" * filled}{"░" * empty}] {progress:3d}% {state}"
+        return f"[{'█' * filled}{'░' * empty}] {progress:3d}% {state}"
 
     @staticmethod
     def tree(spec: Spec, context: str) -> str:
@@ -1712,7 +1712,7 @@ class Cli:
                 except OSError:
                     status = "unreachable"
             lines: list[str] = [
-                f"{prefix}{("└── " if last else "├── ")}{name} [{status}]",
+                f"{prefix}{('└── ' if last else '├── ')}{name} [{status}]",
             ]
             refs: tuple[str, ...] = Spec.refs(config=spec.process(name=name))
             child_prefix: str = prefix + ("    " if last else "│   ")
@@ -2020,8 +2020,8 @@ valid: {len(spec.processes)} processes
             else """\
 
 """.join(
-                f"{row.get("process")}/{row.get("context")} "
-                f"{row.get("state")} {row.get("progress")}%"
+                f"{row.get('process')}/{row.get('context')} "
+                f"{row.get('state')} {row.get('progress')}%"
                 for row in rows
             )
         )

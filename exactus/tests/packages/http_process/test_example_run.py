@@ -90,7 +90,7 @@ def test_example_module_runs_as_a_script(
     expect_equal(
         actual=events,
         expected=[
-            f"init:{modules["sys"].executable}",
+            f"init:{modules['sys'].executable}",
             "start",
             "wait",
             "stop",

@@ -315,7 +315,7 @@ def action_event(*, action: Action, event_id: str) -> Event | None:
             event_id=event_id,
             kind="url_change",
             layer="navigation",
-            label=f"Navigate to {action.get("url")}",
+            label=f"Navigate to {action.get('url')}",
             elapsed_ms=elapsed,
         )
         event["url"] = action.get("url")
@@ -324,7 +324,7 @@ def action_event(*, action: Action, event_id: str) -> Event | None:
             event_id=event_id,
             kind="wait",
             layer="timing",
-            label=f"Wait {action.get("milliseconds", 0)} ms",
+            label=f"Wait {action.get('milliseconds', 0)} ms",
             elapsed_ms=elapsed,
         )
         event["payload"] = str(object=action.get("milliseconds", 0))
@@ -333,7 +333,7 @@ def action_event(*, action: Action, event_id: str) -> Event | None:
             event_id=event_id,
             kind="console",
             layer="console",
-            label=f"Dialog: {action.get("message", "")}",
+            label=f"Dialog: {action.get('message', '')}",
             elapsed_ms=elapsed,
         )
     return event

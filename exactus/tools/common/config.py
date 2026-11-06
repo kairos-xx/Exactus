@@ -298,7 +298,10 @@ def discovery_from_environment(*, start: Path) -> tuple[ConfigFile, ...]:
 
     An explicit ``EXACTUS_ROOT`` bounds the upward walk at the declared
     project root so nested invocations cannot inherit the enclosing
-    project's configuration.
+    project's configuration. When it is unset, ``start`` itself bounds
+    the walk — an explicit run target, whether it arrives through the
+    CLI or the Python API, cannot inherit an enclosing project's
+    configuration or reports anchor either.
 
     Args:
         start: Directory the upward walk begins in.
@@ -311,10 +314,15 @@ def discovery_from_environment(*, start: Path) -> tuple[ConfigFile, ...]:
     if value == Constants.disabled:
         return ()
     root: str | None = environ.get("EXACTUS_ROOT")
+    boundary: Path
+    if root is not None:
+        boundary = Path(root)
+    else:
+        boundary = start if start.is_dir() else start.parent
     return discover(
         start=start,
         explicit=Path(value) if value else None,
-        boundary=Path(root) if root else None,
+        boundary=boundary,
     )
 
 
@@ -599,7 +607,7 @@ def _section_layers(
     names: tuple[str, ...] = (tool,)
     tables: list[tuple[str, dict[str, JsonValue]]] = [
         (
-            f"{label}: [tool.exactus.{".".join((*prefix, name))}]",
+            f"{label}: [tool.exactus.{'.'.join((*prefix, name))}]",
             _resolved_paths(
                 files=files,
                 path=(*prefix, name),

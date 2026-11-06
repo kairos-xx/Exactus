@@ -59,6 +59,8 @@ from exactus.tools.common.cli import (
 )
 from exactus.tools.common.collect_files import Constants as CollectFilesTables
 from exactus.tools.common.collect_files import collect_report_files
+from exactus.tools.common.nesting_guard import NestingError
+from exactus.tools.common.nesting_guard import enter as enter_nesting
 from exactus.tools.common.path_filters import glob_match
 
 if argv[1:2] != ["__complete"] and find_spec(name="jinja2") is None:
@@ -341,7 +343,7 @@ class Constants:
     )
 
 
-def _default_root() -> Path:
+def default_root() -> Path:
     """Resolve the exactused project root before any flag is parsed.
 
     ``EXACTUS_ROOT`` wins; otherwise an ``exactus`` executable exactuss the
@@ -567,7 +569,7 @@ class Check:
 
     """
 
-    root: ClassVar[Path] = _default_root()
+    root: ClassVar[Path] = default_root()
     exactus_root: ClassVar[Path] = root / "EXACTUS_RESULTS"
     collect_files: ClassVar[bool] = False
     poll_seconds: Final[float] = 0.2
@@ -1528,7 +1530,7 @@ invocation observed this run.
                 ):
                     counts[path.suffix] += 1
         return " · ".join(
-            (f"{counts[suffix]} {suffix.removeprefix(".")}")
+            (f"{counts[suffix]} {suffix.removeprefix('.')}")
             for suffix in Constants.counted_suffixes
         )
 
@@ -2719,7 +2721,7 @@ exit 0
             digest for digest in digests if digest.status != "PASS"
         )
         lines: list[str] = [
-            (f"# {pipeline.replace("-", " ").title()} Pipeline"),
+            (f"# {pipeline.replace('-', ' ').title()} Pipeline"),
             "",
             (f"- Status: **{status}**"),
             (f"- Run UUID: `{run_id}`"),
@@ -2747,7 +2749,7 @@ exit 0
                             f"{digest.findings}"
                             f" | "
                         ),
-                        (f"{headline.replace("|", chr(92) + "|")} |"),
+                        (f"{headline.replace('|', chr(92) + '|')} |"),
                     ),
                 ),
             )
@@ -2892,7 +2894,7 @@ exit 0
                 web=output / "result_web",
             ),
             analyzer=pipeline,
-            title=(f"{pipeline.replace("-", " ").title()} Pipeline"),
+            title=(f"{pipeline.replace('-', ' ').title()} Pipeline"),
             markdown=markdown,
             data=data,
         )
@@ -4658,7 +4660,7 @@ exit 0
             if pending != announced:
                 announced = pending
                 run.log.record(
-                    message=(f"waiting for {", ".join(pending)} to complete"),
+                    message=(f"waiting for {', '.join(pending)} to complete"),
                 )
             cls._touch_pipeline(pipeline=run.pipeline, run_id=run.run_id)
             cls._publish_activity(
@@ -4669,7 +4671,7 @@ exit 0
             cls._progress_lines = ExactusTerminal.progress(
                 title=(f"exactus · {run.pipeline}"),
                 global_fraction=cls._global_fraction(run=run),
-                stage=(f"waiting for {", ".join(pending)} to complete"),
+                stage=(f"waiting for {', '.join(pending)} to complete"),
                 tools=cls._progress_rows(run=run),
                 weights=tuple(
                     run.weights.get(identifier, 0.0)
@@ -5601,7 +5603,7 @@ cleared {path}
                     f"union plan grew by "
                     f"{len(specs)}"
                     f" tools: "
-                    f"{", ".join(sorted(specs))}"
+                    f"{', '.join(sorted(specs))}"
                 ),
             )
 
@@ -6483,7 +6485,7 @@ class Terminal:
             Styled or unmodified text.
 
         """
-        return f"{"".join(styles)}{text}{self.RESET}" if self.color else text
+        return f"{''.join(styles)}{text}{self.RESET}" if self.color else text
 
     def write(self, text: str = "") -> None:
         """Write a line to the terminal.
@@ -6764,14 +6766,14 @@ class HelpRenderer:
             )
             self.terminal.write()
             self.terminal.write(
-                text=(f"  {"ARGUMENT":<{syntax_width}}  DESCRIPTION"),
+                text=(f"  {'ARGUMENT':<{syntax_width}}  DESCRIPTION"),
             )
             self.terminal.write(
                 text=(
                     f"  "
-                    f"{"─" * syntax_width}"
+                    f"{'─' * syntax_width}"
                     f"  "
-                    f"{"─" * min(description_width, 50)}"
+                    f"{'─' * min(description_width, 50)}"
                 ),
             )
             for argument in arguments:
@@ -6804,7 +6806,7 @@ class HelpRenderer:
             text=(f"  {argument.syntax:<{syntax_width}}  {lines[0]}"),
         )
         for line in lines[1:]:
-            self.terminal.write(text=f"  {"":<{syntax_width}}  {line}")
+            self.terminal.write(text=f"  {'':<{syntax_width}}  {line}")
 
 
 class Application:
@@ -7000,7 +7002,7 @@ class Application:
                 self.output.write(
                     text=(
                         f"  {option.name:<28} {option.layer:<9} "
-                        f"{option.value}  {option.source or "-"}"
+                        f"{option.value}  {option.source or '-'}"
                     ),
                 )
         return 0
@@ -7203,20 +7205,19 @@ def bundled_tools() -> tuple[Tool, ...]:
     return tuple(tool for tool in tools if tool.name not in unavailable)
 
 
-def main(*, arguments: Sequence[str] | None = None) -> int:
-    """Run the bundled CLI dispatcher.
+def _dispatch_subcommand(*, arguments: Sequence[str]) -> int | None:
+    """Run a resolved sub-command when present.
 
     Args:
         arguments: Arguments excluding the executable name.
 
     Returns:
-        Process exit status.
+        Command exit status, or None when no sub-command matched.
 
     """
-    resolved: Sequence[str] = argv[1:] if arguments is None else arguments
-    if resolved and resolved[0] == "__complete":
+    if arguments and arguments[0] == "__complete":
         return run_completion(
-            arguments=resolved[1:],
+            arguments=arguments[1:],
             catalog=check_catalog(
                 tools=bundled_tools(),
                 orchestrator_parser=Check.create_parser(),
@@ -7231,20 +7232,44 @@ def main(*, arguments: Sequence[str] | None = None) -> int:
                 ),
             ),
         )
-    if resolved and resolved[0] == "completion":
-        return run_completion_command(arguments=resolved[1:])
-    if resolved and resolved[0] in (
+    if arguments and arguments[0] == "completion":
+        return run_completion_command(arguments=arguments[1:])
+    if arguments and arguments[0] in (
         "install",
         "--install",
         "uninstall",
         "--uninstall",
     ):
         return run_install_command(
-            arguments=resolved[1:],
-            uninstall=resolved[0] in ("uninstall", "--uninstall"),
+            arguments=arguments[1:],
+            uninstall=arguments[0] in ("uninstall", "--uninstall"),
         )
-    if resolved and resolved[0] in ("external", "--external"):
-        return run_external_command(arguments=resolved[1:])
+    if arguments and arguments[0] in ("external", "--external"):
+        return run_external_command(arguments=arguments[1:])
+    return None
+
+
+def main(*, arguments: Sequence[str] | None = None) -> int:
+    """Run the bundled CLI dispatcher.
+
+    Args:
+        arguments: Arguments excluding the executable name.
+
+    Returns:
+        Process exit status.
+
+    """
+    try:
+        _ = enter_nesting()
+    except NestingError as error:
+        _ = stderr.write(f"""\
+ERROR: {error}
+""")
+        return 2
+    resolved: Sequence[str] = argv[1:] if arguments is None else arguments
+    dispatched: int | None = _dispatch_subcommand(arguments=resolved)
+    if dispatched is not None:
+        return dispatched
     warn_if_stale()
     ensure_completion()
     tools: tuple[Tool, ...] = bundled_tools()

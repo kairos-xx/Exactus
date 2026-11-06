@@ -477,12 +477,12 @@ class Classification:
                 f"classification: {self.level.value} ({self.category.value})",
                 f"score: {self.score}",
                 "unit tests required: "
-                f"{("yes" if self.requires_unit_tests else "no")}",
+                f"{('yes' if self.requires_unit_tests else 'no')}",
                 "execution required: "
-                f"{("yes" if self.requires_execution else "no")}",
+                f"{('yes' if self.requires_execution else 'no')}",
                 (
                     f"branch coverage required: "
-                    f"{("yes" if self.requires_branch_coverage else "no")}"
+                    f"{('yes' if self.requires_branch_coverage else 'no')}"
                 ),
                 "metrics:",
                 (

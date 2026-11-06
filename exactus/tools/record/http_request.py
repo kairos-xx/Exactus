@@ -70,7 +70,7 @@ def cookie_header(*, rows: JsonValue) -> str | None:
     if not isinstance(rows, list):
         return None
     pairs: list[str] = [
-        f"{row.get("key")}={row.get("value") or ""}"
+        f"{row.get('key')}={row.get('value') or ''}"
         for row in rows
         if isinstance(row, dict)
         and row.get("enabled") is not False

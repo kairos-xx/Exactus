@@ -226,7 +226,7 @@ def _payload(*, out: Path) -> dict[str, JsonValue]:
         s=(out / "result.json").read_text(encoding="utf-8"),
     )
     if not isinstance(loaded, dict):
-        fail(message=f"{out / "result.json"} is not a JSON object")
+        fail(message=f"{out / 'result.json'} is not a JSON object")
     return loaded
 
 

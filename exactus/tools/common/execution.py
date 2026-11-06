@@ -1108,7 +1108,7 @@ def _fallback_markdown(
         "| Field | Value |",
         "| --- | --- |",
         f"| Analyzer | `{result.analyzer}` |",
-        f"| Result | **{("PASS" if result.status == 0 else "FAIL")}** |",
+        f"| Result | **{('PASS' if result.status == 0 else 'FAIL')}** |",
         f"| Exit status | `{result.status}` |",
         f"| Elapsed | `{result.elapsed_seconds:.3f}s` |",
         f"| Command | `{result.command}` |",
@@ -1136,7 +1136,7 @@ def _fallback_markdown(
     else:
         lines.extend(("| Artifact | Bytes |", "| --- | ---: |"))
         lines.extend(
-            f"| `{artifact.get("path")}` | {artifact.get("bytes")} |"
+            f"| `{artifact.get('path')}` | {artifact.get('bytes')} |"
             for artifact in artifacts
             if isinstance(artifact, dict)
         )
@@ -1150,7 +1150,7 @@ def _fallback_markdown(
                 continue
             lines.extend(
                 (
-                    f"### `{artifact.get("path")}`",
+                    f"### `{artifact.get('path')}`",
                     "",
                     "```json",
                     dumps(obj=content, indent=2, sort_keys=True),
@@ -2498,7 +2498,7 @@ def execute_exactus(
     if "EXACTUS_ORCHESTRATED" not in environ:
         ExactusTerminal.finish_standalone_progress(failed=not result.passed)
         ExactusTerminal.results(
-            title=f"exactus · {analyzer.removeprefix("exactus_")}",
+            title=f"exactus · {analyzer.removeprefix('exactus_')}",
             rows=(
                 ResultRow(
                     tool=analyzer,

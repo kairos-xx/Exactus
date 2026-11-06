@@ -74,7 +74,12 @@ def description(*, path: Path) -> str:
             ).strip()
             summary = summary.split(sep="@", maxsplit=1)[0].strip()
     elif candidate.suffix == ".md":
-        paragraphs: list[str] = text.split(sep="\n\n")
+        paragraphs: list[str] = text.split(
+            sep="""\
+
+
+""",
+        )
         for paragraph in paragraphs:
             stripped: str = paragraph.strip()
             if stripped and (
@@ -82,7 +87,15 @@ def description(*, path: Path) -> str:
             ):
                 summary = stripped
                 break
-    summary = " ".join(summary.split(sep="\n\n", maxsplit=1)[0].split())
+    summary = " ".join(
+        summary.split(
+            sep="""\
+
+
+""",
+            maxsplit=1,
+        )[0].split(),
+    )
     if not summary:
         label: str = path.stem.replace("_", " ").replace("-", " ")
         suffix: str = path.suffix.lstrip(".") or "project"
@@ -127,7 +140,10 @@ def heal_directory(*, directory: Path, entries: list[Path]) -> None:
     body: str = (
         readme.read_text(encoding="utf-8")
         if readme.is_file()
-        else f"# `{directory.name or 'Project'}/`\n\n"
+        else f"""\
+# `{directory.name or "Project"}/`
+
+"""
     )
     if not readme.is_file():
         candidates: list[Path] = sorted(
@@ -139,7 +155,13 @@ def heal_directory(*, directory: Path, entries: list[Path]) -> None:
             ),
         )
         if candidates:
-            body += description(path=candidates[0]) + "\n\n"
+            body += (
+                description(path=candidates[0])
+                + """\
+
+
+"""
+            )
     lines: list[str] = [
         Constants.start,
         "## Directory contents",
@@ -161,7 +183,9 @@ def heal_directory(*, directory: Path, entries: list[Path]) -> None:
     if not folders:
         lines.append("No subdirectories.")
     lines.extend(("", Constants.end))
-    block: str = "\n".join(lines)
+    block: str = """\
+
+""".join(lines)
     match: Match[str] | None = Constants.inventory_blocks.search(string=body)
     if match is not None:
         before: str = body[: match.start()]
@@ -171,6 +195,16 @@ def heal_directory(*, directory: Path, entries: list[Path]) -> None:
         )
         updated: str = before + block + after
     else:
-        updated = body.rstrip() + "\n\n" + block + "\n"
+        updated = (
+            body.rstrip()
+            + """\
+
+
+"""
+            + block
+            + """\
+
+"""
+        )
     if updated != body:
         _ = readme.write_text(data=updated, encoding="utf-8")

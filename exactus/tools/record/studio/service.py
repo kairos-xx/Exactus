@@ -882,7 +882,7 @@ class StudioHandler(BaseHTTPRequestHandler):
                     ensure_ascii=False,
                     indent=2,
                 ).encode(),
-                download=f"{slug.lstrip("@") or "flows"}.pwflow.json",
+                download=f"{slug.lstrip('@') or 'flows'}.pwflow.json",
             )
         elif route.startswith("/reports/actions/"):
             relative: Path = Path(route.removeprefix("/reports/actions/"))

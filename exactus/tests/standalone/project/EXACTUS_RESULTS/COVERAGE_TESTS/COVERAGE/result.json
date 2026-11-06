@@ -3,7 +3,7 @@
   "analyzer": "coverage",
   "comparison": {
     "available": true,
-    "previous_generated_at": "2026-11-04T11:56:02.204829+00:00",
+    "previous_generated_at": "2026-11-06T02:17:12.602520+00:00",
     "previous_run_id": null,
     "previous_status": null,
     "previous_duration_seconds": null,
@@ -22,8 +22,8 @@
   "coverage": {
     "meta": {
       "format": 3,
-      "version": "7.17.0",
-      "timestamp": "2026-11-04T12:36:41.162899",
+      "version": "7.17.1",
+      "timestamp": "2026-11-06T02:41:31.627047",
       "branch_coverage": true,
       "show_contexts": false
     },
@@ -416,8 +416,8 @@
   },
   "findings": [],
   "fingerprint": {
-    "commit": "ce47630806edce94544dfaacf41b56473c05c3f7",
-    "tree": "c1f5559cd1439149d0c11b1e214b6b7d96a57f7a",
+    "commit": "539634be50497c4b27a9d77f25f2676beeb62dd6",
+    "tree": "93f4670ed623afe431475759aade5383959821e9",
     "dirty": true,
     "python": "3.13.9",
     "ruff": "ruff 0.12.0",
@@ -428,8 +428,8 @@
     "per_file_minimum": 80.0,
     "files_below": []
   },
-  "generated_at": "2026-11-04T12:36:41.201874+00:00",
-  "generated_at_human": "04 November 2026, 12:36:41 UTC",
+  "generated_at": "2026-11-06T02:41:31.698386+00:00",
+  "generated_at_human": "06 November 2026, 02:41:31 UTC",
   "import_graph": {
     "excused_sources": [],
     "ignored_non_local_imports": [
@@ -470,11 +470,11 @@
           "evidence": [],
           "level": "TEST-0",
           "metadata": {
-            "duration_seconds": 0.0009364580037072301,
-            "finished_at": "2026-11-04T12:36:40.964126+00:00",
+            "duration_seconds": 0.0011316669988445938,
+            "finished_at": "2026-11-06T02:41:31.264131+00:00",
             "size_bytes": 295,
             "source_lines": 10,
-            "started_at": "2026-11-04T12:36:40.963204+00:00",
+            "started_at": "2026-11-06T02:41:31.263004+00:00",
             "worker_name": "meaningful_0"
           },
           "metrics": {
@@ -544,8 +544,8 @@
     "web": "result_web"
   },
   "root": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
-  "run_at": "2026-11-04T12:36:41.201874+00:00",
-  "run_at_human": "04 November 2026, 12:36:41 UTC",
+  "run_at": "2026-11-06T02:41:31.698386+00:00",
+  "run_at_human": "06 November 2026, 02:41:31 UTC",
   "schema": "project-exactus-report/v1",
   "sections": [
     {

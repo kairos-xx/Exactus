@@ -152,7 +152,7 @@ def _failure_lines(*, failed: list[JsonValue]) -> list[str]:
     item: JsonValue
     for item in failed:
         entry: dict[str, JsonValue] = require_json_dict(value=item)
-        lines.append(f"{entry.get("name")}: {entry.get("error")}")
+        lines.append(f"{entry.get('name')}: {entry.get('error')}")
     return lines
 
 

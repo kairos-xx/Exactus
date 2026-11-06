@@ -601,7 +601,7 @@ def bundle_name(
         parts.append("_".join(("tools", *tools_names)))
     if package_names:
         parts.append("_".join(("packages", *package_names)))
-    return f"{"_".join(parts)}.zip"
+    return f"{'_'.join(parts)}.zip"
 
 
 def _bundle_readme(

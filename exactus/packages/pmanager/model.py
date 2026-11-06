@@ -1206,7 +1206,7 @@ class ProcessDefinition:
         if unknown:
             msg: str = (
                 "__init__() got unexpected keyword argument(s): "
-                f"{", ".join(repr(name) for name in unknown)}"
+                f"{', '.join(repr(name) for name in unknown)}"
             )
             raise TypeError(msg)
         self.extends = fields.get("extends")

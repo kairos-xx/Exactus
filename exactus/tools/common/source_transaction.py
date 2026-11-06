@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from contextlib import contextmanager
 from contextvars import ContextVar
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from hashlib import sha256
 from json import dumps, loads
 from os import fsync, link, stat_result, utime
@@ -16,6 +16,14 @@ from stat import S_IMODE
 from tempfile import NamedTemporaryFile
 from typing import TYPE_CHECKING, ClassVar, Protocol, cast, final
 from uuid import uuid4
+
+from exactus.tools.common.source_merge import (
+    LiveMerger,
+    MergedEdit,
+    MergeVerdict,
+    decide,
+    save_conflict,
+)
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Generator, Sequence
@@ -184,6 +192,29 @@ def read_image(*, path: Path) -> FileImage | None:
     )
 
 
+def same_content(
+    *,
+    left: FileImage | None,
+    right: FileImage | None,
+) -> bool:
+    """Return whether two images carry identical bytes and mode.
+
+    Timestamp drift alone — a ``touch``, an indexer pass, a sync
+    daemon — must never count as an external source edit.
+
+    Args:
+        left: First image, or ``None`` for absent.
+        right: Second image, or ``None`` for absent.
+
+    Returns:
+        ``True`` when both are absent or share data and mode.
+
+    """
+    if left is None or right is None:
+        return left is right
+    return left.data == right.data and left.mode == right.mode
+
+
 def same_image(*, left: FileImage | None, right: FileImage | None) -> bool:
     """Compare source identity while ignoring read-induced access times.
 
@@ -230,14 +261,24 @@ def _durable_file(*, path: Path, data: bytes, mode: int = 0o600) -> None:
 class SourceJournal:
     """Own one serialized source commit and its recoverable originals."""
 
-    def __init__(self, *, root: Path, directory: Path) -> None:
+    def __init__(
+        self,
+        *,
+        root: Path,
+        directory: Path,
+        merger: LiveMerger | None = None,
+    ) -> None:
         """Bind a private journal directory without changing source.
 
         Args:
             root: Owned project boundary.
             directory: Durable journal storage outside source discovery.
+            merger: Optional reconciler for files the user edited while
+                the run proposed changes; without one such files keep
+                the fork-preserving behavior.
 
         """
+        self._merger: LiveMerger | None = merger
         self.root: Path = root.resolve()
         self.directory: Path = directory
         self._connection: Connection | None = None
@@ -282,13 +323,19 @@ class SourceJournal:
         self,
         *,
         edits: Sequence[FileEdit],
-        publish: Callable[[], None] | None = None,
-    ) -> None:
+        publish: Callable[[tuple[Path, ...]], None] | None = None,
+    ) -> tuple[Path, ...]:
         """Commit unique validated proposals, rolling back any failure.
 
         Args:
             edits: Non-overlapping whole-file proposals.
-            publish: Final report publisher included in the transaction.
+            publish: Final report publisher included in the transaction;
+                receives the dirty relative paths before writing.
+
+        Returns:
+            Root-relative paths resolved ``apply_and_preserve`` — files
+            whose exactus proposal overwrote a concurrent user edit and
+            whose ``A``/``B``/``C`` forks were preserved for merging.
 
         Raises:
             SourceConflictError: A proposal has invalid ownership.
@@ -300,24 +347,15 @@ class SourceJournal:
         if len({edit.relative for edit in ordered}) != len(ordered):
             msg: str = "Overlapping whole-file source proposals."
             raise SourceConflictError(msg)
-        for edit in ordered:
-            path: Path = self._path(relative=edit.relative)
-            if not same_image(left=edit.before, right=read_image(path=path)):
-                msg = f"Stale source proposal: {edit.relative}"
-                raise SourceConflictError(msg)
-            if edit.after is not None and path.suffix == ".py":
-                _ = compile(
-                    source=edit.after.data,
-                    filename=str(object=path),
-                    mode="exec",
-                    dont_inherit=True,
-                )
-        self._prepare(edits=ordered)
+        resolved: tuple[FileEdit, ...]
+        dirty: tuple[Path, ...]
+        resolved, dirty = self._resolve(edits=ordered)
+        self._prepare(edits=resolved)
         try:
-            for index, edit in enumerate(iterable=ordered):
+            for index, edit in enumerate(iterable=resolved):
                 self._apply(index=index, edit=edit)
             if publish is not None:
-                publish()
+                publish(dirty)
             self._manifest["state"] = "committed"
             self._save()
         except BaseException as error:
@@ -331,6 +369,7 @@ class SourceJournal:
             raise
         else:
             self._discard()
+        return dirty
 
     def recover(self) -> None:
         """Recover interrupted commits without replacing external edits.
@@ -406,6 +445,83 @@ class SourceJournal:
             and image.digest == metadata.get("digest")
             and image.mode == metadata.get("mode")
         )
+
+    def _resolve(
+        self,
+        *,
+        edits: tuple[FileEdit, ...],
+    ) -> tuple[tuple[FileEdit, ...], tuple[Path, ...]]:
+        """Apply the three-way merge decision to every proposal.
+
+        Args:
+            edits: Ordered proposals to resolve against live sources.
+
+        Returns:
+            The edits to commit — ``keep_current`` proposals dropped,
+            conflicted proposals re-based on the live image — and the
+            dirty relative paths preserved for conciliation.
+
+        """
+        conflict_dir: Path | None = None
+        dirty: list[Path] = []
+        pending: list[FileEdit] = []
+        for edit in edits:
+            path: Path = self._path(relative=edit.relative)
+            current: FileImage | None = read_image(path=path)
+            verdict: MergeVerdict = decide(
+                before=edit.before,
+                after=edit.after,
+                current=current,
+            )
+            if verdict is MergeVerdict.keep_current:
+                continue
+            merged: MergedEdit | None = (
+                self._merger(
+                    suffix=path.suffix,
+                    original=edit.before.data,
+                    tool=edit.after.data,
+                    user=current.data,
+                )
+                if self._merger is not None
+                and verdict is MergeVerdict.apply_and_preserve
+                and edit.before is not None
+                and edit.after is not None
+                and current is not None
+                else None
+            )
+            resolved_edit: FileEdit
+            if verdict is MergeVerdict.apply_and_preserve:
+                if merged is None or not merged.exact:
+                    if conflict_dir is None:
+                        conflict_dir = (
+                            self.directory / "conflicts" / uuid4().hex
+                        )
+                    _ = save_conflict(
+                        directory=conflict_dir,
+                        relative=edit.relative,
+                        before=edit.before,
+                        after=edit.after,
+                        current=current,
+                    )
+                    dirty.append(edit.relative)
+                resolved_edit = replace(
+                    edit,
+                    before=current,
+                    after=edit.after
+                    if merged is None or edit.after is None
+                    else replace(edit.after, data=merged.data),
+                )
+            else:
+                resolved_edit = edit
+            if resolved_edit.after is not None and path.suffix == ".py":
+                _ = compile(
+                    source=resolved_edit.after.data,
+                    filename=str(object=path),
+                    mode="exec",
+                    dont_inherit=True,
+                )
+            pending.append(resolved_edit)
+        return tuple(pending), tuple(dirty)
 
     def _path(self, *, relative: Path) -> Path:
         """Resolve one non-symlink owned path.
@@ -512,7 +628,10 @@ class SourceJournal:
         self._save()
         if edit.before is not None:
             _ = path.rename(target=claim)
-            if not same_image(left=edit.before, right=read_image(path=claim)):
+            if not same_content(
+                left=edit.before,
+                right=read_image(path=claim),
+            ):
                 msg: str = f"External edit intercepted during commit: {path}"
                 raise SourceConflictError(msg)
         if edit.after is not None:
@@ -568,7 +687,7 @@ class SourceJournal:
         if conflicts:
             msg = (
                 f"External edits preserved; journal retained at {run}: "
-                f"{", ".join(conflicts)}"
+                f"{', '.join(conflicts)}"
             )
             raise SourceConflictError(msg)
         rmtree(path=run)

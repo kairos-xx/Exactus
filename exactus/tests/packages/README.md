@@ -37,6 +37,7 @@ Tests for the package multi-use tools.
 - [`screenshot/`](screenshot/README.md) — Tests of `exactus/screenshot`.
 - [`server/`](server/README.md) — Tests of `exactus/server`.
 - [`shebang_update/`](shebang_update/README.md) — Tests of the `exactus/packages/shebang_update/` shebang updater.
+- [`source_merger/`](source_merger/README.md) — Provide init py content.
 - [`steps/`](steps/README.md) — Tests of the `exactus/packages/steps/` timestamped step trace.
 - [`todo_sync/`](todo_sync/README.md) — Tests for the reusable TODO dashboard synchronizer.
 - [`tree/`](tree/README.md) — Tests for \[`exactus/packages/tree/`\](../../../packages/tree) — `TREE.txt`-style listings.

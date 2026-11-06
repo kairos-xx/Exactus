@@ -392,7 +392,7 @@ def parse_convention(*, spec: str) -> CssNamingConvention:
         try:
             step = float(pairs["step"])
         except ValueError as error:
-            msg = f"convention step {pairs["step"]!r} is not numeric"
+            msg = f"convention step {pairs['step']!r} is not numeric"
             raise ValueError(msg) from error
     return CssNamingConvention(
         stem=pairs["stem"],
@@ -422,7 +422,7 @@ def convention_spec(*, convention: CssNamingConvention) -> str:
     """
     pairs: list[str] = [f"stem={convention.stem}"]
     if convention.members:
-        pairs.append(f"members={",".join(sorted(convention.members))}")
+        pairs.append(f"members={','.join(sorted(convention.members))}")
     if convention.unit is not None:
         pairs.append(f"unit={convention.unit}")
     if convention.step is not None:
@@ -726,7 +726,7 @@ def _registry_findings(
                     f"{declaration.name}"
                     f" is not a member of registered scale "
                     f"{convention.stem}"
-                    f" (allowed: {", ".join(sorted(convention.members))})."
+                    f" (allowed: {', '.join(sorted(convention.members))})."
                 ),
                 severity=_severity(
                     rule="CSSN011",

@@ -87,7 +87,7 @@ def result_stats(*, report_json: Path) -> str:
             )
     order: tuple[str, ...] = ("error", "warning", "information", "info")
     counts: list[str] = [
-        f"{severity[level]} {level}{"s" if severity[level] != 1 else ""}"
+        f"{severity[level]} {level}{'s' if severity[level] != 1 else ''}"
         for level in order
         if severity.get(level)
     ]

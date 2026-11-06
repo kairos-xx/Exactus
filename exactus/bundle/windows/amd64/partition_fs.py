@@ -2151,11 +2151,11 @@ def apply_delta(root: Path, update: Path) -> Catalog:
         finally:
             temporary.unlink(missing_ok=True)
     atomic_bytes(
-        path=root / "catalogs" / f"{baseline['root_sha256']}.json",
+        path=root / "catalogs" / f"{baseline["root_sha256"]}.json",
         data=canonical(value=cast(typ="Json", val=baseline)),
     )
     atomic_bytes(
-        path=root / "catalogs" / f"{current['root_sha256']}.json",
+        path=root / "catalogs" / f"{current["root_sha256"]}.json",
         data=canonical(value=cast(typ="Json", val=current)),
     )
     atomic_bytes(

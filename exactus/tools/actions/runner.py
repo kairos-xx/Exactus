@@ -182,7 +182,7 @@ def _validate_arguments(*, tool: str, arguments: dict[str, JsonValue]) -> None:
     elif tool == "frontend.run":
         allowed = {"projects", "server_log", "workers", "fail_on_findings"}
     if unknown := set(arguments) - allowed:
-        msg: str = f"Unknown {tool} arguments: {", ".join(sorted(unknown))}."
+        msg: str = f"Unknown {tool} arguments: {', '.join(sorted(unknown))}."
         raise ValueError(msg)
     if tool == "record.crawl":
         _validate_crawl_arguments(
@@ -836,10 +836,10 @@ def _frontend(
                 {
                     "rule": "FRONTEND001",
                     "severity": "error",
-                    "file": f"{project.get("name")}: discovery",
+                    "file": f"{project.get('name')}: discovery",
                     "message": (
-                        f"{event.get("category")}: {event.get("message")}"
-                        f" {event.get("url")}"
+                        f"{event.get('category')}: {event.get('message')}"
+                        f" {event.get('url')}"
                     ),
                 }
                 for event in discovery_events
@@ -853,7 +853,7 @@ def _frontend(
                 web=lane / "result_web",
             ),
             analyzer="frontend",
-            title=f"Frontend · {project.get("name")}",
+            title=f"Frontend · {project.get('name')}",
             markdown="""\
 # Frontend execution
 """,

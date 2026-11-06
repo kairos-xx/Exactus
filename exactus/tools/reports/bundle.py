@@ -584,7 +584,7 @@ class ReportBundle:
         ]
         lines[1:1] = [
             "",
-            f"**Run time:** {payload["run_at_human"] or "Not recorded"}",
+            f"**Run time:** {payload['run_at_human'] or 'Not recorded'}",
         ]
         normalized = (
             """\
@@ -961,7 +961,7 @@ window.__REPORT_DATA__ = JSON.parse(`{escaped}`);
         text: str = candidate.as_posix() + suffix
         href: str = Path(relpath(path=target, start=base)).as_posix()
         anchor: str = f"#L{anchor_line}" if anchor_line else ""
-        return f"[`{text}`]({quote(string=href, safe="/.")}{anchor})"
+        return f"[`{text}`]({quote(string=href, safe='/.')}{anchor})"
 
     @staticmethod
     def _template(name: str) -> str:

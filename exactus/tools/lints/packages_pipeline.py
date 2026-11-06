@@ -156,9 +156,9 @@ def run_group_final(
         )
         trace(
             step=(
-                f"group final — {report.get("status", "done")}, "
-                f"{report.get("constants", 0)} constants, "
-                f"{report.get("changed", 0)} files changed"
+                f"group final — {report.get('status', 'done')}, "
+                f"{report.get('constants', 0)} constants, "
+                f"{report.get('changed', 0)} files changed"
             ),
             depth=2,
         )
@@ -454,7 +454,7 @@ def run_all_lints(
     trace(
         step=(
             f"all lints: specs resolved — "
-            f"{", ".join(spec.name for spec in specs)}"
+            f"{', '.join(spec.name for spec in specs)}"
         ),
         depth=2,
     )

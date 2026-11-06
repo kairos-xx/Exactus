@@ -82,8 +82,11 @@ def test_journal_rolls_back_report_failure(tmp_path: Path) -> None:
         directory=tmp_path / ".journal",
     )
 
-    def fail() -> None:
+    def fail(_dirty: tuple[Path, ...]) -> None:
         """Inject a late report failure.
+
+        Args:
+            _dirty: Pending dirty paths reported by the journal.
 
         Raises:
             RuntimeError: Always, to reject the report publication.
@@ -130,20 +133,17 @@ def test_stale_proposal_preserves_manual_edit(tmp_path: Path) -> None:
     )
     journal.acquire()
     try:
-        with pytest.raises(
-            expected_exception=SourceConflictError,
-            match="Stale",
-        ):
-            journal.commit(
-                edits=(
-                    FileEdit(
-                        relative=Path("example.py"),
-                        before=before,
-                        after=before,
-                    ),
+        dirty: tuple[Path, ...] = journal.commit(
+            edits=(
+                FileEdit(
+                    relative=Path("example.py"),
+                    before=before,
+                    after=before,
                 ),
-            )
+            ),
+        )
         expect_equal(actual=source.read_bytes(), expected=b"manual = 3\n")
+        expect_equal(actual=dirty, expected=())
     finally:
         journal.release()
 
@@ -168,8 +168,11 @@ def test_restart_recovers_interrupted_commit(
     directory: Path = tmp_path / ".journal"
     journal: SourceJournal = SourceJournal(root=tmp_path, directory=directory)
 
-    def fail() -> None:
+    def fail(_dirty: tuple[Path, ...]) -> None:
         """Interrupt after publication.
+
+        Args:
+            _dirty: Pending dirty paths reported by the journal.
 
         Raises:
             KeyboardInterrupt: Always, to abandon the commit.
@@ -244,8 +247,11 @@ def test_late_manual_edit_survives_rollback(tmp_path: Path) -> None:
         directory=tmp_path / ".journal",
     )
 
-    def fail() -> None:
+    def fail(_dirty: tuple[Path, ...]) -> None:
         """Simulate a manual save concurrent with a failed publication.
+
+        Args:
+            _dirty: Pending dirty paths reported by the journal.
 
         Raises:
             RuntimeError: Always, after the conflicting edit lands.

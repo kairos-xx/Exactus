@@ -259,7 +259,7 @@ class Redaction:
             The key and separator followed by ``[redacted]``.
 
         """
-        return f"{found["key"]}{found["sep"]}{Constants.redacted}"
+        return f"{found['key']}{found['sep']}{Constants.redacted}"
 
 
 class EnvironmentProbe:

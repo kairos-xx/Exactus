@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 from ast import literal_eval, parse
+from hashlib import sha256
 from io import StringIO
 from itertools import pairwise
 from json import loads
@@ -567,6 +568,46 @@ def test_fixing_pass_runs_on_copy(
     """
     status: int = _run(project=sample_project, out=tmp_path / "out")
     expect_in(member=status, container={0, 1})
+
+
+def _source_digests(*, root: Path) -> dict[str, str]:
+    """Hash every project source file by its root-relative path.
+
+    Args:
+        root: Project directory to scan.
+
+    Returns:
+        Mapping of relative path to content digest.
+
+    """
+    return {
+        path.relative_to(root).as_posix(): sha256(
+            string=path.read_bytes(),
+        ).hexdigest()
+        for path in sorted(root.rglob(pattern="*"))
+        if path.is_file()
+        and path.suffix in {".py", ".js", ".css", ".html", ".toml", ".md"}
+    }
+
+
+def test_second_fixing_pass_changes_no_bytes(
+    sample_project: Path,
+    tmp_path: Path,
+) -> None:
+    """The mutating pipeline reaches a fixed point: pipeline(F) = F.
+
+    Args:
+        sample_project: Generated sample project directory.
+        tmp_path: Per-test temporary directory.
+
+    """
+    _ = _run(project=sample_project, out=tmp_path / "first")
+    settled: dict[str, str] = _source_digests(root=sample_project)
+    _ = _run(project=sample_project, out=tmp_path / "second")
+    expect_equal(
+        actual=_source_digests(root=sample_project),
+        expected=settled,
+    )
 
 
 @pytest.mark.parametrize("flags", [(), ("--dry",), ("--no-fix",)])

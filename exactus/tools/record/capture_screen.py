@@ -393,7 +393,7 @@ class SnapshotCapture:
             doc_width = int(measurement["width"])
             delta: int = abs(target - int(measurement["innerHeight"]))
             if (
-                (current := f"{needed}|{measurement["signature"]}") == previous
+                (current := f"{needed}|{measurement['signature']}") == previous
                 and not changed
                 and delta <= CaptureScreenDefaults.tolerance
             ):

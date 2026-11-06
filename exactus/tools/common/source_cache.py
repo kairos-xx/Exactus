@@ -5,7 +5,6 @@ from __future__ import annotations
 
 from ast import Module, parse
 from contextvars import ContextVar, Token
-from copy import deepcopy
 from dataclasses import dataclass
 from hashlib import sha256
 from threading import RLock
@@ -79,7 +78,11 @@ class SourceCache:
             return SourceRecord(
                 digest=record.digest,
                 source=record.source,
-                tree=deepcopy(x=record.tree) if mutable else record.tree,
+                tree=(
+                    parse(source=record.source, filename=str(object=path))
+                    if mutable
+                    else record.tree
+                ),
             )
 
     def text(self, *, path: Path) -> str:

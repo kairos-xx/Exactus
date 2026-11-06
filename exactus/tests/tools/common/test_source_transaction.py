@@ -7,6 +7,7 @@ from pathlib import Path
 
 import pytest
 
+from exactus.packages.source_merger.live import merge_live_edit
 from exactus.tests.common.support import (
     expect_equal,
     expect_false,
@@ -132,8 +133,10 @@ def test_commit_rejects_overlapping_proposals(tmp_path: Path) -> None:
         journal.release()
 
 
-def test_commit_rejects_stale_proposals(tmp_path: Path) -> None:
-    """Recorded ownership must match the source at commit time.
+def test_commit_keeps_current_when_only_the_user_changed(
+    tmp_path: Path,
+) -> None:
+    """``C != A`` with ``B == A`` leaves the user's file untouched.
 
     Args:
         tmp_path: Independent source tree.
@@ -152,16 +155,209 @@ external = True
     )
     journal.acquire()
     try:
-        edits: tuple[FileEdit, ...] = (
-            FileEdit(relative=Path("stale.py"), before=None, after=None),
+        journal.commit(
+            edits=(
+                FileEdit(
+                    relative=Path("stale.py"),
+                    before=None,
+                    after=None,
+                ),
+            ),
         )
-        with pytest.raises(
-            expected_exception=SourceConflictError,
-            match="Stale source proposal",
-        ):
-            journal.commit(edits=edits)
     finally:
         journal.release()
+    expect_equal(
+        actual=target.read_text(encoding="utf-8"),
+        expected="""\
+external = True
+""",
+    )
+
+
+def test_commit_applies_b_and_preserves_all_three_forks(
+    tmp_path: Path,
+) -> None:
+    """``C != A`` with ``B != A`` writes ``B`` and saves A/B/C.
+
+    Args:
+        tmp_path: Independent source tree.
+
+    """
+    target: Path = tmp_path / "forked.py"
+    _ = target.write_text(
+        data="""\
+user = 'C'
+""",
+        encoding="utf-8",
+    )
+    before: FileImage = FileImage(
+        data=b"orig = 'A'\n",
+        mode=0o644,
+        atime_ns=0,
+        mtime_ns=0,
+    )
+    after: FileImage = FileImage(
+        data=b"fixed = 'B'\n",
+        mode=0o644,
+        atime_ns=0,
+        mtime_ns=0,
+    )
+    directory: Path = tmp_path / ".journal"
+    journal: SourceJournal = SourceJournal(
+        root=tmp_path,
+        directory=directory,
+    )
+    journal.acquire()
+    try:
+        journal.commit(
+            edits=(
+                FileEdit(
+                    relative=Path("forked.py"),
+                    before=before,
+                    after=after,
+                ),
+            ),
+        )
+    finally:
+        journal.release()
+    expect_equal(
+        actual=target.read_text(encoding="utf-8"),
+        expected="""\
+fixed = 'B'
+""",
+    )
+    conflict_root: Path = next(directory.glob(pattern="conflicts/*/"))
+    expect_equal(
+        actual=(conflict_root / "forked.py.original").read_bytes(),
+        expected=b"orig = 'A'\n",
+    )
+    expect_equal(
+        actual=(conflict_root / "forked.py.proposed").read_bytes(),
+        expected=b"fixed = 'B'\n",
+    )
+    expect_equal(
+        actual=(conflict_root / "forked.py.current").read_bytes(),
+        expected=b"user = 'C'\n",
+    )
+
+
+def test_commit_merges_independent_user_edit_without_forks(
+    tmp_path: Path,
+) -> None:
+    """Independent user and tool edits merge and leave no conflict forks.
+
+    Args:
+        tmp_path: Independent source tree.
+
+    """
+    original: bytes = b"def a():\n    return 1\n\n\ndef b():\n    return 2\n"
+    refactored: bytes = (
+        b"def a() -> int:\n    return 1\n\n\ndef b():\n    return 2\n"
+    )
+    edited: bytes = b"def a():\n    return 1\n\n\ndef b():\n    return 3\n"
+    target: Path = tmp_path / "merged.py"
+    _ = target.write_bytes(data=edited)
+    directory: Path = tmp_path / ".journal"
+    journal: SourceJournal = SourceJournal(
+        root=tmp_path,
+        directory=directory,
+        merger=merge_live_edit,
+    )
+    journal.acquire()
+    try:
+        dirty: tuple[Path, ...] = journal.commit(
+            edits=(
+                FileEdit(
+                    relative=Path("merged.py"),
+                    before=FileImage(
+                        data=original,
+                        mode=0o644,
+                        atime_ns=0,
+                        mtime_ns=0,
+                    ),
+                    after=FileImage(
+                        data=refactored,
+                        mode=0o644,
+                        atime_ns=0,
+                        mtime_ns=0,
+                    ),
+                ),
+            ),
+        )
+    finally:
+        journal.release()
+    expect_equal(
+        actual=target.read_bytes(),
+        expected=(
+            b"def a() -> int:\n    return 1\n\n\ndef b():\n    return 3\n"
+        ),
+    )
+    expect_equal(actual=dirty, expected=())
+    expect_equal(
+        actual=sorted(directory.glob(pattern="conflicts/*")),
+        expected=[],
+    )
+
+
+def test_commit_token_merge_keeps_user_edit_and_flags_review(
+    tmp_path: Path,
+) -> None:
+    """A heuristic token merge keeps the edit but preserves the forks.
+
+    Duplicate selectors make the structural merge ambiguous, so the
+    token-level fallback reconciles the edit and the file stays flagged.
+
+    Args:
+        tmp_path: Independent source tree.
+
+    """
+    original: bytes = (
+        b".x {\n  color: red;\n}\n.x {\n  color: blue;\n}\n"
+        b".y {\n  margin: 0px;\n}\n.z {\n  top: 1px;\n}\n"
+    )
+    refactored: bytes = original.replace(b"0px", b"0")
+    edited: bytes = original.replace(b"top: 1px", b"top: 9px")
+    target: Path = tmp_path / "heuristic.css"
+    _ = target.write_bytes(data=edited)
+    directory: Path = tmp_path / ".journal"
+    journal: SourceJournal = SourceJournal(
+        root=tmp_path,
+        directory=directory,
+        merger=merge_live_edit,
+    )
+    journal.acquire()
+    try:
+        dirty: tuple[Path, ...] = journal.commit(
+            edits=(
+                FileEdit(
+                    relative=Path("heuristic.css"),
+                    before=FileImage(
+                        data=original,
+                        mode=0o644,
+                        atime_ns=0,
+                        mtime_ns=0,
+                    ),
+                    after=FileImage(
+                        data=refactored,
+                        mode=0o644,
+                        atime_ns=0,
+                        mtime_ns=0,
+                    ),
+                ),
+            ),
+        )
+    finally:
+        journal.release()
+    expect_equal(
+        actual=target.read_bytes(),
+        expected=refactored.replace(b"top: 1px", b"top: 9px"),
+    )
+    expect_equal(actual=dirty, expected=(Path("heuristic.css"),))
+    conflict_root: Path = next(directory.glob(pattern="conflicts/*/"))
+    expect_equal(
+        actual=(conflict_root / "heuristic.css.current").read_bytes(),
+        expected=edited,
+    )
 
 
 def test_commit_rejects_escaping_destinations(tmp_path: Path) -> None:
@@ -283,4 +479,59 @@ new = 2
         expected="""\
 new = 2
 """,
+    )
+
+
+def test_commit_ignores_timestamp_only_drift(tmp_path: Path) -> None:
+    """A touched-but-identical file must accept ``B`` like ``C == A``.
+
+    Args:
+        tmp_path: Independent source tree.
+
+    """
+    target: Path = tmp_path / "touched.py"
+    _ = target.write_text(
+        data="""\
+orig = 'A'
+""",
+        encoding="utf-8",
+    )
+    before: FileImage = FileImage(
+        data=b"orig = 'A'\n",
+        mode=0o644,
+        atime_ns=1,
+        mtime_ns=1,
+    )
+    after: FileImage = FileImage(
+        data=b"fixed = 'B'\n",
+        mode=0o644,
+        atime_ns=0,
+        mtime_ns=0,
+    )
+    journal: SourceJournal = SourceJournal(
+        root=tmp_path,
+        directory=tmp_path / ".journal",
+    )
+    journal.acquire()
+    try:
+        journal.commit(
+            edits=(
+                FileEdit(
+                    relative=Path("touched.py"),
+                    before=before,
+                    after=after,
+                ),
+            ),
+        )
+    finally:
+        journal.release()
+    expect_equal(
+        actual=target.read_text(encoding="utf-8"),
+        expected="""\
+fixed = 'B'
+""",
+    )
+    expect_equal(
+        actual=sorted((tmp_path / ".journal").glob(pattern="conflicts/*")),
+        expected=[],
     )

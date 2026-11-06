@@ -208,7 +208,7 @@ class EngineWorld:
         """
         literal: str = dumps(obj=argument, allow_nan=False)
         return self.evaluate(
-            expression=f"({function.strip().removesuffix(";")})({literal})",
+            expression=f"({function.strip().removesuffix(';')})({literal})",
         )
 
     def _reset(self) -> None:

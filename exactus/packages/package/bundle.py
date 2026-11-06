@@ -1393,7 +1393,7 @@ def size_label(*, size: int) -> str:
         unit = candidate
     if unit == "B":
         return f"{size}B"
-    return f"{f"{value:.1f}".removesuffix(".0")}{unit}"
+    return f"{f'{value:.1f}'.removesuffix('.0')}{unit}"
 
 
 class FetchError(RuntimeError):
@@ -2528,7 +2528,7 @@ class BundleBuilder:
             )
             archive_file: Path = stage.parent / f"{descriptor}-{revision}.zip"
             _ = archive_file.write_bytes(data=downloaded)
-            directory: str = f"{descriptor.replace("-", "_")}-{revision}"
+            directory: str = f"{descriptor.replace('-', '_')}-{revision}"
             self._extract_zip(
                 archive=archive_file,
                 destination=browsers_root / directory,
@@ -3553,7 +3553,7 @@ Catalog root: `{ctx.root}`
             atomic_bytes(
                 path=live
                 / "catalogs"
-                / (f"{ctx.previous["root_sha256"]}.json"),
+                / (f"{ctx.previous['root_sha256']}.json"),
                 data=canonical(
                     value=cast(typ="PartitionJson", val=ctx.previous),
                 ),

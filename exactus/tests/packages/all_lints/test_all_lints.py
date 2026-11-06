@@ -4238,6 +4238,58 @@ def test_stabilizer_preserves_required_trailing_commas(tmp_path: Path) -> None:
     expect_equal(actual=checked.returncode, expected=0)
 
 
+def test_stabilizer_survives_unparsable_file_in_batch(tmp_path: Path) -> None:
+    """One syntax error no longer aborts the batch or is rewritten.
+
+    Args:
+        tmp_path: Isolated source directory.
+
+    """
+    broken: Path = tmp_path / "a_broken.py"
+    valid: Path = tmp_path / "b_valid.py"
+    broken_bytes: bytes = b"def f(:\n    pass\n"
+    broken.write_bytes(data=broken_bytes)
+    valid.write_text(
+        data="""\
+x   =   1
+""",
+        encoding="utf-8",
+    )
+    launcher: str = capable_ruff(tmp_path=tmp_path)
+    stabilizer: RuffStabilizer = RuffStabilizer(
+        paths=[broken, valid],
+        options=RuffStabilizerOptions(command_prefix=(launcher,)),
+    )
+    expect_equal(actual=broken.read_bytes(), expected=broken_bytes)
+    expect_equal(
+        actual=valid.read_text(encoding="utf-8"),
+        expected="""\
+x = 1
+""",
+    )
+    expect_true(condition=stabilizer.metrics.converged)
+    expect_equal(actual=stabilizer.metrics.format_locked, expected=1)
+
+
+def test_stabilizer_survives_single_unparsable_file(tmp_path: Path) -> None:
+    """A lone syntax error is reported rather than raised.
+
+    Args:
+        tmp_path: Isolated source directory.
+
+    """
+    broken: Path = tmp_path / "only_broken.py"
+    broken_bytes: bytes = b"def f(:\n    pass\n"
+    broken.write_bytes(data=broken_bytes)
+    launcher: str = capable_ruff(tmp_path=tmp_path)
+    stabilizer: RuffStabilizer = RuffStabilizer(
+        paths=[broken],
+        options=RuffStabilizerOptions(command_prefix=(launcher,)),
+    )
+    expect_equal(actual=broken.read_bytes(), expected=broken_bytes)
+    expect_true(condition=stabilizer.metrics.converged)
+
+
 def test_stabilizer_rejects_incapable_ruff(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,

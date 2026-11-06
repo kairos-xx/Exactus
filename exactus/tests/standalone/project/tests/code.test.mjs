@@ -8,7 +8,8 @@ import {add, isEven, sumText} from "../web/code.js";
  * @throws {Error} When the actual result differs from the expectation.
  */
 const expectEqual = (actual, expected) => {
-  if (actual !== expected) throw new Error(`Expected ${expected}, got ${actual}`);
+  if (actual !== expected)
+    throw new Error(`Expected ${expected}, got ${actual}`);
 };
 expectEqual(add(2, 3), 5);
 expectEqual(isEven(4), true);

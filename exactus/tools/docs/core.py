@@ -524,7 +524,7 @@ class Text:
             "can",
             "should",
         }:
-            return f"Return whether {" ".join(words[1:]) or phrase}."
+            return f"Return whether {' '.join(words[1:]) or phrase}."
         verbs: dict[str, str] = {
             "add": "Add",
             "analyze": "Analyze",
@@ -551,9 +551,9 @@ class Text:
             "write": "Write",
         }
         return (
-            f"{verbs[words[0]]} {" ".join(words[1:])}."
+            f"{verbs[words[0]]} {' '.join(words[1:])}."
             if words[0] in verbs and len(words) > 1
-            else f"{"Return" if returns else "Handle"} {phrase}."
+            else f"{'Return' if returns else 'Handle'} {phrase}."
         )
 
     @classmethod
@@ -867,8 +867,8 @@ class PythonAnalyzer:
         returns: str = cls._annotation(node=node.returns)
         prefix: str = "async " if isinstance(node, AsyncFunctionDef) else ""
         return (
-            f"{prefix}{node.name}({", ".join(parts)})"
-            f"{f" -> {returns}" if returns else ""}"
+            f"{prefix}{node.name}({', '.join(parts)})"
+            f"{f' -> {returns}' if returns else ''}"
         )
 
     @classmethod
@@ -2549,7 +2549,7 @@ class JavaScriptAnalyzer:
                     body_end=body_end,
                     params_text=parameters,
                     signature=(
-                        f"{"async " if match.group("async") else ""}"
+                        f"{'async ' if match.group('async') else ''}"
                         f"{method_name}({parameters.strip()})"
                     ),
                     is_async=bool(match.group("async")),
@@ -2614,8 +2614,8 @@ class JavaScriptAnalyzer:
                     body_end=body_end,
                     params_text=parameters,
                     signature=(
-                        f"{"async " if match.group("async") else ""}"
-                        f"function{"*" if match.group("generator") else ""} "
+                        f"{'async ' if match.group('async') else ''}"
+                        f"function{'*' if match.group('generator') else ''} "
                         f"{name}({parameters.strip()})"
                     ),
                     is_async=bool(match.group("async")),

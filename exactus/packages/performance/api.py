@@ -246,7 +246,7 @@ Press Ctrl+C to stop.
                 f"({run.silent / run.duration:.0%} of runtime)",
             )
         lines.extend(
-            f"  actor {actor.name or "-"}: {actor.inferred:.3f}s "
+            f"  actor {actor.name or '-'}: {actor.inferred:.3f}s "
             f"({actor.share:.0%}), {actor.count} events"
             for actor in run.actors[:3]
         )

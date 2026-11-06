@@ -33,7 +33,7 @@ def main() -> int:
         expected: str = (
             "expected.md"
             if stem == "result"
-            else f"expected_{stem.removesuffix("_result")}.md"
+            else f"expected_{stem.removesuffix('_result')}.md"
         )
         if not (root / expected).is_file():
             return 1

@@ -835,7 +835,12 @@ def _maintenance(runtime: Runtime, args: list[str]) -> None:
             if args[0] == "--apply-update"
             else rollback(root=runtime.source, digest=args[1])
         )
-    _write(text=updated["root_sha256"] + "\n")
+    _write(
+        text=updated["root_sha256"]
+        + """\
+
+""",
+    )
 
 
 class ProcessReplacement(Protocol):
@@ -903,9 +908,21 @@ def main(
         runtime: Runtime = Runtime(catalog_path=catalog_path)
         tool: str = args[0] if args else "--help"
         if tool in {"list-tools", "--list-tools", "--list"}:
-            _write(text="\n".join(runtime.tools()) + "\n")
+            _write(
+                text="""\
+
+""".join(runtime.tools())
+                + """\
+
+""",
+            )
         elif tool == "--version":
-            _write(text=runtime.catalog["root_sha256"] + "\n")
+            _write(
+                text=runtime.catalog["root_sha256"]
+                + """\
+
+""",
+            )
         elif tool in {"--verify", "--verify-deep"}:
             if tool == "--verify-deep":
                 deep_verify(catalog=runtime.catalog, root=runtime.source)
@@ -914,17 +931,24 @@ def main(
                     catalog=runtime.catalog,
                     root=runtime.source,
                 )
-            _write(text="Verified " + runtime.catalog["root_sha256"] + "\n")
+            _write(
+                text="Verified "
+                + runtime.catalog["root_sha256"]
+                + """\
+
+""",
+            )
         elif tool in {"--help", "-h"}:
             _write(
                 text=(
                     dedent(
                         text=(
-                            "    usage: tools.py TOOL [ARGS...]\n    Offli"
-                            "ne partitioned filesystem launcher.\n    list"
-                            "-tools | --verify | --verify-deep | --version"
-                            "\n    Cache: EXACTUS_TOOLS_CACHE or XDG_CACHE"
-                            "_HOME/exactus-tools\n    "
+                            """\
+    usage: tools.py TOOL [ARGS...]
+    Offline partitioned filesystem launcher.
+    list-tools | --verify | --verify-deep | --version
+    Cache: EXACTUS_TOOLS_CACHE or XDG_CACHE_HOME/exactus-tools
+    """
                         ),
                     )
                 ),
@@ -933,13 +957,21 @@ def main(
             _maintenance(runtime=runtime, args=args)
         else:
             if tool not in runtime.tools():
-                _error(text=f"Unsupported bundled tool: {tool}\n")
+                _error(
+                    text=f"""\
+Unsupported bundled tool: {tool}
+""",
+                )
                 return 127
             command, env = runtime.command(tool=tool, args=args[1:])
             if os_name == "posix":
                 replace_process(file=command[0], args=command, env=env)
             return call(args=command, env=env)
     except (OSError, RuntimeError, ValueError, KeyError) as exc:
-        _error(text=f"Bundle error: {exc}\n")
+        _error(
+            text=f"""\
+Bundle error: {exc}
+""",
+        )
         return 1
     return 0

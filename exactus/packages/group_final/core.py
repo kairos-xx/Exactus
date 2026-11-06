@@ -307,10 +307,10 @@ class ProgressDisplay:
         filled: int = round(number=ratio * 28)
         color: str = Palette.green if ratio >= 1.0 else Palette.cyan
         bar: str = (
-            f"{Palette.dim}[{color}{"█" * filled}{Palette.dim}"
-            f"{"░" * (28 - filled)}]{Palette.reset}"
+            f"{Palette.dim}[{color}{'█' * filled}{Palette.dim}"
+            f"{'░' * (28 - filled)}]{Palette.reset}"
             if self._colored
-            else f"[{"█" * filled}{"░" * (28 - filled)}]"
+            else f"[{'█' * filled}{'░' * (28 - filled)}]"
         )
         return (
             f"{self._label:<8} {bar} {ratio * 100:6.2f}% "
@@ -1056,7 +1056,7 @@ class FinalConstantsRefactor:
         progress.close()
         for path in changed:
             _print(
-                f"{("WOULD UPDATE" if self._dry_run else "UPDATE")} "
+                f"{('WOULD UPDATE' if self._dry_run else 'UPDATE')} "
                 f"{path.relative_to(self._root)}",
             )
         return ScanReport(
@@ -2615,7 +2615,7 @@ class Cli:
         rows: list[str] = [
             "",
             _paint(
-                text=f"{"metric".ljust(width)}  count",
+                text=f"{'metric'.ljust(width)}  count",
                 color=Palette.bold,
                 enabled=enabled,
             ),

@@ -63,9 +63,11 @@ No direct files besides this README.
 - [`5b/`](5b/README.md) — Immutable compressed payload packs for this hash prefix.
 - [`5c/`](5c/README.md) — Immutable compressed payload packs for this hash prefix.
 - [`5d/`](5d/README.md) — Immutable compressed payload packs for this hash prefix.
+- [`5e/`](5e/README.md) — Immutable compressed payload packs for this hash prefix.
 - [`5f/`](5f/README.md) — Immutable compressed payload packs for this hash prefix.
 - [`60/`](60/README.md) — Immutable compressed payload packs for this hash prefix.
 - [`61/`](61/README.md) — Immutable compressed payload packs for this hash prefix.
+- [`63/`](63/README.md) — Immutable compressed payload packs for this hash prefix.
 - [`67/`](67/README.md) — Immutable compressed payload packs for this hash prefix.
 - [`68/`](68/README.md) — Immutable compressed payload packs for this hash prefix.
 - [`6a/`](6a/README.md) — Immutable compressed payload packs for this hash prefix.
@@ -109,6 +111,7 @@ No direct files besides this README.
 - [`c1/`](c1/README.md) — Immutable compressed payload packs for this hash prefix.
 - [`c3/`](c3/README.md) — Immutable compressed payload packs for this hash prefix.
 - [`c4/`](c4/README.md) — Immutable compressed payload packs for this hash prefix.
+- [`c5/`](c5/README.md) — Immutable compressed payload packs for this hash prefix.
 - [`c8/`](c8/README.md) — Immutable compressed payload packs for this hash prefix.
 - [`c9/`](c9/README.md) — Immutable compressed payload packs for this hash prefix.
 - [`ca/`](ca/README.md) — Immutable compressed payload packs for this hash prefix.

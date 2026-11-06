@@ -35,6 +35,7 @@ class Constants:
     Attributes:
         root: Grouped module constant.
         excludes: Grouped module constant.
+        browser_exports: Grouped module constant.
         signals: Grouped module constant.
 
     """
@@ -46,6 +47,10 @@ class Constants:
         "exec/**",
         "artifacts/**",
         "demo/**",
+    )
+    browser_exports: Final[tuple[str, ...]] = (
+        "PLAYWRIGHT_BROWSERS_PATH",
+        "PLAYWRIGHT_SKIP_VALIDATE_DEPENDENCIES",
     )
     signals: Final[tuple[Signals, ...]] = tuple(
         Signals[name]
@@ -71,14 +76,14 @@ def isolated_tool_environment(monkeypatch: pytest.MonkeyPatch) -> None:
         monkeypatch: Restore inherited values and direct tool exports.
 
     """
-    # A live outer ``exactus`` run exports its coordination context —
-    # registry path, report output, run identity, roots — into every
-    # spawned process. Dropping the full run-scoped contract keeps
-    # in-process tool invocations from resolving, claiming, or wiping
-    # the outer run's live report tree.
     for name in tuple(environ):
         if run_scoped(name=name):
             monkeypatch.delenv(name=name, raising=False)
+    for name in Constants.browser_exports:
+        present: bool = name in environ
+        monkeypatch.setenv(name=name, value=environ.get(name, ""))
+        if not present:
+            monkeypatch.delenv(name=name)
 
 
 @pytest.fixture
@@ -111,10 +116,8 @@ def sample_project(tmp_path: Path) -> Path:
     (root / "tests").mkdir()
     (root / "pkg" / "__init__.py").write_text(data="", encoding="utf-8")
     (root / "pkg" / "mod.py").write_text(
-        data=(
-            dedent(
-                text=(
-                    """\
+        data=dedent(
+            text="""\
     import os
     from dataclasses import dataclass
 
@@ -131,25 +134,21 @@ def sample_project(tmp_path: Path) -> Path:
     def use():
         x = add(1, 2)
         return Box(3), x, os.sep
-    """
-                ),
-            )
+    """,
         ),
         encoding="utf-8",
     )
     (root / "tests" / "test_mod.py").write_text(
-        data=(
-            dedent(
-                text=(
-                    """\
+        data=dedent(
+            text=(
+                """\
     from pkg.mod import add
 
 
     def test_add():
         assert add(1, 2) == 3
     """
-                ),
-            )
+            ),
         ),
         encoding="utf-8",
     )
@@ -195,10 +194,8 @@ def defect_project(tmp_path: Path) -> Path:
     root: Path = tmp_path / "defects"
     (root / "src").mkdir(parents=True)
     (root / "src" / "bad.py").write_text(
-        data=(
-            dedent(
-                text=(
-                    """\
+        data=dedent(
+            text="""\
     import os, sys
     import json
     from typing import *
@@ -232,9 +229,7 @@ def defect_project(tmp_path: Path) -> Path:
     def very_long_function_name_for_testing(argument_one, argument_two, \
 argument_three, argument_four):
         pass
-    """
-                ),
-            )
+    """,
         ),
         encoding="utf-8",
     )
@@ -245,10 +240,9 @@ def (:
         encoding="utf-8",
     )
     (root / "web.js").write_text(
-        data=(
-            dedent(
-                text=(
-                    """\
+        data=dedent(
+            text=(
+                """\
     var a = 1
     if (a == '1') { eval('x') }
     function f(a, b) { return a + b }
@@ -257,53 +251,42 @@ def (:
     document.write('x');
     let q = [1,2];
     """
-                ),
-            )
+            ),
         ),
         encoding="utf-8",
     )
     (root / "web.mjs").write_text(
-        data=(
-            dedent(
-                text=(
-                    """\
+        data=dedent(
+            text="""\
                     export const a = () => { debugger; };
                     export default function () { return undefined == null; }
-"""
-                ),
-            )
+""",
         ),
         encoding="utf-8",
     )
     (root / "style.css").write_text(
-        data=(
-            dedent(
-                text=(
-                    """\
+        data=dedent(
+            text=(
+                """\
     a { color: #FFF; color: red !important; }
     b {}
     .x{margin:0px;padding:0 0 0 0}
     @media (max-width:100px){c{display:none}}
     d { colr: red; background: url(  x.png ) }
     """
-                ),
-            )
+            ),
         ),
         encoding="utf-8",
     )
     (root / "page.html").write_text(
-        data=(
-            dedent(
-                text=(
-                    """\
+        data=dedent(
+            text="""\
     <html><head><title></title></head><body>
     <img src=a.png><div id=a></div><div id=a></div>
     <a href=#>x</a><p style='color:red'>t</p>
     <button onclick='go()'>b</button>
     <input type=text><script>var z=1</script></body></html>
-    """
-                ),
-            )
+    """,
         ),
         encoding="utf-8",
     )

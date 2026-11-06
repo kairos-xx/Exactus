@@ -84,7 +84,7 @@ def default_label(*, event: TimelineEvent) -> str:
         EventKind.WEBSOCKET_CALL: f"WebSocket {url}"
         if url
         else "WebSocket session",
-        EventKind.WAIT: f"Wait for {_payload(event=event).get("condition")}",
+        EventKind.WAIT: f"Wait for {_payload(event=event).get('condition')}",
         EventKind.VIEWPORT: _viewport_label(document=_payload(event=event)),
         EventKind.POSITION_POINTER: _pointer_label(event=event),
     }
@@ -139,7 +139,7 @@ def _viewport_label(*, document: dict[str, JsonValue]) -> str:
     if document.get("action") == "resize":
         return (
             f"Resize viewport to "
-            f"{document.get("width")} x {document.get("height")}"
+            f"{document.get('width')} x {document.get('height')}"
         )
     return "Rotate viewport"
 

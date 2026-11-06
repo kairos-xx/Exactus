@@ -503,7 +503,7 @@ def _matrix_rows(sections: list[Counts], anchors: list[str]) -> list[str]:
                             f"{SyncTodoTables.CATEGORY_LABELS[task.category]}]"
                             f"(#{anchors[index]}) | "
                         ),
-                        f"{" | ".join(cells)} | ",
+                        f"{' | '.join(cells)} | ",
                         f"{mark} |",
                     ),
                 ),

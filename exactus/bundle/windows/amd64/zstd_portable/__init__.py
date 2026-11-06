@@ -10,6 +10,7 @@ from platform import machine, system
 from stat import S_IXGRP, S_IXOTH, S_IXUSR
 from subprocess import PIPE, Popen
 from tempfile import gettempdir
+from textwrap import dedent
 from threading import Lock, Thread
 from typing import (
     TYPE_CHECKING,
@@ -179,23 +180,34 @@ def export_package(*, os_name: str, machine: str, target: Path) -> Path:
     (package / "bin" / archive.name).write_bytes(data=archive.read_bytes())
     _ = (package / "README.md").write_text(
         data=(
-            "# `zstd_portable/`\n\nPortable Zstandard compression bootstrap"
-            " for the generated bundle.\n\n- [__init__.py](__init__.py) —"
-            " Python wrapper and payload loader.\n- [bin/](bin/README.md) —"
-            " Target-specific native CLI archive.\n\nKeep this package and its"
-            " native archive together. The runtime extracts the CLI into its"
-            " user cache when compression is needed.\n"
+            dedent(
+                text="""\
+    # `zstd_portable/`
+
+    Portable Zstandard compression bootstrap for the generated bundle.
+
+    - [__init__.py](__init__.py) — Python wrapper and payload loader.
+    - [bin/](bin/README.md) — Target-specific native CLI archive.
+
+    Keep this package and its native archive together. The runtime extracts \
+the CLI into its user cache when compression is needed.
+    """,
+            )
         ),
         encoding="utf-8",
     )
     _ = (package / "bin" / "README.md").write_text(
         data=(
-            "# `bin/`\n\nNative Zstandard payload for"
-            f" `{normalized[0]}/{normalized[1]}`.\n\n-"
-            f" [{archive.name}]({archive.name}) — Archive containing"
-            f" `{_member}`.\n\n[Package documentation](../README.md). Do not"
-            " unpack or rename the archive; the Python loader validates its"
-            " contents.\n"
+            f"""\
+# `bin/`
+
+Native Zstandard payload for `{normalized[0]}/{normalized[1]}`.
+
+- [{archive.name}]({archive.name}) — Archive containing `{_member}`.
+
+[Package documentation](../README.md). Do not unpack or rename the archive; \
+the Python loader validates its contents.
+"""
         ),
         encoding="utf-8",
     )
@@ -781,5 +793,13 @@ class Zstd:
             The captured stderr lines or a generic failure message.
 
         """
-        details: str = "\n".join(line for line in self._stderr if line)
-        return f"zstd failed:\n{details}" if details else "zstd failed."
+        details: str = """\
+
+""".join(line for line in self._stderr if line)
+        return (
+            f"""\
+zstd failed:
+{details}"""
+            if details
+            else "zstd failed."
+        )

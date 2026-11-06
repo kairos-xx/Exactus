@@ -445,7 +445,7 @@ def main() -> int:
 
 reports: {root / "EXACTUS_RESULTS"}""",
     )
-    emit(message=f"transcripts: {root / ".demo-logs"}")
+    emit(message=f"transcripts: {root / '.demo-logs'}")
     return status
 
 

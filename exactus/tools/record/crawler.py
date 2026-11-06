@@ -681,7 +681,7 @@ async def option_visits(
             visits.append(
                 VisitStep(
                     name=f"{panel}:option-{
-                        slug(value=(f"{name}-{value}").lower())
+                        slug(value=(f'{name}-{value}').lower())
                     }",
                     url=url,
                     actions=(
@@ -785,7 +785,7 @@ def resolve_devices(names: str) -> tuple[DeviceSpec, ...]:
     if not wanted:
         return Constants.devices
     if unknown := wanted - {device.name for device in Constants.devices}:
-        msg: str = f"unknown device(s): {", ".join(sorted(unknown))}"
+        msg: str = f"unknown device(s): {', '.join(sorted(unknown))}"
         raise ValueError(msg)
     return tuple(
         device for device in Constants.devices if device.name in wanted
@@ -811,7 +811,7 @@ def resolve_themes(names: str) -> tuple[ThemeName, ...]:
     if not wanted:
         return Constants.themes
     if unknown := wanted - set(Constants.themes):
-        msg: str = f"unknown theme(s): {", ".join(sorted(unknown))}"
+        msg: str = f"unknown theme(s): {', '.join(sorted(unknown))}"
         raise ValueError(msg)
     return tuple(theme for theme in Constants.themes if theme in wanted)
 

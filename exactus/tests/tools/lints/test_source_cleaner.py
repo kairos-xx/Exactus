@@ -1,11 +1,26 @@
 # Copyright (c) 2026
 """Behavioral tests for the lints source cleaner."""
 
+from collections.abc import Sequence
+from io import StringIO
 from pathlib import Path
 from textwrap import dedent
 
-from exactus.tests.common.support import expect_equal, expect_in, expect_true
-from exactus.tools.lints.core import SourceCleaner
+import pytest
+
+from exactus.tests.common.support import (
+    expect_equal,
+    expect_in,
+    expect_true,
+    private_call,
+)
+from exactus.tools.common.sprint import Writer
+from exactus.tools.lints.core import (
+    CleanStats,
+    CommandResult,
+    LintExactus,
+    SourceCleaner,
+)
 
 
 def test_normalize_drops_javascript_blank_lines() -> None:
@@ -350,4 +365,231 @@ const b = 2;
 const a = 1;
 const b = 2;
 """,
+    )
+
+
+def test_run_reports_formatter_failures_without_aborting(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """A file a formatter cannot parse becomes a finding, not a crash.
+
+    The batch run fails, the per-file retry isolates the unparsable
+    file, and the remaining file is still formatted.
+
+    Args:
+        tmp_path: Per-test project directory.
+        monkeypatch: Pytest patching helper.
+
+    """
+    good: Path = tmp_path / "ok.css"
+    bad: Path = tmp_path / "broken.css"
+    _ = good.write_text(
+        data="""\
+a { color: red; }
+""",
+        encoding="utf-8",
+    )
+    _ = bad.write_text(
+        data="""\
+a { color: red; }
+""",
+        encoding="utf-8",
+    )
+    calls: list[tuple[tuple[str, ...], Path]] = []
+
+    def fake_run_command(
+        command: Sequence[str],
+        cwd: Path,
+    ) -> CommandResult:
+        """Return the recorded command result without executing.
+
+        Args:
+            command: Recorded command tokens.
+            cwd: Invocation working directory.
+
+        Returns:
+            Queued command result for the invocation.
+
+        """
+        calls.append((tuple(command), cwd))
+        failing: bool = str(object=bad) in command
+        batch: bool = (
+            str(object=good) in command and str(object=bad) in command
+        )
+        return CommandResult(
+            command=tuple(command),
+            returncode=2 if batch or failing else 0,
+            stdout="",
+            stderr=(
+                f"[error] {bad}: SyntaxError: broken css (3:5)"
+                if failing
+                else "batch exploded"
+            ),
+        )
+
+    monkeypatch.setattr(
+        target=LintExactus,
+        name="run_command",
+        value=staticmethod(fake_run_command),
+    )
+    stats: CleanStats = SourceCleaner.run(
+        files=[good, bad],
+        cwd=tmp_path,
+        writer=StringIO(),
+        commands={"prettier": ("prettier",)},
+        enabled=True,
+    )
+    expect_equal(actual=len(stats.failures), expected=1)
+    expect_equal(
+        actual=stats.failures,
+        expected=[
+            {
+                "tool": "prettier",
+                "file": "broken.css",
+                "line": 3,
+                "column": 5,
+                "end_line": 3,
+                "end_column": 5,
+                "rule": "formatter-failed",
+                "severity": "error",
+                "message": (f"[error] {bad}: SyntaxError: broken css (3:5)"),
+            },
+        ],
+    )
+    expect_true(condition=all(cwd == tmp_path for _, cwd in calls))
+
+
+def test_format_report_entry_carried_into_audit_report() -> None:
+    """A carried clean/format entry merges when the stage never ran.
+
+    The transactional pipeline repeats the workflow read-only after
+    freezing mutations; that pass must still surface formatter
+    failures recorded by the earlier mutating pass.
+    """
+    carried: dict[str, object] = {
+        "tool": "format",
+        "command": [],
+        "returncode": 1,
+        "stderr": "",
+        "count": 1,
+        "findings": [
+            {
+                "tool": "prettier",
+                "file": "broken.html",
+                "line": 3,
+                "column": 5,
+                "end_line": 3,
+                "end_column": 5,
+                "rule": "formatter-failed",
+                "severity": "error",
+                "message": "SyntaxError: broken html (3:5)",
+            },
+        ],
+        "duration_seconds": 0.5,
+    }
+    entry: object = private_call(
+        owner=LintExactus,
+        name="_format_report_entry",
+        clean_stats=None,
+        carried=carried,
+    )
+    expect_equal(actual=entry, expected={"format": carried})
+    expect_equal(
+        actual=private_call(
+            owner=LintExactus,
+            name="_format_report_entry",
+            clean_stats=None,
+        ),
+        expected={},
+    )
+
+
+def test_run_reports_cleaner_failures_without_aborting(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """A file the normalizer cannot process becomes a finding too.
+
+    Args:
+        tmp_path: Per-test project directory.
+        monkeypatch: Pytest patching helper.
+
+    """
+    first: Path = tmp_path / "one.py"
+    second: Path = tmp_path / "two.py"
+    _ = first.write_text(
+        data="""\
+x = 1
+""",
+        encoding="utf-8",
+    )
+    _ = second.write_text(
+        data="""\
+y = 2
+""",
+        encoding="utf-8",
+    )
+
+    def explode(
+        cls: type[SourceCleaner],
+        path: Path,
+        stats: CleanStats,
+        writer: Writer,
+    ) -> None:
+        """Raise unconditionally to simulate a normalization failure.
+
+        Args:
+            cls: Bound SourceCleaner class.
+            path: File being normalized.
+            stats: Accumulated clean statistics.
+            writer: Report sink.
+
+        Raises:
+            OSError: Always, to reject the clean operation.
+
+        """
+        _ = cls, stats, writer
+        msg: str = f"cannot normalize {path.name}"
+        raise OSError(msg)
+
+    monkeypatch.setattr(
+        target=SourceCleaner,
+        name="_clean",
+        value=classmethod(explode),
+    )
+    stats: CleanStats = SourceCleaner.run(
+        files=[first, second],
+        cwd=tmp_path,
+        writer=StringIO(),
+        commands={},
+        enabled=True,
+    )
+    expect_equal(actual=len(stats.failures), expected=2)
+    expect_equal(
+        actual=stats.failures,
+        expected=[
+            {
+                "tool": "clean",
+                "file": "one.py",
+                "line": 0,
+                "column": 0,
+                "end_line": 0,
+                "end_column": 0,
+                "rule": "clean-failed",
+                "severity": "error",
+                "message": "cannot normalize one.py",
+            },
+            {
+                "tool": "clean",
+                "file": "two.py",
+                "line": 0,
+                "column": 0,
+                "end_line": 0,
+                "end_column": 0,
+                "rule": "clean-failed",
+                "severity": "error",
+                "message": "cannot normalize two.py",
+            },
+        ],
     )

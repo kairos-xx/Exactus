@@ -32,7 +32,7 @@ def function_name(*, command_name: str) -> str:
 
     """
     cleaned: str = sub(pattern="[^a-zA-Z0-9_]", repl="_", string=command_name)
-    return f"_{cleaned.lstrip("_") or "tool"}_completion"
+    return f"_{cleaned.lstrip('_') or 'tool'}_completion"
 
 
 def _bash_launcher(*, launcher: tuple[str, ...]) -> str:

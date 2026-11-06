@@ -520,6 +520,7 @@ def test_report_data_metrics(tmp_path: Path) -> None:
     expect_equal(
         actual=[dig(document=row, path=("linter",)) for row in rows],
         expected=[
+            "format",
             "custom_compliance",
             "custom_shebang",
             "custom_python",
@@ -540,7 +541,7 @@ def test_report_data_metrics(tmp_path: Path) -> None:
         ],
     )
     expect_equal(
-        actual=rows[2],
+        actual=rows[3],
         expected={
             "linter": "custom_python",
             "status": "ran",
@@ -555,7 +556,7 @@ def test_report_data_metrics(tmp_path: Path) -> None:
         },
     )
     expect_equal(
-        actual=rows[11],
+        actual=rows[12],
         expected={
             "linter": "basedpyright",
             "status": "ran",
@@ -569,8 +570,8 @@ def test_report_data_metrics(tmp_path: Path) -> None:
             "duration_seconds": 0.25,
         },
     )
-    expect_equal(actual=dig(document=rows[14], path=("files",)), expected=2)
-    for index, status in ((15, "missing"), (16, "not run")):
+    expect_equal(actual=dig(document=rows[15], path=("files",)), expected=2)
+    for index, status in ((16, "missing"), (17, "not run")):
         expect_equal(
             actual=rows[index],
             expected={
@@ -955,7 +956,7 @@ def test_execute_exactus_renders_lints_from_template(
     )
     expect_true(condition=bool(dig(document=web, path=("view", "blocking"))))
     expect_none(
-        value=dig(document=web, path=("view", "linters", 9, "version")),
+        value=dig(document=web, path=("view", "linters", 10, "version")),
     )
 
 

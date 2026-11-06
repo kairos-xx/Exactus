@@ -589,7 +589,7 @@ raise SystemExit(result.returncode)
         if result.returncode == 0:
             return
         detail: str = result.stderr.strip() or result.stdout.strip()
-        msg: str = f"{" ".join(arguments[:2])} failed: {detail}"
+        msg: str = f"{' '.join(arguments[:2])} failed: {detail}"
         raise RuntimeError(msg)
 
     def _run_optional(self, *, arguments: tuple[str, ...]) -> None:

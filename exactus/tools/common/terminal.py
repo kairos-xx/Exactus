@@ -333,7 +333,7 @@ class ExactusTerminal:
         )
         lines: list[str] = [
             f"{Constants.bold}{Constants.cyan}{title}{Constants.reset}",
-            f"  {Constants.bold}{"GLOBAL":<29}{Constants.reset} [{
+            f"  {Constants.bold}{'GLOBAL':<29}{Constants.reset} [{
                 cls._bar(
                     fraction=global_fraction,
                     markers=global_marks,
@@ -682,7 +682,7 @@ Result  {cls._status(value=overall)}    Tools  {len(rows)}    Passed  \
             out.append(value[index])
             shown += 1
             index += 1
-        return f"{"".join(out)}…{Constants.reset}"
+        return f"{''.join(out)}…{Constants.reset}"
 
     @classmethod
     def _rows(cls, *, frame: tuple[str, ...], columns: int) -> int:
@@ -982,7 +982,7 @@ Result  {cls._status(value=overall)}    Tools  {len(rows)}    Passed  \
         filled: int = round(number=clamped * bar_width)
         if not markers:
             empty: str = "░" * (bar_width - filled)
-            return f"{"█" * filled}{Constants.dim}{empty}{Constants.reset}"
+            return f"{'█' * filled}{Constants.dim}{empty}{Constants.reset}"
         parts: list[str] = []
         for index in range(bar_width):
             if index in markers:
@@ -991,7 +991,7 @@ Result  {cls._status(value=overall)}    Tools  {len(rows)}    Passed  \
                 parts.append("█")
             else:
                 parts.append(f"{Constants.dim}░")
-        return f"{"".join(parts)}{Constants.reset}"
+        return f"{''.join(parts)}{Constants.reset}"
 
     @staticmethod
     def _segmented_bar(
@@ -1040,7 +1040,7 @@ Result  {cls._status(value=overall)}    Tools  {len(rows)}    Passed  \
                     parts.append("█")
                 else:
                     parts.append(f"{Constants.dim}░")
-        return f"{"".join(parts)}{Constants.reset}"
+        return f"{''.join(parts)}{Constants.reset}"
 
 
 def dsr_reply() -> bool:

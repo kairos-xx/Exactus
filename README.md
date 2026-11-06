@@ -124,7 +124,7 @@ resolved in this order:
 the project root.
 
 Markdown, JSON, and web reports compare against the previous report, even
-when the run cleans its output first. Comparisons include added, resolved,
+when the run clears its output first. Comparisons include added, resolved,
 and unchanged findings, deltas by source/category/rule, numeric subsection
 metrics, and per-tool details in aggregate pipeline reports. Numeric deltas
 use the metric's units; coverage percentages differ in percentage points.
@@ -378,6 +378,7 @@ capture records — see `exactus/tools/common/sprint.py` for the directive synta
 ### Files
 
 - [`AGENTS.md`](AGENTS.md) — Provide AGENTS md content.
+- [`HANDOFF_lints_merge_stress.md`](HANDOFF_lints_merge_stress.md) — Last updated 2026-11-05 ~02:10 WET. Nothing was committed or pushed. No publication, tagging or privileged install was performed.
 - [`MANIFEST.in`](MANIFEST.in) — Provide MANIFEST in content.
 - [`TREE.txt`](TREE.txt) — Provide TREE txt content.
 - [`config.json.example`](config.json.example) — Provide config.json example content.
@@ -387,6 +388,7 @@ capture records — see `exactus/tools/common/sprint.py` for the directive synta
 - [`package-lock.json`](package-lock.json) — Provide package lock json content.
 - [`package.json`](package.json) — Provide package json content.
 - [`pyproject.toml`](pyproject.toml) — Provide pyproject toml content.
+- [`source_merger_incremental.zip`](source_merger_incremental.zip) — Provide source merger incremental zip content.
 - [`stylelint.config.mjs`](stylelint.config.mjs) — ", "*
 - [`uv.lock`](uv.lock) — Provide uv lock content.
 
@@ -394,7 +396,7 @@ capture records — see `exactus/tools/common/sprint.py` for the directive synta
 
 - [`EXACTUS_RESULTS_RELEASE/`](EXACTUS_RESULTS_RELEASE/README.md) — No direct files besides this README.
 - [`STUDIO_SCREENSHOTS/`](STUDIO_SCREENSHOTS/README.md) — Provide 01 welcome png content.
-- [`artifacts/`](artifacts/README.md) — Contain artifacts resources and their directory inventory.
+- [`artifacts/`](artifacts/README.md) — No direct files besides this README.
 - [`bin/`](bin/README.md) — Project executables and native tool archives.
 - [`demo/`](demo/README.md) — This fixture exercises the relocatable `exec/exactus` artifact with Python, JavaScript, CSS, HTML, Python tests, JavaScript tests, browser diagnostics and server diagnostics.
 - [`dev/`](dev/README.md) — Provide README txt content.

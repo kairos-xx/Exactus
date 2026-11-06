@@ -1298,9 +1298,9 @@ def _findings(*, checks: Checks) -> list[JsonValue]:
         index += 1
         finding: dict[str, JsonValue] = {
             "id": f"SEL-{index:03d}",
-            "title": f"self_test {entry["kind"]} check failed",
+            "title": f"self_test {entry['kind']} check failed",
             "severity": "error",
-            "rule": f"self_test-{entry["kind"]}",
+            "rule": f"self_test-{entry['kind']}",
             "path": str(object=entry["name"]),
             "file": str(object=entry["name"]),
             "line": 0,
@@ -1375,8 +1375,8 @@ def _markdown(*, checks: Checks) -> str:
     """
     lines: list[str] = ["## Checks", ""]
     for entry in checks.entries:
-        reason: str = f" — {entry["reason"]}" if entry.get("reason") else ""
-        lines.append(f"- **{entry["status"]}** `{entry["name"]}`{reason}")
+        reason: str = f" — {entry['reason']}" if entry.get("reason") else ""
+        lines.append(f"- **{entry['status']}** `{entry['name']}`{reason}")
     lines.append("")
     return """\
 
@@ -1659,7 +1659,7 @@ def main(*, arguments: Sequence[str] | None = None) -> int:
                 ),
             )
             trace(
-                step=f"report: bundle written — {output_dir / "result.md"}",
+                step=f"report: bundle written — {output_dir / 'result.md'}",
                 depth=2,
             )
         status: int = 1 if checks.failed else 0

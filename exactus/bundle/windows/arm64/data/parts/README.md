@@ -6,7 +6,7 @@ Use `list-tools`, `--verify`, `--verify-deep`, or `TOOL [ARGS...]`. Components m
 
 Builds reuse unchanged staged recipes and packs. --only forces named selected components; --rebuild restages all. Incremental rebuilds emit a sibling `<leaf>.update/` directory holding the new catalog and only the changed packs. Apply with `--apply-update <dir>`; rollback with `--rollback`. Explicit GC is opt-in.
 
-Catalog root: `4bcb64114664b7c3e5c7ebf4a0254b01bfe49389e7a98a9b7844ee4328ef9e45`
+Catalog root: `2e6ea67bc60fc00443f6a64dde4978fcde92d87bd3b27b4192249fcf6b6e7b28`
 
 <!-- exactus:inventory:start -->
 ## Directory contents

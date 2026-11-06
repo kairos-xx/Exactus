@@ -99,7 +99,7 @@ def _data(
         "No steps.txt traces found."
         if slowest is None
         else (
-            f"{len(runs)} run{"s" if len(runs) != 1 else ""} profiled — "
+            f"{len(runs)} run{'s' if len(runs) != 1 else ''} profiled — "
             f"slowest {slowest.tool} {slowest.duration:.1f}s"
         )
     )
@@ -219,7 +219,7 @@ def main(*, arguments: tuple[str, ...] | None = None) -> int:
             data=_data(runs=runs, config=config, root=root),
         )
         trace(
-            step=(f"report: bundle written — {output_dir / "result.md"}"),
+            step=(f"report: bundle written — {output_dir / 'result.md'}"),
             depth=2,
         )
         trace(step=f"performance: run finished — status {status}")

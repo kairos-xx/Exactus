@@ -243,8 +243,6 @@ archive members.
         "--config",
         'format.quote-style = "double"',
         "--config",
-        'format.nested-string-quote-style = "preferred"',
-        "--config",
         'format.line-ending = "lf"',
         "--config",
         'format.indent-style = "space"',
@@ -1344,11 +1342,15 @@ class RuffStabilizer:
                 msg: str = f"File does not exist: {path}"
                 raise FileNotFoundError(msg)
             self._originals[path] = (path.read_bytes(), path.stat().st_mode)
+        self._unparsable: frozenset[Path] = frozenset(
+            path for path in self._paths if not self._compiles(path=path)
+        )
+        self._format_locked.update(self._unparsable)
         self._verify_policy()
         try:
             if len(self._paths) > 1:
                 self._stabilize_batch()
-            else:
+            elif not self._format_locked:
                 executor: ThreadPoolExecutor = ThreadPoolExecutor(
                     max_workers=self._max_workers,
                 )
@@ -1360,6 +1362,8 @@ class RuffStabilizer:
                     raise
                 else:
                     executor.shutdown(wait=True)
+            else:
+                self._collect_diagnostics()
         except BaseException:
             self._rollback()
             raise
@@ -1473,6 +1477,34 @@ class RuffStabilizer:
         )
         raise RuntimeError(msg)
 
+    @staticmethod
+    def _compiles(*, path: Path) -> bool:
+        """Report whether a Python file is syntactically valid.
+
+        Ruff refuses an entire multi-path ``format`` invocation when any
+        one path has a syntax error, so one broken file would abort the
+        whole run without a report. Unreadable or invalid files are kept
+        out of the mutating batch; the final ``ruff check`` still reports
+        them as findings.
+
+        Args:
+            path: Python file to probe.
+
+        Returns:
+            ``True`` when the file reads and compiles.
+
+        """
+        try:
+            _ = compile(
+                source=path.read_bytes(),
+                filename=str(object=path),
+                mode="exec",
+                dont_inherit=True,
+            )
+        except (OSError, SyntaxError, ValueError):
+            return False
+        return True
+
     def _verify_policy(self) -> None:
         """Probe the resolved executable before any real work runs.
 
@@ -1487,9 +1519,12 @@ class RuffStabilizer:
         """
         if not self._verify or not self._paths:
             return
-        probe: tuple[str, ...] = self._policy.verify_argv(
-            path=self._paths[0],
+        usable: tuple[Path, ...] = tuple(
+            path for path in self._paths if path not in self._format_locked
         )
+        if not usable:
+            return
+        probe: tuple[str, ...] = self._policy.verify_argv(path=usable[0])
         try:
             self._invocations += 1
             _ = self._run(args=probe)
@@ -1770,7 +1805,7 @@ class RuffStabilizer:
         msg: str = (
             "Final Ruff compact pass did not converge "
             f"after {self._max_iterations} cycles; still changing: "
-            f"{", ".join(path.as_posix() for path in active)}"
+            f"{', '.join(path.as_posix() for path in active)}"
         )
         raise RuntimeError(msg)
 
@@ -1956,17 +1991,19 @@ class RuffStabilizer:
             RuntimeError: If any file keeps changing through every cycle.
 
         """
-        active: list[Path] = list(self._paths)
+        active: list[Path] = [
+            path for path in self._paths if path not in self._format_locked
+        ]
         starts: dict[Path, StabilizationStart] = {
             path: StabilizationStart(
                 size=path.stat().st_size,
                 datetime=datetime.now(tz=UTC),
                 time=monotonic(),
             )
-            for path in active
+            for path in self._paths
         }
-        format_calls: dict[Path, int] = dict.fromkeys(active, 0)
-        fix_calls: dict[Path, int] = dict.fromkeys(active, 0)
+        format_calls: dict[Path, int] = dict.fromkeys(self._paths, 0)
+        fix_calls: dict[Path, int] = dict.fromkeys(self._paths, 0)
         history: _StateHistory = _StateHistory(seen={}, last={})
         conflicted: set[Path] = set()
         reverted: set[Path] = set()
@@ -2119,8 +2156,11 @@ class RuffStabilizer:
         paths: tuple[Path, ...] = tuple(
             path
             for path in self._paths
-            if path in touched
-            or self._read(path=path) != self._ordinary_verified.get(path)
+            if path not in self._unparsable
+            and (
+                path in touched
+                or self._read(path=path) != self._ordinary_verified.get(path)
+            )
         )
         if not paths:
             return []
@@ -2235,7 +2275,7 @@ class RuffStabilizer:
                 step=(
                     f"stabilize: rollback — restored {restored} "
                     f"files; conflicts: "
-                    f"{", ".join(conflicts) if conflicts else "none"}"
+                    f"{', '.join(conflicts) if conflicts else 'none'}"
                 ),
                 depth=3,
             )
@@ -2328,7 +2368,7 @@ class RuffStabilizer:
                 msg = (
                     f"Ruff subprocess timed out after "
                     f"{self._subprocess_timeout}s: "
-                    f"{" ".join(args)}"
+                    f"{' '.join(args)}"
                 )
                 raise RuffExecutionError(argv=args, message=msg) from error
         finally:
@@ -2344,7 +2384,7 @@ class RuffStabilizer:
         if result.returncode < 0:
             msg = (
                 f"Ruff subprocess was terminated by signal "
-                f"{-result.returncode}: {" ".join(args)}"
+                f"{-result.returncode}: {' '.join(args)}"
             )
             raise RuffExecutionError(
                 argv=args,
@@ -2363,8 +2403,8 @@ class RuffStabilizer:
             ).strip()
             msg = (
                 f"Ruff exited {result.returncode}: "
-                f"{" ".join(args)}"
-                f"{f" — {detail}" if detail else ""}"
+                f"{' '.join(args)}"
+                f"{f' — {detail}' if detail else ''}"
             )
             raise RuffExecutionError(
                 argv=args,
@@ -2697,7 +2737,7 @@ class ProgressDisplay:
                 ),
             )
             if colored
-            else f"[{"█" * filled}{unfilled}]"
+            else f"[{'█' * filled}{unfilled}]"
         )
         return f"{bar} {ratio * 100:6.2f}% {completed}/{total}"
 
@@ -2717,7 +2757,7 @@ class ProgressDisplay:
         )
         return [
             _paint(
-                text=f"{"TOTAL".ljust(width)}",
+                text=f"{'TOTAL'.ljust(width)}",
                 color=Constants.ansi_bold,
                 enabled=self._colored,
             )
@@ -3233,7 +3273,7 @@ class AuditRunner:
             step=(
                 f"all lints: start — "
                 f"{len(specs)} tools, {self._workers} workers, stabilize={
-                    ("on" if stabilize else "off")
+                    ('on' if stabilize else 'off')
                 }"
             ),
             depth=1,
@@ -4098,7 +4138,7 @@ class AuditRunner:
                         end_line=None,
                         end_column=None,
                         severity=self._severity(value=match.group("severity")),
-                        code=f"TS{match.group("code")}",
+                        code=f"TS{match.group('code')}",
                         message=match.group("message"),
                     ),
                 )
@@ -4436,7 +4476,7 @@ class AuditRunner:
             path=self._root / file,
             tool="lints",
         )
-        option: str = f"{spec.name.removesuffix("_docs")}-arg"
+        option: str = f"{spec.name.removesuffix('_docs')}-arg"
         extra: JsonValue = values.get(option, [])
         if isinstance(extra, str):
             extra = [extra]

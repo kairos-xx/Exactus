@@ -379,7 +379,7 @@ def test_trailing_comment_is_hoisted_above_the_statement() -> None:
 def test_directive_comments_stay_on_their_line() -> None:
     """Pragma comments are never hoisted or wrapped."""
     source: str = (
-        f"value = compute(argument)  # {"type"}: ignore[arg-type]  "
+        f"value = compute(argument)  # {'type'}: ignore[arg-type]  "
     ) + "x" * 40
     result: TextResult = _fixer(width=40).transform_text(
         source=source
@@ -387,7 +387,7 @@ def test_directive_comments_stay_on_their_line() -> None:
 
 """,
     )
-    expect_in(member=f"# {"type"}: ignore[arg-type]", container=result.source)
+    expect_in(member=f"# {'type'}: ignore[arg-type]", container=result.source)
     expect_equal(actual=len(result.source.splitlines()), expected=1)
 
 

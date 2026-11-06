@@ -1,50 +1,50 @@
-coverage_tests: 6.559s, 66 events, 10.06 events/s, gap 1.259s
-  silent 6.024s (92% of runtime)
-  actor report bundle: 1.583s (24%), 4 events
-  actor progress: 1.479s (23%), 9 events
-  actor exec: 1.387s (21%), 6 events
-  slow 2.472s measured: exec: python — exit 0 in 2.472s
-  slow 1.259s inferred: shard 0: exit 0 — 2 tests, 0 failures, 0 skipped, 0 warnings
-  slow 1.002s inferred: progress: pytest shard — 0 tests finished; per-test progress (0/1)
-  workers: 3 threads, busiest main 6.558s
-docs: 0.990s, 18 events, 18.18 events/s, gap 0.895s
-  silent 0.895s (90% of runtime)
-  actor stage: 0.896s (91%), 3 events
-  actor progress: 0.086s (9%), 8 events
-  actor docs: 0.007s (1%), 6 events
-  slow 0.895s inferred: stage: report
-  slow 0.077s inferred: progress: analyzing docstrings — test_calc.py (6/8)
-  slow 0.007s inferred: docs: 8 files discovered
-kwargs_typehints: 3.092s, 31 events, 10.03 events/s, gap 2.105s
-  silent 2.813s (91% of runtime)
-  actor progress: 2.373s (77%), 20 events
-  actor stage: 0.709s (23%), 3 events
-  actor discover: 0.013s (0%), 1 events
-  slow 2.105s inferred: progress: fuzzing builtins (0/1)
-  slow 0.708s inferred: stage: report
-  slow 0.237s inferred: progress: resolving calls — /Users/joaolopes/Exactus/exactus/tests/standalone/pr
-  workers: 3 threads, busiest main 3.091s
-lints: 11.370s, 582 events, 51.19 events/s, gap 1.160s
-  silent 6.685s (59% of runtime)
-  actor basedpyright: 8.421s (22%), 30 events
-  actor eslint: 7.709s (20%), 24 events
-  actor typescript: 4.103s (11%), 16 events
-  slow 2.146s inferred: typescript: exec eslint.config.mjs — 6 argv
-  slow 2.146s measured: typescript: eslint.config.mjs — exit 0, 0 diagnostics, 2.145754s
-  slow 1.890s inferred: typescript: exec eslint.config.mjs — 6 argv
-  workers: 38 threads, busiest main 11.368s
-performance: 0.001s, 2 events, 2000.00 events/s, gap 0.000s
+coverage_tests: 11.690s, 68 events, 5.82 events/s, gap 2.244s
+  silent 11.355s (97% of runtime)
+  actor progress: 3.930s (34%), 11 events
+  actor shard 0: 2.244s (19%), 1 events
+  actor report bundle: 2.141s (18%), 4 events
+  slow 4.911s measured: exec: python — exit 0 in 4.911s
+  slow 2.244s inferred: shard 0: exit 0 — 2 tests, 0 failures, 0 skipped, 0 warnings
+  slow 1.402s inferred: coverage tests: evidence validation — exit 0
+  workers: 3 threads, busiest main 11.689s
+docs: 1.217s, 18 events, 14.79 events/s, gap 1.115s
+  silent 1.115s (92% of runtime)
+  actor stage: 1.117s (92%), 3 events
+  actor progress: 0.070s (6%), 8 events
+  actor docs: 0.028s (2%), 6 events
+  slow 1.115s inferred: stage: report
+  slow 0.056s inferred: progress: analyzing docstrings — test_calc.py (6/8)
+  slow 0.028s inferred: docs: 8 files discovered
+kwargs_typehints: 5.068s, 31 events, 6.12 events/s, gap 3.533s
+  silent 4.934s (97% of runtime)
+  actor progress: 4.033s (79%), 20 events
+  actor stage: 1.016s (20%), 3 events
+  actor discover: 0.033s (1%), 1 events
+  slow 3.533s inferred: progress: fuzzing builtins (0/1)
+  slow 1.015s inferred: stage: report
+  slow 0.386s inferred: progress: resolving calls — /Users/joaolopes/Exactus/exactus/tests/standalone/pr
+  workers: 4 threads, busiest main 5.067s
+lints: 16.676s, 588 events, 35.26 events/s, gap 1.820s
+  silent 11.287s (68% of runtime)
+  actor basedpyright: 14.386s (23%), 30 events
+  actor eslint: 12.671s (20%), 24 events
+  actor typescript: 6.813s (11%), 16 events
+  slow 3.649s inferred: typescript: exec eslint.config.mjs — 6 argv
+  slow 3.648s measured: typescript: eslint.config.mjs — exit 0, 0 diagnostics, 3.648349s
+  slow 3.126s inferred: typescript: exec eslint.config.mjs — 6 argv
+  workers: 39 threads, busiest main 16.675s
+performance: 0.002s, 2 events, 1000.00 events/s, gap 0.001s
   silent 0.000s (0% of runtime)
-  actor performance: 0.000s (0%), 2 events
-  slow 0.000s inferred: performance: arguments — root /Users/joaolopes/Exactus/exactus/tests/standalone/
+  actor performance: 0.001s (100%), 2 events
+  slow 0.001s inferred: performance: arguments — root /Users/joaolopes/Exactus/exactus/tests/standalone/
   slow 0.000s inferred: performance: run start
-readme: 0.710s, 19 events, 26.76 events/s, gap 0.675s
-  silent 0.675s (95% of runtime)
-  actor stage: 0.681s (96%), 4 events
-  actor readme: 0.015s (2%), 5 events
-  actor repair: 0.009s (1%), 4 events
-  slow 0.675s inferred: stage: report
-  slow 0.015s inferred: readme: 0 findings across 4 inventories
-  slow 0.006s inferred: repair: python
+readme: 1.050s, 19 events, 18.10 events/s, gap 1.005s
+  silent 1.005s (96% of runtime)
+  actor stage: 1.011s (96%), 4 events
+  actor readme: 0.032s (3%), 5 events
+  actor repair: 0.004s (0%), 4 events
+  slow 1.005s inferred: stage: report
+  slow 0.031s inferred: readme: 0 findings across 4 inventories
+  slow 0.004s inferred: stage: scan directories
 Report: /Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/PERFORMANCE/report.json
 Dashboard: /Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/PERFORMANCE/index.html

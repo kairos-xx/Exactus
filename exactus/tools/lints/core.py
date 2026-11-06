@@ -74,6 +74,7 @@ from exactus.packages.all_lints import (
     resolve_tool_command,
 )
 from exactus.packages.organize import configured_order
+from exactus.packages.source_merger.live import merge_live_edit
 from exactus.packages.steps import trace
 from exactus.tools.common.cli import (
     ExactusCommonTables,
@@ -288,6 +289,7 @@ class Constants:
     stylelint_suffixes: ClassVar[frozenset[str]] = frozenset({".css"})
     htmlhint_suffixes: ClassVar[frozenset[str]] = frozenset({".htm", ".html"})
     tool_names: ClassVar[tuple[str, ...]] = (
+        "format",
         "custom_compliance",
         "custom_shebang",
         "custom_python",
@@ -1069,6 +1071,10 @@ class CleanStats:
         changed: Files rewritten.
         lines_removed: Blank lines removed.
         bytes_delta: Net byte-size change.
+        seconds: Wall-clock seconds the clean run took.
+        failures: Per-file cleaner/formatter failure findings. A file one
+            tool could not process becomes a reported issue instead of
+            aborting the pipeline.
 
     """
 
@@ -1076,6 +1082,8 @@ class CleanStats:
     changed: int = 0
     lines_removed: int = 0
     bytes_delta: int = 0
+    seconds: float = 0.0
+    failures: list[JsonValue] = field(default_factory=list)
 
 
 @dataclass(frozen=True, slots=True)
@@ -1410,6 +1418,9 @@ class LintExactusRequest:
             runtime for the transactional fix path.
         publisher: Report sink invoked inside the source commit, or
             ``None`` to leave publication to the caller.
+        format_report: Clean/format tool entry carried from the last
+            mutating pass into the final read-only report, or ``None``
+            when no pass produced one.
 
     """
 
@@ -1427,6 +1438,7 @@ class LintExactusRequest:
         default_factory=TransactionLimits,
     )
     publisher: Callable[[dict[str, JsonValue]], None] | None = None
+    format_report: JsonValue | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -1864,6 +1876,7 @@ class SourceCleaner:
 
         """
         stats: CleanStats = CleanStats()
+        started: float = monotonic()
         resolver: ConfigResolver = ConfigResolver(root=cwd)
         existing: list[Path] = [
             file
@@ -1878,7 +1891,22 @@ class SourceCleaner:
         ]
         trace(step=f"clean: normalize {len(existing)} files", depth=3)
         for file in existing:
-            cls._clean(path=file, stats=stats, writer=writer)
+            try:
+                cls._clean(path=file, stats=stats, writer=writer)
+            except (OSError, ValueError, RuntimeError) as error:
+                stats.failures.append(
+                    cls._failure_finding(
+                        tool="clean",
+                        file=file,
+                        cwd=cwd,
+                        message=str(object=error),
+                        rule="clean-failed",
+                    ),
+                )
+                sprint(
+                    f"warning: could not normalize {file}: {error}",
+                    file=writer,
+                )
         trace(
             step=(
                 f"clean: normalized — {stats.changed} changed, "
@@ -1886,7 +1914,15 @@ class SourceCleaner:
             ),
             depth=3,
         )
-        cls._format(files=existing, cwd=cwd, commands=commands, writer=writer)
+        stats.failures.extend(
+            cls._format(
+                files=existing,
+                cwd=cwd,
+                commands=commands,
+                writer=writer,
+            ),
+        )
+        stats.seconds = round(number=monotonic() - started, ndigits=3)
         cls._report(stats=stats, writer=writer)
         return stats
 
@@ -2587,7 +2623,7 @@ class SourceCleaner:
         cwd: Path,
         commands: ToolCommands,
         writer: Writer,
-    ) -> None:
+    ) -> list[JsonValue]:
         """Format Python, CSS/HTML, and JavaScript sources.
 
         JavaScript skips Prettier — the delimiter convention pass owns
@@ -2599,17 +2635,25 @@ class SourceCleaner:
         exit status of one means unfixable findings remain; those are
         reported by the lint pass rather than failing the formatter.
 
+        Each formatter first runs on its whole batch. When the batch fails
+        the tool is retried once per file so a single file the tool cannot
+        parse no longer aborts the pipeline or blocks the remaining files —
+        each failure is returned as a ``formatter-failed`` finding that the
+        report surfaces as an issue.
+
         Args:
             files: Source files to format.
             cwd: Project working directory.
             commands: Resolved executable prefixes keyed by tool name.
             writer: Status-message writer.
 
-        Raises:
-            RuntimeError: If a formatter exits with a failure status.
+        Returns:
+            Per-file formatter failure findings.
 
         """
-        formatter_commands: list[tuple[tuple[str, ...], bool]] = []
+        formatter_commands: list[
+            tuple[str, tuple[str, ...], list[str], bool]
+        ] = []
         py_files: list[str] = [
             str(object=file) for file in files if file.suffix in cls.py
         ]
@@ -2624,15 +2668,36 @@ class SourceCleaner:
             )
             formatter_commands.append(
                 (
+                    "ruff",
                     (
                         *ruff,
                         "check",
                         *Constants.ruff_policy(cwd=cwd),
                         "--fix",
                         "--exit-zero",
-                        *py_files,
                     ),
+                    py_files,
                     False,
+                ),
+            )
+        js_files: list[str] = [
+            str(object=file) for file in files if file.suffix in cls.js
+        ]
+        eslint: tuple[str, ...] | None = commands.get("eslint")
+        if js_files and eslint is not None:
+            trace(
+                step=(
+                    f"clean: format — eslint --fix on "
+                    f"{len(js_files)} javascript files"
+                ),
+                depth=3,
+            )
+            formatter_commands.append(
+                (
+                    "eslint",
+                    (*eslint, "--fix", "--no-warn-ignored"),
+                    js_files,
+                    True,
                 ),
             )
         prettier_files: list[str] = [
@@ -2648,22 +2713,7 @@ class SourceCleaner:
                 depth=3,
             )
             formatter_commands.append(
-                ((*prettier, "--write", *prettier_files), False),
-            )
-        js_files: list[str] = [
-            str(object=file) for file in files if file.suffix in cls.js
-        ]
-        eslint: tuple[str, ...] | None = commands.get("eslint")
-        if js_files and eslint is not None:
-            trace(
-                step=(
-                    f"clean: format — eslint --fix on "
-                    f"{len(js_files)} javascript files"
-                ),
-                depth=3,
-            )
-            formatter_commands.append(
-                ((*eslint, "--fix", "--no-warn-ignored", *js_files), True),
+                ("prettier", (*prettier, "--write"), prettier_files, False),
             )
         skipped: list[str] = [
             tool
@@ -2676,29 +2726,109 @@ class SourceCleaner:
         ]
         if skipped:
             sprint(
-                f"Skipping formatters not installed: {", ".join(skipped)}.",
+                f"Skipping formatters not installed: {', '.join(skipped)}.",
                 file=writer,
             )
-        for command, tolerate_findings in formatter_commands:
+        failures: list[JsonValue] = []
+        for (
+            tool,
+            prefix,
+            command_files,
+            tolerate_findings,
+        ) in formatter_commands:
             result: CommandResult = LintExactus.run_command(
-                command=command,
+                command=(*prefix, *command_files),
                 cwd=cwd,
             )
             trace(
                 step=(
-                    f"clean: formatter {command[0]} — exit {result.returncode}"
+                    f"clean: formatter {prefix[0]} — exit {result.returncode}"
                 ),
                 depth=3,
             )
-            if result.returncode and not (
+            if not result.returncode or (
                 tolerate_findings and result.returncode == 1
             ):
-                msg: str = dedent(
-                    text=f"""\
-    Formatter failed: {" ".join(command)}
-    {result.stderr}""",
+                continue
+            for file in command_files:
+                single: CommandResult = LintExactus.run_command(
+                    command=(*prefix, file),
+                    cwd=cwd,
                 )
-                raise RuntimeError(msg)
+                trace(
+                    step=(
+                        f"clean: formatter {prefix[0]} on {file} — "
+                        f"exit {single.returncode}"
+                    ),
+                    depth=4,
+                )
+                if not single.returncode or (
+                    tolerate_findings and single.returncode == 1
+                ):
+                    continue
+                message: str = single.stderr.strip() or (
+                    f"{tool} exited with status {single.returncode}."
+                )
+                failures.append(
+                    cls._failure_finding(
+                        tool=tool,
+                        file=Path(file),
+                        cwd=cwd,
+                        message=message,
+                        rule="formatter-failed",
+                    ),
+                )
+                sprint(
+                    f"warning: {tool} could not format {file}; "
+                    "reporting it as an issue",
+                    file=writer,
+                )
+        return failures
+
+    @staticmethod
+    def _failure_finding(
+        *,
+        tool: str,
+        file: Path,
+        cwd: Path,
+        message: str,
+        rule: str,
+    ) -> JsonValue:
+        """Normalize one clean-stage failure into a report finding.
+
+        Args:
+            tool: Failing cleaner or formatter name.
+            file: File the tool could not process.
+            cwd: Project working directory.
+            message: Captured stderr or exception text.
+            rule: Reported rule identifier.
+
+        Returns:
+            Finding payload compatible with the merged report.
+
+        """
+        try:
+            relative: str = (
+                file.resolve().relative_to(cwd.resolve()).as_posix()
+            )
+        except (OSError, ValueError):
+            relative = str(object=file)
+        matched: Match[str] | None = compile_regex(
+            pattern=r"\((?P<line>\d+):(?P<column>\d+)\)",
+        ).search(string=message)
+        line: int = int(matched["line"]) if matched else 0
+        column: int = int(matched["column"]) if matched else 0
+        return {
+            "tool": tool,
+            "file": relative,
+            "line": line,
+            "column": column,
+            "end_line": line,
+            "end_column": column,
+            "rule": rule,
+            "severity": "error",
+            "message": " ".join(message.split())[:500],
+        }
 
     @staticmethod
     def _markup_boundary(lowered: str, index: int) -> bool:
@@ -2732,7 +2862,7 @@ class SourceCleaner:
 
         """
         return (
-            f"{body.rstrip(" \t")}{line[len(body) :]}"
+            f"{body.rstrip(' \t')}{line[len(body) :]}"
             if (
                 body := line.rstrip("""\
 \r
@@ -2833,7 +2963,7 @@ class SourceCleaner:
             f"{stats.changed} changed, "
             f"{stats.lines_removed} lines removed, "
             f"{abs(stats.bytes_delta)} bytes "
-            f"{"added" if stats.bytes_delta > 0 else "removed"}",
+            f"{'added' if stats.bytes_delta > 0 else 'removed'}",
             file=writer,
         )
 
@@ -3002,6 +3132,8 @@ class _ToolPhasesInput:
         tool_args: Extra CLI arguments appended per tool.
         group_final_report: Payload produced by the group-final stage.
         organize_report: Payload produced by the organize stage.
+        format_report: Clean/format tool entry carried from a mutating
+            pass, or ``None`` when none was produced.
         writer: Status-message writer.
         progress: Shared stage tracker for progress publication.
 
@@ -3018,6 +3150,7 @@ class _ToolPhasesInput:
     tool_args: ToolArguments
     group_final_report: JsonValue
     organize_report: JsonValue
+    format_report: JsonValue | None
     writer: Writer
     progress: LintProgress
 
@@ -3146,6 +3279,7 @@ class LintExactus:
         journal: SourceJournal = SourceJournal(
             root=request.cwd,
             directory=directory,
+            merger=merge_live_edit,
         )
         journal.acquire()
         try:
@@ -3174,9 +3308,14 @@ class LintExactus:
                 seen: set[str] = {workspace.fingerprint()}
                 report: dict[str, JsonValue]
                 status: int
+                format_report: JsonValue | None = None
                 for _ in range(request.transaction_limits.max_passes):
                     before: str = workspace.fingerprint()
                     report, status = cls._run_cached(request=prospective)
+                    format_report = cast(
+                        typ="dict[str, JsonValue]",
+                        val=report["tools"],
+                    ).get("format", format_report)
                     after: str = workspace.fingerprint()
                     if after == before:
                         break
@@ -3200,6 +3339,7 @@ class LintExactus:
                             infer=False,
                             install_tools=False,
                         ),
+                        format_report=format_report,
                     ),
                 )
                 edits: tuple[FileEdit, ...] = workspace.proposals()
@@ -3212,26 +3352,41 @@ class LintExactus:
                         ),
                     ),
                 )
-                report["transaction"] = {
+                transaction: dict[str, JsonValue] = {
                     "state": "committed",
                     "files": len(edits),
+                    "dirty": [],
                     "stages": [
                         {"name": name, "paths": list(paths)}
                         for name, paths in workspace.stages
                     ],
                 }
+                report["transaction"] = transaction
 
-                def _publisher() -> None:
-                    """Publish the verified report inside the commit."""
+                def _publisher(dirty: tuple[Path, ...]) -> None:
+                    """Publish the verified report inside the commit.
+
+                    Args:
+                        dirty: Fork-preserved relative paths.
+
+                    """
+                    transaction["state"] = "dirty" if dirty else "committed"
+                    transaction["dirty"] = [path.as_posix() for path in dirty]
                     if request.publisher is not None:
                         request.publisher(report)
 
-                journal.commit(
+                dirty: tuple[Path, ...] = journal.commit(
                     edits=edits,
-                    publish=_publisher
-                    if request.publisher is not None
-                    else None,
+                    publish=_publisher,
                 )
+                if dirty:
+                    trace(
+                        step=(
+                            f"lints: {len(dirty)} dirty file(s) "
+                            "preserved for conciliation"
+                        ),
+                        depth=1,
+                    )
                 return report, status
         finally:
             journal.release()
@@ -3336,6 +3491,7 @@ class LintExactus:
                     tool_args=request.tool_args,
                     group_final_report=group_final_report,
                     organize_report=organize_report,
+                    format_report=request.format_report,
                     writer=status_writer,
                     progress=progress,
                 ),
@@ -4869,7 +5025,7 @@ class LintExactus:
                             message=(
                                 f"Bare import `{alias.name}` is only "
                                 "used through attributes "
-                                f"({", ".join(sorted(set(attributes)))}); "
+                                f"({', '.join(sorted(set(attributes)))}); "
                                 "prefer `from ... import ...`."
                             ),
                             position=(
@@ -4992,7 +5148,7 @@ class LintExactus:
                         file=file,
                         rule="JS004",
                         message=(
-                            f"Function `{match.group("name")}` uses function "
+                            f"Function `{match.group('name')}` uses function "
                             "declaration syntax; prefer arrow notation."
                         ),
                         position=(line, column),
@@ -5083,7 +5239,7 @@ class LintExactus:
                     file=file,
                     rule="JS003",
                     message=(
-                        f"Instance method `{match.group("name")}` "
+                        f"Instance method `{match.group('name')}` "
                         "uses arrow notation; only static methods "
                         "and standalone functions should be arrows."
                     ),
@@ -5155,7 +5311,7 @@ class LintExactus:
                             rule="JS005",
                             message=(
                                 "Static inline style "
-                                f"`{match.group("property")}` {detail}"
+                                f"`{match.group('property')}` {detail}"
                             ),
                             position=cls._line_column(
                                 text=text,
@@ -5190,7 +5346,7 @@ class LintExactus:
                             rule="JS006",
                             message=(
                                 "Static inline style "
-                                f"`{property_match.group("property")}` is "
+                                f"`{property_match.group('property')}` is "
                                 "assigned through `Object.assign(...style, "
                                 "{...})`; move it to a CSS class."
                             ),
@@ -5338,7 +5494,7 @@ class LintExactus:
                         rule="CSS001",
                         message=(
                             f"`{property_name}` contains a hardcoded "
-                            f"{", ".join(dict.fromkeys(reasons))}; the value "
+                            f"{', '.join(dict.fromkeys(reasons))}; the value "
                             "must come from a CSS variable. This includes "
                             "gradient definitions/components and all numeric "
                             "measurements. Only 0, 1, 0%, and 100% are "
@@ -5718,6 +5874,46 @@ class LintExactus:
         )
 
     @classmethod
+    def _format_report_entry(
+        cls: type[Self],
+        *,
+        clean_stats: CleanStats | None,
+        carried: JsonValue | None = None,
+    ) -> dict[str, JsonValue]:
+        """Render the clean/format stage as a report tool entry.
+
+        Args:
+            clean_stats: Accumulated cleaner metrics and per-file
+                cleaner/formatter failure findings, or ``None`` when the
+                stage never ran.
+            carried: Entry produced by an earlier mutating pass, merged
+                when this pass never ran the stage.
+
+        Returns:
+            ``{"format": entry}`` to merge into the tools report, or an
+            empty mapping when no pass produced one. A nonzero
+            ``returncode`` mirrors the presence of failure findings.
+
+        """
+        if clean_stats is None:
+            return {"format": carried} if isinstance(carried, dict) else {}
+        findings: list[JsonValue] = sorted(
+            clean_stats.failures,
+            key=cls._sort_key,
+        )
+        return {
+            "format": {
+                "tool": "format",
+                "command": [],
+                "returncode": int(bool(findings)),
+                "stderr": "",
+                "count": len(findings),
+                "findings": findings,
+                "duration_seconds": clean_stats.seconds,
+            },
+        }
+
+    @classmethod
     def _tool_phases(
         cls: type[Self],
         inputs: _ToolPhasesInput,
@@ -5751,9 +5947,10 @@ class LintExactus:
         htmlhint_args: list[str] = scope.htmlhint_args
         clean_files: list[Path] = scope.clean_files
         resolver: LintsConfigResolver = LintsConfigResolver(root=cwd)
+        clean_stats: CleanStats | None = None
         if config.fix and not config.simple:
             trace(step=f"clean: {len(clean_files)} source files", depth=2)
-            _ = run_source_activity(
+            clean_stats = run_source_activity(
                 mode="write",
                 identity="lints:clean",
                 action=lambda: SourceCleaner.run(
@@ -5794,7 +5991,6 @@ class LintExactus:
                     ),
                 ),
             )
-        if not config.simple:
             simplify_counts: dict[str, int] = run_source_activity(
                 mode="write",
                 identity="lints:python-simplify",
@@ -5821,6 +6017,12 @@ class LintExactus:
                 "skipped": simplify_counts["skipped"],
                 "healed": simplify_counts["changed"],
             }
+        tools.update(
+            cls._format_report_entry(
+                clean_stats=clean_stats,
+                carried=inputs.format_report,
+            ),
+        )
         report: dict[str, JsonValue] = {
             "version": Constants.report_version,
             "tools": tools,
@@ -5835,7 +6037,7 @@ class LintExactus:
         trace(
             step=(
                 "all lints: long-line repair — "
-                f"{"enabled" if repair is not None else "disabled"}"
+                f"{'enabled' if repair is not None else 'disabled'}"
             ),
             depth=2,
         )
@@ -5867,12 +6069,13 @@ class LintExactus:
                 file_count=len(python_files),
             )
         report["all_lints"] = cast(typ="JsonValue", val=all_lints_report)
-        baselines: tuple[frozenset[IssueKey], frozenset[IssueKey]] | None = (
-            issue_baselines(results=all_lints_results)
-            if python_args and not config.simple
-            else None
-        )
-        if baselines is not None:
+        if (
+            baselines := (
+                issue_baselines(results=all_lints_results)
+                if python_args and not config.simple
+                else None
+            )
+        ) is not None:
             trace(
                 step=(
                     f"infer: baselines — {len(baselines[0])} ruff, "
@@ -5886,11 +6089,17 @@ class LintExactus:
             raise RuntimeError(msg)
         status: int = 0
         if not config.simple:
-            inference: bool = config.fix and any(
-                resolver.resolve(path=path, base=config).infer
-                for path in python_files
+            progress.stage(
+                name="infer"
+                if (
+                    inference := config.fix
+                    and any(
+                        resolver.resolve(path=path, base=config).infer
+                        for path in python_files
+                    )
+                )
+                else "pyrefly",
             )
-            progress.stage(name="infer" if inference else "pyrefly")
             trace(
                 step="stage: infer" if inference else "stage: pyrefly",
                 depth=1,
@@ -6409,7 +6618,7 @@ class LintExactus:
         entries: dict[str, JsonValue] = {"custom_shebang": shebang}
         trace(
             step=(
-                f"conventions: shebang — {shebang.get("count", 0)} findings"
+                f"conventions: shebang — {shebang.get('count', 0)} findings"
             ),
             depth=2,
         )
@@ -6477,7 +6686,7 @@ class LintExactus:
             trace(
                 step=(
                     "conventions: javascript delimiters — "
-                    f"{delimiters.get("count", 0)} findings"
+                    f"{delimiters.get('count', 0)} findings"
                 ),
                 depth=2,
             )
@@ -6493,7 +6702,7 @@ class LintExactus:
             trace(
                 step=(
                     "conventions: javascript notation — "
-                    f"{notation.get("count", 0)} findings"
+                    f"{notation.get('count', 0)} findings"
                 ),
                 depth=2,
             )
@@ -7128,7 +7337,7 @@ class LintExactus:
             )
             trace(
                 step=(
-                    f"infer: sources {"changed" if changed else "unchanged"}"
+                    f"infer: sources {'changed' if changed else 'unchanged'}"
                 ),
                 depth=2,
             )
@@ -7653,7 +7862,7 @@ class LintExactus:
             trace(
                 step=(
                     f"toolchain: {name} → "
-                    f"{" ".join(command) if command else "missing"}"
+                    f"{' '.join(command) if command else 'missing'}"
                 ),
                 depth=3,
             )
@@ -8716,7 +8925,7 @@ class LintExactus:
         trace(
             step=(
                 f"delimiters: scanning {len(files)} files — "
-                f"heal {"on" if inputs.fix else "off"}"
+                f"heal {'on' if inputs.fix else 'off'}"
             ),
             depth=3,
         )
@@ -8791,7 +9000,7 @@ class LintExactus:
         trace(
             step=(
                 f"notation: scanning {len(files)} files — "
-                f"heal {"on" if inputs.fix else "off"}"
+                f"heal {'on' if inputs.fix else 'off'}"
             ),
             depth=3,
         )
@@ -8861,7 +9070,7 @@ class LintExactus:
         heal: bool = inputs.shebang.heal and inputs.fix
         trace(
             step=(
-                f"shebang: scanning sources — heal {"on" if heal else "off"}"
+                f"shebang: scanning sources — heal {'on' if heal else 'off'}"
             ),
             depth=3,
         )

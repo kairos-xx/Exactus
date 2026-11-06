@@ -160,7 +160,7 @@ def _execution_findings(
                             "action",
                         ) or event.get("phase")
                         detail: str = (
-                            f"{event.get("message")} {event.get("url")}"
+                            f"{event.get('message')} {event.get('url')}"
                         )
                         source_line: JsonValue = event.get("line")
                         source_column: JsonValue = event.get("column")
@@ -171,7 +171,7 @@ def _execution_findings(
                                     object=event.get("file")
                                     or f"{identity}: {target}",
                                 ),
-                                message=f"{event.get("category")}: {detail}",
+                                message=f"{event.get('category')}: {detail}",
                                 flow=identity,
                                 action=str(object=event.get("action") or ""),
                                 phase=str(object=event.get("phase") or ""),
@@ -372,9 +372,9 @@ def markdown_report(*, result: FrontendExactusResult) -> str:
                 continue
             lines.extend(
                 [
-                    f"## {flow.get("flow_id")} — {flow.get("status")}",
+                    f"## {flow.get('flow_id')} — {flow.get('status')}",
                     "",
-                    f"Run: `{flow.get("run_id", "")}`",
+                    f"Run: `{flow.get('run_id', '')}`",
                     "",
                 ],
             )
@@ -387,7 +387,7 @@ def markdown_report(*, result: FrontendExactusResult) -> str:
                         ) or record.get("event_id")
                         lines.extend(
                             [
-                                f"### {label} — {record.get("status")}",
+                                f"### {label} — {record.get('status')}",
                                 "",
                                 "```json",
                                 dumps(obj=record, indent=2),

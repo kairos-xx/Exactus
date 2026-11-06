@@ -362,7 +362,7 @@ def test_skip_plugin_preserves_project_imports(
                     "Constants; print(Constants.skip_fields)"
                 ),
                 "exactus_skip_plugin",
-                f"--rcfile={tmp_path / "coverage.ini"}",
+                f"--rcfile={tmp_path / 'coverage.ini'}",
             ),
             cwd=tmp_path,
         ),

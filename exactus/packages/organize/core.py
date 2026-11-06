@@ -184,12 +184,12 @@ def validate_order(*, order: Sequence[str]) -> tuple[str, ...]:
     unknown: list[str] = sorted(set(normalized) - default)
     missing: list[str] = sorted(default - set(normalized))
     if unknown:
-        details.append(f"unknown categories: {", ".join(unknown)}")
+        details.append(f"unknown categories: {', '.join(unknown)}")
     if missing:
-        details.append(f"missing categories: {", ".join(missing)}")
+        details.append(f"missing categories: {', '.join(missing)}")
     if not details:
         details.append("duplicate categories")
-    msg: str = f"invalid organize order ({"; ".join(details)})"
+    msg: str = f"invalid organize order ({'; '.join(details)})"
     raise ValueError(msg)
 
 

@@ -8,11 +8,11 @@ Provide result json content.
 ### Files
 
 - [`result.json`](result.json) — Provide result json content.
-- [`result.md`](result.md) — **Run time:** 04 November 2026, 12:36:40 UTC
+- [`result.md`](result.md) — **Run time:** 06 November 2026, 02:41:30 UTC
 
 ### Subdirectories
 
-- [`ARTIFACTS/`](ARTIFACTS/README.md) — Provide result json content.
-- [`result_web/`](result_web/README.md) — Provide cerulean css content.
+- [`ARTIFACTS/`](ARTIFACTS/README.md) — Provide @activity json content.
+- [`result_web/`](result_web/README.md) — No subdirectories.
 
 <!-- exactus:inventory:end -->

@@ -75,7 +75,7 @@ def human_size(*, size: int) -> str:
             return (
                 f"{size}B"
                 if unit == "B"
-                else f"{f"{value:.1f}".removesuffix(".0")}{unit}"
+                else f"{f'{value:.1f}'.removesuffix('.0')}{unit}"
             )
         value /= size_base
     return f"{size}B"
@@ -281,7 +281,7 @@ def _tree_rows(
         )
         rows.append(
             (
-                f"{prefix}{branch}{child_name}{("/" if is_dir else "")}",
+                f"{prefix}{branch}{child_name}{('/' if is_dir else '')}",
                 size,
                 mtime,
             ),

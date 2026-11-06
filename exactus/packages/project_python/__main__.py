@@ -9,6 +9,7 @@ script as ``__main__`` with the remaining arguments.
 from __future__ import annotations
 
 from importlib import import_module
+from importlib.util import find_spec
 from pathlib import Path
 from runpy import run_path
 from sys import argv, path, stderr
@@ -18,8 +19,8 @@ from typing import TYPE_CHECKING, cast
 if TYPE_CHECKING:
     from collections.abc import Callable
 file_path: Path = Path(__file__).resolve()
-path.insert(0, str(object=file_path.parent.parent))
-path.insert(0, str(object=file_path.parent.parent.parent.parent))
+if find_spec(name="exactus") is None:
+    path.insert(0, str(object=file_path.parents[3]))
 switch: Callable[[], None] | None = None
 for candidate in ("exactus.packages.project_python", "project_python"):
     try:

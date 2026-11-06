@@ -82,7 +82,7 @@ def main(*, arguments: tuple[str, ...] | None = None) -> int:
             step=(
                 f"readme: arguments — root {root}, "
                 f"output {output_dir}, fix "
-                f"{not cast(typ="bool", val=options.dry)}"
+                f"{not cast(typ='bool', val=options.dry)}"
             ),
         )
         trace(step="readme: run start")
@@ -111,7 +111,7 @@ def main(*, arguments: tuple[str, ...] | None = None) -> int:
             ),
         )
         trace(
-            step=f"report: bundle written — {output_dir / "README.md"}",
+            step=f"report: bundle written — {output_dir / 'README.md'}",
             depth=2,
         )
         status: int = int(bool(result.findings))

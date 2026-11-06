@@ -9,7 +9,8 @@ export default {
     "**/.cache/**",
     "**/.venv/**",
     "**/.history/**",
-    "exactus/bundle/**"
+    "exactus/bundle/**",
+    "dev/stress_test/**"
   ],
   reportDescriptionlessDisables: true,
   reportInvalidScopeDisables: true,

@@ -201,7 +201,7 @@ def _expect_hit_contains_point(
         expect_true(
             condition=left - 1 <= x <= left + bounds["width"] + 1
             and top - 1 <= y <= top + bounds["height"] + 1,
-            message=f"{element["selector"]} does not contain {x},{y}",
+            message=f"{element['selector']} does not contain {x},{y}",
         )
 
 
@@ -952,7 +952,7 @@ def test_target_is_configured_started_and_opened_through_studio(
             condition=str(object=service.snapshot()["target_url"]).startswith(
                 str(object=detected),
             ),
-            message=f"Opened {service.snapshot()["target_url"]}.",
+            message=f"Opened {service.snapshot()['target_url']}.",
         )
         edit(
             service=service,
@@ -1095,7 +1095,7 @@ def test_a_new_project_suggests_the_demo_server_and_start_opens_its_page(
             condition=str(object=service.snapshot()["target_url"]).startswith(
                 base,
             ),
-            message=f"Opened {service.snapshot()["target_url"]}, not {base}.",
+            message=f"Opened {service.snapshot()['target_url']}, not {base}.",
         )
     finally:
         service.stop()

@@ -2019,7 +2019,7 @@ class FlowRunner:
             if selected is None and item.get("required") is not False:
                 msg: str = (
                     f"Response variable {name!r} could not read "
-                    f"{source}{f".{path}" if path else ""}."
+                    f"{source}{f'.{path}' if path else ''}."
                 )
                 raise ValueError(msg)
             if selected is None:
@@ -2255,7 +2255,7 @@ class FlowRunner:
                 except (PlaywrightError, OSError) as failure:
                     status, error = (
                         "failed",
-                        f"{error or ""} Screenshot: {failure}",
+                        f"{error or ''} Screenshot: {failure}",
                     )
         drift: JsonValue = (
             cast(typ="dict[str, JsonValue]", val=response).get("drift")

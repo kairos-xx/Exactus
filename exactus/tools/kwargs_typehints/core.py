@@ -2597,7 +2597,7 @@ class BareImportExactusor:
                         (use.line, use.column, use.original, replacement),
                     )
                 suggestion = (
-                    f"from {plan.module} import {", ".join(import_parts)}"
+                    f"from {plan.module} import {', '.join(import_parts)}"
                 )
                 if plan.value_uses:
                     kept: str = self.preserved_import(plan=plan)

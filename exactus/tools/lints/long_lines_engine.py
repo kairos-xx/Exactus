@@ -1023,11 +1023,11 @@ class LongLineFixer:
 
         """
         return f"{quote}{
-            value.replace("\\", "\\\\")
-            .replace("\n", "\\n")
-            .replace("\r", "\\r")
-            .replace("\t", "\\t")
-            .replace(quote, f"\\{quote}")
+            value.replace('\\', '\\\\')
+            .replace('\n', '\\n')
+            .replace('\r', '\\r')
+            .replace('\t', '\\t')
+            .replace(quote, f'\\{quote}')
         }{quote}"
 
     @staticmethod

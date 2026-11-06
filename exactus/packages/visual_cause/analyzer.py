@@ -1800,7 +1800,7 @@ class CssVisualCause:
             "|---|---:|",
         ]
         lines.extend(
-            f"| `{item.get("size", "")}` | {item.get("count", 0)} |"
+            f"| `{item.get('size', '')}` | {item.get('count', 0)} |"
             for item in repeated_value
             if isinstance(item, dict)
         )
@@ -1872,7 +1872,7 @@ class CssVisualCause:
             if rows:
                 body.extend(
                     [
-                        f"**{group.replace("_", " ").title()}**",
+                        f"**{group.replace('_', ' ').title()}**",
                         "",
                         "| Property | A | B |",
                         "|---|---|---|",
@@ -4298,7 +4298,7 @@ class CssVisualCause:
                     f"Affected DOM elements: {len(results.affected)}",
                     f"Changed DOM nodes: {len(results.nodes)}",
                     f"Causal CSS rules: {len(results.causes)}",
-                    f"Report: {self.settings.output / "report.json"}",
+                    f"Report: {self.settings.output / 'report.json'}",
                     "",
                 ],
             ),
@@ -4694,7 +4694,7 @@ class CssVisualCause:
             f"{round(number=baseline_pixels):,} changed pixels |",
             f"| Evidence score | {confidence:.3f} |",
             "| Impact classification | "
-            f"{impact.get("impact_kind", "unknown")} |",
+            f"{impact.get('impact_kind', 'unknown')} |",
             "",
             "> **Metric meaning:** for counterfactually proven properties, "
             "“explained visual delta” is the number of changed pixels removed "
@@ -4727,9 +4727,9 @@ class CssVisualCause:
         if tokens:
             lines.extend(["**Causal value fragments:**", ""])
             lines.extend(
-                f"- `{token.get("b", "")}` → `{token.get("a", "")}` "
+                f"- `{token.get('b', '')}` → `{token.get('a', '')}` "
                 "(confidence "
-                f"{self._json_float(value=token.get("confidence", 0.0)):.3f})"
+                f"{self._json_float(value=token.get('confidence', 0.0)):.3f})"
                 for token in tokens[:8]
             )
             lines.append("")

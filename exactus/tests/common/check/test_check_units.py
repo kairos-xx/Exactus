@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from io import StringIO
-from typing import TYPE_CHECKING, cast
+from typing import TYPE_CHECKING
 from zipfile import ZipFile
 
 from exactus import __main__ as check
@@ -14,7 +14,6 @@ from exactus.tests.common.support import (
     expect_equal,
     expect_in,
     expect_true,
-    private_call,
 )
 
 if TYPE_CHECKING:
@@ -26,17 +25,14 @@ if TYPE_CHECKING:
     from exactus.__main__ import ArgumentInfo
 
 
-def _default_root() -> Path:
-    """Resolve the private default-root helper.
+def default_root() -> Path:
+    """Resolve the default-root helper.
 
     Returns:
         Resolved project root.
 
     """
-    return cast(
-        typ="Path",
-        val=private_call(owner=check, name="_default_root"),
-    )
+    return check.default_root()
 
 
 def test_default_root_precedence(
@@ -52,7 +48,7 @@ def test_default_root_precedence(
     """
     explicit: Path = tmp_path / "explicit"
     monkeypatch.setenv(name="EXACTUS_ROOT", value=str(object=explicit))
-    expect_equal(actual=_default_root(), expected=explicit.resolve())
+    expect_equal(actual=default_root(), expected=explicit.resolve())
     monkeypatch.delenv(name="EXACTUS_ROOT")
     launcher: Path = tmp_path / "project" / "exec" / "exactus"
     launcher.parent.mkdir(parents=True)
@@ -63,7 +59,7 @@ def test_default_root_precedence(
         name="argv",
         value=[str(object=launcher)],
     )
-    expect_equal(actual=_default_root(), expected=tmp_path / "project")
+    expect_equal(actual=default_root(), expected=tmp_path / "project")
     installed: Path = tmp_path / "bin" / "exactus"
     installed.parent.mkdir(parents=True)
     with ZipFile(file=installed, mode="w") as archive:
@@ -74,7 +70,7 @@ def test_default_root_precedence(
         value=[str(object=installed)],
     )
     monkeypatch.chdir(path=tmp_path)
-    expect_equal(actual=_default_root(), expected=tmp_path.resolve())
+    expect_equal(actual=default_root(), expected=tmp_path.resolve())
     markered: Path = tmp_path / "tool" / "exactus"
     markered.parent.mkdir(parents=True)
     _ = (markered.parent / "pyproject.toml").write_text(
@@ -88,9 +84,9 @@ def test_default_root_precedence(
         name="argv",
         value=[str(object=markered)],
     )
-    expect_equal(actual=_default_root(), expected=markered.parent)
+    expect_equal(actual=default_root(), expected=markered.parent)
     monkeypatch.setattr(target=check, name="argv", value=["python"])
-    expect_equal(actual=_default_root(), expected=tmp_path.resolve())
+    expect_equal(actual=default_root(), expected=tmp_path.resolve())
 
 
 def test_tool_and_terminal_properties(monkeypatch: pytest.MonkeyPatch) -> None:

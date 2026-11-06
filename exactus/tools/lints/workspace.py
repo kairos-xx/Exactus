@@ -20,7 +20,7 @@ from exactus.tools.common.source_transaction import (
     StageContext,
     StageObserver,
     read_image,
-    same_image,
+    same_content,
 )
 
 if TYPE_CHECKING:
@@ -193,7 +193,10 @@ class SourceWorkspace:
             changed: tuple[str, ...] = tuple(
                 path.as_posix()
                 for path in sorted(before.keys() | after.keys())
-                if not same_image(left=before.get(path), right=after.get(path))
+                if not same_content(
+                    left=before.get(path),
+                    right=after.get(path),
+                )
             )
             self.stages.append((name, changed))
         self.check_budget()
@@ -256,25 +259,30 @@ class SourceWorkspace:
             digest.update(str(object=image.mode).encode())
         return digest.hexdigest()
 
-    def verify_originals(self) -> None:
-        """Reject external changes before publishing any proposal.
+    def verify_originals(self) -> frozenset[Path]:
+        """Report originals that changed on disk during analysis.
 
-        Raises:
-            SourceConflictError: An original changed during analysis.
+        The three-way merge decision in ``SourceJournal.commit``
+        resolves each changed file individually, so changed originals
+        are reported rather than rejected.
+
+        Returns:
+            Original-relative paths whose live image drifted.
 
         """
-        for relative, expected in self.originals.items():
-            if not same_image(
+        return frozenset(
+            relative
+            for relative, expected in self.originals.items()
+            if not same_content(
                 left=expected,
                 right=read_image(path=self.root / relative),
-            ):
-                msg: str = f"External source edit preserved: {relative}"
-                raise SourceConflictError(msg)
+            )
+        )
 
     def freeze(self) -> None:
         """Freeze validated prospective bytes and recheck originals."""
         self.check_budget()
-        self.verify_originals()
+        _ = self.verify_originals()
         self._verified = self.snapshot()
 
     def proposals(self) -> tuple[FileEdit, ...]:
@@ -289,7 +297,7 @@ class SourceWorkspace:
         """
         current: dict[Path, FileImage] = self.snapshot()
         if self._verified is None or any(
-            not same_image(
+            not same_content(
                 left=current.get(path),
                 right=self._verified.get(path),
             )
@@ -297,7 +305,7 @@ class SourceWorkspace:
         ):
             msg: str = "Cannot commit an unverified or changed lint workspace."
             raise SourceConflictError(msg)
-        self.verify_originals()
+        _ = self.verify_originals()
         return tuple(
             FileEdit(
                 relative=path,
@@ -310,7 +318,7 @@ class SourceWorkspace:
                 ),
             )
             for path in sorted(self.originals.keys() | current.keys())
-            if not same_image(
+            if not same_content(
                 left=self.originals.get(path),
                 right=current.get(path),
             )

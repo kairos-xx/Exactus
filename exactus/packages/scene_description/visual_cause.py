@@ -50,7 +50,7 @@ class VisualCauseDescriber:
         ]
         if isinstance(elements, list):
             lines.extend(
-                f"- {item.get("summary")}"
+                f"- {item.get('summary')}"
                 for item in elements
                 if isinstance(item, dict) and item.get("summary")
             )

@@ -182,7 +182,7 @@ def normalized_data(
     status: str = str(object=payload.get("status", "ERROR"))
     reason: str = (
         f"{len(findings)} browser, server or workflow findings; "
-        f"{outcomes["failed"]} failed workflows."
+        f"{outcomes['failed']} failed workflows."
     )
     return {
         "title": "Frontend execution",

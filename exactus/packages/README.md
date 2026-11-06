@@ -40,6 +40,7 @@ generates an offline dashboard and provides an explicitly started watcher.
 - [`screenshot/`](screenshot/README.md) — This package owns screenshot acquisition and image similarity comparison. Browser recording, crawling, diagnostics, and replay live in `exactus.tools.record`. The `exactus.tools.frontend` exactus combines both engines in device/theme lanes.
 - [`server/`](server/README.md) — Loopback web-server lifecycle used by the screenshot shortcuts (`--server` and `--entrypoint`) in `exactus/__main__.py`.
 - [`shebang_update/`](shebang_update/README.md) — Update Python virtual-environment shebangs to the current project path.
+- [`source_merger/`](source_merger/README.md) — Conflict-aware concurrent source reconciliation for Python, JS, HTML and CSS.
 - [`steps/`](steps/README.md) — Timestamped step tracing shared by the Exactus packages.
 - [`todo_sync/`](todo_sync/README.md) — Adapted from the supplied `sync_todo.py`: a reusable, standard-library-only package with no dependency on `vm_image_manager`, Exactus runtime, npm, or the network. It never infers completion or changes checkboxes.
 - [`tree/`](tree/README.md) — Render directories, `.zip` archives and explicit path lists as `TREE.txt`-style listings (name + aligned size + modified date).

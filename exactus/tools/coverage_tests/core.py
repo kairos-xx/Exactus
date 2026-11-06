@@ -2043,8 +2043,8 @@ class CombinedCoverageRunner:
                 suffix: str = f": {detail}" if detail else ""
                 origin: str = cls._issue_origin(entry=entry)
                 lines.append(
-                    f"- `{entry.get("test", "n/a")}` — {
-                        entry.get("kind", "FAILED")
+                    f"- `{entry.get('test', 'n/a')}` — {
+                        entry.get('kind', 'FAILED')
                     }{suffix}{origin}",
                 )
             lines.append("")
@@ -2054,10 +2054,10 @@ class CombinedCoverageRunner:
                 entry = item if isinstance(item, dict) else {}
                 origin = cls._issue_origin(entry=entry)
                 lines.append(
-                    f"- `{entry.get("test", "n/a")}` — `{
-                        entry.get("category", "Warning")
-                    }` at `{entry.get("location", "n/a")}`: {
-                        entry.get("message", "")
+                    f"- `{entry.get('test', 'n/a')}` — `{
+                        entry.get('category', 'Warning')
+                    }` at `{entry.get('location', 'n/a')}`: {
+                        entry.get('message', '')
                     }{origin}",
                 )
             lines.append("")
@@ -2472,8 +2472,8 @@ class CombinedCoverageRunner:
             The resulting value.
 
         """
-        return f" _(shard {entry.get("shard", "?")}, `{
-            entry.get("log", "n/a")
+        return f" _(shard {entry.get('shard', '?')}, `{
+            entry.get('log', 'n/a')
         }`)_"
 
     @staticmethod
@@ -2729,10 +2729,10 @@ class CombinedCoverageRunner:
         )
         return [
             f"- JavaScript files measured: **{
-                javascript.get(("files_measured"), 0)
+                javascript.get(('files_measured'), 0)
             }**",
             f"- JavaScript line coverage: **{
-                javascript.get(("percent_covered"), "n/a")
+                javascript.get(('percent_covered'), 'n/a')
             }%**",
             f"- JavaScript unreached sources: **{js_unreached_count}**",
         ]
@@ -2755,9 +2755,9 @@ class CombinedCoverageRunner:
         )
         return "".join(
             (
-                f"| `{values.get("path", "n/a")}` | ",
-                f"{values.get("num_statements", "n/a")} | ",
-                f"{values.get("missing_lines", "n/a")} | ",
+                f"| `{values.get('path', 'n/a')}` | ",
+                f"{values.get('num_statements', 'n/a')} | ",
+                f"{values.get('missing_lines', 'n/a')} | ",
                 f"{percent}% |",
             ),
         )
@@ -2776,7 +2776,7 @@ class CombinedCoverageRunner:
         if isinstance(item, dict) and isinstance(item.get("file"), str):
             module: JsonValue = item.get("module")
             suffix: str = f" (module `{module}`)" if module else ""
-            return f"- `{item["file"]}`{suffix}"
+            return f"- `{item['file']}`{suffix}"
         return f"- `{item}`"
 
     @staticmethod
@@ -5088,7 +5088,7 @@ class CombinedCoverageRunner:
             program=str(object=bundle) if bundle is not None else None,
         )
         trace(
-            step=f"coverage {" ".join(arguments)} — exit {process.returncode}",
+            step=f"coverage {' '.join(arguments)} — exit {process.returncode}",
             depth=2,
         )
         return process.returncode
@@ -5153,20 +5153,20 @@ class CombinedCoverageRunner:
             "",
             "## Summary",
             "",
-            f"- Status: **{("PASS" if passed else "FAIL")}**",
+            f"- Status: **{('PASS' if passed else 'FAIL')}**",
             (
                 f"- Coverage gate: "
-                f"**{(minimum if minimum is not None else "disabled")}**"
+                f"**{(minimum if minimum is not None else 'disabled')}**"
             ),
             (
                 f"- Per-file gate: "
-                f"**{per_file if per_file is not None else "disabled"}** "
+                f"**{per_file if per_file is not None else 'disabled'}** "
                 f"({len(shortfalls)} file(s) below)"
             ),
             f"- Coverage: **{percent}%**",
-            f"- Statements: **{total.get("num_statements", "n/a")}**",
-            f"- Missing lines: **{total.get("missing_lines", "n/a")}**",
-            f"- Covered lines: **{total.get("covered_lines", "n/a")}**",
+            f"- Statements: **{total.get('num_statements', 'n/a')}**",
+            f"- Missing lines: **{total.get('missing_lines', 'n/a')}**",
+            f"- Covered lines: **{total.get('covered_lines', 'n/a')}**",
             f"- Reachable local targets: **{target_count}**",
             f"- Ignored non-local imports: **{ignored_count}**",
             f"- Unreached source files: **{unreached_count}**",
@@ -5208,8 +5208,8 @@ class CombinedCoverageRunner:
                 "".join(
                     (
                         f"| `{name}` | ",
-                        f"{values.get("num_statements", "n/a")} | ",
-                        f"{values.get("missing_lines", "n/a")} | ",
+                        f"{values.get('num_statements', 'n/a')} | ",
+                        f"{values.get('missing_lines', 'n/a')} | ",
                         f"{cell_percent}% |",
                     ),
                 ),
@@ -5457,16 +5457,16 @@ class CombinedCoverageRunner:
             )
             lines.extend(
                 (
-                    f"### `{item["test"]}`",
+                    f"### `{item['test']}`",
                     "",
                     "**Outcome:** SKIPPED · **Severity:** info",
-                    f"**Location:** `{item["path"]}:{item["line"]}`",
+                    f"**Location:** `{item['path']}:{item['line']}`",
                     "",
                     str(object=item["message"]),
                     "",
                     (
                         f"Log: [Test "
-                        f"output]({item["log"]}) (shard {item["shard"]})"
+                        f"output]({item['log']}) (shard {item['shard']})"
                     ),
                     "",
                 ),
@@ -5479,7 +5479,7 @@ class CombinedCoverageRunner:
                 )
                 lines.append("~~~python")
                 lines.extend(
-                    f"{row["n"]}{">" if row["target"] else " "}| {row["text"]}"
+                    f"{row['n']}{'>' if row['target'] else ' '}| {row['text']}"
                     for row in rows
                 )
                 lines.extend(("~~~", ""))
@@ -5563,9 +5563,9 @@ class CombinedCoverageRunner:
                 reason: str = str(object=entry.get("detail", "")).strip()
                 first: str = (reason.splitlines() or [""])[0]
                 lines.append(
-                    f"| `{entry.get("test")}` | {entry.get("kind")} | "
-                    f"{first.replace("|", chr(92) + "|")[:200]} | "
-                    f"`{entry.get("log")}` |",
+                    f"| `{entry.get('test')}` | {entry.get('kind')} | "
+                    f"{first.replace('|', chr(92) + '|')[:200]} | "
+                    f"`{entry.get('log')}` |",
                 )
             lines.append("")
         lines.extend(skipped_lines)
@@ -5578,8 +5578,8 @@ class CombinedCoverageRunner:
             ),
         )
         lines.extend(
-            f"| `{row["group"]}` | {row["files"]} | {row["tests"]} | "
-            f"{row["passed"]} | {row["failed"]} | {row["skipped"]} |"
+            f"| `{row['group']}` | {row['files']} | {row['tests']} | "
+            f"{row['passed']} | {row['failed']} | {row['skipped']} |"
             for row in group_rows
         )
         lines.extend(
@@ -5588,7 +5588,7 @@ class CombinedCoverageRunner:
         lines.append("| --- | ---: | ---: | ---: | --- |")
         lines.extend(
             f"| {shard.index} | {shard.returncode} | "
-            f"{shard.collected if shard.collected is not None else "n/a"} | "
+            f"{shard.collected if shard.collected is not None else 'n/a'} | "
             f"{len(shard.tests)} | `{shard.log}` |"
             for shard in execution.shards
         )
@@ -5602,7 +5602,7 @@ class CombinedCoverageRunner:
             lines.append("| --- | ---: |")
             lines.extend(
                 (
-                    f"| {text.replace("|", chr(92) + "|")[:200]} | {count} |"
+                    f"| {text.replace('|', chr(92) + '|')[:200]} | {count} |"
                     for text, count in warnings.most_common()
                 ),
             )
@@ -5733,7 +5733,7 @@ class CombinedCoverageRunner:
                 entries: list[tuple[str, str]] = executed.get(test, [])
                 lines.append(
                     f"### `{test}` — {len(entries)} "
-                    f"test{("" if len(entries) == 1 else "s")}",
+                    f"test{('' if len(entries) == 1 else 's')}",
                 )
                 lines.append("")
                 if entries:
@@ -5742,7 +5742,7 @@ class CombinedCoverageRunner:
                     outcome: str
                     for test_name, outcome in entries:
                         lines.append(
-                            f"| `{test_name.replace("|", chr(92) + "|")}` "
+                            f"| `{test_name.replace('|', chr(92) + '|')}` "
                             f"| {outcome} |",
                         )
                 else:
@@ -6633,7 +6633,7 @@ class CommandLine:
             msg: str = (
                 f"Every --source-root must be an existing "
                 f"directory inside the project root: "
-                f"{", ".join(map(str, invalid))}"
+                f"{', '.join(map(str, invalid))}"
             )
             raise CoverageRunError(msg)
         return CoverageConfig(

@@ -560,7 +560,7 @@ def test_link_paths_leaves_non_paths(tmp_path: Path) -> None:
             "bare `word`",
             "gone `pkg/absent.py`",
             "up `../outside.py`",
-            f"out `{tmp_path.parent / "other.py"}`",
+            f"out `{tmp_path.parent / 'other.py'}`",
             "empty `pkg/mod.py::[x]`",
         ],
     )
@@ -586,7 +586,7 @@ def test_link_paths_leaves_oversized_paths(tmp_path: Path) -> None:
 
     """
     (tmp_path / "tests").mkdir()
-    raw: str = f"exactus/tests/test_case[{"x" * 300}]"
+    raw: str = f"exactus/tests/test_case[{'x' * 300}]"
     markdown: str = f"failed `{raw}`"
     linked: str = ReportBundle.link_paths(
         markdown=markdown,

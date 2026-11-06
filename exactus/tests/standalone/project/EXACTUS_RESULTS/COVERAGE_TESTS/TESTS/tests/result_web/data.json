@@ -4,7 +4,7 @@
   "analyzer": "tests-tests",
   "comparison": {
     "available": true,
-    "previous_generated_at": "2026-11-04T11:56:00.844766+00:00",
+    "previous_generated_at": "2026-11-06T02:17:11.397842+00:00",
     "previous_run_id": null,
     "previous_status": "PASS",
     "previous_duration_seconds": null,
@@ -22,15 +22,15 @@
   },
   "findings": [],
   "fingerprint": {
-    "commit": "ce47630806edce94544dfaacf41b56473c05c3f7",
-    "tree": "c1f5559cd1439149d0c11b1e214b6b7d96a57f7a",
+    "commit": "539634be50497c4b27a9d77f25f2676beeb62dd6",
+    "tree": "93f4670ed623afe431475759aade5383959821e9",
     "dirty": true,
     "python": "3.13.9",
     "ruff": "ruff 0.12.0",
     "basedpyright": "basedpyright 1.40.2"
   },
-  "generated_at": "2026-11-04T12:36:40.067083+00:00",
-  "generated_at_human": "04 November 2026, 12:36:40 UTC",
+  "generated_at": "2026-11-06T02:41:30.027843+00:00",
+  "generated_at_human": "06 November 2026, 02:41:30 UTC",
   "local_links": {
     "tests/test_calc.py": "../../../../tests/test_calc.py",
     "/Users/joaolopes/Exactus/exactus/tests/standalone/project": "../../../..",
@@ -38,7 +38,7 @@
     "result.md": "result.md",
     "result.json": "result.json"
   },
-  "markdown": "# tests Test Analyzer\n\n**Run time:** 04 November 2026, 12:36:40 UTC\n\n## Change since previous report\n\n| Findings | Current | Previous | Delta | Added | Resolved | Unchanged |\n|---|---:|---:|---:|---:|---:|---:|\n| Overall | 0 | 0 | 0 | 0 | 0 | 0 |\n\n\n\n- Status: **PASS**\n- Execution: shared with COVERAGE (no duplicate pytest run)\n- Matching test files: **1**\n- Tests run: **2**\n\n## Test files\n\n### [`tests/test_calc.py`](../../../../tests/test_calc.py) — 2 tests\n\n| Test | Outcome |\n| --- | --- |\n| `test_add_sums_operands` | PASSED |\n| `test_is_even_flags_parity` | PASSED |\n",
+  "markdown": "# tests Test Analyzer\n\n**Run time:** 06 November 2026, 02:41:30 UTC\n\n## Change since previous report\n\n| Findings | Current | Previous | Delta | Added | Resolved | Unchanged |\n|---|---:|---:|---:|---:|---:|---:|\n| Overall | 0 | 0 | 0 | 0 | 0 | 0 |\n\n\n\n- Status: **PASS**\n- Execution: shared with COVERAGE (no duplicate pytest run)\n- Matching test files: **1**\n- Tests run: **2**\n\n## Test files\n\n### [`tests/test_calc.py`](../../../../tests/test_calc.py) — 2 tests\n\n| Test | Outcome |\n| --- | --- |\n| `test_add_sums_operands` | PASSED |\n| `test_is_even_flags_parity` | PASSED |\n",
   "passed": true,
   "project_href": "../../../../..",
   "project_root": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
@@ -47,8 +47,8 @@
     "json": "result.json",
     "web": "result_web"
   },
-  "run_at": "2026-11-04T12:36:40.067083+00:00",
-  "run_at_human": "04 November 2026, 12:36:40 UTC",
+  "run_at": "2026-11-06T02:41:30.027843+00:00",
+  "run_at_human": "06 November 2026, 02:41:30 UTC",
   "schema": "project-exactus-report/v1",
   "sections": [
     {
@@ -72,7 +72,7 @@
   "shared_execution_status": 0,
   "test_execution": {
     "status": 0,
-    "duration_seconds": 2.54,
+    "duration_seconds": 5.087,
     "tests": [
       {
         "shard": 0,

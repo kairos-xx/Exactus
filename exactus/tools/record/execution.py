@@ -239,7 +239,7 @@ class VariableResolver:
             sorted(name for name in supplied_map if name not in definitions),
         )
         if unknown:
-            msg: str = f"Unknown execution variables: {", ".join(unknown)}"
+            msg: str = f"Unknown execution variables: {', '.join(unknown)}"
             raise ExecutionError(msg)
         resolved: list[RuntimeVariable] = []
         for definition in workspace.variables:

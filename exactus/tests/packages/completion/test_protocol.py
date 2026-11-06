@@ -209,7 +209,7 @@ def test_parse_enforces_input_limit() -> None:
             "--shell=bash",
             "--active-word-index=1",
             "--word=check",
-            f"--word={"x" * _GroupFinalConstants_5.max_input}",
+            f"--word={'x' * _GroupFinalConstants_5.max_input}",
         ),
     )
     expect_equal(actual=parsed.status, expected=Constants.exit_malformed)
