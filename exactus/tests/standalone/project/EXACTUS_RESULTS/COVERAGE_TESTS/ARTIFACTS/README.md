@@ -1,6 +1,6 @@
 # `COVERAGE_TESTS/`
 
-Provide @activity json content.
+Provide result json content.
 
 <!-- exactus:inventory:start -->
 ## Directory contents
@@ -14,7 +14,7 @@ Provide @activity json content.
 
 ### Subdirectories
 
-- [`COVERAGE/`](COVERAGE/README.md) — Provide import graph json content.
+- [`COVERAGE/`](COVERAGE/README.md) — Provide coverage raw py json content.
 - [`TESTS/`](TESTS/README.md) — Provide shard 000 log content.
 
 <!-- exactus:inventory:end -->

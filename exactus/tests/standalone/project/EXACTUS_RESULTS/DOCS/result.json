@@ -4,7 +4,7 @@
   "tool": {
     "name": "docs",
     "display_name": "Documentation Exactus",
-    "version": "0.7.1"
+    "version": null
   },
   "summary": {
     "targets_eligible": 8,
@@ -17,7 +17,7 @@
     {
       "name": "@activity.json",
       "path": "ARTIFACTS/@activity.json",
-      "bytes": 1855
+      "bytes": 1857
     },
     {
       "name": "README.md",
@@ -42,10 +42,10 @@
   ],
   "comparison": {
     "available": true,
-    "previous_generated_at": "2026-11-06T02:17:06.081077+00:00",
-    "previous_run_id": "8fda18e03ec84ab384f411f9b1ee69f6:docs",
+    "previous_generated_at": "2026-11-06T02:41:30.608820+00:00",
+    "previous_run_id": "0aff3ce389f246459ce96ab2e4d75298:docs",
     "previous_status": "PASS",
-    "previous_duration_seconds": 0.92,
+    "previous_duration_seconds": 1.245,
     "current_total": 0,
     "previous_total": 0,
     "delta": 0,
@@ -143,7 +143,7 @@
       }
     ]
   },
-  "duration_seconds": 1.245,
+  "duration_seconds": 1.011,
   "environment": {
     "os": "Darwin 25.3.0",
     "python": "3.13.9",
@@ -156,7 +156,7 @@
       },
       {
         "name": "EXACTUS_PIPELINE_RUN_ID",
-        "value": "0aff3ce389f246459ce96ab2e4d75298"
+        "value": "b06ce16423b2422b821ba7adb10976f3"
       },
       {
         "name": "EXACTUS_REGISTRY",
@@ -168,7 +168,7 @@
       },
       {
         "name": "EXACTUS_RUN_ID",
-        "value": "0aff3ce389f246459ce96ab2e4d75298:docs"
+        "value": "b06ce16423b2422b821ba7adb10976f3:docs"
       },
       {
         "name": "EXACTUS_TOOL",
@@ -176,7 +176,11 @@
       },
       {
         "name": "LANG",
-        "value": "C.UTF-8"
+        "value": "en_US.UTF-8"
+      },
+      {
+        "name": "TERM",
+        "value": "xterm-256color"
       }
     ]
   },
@@ -283,8 +287,8 @@
   },
   "findings": [],
   "fingerprint": {
-    "commit": "539634be50497c4b27a9d77f25f2676beeb62dd6",
-    "tree": "93f4670ed623afe431475759aade5383959821e9",
+    "commit": "82aa4af14783847df8265c9db323faeeed706c23",
+    "tree": "1f2c5c1744667c3058a380081f7265d38c25721b",
     "dirty": true,
     "python": "3.13.9",
     "ruff": "ruff 0.12.0",
@@ -294,24 +298,24 @@
     "status": "PASS",
     "reason": "No blocking findings"
   },
-  "generated_at": "2026-11-06T02:41:30.608820+00:00",
-  "generated_at_human": "06 November 2026, 02:41:30 UTC",
+  "generated_at": "2026-11-06T04:08:31.251972+00:00",
+  "generated_at_human": "06 November 2026, 04:08:31 UTC",
   "invocation": {
-    "command": "/Users/joaolopes/Exactus/bin/release/exactus_macos_arm64/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=63798 --orchestrator-control-token=[redacted] --orchestrator-worker-port=63779 --orchestrator-worker-token=[redacted] '--orchestrator-call={\"args\":[],\"kwargs\":{\"request\":{\"identifier\":\"docs\",\"module\":\"exactus.tools.docs.main\",\"output\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/DOCS\",\"arguments\":[],\"explicit_arguments\":[],\"run_id\":\"0aff3ce389f246459ce96ab2e4d75298:docs\",\"pipeline_run_id\":\"0aff3ce389f246459ce96ab2e4d75298\",\"project_root\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\"}}}'",
+    "command": "/usr/local/bin/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=59753 --orchestrator-control-token=[redacted] --orchestrator-worker-port=59738 --orchestrator-worker-token=[redacted] '--orchestrator-call={\"args\":[],\"kwargs\":{\"request\":{\"identifier\":\"docs\",\"module\":\"exactus.tools.docs.main\",\"output\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/DOCS\",\"arguments\":[],\"explicit_arguments\":[],\"run_id\":\"b06ce16423b2422b821ba7adb10976f3:docs\",\"pipeline_run_id\":\"b06ce16423b2422b821ba7adb10976f3\",\"project_root\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\"}}}'",
     "cwd": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
     "arguments": [
       "exactus.tools.common.tool_worker",
       "ExactusTool",
-      "--orchestrator-control-port=63798",
+      "--orchestrator-control-port=59753",
       "--orchestrator-control-token=[redacted]",
-      "--orchestrator-worker-port=63779",
+      "--orchestrator-worker-port=59738",
       "--orchestrator-worker-token=[redacted]",
-      "--orchestrator-call={\"args\":[],\"kwargs\":{\"request\":{\"identifier\":\"docs\",\"module\":\"exactus.tools.docs.main\",\"output\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/DOCS\",\"arguments\":[],\"explicit_arguments\":[],\"run_id\":\"0aff3ce389f246459ce96ab2e4d75298:docs\",\"pipeline_run_id\":\"0aff3ce389f246459ce96ab2e4d75298\",\"project_root\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\"}}}"
+      "--orchestrator-call={\"args\":[],\"kwargs\":{\"request\":{\"identifier\":\"docs\",\"module\":\"exactus.tools.docs.main\",\"output\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/DOCS\",\"arguments\":[],\"explicit_arguments\":[],\"run_id\":\"b06ce16423b2422b821ba7adb10976f3:docs\",\"pipeline_run_id\":\"b06ce16423b2422b821ba7adb10976f3\",\"project_root\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\"}}}"
     ]
   },
   "passed": true,
-  "pipeline_run_id": "0aff3ce389f246459ce96ab2e4d75298",
-  "previous_duration_seconds": 0.92,
+  "pipeline_run_id": "b06ce16423b2422b821ba7adb10976f3",
+  "previous_duration_seconds": 1.245,
   "project_href": "../../..",
   "project_root": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
   "report_bundle": {
@@ -322,22 +326,22 @@
   "resume": "PASS: analyzer completed with exit status 0.",
   "root": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
   "run": {
-    "id": "0aff3ce389f246459ce96ab2e4d75298:docs",
-    "pipeline_id": "0aff3ce389f246459ce96ab2e4d75298",
+    "id": "b06ce16423b2422b821ba7adb10976f3:docs",
+    "pipeline_id": "b06ce16423b2422b821ba7adb10976f3",
     "status": "PASS",
     "exit_code": 0,
-    "started_at": "2026-11-06T02:41:30.477338+00:00",
-    "finished_at": "2026-11-06T02:41:31.725425+00:00",
-    "at_human": "06 November 2026, 02:41:30 UTC",
-    "started_at_human": "06 November 2026, 02:41:30 UTC",
-    "finished_at_human": "06 November 2026, 02:41:31 UTC",
-    "duration_seconds": 1.245,
-    "duration_human": "1.2 s",
+    "started_at": "2026-11-06T04:08:31.145813+00:00",
+    "finished_at": "2026-11-06T04:08:32.163104+00:00",
+    "at_human": "06 November 2026, 04:08:31 UTC",
+    "started_at_human": "06 November 2026, 04:08:31 UTC",
+    "finished_at_human": "06 November 2026, 04:08:32 UTC",
+    "duration_seconds": 1.011,
+    "duration_human": "1.0 s",
     "error": null
   },
-  "run_at": "2026-11-06T02:41:30.477338+00:00",
-  "run_at_human": "06 November 2026, 02:41:30 UTC",
-  "run_id": "0aff3ce389f246459ce96ab2e4d75298:docs",
+  "run_at": "2026-11-06T04:08:31.145813+00:00",
+  "run_at_human": "06 November 2026, 04:08:31 UTC",
+  "run_id": "b06ce16423b2422b821ba7adb10976f3:docs",
   "schema": "project-exactus-report/v1",
   "scope": {
     "include": [

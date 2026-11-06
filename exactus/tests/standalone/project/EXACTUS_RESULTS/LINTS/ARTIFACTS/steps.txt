@@ -1,588 +1,584 @@
-2026-11-06T02:40:57.477+00:00 +    0.001s lints: arguments — root /Users/joaolopes/Exactus/exactus/tests/standalone/project, output /Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/LINTS
-2026-11-06T02:40:57.513+00:00 +    0.036s lints: run start
-2026-11-06T02:40:57.513+00:00 +    0.037s   stage: group final
-2026-11-06T02:40:57.523+00:00 +    0.046s       progress: group final (0/8)
-2026-11-06T02:40:57.523+00:00 +    0.046s     group final — scanning python sources (dry_run=False)
-2026-11-06T02:40:57.527+00:00 +    0.051s       group final: 6 python files collected
-2026-11-06T02:40:57.529+00:00 +    0.052s       group final: parsed 6 modules
-2026-11-06T02:40:57.529+00:00 +    0.052s       group final: 0 plans — 0 constants
-2026-11-06T02:40:57.529+00:00 +    0.052s       group final: 0 plans kept after unsafe-import check
-2026-11-06T02:40:57.529+00:00 +    0.052s       group final: legacy-reference scope — 1 of 6 files
-2026-11-06T02:40:57.530+00:00 +    0.053s     group final — done, 0 constants, 0 files changed
-2026-11-06T02:40:57.566+00:00 +    0.090s   stage: collect
-2026-11-06T02:40:57.567+00:00 +    0.091s       progress: collect (0/8)
-2026-11-06T02:40:57.568+00:00 +    0.092s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/conftest.py
-2026-11-06T02:40:57.568+00:00 +    0.092s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/__init__.py
-2026-11-06T02:40:57.568+00:00 +    0.092s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/python/__init__.py
-2026-11-06T02:40:57.568+00:00 +    0.092s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/python/calc.py
-2026-11-06T02:40:57.569+00:00 +    0.092s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/web/index.html
-2026-11-06T02:40:57.569+00:00 +    0.092s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/web/code.js
-2026-11-06T02:40:57.569+00:00 +    0.092s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/web/style.css
-2026-11-06T02:40:57.569+00:00 +    0.093s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/tests/__init__.py
-2026-11-06T02:40:57.569+00:00 +    0.093s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/tests/test_calc.py
-2026-11-06T02:40:57.569+00:00 +    0.093s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/tests/code.test.mjs
-2026-11-06T02:40:57.642+00:00 +    0.166s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/conftest.py
-2026-11-06T02:40:57.643+00:00 +    0.166s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/__init__.py
-2026-11-06T02:40:57.644+00:00 +    0.167s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/python/__init__.py
-2026-11-06T02:40:57.645+00:00 +    0.168s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/python/calc.py
-2026-11-06T02:40:57.645+00:00 +    0.169s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/web/index.html
-2026-11-06T02:40:57.646+00:00 +    0.170s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/web/code.js
-2026-11-06T02:40:57.646+00:00 +    0.170s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/web/style.css
-2026-11-06T02:40:57.647+00:00 +    0.170s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/tests/__init__.py
-2026-11-06T02:40:57.647+00:00 +    0.171s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/tests/test_calc.py
-2026-11-06T02:40:57.648+00:00 +    0.171s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/tests/code.test.mjs
-2026-11-06T02:40:57.648+00:00 +    0.171s     collect: 6 python, 2 javascript, 1 css, 1 html, 10 files to clean
-2026-11-06T02:40:57.648+00:00 +    0.171s   stage: organize
-2026-11-06T02:40:57.717+00:00 +    0.241s       progress: organize (0/8)
-2026-11-06T02:40:57.720+00:00 +    0.244s     organize — scanning 8 python/javascript sources (dry_run=False)
-2026-11-06T02:40:57.785+00:00 +    0.309s         organize[python]: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/__init__.py — unchanged
-2026-11-06T02:40:57.786+00:00 +    0.309s         organize[python]: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/conftest.py — unchanged
-2026-11-06T02:40:57.786+00:00 +    0.309s         organize[python]: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/python/__init__.py — unchanged
-2026-11-06T02:40:57.786+00:00 +    0.309s         organize[python]: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/python/calc.py — unchanged
-2026-11-06T02:40:57.786+00:00 +    0.309s         organize[python]: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/tests/__init__.py — unchanged
-2026-11-06T02:40:57.965+00:00 +    0.488s         organize[javascript]: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/tests/code.test.mjs — unchanged
-2026-11-06T02:40:57.965+00:00 +    0.488s         organize[python]: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/tests/test_calc.py — unchanged
-2026-11-06T02:40:57.989+00:00 +    0.512s         organize[javascript]: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/web/code.js — unchanged
-2026-11-06T02:40:57.990+00:00 +    0.513s     organize — 8 files scanned (6 python, 2 javascript), 0 changed, 0 skipped; 0/0 methods moved across 0/1 classes (0 lines)
-2026-11-06T02:40:57.998+00:00 +    0.522s       progress: toolchain (1/8)
-2026-11-06T02:40:57.998+00:00 +    0.522s   stage: toolchain
-2026-11-06T02:40:57.999+00:00 +    0.522s     toolchain: required — ['basedpyright', 'eslint', 'htmlhint', 'prettier', 'pyrefly', 'ruff', 'stylelint', 'tsc']
-2026-11-06T02:40:58.130+00:00 +    0.654s       toolchain: exactus bundle — nothing to install
-2026-11-06T02:40:58.461+00:00 +    0.984s       toolchain: ruff → /Users/joaolopes/Exactus/.venv/bin/ruff
-2026-11-06T02:40:58.461+00:00 +    0.985s       toolchain: basedpyright → /Users/joaolopes/Exactus/.venv/bin/basedpyright
-2026-11-06T02:40:58.461+00:00 +    0.985s       toolchain: pyrefly → /opt/anaconda3/bin/pyrefly
-2026-11-06T02:40:58.461+00:00 +    0.985s       toolchain: refurb → missing
-2026-11-06T02:40:58.461+00:00 +    0.985s       toolchain: eslint → /Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/eslint
-2026-11-06T02:40:58.461+00:00 +    0.985s       toolchain: tsc → /Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/tsc
-2026-11-06T02:40:58.461+00:00 +    0.985s       toolchain: stylelint → /Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/stylelint
-2026-11-06T02:40:58.461+00:00 +    0.985s       toolchain: htmlhint → /Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/htmlhint
-2026-11-06T02:40:58.461+00:00 +    0.985s       toolchain: prettier → /Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/prettier
-2026-11-06T02:40:58.461+00:00 +    0.985s     toolchain: resolved — ['basedpyright', 'eslint', 'htmlhint', 'prettier', 'pyrefly', 'ruff', 'stylelint', 'tsc']; missing — ['refurb']
-2026-11-06T02:40:58.785+00:00 +    1.309s       progress: clean (2/8)
-2026-11-06T02:40:58.786+00:00 +    1.309s   stage: clean
-2026-11-06T02:40:58.834+00:00 +    1.358s       clean: materialized eslint.config.mjs
-2026-11-06T02:40:58.835+00:00 +    1.358s       clean: materialized jsconfig.json
-2026-11-06T02:40:58.836+00:00 +    1.359s       clean: materialized stylelint.config.mjs
-2026-11-06T02:40:58.836+00:00 +    1.359s     clean: 10 source files
-2026-11-06T02:40:58.846+00:00 +    1.370s       clean: normalize 10 files
-2026-11-06T02:40:58.846+00:00 +    1.370s         clean: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/__init__.py — unchanged
-2026-11-06T02:40:58.847+00:00 +    1.370s         clean: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/conftest.py — normalized
-2026-11-06T02:40:58.847+00:00 +    1.371s         clean: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/python/__init__.py — unchanged
-2026-11-06T02:40:58.848+00:00 +    1.371s         clean: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/python/calc.py — normalized
-2026-11-06T02:40:58.848+00:00 +    1.371s         clean: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/tests/__init__.py — unchanged
-2026-11-06T02:40:58.848+00:00 +    1.372s         clean: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/tests/code.test.mjs — unchanged
-2026-11-06T02:40:58.849+00:00 +    1.372s         clean: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/tests/test_calc.py — normalized
-2026-11-06T02:40:58.849+00:00 +    1.372s         clean: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/web/code.js — unchanged
-2026-11-06T02:40:58.849+00:00 +    1.373s         clean: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/web/index.html — unchanged
-2026-11-06T02:40:58.849+00:00 +    1.373s         clean: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/web/style.css — unchanged
-2026-11-06T02:40:58.849+00:00 +    1.373s       clean: normalized — 3 changed, 20 lines removed
-2026-11-06T02:40:58.849+00:00 +    1.373s       clean: format — ruff check --fix on 6 python files
-2026-11-06T02:40:58.850+00:00 +    1.373s       clean: format — eslint --fix on 2 javascript files
-2026-11-06T02:40:58.850+00:00 +    1.373s       clean: format — prettier --write on 2 web files
-2026-11-06T02:40:58.942+00:00 +    1.466s       clean: formatter /Users/joaolopes/Exactus/.venv/bin/ruff — exit 0
-2026-11-06T02:40:59.897+00:00 +    2.420s       clean: formatter /Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/eslint — exit 0
-2026-11-06T02:41:00.084+00:00 +    2.607s       clean: formatter /Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/prettier — exit 0
-2026-11-06T02:41:00.093+00:00 +    2.616s       progress: conventions (3/8)
-2026-11-06T02:41:00.093+00:00 +    2.616s   stage: conventions
-2026-11-06T02:41:00.102+00:00 +    2.626s     conventions: scopes — 6 python, 2 delimiter, 2 notation, 1 javascript, 1 css, 1 html
-2026-11-06T02:41:00.103+00:00 +    2.626s       progress: conventions — shebang (3/8)
-2026-11-06T02:41:00.103+00:00 +    2.626s       shebang: scanning sources — heal on
-2026-11-06T02:41:00.103+00:00 +    2.626s       shebang: 6 files to inspect, 0 skipped
-2026-11-06T02:41:00.103+00:00 +    2.626s       progress: checking permissions — __init__.py (1/6)
-2026-11-06T02:41:00.108+00:00 +    2.631s         shebang: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/__init__.py — ok
-2026-11-06T02:41:00.108+00:00 +    2.632s       progress: checking permissions — conftest.py (2/6)
-2026-11-06T02:41:00.109+00:00 +    2.633s         shebang: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/conftest.py — ok
-2026-11-06T02:41:00.110+00:00 +    2.633s       progress: checking permissions — __init__.py (3/6)
-2026-11-06T02:41:00.110+00:00 +    2.633s         shebang: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/python/__init__.py — ok
-2026-11-06T02:41:00.110+00:00 +    2.634s       progress: checking permissions — calc.py (4/6)
-2026-11-06T02:41:00.110+00:00 +    2.634s         shebang: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/python/calc.py — ok
-2026-11-06T02:41:00.110+00:00 +    2.634s       progress: checking permissions — __init__.py (5/6)
-2026-11-06T02:41:00.111+00:00 +    2.634s         shebang: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/tests/__init__.py — ok
-2026-11-06T02:41:00.111+00:00 +    2.634s       progress: checking permissions — test_calc.py (6/6)
-2026-11-06T02:41:00.111+00:00 +    2.635s         shebang: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/tests/test_calc.py — ok
-2026-11-06T02:41:00.111+00:00 +    2.635s     conventions: shebang — 0 findings
-2026-11-06T02:41:00.112+00:00 +    2.636s       progress: conventions — python (3/8)
-2026-11-06T02:41:00.112+00:00 +    2.636s       conventions: python — parse pass (6 files)
-2026-11-06T02:41:00.143+00:00 +    2.667s       progress: conventions — python: __init__.py (3/8)
-2026-11-06T02:41:00.147+00:00 +    2.670s       progress: conventions — python: conftest.py (3/8)
-2026-11-06T02:41:00.149+00:00 +    2.672s       progress: conventions — python: __init__.py (3/8)
-2026-11-06T02:41:00.156+00:00 +    2.679s       progress: conventions — python: calc.py (3/8)
-2026-11-06T02:41:00.158+00:00 +    2.682s       progress: conventions — python: __init__.py (3/8)
-2026-11-06T02:41:00.169+00:00 +    2.693s       progress: conventions — python: test_calc.py (3/8)
-2026-11-06T02:41:00.169+00:00 +    2.693s       conventions: python — findings pass
-2026-11-06T02:41:00.169+00:00 +    2.693s       progress: conventions — python: __init__.py (3/8)
-2026-11-06T02:41:00.170+00:00 +    2.693s       progress: conventions — python: conftest.py (3/8)
-2026-11-06T02:41:00.170+00:00 +    2.693s       progress: conventions — python: __init__.py (3/8)
-2026-11-06T02:41:00.174+00:00 +    2.697s       progress: conventions — python: calc.py (3/8)
-2026-11-06T02:41:00.174+00:00 +    2.698s       progress: conventions — python: __init__.py (3/8)
-2026-11-06T02:41:00.174+00:00 +    2.698s       progress: conventions — python: test_calc.py (3/8)
-2026-11-06T02:41:00.175+00:00 +    2.698s     conventions: python — 0 findings
-2026-11-06T02:41:00.233+00:00 +    2.757s       progress: JavaScript conventions — /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/tests/code.test.mjs (0/2) @thread=ThreadPoolExecutor-29_0
-2026-11-06T02:41:00.273+00:00 +    2.797s       progress: JavaScript conventions — /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/web/code.js (0/2) @thread=ThreadPoolExecutor-29_1
-2026-11-06T02:41:00.377+00:00 +    2.900s       progress: JavaScript conventions — /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/tests/code.test.mjs (1/2) @thread=ThreadPoolExecutor-29_0
-2026-11-06T02:41:00.380+00:00 +    2.904s       progress: JavaScript conventions — /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/web/code.js (2/2) @thread=ThreadPoolExecutor-29_1
-2026-11-06T02:41:00.386+00:00 +    2.910s       progress: conventions — delimiters (3/8)
-2026-11-06T02:41:00.387+00:00 +    2.910s       delimiters: scanning 2 files — heal on
-2026-11-06T02:41:00.387+00:00 +    2.910s       delimiters: done — 0 findings, 0 healed
-2026-11-06T02:41:00.387+00:00 +    2.910s     conventions: javascript delimiters — 0 findings
-2026-11-06T02:41:00.387+00:00 +    2.910s       progress: conventions — notation (3/8)
-2026-11-06T02:41:00.387+00:00 +    2.910s       notation: scanning 2 files — heal on
-2026-11-06T02:41:00.387+00:00 +    2.910s       notation: done — 0 findings, 0 healed
-2026-11-06T02:41:00.387+00:00 +    2.910s     conventions: javascript notation — 0 findings
-2026-11-06T02:41:00.387+00:00 +    2.910s       progress: conventions — javascript (3/8)
-2026-11-06T02:41:00.387+00:00 +    2.911s       progress: conventions — javascript: code.js (3/8)
-2026-11-06T02:41:00.387+00:00 +    2.911s       progress: conventions — javascript: code.js (3/8)
-2026-11-06T02:41:00.387+00:00 +    2.911s     conventions: javascript — 0 findings
-2026-11-06T02:41:00.387+00:00 +    2.911s       progress: conventions — css (3/8)
-2026-11-06T02:41:00.388+00:00 +    2.911s       progress: conventions — css: style.css (3/8)
-2026-11-06T02:41:00.388+00:00 +    2.911s       css tokens: parsing 1 files
-2026-11-06T02:41:00.388+00:00 +    2.912s         css tokens: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/web/style.css — 9 declarations
-2026-11-06T02:41:00.388+00:00 +    2.912s       css tokens: 7 definitions, 0 component names
-2026-11-06T02:41:00.388+00:00 +    2.912s       css tokens: references check
-2026-11-06T02:41:00.388+00:00 +    2.912s       css tokens: custom-property layers check
-2026-11-06T02:41:00.388+00:00 +    2.912s       css tokens: terminal declarations check
-2026-11-06T02:41:00.392+00:00 +    2.916s       progress: conventions — css tokens (3/8)
-2026-11-06T02:41:00.392+00:00 +    2.916s     conventions: css — 0 findings
-2026-11-06T02:41:00.392+00:00 +    2.916s       progress: conventions — html (3/8)
-2026-11-06T02:41:00.393+00:00 +    2.916s       progress: conventions — html: index.html (3/8)
-2026-11-06T02:41:00.393+00:00 +    2.916s     conventions: html — 0 findings
-2026-11-06T02:41:00.415+00:00 +    2.939s     all lints: long-line repair — enabled
-2026-11-06T02:41:00.415+00:00 +    2.939s   stage: all lints
-2026-11-06T02:41:00.421+00:00 +    2.945s       progress: all lints (4/8)
-2026-11-06T02:41:00.421+00:00 +    2.945s     all lints: launch package audit
-2026-11-06T02:41:00.422+00:00 +    2.946s     all lints: specs resolved — ruff, refurb, ruff_docs, basedpyright, pyrefly, eslint, stylelint, htmlint, typescript
-2026-11-06T02:41:00.423+00:00 +    2.947s   all lints: start — 9 tools, 16 workers, stabilize=on
-2026-11-06T02:41:00.423+00:00 +    2.947s     all lints: discover files
-2026-11-06T02:41:00.435+00:00 +    2.958s       all lints: ruff — 6 files
-2026-11-06T02:41:00.435+00:00 +    2.958s       all lints: refurb — 6 files
-2026-11-06T02:41:00.435+00:00 +    2.958s       all lints: ruff_docs — 6 files
-2026-11-06T02:41:00.435+00:00 +    2.958s       all lints: basedpyright — 6 files
-2026-11-06T02:41:00.435+00:00 +    2.958s       all lints: pyrefly — 6 files
-2026-11-06T02:41:00.435+00:00 +    2.958s       all lints: eslint — 4 files
-2026-11-06T02:41:00.435+00:00 +    2.958s       all lints: stylelint — 1 files
-2026-11-06T02:41:00.435+00:00 +    2.958s       all lints: htmlint — 1 files
-2026-11-06T02:41:00.435+00:00 +    2.959s       all lints: typescript — 4 files
-2026-11-06T02:41:00.436+00:00 +    2.960s       all lints: refurb — unavailable, no files checked
-2026-11-06T02:41:00.437+00:00 +    2.960s     all lints: execute — 12 files with checks
-2026-11-06T02:41:00.437+00:00 +    2.960s     all lints: submit non-python checks
-2026-11-06T02:41:00.440+00:00 +    2.963s       eslint: batch — 1 files, one process @thread=ThreadPoolExecutor-30_0
-2026-11-06T02:41:00.440+00:00 +    2.963s         eslint: exec eslint.config.mjs — 5 argv @thread=ThreadPoolExecutor-30_0
-2026-11-06T02:41:00.456+00:00 +    2.980s       eslint: batch — 1 files, one process @thread=ThreadPoolExecutor-30_2
-2026-11-06T02:41:00.456+00:00 +    2.980s         eslint: exec tests/code.test.mjs — 5 argv @thread=ThreadPoolExecutor-30_2
-2026-11-06T02:41:00.478+00:00 +    3.001s       eslint: batch — 1 files, one process @thread=ThreadPoolExecutor-30_1
-2026-11-06T02:41:00.478+00:00 +    3.001s         eslint: exec stylelint.config.mjs — 5 argv @thread=ThreadPoolExecutor-30_1
-2026-11-06T02:41:00.486+00:00 +    3.010s       eslint: batch — 1 files, one process @thread=ThreadPoolExecutor-30_3
-2026-11-06T02:41:00.486+00:00 +    3.010s         eslint: exec web/code.js — 5 argv @thread=ThreadPoolExecutor-30_3
-2026-11-06T02:41:00.497+00:00 +    3.021s       typescript: batch — 4 files, one process @thread=ThreadPoolExecutor-30_4
-2026-11-06T02:41:00.499+00:00 +    3.023s       htmlint: batch — 1 files, one process @thread=ThreadPoolExecutor-30_5
-2026-11-06T02:41:00.499+00:00 +    3.023s         htmlint: exec web/index.html — 2 argv @thread=ThreadPoolExecutor-30_5
-2026-11-06T02:41:00.507+00:00 +    3.031s       stylelint: batch — 1 files, one process @thread=ThreadPoolExecutor-30_6
-2026-11-06T02:41:00.508+00:00 +    3.031s         stylelint: exec web/style.css — 4 argv @thread=ThreadPoolExecutor-30_6
-2026-11-06T02:41:00.513+00:00 +    3.036s     all lints: stabilize 6 python files (ruff format/fix cycles)
-2026-11-06T02:41:00.513+00:00 +    3.037s       typescript: scoped project — 4 files via .exactus-typescript-60941.json (extends jsconfig.json) @thread=ThreadPoolExecutor-30_4
-2026-11-06T02:41:00.519+00:00 +    3.042s         typescript: exec eslint.config.mjs — 6 argv @thread=ThreadPoolExecutor-30_4
-2026-11-06T02:41:00.604+00:00 +    3.127s       stabilize: cycle 1 — ruff format (6 files)
-2026-11-06T02:41:00.642+00:00 +    3.166s       stabilize: cycle 1 — ruff check --fix (6 files)
-2026-11-06T02:41:00.652+00:00 +    3.175s       progress: all lints — typescript: eslint.config.mjs (7/46) @thread=Thread-7_(_pace)
-2026-11-06T02:41:00.688+00:00 +    3.212s       stabilize: cycle 1 — batch file repair (6 files)
-2026-11-06T02:41:00.720+00:00 +    3.243s       stabilize: cycle 1 — 3 files still changing
-2026-11-06T02:41:00.720+00:00 +    3.243s       stabilize: cycle 2 — ruff format (3 files)
-2026-11-06T02:41:00.747+00:00 +    3.270s         htmlint: web/index.html — exit 0, 0 diagnostics, 0.244416s @thread=ThreadPoolExecutor-30_5
-2026-11-06T02:41:00.748+00:00 +    3.271s       stabilize: cycle 2 — ruff check --fix (3 files)
-2026-11-06T02:41:00.782+00:00 +    3.306s       stabilize: cycle 2 — batch file repair (3 files)
-2026-11-06T02:41:00.813+00:00 +    3.337s       stabilize: cycle 2 — 0 files still changing
-2026-11-06T02:41:00.916+00:00 +    3.440s         stabilize: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/__init__.py — format 2 calls, fix 2 calls, 0.317s, +0B
-2026-11-06T02:41:00.917+00:00 +    3.440s       progress: all lints — stabilize: __init__.py (10/46)
-2026-11-06T02:41:00.917+00:00 +    3.440s         stabilize: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/conftest.py — format 3 calls, fix 3 calls, 0.318s, +1B
-2026-11-06T02:41:00.917+00:00 +    3.440s         stabilize: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/python/__init__.py — format 2 calls, fix 2 calls, 0.318s, +0B
-2026-11-06T02:41:00.917+00:00 +    3.440s         stabilize: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/python/calc.py — format 3 calls, fix 3 calls, 0.318s, +3B
-2026-11-06T02:41:00.917+00:00 +    3.441s         stabilize: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/tests/__init__.py — format 2 calls, fix 2 calls, 0.318s, +0B
-2026-11-06T02:41:00.917+00:00 +    3.441s         stabilize: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/tests/test_calc.py — format 3 calls, fix 3 calls, 0.318s, +7B
-2026-11-06T02:41:00.918+00:00 +    3.441s     all lints: stabilization metrics — {"conflicts": 0, "converged": true, "diagnostics": 0, "duration_seconds": 0.38258375000441447, "files": 6, "format_locked": 0, "invocations": 9, "iterations": 3, "oscillated": false, "per_step_changes": {"compact-fix": 0, "compact-format": 0, "fix-repair": 0, "format": 3}, "policy_fingerprint": "091206bd6c597498", "restored": 0, "rolled_back": false, "ruff_version": null}
-2026-11-06T02:41:00.918+00:00 +    3.441s     all lints: stabilization complete
-2026-11-06T02:41:00.918+00:00 +    3.441s     all lints: submit python checks
-2026-11-06T02:41:00.923+00:00 +    3.446s       ruff: batch — 1 files, one process @thread=ThreadPoolExecutor-30_7
-2026-11-06T02:41:00.923+00:00 +    3.447s         ruff: exec conftest.py — 9 argv @thread=ThreadPoolExecutor-30_7
-2026-11-06T02:41:00.935+00:00 +    3.459s       ruff: batch — 1 files, one process @thread=ThreadPoolExecutor-30_5
-2026-11-06T02:41:00.923+00:00 +    3.447s       ruff: batch — 1 files, one process @thread=ThreadPoolExecutor-30_8
-2026-11-06T02:41:00.935+00:00 +    3.459s         ruff: exec __init__.py — 9 argv @thread=ThreadPoolExecutor-30_5
-2026-11-06T02:41:00.937+00:00 +    3.460s       ruff: batch — 1 files, one process @thread=ThreadPoolExecutor-30_9
-2026-11-06T02:41:00.939+00:00 +    3.462s       ruff: batch — 1 files, one process @thread=ThreadPoolExecutor-30_10
-2026-11-06T02:41:00.940+00:00 +    3.464s         ruff: exec python/__init__.py — 9 argv @thread=ThreadPoolExecutor-30_8
-2026-11-06T02:41:00.940+00:00 +    3.464s       ruff: batch — 1 files, one process @thread=ThreadPoolExecutor-30_11
-2026-11-06T02:41:00.949+00:00 +    3.473s         ruff: exec python/calc.py — 9 argv @thread=ThreadPoolExecutor-30_9
-2026-11-06T02:41:00.951+00:00 +    3.474s         ruff: exec tests/__init__.py — 9 argv @thread=ThreadPoolExecutor-30_10
-2026-11-06T02:41:00.961+00:00 +    3.484s         ruff: exec tests/test_calc.py — 9 argv @thread=ThreadPoolExecutor-30_11
-2026-11-06T02:41:00.973+00:00 +    3.496s         ruff: conftest.py — exit 0, 0 diagnostics, 0.049194s @thread=ThreadPoolExecutor-30_7
-2026-11-06T02:41:00.982+00:00 +    3.506s         ruff: __init__.py — exit 0, 0 diagnostics, 0.041896s @thread=ThreadPoolExecutor-30_5
-2026-11-06T02:41:00.991+00:00 +    3.514s       all lints: ruff — task done, 1 file results
-2026-11-06T02:41:00.991+00:00 +    3.515s       all lints: htmlint — task done, 1 file results
-2026-11-06T02:41:00.997+00:00 +    3.520s       all lints: ruff — task done, 1 file results
-2026-11-06T02:41:01.002+00:00 +    3.526s       pyrefly: batch — 6 files, one process @thread=ThreadPoolExecutor-30_5
-2026-11-06T02:41:00.983+00:00 +    3.506s       basedpyright: batch — 2 files, one process @thread=ThreadPoolExecutor-30_12
-2026-11-06T02:41:01.000+00:00 +    3.524s         ruff: tests/__init__.py — exit 0, 0 diagnostics, 0.025869s @thread=ThreadPoolExecutor-30_10
-2026-11-06T02:41:01.003+00:00 +    3.527s       basedpyright: batch — 2 files, one process @thread=ThreadPoolExecutor-30_13
-2026-11-06T02:41:01.005+00:00 +    3.529s         ruff: python/calc.py — exit 0, 0 diagnostics, 0.043685s @thread=ThreadPoolExecutor-30_9
-2026-11-06T02:41:01.005+00:00 +    3.529s       basedpyright: batch — 2 files, one process @thread=ThreadPoolExecutor-30_7
-2026-11-06T02:41:01.006+00:00 +    3.530s         pyrefly: exec __init__.py — 12 argv @thread=ThreadPoolExecutor-30_5
-2026-11-06T02:41:01.006+00:00 +    3.530s         ruff: python/__init__.py — exit 0, 0 diagnostics, 0.054801s @thread=ThreadPoolExecutor-30_8
-2026-11-06T02:41:01.007+00:00 +    3.530s       all lints: ruff — task done, 1 file results
-2026-11-06T02:41:01.007+00:00 +    3.530s         basedpyright: exec __init__.py — 4 argv @thread=ThreadPoolExecutor-30_12
-2026-11-06T02:41:01.007+00:00 +    3.530s         basedpyright: exec python/__init__.py — 4 argv @thread=ThreadPoolExecutor-30_13
-2026-11-06T02:41:01.008+00:00 +    3.531s         basedpyright: exec tests/__init__.py — 4 argv @thread=ThreadPoolExecutor-30_7
-2026-11-06T02:41:01.014+00:00 +    3.538s       all lints: ruff — task done, 1 file results
-2026-11-06T02:41:01.028+00:00 +    3.552s         ruff: tests/test_calc.py — exit 0, 0 diagnostics, 0.046587s @thread=ThreadPoolExecutor-30_11
-2026-11-06T02:41:01.035+00:00 +    3.559s       all lints: ruff — task done, 1 file results
-2026-11-06T02:41:01.041+00:00 +    3.565s       all lints: ruff — task done, 1 file results
-2026-11-06T02:41:01.165+00:00 +    3.689s       progress: all lints — pyrefly: __init__.py (23/46) @thread=Thread-8_(_pace)
-2026-11-06T02:41:01.439+00:00 +    3.962s       progress: all lints — Checking: ruff_docs 0/6, basedpyright 3/6, pyrefly 2/6, eslint 0/4, stylelint 0/1, typescript 3/4 (27/46) @thread=Thread-6_(heartbeat)
-2026-11-06T02:41:01.776+00:00 +    4.300s       progress: all lints — pyrefly: tests/__init__.py (30/46) @thread=Thread-8_(_pace)
-2026-11-06T02:41:01.852+00:00 +    4.375s         pyrefly: __init__.py — exit 0, 0 diagnostics, 0.843892s @thread=ThreadPoolExecutor-30_5
-2026-11-06T02:41:01.852+00:00 +    4.375s         pyrefly: __init__.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-30_5
-2026-11-06T02:41:01.852+00:00 +    4.376s         pyrefly: conftest.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-30_5
-2026-11-06T02:41:01.852+00:00 +    4.376s         pyrefly: python/__init__.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-30_5
-2026-11-06T02:41:01.852+00:00 +    4.376s         pyrefly: python/calc.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-30_5
-2026-11-06T02:41:01.852+00:00 +    4.376s         pyrefly: tests/__init__.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-30_5
-2026-11-06T02:41:01.852+00:00 +    4.376s         pyrefly: tests/test_calc.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-30_5
-2026-11-06T02:41:01.852+00:00 +    4.376s       all lints: pyrefly — task done, 6 file results
-2026-11-06T02:41:02.084+00:00 +    4.607s         eslint: tests/code.test.mjs — exit 0, 0 diagnostics, 1.627508s @thread=ThreadPoolExecutor-30_2
-2026-11-06T02:41:02.084+00:00 +    4.608s       progress: all lints — eslint: tests/code.test.mjs (32/46) @thread=ThreadPoolExecutor-30_2
-2026-11-06T02:41:02.084+00:00 +    4.608s       all lints: eslint — task done, 1 file results
-2026-11-06T02:41:02.093+00:00 +    4.617s         eslint: eslint.config.mjs — exit 0, 0 diagnostics, 1.653096s @thread=ThreadPoolExecutor-30_0
-2026-11-06T02:41:02.093+00:00 +    4.617s       all lints: eslint — task done, 1 file results
-2026-11-06T02:41:02.109+00:00 +    4.632s         eslint: stylelint.config.mjs — exit 0, 0 diagnostics, 1.631021s @thread=ThreadPoolExecutor-30_1
-2026-11-06T02:41:02.109+00:00 +    4.633s       all lints: eslint — task done, 1 file results
-2026-11-06T02:41:02.110+00:00 +    4.633s         eslint: web/code.js — exit 0, 0 diagnostics, 1.623391s @thread=ThreadPoolExecutor-30_3
-2026-11-06T02:41:02.110+00:00 +    4.634s       all lints: eslint — task done, 1 file results
-2026-11-06T02:41:02.440+00:00 +    4.963s       progress: all lints — Checking: ruff_docs 0/6, basedpyright 3/6, stylelint 0/1, typescript 3/4 (35/46) @thread=Thread-6_(heartbeat)
-2026-11-06T02:41:02.626+00:00 +    5.149s         stylelint: web/style.css — exit 0, 0 diagnostics, 2.117968s @thread=ThreadPoolExecutor-30_6
-2026-11-06T02:41:02.626+00:00 +    5.149s       all lints: stylelint — task done, 1 file results
-2026-11-06T02:41:03.443+00:00 +    5.966s       progress: all lints — Checking: ruff_docs 0/6, basedpyright 3/6, typescript 3/4 (36/46) @thread=Thread-6_(heartbeat)
-2026-11-06T02:41:03.463+00:00 +    5.987s         basedpyright: python/__init__.py — exit 0, 0 diagnostics, 2.448101s @thread=ThreadPoolExecutor-30_13
-2026-11-06T02:41:03.464+00:00 +    5.987s         basedpyright: python/__init__.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-30_13
-2026-11-06T02:41:03.464+00:00 +    5.987s         basedpyright: python/calc.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-30_13
-2026-11-06T02:41:03.464+00:00 +    5.987s       all lints: basedpyright — task done, 2 file results
-2026-11-06T02:41:03.493+00:00 +    6.016s         basedpyright: tests/__init__.py — exit 0, 0 diagnostics, 2.463878s @thread=ThreadPoolExecutor-30_7
-2026-11-06T02:41:03.493+00:00 +    6.017s         basedpyright: tests/__init__.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-30_7
-2026-11-06T02:41:03.493+00:00 +    6.017s         basedpyright: tests/test_calc.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-30_7
-2026-11-06T02:41:03.493+00:00 +    6.017s       all lints: basedpyright — task done, 2 file results
-2026-11-06T02:41:03.680+00:00 +    6.204s         basedpyright: __init__.py — exit 0, 0 diagnostics, 2.665569s @thread=ThreadPoolExecutor-30_12
-2026-11-06T02:41:03.680+00:00 +    6.204s       progress: all lints — basedpyright: conftest.py (39/46) @thread=ThreadPoolExecutor-30_12
-2026-11-06T02:41:03.680+00:00 +    6.204s         basedpyright: __init__.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-30_12
-2026-11-06T02:41:03.681+00:00 +    6.204s         basedpyright: conftest.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-30_12
-2026-11-06T02:41:03.682+00:00 +    6.205s       all lints: basedpyright — task done, 2 file results
-2026-11-06T02:41:04.167+00:00 +    6.691s         typescript: eslint.config.mjs — exit 0, 0 diagnostics, 3.648349s @thread=ThreadPoolExecutor-30_4
-2026-11-06T02:41:04.169+00:00 +    6.693s       progress: all lints — typescript: web/code.js (40/46) @thread=ThreadPoolExecutor-30_4
-2026-11-06T02:41:04.169+00:00 +    6.693s         typescript: eslint.config.mjs — passed, 0 diagnostics @thread=ThreadPoolExecutor-30_4
-2026-11-06T02:41:04.169+00:00 +    6.693s         typescript: stylelint.config.mjs — passed, 0 diagnostics @thread=ThreadPoolExecutor-30_4
-2026-11-06T02:41:04.169+00:00 +    6.693s         typescript: tests/code.test.mjs — passed, 0 diagnostics @thread=ThreadPoolExecutor-30_4
-2026-11-06T02:41:04.169+00:00 +    6.693s         typescript: web/code.js — passed, 0 diagnostics @thread=ThreadPoolExecutor-30_4
-2026-11-06T02:41:04.170+00:00 +    6.694s       all lints: typescript — task done, 4 file results
-2026-11-06T02:41:04.193+00:00 +    6.717s     all lints: derive results
-2026-11-06T02:41:04.193+00:00 +    6.717s       all lints: ruff_docs — derived 6 file results from ruff
-2026-11-06T02:41:04.194+00:00 +    6.717s       progress: all lints — ruff_docs: tests/test_calc.py (46/46)
-2026-11-06T02:41:04.194+00:00 +    6.717s     all lints: ruff — passed, 6 files, 0 diagnostics
-2026-11-06T02:41:04.194+00:00 +    6.717s     all lints: refurb — unavailable, 6 files, 0 diagnostics
-2026-11-06T02:41:04.194+00:00 +    6.717s     all lints: ruff_docs — passed, 6 files, 0 diagnostics
-2026-11-06T02:41:04.194+00:00 +    6.717s     all lints: basedpyright — passed, 6 files, 0 diagnostics
-2026-11-06T02:41:04.194+00:00 +    6.717s     all lints: pyrefly — passed, 6 files, 0 diagnostics
-2026-11-06T02:41:04.194+00:00 +    6.717s     all lints: eslint — passed, 4 files, 0 diagnostics
-2026-11-06T02:41:04.194+00:00 +    6.717s     all lints: stylelint — passed, 1 files, 0 diagnostics
-2026-11-06T02:41:04.194+00:00 +    6.717s     all lints: htmlint — passed, 1 files, 0 diagnostics
-2026-11-06T02:41:04.194+00:00 +    6.717s     all lints: typescript — passed, 4 files, 0 diagnostics
-2026-11-06T02:41:04.194+00:00 +    6.718s   all lints: finished — 3.771s
-2026-11-06T02:41:04.195+00:00 +    6.718s     all lints: report built — 9 tools, 0 diagnostics
-2026-11-06T02:41:04.195+00:00 +    6.718s     all lints: 9 tool results merged
-2026-11-06T02:41:04.206+00:00 +    6.729s     long lines: 0 residual E501, 0 repaired, 0 skipped
-2026-11-06T02:41:04.206+00:00 +    6.729s     infer: baselines — 0 ruff, 0 basedpyright issues
-2026-11-06T02:41:04.206+00:00 +    6.730s       progress: infer (5/8)
-2026-11-06T02:41:04.206+00:00 +    6.730s   stage: infer
-2026-11-06T02:41:04.222+00:00 +    6.745s     infer: snapshot sources
-2026-11-06T02:41:04.228+00:00 +    6.752s       progress: infer — pyrefly infer (5/8)
-2026-11-06T02:41:04.645+00:00 +    7.169s     infer: pyrefly infer — exit 0
-2026-11-06T02:41:04.651+00:00 +    7.174s     infer: sources unchanged
-2026-11-06T02:41:04.654+00:00 +    7.177s       progress: infer — check (5/8)
-2026-11-06T02:41:04.654+00:00 +    7.178s     infer: pyrefly report
-2026-11-06T02:41:05.029+00:00 +    7.552s       clean: removed temporary eslint.config.mjs
-2026-11-06T02:41:05.029+00:00 +    7.553s       clean: removed temporary jsconfig.json
-2026-11-06T02:41:05.029+00:00 +    7.553s       clean: removed temporary stylelint.config.mjs
-2026-11-06T02:41:05.032+00:00 +    7.555s       progress: compliance and report (6/8)
-2026-11-06T02:41:05.032+00:00 +    7.555s   stage: compliance and report
-2026-11-06T02:41:05.032+00:00 +    7.555s     report: compliance scan
-2026-11-06T02:41:05.032+00:00 +    7.555s       compliance: scanning owned sources
-2026-11-06T02:41:05.032+00:00 +    7.555s       compliance: 6 files, 0 skipped
-2026-11-06T02:41:05.035+00:00 +    7.558s       compliance: configuration check
-2026-11-06T02:41:05.035+00:00 +    7.559s     compliance: 0 findings across 6 files
-2026-11-06T02:41:06.856+00:00 +    9.379s     report: tool versions recorded
-2026-11-06T02:41:06.873+00:00 +    9.396s     report: file activities released
-2026-11-06T02:41:06.873+00:00 +    9.396s     report: 0 findings collected
-2026-11-06T02:41:06.920+00:00 +    9.444s lints: run finished — status 0
-2026-11-06T02:41:06.931+00:00 +    9.455s lints: run start
-2026-11-06T02:41:06.932+00:00 +    9.455s   stage: group final
-2026-11-06T02:41:06.941+00:00 +    9.464s       progress: group final (0/8)
-2026-11-06T02:41:06.941+00:00 +    9.465s     group final — scanning python sources (dry_run=True)
-2026-11-06T02:41:06.945+00:00 +    9.468s       group final: 6 python files collected
-2026-11-06T02:41:06.946+00:00 +    9.469s       group final: parsed 6 modules
-2026-11-06T02:41:06.946+00:00 +    9.469s       group final: 0 plans — 0 constants
-2026-11-06T02:41:06.946+00:00 +    9.469s       group final: 0 plans kept after unsafe-import check
-2026-11-06T02:41:06.946+00:00 +    9.469s       group final: legacy-reference scope — 1 of 6 files
-2026-11-06T02:41:06.947+00:00 +    9.470s     group final — done, 0 constants, 0 files changed
-2026-11-06T02:41:06.954+00:00 +    9.478s   stage: collect
-2026-11-06T02:41:06.955+00:00 +    9.478s       progress: collect (0/8)
-2026-11-06T02:41:06.955+00:00 +    9.479s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/conftest.py
-2026-11-06T02:41:06.956+00:00 +    9.479s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/__init__.py
-2026-11-06T02:41:06.956+00:00 +    9.479s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/python/__init__.py
-2026-11-06T02:41:06.956+00:00 +    9.479s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/python/calc.py
-2026-11-06T02:41:06.956+00:00 +    9.480s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/web/index.html
-2026-11-06T02:41:06.956+00:00 +    9.480s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/web/code.js
-2026-11-06T02:41:06.956+00:00 +    9.480s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/web/style.css
-2026-11-06T02:41:06.957+00:00 +    9.480s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/tests/__init__.py
-2026-11-06T02:41:06.957+00:00 +    9.480s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/tests/test_calc.py
-2026-11-06T02:41:06.957+00:00 +    9.480s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/tests/code.test.mjs
-2026-11-06T02:41:06.972+00:00 +    9.495s     collect: 6 python, 2 javascript, 1 css, 1 html, 0 files to clean
-2026-11-06T02:41:06.972+00:00 +    9.495s   stage: organize
-2026-11-06T02:41:06.979+00:00 +    9.502s       progress: organize (0/8)
-2026-11-06T02:41:06.982+00:00 +    9.506s     organize — scanning 8 python/javascript sources (dry_run=True)
-2026-11-06T02:41:06.985+00:00 +    9.509s         organize[python]: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/__init__.py — unchanged
-2026-11-06T02:41:06.985+00:00 +    9.509s         organize[python]: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/conftest.py — unchanged
-2026-11-06T02:41:06.998+00:00 +    9.522s         organize[python]: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/python/__init__.py — unchanged
-2026-11-06T02:41:07.041+00:00 +    9.564s         organize[python]: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/python/calc.py — unchanged
-2026-11-06T02:41:07.041+00:00 +    9.564s         organize[python]: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/tests/__init__.py — unchanged
-2026-11-06T02:41:07.219+00:00 +    9.742s         organize[javascript]: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/tests/code.test.mjs — unchanged
-2026-11-06T02:41:07.219+00:00 +    9.743s         organize[python]: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/tests/test_calc.py — unchanged
-2026-11-06T02:41:07.221+00:00 +    9.744s         organize[javascript]: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/web/code.js — unchanged
-2026-11-06T02:41:07.221+00:00 +    9.745s     organize — 8 files scanned (6 python, 2 javascript), 0 changed, 0 skipped; 0/0 methods moved across 0/1 classes (0 lines)
-2026-11-06T02:41:07.229+00:00 +    9.753s       progress: toolchain (1/8)
-2026-11-06T02:41:07.229+00:00 +    9.753s   stage: toolchain
-2026-11-06T02:41:07.481+00:00 +   10.004s       toolchain: ruff → /Users/joaolopes/Exactus/.venv/bin/ruff
-2026-11-06T02:41:07.481+00:00 +   10.004s       toolchain: basedpyright → /Users/joaolopes/Exactus/.venv/bin/basedpyright
-2026-11-06T02:41:07.481+00:00 +   10.004s       toolchain: pyrefly → /opt/anaconda3/bin/pyrefly
-2026-11-06T02:41:07.481+00:00 +   10.005s       toolchain: refurb → missing
-2026-11-06T02:41:07.481+00:00 +   10.005s       toolchain: eslint → /Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/eslint
-2026-11-06T02:41:07.481+00:00 +   10.005s       toolchain: tsc → /Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/tsc
-2026-11-06T02:41:07.481+00:00 +   10.005s       toolchain: stylelint → /Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/stylelint
-2026-11-06T02:41:07.481+00:00 +   10.005s       toolchain: htmlhint → /Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/htmlhint
-2026-11-06T02:41:07.481+00:00 +   10.005s       toolchain: prettier → /Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/prettier
-2026-11-06T02:41:07.481+00:00 +   10.005s     toolchain: resolved — ['basedpyright', 'eslint', 'htmlhint', 'prettier', 'pyrefly', 'ruff', 'stylelint', 'tsc']; missing — ['refurb']
-2026-11-06T02:41:07.852+00:00 +   10.375s       progress: clean (2/8)
-2026-11-06T02:41:07.852+00:00 +   10.376s   stage: clean
-2026-11-06T02:41:07.900+00:00 +   10.424s       clean: materialized eslint.config.mjs
-2026-11-06T02:41:07.902+00:00 +   10.425s       clean: materialized jsconfig.json
-2026-11-06T02:41:07.903+00:00 +   10.427s       clean: materialized stylelint.config.mjs
-2026-11-06T02:41:07.903+00:00 +   10.427s       progress: conventions (3/8)
-2026-11-06T02:41:07.903+00:00 +   10.427s   stage: conventions
-2026-11-06T02:41:07.909+00:00 +   10.433s     conventions: scopes — 6 python, 2 delimiter, 2 notation, 1 javascript, 1 css, 1 html
-2026-11-06T02:41:07.909+00:00 +   10.433s       progress: conventions — shebang (3/8)
-2026-11-06T02:41:07.909+00:00 +   10.433s       shebang: scanning sources — heal off
-2026-11-06T02:41:07.910+00:00 +   10.433s       shebang: 6 files to inspect, 0 skipped
-2026-11-06T02:41:07.910+00:00 +   10.433s       progress: checking permissions — __init__.py (1/6)
-2026-11-06T02:41:07.912+00:00 +   10.436s         shebang: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/__init__.py — ok
-2026-11-06T02:41:07.912+00:00 +   10.436s       progress: checking permissions — conftest.py (2/6)
-2026-11-06T02:41:07.913+00:00 +   10.437s         shebang: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/conftest.py — ok
-2026-11-06T02:41:07.913+00:00 +   10.437s       progress: checking permissions — __init__.py (3/6)
-2026-11-06T02:41:07.913+00:00 +   10.437s         shebang: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/python/__init__.py — ok
-2026-11-06T02:41:07.913+00:00 +   10.437s       progress: checking permissions — calc.py (4/6)
-2026-11-06T02:41:07.914+00:00 +   10.437s         shebang: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/python/calc.py — ok
-2026-11-06T02:41:07.914+00:00 +   10.437s       progress: checking permissions — __init__.py (5/6)
-2026-11-06T02:41:07.914+00:00 +   10.438s         shebang: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/tests/__init__.py — ok
-2026-11-06T02:41:07.914+00:00 +   10.438s       progress: checking permissions — test_calc.py (6/6)
-2026-11-06T02:41:07.914+00:00 +   10.438s         shebang: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/tests/test_calc.py — ok
-2026-11-06T02:41:07.914+00:00 +   10.438s     conventions: shebang — 0 findings
-2026-11-06T02:41:07.914+00:00 +   10.438s       progress: conventions — python (3/8)
-2026-11-06T02:41:07.914+00:00 +   10.438s       conventions: python — parse pass (6 files)
-2026-11-06T02:41:07.916+00:00 +   10.440s       progress: conventions — python: __init__.py (3/8)
-2026-11-06T02:41:07.917+00:00 +   10.440s       progress: conventions — python: conftest.py (3/8)
-2026-11-06T02:41:07.917+00:00 +   10.440s       progress: conventions — python: __init__.py (3/8)
-2026-11-06T02:41:07.917+00:00 +   10.441s       progress: conventions — python: calc.py (3/8)
-2026-11-06T02:41:07.918+00:00 +   10.441s       progress: conventions — python: __init__.py (3/8)
-2026-11-06T02:41:07.918+00:00 +   10.442s       progress: conventions — python: test_calc.py (3/8)
-2026-11-06T02:41:07.918+00:00 +   10.442s       conventions: python — findings pass
-2026-11-06T02:41:07.919+00:00 +   10.442s       progress: conventions — python: __init__.py (3/8)
-2026-11-06T02:41:07.919+00:00 +   10.442s       progress: conventions — python: conftest.py (3/8)
-2026-11-06T02:41:07.919+00:00 +   10.442s       progress: conventions — python: __init__.py (3/8)
-2026-11-06T02:41:07.919+00:00 +   10.442s       progress: conventions — python: calc.py (3/8)
-2026-11-06T02:41:07.919+00:00 +   10.443s       progress: conventions — python: __init__.py (3/8)
-2026-11-06T02:41:07.919+00:00 +   10.443s       progress: conventions — python: test_calc.py (3/8)
-2026-11-06T02:41:07.919+00:00 +   10.443s     conventions: python — 0 findings
-2026-11-06T02:41:08.009+00:00 +   10.533s       progress: JavaScript conventions — /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/tests/code.test.mjs (0/2) @thread=ThreadPoolExecutor-47_0
-2026-11-06T02:41:08.062+00:00 +   10.585s       progress: JavaScript conventions — /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/web/code.js (0/2) @thread=ThreadPoolExecutor-47_1
-2026-11-06T02:41:08.123+00:00 +   10.647s       progress: JavaScript conventions — /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/tests/code.test.mjs (1/2) @thread=ThreadPoolExecutor-47_0
-2026-11-06T02:41:08.190+00:00 +   10.713s       progress: JavaScript conventions — /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/web/code.js (2/2) @thread=ThreadPoolExecutor-47_1
-2026-11-06T02:41:08.206+00:00 +   10.729s       progress: conventions — delimiters (3/8)
-2026-11-06T02:41:08.206+00:00 +   10.729s       delimiters: scanning 2 files — heal off
-2026-11-06T02:41:08.206+00:00 +   10.729s       delimiters: done — 0 findings, 0 healed
-2026-11-06T02:41:08.206+00:00 +   10.729s     conventions: javascript delimiters — 0 findings
-2026-11-06T02:41:08.206+00:00 +   10.729s       progress: conventions — notation (3/8)
-2026-11-06T02:41:08.206+00:00 +   10.730s       notation: scanning 2 files — heal off
-2026-11-06T02:41:08.206+00:00 +   10.730s       notation: done — 0 findings, 0 healed
-2026-11-06T02:41:08.206+00:00 +   10.730s     conventions: javascript notation — 0 findings
-2026-11-06T02:41:08.206+00:00 +   10.730s       progress: conventions — javascript (3/8)
-2026-11-06T02:41:08.207+00:00 +   10.730s       progress: conventions — javascript: code.js (3/8)
-2026-11-06T02:41:08.207+00:00 +   10.731s       progress: conventions — javascript: code.js (3/8)
-2026-11-06T02:41:08.207+00:00 +   10.731s     conventions: javascript — 0 findings
-2026-11-06T02:41:08.207+00:00 +   10.731s       progress: conventions — css (3/8)
-2026-11-06T02:41:08.207+00:00 +   10.731s       progress: conventions — css: style.css (3/8)
-2026-11-06T02:41:08.207+00:00 +   10.731s       css tokens: parsing 1 files
-2026-11-06T02:41:08.208+00:00 +   10.731s         css tokens: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/web/style.css — 9 declarations
-2026-11-06T02:41:08.208+00:00 +   10.731s       css tokens: 7 definitions, 0 component names
-2026-11-06T02:41:08.208+00:00 +   10.732s       css tokens: references check
-2026-11-06T02:41:08.209+00:00 +   10.732s       css tokens: custom-property layers check
-2026-11-06T02:41:08.209+00:00 +   10.732s       css tokens: terminal declarations check
-2026-11-06T02:41:08.213+00:00 +   10.736s       progress: conventions — css tokens (3/8)
-2026-11-06T02:41:08.213+00:00 +   10.736s     conventions: css — 0 findings
-2026-11-06T02:41:08.213+00:00 +   10.736s       progress: conventions — html (3/8)
-2026-11-06T02:41:08.213+00:00 +   10.736s       progress: conventions — html: index.html (3/8)
-2026-11-06T02:41:08.213+00:00 +   10.736s     conventions: html — 0 findings
-2026-11-06T02:41:08.228+00:00 +   10.751s     all lints: long-line repair — disabled
-2026-11-06T02:41:08.228+00:00 +   10.751s   stage: all lints
-2026-11-06T02:41:08.229+00:00 +   10.753s       progress: all lints (4/8)
-2026-11-06T02:41:08.230+00:00 +   10.753s     all lints: launch package audit
-2026-11-06T02:41:08.230+00:00 +   10.754s     all lints: specs resolved — ruff, refurb, ruff_docs, basedpyright, pyrefly, eslint, stylelint, htmlint, typescript
-2026-11-06T02:41:08.231+00:00 +   10.754s   all lints: start — 9 tools, 16 workers, stabilize=off
-2026-11-06T02:41:08.231+00:00 +   10.754s     all lints: discover files
-2026-11-06T02:41:08.247+00:00 +   10.771s       all lints: ruff — 6 files
-2026-11-06T02:41:08.247+00:00 +   10.771s       all lints: refurb — 6 files
-2026-11-06T02:41:08.247+00:00 +   10.771s       all lints: ruff_docs — 6 files
-2026-11-06T02:41:08.247+00:00 +   10.771s       all lints: basedpyright — 6 files
-2026-11-06T02:41:08.247+00:00 +   10.771s       all lints: pyrefly — 6 files
-2026-11-06T02:41:08.247+00:00 +   10.771s       all lints: eslint — 4 files
-2026-11-06T02:41:08.247+00:00 +   10.771s       all lints: stylelint — 1 files
-2026-11-06T02:41:08.247+00:00 +   10.771s       all lints: htmlint — 1 files
-2026-11-06T02:41:08.248+00:00 +   10.771s       all lints: typescript — 4 files
-2026-11-06T02:41:08.249+00:00 +   10.772s       all lints: refurb — unavailable, no files checked
-2026-11-06T02:41:08.249+00:00 +   10.772s     all lints: execute — 12 files with checks
-2026-11-06T02:41:08.249+00:00 +   10.772s     all lints: submit non-python checks
-2026-11-06T02:41:08.251+00:00 +   10.775s       eslint: batch — 1 files, one process @thread=ThreadPoolExecutor-48_0
-2026-11-06T02:41:08.252+00:00 +   10.775s         eslint: exec eslint.config.mjs — 5 argv @thread=ThreadPoolExecutor-48_0
-2026-11-06T02:41:08.252+00:00 +   10.775s       eslint: batch — 1 files, one process @thread=ThreadPoolExecutor-48_1
-2026-11-06T02:41:08.260+00:00 +   10.784s         eslint: exec stylelint.config.mjs — 5 argv @thread=ThreadPoolExecutor-48_1
-2026-11-06T02:41:08.259+00:00 +   10.783s       eslint: batch — 1 files, one process @thread=ThreadPoolExecutor-48_2
-2026-11-06T02:41:08.271+00:00 +   10.795s         eslint: exec tests/code.test.mjs — 5 argv @thread=ThreadPoolExecutor-48_2
-2026-11-06T02:41:08.272+00:00 +   10.796s       eslint: batch — 1 files, one process @thread=ThreadPoolExecutor-48_3
-2026-11-06T02:41:08.273+00:00 +   10.797s         eslint: exec web/code.js — 5 argv @thread=ThreadPoolExecutor-48_3
-2026-11-06T02:41:08.306+00:00 +   10.830s       htmlint: batch — 1 files, one process @thread=ThreadPoolExecutor-48_5
-2026-11-06T02:41:08.306+00:00 +   10.830s         htmlint: exec web/index.html — 2 argv @thread=ThreadPoolExecutor-48_5
-2026-11-06T02:41:08.312+00:00 +   10.835s       typescript: batch — 4 files, one process @thread=ThreadPoolExecutor-48_4
-2026-11-06T02:41:08.316+00:00 +   10.839s       stylelint: batch — 1 files, one process @thread=ThreadPoolExecutor-48_6
-2026-11-06T02:41:08.316+00:00 +   10.839s         stylelint: exec web/style.css — 4 argv @thread=ThreadPoolExecutor-48_6
-2026-11-06T02:41:08.326+00:00 +   10.850s       typescript: scoped project — 4 files via .exactus-typescript-60941.json (extends jsconfig.json) @thread=ThreadPoolExecutor-48_4
-2026-11-06T02:41:08.327+00:00 +   10.850s         typescript: exec eslint.config.mjs — 6 argv @thread=ThreadPoolExecutor-48_4
-2026-11-06T02:41:08.357+00:00 +   10.881s     all lints: stabilization skipped — disabled
-2026-11-06T02:41:08.358+00:00 +   10.881s     all lints: submit python checks
-2026-11-06T02:41:08.365+00:00 +   10.889s       ruff: batch — 1 files, one process @thread=ThreadPoolExecutor-48_7
-2026-11-06T02:41:08.395+00:00 +   10.918s         ruff: exec __init__.py — 9 argv @thread=ThreadPoolExecutor-48_7
-2026-11-06T02:41:08.400+00:00 +   10.924s       ruff: batch — 1 files, one process @thread=ThreadPoolExecutor-48_8
-2026-11-06T02:41:08.401+00:00 +   10.924s         ruff: exec conftest.py — 9 argv @thread=ThreadPoolExecutor-48_8
-2026-11-06T02:41:08.417+00:00 +   10.940s       ruff: batch — 1 files, one process @thread=ThreadPoolExecutor-48_10
-2026-11-06T02:41:08.417+00:00 +   10.941s       ruff: batch — 1 files, one process @thread=ThreadPoolExecutor-48_9
-2026-11-06T02:41:08.423+00:00 +   10.946s         ruff: exec python/calc.py — 9 argv @thread=ThreadPoolExecutor-48_10
-2026-11-06T02:41:08.425+00:00 +   10.948s       ruff: batch — 1 files, one process @thread=ThreadPoolExecutor-48_11
-2026-11-06T02:41:08.425+00:00 +   10.949s         ruff: exec python/__init__.py — 9 argv @thread=ThreadPoolExecutor-48_9
-2026-11-06T02:41:08.426+00:00 +   10.949s         ruff: __init__.py — exit 0, 0 diagnostics, 0.030748s @thread=ThreadPoolExecutor-48_7
-2026-11-06T02:41:08.431+00:00 +   10.955s         ruff: exec tests/__init__.py — 9 argv @thread=ThreadPoolExecutor-48_11
-2026-11-06T02:41:08.442+00:00 +   10.966s         ruff: conftest.py — exit 0, 0 diagnostics, 0.039507s @thread=ThreadPoolExecutor-48_8
-2026-11-06T02:41:08.448+00:00 +   10.971s       progress: all lints — ruff: __init__.py (7/40) @thread=ThreadPoolExecutor-48_7
-2026-11-06T02:41:08.457+00:00 +   10.981s       ruff: batch — 1 files, one process @thread=ThreadPoolExecutor-48_8
-2026-11-06T02:41:08.459+00:00 +   10.983s         ruff: exec tests/test_calc.py — 9 argv @thread=ThreadPoolExecutor-48_8
-2026-11-06T02:41:08.465+00:00 +   10.989s       basedpyright: batch — 2 files, one process @thread=ThreadPoolExecutor-48_7
-2026-11-06T02:41:08.459+00:00 +   10.982s       basedpyright: batch — 2 files, one process @thread=ThreadPoolExecutor-48_12
-2026-11-06T02:41:08.459+00:00 +   10.982s         ruff: python/calc.py — exit 0, 0 diagnostics, 0.033054s @thread=ThreadPoolExecutor-48_10
-2026-11-06T02:41:08.467+00:00 +   10.990s         ruff: python/__init__.py — exit 0, 0 diagnostics, 0.035011s @thread=ThreadPoolExecutor-48_9
-2026-11-06T02:41:08.469+00:00 +   10.993s       pyrefly: batch — 6 files, one process @thread=ThreadPoolExecutor-48_14
-2026-11-06T02:41:08.470+00:00 +   10.993s       basedpyright: batch — 2 files, one process @thread=ThreadPoolExecutor-48_13
-2026-11-06T02:41:08.470+00:00 +   10.994s         basedpyright: exec __init__.py — 4 argv @thread=ThreadPoolExecutor-48_12
-2026-11-06T02:41:08.471+00:00 +   10.995s       all lints: ruff — task done, 1 file results
-2026-11-06T02:41:08.471+00:00 +   10.995s         basedpyright: exec python/__init__.py — 4 argv @thread=ThreadPoolExecutor-48_7
-2026-11-06T02:41:08.472+00:00 +   10.996s         ruff: tests/__init__.py — exit 0, 0 diagnostics, 0.023181s @thread=ThreadPoolExecutor-48_11
-2026-11-06T02:41:08.473+00:00 +   10.996s         pyrefly: exec __init__.py — 12 argv @thread=ThreadPoolExecutor-48_14
-2026-11-06T02:41:08.478+00:00 +   11.001s       all lints: ruff — task done, 1 file results
-2026-11-06T02:41:08.478+00:00 +   11.002s         basedpyright: exec tests/__init__.py — 4 argv @thread=ThreadPoolExecutor-48_13
-2026-11-06T02:41:08.482+00:00 +   11.006s         ruff: tests/test_calc.py — exit 0, 0 diagnostics, 0.0233s @thread=ThreadPoolExecutor-48_8
-2026-11-06T02:41:08.490+00:00 +   11.013s       all lints: ruff — task done, 1 file results
-2026-11-06T02:41:08.504+00:00 +   11.027s       all lints: ruff — task done, 1 file results
-2026-11-06T02:41:08.504+00:00 +   11.028s       all lints: ruff — task done, 1 file results
-2026-11-06T02:41:08.504+00:00 +   11.028s       all lints: ruff — task done, 1 file results
-2026-11-06T02:41:08.627+00:00 +   11.151s         htmlint: web/index.html — exit 0, 0 diagnostics, 0.320688s @thread=ThreadPoolExecutor-48_5
-2026-11-06T02:41:08.627+00:00 +   11.151s       all lints: htmlint — task done, 1 file results
-2026-11-06T02:41:08.774+00:00 +   11.297s       progress: all lints — typescript: tests/code.test.mjs (20/40) @thread=Thread-13_(_pace)
-2026-11-06T02:41:09.018+00:00 +   11.541s         pyrefly: __init__.py — exit 0, 0 diagnostics, 0.533719s @thread=ThreadPoolExecutor-48_14
-2026-11-06T02:41:09.018+00:00 +   11.542s       progress: all lints — pyrefly: python/calc.py (23/40) @thread=ThreadPoolExecutor-48_14
-2026-11-06T02:41:09.018+00:00 +   11.542s         pyrefly: __init__.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-48_14
-2026-11-06T02:41:09.018+00:00 +   11.542s         pyrefly: conftest.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-48_14
-2026-11-06T02:41:09.018+00:00 +   11.542s         pyrefly: python/__init__.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-48_14
-2026-11-06T02:41:09.018+00:00 +   11.542s         pyrefly: python/calc.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-48_14
-2026-11-06T02:41:09.018+00:00 +   11.542s         pyrefly: tests/__init__.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-48_14
-2026-11-06T02:41:09.018+00:00 +   11.542s         pyrefly: tests/test_calc.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-48_14
-2026-11-06T02:41:09.018+00:00 +   11.542s       all lints: pyrefly — task done, 6 file results
-2026-11-06T02:41:09.254+00:00 +   11.778s       progress: all lints — Checking: ruff_docs 0/6, basedpyright 3/6, eslint 0/4, stylelint 0/1, typescript 3/4 (25/40) @thread=Thread-12_(heartbeat)
-2026-11-06T02:41:09.730+00:00 +   12.254s         eslint: web/code.js — exit 0, 0 diagnostics, 1.456787s @thread=ThreadPoolExecutor-48_3
-2026-11-06T02:41:09.730+00:00 +   12.254s       progress: all lints — eslint: web/code.js (26/40) @thread=ThreadPoolExecutor-48_3
-2026-11-06T02:41:09.730+00:00 +   12.254s       all lints: eslint — task done, 1 file results
-2026-11-06T02:41:09.749+00:00 +   12.272s         eslint: tests/code.test.mjs — exit 0, 0 diagnostics, 1.47761s @thread=ThreadPoolExecutor-48_2
-2026-11-06T02:41:09.749+00:00 +   12.273s       all lints: eslint — task done, 1 file results
-2026-11-06T02:41:09.825+00:00 +   12.348s         eslint: stylelint.config.mjs — exit 0, 0 diagnostics, 1.564462s @thread=ThreadPoolExecutor-48_1
-2026-11-06T02:41:09.825+00:00 +   12.348s       all lints: eslint — task done, 1 file results
-2026-11-06T02:41:09.867+00:00 +   12.390s         eslint: eslint.config.mjs — exit 0, 0 diagnostics, 1.614548s @thread=ThreadPoolExecutor-48_0
-2026-11-06T02:41:09.867+00:00 +   12.390s       all lints: eslint — task done, 1 file results
-2026-11-06T02:41:10.006+00:00 +   12.530s         stylelint: web/style.css — exit 0, 0 diagnostics, 1.690574s @thread=ThreadPoolExecutor-48_6
-2026-11-06T02:41:10.007+00:00 +   12.530s       progress: all lints — stylelint: web/style.css (30/40) @thread=ThreadPoolExecutor-48_6
-2026-11-06T02:41:10.007+00:00 +   12.530s       all lints: stylelint — task done, 1 file results
-2026-11-06T02:41:10.259+00:00 +   12.783s       progress: all lints — Checking: ruff_docs 0/6, basedpyright 3/6, typescript 3/4 (30/40) @thread=Thread-12_(heartbeat)
-2026-11-06T02:41:10.647+00:00 +   13.171s         basedpyright: python/__init__.py — exit 0, 0 diagnostics, 2.164024s @thread=ThreadPoolExecutor-48_7
-2026-11-06T02:41:10.648+00:00 +   13.171s       progress: all lints — basedpyright: python/calc.py (31/40) @thread=ThreadPoolExecutor-48_7
-2026-11-06T02:41:10.648+00:00 +   13.171s         basedpyright: python/__init__.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-48_7
-2026-11-06T02:41:10.648+00:00 +   13.171s         basedpyright: python/calc.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-48_7
-2026-11-06T02:41:10.648+00:00 +   13.171s       all lints: basedpyright — task done, 2 file results
-2026-11-06T02:41:10.655+00:00 +   13.179s         basedpyright: tests/__init__.py — exit 0, 0 diagnostics, 2.1592s @thread=ThreadPoolExecutor-48_13
-2026-11-06T02:41:10.656+00:00 +   13.179s         basedpyright: tests/__init__.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-48_13
-2026-11-06T02:41:10.656+00:00 +   13.179s         basedpyright: tests/test_calc.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-48_13
-2026-11-06T02:41:10.656+00:00 +   13.179s       all lints: basedpyright — task done, 2 file results
-2026-11-06T02:41:10.830+00:00 +   13.353s         basedpyright: __init__.py — exit 0, 0 diagnostics, 2.356816s @thread=ThreadPoolExecutor-48_12
-2026-11-06T02:41:10.830+00:00 +   13.354s         basedpyright: __init__.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-48_12
-2026-11-06T02:41:10.830+00:00 +   13.354s         basedpyright: conftest.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-48_12
-2026-11-06T02:41:10.830+00:00 +   13.354s       all lints: basedpyright — task done, 2 file results
-2026-11-06T02:41:11.260+00:00 +   13.783s       progress: all lints — Checking: ruff_docs 0/6, typescript 3/4 (33/40) @thread=Thread-12_(heartbeat)
-2026-11-06T02:41:11.452+00:00 +   13.976s         typescript: eslint.config.mjs — exit 0, 0 diagnostics, 3.125213s @thread=ThreadPoolExecutor-48_4
-2026-11-06T02:41:11.453+00:00 +   13.976s         typescript: eslint.config.mjs — passed, 0 diagnostics @thread=ThreadPoolExecutor-48_4
-2026-11-06T02:41:11.453+00:00 +   13.976s         typescript: stylelint.config.mjs — passed, 0 diagnostics @thread=ThreadPoolExecutor-48_4
-2026-11-06T02:41:11.453+00:00 +   13.976s         typescript: tests/code.test.mjs — passed, 0 diagnostics @thread=ThreadPoolExecutor-48_4
-2026-11-06T02:41:11.453+00:00 +   13.976s         typescript: web/code.js — passed, 0 diagnostics @thread=ThreadPoolExecutor-48_4
-2026-11-06T02:41:11.453+00:00 +   13.976s       all lints: typescript — task done, 4 file results
-2026-11-06T02:41:11.455+00:00 +   13.978s     all lints: derive results
-2026-11-06T02:41:11.455+00:00 +   13.978s       all lints: ruff_docs — derived 6 file results from ruff
-2026-11-06T02:41:11.455+00:00 +   13.978s       progress: all lints — ruff_docs: tests/test_calc.py (40/40)
-2026-11-06T02:41:11.455+00:00 +   13.978s     all lints: ruff — passed, 6 files, 0 diagnostics
-2026-11-06T02:41:11.455+00:00 +   13.978s     all lints: refurb — unavailable, 6 files, 0 diagnostics
-2026-11-06T02:41:11.455+00:00 +   13.978s     all lints: ruff_docs — passed, 6 files, 0 diagnostics
-2026-11-06T02:41:11.455+00:00 +   13.978s     all lints: basedpyright — passed, 6 files, 0 diagnostics
-2026-11-06T02:41:11.455+00:00 +   13.978s     all lints: pyrefly — passed, 6 files, 0 diagnostics
-2026-11-06T02:41:11.455+00:00 +   13.979s     all lints: eslint — passed, 4 files, 0 diagnostics
-2026-11-06T02:41:11.455+00:00 +   13.979s     all lints: stylelint — passed, 1 files, 0 diagnostics
-2026-11-06T02:41:11.455+00:00 +   13.979s     all lints: htmlint — passed, 1 files, 0 diagnostics
-2026-11-06T02:41:11.455+00:00 +   13.979s     all lints: typescript — passed, 4 files, 0 diagnostics
-2026-11-06T02:41:11.455+00:00 +   13.979s   all lints: finished — 3.224s
-2026-11-06T02:41:11.455+00:00 +   13.979s     all lints: report built — 9 tools, 0 diagnostics
-2026-11-06T02:41:11.456+00:00 +   13.979s     all lints: 9 tool results merged
-2026-11-06T02:41:11.459+00:00 +   13.982s     long lines: 0 residual E501, 0 repaired, 0 skipped
-2026-11-06T02:41:11.459+00:00 +   13.982s     infer: baselines — 0 ruff, 0 basedpyright issues
-2026-11-06T02:41:11.459+00:00 +   13.982s       progress: pyrefly (5/8)
-2026-11-06T02:41:11.459+00:00 +   13.982s   stage: pyrefly
-2026-11-06T02:41:11.461+00:00 +   13.984s       progress: pyrefly — check (5/8)
-2026-11-06T02:41:11.461+00:00 +   13.984s     pyrefly: report
-2026-11-06T02:41:11.809+00:00 +   14.333s       clean: removed temporary eslint.config.mjs
-2026-11-06T02:41:11.809+00:00 +   14.333s       clean: removed temporary jsconfig.json
-2026-11-06T02:41:11.809+00:00 +   14.333s       clean: removed temporary stylelint.config.mjs
-2026-11-06T02:41:11.811+00:00 +   14.335s       progress: compliance and report (6/8)
-2026-11-06T02:41:11.811+00:00 +   14.335s   stage: compliance and report
-2026-11-06T02:41:11.811+00:00 +   14.335s     report: compliance scan
-2026-11-06T02:41:11.812+00:00 +   14.335s       compliance: scanning owned sources
-2026-11-06T02:41:11.812+00:00 +   14.335s       compliance: 6 files, 0 skipped
-2026-11-06T02:41:11.814+00:00 +   14.338s       compliance: configuration check
-2026-11-06T02:41:11.815+00:00 +   14.338s     compliance: 0 findings across 6 files
-2026-11-06T02:41:13.123+00:00 +   15.647s     report: tool versions recorded
-2026-11-06T02:41:13.137+00:00 +   15.660s     report: file activities released
-2026-11-06T02:41:13.137+00:00 +   15.661s     report: 0 findings collected
-2026-11-06T02:41:13.138+00:00 +   15.661s lints: run finished — status 0
-2026-11-06T02:41:13.145+00:00 +   15.668s lints: write report bundle
-2026-11-06T02:41:14.144+00:00 +   16.668s   lints: wrote LINTS.md, LINTS.json, LINTS_web
-2026-11-06T02:41:14.153+00:00 +   16.676s lints: finished — exit status 0
+2026-11-06T04:08:14.043+00:00 +    0.001s lints: arguments — root /Users/joaolopes/Exactus/exactus/tests/standalone/project, output /Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/LINTS
+2026-11-06T04:08:14.073+00:00 +    0.031s lints: run start
+2026-11-06T04:08:14.073+00:00 +    0.031s   stage: group final
+2026-11-06T04:08:14.082+00:00 +    0.040s       progress: group final (0/8)
+2026-11-06T04:08:14.082+00:00 +    0.040s     group final — scanning python sources (dry_run=False)
+2026-11-06T04:08:14.087+00:00 +    0.044s       group final: 6 python files collected
+2026-11-06T04:08:14.088+00:00 +    0.045s       group final: parsed 6 modules
+2026-11-06T04:08:14.088+00:00 +    0.045s       group final: 0 plans — 0 constants
+2026-11-06T04:08:14.088+00:00 +    0.045s       group final: 0 plans kept after unsafe-import check
+2026-11-06T04:08:14.088+00:00 +    0.045s       group final: legacy-reference scope — 1 of 6 files
+2026-11-06T04:08:14.088+00:00 +    0.046s     group final — done, 0 constants, 0 files changed
+2026-11-06T04:08:14.106+00:00 +    0.064s   stage: collect
+2026-11-06T04:08:14.106+00:00 +    0.064s       progress: collect (0/8)
+2026-11-06T04:08:14.107+00:00 +    0.064s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/conftest.py
+2026-11-06T04:08:14.107+00:00 +    0.064s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/__init__.py
+2026-11-06T04:08:14.107+00:00 +    0.064s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/python/__init__.py
+2026-11-06T04:08:14.107+00:00 +    0.065s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/python/calc.py
+2026-11-06T04:08:14.107+00:00 +    0.065s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/web/index.html
+2026-11-06T04:08:14.107+00:00 +    0.065s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/web/code.js
+2026-11-06T04:08:14.107+00:00 +    0.065s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/web/style.css
+2026-11-06T04:08:14.108+00:00 +    0.065s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/tests/__init__.py
+2026-11-06T04:08:14.108+00:00 +    0.065s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/tests/test_calc.py
+2026-11-06T04:08:14.108+00:00 +    0.065s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/tests/code.test.mjs
+2026-11-06T04:08:14.207+00:00 +    0.165s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/conftest.py
+2026-11-06T04:08:14.207+00:00 +    0.165s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/__init__.py
+2026-11-06T04:08:14.208+00:00 +    0.165s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/python/__init__.py
+2026-11-06T04:08:14.208+00:00 +    0.165s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/python/calc.py
+2026-11-06T04:08:14.208+00:00 +    0.166s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/web/index.html
+2026-11-06T04:08:14.208+00:00 +    0.166s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/web/code.js
+2026-11-06T04:08:14.209+00:00 +    0.166s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/web/style.css
+2026-11-06T04:08:14.209+00:00 +    0.166s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/tests/__init__.py
+2026-11-06T04:08:14.209+00:00 +    0.167s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/tests/test_calc.py
+2026-11-06T04:08:14.209+00:00 +    0.167s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/tests/code.test.mjs
+2026-11-06T04:08:14.209+00:00 +    0.167s     collect: 6 python, 2 javascript, 1 css, 1 html, 10 files to clean
+2026-11-06T04:08:14.209+00:00 +    0.167s   stage: organize
+2026-11-06T04:08:14.216+00:00 +    0.173s       progress: organize (0/8)
+2026-11-06T04:08:14.217+00:00 +    0.175s     organize — scanning 8 python/javascript sources (dry_run=False)
+2026-11-06T04:08:14.310+00:00 +    0.268s         organize[python]: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/__init__.py — unchanged
+2026-11-06T04:08:14.323+00:00 +    0.281s         organize[python]: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/conftest.py — unchanged
+2026-11-06T04:08:14.336+00:00 +    0.294s         organize[python]: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/python/__init__.py — unchanged
+2026-11-06T04:08:14.354+00:00 +    0.312s         organize[python]: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/python/calc.py — unchanged
+2026-11-06T04:08:14.356+00:00 +    0.313s         organize[python]: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/tests/__init__.py — unchanged
+2026-11-06T04:08:14.474+00:00 +    0.432s         organize[javascript]: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/tests/code.test.mjs — unchanged
+2026-11-06T04:08:14.475+00:00 +    0.435s         organize[python]: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/tests/test_calc.py — unchanged
+2026-11-06T04:08:14.486+00:00 +    0.444s         organize[javascript]: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/web/code.js — unchanged
+2026-11-06T04:08:14.493+00:00 +    0.451s     organize — 8 files scanned (6 python, 2 javascript), 0 changed, 0 skipped; 0/0 methods moved across 0/1 classes (0 lines)
+2026-11-06T04:08:14.504+00:00 +    0.461s       progress: toolchain (1/8)
+2026-11-06T04:08:14.504+00:00 +    0.461s   stage: toolchain
+2026-11-06T04:08:14.504+00:00 +    0.461s     toolchain: required — ['basedpyright', 'eslint', 'htmlhint', 'prettier', 'pyrefly', 'ruff', 'stylelint', 'tsc']
+2026-11-06T04:08:14.561+00:00 +    0.518s       toolchain: exactus bundle — nothing to install
+2026-11-06T04:08:14.700+00:00 +    0.657s       toolchain: ruff → /opt/anaconda3/bin/ruff
+2026-11-06T04:08:14.700+00:00 +    0.657s       toolchain: basedpyright → /opt/anaconda3/bin/basedpyright
+2026-11-06T04:08:14.700+00:00 +    0.657s       toolchain: pyrefly → /opt/anaconda3/bin/pyrefly
+2026-11-06T04:08:14.700+00:00 +    0.657s       toolchain: refurb → missing
+2026-11-06T04:08:14.700+00:00 +    0.657s       toolchain: eslint → /Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/eslint
+2026-11-06T04:08:14.700+00:00 +    0.657s       toolchain: tsc → /Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/tsc
+2026-11-06T04:08:14.700+00:00 +    0.657s       toolchain: stylelint → /Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/stylelint
+2026-11-06T04:08:14.700+00:00 +    0.657s       toolchain: htmlhint → /Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/htmlhint
+2026-11-06T04:08:14.700+00:00 +    0.657s       toolchain: prettier → /Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/prettier
+2026-11-06T04:08:14.700+00:00 +    0.657s     toolchain: resolved — ['basedpyright', 'eslint', 'htmlhint', 'prettier', 'pyrefly', 'ruff', 'stylelint', 'tsc']; missing — ['refurb']
+2026-11-06T04:08:15.032+00:00 +    0.990s       progress: clean (2/8)
+2026-11-06T04:08:15.033+00:00 +    0.990s   stage: clean
+2026-11-06T04:08:15.070+00:00 +    1.028s       clean: materialized eslint.config.mjs
+2026-11-06T04:08:15.071+00:00 +    1.028s       clean: materialized jsconfig.json
+2026-11-06T04:08:15.071+00:00 +    1.028s       clean: materialized stylelint.config.mjs
+2026-11-06T04:08:15.071+00:00 +    1.029s     clean: 10 source files
+2026-11-06T04:08:15.079+00:00 +    1.037s       clean: normalize 10 files
+2026-11-06T04:08:15.079+00:00 +    1.037s         clean: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/__init__.py — unchanged
+2026-11-06T04:08:15.080+00:00 +    1.037s         clean: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/conftest.py — normalized
+2026-11-06T04:08:15.080+00:00 +    1.037s         clean: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/python/__init__.py — unchanged
+2026-11-06T04:08:15.080+00:00 +    1.038s         clean: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/python/calc.py — normalized
+2026-11-06T04:08:15.080+00:00 +    1.038s         clean: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/tests/__init__.py — unchanged
+2026-11-06T04:08:15.081+00:00 +    1.038s         clean: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/tests/code.test.mjs — unchanged
+2026-11-06T04:08:15.081+00:00 +    1.039s         clean: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/tests/test_calc.py — normalized
+2026-11-06T04:08:15.081+00:00 +    1.039s         clean: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/web/code.js — unchanged
+2026-11-06T04:08:15.082+00:00 +    1.039s         clean: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/web/index.html — unchanged
+2026-11-06T04:08:15.082+00:00 +    1.039s         clean: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/web/style.css — unchanged
+2026-11-06T04:08:15.082+00:00 +    1.039s       clean: normalized — 3 changed, 20 lines removed
+2026-11-06T04:08:15.082+00:00 +    1.039s       clean: format — ruff check --fix on 6 python files
+2026-11-06T04:08:15.082+00:00 +    1.040s       clean: format — eslint --fix on 2 javascript files
+2026-11-06T04:08:15.082+00:00 +    1.040s       clean: format — prettier --write on 2 web files
+2026-11-06T04:08:15.102+00:00 +    1.060s       clean: formatter /opt/anaconda3/bin/ruff — exit 0
+2026-11-06T04:08:16.020+00:00 +    1.977s       clean: formatter /Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/eslint — exit 0
+2026-11-06T04:08:16.216+00:00 +    2.174s       clean: formatter /Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/prettier — exit 0
+2026-11-06T04:08:16.222+00:00 +    2.180s       progress: conventions (3/8)
+2026-11-06T04:08:16.222+00:00 +    2.180s   stage: conventions
+2026-11-06T04:08:16.229+00:00 +    2.187s     conventions: scopes — 6 python, 2 delimiter, 2 notation, 1 javascript, 1 css, 1 html
+2026-11-06T04:08:16.230+00:00 +    2.187s       progress: conventions — shebang (3/8)
+2026-11-06T04:08:16.230+00:00 +    2.187s       shebang: scanning sources — heal on
+2026-11-06T04:08:16.230+00:00 +    2.187s       shebang: 6 files to inspect, 0 skipped
+2026-11-06T04:08:16.230+00:00 +    2.187s       progress: checking permissions — __init__.py (1/6)
+2026-11-06T04:08:16.232+00:00 +    2.189s         shebang: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/__init__.py — ok
+2026-11-06T04:08:16.232+00:00 +    2.189s       progress: checking permissions — conftest.py (2/6)
+2026-11-06T04:08:16.232+00:00 +    2.189s         shebang: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/conftest.py — ok
+2026-11-06T04:08:16.232+00:00 +    2.189s       progress: checking permissions — __init__.py (3/6)
+2026-11-06T04:08:16.232+00:00 +    2.190s         shebang: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/python/__init__.py — ok
+2026-11-06T04:08:16.232+00:00 +    2.190s       progress: checking permissions — calc.py (4/6)
+2026-11-06T04:08:16.232+00:00 +    2.190s         shebang: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/python/calc.py — ok
+2026-11-06T04:08:16.232+00:00 +    2.190s       progress: checking permissions — __init__.py (5/6)
+2026-11-06T04:08:16.232+00:00 +    2.190s         shebang: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/tests/__init__.py — ok
+2026-11-06T04:08:16.232+00:00 +    2.190s       progress: checking permissions — test_calc.py (6/6)
+2026-11-06T04:08:16.232+00:00 +    2.190s         shebang: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/tests/test_calc.py — ok
+2026-11-06T04:08:16.233+00:00 +    2.190s     conventions: shebang — 0 findings
+2026-11-06T04:08:16.233+00:00 +    2.190s       progress: conventions — python (3/8)
+2026-11-06T04:08:16.233+00:00 +    2.190s       conventions: python — parse pass (6 files)
+2026-11-06T04:08:16.262+00:00 +    2.220s       progress: conventions — python: __init__.py (3/8)
+2026-11-06T04:08:16.264+00:00 +    2.222s       progress: conventions — python: conftest.py (3/8)
+2026-11-06T04:08:16.266+00:00 +    2.223s       progress: conventions — python: __init__.py (3/8)
+2026-11-06T04:08:16.267+00:00 +    2.225s       progress: conventions — python: calc.py (3/8)
+2026-11-06T04:08:16.268+00:00 +    2.226s       progress: conventions — python: __init__.py (3/8)
+2026-11-06T04:08:16.271+00:00 +    2.229s       progress: conventions — python: test_calc.py (3/8)
+2026-11-06T04:08:16.272+00:00 +    2.229s       conventions: python — findings pass
+2026-11-06T04:08:16.272+00:00 +    2.229s       progress: conventions — python: __init__.py (3/8)
+2026-11-06T04:08:16.272+00:00 +    2.229s       progress: conventions — python: conftest.py (3/8)
+2026-11-06T04:08:16.272+00:00 +    2.230s       progress: conventions — python: __init__.py (3/8)
+2026-11-06T04:08:16.272+00:00 +    2.230s       progress: conventions — python: calc.py (3/8)
+2026-11-06T04:08:16.272+00:00 +    2.230s       progress: conventions — python: __init__.py (3/8)
+2026-11-06T04:08:16.272+00:00 +    2.230s       progress: conventions — python: test_calc.py (3/8)
+2026-11-06T04:08:16.273+00:00 +    2.230s     conventions: python — 0 findings
+2026-11-06T04:08:16.334+00:00 +    2.292s       progress: JavaScript conventions — /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/tests/code.test.mjs (0/2) @thread=ThreadPoolExecutor-15_0
+2026-11-06T04:08:16.376+00:00 +    2.334s       progress: JavaScript conventions — /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/web/code.js (0/2) @thread=ThreadPoolExecutor-15_1
+2026-11-06T04:08:16.426+00:00 +    2.384s       progress: JavaScript conventions — /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/tests/code.test.mjs (1/2) @thread=ThreadPoolExecutor-15_0
+2026-11-06T04:08:16.462+00:00 +    2.420s       progress: JavaScript conventions — /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/web/code.js (2/2) @thread=ThreadPoolExecutor-15_1
+2026-11-06T04:08:16.467+00:00 +    2.425s       progress: conventions — delimiters (3/8)
+2026-11-06T04:08:16.467+00:00 +    2.425s       delimiters: scanning 2 files — heal on
+2026-11-06T04:08:16.467+00:00 +    2.425s       delimiters: done — 0 findings, 0 healed
+2026-11-06T04:08:16.467+00:00 +    2.425s     conventions: javascript delimiters — 0 findings
+2026-11-06T04:08:16.467+00:00 +    2.425s       progress: conventions — notation (3/8)
+2026-11-06T04:08:16.467+00:00 +    2.425s       notation: scanning 2 files — heal on
+2026-11-06T04:08:16.467+00:00 +    2.425s       notation: done — 0 findings, 0 healed
+2026-11-06T04:08:16.467+00:00 +    2.425s     conventions: javascript notation — 0 findings
+2026-11-06T04:08:16.467+00:00 +    2.425s       progress: conventions — javascript (3/8)
+2026-11-06T04:08:16.468+00:00 +    2.425s       progress: conventions — javascript: code.js (3/8)
+2026-11-06T04:08:16.468+00:00 +    2.426s       progress: conventions — javascript: code.js (3/8)
+2026-11-06T04:08:16.468+00:00 +    2.426s     conventions: javascript — 0 findings
+2026-11-06T04:08:16.468+00:00 +    2.426s       progress: conventions — css (3/8)
+2026-11-06T04:08:16.468+00:00 +    2.426s       progress: conventions — css: style.css (3/8)
+2026-11-06T04:08:16.468+00:00 +    2.426s       css tokens: parsing 1 files
+2026-11-06T04:08:16.469+00:00 +    2.426s         css tokens: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/web/style.css — 9 declarations
+2026-11-06T04:08:16.469+00:00 +    2.426s       css tokens: 7 definitions, 0 component names
+2026-11-06T04:08:16.469+00:00 +    2.426s       css tokens: references check
+2026-11-06T04:08:16.469+00:00 +    2.426s       css tokens: custom-property layers check
+2026-11-06T04:08:16.469+00:00 +    2.426s       css tokens: terminal declarations check
+2026-11-06T04:08:16.472+00:00 +    2.429s       progress: conventions — css tokens (3/8)
+2026-11-06T04:08:16.472+00:00 +    2.429s     conventions: css — 0 findings
+2026-11-06T04:08:16.472+00:00 +    2.429s       progress: conventions — html (3/8)
+2026-11-06T04:08:16.472+00:00 +    2.429s       progress: conventions — html: index.html (3/8)
+2026-11-06T04:08:16.472+00:00 +    2.429s     conventions: html — 0 findings
+2026-11-06T04:08:16.492+00:00 +    2.449s     all lints: long-line repair — enabled
+2026-11-06T04:08:16.492+00:00 +    2.449s   stage: all lints
+2026-11-06T04:08:16.498+00:00 +    2.456s       progress: all lints (4/8)
+2026-11-06T04:08:16.498+00:00 +    2.456s     all lints: launch package audit
+2026-11-06T04:08:16.499+00:00 +    2.456s     all lints: specs resolved — ruff, refurb, ruff_docs, basedpyright, pyrefly, eslint, stylelint, htmlint, typescript
+2026-11-06T04:08:16.499+00:00 +    2.456s   all lints: start — 9 tools, 16 workers, stabilize=on
+2026-11-06T04:08:16.499+00:00 +    2.456s     all lints: discover files
+2026-11-06T04:08:16.507+00:00 +    2.464s       all lints: ruff — 6 files
+2026-11-06T04:08:16.507+00:00 +    2.464s       all lints: refurb — 6 files
+2026-11-06T04:08:16.507+00:00 +    2.464s       all lints: ruff_docs — 6 files
+2026-11-06T04:08:16.507+00:00 +    2.464s       all lints: basedpyright — 6 files
+2026-11-06T04:08:16.507+00:00 +    2.464s       all lints: pyrefly — 6 files
+2026-11-06T04:08:16.507+00:00 +    2.464s       all lints: eslint — 4 files
+2026-11-06T04:08:16.507+00:00 +    2.464s       all lints: stylelint — 1 files
+2026-11-06T04:08:16.507+00:00 +    2.464s       all lints: htmlint — 1 files
+2026-11-06T04:08:16.508+00:00 +    2.465s       all lints: typescript — 4 files
+2026-11-06T04:08:16.508+00:00 +    2.466s       all lints: refurb — unavailable, no files checked
+2026-11-06T04:08:16.508+00:00 +    2.466s     all lints: execute — 12 files with checks
+2026-11-06T04:08:16.509+00:00 +    2.466s     all lints: submit non-python checks
+2026-11-06T04:08:16.512+00:00 +    2.470s       eslint: batch — 1 files, one process @thread=ThreadPoolExecutor-16_0
+2026-11-06T04:08:16.512+00:00 +    2.470s         eslint: exec eslint.config.mjs — 5 argv @thread=ThreadPoolExecutor-16_0
+2026-11-06T04:08:16.518+00:00 +    2.476s       eslint: batch — 1 files, one process @thread=ThreadPoolExecutor-16_1
+2026-11-06T04:08:16.519+00:00 +    2.476s         eslint: exec stylelint.config.mjs — 5 argv @thread=ThreadPoolExecutor-16_1
+2026-11-06T04:08:16.525+00:00 +    2.483s       eslint: batch — 1 files, one process @thread=ThreadPoolExecutor-16_2
+2026-11-06T04:08:16.525+00:00 +    2.483s         eslint: exec tests/code.test.mjs — 5 argv @thread=ThreadPoolExecutor-16_2
+2026-11-06T04:08:16.534+00:00 +    2.492s       eslint: batch — 1 files, one process @thread=ThreadPoolExecutor-16_3
+2026-11-06T04:08:16.537+00:00 +    2.494s         eslint: exec web/code.js — 5 argv @thread=ThreadPoolExecutor-16_3
+2026-11-06T04:08:16.538+00:00 +    2.495s       stylelint: batch — 1 files, one process @thread=ThreadPoolExecutor-16_6
+2026-11-06T04:08:16.537+00:00 +    2.494s       htmlint: batch — 1 files, one process @thread=ThreadPoolExecutor-16_5
+2026-11-06T04:08:16.538+00:00 +    2.495s       typescript: batch — 4 files, one process @thread=ThreadPoolExecutor-16_4
+2026-11-06T04:08:16.538+00:00 +    2.495s         stylelint: exec web/style.css — 4 argv @thread=ThreadPoolExecutor-16_6
+2026-11-06T04:08:16.543+00:00 +    2.501s         htmlint: exec web/index.html — 2 argv @thread=ThreadPoolExecutor-16_5
+2026-11-06T04:08:16.567+00:00 +    2.525s       typescript: scoped project — 4 files via .exactus-typescript-57272.json (extends jsconfig.json) @thread=ThreadPoolExecutor-16_4
+2026-11-06T04:08:16.567+00:00 +    2.525s         typescript: exec eslint.config.mjs — 6 argv @thread=ThreadPoolExecutor-16_4
+2026-11-06T04:08:16.592+00:00 +    2.549s     all lints: stabilize 6 python files (ruff format/fix cycles)
+2026-11-06T04:08:16.617+00:00 +    2.575s       stabilize: cycle 1 — ruff format (6 files)
+2026-11-06T04:08:16.653+00:00 +    2.610s       stabilize: cycle 1 — ruff check --fix (6 files)
+2026-11-06T04:08:16.689+00:00 +    2.646s       stabilize: cycle 1 — batch file repair (6 files)
+2026-11-06T04:08:16.706+00:00 +    2.663s       progress: all lints — typescript: eslint.config.mjs (7/46) @thread=Thread-7_(_pace)
+2026-11-06T04:08:16.712+00:00 +    2.669s         htmlint: web/index.html — exit 0, 0 diagnostics, 0.16108s @thread=ThreadPoolExecutor-16_5
+2026-11-06T04:08:16.715+00:00 +    2.673s       stabilize: cycle 1 — 3 files still changing
+2026-11-06T04:08:16.715+00:00 +    2.673s       stabilize: cycle 2 — ruff format (3 files)
+2026-11-06T04:08:16.734+00:00 +    2.691s       stabilize: cycle 2 — ruff check --fix (3 files)
+2026-11-06T04:08:16.754+00:00 +    2.712s       stabilize: cycle 2 — batch file repair (3 files)
+2026-11-06T04:08:16.776+00:00 +    2.733s       stabilize: cycle 2 — 0 files still changing
+2026-11-06T04:08:16.859+00:00 +    2.817s         stabilize: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/__init__.py — format 2 calls, fix 2 calls, 0.243s, +0B
+2026-11-06T04:08:16.860+00:00 +    2.817s         stabilize: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/conftest.py — format 3 calls, fix 3 calls, 0.243s, +1B
+2026-11-06T04:08:16.860+00:00 +    2.817s         stabilize: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/python/__init__.py — format 2 calls, fix 2 calls, 0.243s, +0B
+2026-11-06T04:08:16.860+00:00 +    2.817s         stabilize: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/python/calc.py — format 3 calls, fix 3 calls, 0.243s, +3B
+2026-11-06T04:08:16.860+00:00 +    2.817s         stabilize: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/tests/__init__.py — format 2 calls, fix 2 calls, 0.243s, +0B
+2026-11-06T04:08:16.860+00:00 +    2.817s         stabilize: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/tests/test_calc.py — format 3 calls, fix 3 calls, 0.243s, +7B
+2026-11-06T04:08:16.860+00:00 +    2.817s     all lints: stabilization metrics — {"conflicts": 0, "converged": true, "diagnostics": 0, "duration_seconds": 0.26738050000858493, "files": 6, "format_locked": 0, "invocations": 9, "iterations": 3, "oscillated": false, "per_step_changes": {"compact-fix": 0, "compact-format": 0, "fix-repair": 0, "format": 3}, "policy_fingerprint": "de37bc276419e5df", "restored": 0, "rolled_back": false, "ruff_version": null}
+2026-11-06T04:08:16.860+00:00 +    2.817s     all lints: stabilization complete
+2026-11-06T04:08:16.860+00:00 +    2.818s     all lints: submit python checks
+2026-11-06T04:08:16.864+00:00 +    2.821s       ruff: batch — 1 files, one process @thread=ThreadPoolExecutor-16_7
+2026-11-06T04:08:16.864+00:00 +    2.821s         ruff: exec conftest.py — 9 argv @thread=ThreadPoolExecutor-16_7
+2026-11-06T04:08:16.864+00:00 +    2.822s       ruff: batch — 1 files, one process @thread=ThreadPoolExecutor-16_5
+2026-11-06T04:08:16.864+00:00 +    2.822s         ruff: exec __init__.py — 9 argv @thread=ThreadPoolExecutor-16_5
+2026-11-06T04:08:16.875+00:00 +    2.833s       ruff: batch — 1 files, one process @thread=ThreadPoolExecutor-16_8
+2026-11-06T04:08:16.876+00:00 +    2.833s         ruff: exec python/__init__.py — 9 argv @thread=ThreadPoolExecutor-16_8
+2026-11-06T04:08:16.879+00:00 +    2.836s       ruff: batch — 1 files, one process @thread=ThreadPoolExecutor-16_9
+2026-11-06T04:08:16.879+00:00 +    2.837s         ruff: exec python/calc.py — 9 argv @thread=ThreadPoolExecutor-16_9
+2026-11-06T04:08:16.884+00:00 +    2.841s       ruff: batch — 1 files, one process @thread=ThreadPoolExecutor-16_10
+2026-11-06T04:08:16.884+00:00 +    2.842s         ruff: __init__.py — exit 0, 0 diagnostics, 0.020098s @thread=ThreadPoolExecutor-16_5
+2026-11-06T04:08:16.885+00:00 +    2.843s       ruff: batch — 1 files, one process @thread=ThreadPoolExecutor-16_11
+2026-11-06T04:08:16.886+00:00 +    2.843s         ruff: exec tests/__init__.py — 9 argv @thread=ThreadPoolExecutor-16_10
+2026-11-06T04:08:16.886+00:00 +    2.843s       basedpyright: batch — 2 files, one process @thread=ThreadPoolExecutor-16_12
+2026-11-06T04:08:16.891+00:00 +    2.848s         ruff: conftest.py — exit 0, 0 diagnostics, 0.026785s @thread=ThreadPoolExecutor-16_7
+2026-11-06T04:08:16.892+00:00 +    2.849s       basedpyright: batch — 2 files, one process @thread=ThreadPoolExecutor-16_5
+2026-11-06T04:08:16.892+00:00 +    2.850s       all lints: ruff — task done, 1 file results
+2026-11-06T04:08:16.892+00:00 +    2.850s         ruff: exec tests/test_calc.py — 9 argv @thread=ThreadPoolExecutor-16_11
+2026-11-06T04:08:16.893+00:00 +    2.850s       pyrefly: batch — 6 files, one process @thread=ThreadPoolExecutor-16_14
+2026-11-06T04:08:16.893+00:00 +    2.851s       basedpyright: batch — 2 files, one process @thread=ThreadPoolExecutor-16_13
+2026-11-06T04:08:16.901+00:00 +    2.859s         basedpyright: exec __init__.py — 4 argv @thread=ThreadPoolExecutor-16_12
+2026-11-06T04:08:16.902+00:00 +    2.860s         ruff: python/__init__.py — exit 0, 0 diagnostics, 0.025973s @thread=ThreadPoolExecutor-16_8
+2026-11-06T04:08:16.902+00:00 +    2.860s         basedpyright: exec python/__init__.py — 4 argv @thread=ThreadPoolExecutor-16_5
+2026-11-06T04:08:16.902+00:00 +    2.860s       all lints: htmlint — task done, 1 file results
+2026-11-06T04:08:16.903+00:00 +    2.860s         ruff: python/calc.py — exit 0, 0 diagnostics, 0.017404s @thread=ThreadPoolExecutor-16_9
+2026-11-06T04:08:16.909+00:00 +    2.866s         pyrefly: exec __init__.py — 12 argv @thread=ThreadPoolExecutor-16_14
+2026-11-06T04:08:16.911+00:00 +    2.868s       progress: all lints — ruff: python/__init__.py (18/46) @thread=ThreadPoolExecutor-16_8
+2026-11-06T04:08:16.917+00:00 +    2.875s         basedpyright: exec tests/__init__.py — 4 argv @thread=ThreadPoolExecutor-16_13
+2026-11-06T04:08:16.918+00:00 +    2.875s         ruff: tests/__init__.py — exit 0, 0 diagnostics, 0.024403s @thread=ThreadPoolExecutor-16_10
+2026-11-06T04:08:16.925+00:00 +    2.882s         ruff: tests/test_calc.py — exit 0, 0 diagnostics, 0.02215s @thread=ThreadPoolExecutor-16_11
+2026-11-06T04:08:16.931+00:00 +    2.888s       all lints: ruff — task done, 1 file results
+2026-11-06T04:08:16.945+00:00 +    2.903s       all lints: ruff — task done, 1 file results
+2026-11-06T04:08:16.946+00:00 +    2.903s       all lints: ruff — task done, 1 file results
+2026-11-06T04:08:16.946+00:00 +    2.903s       all lints: ruff — task done, 1 file results
+2026-11-06T04:08:16.946+00:00 +    2.903s       all lints: ruff — task done, 1 file results
+2026-11-06T04:08:17.211+00:00 +    3.168s       progress: all lints — pyrefly: conftest.py (27/46) @thread=Thread-10_(_pace)
+2026-11-06T04:08:17.355+00:00 +    3.312s         eslint: tests/code.test.mjs — exit 0, 0 diagnostics, 0.829461s @thread=ThreadPoolExecutor-16_2
+2026-11-06T04:08:17.355+00:00 +    3.313s       all lints: eslint — task done, 1 file results
+2026-11-06T04:08:17.378+00:00 +    3.336s         eslint: stylelint.config.mjs — exit 0, 0 diagnostics, 0.85879s @thread=ThreadPoolExecutor-16_1
+2026-11-06T04:08:17.379+00:00 +    3.336s       all lints: eslint — task done, 1 file results
+2026-11-06T04:08:17.411+00:00 +    3.369s         eslint: web/code.js — exit 0, 0 diagnostics, 0.873875s @thread=ThreadPoolExecutor-16_3
+2026-11-06T04:08:17.411+00:00 +    3.369s       progress: all lints — eslint: web/code.js (31/46) @thread=ThreadPoolExecutor-16_3
+2026-11-06T04:08:17.411+00:00 +    3.369s       all lints: eslint — task done, 1 file results
+2026-11-06T04:08:17.435+00:00 +    3.393s         pyrefly: __init__.py — exit 0, 0 diagnostics, 0.503874s @thread=ThreadPoolExecutor-16_14
+2026-11-06T04:08:17.435+00:00 +    3.393s         pyrefly: __init__.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-16_14
+2026-11-06T04:08:17.435+00:00 +    3.393s         pyrefly: conftest.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-16_14
+2026-11-06T04:08:17.435+00:00 +    3.393s         pyrefly: python/__init__.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-16_14
+2026-11-06T04:08:17.435+00:00 +    3.393s         pyrefly: python/calc.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-16_14
+2026-11-06T04:08:17.435+00:00 +    3.393s         pyrefly: tests/__init__.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-16_14
+2026-11-06T04:08:17.435+00:00 +    3.393s         pyrefly: tests/test_calc.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-16_14
+2026-11-06T04:08:17.436+00:00 +    3.393s       all lints: pyrefly — task done, 6 file results
+2026-11-06T04:08:17.526+00:00 +    3.484s         eslint: eslint.config.mjs — exit 0, 0 diagnostics, 1.014081s @thread=ThreadPoolExecutor-16_0
+2026-11-06T04:08:17.526+00:00 +    3.484s       all lints: eslint — task done, 1 file results
+2026-11-06T04:08:17.811+00:00 +    3.769s         stylelint: web/style.css — exit 0, 0 diagnostics, 1.266262s @thread=ThreadPoolExecutor-16_6
+2026-11-06T04:08:17.812+00:00 +    3.769s       progress: all lints — stylelint: web/style.css (36/46) @thread=ThreadPoolExecutor-16_6
+2026-11-06T04:08:17.814+00:00 +    3.771s       all lints: stylelint — task done, 1 file results
+2026-11-06T04:08:18.128+00:00 +    4.086s         basedpyright: python/__init__.py — exit 0, 0 diagnostics, 1.210241s @thread=ThreadPoolExecutor-16_5
+2026-11-06T04:08:18.128+00:00 +    4.086s       progress: all lints — basedpyright: python/calc.py (37/46) @thread=ThreadPoolExecutor-16_5
+2026-11-06T04:08:18.128+00:00 +    4.086s         basedpyright: python/__init__.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-16_5
+2026-11-06T04:08:18.128+00:00 +    4.086s         basedpyright: python/calc.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-16_5
+2026-11-06T04:08:18.128+00:00 +    4.086s       all lints: basedpyright — task done, 2 file results
+2026-11-06T04:08:18.229+00:00 +    4.187s         basedpyright: tests/__init__.py — exit 0, 0 diagnostics, 1.292838s @thread=ThreadPoolExecutor-16_13
+2026-11-06T04:08:18.229+00:00 +    4.187s         basedpyright: tests/__init__.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-16_13
+2026-11-06T04:08:18.229+00:00 +    4.187s         basedpyright: tests/test_calc.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-16_13
+2026-11-06T04:08:18.229+00:00 +    4.187s       all lints: basedpyright — task done, 2 file results
+2026-11-06T04:08:18.355+00:00 +    4.313s         basedpyright: __init__.py — exit 0, 0 diagnostics, 1.445656s @thread=ThreadPoolExecutor-16_12
+2026-11-06T04:08:18.355+00:00 +    4.313s       progress: all lints — basedpyright: conftest.py (39/46) @thread=ThreadPoolExecutor-16_12
+2026-11-06T04:08:18.355+00:00 +    4.313s         basedpyright: __init__.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-16_12
+2026-11-06T04:08:18.356+00:00 +    4.313s         basedpyright: conftest.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-16_12
+2026-11-06T04:08:18.355+00:00 +    4.313s       all lints: basedpyright — task done, 2 file results
+2026-11-06T04:08:18.775+00:00 +    4.732s         typescript: eslint.config.mjs — exit 0, 0 diagnostics, 2.207636s @thread=ThreadPoolExecutor-16_4
+2026-11-06T04:08:18.775+00:00 +    4.733s       progress: all lints — typescript: web/code.js (40/46) @thread=ThreadPoolExecutor-16_4
+2026-11-06T04:08:18.775+00:00 +    4.733s         typescript: eslint.config.mjs — passed, 0 diagnostics @thread=ThreadPoolExecutor-16_4
+2026-11-06T04:08:18.776+00:00 +    4.733s         typescript: stylelint.config.mjs — passed, 0 diagnostics @thread=ThreadPoolExecutor-16_4
+2026-11-06T04:08:18.776+00:00 +    4.733s         typescript: tests/code.test.mjs — passed, 0 diagnostics @thread=ThreadPoolExecutor-16_4
+2026-11-06T04:08:18.776+00:00 +    4.733s         typescript: web/code.js — passed, 0 diagnostics @thread=ThreadPoolExecutor-16_4
+2026-11-06T04:08:18.776+00:00 +    4.733s       all lints: typescript — task done, 4 file results
+2026-11-06T04:08:18.778+00:00 +    4.735s     all lints: derive results
+2026-11-06T04:08:18.778+00:00 +    4.735s       all lints: ruff_docs — derived 6 file results from ruff
+2026-11-06T04:08:18.778+00:00 +    4.735s       progress: all lints — ruff_docs: tests/test_calc.py (46/46)
+2026-11-06T04:08:18.778+00:00 +    4.736s     all lints: ruff — passed, 6 files, 0 diagnostics
+2026-11-06T04:08:18.778+00:00 +    4.736s     all lints: refurb — unavailable, 6 files, 0 diagnostics
+2026-11-06T04:08:18.778+00:00 +    4.736s     all lints: ruff_docs — passed, 6 files, 0 diagnostics
+2026-11-06T04:08:18.778+00:00 +    4.736s     all lints: basedpyright — passed, 6 files, 0 diagnostics
+2026-11-06T04:08:18.778+00:00 +    4.736s     all lints: pyrefly — passed, 6 files, 0 diagnostics
+2026-11-06T04:08:18.778+00:00 +    4.736s     all lints: eslint — passed, 4 files, 0 diagnostics
+2026-11-06T04:08:18.778+00:00 +    4.736s     all lints: stylelint — passed, 1 files, 0 diagnostics
+2026-11-06T04:08:18.778+00:00 +    4.736s     all lints: htmlint — passed, 1 files, 0 diagnostics
+2026-11-06T04:08:18.778+00:00 +    4.736s     all lints: typescript — passed, 4 files, 0 diagnostics
+2026-11-06T04:08:18.778+00:00 +    4.736s   all lints: finished — 2.279s
+2026-11-06T04:08:18.778+00:00 +    4.736s     all lints: report built — 9 tools, 0 diagnostics
+2026-11-06T04:08:18.778+00:00 +    4.736s     all lints: 9 tool results merged
+2026-11-06T04:08:18.785+00:00 +    4.742s     long lines: 0 residual E501, 0 repaired, 0 skipped
+2026-11-06T04:08:18.785+00:00 +    4.742s     infer: baselines — 0 ruff, 0 basedpyright issues
+2026-11-06T04:08:18.785+00:00 +    4.743s       progress: infer (5/8)
+2026-11-06T04:08:18.785+00:00 +    4.743s   stage: infer
+2026-11-06T04:08:18.793+00:00 +    4.751s     infer: snapshot sources
+2026-11-06T04:08:18.796+00:00 +    4.754s       progress: infer — pyrefly infer (5/8)
+2026-11-06T04:08:18.994+00:00 +    4.952s     infer: pyrefly infer — exit 0
+2026-11-06T04:08:18.997+00:00 +    4.955s     infer: sources unchanged
+2026-11-06T04:08:18.999+00:00 +    4.957s       progress: infer — check (5/8)
+2026-11-06T04:08:19.000+00:00 +    4.957s     infer: pyrefly report
+2026-11-06T04:08:19.262+00:00 +    5.220s       clean: removed temporary eslint.config.mjs
+2026-11-06T04:08:19.263+00:00 +    5.220s       clean: removed temporary jsconfig.json
+2026-11-06T04:08:19.263+00:00 +    5.220s       clean: removed temporary stylelint.config.mjs
+2026-11-06T04:08:19.264+00:00 +    5.222s       progress: compliance and report (6/8)
+2026-11-06T04:08:19.264+00:00 +    5.222s   stage: compliance and report
+2026-11-06T04:08:19.264+00:00 +    5.222s     report: compliance scan
+2026-11-06T04:08:19.264+00:00 +    5.222s       compliance: scanning owned sources
+2026-11-06T04:08:19.264+00:00 +    5.222s       compliance: 6 files, 0 skipped
+2026-11-06T04:08:19.266+00:00 +    5.224s       compliance: configuration check
+2026-11-06T04:08:19.266+00:00 +    5.224s     compliance: 0 findings across 6 files
+2026-11-06T04:08:20.491+00:00 +    6.448s     report: tool versions recorded
+2026-11-06T04:08:20.504+00:00 +    6.462s     report: file activities released
+2026-11-06T04:08:20.504+00:00 +    6.462s     report: 0 findings collected
+2026-11-06T04:08:20.544+00:00 +    6.501s lints: run finished — status 0
+2026-11-06T04:08:20.549+00:00 +    6.506s lints: run start
+2026-11-06T04:08:20.549+00:00 +    6.506s   stage: group final
+2026-11-06T04:08:20.554+00:00 +    6.512s       progress: group final (0/8)
+2026-11-06T04:08:20.554+00:00 +    6.512s     group final — scanning python sources (dry_run=True)
+2026-11-06T04:08:20.558+00:00 +    6.515s       group final: 6 python files collected
+2026-11-06T04:08:20.558+00:00 +    6.516s       group final: parsed 6 modules
+2026-11-06T04:08:20.558+00:00 +    6.516s       group final: 0 plans — 0 constants
+2026-11-06T04:08:20.558+00:00 +    6.516s       group final: 0 plans kept after unsafe-import check
+2026-11-06T04:08:20.559+00:00 +    6.516s       group final: legacy-reference scope — 1 of 6 files
+2026-11-06T04:08:20.559+00:00 +    6.517s     group final — done, 0 constants, 0 files changed
+2026-11-06T04:08:20.565+00:00 +    6.522s   stage: collect
+2026-11-06T04:08:20.565+00:00 +    6.522s       progress: collect (0/8)
+2026-11-06T04:08:20.565+00:00 +    6.523s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/conftest.py
+2026-11-06T04:08:20.566+00:00 +    6.523s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/__init__.py
+2026-11-06T04:08:20.566+00:00 +    6.524s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/python/__init__.py
+2026-11-06T04:08:20.566+00:00 +    6.524s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/python/calc.py
+2026-11-06T04:08:20.566+00:00 +    6.524s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/web/index.html
+2026-11-06T04:08:20.566+00:00 +    6.524s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/web/code.js
+2026-11-06T04:08:20.566+00:00 +    6.524s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/web/style.css
+2026-11-06T04:08:20.567+00:00 +    6.524s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/tests/__init__.py
+2026-11-06T04:08:20.567+00:00 +    6.524s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/tests/test_calc.py
+2026-11-06T04:08:20.567+00:00 +    6.524s         collect: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/tests/code.test.mjs
+2026-11-06T04:08:20.577+00:00 +    6.535s     collect: 6 python, 2 javascript, 1 css, 1 html, 0 files to clean
+2026-11-06T04:08:20.577+00:00 +    6.535s   stage: organize
+2026-11-06T04:08:20.582+00:00 +    6.540s       progress: organize (0/8)
+2026-11-06T04:08:20.584+00:00 +    6.541s     organize — scanning 8 python/javascript sources (dry_run=True)
+2026-11-06T04:08:20.585+00:00 +    6.543s         organize[python]: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/__init__.py — unchanged
+2026-11-06T04:08:20.586+00:00 +    6.543s         organize[python]: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/conftest.py — unchanged
+2026-11-06T04:08:20.586+00:00 +    6.544s         organize[python]: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/python/__init__.py — unchanged
+2026-11-06T04:08:20.586+00:00 +    6.544s         organize[python]: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/python/calc.py — unchanged
+2026-11-06T04:08:20.597+00:00 +    6.554s         organize[python]: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/tests/__init__.py — unchanged
+2026-11-06T04:08:20.787+00:00 +    6.745s         organize[javascript]: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/tests/code.test.mjs — unchanged
+2026-11-06T04:08:20.787+00:00 +    6.745s         organize[python]: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/tests/test_calc.py — unchanged
+2026-11-06T04:08:20.788+00:00 +    6.745s         organize[javascript]: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/web/code.js — unchanged
+2026-11-06T04:08:20.792+00:00 +    6.749s     organize — 8 files scanned (6 python, 2 javascript), 0 changed, 0 skipped; 0/0 methods moved across 0/1 classes (0 lines)
+2026-11-06T04:08:20.808+00:00 +    6.765s       progress: toolchain (1/8)
+2026-11-06T04:08:20.808+00:00 +    6.765s   stage: toolchain
+2026-11-06T04:08:21.078+00:00 +    7.036s       toolchain: ruff → /opt/anaconda3/bin/ruff
+2026-11-06T04:08:21.078+00:00 +    7.036s       toolchain: basedpyright → /opt/anaconda3/bin/basedpyright
+2026-11-06T04:08:21.078+00:00 +    7.036s       toolchain: pyrefly → /opt/anaconda3/bin/pyrefly
+2026-11-06T04:08:21.078+00:00 +    7.036s       toolchain: refurb → missing
+2026-11-06T04:08:21.078+00:00 +    7.036s       toolchain: eslint → /Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/eslint
+2026-11-06T04:08:21.078+00:00 +    7.036s       toolchain: tsc → /Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/tsc
+2026-11-06T04:08:21.078+00:00 +    7.036s       toolchain: stylelint → /Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/stylelint
+2026-11-06T04:08:21.078+00:00 +    7.036s       toolchain: htmlhint → /Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/htmlhint
+2026-11-06T04:08:21.078+00:00 +    7.036s       toolchain: prettier → /Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/eslint_htmlhint_jslint_prettier_stylelint_tsc/js/node_modules/.bin/prettier
+2026-11-06T04:08:21.078+00:00 +    7.036s     toolchain: resolved — ['basedpyright', 'eslint', 'htmlhint', 'prettier', 'pyrefly', 'ruff', 'stylelint', 'tsc']; missing — ['refurb']
+2026-11-06T04:08:21.211+00:00 +    7.169s       progress: clean (2/8)
+2026-11-06T04:08:21.211+00:00 +    7.169s   stage: clean
+2026-11-06T04:08:21.241+00:00 +    7.198s       clean: materialized eslint.config.mjs
+2026-11-06T04:08:21.241+00:00 +    7.199s       clean: materialized jsconfig.json
+2026-11-06T04:08:21.242+00:00 +    7.199s       clean: materialized stylelint.config.mjs
+2026-11-06T04:08:21.242+00:00 +    7.199s       progress: conventions (3/8)
+2026-11-06T04:08:21.242+00:00 +    7.199s   stage: conventions
+2026-11-06T04:08:21.245+00:00 +    7.202s     conventions: scopes — 6 python, 2 delimiter, 2 notation, 1 javascript, 1 css, 1 html
+2026-11-06T04:08:21.245+00:00 +    7.202s       progress: conventions — shebang (3/8)
+2026-11-06T04:08:21.245+00:00 +    7.202s       shebang: scanning sources — heal off
+2026-11-06T04:08:21.245+00:00 +    7.202s       shebang: 6 files to inspect, 0 skipped
+2026-11-06T04:08:21.245+00:00 +    7.202s       progress: checking permissions — __init__.py (1/6)
+2026-11-06T04:08:21.247+00:00 +    7.204s         shebang: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/__init__.py — ok
+2026-11-06T04:08:21.247+00:00 +    7.204s       progress: checking permissions — conftest.py (2/6)
+2026-11-06T04:08:21.247+00:00 +    7.204s         shebang: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/conftest.py — ok
+2026-11-06T04:08:21.247+00:00 +    7.204s       progress: checking permissions — __init__.py (3/6)
+2026-11-06T04:08:21.247+00:00 +    7.205s         shebang: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/python/__init__.py — ok
+2026-11-06T04:08:21.247+00:00 +    7.205s       progress: checking permissions — calc.py (4/6)
+2026-11-06T04:08:21.247+00:00 +    7.205s         shebang: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/python/calc.py — ok
+2026-11-06T04:08:21.247+00:00 +    7.205s       progress: checking permissions — __init__.py (5/6)
+2026-11-06T04:08:21.247+00:00 +    7.205s         shebang: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/tests/__init__.py — ok
+2026-11-06T04:08:21.247+00:00 +    7.205s       progress: checking permissions — test_calc.py (6/6)
+2026-11-06T04:08:21.248+00:00 +    7.205s         shebang: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/tests/test_calc.py — ok
+2026-11-06T04:08:21.248+00:00 +    7.205s     conventions: shebang — 0 findings
+2026-11-06T04:08:21.248+00:00 +    7.205s       progress: conventions — python (3/8)
+2026-11-06T04:08:21.248+00:00 +    7.205s       conventions: python — parse pass (6 files)
+2026-11-06T04:08:21.249+00:00 +    7.207s       progress: conventions — python: __init__.py (3/8)
+2026-11-06T04:08:21.249+00:00 +    7.207s       progress: conventions — python: conftest.py (3/8)
+2026-11-06T04:08:21.249+00:00 +    7.207s       progress: conventions — python: __init__.py (3/8)
+2026-11-06T04:08:21.249+00:00 +    7.207s       progress: conventions — python: calc.py (3/8)
+2026-11-06T04:08:21.250+00:00 +    7.207s       progress: conventions — python: __init__.py (3/8)
+2026-11-06T04:08:21.250+00:00 +    7.207s       progress: conventions — python: test_calc.py (3/8)
+2026-11-06T04:08:21.250+00:00 +    7.207s       conventions: python — findings pass
+2026-11-06T04:08:21.250+00:00 +    7.207s       progress: conventions — python: __init__.py (3/8)
+2026-11-06T04:08:21.250+00:00 +    7.208s       progress: conventions — python: conftest.py (3/8)
+2026-11-06T04:08:21.250+00:00 +    7.208s       progress: conventions — python: __init__.py (3/8)
+2026-11-06T04:08:21.250+00:00 +    7.208s       progress: conventions — python: calc.py (3/8)
+2026-11-06T04:08:21.250+00:00 +    7.208s       progress: conventions — python: __init__.py (3/8)
+2026-11-06T04:08:21.250+00:00 +    7.208s       progress: conventions — python: test_calc.py (3/8)
+2026-11-06T04:08:21.251+00:00 +    7.208s     conventions: python — 0 findings
+2026-11-06T04:08:21.312+00:00 +    7.270s       progress: JavaScript conventions — /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/tests/code.test.mjs (0/2) @thread=ThreadPoolExecutor-28_0
+2026-11-06T04:08:21.352+00:00 +    7.309s       progress: JavaScript conventions — /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/web/code.js (0/2) @thread=ThreadPoolExecutor-28_1
+2026-11-06T04:08:21.436+00:00 +    7.393s       progress: JavaScript conventions — /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/tests/code.test.mjs (1/2) @thread=ThreadPoolExecutor-28_0
+2026-11-06T04:08:21.472+00:00 +    7.430s       progress: JavaScript conventions — /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/web/code.js (2/2) @thread=ThreadPoolExecutor-28_1
+2026-11-06T04:08:21.483+00:00 +    7.441s       progress: conventions — delimiters (3/8)
+2026-11-06T04:08:21.483+00:00 +    7.441s       delimiters: scanning 2 files — heal off
+2026-11-06T04:08:21.484+00:00 +    7.441s       delimiters: done — 0 findings, 0 healed
+2026-11-06T04:08:21.484+00:00 +    7.441s     conventions: javascript delimiters — 0 findings
+2026-11-06T04:08:21.484+00:00 +    7.441s       progress: conventions — notation (3/8)
+2026-11-06T04:08:21.484+00:00 +    7.441s       notation: scanning 2 files — heal off
+2026-11-06T04:08:21.484+00:00 +    7.441s       notation: done — 0 findings, 0 healed
+2026-11-06T04:08:21.484+00:00 +    7.441s     conventions: javascript notation — 0 findings
+2026-11-06T04:08:21.484+00:00 +    7.441s       progress: conventions — javascript (3/8)
+2026-11-06T04:08:21.484+00:00 +    7.441s       progress: conventions — javascript: code.js (3/8)
+2026-11-06T04:08:21.484+00:00 +    7.442s       progress: conventions — javascript: code.js (3/8)
+2026-11-06T04:08:21.484+00:00 +    7.442s     conventions: javascript — 0 findings
+2026-11-06T04:08:21.484+00:00 +    7.442s       progress: conventions — css (3/8)
+2026-11-06T04:08:21.484+00:00 +    7.442s       progress: conventions — css: style.css (3/8)
+2026-11-06T04:08:21.484+00:00 +    7.442s       css tokens: parsing 1 files
+2026-11-06T04:08:21.484+00:00 +    7.442s         css tokens: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/web/style.css — 9 declarations
+2026-11-06T04:08:21.485+00:00 +    7.442s       css tokens: 7 definitions, 0 component names
+2026-11-06T04:08:21.485+00:00 +    7.442s       css tokens: references check
+2026-11-06T04:08:21.485+00:00 +    7.442s       css tokens: custom-property layers check
+2026-11-06T04:08:21.485+00:00 +    7.442s       css tokens: terminal declarations check
+2026-11-06T04:08:21.486+00:00 +    7.444s       progress: conventions — css tokens (3/8)
+2026-11-06T04:08:21.487+00:00 +    7.444s     conventions: css — 0 findings
+2026-11-06T04:08:21.487+00:00 +    7.444s       progress: conventions — html (3/8)
+2026-11-06T04:08:21.487+00:00 +    7.444s       progress: conventions — html: index.html (3/8)
+2026-11-06T04:08:21.487+00:00 +    7.444s     conventions: html — 0 findings
+2026-11-06T04:08:21.511+00:00 +    7.468s     all lints: long-line repair — disabled
+2026-11-06T04:08:21.511+00:00 +    7.468s   stage: all lints
+2026-11-06T04:08:21.512+00:00 +    7.470s       progress: all lints (4/8)
+2026-11-06T04:08:21.512+00:00 +    7.470s     all lints: launch package audit
+2026-11-06T04:08:21.513+00:00 +    7.470s     all lints: specs resolved — ruff, refurb, ruff_docs, basedpyright, pyrefly, eslint, stylelint, htmlint, typescript
+2026-11-06T04:08:21.513+00:00 +    7.471s   all lints: start — 9 tools, 16 workers, stabilize=off
+2026-11-06T04:08:21.513+00:00 +    7.471s     all lints: discover files
+2026-11-06T04:08:21.522+00:00 +    7.480s       all lints: ruff — 6 files
+2026-11-06T04:08:21.522+00:00 +    7.480s       all lints: refurb — 6 files
+2026-11-06T04:08:21.522+00:00 +    7.480s       all lints: ruff_docs — 6 files
+2026-11-06T04:08:21.522+00:00 +    7.480s       all lints: basedpyright — 6 files
+2026-11-06T04:08:21.522+00:00 +    7.480s       all lints: pyrefly — 6 files
+2026-11-06T04:08:21.522+00:00 +    7.480s       all lints: eslint — 4 files
+2026-11-06T04:08:21.522+00:00 +    7.480s       all lints: stylelint — 1 files
+2026-11-06T04:08:21.522+00:00 +    7.480s       all lints: htmlint — 1 files
+2026-11-06T04:08:21.523+00:00 +    7.481s       all lints: typescript — 4 files
+2026-11-06T04:08:21.524+00:00 +    7.481s       all lints: refurb — unavailable, no files checked
+2026-11-06T04:08:21.524+00:00 +    7.481s     all lints: execute — 12 files with checks
+2026-11-06T04:08:21.524+00:00 +    7.481s     all lints: submit non-python checks
+2026-11-06T04:08:21.526+00:00 +    7.483s       eslint: batch — 1 files, one process @thread=ThreadPoolExecutor-29_0
+2026-11-06T04:08:21.526+00:00 +    7.483s         eslint: exec eslint.config.mjs — 5 argv @thread=ThreadPoolExecutor-29_0
+2026-11-06T04:08:21.533+00:00 +    7.491s       eslint: batch — 1 files, one process @thread=ThreadPoolExecutor-29_1
+2026-11-06T04:08:21.533+00:00 +    7.491s       eslint: batch — 1 files, one process @thread=ThreadPoolExecutor-29_2
+2026-11-06T04:08:21.534+00:00 +    7.492s       eslint: batch — 1 files, one process @thread=ThreadPoolExecutor-29_3
+2026-11-06T04:08:21.535+00:00 +    7.492s         eslint: exec stylelint.config.mjs — 5 argv @thread=ThreadPoolExecutor-29_1
+2026-11-06T04:08:21.536+00:00 +    7.494s         eslint: exec tests/code.test.mjs — 5 argv @thread=ThreadPoolExecutor-29_2
+2026-11-06T04:08:21.536+00:00 +    7.494s       typescript: batch — 4 files, one process @thread=ThreadPoolExecutor-29_4
+2026-11-06T04:08:21.536+00:00 +    7.494s         eslint: exec web/code.js — 5 argv @thread=ThreadPoolExecutor-29_3
+2026-11-06T04:08:21.537+00:00 +    7.494s       htmlint: batch — 1 files, one process @thread=ThreadPoolExecutor-29_5
+2026-11-06T04:08:21.537+00:00 +    7.494s     all lints: stabilization skipped — disabled
+2026-11-06T04:08:21.537+00:00 +    7.494s       stylelint: batch — 1 files, one process @thread=ThreadPoolExecutor-29_6
+2026-11-06T04:08:21.552+00:00 +    7.510s       typescript: scoped project — 4 files via .exactus-typescript-57272.json (extends jsconfig.json) @thread=ThreadPoolExecutor-29_4
+2026-11-06T04:08:21.563+00:00 +    7.521s         htmlint: exec web/index.html — 2 argv @thread=ThreadPoolExecutor-29_5
+2026-11-06T04:08:21.565+00:00 +    7.522s     all lints: submit python checks
+2026-11-06T04:08:21.566+00:00 +    7.523s         stylelint: exec web/style.css — 4 argv @thread=ThreadPoolExecutor-29_6
+2026-11-06T04:08:21.566+00:00 +    7.524s         typescript: exec eslint.config.mjs — 6 argv @thread=ThreadPoolExecutor-29_4
+2026-11-06T04:08:21.609+00:00 +    7.567s       ruff: batch — 1 files, one process @thread=ThreadPoolExecutor-29_7
+2026-11-06T04:08:21.610+00:00 +    7.567s         ruff: exec __init__.py — 9 argv @thread=ThreadPoolExecutor-29_7
+2026-11-06T04:08:21.631+00:00 +    7.589s       ruff: batch — 1 files, one process @thread=ThreadPoolExecutor-29_8
+2026-11-06T04:08:21.631+00:00 +    7.589s         ruff: exec conftest.py — 9 argv @thread=ThreadPoolExecutor-29_8
+2026-11-06T04:08:21.654+00:00 +    7.612s       ruff: batch — 1 files, one process @thread=ThreadPoolExecutor-29_9
+2026-11-06T04:08:21.655+00:00 +    7.612s         ruff: exec python/__init__.py — 9 argv @thread=ThreadPoolExecutor-29_9
+2026-11-06T04:08:21.668+00:00 +    7.625s       ruff: batch — 1 files, one process @thread=ThreadPoolExecutor-29_10
+2026-11-06T04:08:21.668+00:00 +    7.626s         ruff: exec python/calc.py — 9 argv @thread=ThreadPoolExecutor-29_10
+2026-11-06T04:08:21.675+00:00 +    7.633s         ruff: __init__.py — exit 0, 0 diagnostics, 0.064725s @thread=ThreadPoolExecutor-29_7
+2026-11-06T04:08:21.677+00:00 +    7.635s         ruff: conftest.py — exit 0, 0 diagnostics, 0.04552s @thread=ThreadPoolExecutor-29_8
+2026-11-06T04:08:21.684+00:00 +    7.642s       ruff: batch — 1 files, one process @thread=ThreadPoolExecutor-29_7
+2026-11-06T04:08:21.684+00:00 +    7.642s       basedpyright: batch — 2 files, one process @thread=ThreadPoolExecutor-29_11
+2026-11-06T04:08:21.686+00:00 +    7.644s       basedpyright: batch — 2 files, one process @thread=ThreadPoolExecutor-29_12
+2026-11-06T04:08:21.686+00:00 +    7.644s         basedpyright: exec python/__init__.py — 4 argv @thread=ThreadPoolExecutor-29_12
+2026-11-06T04:08:21.686+00:00 +    7.643s       ruff: batch — 1 files, one process @thread=ThreadPoolExecutor-29_8
+2026-11-06T04:08:21.685+00:00 +    7.643s         ruff: exec tests/__init__.py — 9 argv @thread=ThreadPoolExecutor-29_7
+2026-11-06T04:08:21.686+00:00 +    7.644s         basedpyright: exec __init__.py — 4 argv @thread=ThreadPoolExecutor-29_11
+2026-11-06T04:08:21.686+00:00 +    7.643s         ruff: python/__init__.py — exit 0, 0 diagnostics, 0.031021s @thread=ThreadPoolExecutor-29_9
+2026-11-06T04:08:21.699+00:00 +    7.657s         ruff: exec tests/test_calc.py — 9 argv @thread=ThreadPoolExecutor-29_8
+2026-11-06T04:08:21.708+00:00 +    7.665s         ruff: python/calc.py — exit 0, 0 diagnostics, 0.039615s @thread=ThreadPoolExecutor-29_10
+2026-11-06T04:08:21.715+00:00 +    7.673s       progress: all lints — ruff: python/__init__.py (10/40) @thread=ThreadPoolExecutor-29_9
+2026-11-06T04:08:21.720+00:00 +    7.678s         ruff: tests/__init__.py — exit 0, 0 diagnostics, 0.020534s @thread=ThreadPoolExecutor-29_7
+2026-11-06T04:08:21.736+00:00 +    7.693s       all lints: ruff — task done, 1 file results
+2026-11-06T04:08:21.737+00:00 +    7.694s       all lints: ruff — task done, 1 file results
+2026-11-06T04:08:21.737+00:00 +    7.694s       all lints: ruff — task done, 1 file results
+2026-11-06T04:08:21.737+00:00 +    7.694s       all lints: ruff — task done, 1 file results
+2026-11-06T04:08:21.737+00:00 +    7.694s       all lints: ruff — task done, 1 file results
+2026-11-06T04:08:21.737+00:00 +    7.694s       basedpyright: batch — 2 files, one process @thread=ThreadPoolExecutor-29_10
+2026-11-06T04:08:21.737+00:00 +    7.695s         basedpyright: exec tests/__init__.py — 4 argv @thread=ThreadPoolExecutor-29_10
+2026-11-06T04:08:21.737+00:00 +    7.694s       pyrefly: batch — 6 files, one process @thread=ThreadPoolExecutor-29_9
+2026-11-06T04:08:21.736+00:00 +    7.694s         ruff: tests/test_calc.py — exit 0, 0 diagnostics, 0.020803s @thread=ThreadPoolExecutor-29_8
+2026-11-06T04:08:21.746+00:00 +    7.703s       all lints: ruff — task done, 1 file results
+2026-11-06T04:08:21.744+00:00 +    7.702s         htmlint: web/index.html — exit 0, 0 diagnostics, 0.177148s @thread=ThreadPoolExecutor-29_5
+2026-11-06T04:08:21.746+00:00 +    7.704s       all lints: htmlint — task done, 1 file results
+2026-11-06T04:08:21.747+00:00 +    7.704s         pyrefly: exec __init__.py — 12 argv @thread=ThreadPoolExecutor-29_9
+2026-11-06T04:08:22.011+00:00 +    7.968s       progress: all lints — typescript: tests/code.test.mjs (20/40) @thread=Thread-13_(_pace)
+2026-11-06T04:08:22.155+00:00 +    8.113s         pyrefly: __init__.py — exit 0, 0 diagnostics, 0.408369s @thread=ThreadPoolExecutor-29_9
+2026-11-06T04:08:22.156+00:00 +    8.113s         pyrefly: __init__.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-29_9
+2026-11-06T04:08:22.156+00:00 +    8.113s         pyrefly: conftest.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-29_9
+2026-11-06T04:08:22.156+00:00 +    8.113s         pyrefly: python/__init__.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-29_9
+2026-11-06T04:08:22.156+00:00 +    8.113s         pyrefly: python/calc.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-29_9
+2026-11-06T04:08:22.156+00:00 +    8.113s         pyrefly: tests/__init__.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-29_9
+2026-11-06T04:08:22.156+00:00 +    8.113s         pyrefly: tests/test_calc.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-29_9
+2026-11-06T04:08:22.156+00:00 +    8.113s       all lints: pyrefly — task done, 6 file results
+2026-11-06T04:08:22.528+00:00 +    8.486s       progress: all lints — Checking: ruff_docs 0/6, basedpyright 3/6, eslint 0/4, stylelint 0/1, typescript 3/4 (25/40) @thread=Thread-12_(heartbeat)
+2026-11-06T04:08:22.548+00:00 +    8.506s         eslint: stylelint.config.mjs — exit 0, 0 diagnostics, 1.011482s @thread=ThreadPoolExecutor-29_1
+2026-11-06T04:08:22.549+00:00 +    8.506s       all lints: eslint — task done, 1 file results
+2026-11-06T04:08:22.609+00:00 +    8.566s         eslint: web/code.js — exit 0, 0 diagnostics, 1.058556s @thread=ThreadPoolExecutor-29_3
+2026-11-06T04:08:22.609+00:00 +    8.567s       all lints: eslint — task done, 1 file results
+2026-11-06T04:08:22.623+00:00 +    8.580s         eslint: tests/code.test.mjs — exit 0, 0 diagnostics, 1.08567s @thread=ThreadPoolExecutor-29_2
+2026-11-06T04:08:22.623+00:00 +    8.581s       all lints: eslint — task done, 1 file results
+2026-11-06T04:08:22.640+00:00 +    8.598s         eslint: eslint.config.mjs — exit 0, 0 diagnostics, 1.114603s @thread=ThreadPoolExecutor-29_0
+2026-11-06T04:08:22.641+00:00 +    8.598s       all lints: eslint — task done, 1 file results
+2026-11-06T04:08:22.750+00:00 +    8.707s         stylelint: web/style.css — exit 0, 0 diagnostics, 1.172123s @thread=ThreadPoolExecutor-29_6
+2026-11-06T04:08:22.750+00:00 +    8.707s       progress: all lints — stylelint: web/style.css (30/40) @thread=ThreadPoolExecutor-29_6
+2026-11-06T04:08:22.750+00:00 +    8.707s       all lints: stylelint — task done, 1 file results
+2026-11-06T04:08:23.306+00:00 +    9.264s         basedpyright: python/__init__.py — exit 0, 0 diagnostics, 1.619459s @thread=ThreadPoolExecutor-29_12
+2026-11-06T04:08:23.306+00:00 +    9.264s       progress: all lints — basedpyright: python/calc.py (31/40) @thread=ThreadPoolExecutor-29_12
+2026-11-06T04:08:23.306+00:00 +    9.264s         basedpyright: python/__init__.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-29_12
+2026-11-06T04:08:23.306+00:00 +    9.264s         basedpyright: python/calc.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-29_12
+2026-11-06T04:08:23.306+00:00 +    9.264s       all lints: basedpyright — task done, 2 file results
+2026-11-06T04:08:23.459+00:00 +    9.417s         basedpyright: tests/__init__.py — exit 0, 0 diagnostics, 1.721977s @thread=ThreadPoolExecutor-29_10
+2026-11-06T04:08:23.459+00:00 +    9.417s         basedpyright: tests/__init__.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-29_10
+2026-11-06T04:08:23.459+00:00 +    9.417s         basedpyright: tests/test_calc.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-29_10
+2026-11-06T04:08:23.459+00:00 +    9.417s       all lints: basedpyright — task done, 2 file results
+2026-11-06T04:08:23.532+00:00 +    9.489s       progress: all lints — Checking: ruff_docs 0/6, basedpyright 5/6, typescript 3/4 (32/40) @thread=Thread-12_(heartbeat)
+2026-11-06T04:08:23.659+00:00 +    9.616s         basedpyright: __init__.py — exit 0, 0 diagnostics, 1.950587s @thread=ThreadPoolExecutor-29_11
+2026-11-06T04:08:23.659+00:00 +    9.616s         basedpyright: __init__.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-29_11
+2026-11-06T04:08:23.659+00:00 +    9.617s         basedpyright: conftest.py — passed, 0 diagnostics @thread=ThreadPoolExecutor-29_11
+2026-11-06T04:08:23.659+00:00 +    9.616s       all lints: basedpyright — task done, 2 file results
+2026-11-06T04:08:24.001+00:00 +    9.959s         typescript: eslint.config.mjs — exit 0, 0 diagnostics, 2.408282s @thread=ThreadPoolExecutor-29_4
+2026-11-06T04:08:24.002+00:00 +    9.959s       progress: all lints — typescript: web/code.js (34/40) @thread=ThreadPoolExecutor-29_4
+2026-11-06T04:08:24.002+00:00 +    9.959s         typescript: eslint.config.mjs — passed, 0 diagnostics @thread=ThreadPoolExecutor-29_4
+2026-11-06T04:08:24.002+00:00 +    9.959s         typescript: stylelint.config.mjs — passed, 0 diagnostics @thread=ThreadPoolExecutor-29_4
+2026-11-06T04:08:24.002+00:00 +    9.959s         typescript: tests/code.test.mjs — passed, 0 diagnostics @thread=ThreadPoolExecutor-29_4
+2026-11-06T04:08:24.002+00:00 +    9.959s         typescript: web/code.js — passed, 0 diagnostics @thread=ThreadPoolExecutor-29_4
+2026-11-06T04:08:24.002+00:00 +    9.959s       all lints: typescript — task done, 4 file results
+2026-11-06T04:08:24.004+00:00 +    9.962s     all lints: derive results
+2026-11-06T04:08:24.004+00:00 +    9.962s       all lints: ruff_docs — derived 6 file results from ruff
+2026-11-06T04:08:24.005+00:00 +    9.962s       progress: all lints — ruff_docs: tests/test_calc.py (40/40)
+2026-11-06T04:08:24.005+00:00 +    9.962s     all lints: ruff — passed, 6 files, 0 diagnostics
+2026-11-06T04:08:24.005+00:00 +    9.962s     all lints: refurb — unavailable, 6 files, 0 diagnostics
+2026-11-06T04:08:24.005+00:00 +    9.962s     all lints: ruff_docs — passed, 6 files, 0 diagnostics
+2026-11-06T04:08:24.005+00:00 +    9.962s     all lints: basedpyright — passed, 6 files, 0 diagnostics
+2026-11-06T04:08:24.005+00:00 +    9.962s     all lints: pyrefly — passed, 6 files, 0 diagnostics
+2026-11-06T04:08:24.005+00:00 +    9.962s     all lints: eslint — passed, 4 files, 0 diagnostics
+2026-11-06T04:08:24.005+00:00 +    9.962s     all lints: stylelint — passed, 1 files, 0 diagnostics
+2026-11-06T04:08:24.005+00:00 +    9.962s     all lints: htmlint — passed, 1 files, 0 diagnostics
+2026-11-06T04:08:24.005+00:00 +    9.962s     all lints: typescript — passed, 4 files, 0 diagnostics
+2026-11-06T04:08:24.005+00:00 +    9.962s   all lints: finished — 2.492s
+2026-11-06T04:08:24.005+00:00 +    9.963s     all lints: report built — 9 tools, 0 diagnostics
+2026-11-06T04:08:24.005+00:00 +    9.963s     all lints: 9 tool results merged
+2026-11-06T04:08:24.008+00:00 +    9.965s     long lines: 0 residual E501, 0 repaired, 0 skipped
+2026-11-06T04:08:24.008+00:00 +    9.965s     infer: baselines — 0 ruff, 0 basedpyright issues
+2026-11-06T04:08:24.008+00:00 +    9.965s       progress: pyrefly (5/8)
+2026-11-06T04:08:24.008+00:00 +    9.966s   stage: pyrefly
+2026-11-06T04:08:24.010+00:00 +    9.968s       progress: pyrefly — check (5/8)
+2026-11-06T04:08:24.010+00:00 +    9.968s     pyrefly: report
+2026-11-06T04:08:24.210+00:00 +   10.167s       clean: removed temporary eslint.config.mjs
+2026-11-06T04:08:24.210+00:00 +   10.167s       clean: removed temporary jsconfig.json
+2026-11-06T04:08:24.211+00:00 +   10.168s       clean: removed temporary stylelint.config.mjs
+2026-11-06T04:08:24.213+00:00 +   10.170s       progress: compliance and report (6/8)
+2026-11-06T04:08:24.213+00:00 +   10.171s   stage: compliance and report
+2026-11-06T04:08:24.213+00:00 +   10.171s     report: compliance scan
+2026-11-06T04:08:24.214+00:00 +   10.171s       compliance: scanning owned sources
+2026-11-06T04:08:24.214+00:00 +   10.172s       compliance: 6 files, 0 skipped
+2026-11-06T04:08:24.216+00:00 +   10.173s       compliance: configuration check
+2026-11-06T04:08:24.216+00:00 +   10.174s     compliance: 0 findings across 6 files
+2026-11-06T04:08:25.237+00:00 +   11.194s     report: tool versions recorded
+2026-11-06T04:08:25.250+00:00 +   11.208s     report: file activities released
+2026-11-06T04:08:25.250+00:00 +   11.208s     report: 0 findings collected
+2026-11-06T04:08:25.251+00:00 +   11.208s lints: run finished — status 0
+2026-11-06T04:08:25.255+00:00 +   11.213s lints: write report bundle
+2026-11-06T04:08:26.129+00:00 +   12.087s   lints: wrote LINTS.md, LINTS.json, LINTS_web
+2026-11-06T04:08:26.148+00:00 +   12.106s lints: finished — exit status 0

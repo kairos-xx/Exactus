@@ -1,20 +1,20 @@
 # Lint Exactus
 
-**Run time:** 06 November 2026, 02:40:57 UTC
+**Run time:** 06 November 2026, 04:08:14 UTC
 
 ## Identity
 
 | Field | Value |
 |---|---|
-| Tool | lints 0.7.1 |
-| Run ID | 0aff3ce389f246459ce96ab2e4d75298:lints |
-| Pipeline run | 0aff3ce389f246459ce96ab2e4d75298 |
+| Tool | lints |
+| Run ID | b06ce16423b2422b821ba7adb10976f3:lints |
+| Pipeline run | b06ce16423b2422b821ba7adb10976f3 |
 | Status | PASS |
 | Exit code | 0 |
-| Started | 06 November 2026, 02:40:57 UTC |
-| Finished | 06 November 2026, 02:41:14 UTC |
-| Duration | 16.7 s |
-| Previous duration | 15.407s |
+| Started | 06 November 2026, 04:08:14 UTC |
+| Finished | 06 November 2026, 04:08:26 UTC |
+| Duration | 12.1 s |
+| Previous duration | 16.731s |
 
 ## What was checked
 
@@ -31,7 +31,7 @@
 | Metric | Current | Previous | Delta |
 |---|---:|---:|---:|
 | Findings | 0 | 0 | 0 |
-| Previous duration | 15.407s | | |
+| Previous duration | 16.731s | | |
 
 | Finding change | Count |
 |---|---:|
@@ -87,13 +87,13 @@ No skipped targets.
 ### Invocation
 
 ~~~~shell
-/Users/joaolopes/Exactus/bin/release/exactus_macos_arm64/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=60413 --orchestrator-control-token=[redacted] --orchestrator-worker-port=60361 --orchestrator-worker-token=[redacted] '--orchestrator-call={"args":[],"kwargs":{"request":{"identifier":"lints","module":"exactus.tools.lints.main","output":"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/LINTS","arguments":[],"explicit_arguments":[],"run_id":"0aff3ce389f246459ce96ab2e4d75298:lints","pipeline_run_id":"0aff3ce389f246459ce96ab2e4d75298","project_root":"/Users/joaolopes/Exactus/exactus/tests/standalone/project"}}}'
+/usr/local/bin/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=57341 --orchestrator-control-token=[redacted] --orchestrator-worker-port=57318 --orchestrator-worker-token=[redacted] '--orchestrator-call={"args":[],"kwargs":{"request":{"identifier":"lints","module":"exactus.tools.lints.main","output":"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/LINTS","arguments":[],"explicit_arguments":[],"run_id":"b06ce16423b2422b821ba7adb10976f3:lints","pipeline_run_id":"b06ce16423b2422b821ba7adb10976f3","project_root":"/Users/joaolopes/Exactus/exactus/tests/standalone/project"}}}'
 ~~~~
 
 | Property | Value |
 |---|---|
 | Working directory | [/Users/joaolopes/Exactus/exactus/tests/standalone/project](../..) |
-| Arguments | `exactus.tools.common.tool_worker` `ExactusTool` `--orchestrator-control-port=60413` `--orchestrator-control-token=[redacted]` `--orchestrator-worker-port=60361` `--orchestrator-worker-token=[redacted]` `--orchestrator-call={"args":[],"kwargs":{"request":{"identifier":"lints","module":"exactus.tools.lints.main","output":"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/LINTS","arguments":[],"explicit_arguments":[],"run_id":"0aff3ce389f246459ce96ab2e4d75298:lints","pipeline_run_id":"0aff3ce389f246459ce96ab2e4d75298","project_root":"/Users/joaolopes/Exactus/exactus/tests/standalone/project"}}}` |
+| Arguments | `exactus.tools.common.tool_worker` `ExactusTool` `--orchestrator-control-port=57341` `--orchestrator-control-token=[redacted]` `--orchestrator-worker-port=57318` `--orchestrator-worker-token=[redacted]` `--orchestrator-call={"args":[],"kwargs":{"request":{"identifier":"lints","module":"exactus.tools.lints.main","output":"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/LINTS","arguments":[],"explicit_arguments":[],"run_id":"b06ce16423b2422b821ba7adb10976f3:lints","pipeline_run_id":"b06ce16423b2422b821ba7adb10976f3","project_root":"/Users/joaolopes/Exactus/exactus/tests/standalone/project"}}}` |
 
 ### Environment
 
@@ -107,12 +107,13 @@ No skipped targets.
 | Variable | Value |
 | --- | --- |
 | EXACTUS_ORCHESTRATED | 1 |
-| EXACTUS_PIPELINE_RUN_ID | 0aff3ce389f246459ce96ab2e4d75298 |
+| EXACTUS_PIPELINE_RUN_ID | b06ce16423b2422b821ba7adb10976f3 |
 | EXACTUS_REGISTRY | [/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/.runtime/runs.db](../.runtime/runs.db) |
 | EXACTUS_ROOT | [/Users/joaolopes/Exactus/exactus/tests/standalone/project](../..) |
-| EXACTUS_RUN_ID | 0aff3ce389f246459ce96ab2e4d75298:lints |
+| EXACTUS_RUN_ID | b06ce16423b2422b821ba7adb10976f3:lints |
 | EXACTUS_TOOL | lints |
-| LANG | C.UTF-8 |
+| LANG | en_US.UTF-8 |
+| TERM | xterm-256color |
 
 ## Gate
 
@@ -128,11 +129,11 @@ No findings.
 
 | Artifact | Path | Bytes |
 | --- | --- | --- |
-| @activity.json | [ARTIFACTS/@activity.json](ARTIFACTS/%40activity.json) | 2918 |
+| @activity.json | [ARTIFACTS/@activity.json](ARTIFACTS/%40activity.json) | 2822 |
 | README.md | [ARTIFACTS/README.md](ARTIFACTS/README.md) | 450 |
 | stderr.log | [ARTIFACTS/stderr.log](ARTIFACTS/stderr.log) | 0 |
 | stdout.log | [ARTIFACTS/stdout.log](ARTIFACTS/stdout.log) | 433 |
-| steps.txt | [ARTIFACTS/steps.txt](ARTIFACTS/steps.txt) | 69905 |
+| steps.txt | [ARTIFACTS/steps.txt](ARTIFACTS/steps.txt) | 69170 |
 
 ## Integrated stages
 
@@ -176,24 +177,24 @@ No findings.
 
 | Linter | Status | Version | Files | Findings | Errors | Warnings | Information | Exit code | Duration (s) |
 |---|---|---|---:|---:|---:|---:|---:|---:|---:|
-| format | ran | N/A | N/A | 0 | 0 | 0 | 0 | 0 | 1.24 |
-| custom_compliance | ran | built-in | 6 | 0 | 0 | 0 | 0 | 0 | 0.0030996249988675117 |
-| custom_shebang | ran | built-in | 6 | 0 | 0 | 0 | 0 | 0 | 0.004899833002127707 |
-| custom_python | ran | built-in | 6 | 0 | 0 | 0 | 0 | 0 | 0.005 |
-| custom_python_long_lines | ran | built-in | 6 | 0 | 0 | 0 | 0 | 0 | 7.862500206101686e-05 |
-| custom_javascript | ran | built-in | 2 | 0 | 0 | 0 | 0 | 0 | 0.001 |
-| custom_javascript_delimiters | ran | built-in | 2 | 0 | 0 | 0 | 0 | 0 | 5.1458002417348325e-05 |
-| custom_javascript_notation | ran | built-in | 2 | 0 | 0 | 0 | 0 | 0 | 2.5667002773843706e-05 |
-| custom_css | ran | built-in | 1 | 0 | 0 | 0 | 0 | 0 | 0.005 |
+| format | ran | N/A | N/A | 0 | 0 | 0 | 0 | 0 | 1.139 |
+| custom_compliance | ran | built-in | 6 | 0 | 0 | 0 | 0 | 0 | 0.002505415992345661 |
+| custom_shebang | ran | built-in | 6 | 0 | 0 | 0 | 0 | 0 | 0.0030170410027494654 |
+| custom_python | ran | built-in | 6 | 0 | 0 | 0 | 0 | 0 | 0.003 |
+| custom_python_long_lines | ran | built-in | 6 | 0 | 0 | 0 | 0 | 0 | 7.216700760181993e-05 |
+| custom_javascript | ran | built-in | 2 | 0 | 0 | 0 | 0 | 0 | 0.0 |
+| custom_javascript_delimiters | ran | built-in | 2 | 0 | 0 | 0 | 0 | 0 | 3.3625008654780686e-05 |
+| custom_javascript_notation | ran | built-in | 2 | 0 | 0 | 0 | 0 | 0 | 2.0459003280848265e-05 |
+| custom_css | ran | built-in | 1 | 0 | 0 | 0 | 0 | 0 | 0.002 |
 | custom_html | ran | built-in | 1 | 0 | 0 | 0 | 0 | 0 | 0.0 |
-| ruff | ran | 0.15.22 | 6 | 0 | 0 | 0 | 0 | 0 | 0.087576 |
-| ruff_docs | ran | 0.15.22 | 6 | 0 | 0 | 0 | 0 | 0 | 0.087576 |
-| basedpyright | ran | 1.40.2 | 6 | 0 | 0 | 0 | 0 | 0 | 2.356816 |
-| pyrefly | ran | 0.63.0 | 6 | 0 | 0 | 0 | 0 | 0 | 0.345 |
-| eslint | ran | 10.14.0 | 2 | 0 | 0 | 0 | 0 | 0 | 1.614548 |
-| typescript | ran | 6.0.3 | 2 | 0 | 0 | 0 | 0 | 0 | 3.125213 |
-| stylelint | ran | 17.16.0 | 1 | 0 | 0 | 0 | 0 | 0 | 1.690574 |
-| htmlhint | ran | 1.9.2 | 1 | 0 | 0 | 0 | 0 | 0 | 0.320688 |
+| ruff | ran | 0.12.0 | 6 | 0 | 0 | 0 | 0 | 0 | 0.12645 |
+| ruff_docs | ran | 0.12.0 | 6 | 0 | 0 | 0 | 0 | 0 | 0.12645 |
+| basedpyright | ran | 1.40.2 | 6 | 0 | 0 | 0 | 0 | 0 | 1.972202 |
+| pyrefly | ran | 0.63.0 | 6 | 0 | 0 | 0 | 0 | 0 | 0.195 |
+| eslint | ran | 10.14.0 | 2 | 0 | 0 | 0 | 0 | 0 | 1.114603 |
+| typescript | ran | 6.0.3 | 2 | 0 | 0 | 0 | 0 | 0 | 2.408282 |
+| stylelint | ran | 17.16.0 | 1 | 0 | 0 | 0 | 0 | 0 | 1.172123 |
+| htmlhint | ran | 1.9.2 | 1 | 0 | 0 | 0 | 0 | 0 | 0.177148 |
 
 ### Top rules
 
@@ -205,4 +206,4 @@ N/A — no file has a finding.
 
 ---
 
-Exactus · lints 0.7.1 · Run 0aff3ce389f246459ce96ab2e4d75298:lints · Result PASS · Duration 16.7 s
+Exactus · lints · Run b06ce16423b2422b821ba7adb10976f3:lints · Result PASS · Duration 12.1 s

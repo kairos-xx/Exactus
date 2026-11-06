@@ -4,7 +4,7 @@
   "tool": {
     "name": "coverage_tests",
     "display_name": "Coverage",
-    "version": "0.7.1"
+    "version": null
   },
   "summary": {
     "targets_eligible": 4,
@@ -33,12 +33,12 @@
     {
       "name": "@activity.json",
       "path": "ARTIFACTS/@activity.json",
-      "bytes": 2158
+      "bytes": 2160
     },
     {
       "name": "README.md",
       "path": "ARTIFACTS/COVERAGE/README.md",
-      "bytes": 667
+      "bytes": 670
     },
     {
       "name": "completion.json",
@@ -53,17 +53,17 @@
     {
       "name": "import_graph.json",
       "path": "ARTIFACTS/COVERAGE/import_graph.json",
-      "bytes": 2789
+      "bytes": 2788
     },
     {
       "name": "meaningful.json",
       "path": "ARTIFACTS/COVERAGE/meaningful.json",
-      "bytes": 7275
+      "bytes": 7271
     },
     {
       "name": "test-costs.json",
       "path": "ARTIFACTS/COVERAGE/test-costs.json",
-      "bytes": 170
+      "bytes": 171
     },
     {
       "name": "validation.json",
@@ -73,7 +73,7 @@
     {
       "name": "README.md",
       "path": "ARTIFACTS/README.md",
-      "bytes": 602
+      "bytes": 591
     },
     {
       "name": "README.md",
@@ -88,7 +88,7 @@
     {
       "name": "shard-000.log",
       "path": "ARTIFACTS/TESTS/pytest-shards/shard-000.log",
-      "bytes": 657
+      "bytes": 712
     },
     {
       "name": "stderr.log",
@@ -103,15 +103,15 @@
     {
       "name": "steps.txt",
       "path": "ARTIFACTS/steps.txt",
-      "bytes": 6890
+      "bytes": 6779
     }
   ],
   "comparison": {
     "available": true,
-    "previous_generated_at": "2026-11-06T02:17:14.634070+00:00",
-    "previous_run_id": "8fda18e03ec84ab384f411f9b1ee69f6:coverage_tests",
+    "previous_generated_at": "2026-11-06T02:41:33.841928+00:00",
+    "previous_run_id": "0aff3ce389f246459ce96ab2e4d75298:coverage_tests",
     "previous_status": "PASS",
-    "previous_duration_seconds": 7.802,
+    "previous_duration_seconds": 11.725,
     "current_total": 0,
     "previous_total": 0,
     "delta": 0,
@@ -199,7 +199,7 @@
     "meta": {
       "format": 3,
       "version": "7.17.1",
-      "timestamp": "2026-11-06T02:41:31.627047",
+      "timestamp": "2026-11-06T04:08:39.812133",
       "branch_coverage": true,
       "show_contexts": false
     },
@@ -590,7 +590,7 @@
       "percent_branches_covered_display": "100"
     }
   },
-  "duration_seconds": 11.725,
+  "duration_seconds": 7.1,
   "environment": {
     "os": "Darwin 25.3.0",
     "python": "3.13.9",
@@ -603,7 +603,7 @@
       },
       {
         "name": "EXACTUS_PIPELINE_RUN_ID",
-        "value": "0aff3ce389f246459ce96ab2e4d75298"
+        "value": "b06ce16423b2422b821ba7adb10976f3"
       },
       {
         "name": "EXACTUS_REGISTRY",
@@ -615,7 +615,7 @@
       },
       {
         "name": "EXACTUS_RUN_ID",
-        "value": "0aff3ce389f246459ce96ab2e4d75298:coverage_tests"
+        "value": "b06ce16423b2422b821ba7adb10976f3:coverage_tests"
       },
       {
         "name": "EXACTUS_TOOL",
@@ -623,7 +623,11 @@
       },
       {
         "name": "LANG",
-        "value": "C.UTF-8"
+        "value": "en_US.UTF-8"
+      },
+      {
+        "name": "TERM",
+        "value": "xterm-256color"
       }
     ]
   },
@@ -638,7 +642,7 @@
       "xfailed": 0,
       "xpassed": 0,
       "total": 2,
-      "duration_seconds": 5.087,
+      "duration_seconds": 3.783,
       "test_files": 1,
       "shards": 1,
       "javascript_test_files": 0,
@@ -771,8 +775,8 @@
   },
   "findings": [],
   "fingerprint": {
-    "commit": "539634be50497c4b27a9d77f25f2676beeb62dd6",
-    "tree": "93f4670ed623afe431475759aade5383959821e9",
+    "commit": "82aa4af14783847df8265c9db323faeeed706c23",
+    "tree": "1f2c5c1744667c3058a380081f7265d38c25721b",
     "dirty": true,
     "python": "3.13.9",
     "ruff": "ruff 0.12.0",
@@ -801,8 +805,8 @@
     "per_file_minimum": 80.0,
     "files_below": []
   },
-  "generated_at": "2026-11-06T02:41:33.841928+00:00",
-  "generated_at_human": "06 November 2026, 02:41:33 UTC",
+  "generated_at": "2026-11-06T04:08:41.059176+00:00",
+  "generated_at_human": "06 November 2026, 04:08:41 UTC",
   "import_graph": {
     "excused_sources": [],
     "ignored_non_local_imports": [
@@ -843,11 +847,11 @@
           "evidence": [],
           "level": "TEST-0",
           "metadata": {
-            "duration_seconds": 0.0011316669988445938,
-            "finished_at": "2026-11-06T02:41:31.264131+00:00",
+            "duration_seconds": 0.000939125005970709,
+            "finished_at": "2026-11-06T04:08:39.615090+00:00",
             "size_bytes": 295,
             "source_lines": 10,
-            "started_at": "2026-11-06T02:41:31.263004+00:00",
+            "started_at": "2026-11-06T04:08:39.614158+00:00",
             "worker_name": "meaningful_0"
           },
           "metrics": {
@@ -909,22 +913,22 @@
     ]
   },
   "invocation": {
-    "command": "/Users/joaolopes/Exactus/bin/release/exactus_macos_arm64/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=63757 --orchestrator-control-token=[redacted] --orchestrator-worker-port=63739 --orchestrator-worker-token=[redacted] '--orchestrator-call={\"args\":[],\"kwargs\":{\"request\":{\"identifier\":\"coverage_tests\",\"module\":\"exactus.tools.coverage_tests.main\",\"output\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS\",\"arguments\":[],\"explicit_arguments\":[],\"run_id\":\"0aff3ce389f246459ce96ab2e4d75298:coverage_tests\",\"pipeline_run_id\":\"0aff3ce389f246459ce96ab2e4d75298\",\"project_root\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\"}}}'",
+    "command": "/usr/local/bin/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=59709 --orchestrator-control-token=[redacted] --orchestrator-worker-port=59694 --orchestrator-worker-token=[redacted] '--orchestrator-call={\"args\":[],\"kwargs\":{\"request\":{\"identifier\":\"coverage_tests\",\"module\":\"exactus.tools.coverage_tests.main\",\"output\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS\",\"arguments\":[],\"explicit_arguments\":[],\"run_id\":\"b06ce16423b2422b821ba7adb10976f3:coverage_tests\",\"pipeline_run_id\":\"b06ce16423b2422b821ba7adb10976f3\",\"project_root\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\"}}}'",
     "cwd": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
     "arguments": [
       "exactus.tools.common.tool_worker",
       "ExactusTool",
-      "--orchestrator-control-port=63757",
+      "--orchestrator-control-port=59709",
       "--orchestrator-control-token=[redacted]",
-      "--orchestrator-worker-port=63739",
+      "--orchestrator-worker-port=59694",
       "--orchestrator-worker-token=[redacted]",
-      "--orchestrator-call={\"args\":[],\"kwargs\":{\"request\":{\"identifier\":\"coverage_tests\",\"module\":\"exactus.tools.coverage_tests.main\",\"output\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS\",\"arguments\":[],\"explicit_arguments\":[],\"run_id\":\"0aff3ce389f246459ce96ab2e4d75298:coverage_tests\",\"pipeline_run_id\":\"0aff3ce389f246459ce96ab2e4d75298\",\"project_root\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\"}}}"
+      "--orchestrator-call={\"args\":[],\"kwargs\":{\"request\":{\"identifier\":\"coverage_tests\",\"module\":\"exactus.tools.coverage_tests.main\",\"output\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS\",\"arguments\":[],\"explicit_arguments\":[],\"run_id\":\"b06ce16423b2422b821ba7adb10976f3:coverage_tests\",\"pipeline_run_id\":\"b06ce16423b2422b821ba7adb10976f3\",\"project_root\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\"}}}"
     ]
   },
   "javascript": null,
   "passed": true,
-  "pipeline_run_id": "0aff3ce389f246459ce96ab2e4d75298",
-  "previous_duration_seconds": 7.802,
+  "pipeline_run_id": "b06ce16423b2422b821ba7adb10976f3",
+  "previous_duration_seconds": 11.725,
   "project_href": "../../..",
   "project_root": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
   "report_bundle": {
@@ -935,22 +939,22 @@
   "resume": "PASS: 2 of 2 tests passed; Total 100.0% meets the 90.0% minimum; every file meets 80.0%",
   "root": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
   "run": {
-    "id": "0aff3ce389f246459ce96ab2e4d75298:coverage_tests",
-    "pipeline_id": "0aff3ce389f246459ce96ab2e4d75298",
+    "id": "b06ce16423b2422b821ba7adb10976f3:coverage_tests",
+    "pipeline_id": "b06ce16423b2422b821ba7adb10976f3",
     "status": "PASS",
     "exit_code": 0,
-    "started_at": "2026-11-06T02:41:23.519258+00:00",
-    "finished_at": "2026-11-06T02:41:35.245656+00:00",
-    "at_human": "06 November 2026, 02:41:23 UTC",
-    "started_at_human": "06 November 2026, 02:41:23 UTC",
-    "finished_at_human": "06 November 2026, 02:41:35 UTC",
-    "duration_seconds": 11.725,
-    "duration_human": "11.7 s",
+    "started_at": "2026-11-06T04:08:34.534634+00:00",
+    "finished_at": "2026-11-06T04:08:41.635262+00:00",
+    "at_human": "06 November 2026, 04:08:34 UTC",
+    "started_at_human": "06 November 2026, 04:08:34 UTC",
+    "finished_at_human": "06 November 2026, 04:08:41 UTC",
+    "duration_seconds": 7.1,
+    "duration_human": "7.1 s",
     "error": null
   },
-  "run_at": "2026-11-06T02:41:23.519258+00:00",
-  "run_at_human": "06 November 2026, 02:41:23 UTC",
-  "run_id": "0aff3ce389f246459ce96ab2e4d75298:coverage_tests",
+  "run_at": "2026-11-06T04:08:34.534634+00:00",
+  "run_at_human": "06 November 2026, 04:08:34 UTC",
+  "run_id": "b06ce16423b2422b821ba7adb10976f3:coverage_tests",
   "schema": "project-exactus-report/v1",
   "scope": {
     "include": [],
@@ -975,11 +979,11 @@
         "evidence": [],
         "level": "TEST-0",
         "metadata": {
-          "duration_seconds": 0.0011316669988445938,
-          "finished_at": "2026-11-06T02:41:31.264131+00:00",
+          "duration_seconds": 0.000939125005970709,
+          "finished_at": "2026-11-06T04:08:39.615090+00:00",
           "size_bytes": 295,
           "source_lines": 10,
-          "started_at": "2026-11-06T02:41:31.263004+00:00",
+          "started_at": "2026-11-06T04:08:39.614158+00:00",
           "worker_name": "meaningful_0"
         },
         "metrics": {

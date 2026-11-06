@@ -12,7 +12,7 @@
   "analyzer": "tests",
   "comparison": {
     "available": true,
-    "previous_generated_at": "2026-11-06T02:17:10.633732+00:00",
+    "previous_generated_at": "2026-11-06T02:41:28.680043+00:00",
     "previous_run_id": null,
     "previous_status": "PASS",
     "previous_duration_seconds": null,
@@ -31,15 +31,15 @@
   "failed_tests": [],
   "findings": [],
   "fingerprint": {
-    "commit": "539634be50497c4b27a9d77f25f2676beeb62dd6",
-    "tree": "93f4670ed623afe431475759aade5383959821e9",
+    "commit": "82aa4af14783847df8265c9db323faeeed706c23",
+    "tree": "1f2c5c1744667c3058a380081f7265d38c25721b",
     "dirty": true,
     "python": "3.13.9",
     "ruff": "ruff 0.12.0",
     "basedpyright": "basedpyright 1.40.2"
   },
-  "generated_at": "2026-11-06T02:41:28.680043+00:00",
-  "generated_at_human": "06 November 2026, 02:41:28 UTC",
+  "generated_at": "2026-11-06T04:08:38.352012+00:00",
+  "generated_at_human": "06 November 2026, 04:08:38 UTC",
   "groups": [
     {
       "group": "tests",
@@ -56,7 +56,7 @@
     "result.md": "result.md",
     "result.json": "result.json"
   },
-  "markdown": "# Combined Tests Report\n\n**Run time:** 06 November 2026, 02:41:28 UTC\n\n## Change since previous report\n\n| Findings | Current | Previous | Delta | Added | Resolved | Unchanged |\n|---|---:|---:|---:|---:|---:|---:|\n| Overall | 0 | 0 | 0 | 0 | 0 | 0 |\n\n\n\n- Status: **PASS**\n- Tests run: **2** — 2 passed\n- Test files: **1**\n- Groups: **1**\n- Shards: **1**\n\n## Results by group\n\n| Group | Files | Tests | Passed | Failed | Skipped |\n| --- | ---: | ---: | ---: | ---: | ---: |\n| `tests` | 1 | 2 | 2 | 0 | 0 |\n\n## Shards\n\n| Shard | Exit | Collected | Run | Log |\n| --- | ---: | ---: | ---: | --- |\n| 0 | 0 | 2 | 2 | `ARTIFACTS/TESTS/pytest-shards/shard-000.log` |\n",
+  "markdown": "# Combined Tests Report\n\n**Run time:** 06 November 2026, 04:08:38 UTC\n\n## Change since previous report\n\n| Findings | Current | Previous | Delta | Added | Resolved | Unchanged |\n|---|---:|---:|---:|---:|---:|---:|\n| Overall | 0 | 0 | 0 | 0 | 0 | 0 |\n\n\n\n- Status: **PASS**\n- Tests run: **2** — 2 passed\n- Test files: **1**\n- Groups: **1**\n- Shards: **1**\n\n## Results by group\n\n| Group | Files | Tests | Passed | Failed | Skipped |\n| --- | ---: | ---: | ---: | ---: | ---: |\n| `tests` | 1 | 2 | 2 | 0 | 0 |\n\n## Shards\n\n| Shard | Exit | Collected | Run | Log |\n| --- | ---: | ---: | ---: | --- |\n| 0 | 0 | 2 | 2 | `ARTIFACTS/TESTS/pytest-shards/shard-000.log` |\n",
   "passed": true,
   "project_href": "../../../..",
   "project_root": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
@@ -65,8 +65,8 @@
     "json": "result.json",
     "web": "result_web"
   },
-  "run_at": "2026-11-06T02:41:28.680043+00:00",
-  "run_at_human": "06 November 2026, 02:41:28 UTC",
+  "run_at": "2026-11-06T04:08:38.352012+00:00",
+  "run_at_human": "06 November 2026, 04:08:38 UTC",
   "schema": "project-exactus-report/v1",
   "sections": [
     {

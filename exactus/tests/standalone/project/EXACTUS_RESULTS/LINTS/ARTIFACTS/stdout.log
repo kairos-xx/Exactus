@@ -1,5 +1,5 @@
-Cleaned: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/conftest.py
-Cleaned: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/python/calc.py
-Cleaned: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-9wi577wc/project/tests/test_calc.py
+Cleaned: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/conftest.py
+Cleaned: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/python/calc.py
+Cleaned: /private/var/folders/y1/0lgpfcvx1rnbxz_bxr77lrph0000gn/T/exactus-lints-w4s8rt09/project/tests/test_calc.py
 10 scanned, 3 changed, 20 lines removed, 20 bytes removed
 pyrefly infer left sources unchanged.

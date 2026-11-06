@@ -1,6 +1,6 @@
 # `COVERAGE/`
 
-No direct files besides this README.
+Provide result json content.
 
 <!-- exactus:inventory:start -->
 ## Directory contents
@@ -8,10 +8,10 @@ No direct files besides this README.
 ### Files
 
 - [`result.json`](result.json) — Provide result json content.
-- [`result.md`](result.md) — **Run time:** 06 November 2026, 02:41:31 UTC
+- [`result.md`](result.md) — **Run time:** 06 November 2026, 04:08:39 UTC
 
 ### Subdirectories
 
-- [`result_web/`](result_web/README.md) — No subdirectories.
+- [`result_web/`](result_web/README.md) — Provide cerulean css content.
 
 <!-- exactus:inventory:end -->

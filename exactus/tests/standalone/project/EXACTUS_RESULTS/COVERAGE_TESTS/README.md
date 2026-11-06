@@ -8,12 +8,12 @@ Provide result json content.
 ### Files
 
 - [`result.json`](result.json) — Provide result json content.
-- [`result.md`](result.md) — **Run time:** 06 November 2026, 02:41:23 UTC
+- [`result.md`](result.md) — **Run time:** 06 November 2026, 04:08:34 UTC
 
 ### Subdirectories
 
-- [`ARTIFACTS/`](ARTIFACTS/README.md) — Provide @activity json content.
-- [`COVERAGE/`](COVERAGE/README.md) — No direct files besides this README.
+- [`ARTIFACTS/`](ARTIFACTS/README.md) — Provide result json content.
+- [`COVERAGE/`](COVERAGE/README.md) — Provide result json content.
 - [`TESTS/`](TESTS/README.md) — Provide result json content.
 - [`result_web/`](result_web/README.md) — Provide cerulean css content.
 

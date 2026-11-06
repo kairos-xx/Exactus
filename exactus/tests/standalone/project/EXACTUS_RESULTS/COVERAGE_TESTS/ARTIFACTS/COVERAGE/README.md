@@ -1,6 +1,6 @@
 # `COVERAGE/`
 
-Provide import graph json content.
+Provide coverage raw py json content.
 
 <!-- exactus:inventory:start -->
 ## Directory contents

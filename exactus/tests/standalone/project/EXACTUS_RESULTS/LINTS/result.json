@@ -4,15 +4,15 @@
   "tool": {
     "name": "lints",
     "display_name": "Lint Exactus",
-    "version": "0.7.1"
+    "version": null
   },
   "summary": {
     "timing": {
-      "date_time": "06/11/2026 02:41:06",
-      "finished_date_time": "06/11/2026 02:41:13",
+      "date_time": "06/11/2026 04:08:20",
+      "finished_date_time": "06/11/2026 04:08:25",
       "timezone": "WET",
-      "duration_seconds": 6.205927,
-      "duration_human": "00:00:06.205927"
+      "duration_seconds": 4.701722,
+      "duration_human": "00:00:04.701722"
     },
     "host": {
       "hostname": "Mac",
@@ -97,9 +97,9 @@
   },
   "all_lints": {
     "schema_version": 2,
-    "generated_at": "2026-11-06T02:41:11.455755+00:00",
-    "started_at": "2026-11-06T02:41:08.230083+00:00",
-    "duration_seconds": 3.225629,
+    "generated_at": "2026-11-06T04:08:24.005466+00:00",
+    "started_at": "2026-11-06T04:08:21.512926+00:00",
+    "duration_seconds": 2.492509,
     "root": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
     "ok": true,
     "summary": {
@@ -118,7 +118,7 @@
       "ruff": {
         "name": "ruff",
         "status": "passed",
-        "duration_seconds": 0.087576,
+        "duration_seconds": 0.12645,
         "total_files": 6,
         "completed_files": 6,
         "files_with_issues": 0,
@@ -138,7 +138,7 @@
       "ruff_docs": {
         "name": "ruff_docs",
         "status": "passed",
-        "duration_seconds": 0.087576,
+        "duration_seconds": 0.12645,
         "total_files": 6,
         "completed_files": 6,
         "files_with_issues": 0,
@@ -148,7 +148,7 @@
       "basedpyright": {
         "name": "basedpyright",
         "status": "passed",
-        "duration_seconds": 2.356816,
+        "duration_seconds": 1.972202,
         "total_files": 6,
         "completed_files": 6,
         "files_with_issues": 0,
@@ -158,7 +158,7 @@
       "pyrefly": {
         "name": "pyrefly",
         "status": "passed",
-        "duration_seconds": 0.533719,
+        "duration_seconds": 0.408369,
         "total_files": 6,
         "completed_files": 6,
         "files_with_issues": 0,
@@ -168,7 +168,7 @@
       "eslint": {
         "name": "eslint",
         "status": "passed",
-        "duration_seconds": 1.614548,
+        "duration_seconds": 1.114603,
         "total_files": 4,
         "completed_files": 4,
         "files_with_issues": 0,
@@ -178,7 +178,7 @@
       "stylelint": {
         "name": "stylelint",
         "status": "passed",
-        "duration_seconds": 1.690574,
+        "duration_seconds": 1.172123,
         "total_files": 1,
         "completed_files": 1,
         "files_with_issues": 0,
@@ -188,7 +188,7 @@
       "htmlint": {
         "name": "htmlint",
         "status": "passed",
-        "duration_seconds": 0.320688,
+        "duration_seconds": 0.177148,
         "total_files": 1,
         "completed_files": 1,
         "files_with_issues": 0,
@@ -198,7 +198,7 @@
       "typescript": {
         "name": "typescript",
         "status": "passed",
-        "duration_seconds": 3.125213,
+        "duration_seconds": 2.408282,
         "total_files": 4,
         "completed_files": 4,
         "files_with_issues": 0,
@@ -213,7 +213,7 @@
     {
       "name": "@activity.json",
       "path": "ARTIFACTS/@activity.json",
-      "bytes": 2918
+      "bytes": 2822
     },
     {
       "name": "README.md",
@@ -233,15 +233,15 @@
     {
       "name": "steps.txt",
       "path": "ARTIFACTS/steps.txt",
-      "bytes": 69905
+      "bytes": 69170
     }
   ],
   "comparison": {
     "available": true,
-    "previous_generated_at": "2026-11-06T02:16:54.697978+00:00",
-    "previous_run_id": "8fda18e03ec84ab384f411f9b1ee69f6:lints",
+    "previous_generated_at": "2026-11-06T02:41:13.146208+00:00",
+    "previous_run_id": "0aff3ce389f246459ce96ab2e4d75298:lints",
     "previous_status": "PASS",
-    "previous_duration_seconds": 15.407,
+    "previous_duration_seconds": 16.731,
     "current_total": 0,
     "previous_total": 0,
     "delta": 0,
@@ -304,7 +304,7 @@
       }
     ]
   },
-  "duration_seconds": 16.731,
+  "duration_seconds": 12.114,
   "environment": {
     "os": "Darwin 25.3.0",
     "python": "3.13.9",
@@ -317,7 +317,7 @@
       },
       {
         "name": "EXACTUS_PIPELINE_RUN_ID",
-        "value": "0aff3ce389f246459ce96ab2e4d75298"
+        "value": "b06ce16423b2422b821ba7adb10976f3"
       },
       {
         "name": "EXACTUS_REGISTRY",
@@ -329,7 +329,7 @@
       },
       {
         "name": "EXACTUS_RUN_ID",
-        "value": "0aff3ce389f246459ce96ab2e4d75298:lints"
+        "value": "b06ce16423b2422b821ba7adb10976f3:lints"
       },
       {
         "name": "EXACTUS_TOOL",
@@ -337,7 +337,11 @@
       },
       {
         "name": "LANG",
-        "value": "C.UTF-8"
+        "value": "en_US.UTF-8"
+      },
+      {
+        "name": "TERM",
+        "value": "xterm-256color"
       }
     ]
   },
@@ -362,7 +366,7 @@
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 1.24
+          "duration_seconds": 1.139
         },
         {
           "linter": "custom_compliance",
@@ -374,7 +378,7 @@
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 0.0030996249988675117
+          "duration_seconds": 0.002505415992345661
         },
         {
           "linter": "custom_shebang",
@@ -386,7 +390,7 @@
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 0.004899833002127707
+          "duration_seconds": 0.0030170410027494654
         },
         {
           "linter": "custom_python",
@@ -398,7 +402,7 @@
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 0.005
+          "duration_seconds": 0.003
         },
         {
           "linter": "custom_python_long_lines",
@@ -410,7 +414,7 @@
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 7.862500206101686e-05
+          "duration_seconds": 7.216700760181993e-05
         },
         {
           "linter": "custom_javascript",
@@ -422,7 +426,7 @@
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 0.001
+          "duration_seconds": 0.0
         },
         {
           "linter": "custom_javascript_delimiters",
@@ -434,7 +438,7 @@
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 5.1458002417348325e-05
+          "duration_seconds": 3.3625008654780686e-05
         },
         {
           "linter": "custom_javascript_notation",
@@ -446,7 +450,7 @@
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 2.5667002773843706e-05
+          "duration_seconds": 2.0459003280848265e-05
         },
         {
           "linter": "custom_css",
@@ -458,7 +462,7 @@
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 0.005
+          "duration_seconds": 0.002
         },
         {
           "linter": "custom_html",
@@ -475,26 +479,26 @@
         {
           "linter": "ruff",
           "status": "ran",
-          "version": "0.15.22",
+          "version": "0.12.0",
           "files": 6,
           "findings": 0,
           "errors": 0,
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 0.087576
+          "duration_seconds": 0.12645
         },
         {
           "linter": "ruff_docs",
           "status": "ran",
-          "version": "0.15.22",
+          "version": "0.12.0",
           "files": 6,
           "findings": 0,
           "errors": 0,
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 0.087576
+          "duration_seconds": 0.12645
         },
         {
           "linter": "basedpyright",
@@ -506,7 +510,7 @@
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 2.356816
+          "duration_seconds": 1.972202
         },
         {
           "linter": "pyrefly",
@@ -518,7 +522,7 @@
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 0.345
+          "duration_seconds": 0.195
         },
         {
           "linter": "eslint",
@@ -530,7 +534,7 @@
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 1.614548
+          "duration_seconds": 1.114603
         },
         {
           "linter": "typescript",
@@ -542,7 +546,7 @@
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 3.125213
+          "duration_seconds": 2.408282
         },
         {
           "linter": "stylelint",
@@ -554,7 +558,7 @@
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 1.690574
+          "duration_seconds": 1.172123
         },
         {
           "linter": "htmlhint",
@@ -566,7 +570,7 @@
           "warnings": 0,
           "information": 0,
           "exit_code": 0,
-          "duration_seconds": 0.320688
+          "duration_seconds": 0.177148
         }
       ],
       "top_rules": [],
@@ -620,8 +624,8 @@
   },
   "findings": [],
   "fingerprint": {
-    "commit": "539634be50497c4b27a9d77f25f2676beeb62dd6",
-    "tree": "93f4670ed623afe431475759aade5383959821e9",
+    "commit": "82aa4af14783847df8265c9db323faeeed706c23",
+    "tree": "1f2c5c1744667c3058a380081f7265d38c25721b",
     "dirty": true,
     "python": "3.13.9",
     "ruff": "ruff 0.12.0",
@@ -631,8 +635,8 @@
     "status": "PASS",
     "reason": "No blocking findings"
   },
-  "generated_at": "2026-11-06T02:41:13.146208+00:00",
-  "generated_at_human": "06 November 2026, 02:41:13 UTC",
+  "generated_at": "2026-11-06T04:08:25.256690+00:00",
+  "generated_at_human": "06 November 2026, 04:08:25 UTC",
   "group_final": {
     "files": 6,
     "planned": 0,
@@ -641,16 +645,16 @@
     "dry_run": true
   },
   "invocation": {
-    "command": "/Users/joaolopes/Exactus/bin/release/exactus_macos_arm64/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=60413 --orchestrator-control-token=[redacted] --orchestrator-worker-port=60361 --orchestrator-worker-token=[redacted] '--orchestrator-call={\"args\":[],\"kwargs\":{\"request\":{\"identifier\":\"lints\",\"module\":\"exactus.tools.lints.main\",\"output\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/LINTS\",\"arguments\":[],\"explicit_arguments\":[],\"run_id\":\"0aff3ce389f246459ce96ab2e4d75298:lints\",\"pipeline_run_id\":\"0aff3ce389f246459ce96ab2e4d75298\",\"project_root\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\"}}}'",
+    "command": "/usr/local/bin/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=57341 --orchestrator-control-token=[redacted] --orchestrator-worker-port=57318 --orchestrator-worker-token=[redacted] '--orchestrator-call={\"args\":[],\"kwargs\":{\"request\":{\"identifier\":\"lints\",\"module\":\"exactus.tools.lints.main\",\"output\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/LINTS\",\"arguments\":[],\"explicit_arguments\":[],\"run_id\":\"b06ce16423b2422b821ba7adb10976f3:lints\",\"pipeline_run_id\":\"b06ce16423b2422b821ba7adb10976f3\",\"project_root\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\"}}}'",
     "cwd": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
     "arguments": [
       "exactus.tools.common.tool_worker",
       "ExactusTool",
-      "--orchestrator-control-port=60413",
+      "--orchestrator-control-port=57341",
       "--orchestrator-control-token=[redacted]",
-      "--orchestrator-worker-port=60361",
+      "--orchestrator-worker-port=57318",
       "--orchestrator-worker-token=[redacted]",
-      "--orchestrator-call={\"args\":[],\"kwargs\":{\"request\":{\"identifier\":\"lints\",\"module\":\"exactus.tools.lints.main\",\"output\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/LINTS\",\"arguments\":[],\"explicit_arguments\":[],\"run_id\":\"0aff3ce389f246459ce96ab2e4d75298:lints\",\"pipeline_run_id\":\"0aff3ce389f246459ce96ab2e4d75298\",\"project_root\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\"}}}"
+      "--orchestrator-call={\"args\":[],\"kwargs\":{\"request\":{\"identifier\":\"lints\",\"module\":\"exactus.tools.lints.main\",\"output\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/LINTS\",\"arguments\":[],\"explicit_arguments\":[],\"run_id\":\"b06ce16423b2422b821ba7adb10976f3:lints\",\"pipeline_run_id\":\"b06ce16423b2422b821ba7adb10976f3\",\"project_root\":\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\"}}}"
     ]
   },
   "organize": {
@@ -667,8 +671,8 @@
     "dry_run": true
   },
   "passed": true,
-  "pipeline_run_id": "0aff3ce389f246459ce96ab2e4d75298",
-  "previous_duration_seconds": 15.407,
+  "pipeline_run_id": "b06ce16423b2422b821ba7adb10976f3",
+  "previous_duration_seconds": 16.731,
   "project_href": "../../..",
   "project_root": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
   "report_bundle": {
@@ -678,22 +682,22 @@
   },
   "resume": "PASS: analyzer completed with exit status 0.",
   "run": {
-    "id": "0aff3ce389f246459ce96ab2e4d75298:lints",
-    "pipeline_id": "0aff3ce389f246459ce96ab2e4d75298",
+    "id": "b06ce16423b2422b821ba7adb10976f3:lints",
+    "pipeline_id": "b06ce16423b2422b821ba7adb10976f3",
     "status": "PASS",
     "exit_code": 0,
-    "started_at": "2026-11-06T02:40:57.422587+00:00",
-    "finished_at": "2026-11-06T02:41:14.156619+00:00",
-    "at_human": "06 November 2026, 02:40:57 UTC",
-    "started_at_human": "06 November 2026, 02:40:57 UTC",
-    "finished_at_human": "06 November 2026, 02:41:14 UTC",
-    "duration_seconds": 16.731,
-    "duration_human": "16.7 s",
+    "started_at": "2026-11-06T04:08:14.034757+00:00",
+    "finished_at": "2026-11-06T04:08:26.150442+00:00",
+    "at_human": "06 November 2026, 04:08:14 UTC",
+    "started_at_human": "06 November 2026, 04:08:14 UTC",
+    "finished_at_human": "06 November 2026, 04:08:26 UTC",
+    "duration_seconds": 12.114,
+    "duration_human": "12.1 s",
     "error": null
   },
-  "run_at": "2026-11-06T02:40:57.422587+00:00",
-  "run_at_human": "06 November 2026, 02:40:57 UTC",
-  "run_id": "0aff3ce389f246459ce96ab2e4d75298:lints",
+  "run_at": "2026-11-06T04:08:14.034757+00:00",
+  "run_at_human": "06 November 2026, 04:08:14 UTC",
+  "run_id": "b06ce16423b2422b821ba7adb10976f3:lints",
   "schema": "project-exactus-report/v1",
   "scope": {
     "include": [
@@ -809,7 +813,7 @@
       "count": 0,
       "version": "built-in",
       "files": 6,
-      "duration_seconds": 0.004899833002127707,
+      "duration_seconds": 0.0030170410027494654,
       "findings": [],
       "healed": [],
       "skipped_files": []
@@ -821,14 +825,14 @@
       "stderr": "",
       "count": 0,
       "findings": [],
-      "duration_seconds": 0.005
+      "duration_seconds": 0.003
     },
     "custom_javascript_delimiters": {
       "returncode": 0,
       "count": 0,
       "version": "built-in",
       "files": 2,
-      "duration_seconds": 5.1458002417348325e-05,
+      "duration_seconds": 3.3625008654780686e-05,
       "findings": [],
       "healed": []
     },
@@ -837,7 +841,7 @@
       "count": 0,
       "version": "built-in",
       "files": 2,
-      "duration_seconds": 2.5667002773843706e-05,
+      "duration_seconds": 2.0459003280848265e-05,
       "findings": [],
       "healed": []
     },
@@ -848,7 +852,7 @@
       "stderr": "",
       "count": 0,
       "findings": [],
-      "duration_seconds": 0.001
+      "duration_seconds": 0.0
     },
     "custom_css": {
       "tool": "custom_css",
@@ -857,7 +861,7 @@
       "stderr": "",
       "count": 0,
       "findings": [],
-      "duration_seconds": 0.005
+      "duration_seconds": 0.002
     },
     "custom_html": {
       "tool": "custom_html",
@@ -885,12 +889,12 @@
       "stderr": "",
       "count": 0,
       "findings": [],
-      "duration_seconds": 1.24
+      "duration_seconds": 1.139
     },
     "ruff": {
       "tool": "ruff",
       "command": [
-        "/Users/joaolopes/Exactus/.venv/bin/ruff",
+        "/opt/anaconda3/bin/ruff",
         "check",
         "--select",
         "ALL",
@@ -902,7 +906,7 @@
       ],
       "commands": [
         [
-          "/Users/joaolopes/Exactus/.venv/bin/ruff",
+          "/opt/anaconda3/bin/ruff",
           "check",
           "--select",
           "ALL",
@@ -913,7 +917,7 @@
           "__init__.py"
         ],
         [
-          "/Users/joaolopes/Exactus/.venv/bin/ruff",
+          "/opt/anaconda3/bin/ruff",
           "check",
           "--select",
           "ALL",
@@ -924,7 +928,7 @@
           "conftest.py"
         ],
         [
-          "/Users/joaolopes/Exactus/.venv/bin/ruff",
+          "/opt/anaconda3/bin/ruff",
           "check",
           "--select",
           "ALL",
@@ -935,7 +939,7 @@
           "python/__init__.py"
         ],
         [
-          "/Users/joaolopes/Exactus/.venv/bin/ruff",
+          "/opt/anaconda3/bin/ruff",
           "check",
           "--select",
           "ALL",
@@ -946,7 +950,7 @@
           "python/calc.py"
         ],
         [
-          "/Users/joaolopes/Exactus/.venv/bin/ruff",
+          "/opt/anaconda3/bin/ruff",
           "check",
           "--select",
           "ALL",
@@ -957,7 +961,7 @@
           "tests/__init__.py"
         ],
         [
-          "/Users/joaolopes/Exactus/.venv/bin/ruff",
+          "/opt/anaconda3/bin/ruff",
           "check",
           "--select",
           "ALL",
@@ -983,9 +987,9 @@
       "findings": [],
       "skipped": false,
       "skipped_files": [],
-      "duration_seconds": 0.087576,
+      "duration_seconds": 0.12645,
       "files_checked": 6,
-      "version": "0.15.22"
+      "version": "0.12.0"
     },
     "refurb": {
       "tool": "refurb",
@@ -1005,7 +1009,7 @@
     "ruff_docs": {
       "tool": "ruff_docs",
       "command": [
-        "/Users/joaolopes/Exactus/.venv/bin/ruff",
+        "/opt/anaconda3/bin/ruff",
         "check",
         "--select",
         "ALL",
@@ -1017,7 +1021,7 @@
       ],
       "commands": [
         [
-          "/Users/joaolopes/Exactus/.venv/bin/ruff",
+          "/opt/anaconda3/bin/ruff",
           "check",
           "--select",
           "ALL",
@@ -1028,7 +1032,7 @@
           "__init__.py"
         ],
         [
-          "/Users/joaolopes/Exactus/.venv/bin/ruff",
+          "/opt/anaconda3/bin/ruff",
           "check",
           "--select",
           "ALL",
@@ -1039,7 +1043,7 @@
           "conftest.py"
         ],
         [
-          "/Users/joaolopes/Exactus/.venv/bin/ruff",
+          "/opt/anaconda3/bin/ruff",
           "check",
           "--select",
           "ALL",
@@ -1050,7 +1054,7 @@
           "python/__init__.py"
         ],
         [
-          "/Users/joaolopes/Exactus/.venv/bin/ruff",
+          "/opt/anaconda3/bin/ruff",
           "check",
           "--select",
           "ALL",
@@ -1061,7 +1065,7 @@
           "python/calc.py"
         ],
         [
-          "/Users/joaolopes/Exactus/.venv/bin/ruff",
+          "/opt/anaconda3/bin/ruff",
           "check",
           "--select",
           "ALL",
@@ -1072,7 +1076,7 @@
           "tests/__init__.py"
         ],
         [
-          "/Users/joaolopes/Exactus/.venv/bin/ruff",
+          "/opt/anaconda3/bin/ruff",
           "check",
           "--select",
           "ALL",
@@ -1098,33 +1102,33 @@
       "findings": [],
       "skipped": false,
       "skipped_files": [],
-      "duration_seconds": 0.087576,
+      "duration_seconds": 0.12645,
       "files_checked": 6,
-      "version": "0.15.22"
+      "version": "0.12.0"
     },
     "basedpyright": {
       "tool": "basedpyright",
       "command": [
-        "/Users/joaolopes/Exactus/.venv/bin/basedpyright",
+        "/opt/anaconda3/bin/basedpyright",
         "__init__.py",
         "--outputjson",
         "conftest.py"
       ],
       "commands": [
         [
-          "/Users/joaolopes/Exactus/.venv/bin/basedpyright",
+          "/opt/anaconda3/bin/basedpyright",
           "__init__.py",
           "--outputjson",
           "conftest.py"
         ],
         [
-          "/Users/joaolopes/Exactus/.venv/bin/basedpyright",
+          "/opt/anaconda3/bin/basedpyright",
           "python/__init__.py",
           "--outputjson",
           "python/calc.py"
         ],
         [
-          "/Users/joaolopes/Exactus/.venv/bin/basedpyright",
+          "/opt/anaconda3/bin/basedpyright",
           "tests/__init__.py",
           "--outputjson",
           "tests/test_calc.py"
@@ -1145,7 +1149,7 @@
       "findings": [],
       "skipped": false,
       "skipped_files": [],
-      "duration_seconds": 2.356816,
+      "duration_seconds": 1.972202,
       "files_checked": 6,
       "version": "1.40.2"
     },
@@ -1155,7 +1159,7 @@
         "/opt/anaconda3/bin/pyrefly",
         "check",
         "--python-interpreter-path",
-        "/Users/joaolopes/Exactus/.venv/bin/python",
+        "/opt/anaconda3/bin/python3",
         "--min-severity",
         "warn",
         "--output-format=json",
@@ -1167,11 +1171,11 @@
         "tests/test_calc.py"
       ],
       "returncode": 0,
-      "stderr": " WARN PYTHONPATH environment variable is set to `/Users/joaolopes/Exactus/exactus/tests/standalone/project/src:/Users/joaolopes/Exactus/exactus/tests/standalone/project:/Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/basedpyright_coverage_pyrefly_pytest_ruff/python:/Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/build_twine/python:/Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/defusedxml/python:/Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/fastapi_httpx_httpx2_mcp_pydantic_uvicorn/python:/Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/hypothesis_mutmut/python:/Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/jinja2/python:/Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/pillow/python:/Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/playwright/python:/Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/psutil/python:/Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/tree-sitter_tree-sitter-language-pack/python:/Users/joaolopes/Exactus/bin/release/exactus_macos_arm64/exactus`. Checks in other environments may not include these paths.\n WARN PYTHONPATH environment variable is set to `/Users/joaolopes/Exactus/exactus/tests/standalone/project/src:/Users/joaolopes/Exactus/exactus/tests/standalone/project:/Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/basedpyright_coverage_pyrefly_pytest_ruff/python:/Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/build_twine/python:/Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/defusedxml/python:/Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/fastapi_httpx_httpx2_mcp_pydantic_uvicorn/python:/Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/hypothesis_mutmut/python:/Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/jinja2/python:/Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/pillow/python:/Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/playwright/python:/Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/psutil/python:/Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/tree-sitter_tree-sitter-language-pack/python:/Users/joaolopes/Exactus/bin/release/exactus_macos_arm64/exactus`. Checks in other environments may not include these paths.\n",
+      "stderr": " WARN PYTHONPATH environment variable is set to `/Users/joaolopes/Exactus/exactus/tests/standalone/project/src:/Users/joaolopes/Exactus/exactus/tests/standalone/project:/Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/basedpyright_coverage_pyrefly_pytest_ruff/python:/Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/build_twine/python:/Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/defusedxml/python:/Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/fastapi_httpx_httpx2_mcp_pydantic_uvicorn/python:/Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/hypothesis_mutmut/python:/Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/jinja2/python:/Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/pillow/python:/Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/playwright/python:/Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/psutil/python:/Users/joaolopes/.cache/exactus-tools/8db51af0b4bacdc53a4f8e697d5a67963d26340f3ef7af398cbbfdbeea225e29/components/tree-sitter_tree-sitter-language-pack/python:/usr/local/bin/exactus`. Checks in other environments may not include these paths.\n",
       "count": 0,
       "findings": [],
       "skipped_files": [],
-      "duration_seconds": 0.345,
+      "duration_seconds": 0.195,
       "version": "0.63.0"
     },
     "eslint": {
@@ -1226,7 +1230,7 @@
       "findings": [],
       "skipped": false,
       "skipped_files": [],
-      "duration_seconds": 1.614548,
+      "duration_seconds": 1.114603,
       "files_checked": 4,
       "version": "10.14.0"
     },
@@ -1256,7 +1260,7 @@
       "findings": [],
       "skipped": false,
       "skipped_files": [],
-      "duration_seconds": 1.690574,
+      "duration_seconds": 1.172123,
       "files_checked": 1,
       "version": "17.16.0"
     },
@@ -1282,7 +1286,7 @@
       "findings": [],
       "skipped": false,
       "skipped_files": [],
-      "duration_seconds": 0.320688,
+      "duration_seconds": 0.177148,
       "files_checked": 1,
       "version": "1.9.2"
     },
@@ -1294,7 +1298,7 @@
         "--pretty",
         "false",
         "--project",
-        "/Users/joaolopes/Exactus/exactus/tests/standalone/project/.exactus-typescript-60941.json"
+        "/Users/joaolopes/Exactus/exactus/tests/standalone/project/.exactus-typescript-57272.json"
       ],
       "commands": [
         [
@@ -1303,7 +1307,7 @@
           "--pretty",
           "false",
           "--project",
-          "/Users/joaolopes/Exactus/exactus/tests/standalone/project/.exactus-typescript-60941.json"
+          "/Users/joaolopes/Exactus/exactus/tests/standalone/project/.exactus-typescript-57272.json"
         ]
       ],
       "files": [
@@ -1319,7 +1323,7 @@
       "findings": [],
       "skipped": false,
       "skipped_files": [],
-      "duration_seconds": 3.125213,
+      "duration_seconds": 2.408282,
       "files_checked": 4,
       "version": "6.0.3"
     },
@@ -1328,7 +1332,7 @@
       "count": 0,
       "version": "built-in",
       "files": 6,
-      "duration_seconds": 7.862500206101686e-05,
+      "duration_seconds": 7.216700760181993e-05,
       "findings": [],
       "healed": [],
       "skipped_files": []
@@ -1338,7 +1342,7 @@
       "count": 0,
       "version": "built-in",
       "files": 6,
-      "duration_seconds": 0.0030996249988675117,
+      "duration_seconds": 0.002505415992345661,
       "findings": [],
       "skipped_files": []
     }

@@ -1,5 +1,7 @@
 # `result_web/`
 
+Provide cerulean css content.
+
 <!-- exactus:inventory:start -->
 ## Directory contents
 

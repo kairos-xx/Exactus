@@ -2,13 +2,13 @@
 
 - Status: **PASS**
 
-- Previous run: **1.115s**
+- Previous run: **1.685s**
 
-**Run time:** 06 November 2026, 02:42:11 UTC
+**Run time:** 06 November 2026, 04:08:59 UTC
 
 ## Change since previous report
 
-Previous run completed in **1.115s**.
+Previous run completed in **1.685s**.
 
 | Findings | Current | Previous | Delta | Added | Resolved | Unchanged |
 |---|---:|---:|---:|---:|---:|---:|
@@ -16,4 +16,4 @@ Previous run completed in **1.115s**.
 
 ## Resume
 
-6 runs profiled — slowest lints 16.7s
+6 runs profiled — slowest lints 12.1s

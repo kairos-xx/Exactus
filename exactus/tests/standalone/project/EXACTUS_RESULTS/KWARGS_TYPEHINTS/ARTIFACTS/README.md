@@ -1,6 +1,6 @@
 # `KWARGS_TYPEHINTS/`
 
-Provide @activity json content.
+Provide result json content.
 
 <!-- exactus:inventory:start -->
 ## Directory contents

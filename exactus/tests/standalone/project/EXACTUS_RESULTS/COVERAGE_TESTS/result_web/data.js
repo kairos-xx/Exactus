@@ -4,7 +4,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
   "tool": {
     "name": "coverage_tests",
     "display_name": "Coverage",
-    "version": "0.7.1"
+    "version": null
   },
   "summary": {
     "targets_eligible": 4,
@@ -33,12 +33,12 @@ window.__REPORT_DATA__ = JSON.parse(`{
     {
       "name": "@activity.json",
       "path": "ARTIFACTS/@activity.json",
-      "bytes": 2158
+      "bytes": 2160
     },
     {
       "name": "README.md",
       "path": "ARTIFACTS/COVERAGE/README.md",
-      "bytes": 667
+      "bytes": 670
     },
     {
       "name": "completion.json",
@@ -53,17 +53,17 @@ window.__REPORT_DATA__ = JSON.parse(`{
     {
       "name": "import_graph.json",
       "path": "ARTIFACTS/COVERAGE/import_graph.json",
-      "bytes": 2789
+      "bytes": 2788
     },
     {
       "name": "meaningful.json",
       "path": "ARTIFACTS/COVERAGE/meaningful.json",
-      "bytes": 7275
+      "bytes": 7271
     },
     {
       "name": "test-costs.json",
       "path": "ARTIFACTS/COVERAGE/test-costs.json",
-      "bytes": 170
+      "bytes": 171
     },
     {
       "name": "validation.json",
@@ -73,7 +73,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
     {
       "name": "README.md",
       "path": "ARTIFACTS/README.md",
-      "bytes": 602
+      "bytes": 591
     },
     {
       "name": "README.md",
@@ -88,7 +88,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
     {
       "name": "shard-000.log",
       "path": "ARTIFACTS/TESTS/pytest-shards/shard-000.log",
-      "bytes": 657
+      "bytes": 712
     },
     {
       "name": "stderr.log",
@@ -103,15 +103,15 @@ window.__REPORT_DATA__ = JSON.parse(`{
     {
       "name": "steps.txt",
       "path": "ARTIFACTS/steps.txt",
-      "bytes": 6890
+      "bytes": 6779
     }
   ],
   "comparison": {
     "available": true,
-    "previous_generated_at": "2026-11-06T02:17:14.634070+00:00",
-    "previous_run_id": "8fda18e03ec84ab384f411f9b1ee69f6:coverage_tests",
+    "previous_generated_at": "2026-11-06T02:41:33.841928+00:00",
+    "previous_run_id": "0aff3ce389f246459ce96ab2e4d75298:coverage_tests",
     "previous_status": "PASS",
-    "previous_duration_seconds": 7.802,
+    "previous_duration_seconds": 11.725,
     "current_total": 0,
     "previous_total": 0,
     "delta": 0,
@@ -199,7 +199,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
     "meta": {
       "format": 3,
       "version": "7.17.1",
-      "timestamp": "2026-11-06T02:41:31.627047",
+      "timestamp": "2026-11-06T04:08:39.812133",
       "branch_coverage": true,
       "show_contexts": false
     },
@@ -590,7 +590,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
       "percent_branches_covered_display": "100"
     }
   },
-  "duration_seconds": 11.725,
+  "duration_seconds": 7.1,
   "environment": {
     "os": "Darwin 25.3.0",
     "python": "3.13.9",
@@ -603,7 +603,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
       },
       {
         "name": "EXACTUS_PIPELINE_RUN_ID",
-        "value": "0aff3ce389f246459ce96ab2e4d75298"
+        "value": "b06ce16423b2422b821ba7adb10976f3"
       },
       {
         "name": "EXACTUS_REGISTRY",
@@ -615,7 +615,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
       },
       {
         "name": "EXACTUS_RUN_ID",
-        "value": "0aff3ce389f246459ce96ab2e4d75298:coverage_tests"
+        "value": "b06ce16423b2422b821ba7adb10976f3:coverage_tests"
       },
       {
         "name": "EXACTUS_TOOL",
@@ -623,7 +623,11 @@ window.__REPORT_DATA__ = JSON.parse(`{
       },
       {
         "name": "LANG",
-        "value": "C.UTF-8"
+        "value": "en_US.UTF-8"
+      },
+      {
+        "name": "TERM",
+        "value": "xterm-256color"
       }
     ]
   },
@@ -638,7 +642,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
       "xfailed": 0,
       "xpassed": 0,
       "total": 2,
-      "duration_seconds": 5.087,
+      "duration_seconds": 3.783,
       "test_files": 1,
       "shards": 1,
       "javascript_test_files": 0,
@@ -771,8 +775,8 @@ window.__REPORT_DATA__ = JSON.parse(`{
   },
   "findings": [],
   "fingerprint": {
-    "commit": "539634be50497c4b27a9d77f25f2676beeb62dd6",
-    "tree": "93f4670ed623afe431475759aade5383959821e9",
+    "commit": "82aa4af14783847df8265c9db323faeeed706c23",
+    "tree": "1f2c5c1744667c3058a380081f7265d38c25721b",
     "dirty": true,
     "python": "3.13.9",
     "ruff": "ruff 0.12.0",
@@ -801,8 +805,8 @@ window.__REPORT_DATA__ = JSON.parse(`{
     "per_file_minimum": 80.0,
     "files_below": []
   },
-  "generated_at": "2026-11-06T02:41:33.841928+00:00",
-  "generated_at_human": "06 November 2026, 02:41:33 UTC",
+  "generated_at": "2026-11-06T04:08:41.059176+00:00",
+  "generated_at_human": "06 November 2026, 04:08:41 UTC",
   "import_graph": {
     "excused_sources": [],
     "ignored_non_local_imports": [
@@ -843,11 +847,11 @@ window.__REPORT_DATA__ = JSON.parse(`{
           "evidence": [],
           "level": "TEST-0",
           "metadata": {
-            "duration_seconds": 0.0011316669988445938,
-            "finished_at": "2026-11-06T02:41:31.264131+00:00",
+            "duration_seconds": 0.000939125005970709,
+            "finished_at": "2026-11-06T04:08:39.615090+00:00",
             "size_bytes": 295,
             "source_lines": 10,
-            "started_at": "2026-11-06T02:41:31.263004+00:00",
+            "started_at": "2026-11-06T04:08:39.614158+00:00",
             "worker_name": "meaningful_0"
           },
           "metrics": {
@@ -909,16 +913,16 @@ window.__REPORT_DATA__ = JSON.parse(`{
     ]
   },
   "invocation": {
-    "command": "/Users/joaolopes/Exactus/bin/release/exactus_macos_arm64/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=63757 --orchestrator-control-token=[redacted] --orchestrator-worker-port=63739 --orchestrator-worker-token=[redacted] '--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"coverage_tests\\",\\"module\\":\\"exactus.tools.coverage_tests.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS\\",\\"arguments\\":[],\\"explicit_arguments\\":[],\\"run_id\\":\\"0aff3ce389f246459ce96ab2e4d75298:coverage_tests\\",\\"pipeline_run_id\\":\\"0aff3ce389f246459ce96ab2e4d75298\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}'",
+    "command": "/usr/local/bin/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=59709 --orchestrator-control-token=[redacted] --orchestrator-worker-port=59694 --orchestrator-worker-token=[redacted] '--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"coverage_tests\\",\\"module\\":\\"exactus.tools.coverage_tests.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS\\",\\"arguments\\":[],\\"explicit_arguments\\":[],\\"run_id\\":\\"b06ce16423b2422b821ba7adb10976f3:coverage_tests\\",\\"pipeline_run_id\\":\\"b06ce16423b2422b821ba7adb10976f3\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}'",
     "cwd": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
     "arguments": [
       "exactus.tools.common.tool_worker",
       "ExactusTool",
-      "--orchestrator-control-port=63757",
+      "--orchestrator-control-port=59709",
       "--orchestrator-control-token=[redacted]",
-      "--orchestrator-worker-port=63739",
+      "--orchestrator-worker-port=59694",
       "--orchestrator-worker-token=[redacted]",
-      "--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"coverage_tests\\",\\"module\\":\\"exactus.tools.coverage_tests.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS\\",\\"arguments\\":[],\\"explicit_arguments\\":[],\\"run_id\\":\\"0aff3ce389f246459ce96ab2e4d75298:coverage_tests\\",\\"pipeline_run_id\\":\\"0aff3ce389f246459ce96ab2e4d75298\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}"
+      "--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"coverage_tests\\",\\"module\\":\\"exactus.tools.coverage_tests.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS\\",\\"arguments\\":[],\\"explicit_arguments\\":[],\\"run_id\\":\\"b06ce16423b2422b821ba7adb10976f3:coverage_tests\\",\\"pipeline_run_id\\":\\"b06ce16423b2422b821ba7adb10976f3\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}"
     ]
   },
   "javascript": null,
@@ -949,10 +953,10 @@ window.__REPORT_DATA__ = JSON.parse(`{
     "ARTIFACTS/stdout.log": "ARTIFACTS/stdout.log",
     "ARTIFACTS/steps.txt": "ARTIFACTS/steps.txt"
   },
-  "markdown": "# Coverage\\n\\n**Run time:** 06 November 2026, 02:41:23 UTC\\n\\n## Identity\\n\\n| Field | Value |\\n|---|---|\\n| Tool | coverage_tests 0.7.1 |\\n| Run ID | 0aff3ce389f246459ce96ab2e4d75298:coverage_tests |\\n| Pipeline run | 0aff3ce389f246459ce96ab2e4d75298 |\\n| Status | PASS |\\n| Exit code | 0 |\\n| Started | 06 November 2026, 02:41:23 UTC |\\n| Finished | 06 November 2026, 02:41:35 UTC |\\n| Duration | 11.7 s |\\n| Previous duration | 7.802s |\\n\\n## What was checked\\n\\n**Result: PASS** — 2 tests from 1 test file across 4 measured source files; Python coverage 100.0% (minimum 90.0%); 0 findings.\\n\\n| Severity | Count |\\n|---|---:|\\n| ERROR | 0 |\\n| WARNING | 0 |\\n| INFO | 0 |\\n\\n### Tests\\n\\n| Metric | Value |\\n| --- | --- |\\n| Tests run | 2 |\\n| Passed | 2 |\\n| Failed | 0 |\\n| Errors | 0 |\\n| Skipped | 0 |\\n| Expected failures (xfail) | 0 |\\n| Unexpected passes (xpass) | 0 |\\n| Duration (s) | 5.087 |\\n| Python test files | 1 |\\n| JavaScript test files | 0 |\\n| JavaScript failed tests | 0 |\\n\\n### Coverage\\n\\n| Language | Coverage | Measurement | Files |\\n|---|---:|---|---:|\\n| Python | 100.0% | Lines | 4 |\\n\\nThe Python gate includes branches when branch measurement is enabled. JavaScript measures executable lines.\\n\\n### Change since previous report\\n\\n| Metric | Current | Previous | Delta |\\n|---|---:|---:|---:|\\n| Findings | 0 | 0 | 0 |\\n| Previous duration | 7.802s | | |\\n\\n| Finding change | Count |\\n|---|---:|\\n| Added | 0 |\\n| Resolved | 0 |\\n| Unchanged | 0 |\\n\\n#### Category findings\\n\\n| Category | Title | Findings | Previous | Delta |\\n| --- | --- | --- | --- | --- |\\n| coverage-average | Average file coverage | 0 | 0 | 0 |\\n| coverage-evidence | Coverage evidence validation | 0 | 0 | 0 |\\n| coverage-javascript-total | Overall JavaScript coverage | 0 | 0 | 0 |\\n| coverage-meaningful | Untested meaningful sources | 0 | 0 | 0 |\\n| coverage-meaningful-analysis | Meaningful analysis failures | 0 | 0 | 0 |\\n| coverage-per-file | Per-file coverage minimum | 0 | 0 | 0 |\\n| coverage-shortfall-excused | Excused sub-gate sources | 0 | 0 | 0 |\\n| coverage-total | Overall Python coverage | 0 | 0 | 0 |\\n| test-error | Errored tests | 0 | 0 | 0 |\\n| test-failure | Failed tests | 0 | 0 | 0 |\\n\\n\\n## Setup\\n\\n### Invocation\\n\\n~~~~shell\\n/Users/joaolopes/Exactus/bin/release/exactus_macos_arm64/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=63757 --orchestrator-control-token=[redacted] --orchestrator-worker-port=63739 --orchestrator-worker-token=[redacted] '--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"coverage_tests\\",\\"module\\":\\"exactus.tools.coverage_tests.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS\\",\\"arguments\\":[],\\"explicit_arguments\\":[],\\"run_id\\":\\"0aff3ce389f246459ce96ab2e4d75298:coverage_tests\\",\\"pipeline_run_id\\":\\"0aff3ce389f246459ce96ab2e4d75298\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}'\\n~~~~\\n\\n| Property | Value |\\n|---|---|\\n| Working directory | [/Users/joaolopes/Exactus/exactus/tests/standalone/project](../..) |\\n| Arguments | \`exactus.tools.common.tool_worker\` \`ExactusTool\` \`--orchestrator-control-port=63757\` \`--orchestrator-control-token=[redacted]\` \`--orchestrator-worker-port=63739\` \`--orchestrator-worker-token=[redacted]\` \`--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"coverage_tests\\",\\"module\\":\\"exactus.tools.coverage_tests.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS\\",\\"arguments\\":[],\\"explicit_arguments\\":[],\\"run_id\\":\\"0aff3ce389f246459ce96ab2e4d75298:coverage_tests\\",\\"pipeline_run_id\\":\\"0aff3ce389f246459ce96ab2e4d75298\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}\` |\\n\\n### Environment\\n\\n| Property | Value |\\n|---|---|\\n| OS | Darwin 25.3.0 |\\n| Python | 3.13.9 |\\n| Node | v22.21.1 |\\n| CPU count | 18 |\\n\\n| Variable | Value |\\n| --- | --- |\\n| EXACTUS_ORCHESTRATED | 1 |\\n| EXACTUS_PIPELINE_RUN_ID | 0aff3ce389f246459ce96ab2e4d75298 |\\n| EXACTUS_REGISTRY | [/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/.runtime/runs.db](../.runtime/runs.db) |\\n| EXACTUS_ROOT | [/Users/joaolopes/Exactus/exactus/tests/standalone/project](../..) |\\n| EXACTUS_RUN_ID | 0aff3ce389f246459ce96ab2e4d75298:coverage_tests |\\n| EXACTUS_TOOL | coverage_tests |\\n| LANG | C.UTF-8 |\\n\\n## Gate\\n\\n> **Gate: PASS** — 2 of 2 tests passed; Total 100.0% meets the 90.0% minimum; every file meets 80.0%\\n\\n| Part | Status | Reason |\\n|---|---|---|\\n| Tests | PASS | 2 of 2 tests passed |\\n| Coverage | PASS | Total 100.0% meets the 90.0% minimum; every file meets 80.0% |\\n\\n### Coverage requirements\\n\\n| Requirement | Minimum | Measured | Result |\\n| --- | --- | --- | --- |\\n| Total coverage | 90.0% | 100.0% | PASS |\\n| Per-file minimum | 80.0% | 0 of 4 files below | PASS |\\n| Untested meaningful sources | >= TEST-2 | 0 actionable, 0 analysis errors | PASS |\\n| Evidence check | complete, unchanged evidence | valid | PASS |\\n\\n## Findings\\n\\n### Failed tests — 0\\n\\nNo failed or errored tests.\\n\\n### Coverage violations — 0\\n\\nEvery coverage gate is met.\\n\\n## Evidence\\n\\n| Artifact | Path | Bytes |\\n|---|---|---:|\\n| @activity.json | [ARTIFACTS/@activity.json](ARTIFACTS/%40activity.json) | 2158 |\\n| completion.json | [ARTIFACTS/COVERAGE/completion.json](ARTIFACTS/COVERAGE/completion.json) | 1526 |\\n| coverage_raw_py.json | [ARTIFACTS/COVERAGE/coverage_raw_py.json](ARTIFACTS/COVERAGE/coverage_raw_py.json) | 8328 |\\n| import_graph.json | [ARTIFACTS/COVERAGE/import_graph.json](ARTIFACTS/COVERAGE/import_graph.json) | 2789 |\\n| meaningful.json | [ARTIFACTS/COVERAGE/meaningful.json](ARTIFACTS/COVERAGE/meaningful.json) | 7275 |\\n| test-costs.json | [ARTIFACTS/COVERAGE/test-costs.json](ARTIFACTS/COVERAGE/test-costs.json) | 170 |\\n| validation.json | [ARTIFACTS/COVERAGE/validation.json](ARTIFACTS/COVERAGE/validation.json) | 234 |\\n| stderr.log | [ARTIFACTS/stderr.log](ARTIFACTS/stderr.log) | 0 |\\n| stdout.log | [ARTIFACTS/stdout.log](ARTIFACTS/stdout.log) | 0 |\\n| steps.txt | [ARTIFACTS/steps.txt](ARTIFACTS/steps.txt) | 6890 |\\n\\n## Test groups\\n\\nOne report per group of Python test files.\\n\\n| Group | Files | Tests | Passed | Failed | Skipped | Report |\\n|---|---:|---:|---:|---:|---:|---|\\n| tests | 1 | 2 | 2 | 0 | 0 | [TESTS/tests/result.md](TESTS/tests/result.md) |\\n\\n## Sub-reports\\n\\n| Report | Path | Contents |\\n|---|---|---|\\n| Tests | [TESTS/result.md](TESTS/result.md) | Every test result, failed tests with reasons, shards and warnings |\\n| Coverage | [COVERAGE/result.md](COVERAGE/result.md) | Coverage per file with uncovered lines, the import graph and the JavaScript lane |\\n\\n---\\n\\nExactus · coverage_tests 0.7.1 · Run 0aff3ce389f246459ce96ab2e4d75298:coverage_tests · Result PASS · Duration 11.7 s\\n",
+  "markdown": "# Coverage\\n\\n**Run time:** 06 November 2026, 04:08:34 UTC\\n\\n## Identity\\n\\n| Field | Value |\\n|---|---|\\n| Tool | coverage_tests |\\n| Run ID | b06ce16423b2422b821ba7adb10976f3:coverage_tests |\\n| Pipeline run | b06ce16423b2422b821ba7adb10976f3 |\\n| Status | PASS |\\n| Exit code | 0 |\\n| Started | 06 November 2026, 04:08:34 UTC |\\n| Finished | 06 November 2026, 04:08:41 UTC |\\n| Duration | 7.1 s |\\n| Previous duration | 11.725s |\\n\\n## What was checked\\n\\n**Result: PASS** — 2 tests from 1 test file across 4 measured source files; Python coverage 100.0% (minimum 90.0%); 0 findings.\\n\\n| Severity | Count |\\n|---|---:|\\n| ERROR | 0 |\\n| WARNING | 0 |\\n| INFO | 0 |\\n\\n### Tests\\n\\n| Metric | Value |\\n| --- | --- |\\n| Tests run | 2 |\\n| Passed | 2 |\\n| Failed | 0 |\\n| Errors | 0 |\\n| Skipped | 0 |\\n| Expected failures (xfail) | 0 |\\n| Unexpected passes (xpass) | 0 |\\n| Duration (s) | 3.783 |\\n| Python test files | 1 |\\n| JavaScript test files | 0 |\\n| JavaScript failed tests | 0 |\\n\\n### Coverage\\n\\n| Language | Coverage | Measurement | Files |\\n|---|---:|---|---:|\\n| Python | 100.0% | Lines | 4 |\\n\\nThe Python gate includes branches when branch measurement is enabled. JavaScript measures executable lines.\\n\\n### Change since previous report\\n\\n| Metric | Current | Previous | Delta |\\n|---|---:|---:|---:|\\n| Findings | 0 | 0 | 0 |\\n| Previous duration | 11.725s | | |\\n\\n| Finding change | Count |\\n|---|---:|\\n| Added | 0 |\\n| Resolved | 0 |\\n| Unchanged | 0 |\\n\\n#### Category findings\\n\\n| Category | Title | Findings | Previous | Delta |\\n| --- | --- | --- | --- | --- |\\n| coverage-average | Average file coverage | 0 | 0 | 0 |\\n| coverage-evidence | Coverage evidence validation | 0 | 0 | 0 |\\n| coverage-javascript-total | Overall JavaScript coverage | 0 | 0 | 0 |\\n| coverage-meaningful | Untested meaningful sources | 0 | 0 | 0 |\\n| coverage-meaningful-analysis | Meaningful analysis failures | 0 | 0 | 0 |\\n| coverage-per-file | Per-file coverage minimum | 0 | 0 | 0 |\\n| coverage-shortfall-excused | Excused sub-gate sources | 0 | 0 | 0 |\\n| coverage-total | Overall Python coverage | 0 | 0 | 0 |\\n| test-error | Errored tests | 0 | 0 | 0 |\\n| test-failure | Failed tests | 0 | 0 | 0 |\\n\\n\\n## Setup\\n\\n### Invocation\\n\\n~~~~shell\\n/usr/local/bin/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=59709 --orchestrator-control-token=[redacted] --orchestrator-worker-port=59694 --orchestrator-worker-token=[redacted] '--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"coverage_tests\\",\\"module\\":\\"exactus.tools.coverage_tests.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS\\",\\"arguments\\":[],\\"explicit_arguments\\":[],\\"run_id\\":\\"b06ce16423b2422b821ba7adb10976f3:coverage_tests\\",\\"pipeline_run_id\\":\\"b06ce16423b2422b821ba7adb10976f3\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}'\\n~~~~\\n\\n| Property | Value |\\n|---|---|\\n| Working directory | [/Users/joaolopes/Exactus/exactus/tests/standalone/project](../..) |\\n| Arguments | \`exactus.tools.common.tool_worker\` \`ExactusTool\` \`--orchestrator-control-port=59709\` \`--orchestrator-control-token=[redacted]\` \`--orchestrator-worker-port=59694\` \`--orchestrator-worker-token=[redacted]\` \`--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"coverage_tests\\",\\"module\\":\\"exactus.tools.coverage_tests.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS\\",\\"arguments\\":[],\\"explicit_arguments\\":[],\\"run_id\\":\\"b06ce16423b2422b821ba7adb10976f3:coverage_tests\\",\\"pipeline_run_id\\":\\"b06ce16423b2422b821ba7adb10976f3\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}\` |\\n\\n### Environment\\n\\n| Property | Value |\\n|---|---|\\n| OS | Darwin 25.3.0 |\\n| Python | 3.13.9 |\\n| Node | v22.21.1 |\\n| CPU count | 18 |\\n\\n| Variable | Value |\\n| --- | --- |\\n| EXACTUS_ORCHESTRATED | 1 |\\n| EXACTUS_PIPELINE_RUN_ID | b06ce16423b2422b821ba7adb10976f3 |\\n| EXACTUS_REGISTRY | [/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/.runtime/runs.db](../.runtime/runs.db) |\\n| EXACTUS_ROOT | [/Users/joaolopes/Exactus/exactus/tests/standalone/project](../..) |\\n| EXACTUS_RUN_ID | b06ce16423b2422b821ba7adb10976f3:coverage_tests |\\n| EXACTUS_TOOL | coverage_tests |\\n| LANG | en_US.UTF-8 |\\n| TERM | xterm-256color |\\n\\n## Gate\\n\\n> **Gate: PASS** — 2 of 2 tests passed; Total 100.0% meets the 90.0% minimum; every file meets 80.0%\\n\\n| Part | Status | Reason |\\n|---|---|---|\\n| Tests | PASS | 2 of 2 tests passed |\\n| Coverage | PASS | Total 100.0% meets the 90.0% minimum; every file meets 80.0% |\\n\\n### Coverage requirements\\n\\n| Requirement | Minimum | Measured | Result |\\n| --- | --- | --- | --- |\\n| Total coverage | 90.0% | 100.0% | PASS |\\n| Per-file minimum | 80.0% | 0 of 4 files below | PASS |\\n| Untested meaningful sources | >= TEST-2 | 0 actionable, 0 analysis errors | PASS |\\n| Evidence check | complete, unchanged evidence | valid | PASS |\\n\\n## Findings\\n\\n### Failed tests — 0\\n\\nNo failed or errored tests.\\n\\n### Coverage violations — 0\\n\\nEvery coverage gate is met.\\n\\n## Evidence\\n\\n| Artifact | Path | Bytes |\\n|---|---|---:|\\n| @activity.json | [ARTIFACTS/@activity.json](ARTIFACTS/%40activity.json) | 2160 |\\n| completion.json | [ARTIFACTS/COVERAGE/completion.json](ARTIFACTS/COVERAGE/completion.json) | 1526 |\\n| coverage_raw_py.json | [ARTIFACTS/COVERAGE/coverage_raw_py.json](ARTIFACTS/COVERAGE/coverage_raw_py.json) | 8328 |\\n| import_graph.json | [ARTIFACTS/COVERAGE/import_graph.json](ARTIFACTS/COVERAGE/import_graph.json) | 2788 |\\n| meaningful.json | [ARTIFACTS/COVERAGE/meaningful.json](ARTIFACTS/COVERAGE/meaningful.json) | 7271 |\\n| test-costs.json | [ARTIFACTS/COVERAGE/test-costs.json](ARTIFACTS/COVERAGE/test-costs.json) | 171 |\\n| validation.json | [ARTIFACTS/COVERAGE/validation.json](ARTIFACTS/COVERAGE/validation.json) | 234 |\\n| stderr.log | [ARTIFACTS/stderr.log](ARTIFACTS/stderr.log) | 0 |\\n| stdout.log | [ARTIFACTS/stdout.log](ARTIFACTS/stdout.log) | 0 |\\n| steps.txt | [ARTIFACTS/steps.txt](ARTIFACTS/steps.txt) | 6779 |\\n\\n## Test groups\\n\\nOne report per group of Python test files.\\n\\n| Group | Files | Tests | Passed | Failed | Skipped | Report |\\n|---|---:|---:|---:|---:|---:|---|\\n| tests | 1 | 2 | 2 | 0 | 0 | [TESTS/tests/result.md](TESTS/tests/result.md) |\\n\\n## Sub-reports\\n\\n| Report | Path | Contents |\\n|---|---|---|\\n| Tests | [TESTS/result.md](TESTS/result.md) | Every test result, failed tests with reasons, shards and warnings |\\n| Coverage | [COVERAGE/result.md](COVERAGE/result.md) | Coverage per file with uncovered lines, the import graph and the JavaScript lane |\\n\\n---\\n\\nExactus · coverage_tests · Run b06ce16423b2422b821ba7adb10976f3:coverage_tests · Result PASS · Duration 7.1 s\\n",
   "passed": true,
-  "pipeline_run_id": "0aff3ce389f246459ce96ab2e4d75298",
-  "previous_duration_seconds": 7.802,
+  "pipeline_run_id": "b06ce16423b2422b821ba7adb10976f3",
+  "previous_duration_seconds": 11.725,
   "project_href": "../../..",
   "project_root": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
   "report_bundle": {
@@ -963,22 +967,22 @@ window.__REPORT_DATA__ = JSON.parse(`{
   "resume": "PASS: 2 of 2 tests passed; Total 100.0% meets the 90.0% minimum; every file meets 80.0%",
   "root": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
   "run": {
-    "id": "0aff3ce389f246459ce96ab2e4d75298:coverage_tests",
-    "pipeline_id": "0aff3ce389f246459ce96ab2e4d75298",
+    "id": "b06ce16423b2422b821ba7adb10976f3:coverage_tests",
+    "pipeline_id": "b06ce16423b2422b821ba7adb10976f3",
     "status": "PASS",
     "exit_code": 0,
-    "started_at": "2026-11-06T02:41:23.519258+00:00",
-    "finished_at": "2026-11-06T02:41:35.245656+00:00",
-    "at_human": "06 November 2026, 02:41:23 UTC",
-    "started_at_human": "06 November 2026, 02:41:23 UTC",
-    "finished_at_human": "06 November 2026, 02:41:35 UTC",
-    "duration_seconds": 11.725,
-    "duration_human": "11.7 s",
+    "started_at": "2026-11-06T04:08:34.534634+00:00",
+    "finished_at": "2026-11-06T04:08:41.635262+00:00",
+    "at_human": "06 November 2026, 04:08:34 UTC",
+    "started_at_human": "06 November 2026, 04:08:34 UTC",
+    "finished_at_human": "06 November 2026, 04:08:41 UTC",
+    "duration_seconds": 7.1,
+    "duration_human": "7.1 s",
     "error": null
   },
-  "run_at": "2026-11-06T02:41:23.519258+00:00",
-  "run_at_human": "06 November 2026, 02:41:23 UTC",
-  "run_id": "0aff3ce389f246459ce96ab2e4d75298:coverage_tests",
+  "run_at": "2026-11-06T04:08:34.534634+00:00",
+  "run_at_human": "06 November 2026, 04:08:34 UTC",
+  "run_id": "b06ce16423b2422b821ba7adb10976f3:coverage_tests",
   "schema": "project-exactus-report/v1",
   "scope": {
     "include": [],
@@ -1003,11 +1007,11 @@ window.__REPORT_DATA__ = JSON.parse(`{
         "evidence": [],
         "level": "TEST-0",
         "metadata": {
-          "duration_seconds": 0.0011316669988445938,
-          "finished_at": "2026-11-06T02:41:31.264131+00:00",
+          "duration_seconds": 0.000939125005970709,
+          "finished_at": "2026-11-06T04:08:39.615090+00:00",
           "size_bytes": 295,
           "source_lines": 10,
-          "started_at": "2026-11-06T02:41:31.263004+00:00",
+          "started_at": "2026-11-06T04:08:39.614158+00:00",
           "worker_name": "meaningful_0"
         },
         "metrics": {
@@ -1128,23 +1132,23 @@ window.__REPORT_DATA__ = JSON.parse(`{
     "tool": {
       "name": "coverage_tests",
       "display_name": "Coverage",
-      "version": "0.7.1"
+      "version": null
     },
     "run": {
-      "id": "0aff3ce389f246459ce96ab2e4d75298:coverage_tests",
-      "pipeline_id": "0aff3ce389f246459ce96ab2e4d75298",
+      "id": "b06ce16423b2422b821ba7adb10976f3:coverage_tests",
+      "pipeline_id": "b06ce16423b2422b821ba7adb10976f3",
       "status": "PASS",
       "exit_code": 0,
-      "started_at": "2026-11-06T02:41:23.519258+00:00",
-      "finished_at": "2026-11-06T02:41:35.245656+00:00",
-      "at_human": "06 November 2026, 02:41:23 UTC",
-      "started_at_human": "06 November 2026, 02:41:23 UTC",
-      "finished_at_human": "06 November 2026, 02:41:35 UTC",
-      "duration_seconds": 11.725,
-      "duration_human": "11.7 s",
+      "started_at": "2026-11-06T04:08:34.534634+00:00",
+      "finished_at": "2026-11-06T04:08:41.635262+00:00",
+      "at_human": "06 November 2026, 04:08:34 UTC",
+      "started_at_human": "06 November 2026, 04:08:34 UTC",
+      "finished_at_human": "06 November 2026, 04:08:41 UTC",
+      "duration_seconds": 7.1,
+      "duration_human": "7.1 s",
       "error": null
     },
-    "previous_duration_seconds": 7.802,
+    "previous_duration_seconds": 11.725,
     "summary": {
       "targets_eligible": 4,
       "targets_analyzed": 4,
@@ -1169,10 +1173,10 @@ window.__REPORT_DATA__ = JSON.parse(`{
     },
     "comparison": {
       "available": true,
-      "previous_generated_at": "2026-11-06T02:17:14.634070+00:00",
-      "previous_run_id": "8fda18e03ec84ab384f411f9b1ee69f6:coverage_tests",
+      "previous_generated_at": "2026-11-06T02:41:33.841928+00:00",
+      "previous_run_id": "0aff3ce389f246459ce96ab2e4d75298:coverage_tests",
       "previous_status": "PASS",
-      "previous_duration_seconds": 7.802,
+      "previous_duration_seconds": 11.725,
       "current_total": 0,
       "previous_total": 0,
       "delta": 0,
@@ -1297,11 +1301,11 @@ window.__REPORT_DATA__ = JSON.parse(`{
           "evidence": [],
           "level": "TEST-0",
           "metadata": {
-            "duration_seconds": 0.0011316669988445938,
-            "finished_at": "2026-11-06T02:41:31.264131+00:00",
+            "duration_seconds": 0.000939125005970709,
+            "finished_at": "2026-11-06T04:08:39.615090+00:00",
             "size_bytes": 295,
             "source_lines": 10,
-            "started_at": "2026-11-06T02:41:31.263004+00:00",
+            "started_at": "2026-11-06T04:08:39.614158+00:00",
             "worker_name": "meaningful_0"
           },
           "metrics": {
@@ -1345,16 +1349,16 @@ window.__REPORT_DATA__ = JSON.parse(`{
       ]
     },
     "invocation": {
-      "command": "/Users/joaolopes/Exactus/bin/release/exactus_macos_arm64/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=63757 --orchestrator-control-token=[redacted] --orchestrator-worker-port=63739 --orchestrator-worker-token=[redacted] '--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"coverage_tests\\",\\"module\\":\\"exactus.tools.coverage_tests.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS\\",\\"arguments\\":[],\\"explicit_arguments\\":[],\\"run_id\\":\\"0aff3ce389f246459ce96ab2e4d75298:coverage_tests\\",\\"pipeline_run_id\\":\\"0aff3ce389f246459ce96ab2e4d75298\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}'",
+      "command": "/usr/local/bin/exactus/exactus/packages/pmanager/class_runner.py exactus.tools.common.tool_worker ExactusTool --orchestrator-control-port=59709 --orchestrator-control-token=[redacted] --orchestrator-worker-port=59694 --orchestrator-worker-token=[redacted] '--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"coverage_tests\\",\\"module\\":\\"exactus.tools.coverage_tests.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS\\",\\"arguments\\":[],\\"explicit_arguments\\":[],\\"run_id\\":\\"b06ce16423b2422b821ba7adb10976f3:coverage_tests\\",\\"pipeline_run_id\\":\\"b06ce16423b2422b821ba7adb10976f3\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}'",
       "cwd": "/Users/joaolopes/Exactus/exactus/tests/standalone/project",
       "arguments": [
         "exactus.tools.common.tool_worker",
         "ExactusTool",
-        "--orchestrator-control-port=63757",
+        "--orchestrator-control-port=59709",
         "--orchestrator-control-token=[redacted]",
-        "--orchestrator-worker-port=63739",
+        "--orchestrator-worker-port=59694",
         "--orchestrator-worker-token=[redacted]",
-        "--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"coverage_tests\\",\\"module\\":\\"exactus.tools.coverage_tests.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS\\",\\"arguments\\":[],\\"explicit_arguments\\":[],\\"run_id\\":\\"0aff3ce389f246459ce96ab2e4d75298:coverage_tests\\",\\"pipeline_run_id\\":\\"0aff3ce389f246459ce96ab2e4d75298\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}"
+        "--orchestrator-call={\\"args\\":[],\\"kwargs\\":{\\"request\\":{\\"identifier\\":\\"coverage_tests\\",\\"module\\":\\"exactus.tools.coverage_tests.main\\",\\"output\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project/EXACTUS_RESULTS/COVERAGE_TESTS\\",\\"arguments\\":[],\\"explicit_arguments\\":[],\\"run_id\\":\\"b06ce16423b2422b821ba7adb10976f3:coverage_tests\\",\\"pipeline_run_id\\":\\"b06ce16423b2422b821ba7adb10976f3\\",\\"project_root\\":\\"/Users/joaolopes/Exactus/exactus/tests/standalone/project\\"}}}"
       ]
     },
     "environment": {
@@ -1369,7 +1373,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
         },
         {
           "name": "EXACTUS_PIPELINE_RUN_ID",
-          "value": "0aff3ce389f246459ce96ab2e4d75298"
+          "value": "b06ce16423b2422b821ba7adb10976f3"
         },
         {
           "name": "EXACTUS_REGISTRY",
@@ -1381,7 +1385,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
         },
         {
           "name": "EXACTUS_RUN_ID",
-          "value": "0aff3ce389f246459ce96ab2e4d75298:coverage_tests"
+          "value": "b06ce16423b2422b821ba7adb10976f3:coverage_tests"
         },
         {
           "name": "EXACTUS_TOOL",
@@ -1389,7 +1393,11 @@ window.__REPORT_DATA__ = JSON.parse(`{
         },
         {
           "name": "LANG",
-          "value": "C.UTF-8"
+          "value": "en_US.UTF-8"
+        },
+        {
+          "name": "TERM",
+          "value": "xterm-256color"
         }
       ]
     },
@@ -1399,12 +1407,12 @@ window.__REPORT_DATA__ = JSON.parse(`{
       {
         "name": "@activity.json",
         "path": "ARTIFACTS/@activity.json",
-        "bytes": 2158
+        "bytes": 2160
       },
       {
         "name": "README.md",
         "path": "ARTIFACTS/COVERAGE/README.md",
-        "bytes": 667
+        "bytes": 670
       },
       {
         "name": "completion.json",
@@ -1419,17 +1427,17 @@ window.__REPORT_DATA__ = JSON.parse(`{
       {
         "name": "import_graph.json",
         "path": "ARTIFACTS/COVERAGE/import_graph.json",
-        "bytes": 2789
+        "bytes": 2788
       },
       {
         "name": "meaningful.json",
         "path": "ARTIFACTS/COVERAGE/meaningful.json",
-        "bytes": 7275
+        "bytes": 7271
       },
       {
         "name": "test-costs.json",
         "path": "ARTIFACTS/COVERAGE/test-costs.json",
-        "bytes": 170
+        "bytes": 171
       },
       {
         "name": "validation.json",
@@ -1439,7 +1447,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
       {
         "name": "README.md",
         "path": "ARTIFACTS/README.md",
-        "bytes": 602
+        "bytes": 591
       },
       {
         "name": "README.md",
@@ -1454,7 +1462,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
       {
         "name": "shard-000.log",
         "path": "ARTIFACTS/TESTS/pytest-shards/shard-000.log",
-        "bytes": 657
+        "bytes": 712
       },
       {
         "name": "stderr.log",
@@ -1469,7 +1477,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
       {
         "name": "steps.txt",
         "path": "ARTIFACTS/steps.txt",
-        "bytes": 6890
+        "bytes": 6779
       }
     ],
     "extension": {
@@ -1483,7 +1491,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
         "xfailed": 0,
         "xpassed": 0,
         "total": 2,
-        "duration_seconds": 5.087,
+        "duration_seconds": 3.783,
         "test_files": 1,
         "shards": 1,
         "javascript_test_files": 0,
@@ -1651,7 +1659,7 @@ window.__REPORT_DATA__ = JSON.parse(`{
       },
       {
         "metric": "Duration (s)",
-        "value": 5.087
+        "value": 3.783
       },
       {
         "metric": "Python test files",

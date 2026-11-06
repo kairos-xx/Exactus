@@ -1,53 +1,48 @@
 {
   "activity": {
-    "count": 5,
+    "count": 4,
     "dropped": 0,
     "events": [
       {
-        "at": "2026-11-06T02:41:30.555025+00:00",
+        "at": "2026-11-06T04:08:32.779997+00:00",
         "level": "info",
         "message": "started: Kwargs_Typehints"
       },
       {
-        "at": "2026-11-06T02:41:30.558914+00:00",
+        "at": "2026-11-06T04:08:32.780324+00:00",
         "level": "info",
         "message": "step: starting (Kwargs_Typehints)"
       },
       {
-        "at": "2026-11-06T02:41:31.568183+00:00",
-        "level": "info",
-        "message": "step: resolving calls (/Users/joaolopes/Exactus/exactus/tests/standalone/project/tests/test_calc.py)"
-      },
-      {
-        "at": "2026-11-06T02:41:32.573572+00:00",
+        "at": "2026-11-06T04:08:33.790174+00:00",
         "level": "info",
         "message": "step: fuzzing builtins"
       },
       {
-        "at": "2026-11-06T02:41:35.917237+00:00",
+        "at": "2026-11-06T04:08:35.433569+00:00",
         "level": "info",
-        "message": "finished: DONE (exit status 0) in 5.362s"
+        "message": "finished: DONE (exit status 0) in 2.654s"
       }
     ],
     "limit": 50
   },
-  "elapsed_seconds": 5.363,
+  "elapsed_seconds": 2.654,
   "extra": {
     "exit_code": 0,
-    "previous_duration_seconds": 2.362
+    "previous_duration_seconds": 5.104
   },
-  "finished_at": "2026-11-06T02:41:35.917329+00:00",
+  "finished_at": "2026-11-06T04:08:35.433603+00:00",
   "heartbeat": {
     "alive": false,
     "interval_seconds": 1.0,
-    "last_beat": "2026-11-06T02:41:35.917345+00:00",
+    "last_beat": "2026-11-06T04:08:35.433607+00:00",
     "phase": "finished",
-    "pid": 62329
+    "pid": 58634
   },
   "items": [],
   "kind": "tool",
   "name": "kwargs_typehints",
-  "pipeline_run_id": "0aff3ce389f246459ce96ab2e4d75298",
+  "pipeline_run_id": "b06ce16423b2422b821ba7adb10976f3",
   "progress": {
     "completed": 1,
     "current": "Kwargs_Typehints",
@@ -81,9 +76,9 @@
     "step": "complete",
     "total": 1
   },
-  "run_id": "0aff3ce389f246459ce96ab2e4d75298:kwargs_typehints",
+  "run_id": "b06ce16423b2422b821ba7adb10976f3:kwargs_typehints",
   "schema": "exactus/activity/v1",
-  "started_at": "2026-11-06T02:41:30.554797+00:00",
+  "started_at": "2026-11-06T04:08:32.779733+00:00",
   "status": "DONE",
-  "updated_at": "2026-11-06T02:41:35.917345+00:00"
+  "updated_at": "2026-11-06T04:08:35.433607+00:00"
 }
