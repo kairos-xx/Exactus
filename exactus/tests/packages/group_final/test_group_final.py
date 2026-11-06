@@ -1246,9 +1246,9 @@ def test_run_orders_merged_members_after_their_dependencies(
         < output.index("derived: Final[int]"),
     )
     namespace: dict[str, object] = run_path(path_name=str(object=target))
-    constants: object = namespace["Constants"]
-    expect_equal(actual=getattr(constants, "derived", None), expected=1)
-    expect_equal(actual=getattr(constants, "second", None), expected=2)
+    members: dict[str, object] = dict(vars(namespace["Constants"]))
+    expect_equal(actual=members["derived"], expected=1)
+    expect_equal(actual=members["second"], expected=2)
 
 
 def test_module_name_treats_src_directory_as_import_root(

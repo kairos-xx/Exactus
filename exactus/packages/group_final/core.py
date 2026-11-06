@@ -43,15 +43,7 @@ from fnmatch import fnmatch
 from os import environ, walk
 from pathlib import Path
 from sys import stdlib_module_names, stdout
-from typing import (
-    TYPE_CHECKING,
-    ClassVar,
-    Final,
-    TextIO,
-    TypeVar,
-    cast,
-    final,
-)
+from typing import TYPE_CHECKING, ClassVar, Final, TextIO, TypeVar, cast, final
 
 from exactus.packages.argument_parser import ExactusArgumentParser
 
@@ -102,7 +94,7 @@ except ImportError:
 
 
 AstNode = TypeVar(name="AstNode", bound=AST)
-"""AST node concrete type retained through generic visits."""
+"AST node concrete type retained through generic visits."
 
 
 def _member_name(*, name: str) -> str:
@@ -218,9 +210,8 @@ class Constants:
     """Group module-level constants.
 
     Attributes:
-        max_rounds: Upper bound on repeated grouping rounds per run.
-        source_directory: Conventional import-root directory name of a
-            ``src`` layout.
+        max_rounds: Grouped module constant.
+        source_directory: Grouped module constant.
 
     """
 
@@ -346,14 +337,29 @@ class ProgressDisplay:
         filled: int = round(number=ratio * 28)
         color: str = Palette.green if ratio >= 1.0 else Palette.cyan
         bar: str = (
-            f"{Palette.dim}[{color}{'█' * filled}{Palette.dim}"
-            f"{'░' * (28 - filled)}]{Palette.reset}"
+            (
+                f"{Palette.dim}"
+                f"["
+                f"{color}"
+                f"{'█' * filled}"
+                f"{Palette.dim}"
+                f"{'░' * (28 - filled)}"
+                f"]"
+                f"{Palette.reset}"
+            )
             if self._colored
-            else f"[{'█' * filled}{'░' * (28 - filled)}]"
+            else (f"[{'█' * filled}{'░' * (28 - filled)}]")
         )
         return (
-            f"{self._label:<8} {bar} {ratio * 100:6.2f}% "
-            f"{self._completed}/{self._total}"
+            f"{self._label:<8}"
+            f" "
+            f"{bar}"
+            f" "
+            f"{ratio * 100:6.2f}"
+            f"% "
+            f"{self._completed}"
+            f"/"
+            f"{self._total}"
         )
 
     def _write(self) -> None:
@@ -403,7 +409,7 @@ class BindingCollector(NodeVisitor):
             node: Node being visited.
 
         """
-        if isinstance(node, Name) and not isinstance(node.ctx, Load):
+        if isinstance(node, Name) and (not isinstance(node.ctx, Load)):
             self.names.add(node.id)
             return
         argument_name: object = getattr(node, "arg", None)
@@ -431,7 +437,7 @@ class BindingCollector(NodeVisitor):
             node,
             (FunctionDef, AsyncFunctionDef, ClassDef, Lambda),
         )
-        if is_scope and not self._root and not self._nested:
+        if is_scope and (not self._root) and (not self._nested):
             if isinstance(node, (FunctionDef, AsyncFunctionDef, ClassDef)):
                 self.names.add(node.name)
             return
@@ -529,7 +535,7 @@ class ScopedReferenceTransformer(NodeTransformer):
         collector: BindingCollector = BindingCollector(nested=False)
         collector.visit(node=node)
         local: frozenset[str] = frozenset(
-            (collector.names - collector.globals) & self._tracked,
+            collector.names - collector.globals & self._tracked,
         )
         body_blocked: frozenset[str] = self._closure_blocked[-1] | local
         self._blocked.append(body_blocked)
@@ -708,7 +714,7 @@ class LocalReferenceTransformer(ScopedReferenceTransformer):
         if (
             isinstance(node, Name)
             and node.id in self._names
-            and not self._is_blocked(name=node.id)
+            and (not self._is_blocked(name=node.id))
             and isinstance(node.ctx, Load)
         ):
             return copy_location(
@@ -749,7 +755,7 @@ class QualifiedReferenceTransformer(ScopedReferenceTransformer):
             isinstance(node, Attribute)
             and isinstance(node.value, Name)
             and (node.value.id in self._module_aliases)
-            and not self._is_blocked(name=node.value.id)
+            and (not self._is_blocked(name=node.value.id))
             and (node.attr in self._module_aliases[node.value.id])
         ):
             return copy_location(
@@ -793,7 +799,7 @@ class MemberReferenceTransformer(NodeTransformer):
         if (
             isinstance(node, Name)
             and isinstance(node.ctx, Load)
-            and node.id in self._replacements
+            and (node.id in self._replacements)
         ):
             return copy_location(
                 new_node=Name(id=self._replacements[node.id], ctx=Load()),
@@ -866,7 +872,7 @@ class ConstantsMemberTransformer(ScopedReferenceTransformer):
             isinstance(node.value, Attribute)
             and node.value.attr == "Constants"
             and isinstance(node.value.value, Name)
-            and not self._is_blocked(name=node.value.value.id)
+            and (not self._is_blocked(name=node.value.value.id))
         ):
             replacements = self._module_aliases.get(node.value.value.id)
         if replacements is None or node.attr not in replacements:
@@ -1180,9 +1186,9 @@ class FinalConstantsRefactor:
         """
         if member.value is None or not isinstance(member.target, Name):
             return frozenset()
-        return frozenset(
-            cls._loaded_names(node=member.value) & names,
-        ) - {member.target.id}
+        return frozenset(cls._loaded_names(node=member.value) & names) - {
+            member.target.id,
+        }
 
     @classmethod
     def _rewrite_imports(
@@ -1249,11 +1255,9 @@ class FinalConstantsRefactor:
                             names=[
                                 alias(
                                     name="Constants",
-                                    asname=(
-                                        None
-                                        if qualifier == "Constants"
-                                        else qualifier
-                                    ),
+                                    asname=None
+                                    if qualifier == "Constants"
+                                    else qualifier,
                                 ),
                             ],
                             level=statement.level,
@@ -1381,7 +1385,7 @@ class FinalConstantsRefactor:
                     module_aliases[imported.asname or imported.name] = (
                         replacements
                     )
-        return class_aliases, module_aliases
+        return (class_aliases, module_aliases)
 
     @staticmethod
     def _parse_trees(
@@ -1445,7 +1449,7 @@ class FinalConstantsRefactor:
             for index, statement in enumerate(iterable=tree.body)
             if isinstance(statement, AnnAssign)
             and isinstance(statement.target, Name)
-            and statement.target.id in names
+            and (statement.target.id in names)
         ]
         if not positions:
             return None
@@ -1462,7 +1466,7 @@ class FinalConstantsRefactor:
         return ModulePlan(
             path=plan.path,
             module_name=plan.module_name,
-            names=frozenset(name for _, name in selected),
+            names=frozenset((name for _, name in selected)),
             insertion_index=selected[0][0],
             merge=plan.merge,
         )
@@ -1750,7 +1754,7 @@ class FinalConstantsRefactor:
             default=len(lines) - 1,
         )
         lines[last_attribute + 1 : last_attribute + 1] = [
-            f"        {member}: Grouped module constant."
+            (f"        {member}: Grouped module constant.")
             for member, _ in members
         ]
         return """\
@@ -1807,7 +1811,10 @@ class FinalConstantsRefactor:
             collector.visit(node=statement)
             bindings.extend((name, None) for name in collector.names)
         if all(
-            name != imported or module == "typing" for name, module in bindings
+            (
+                name != imported or module == "typing"
+                for name, module in bindings
+            ),
         ):
             return imported
         occupied: set[str] = {name for name, _ in bindings}
@@ -1832,7 +1839,7 @@ class FinalConstantsRefactor:
 
         """
         group: int = 0 if name.isupper() else 1 if name[:1].isupper() else 2
-        return group, name.lower()
+        return (group, name.lower())
 
     @staticmethod
     def _typing_import_index(*, tree: Module) -> int:
@@ -1898,7 +1905,7 @@ class FinalConstantsRefactor:
             if self._file_filter is None or self._file_filter(path)
         )
         trace(
-            step=f"group final: {len(paths)} python files collected",
+            step=(f"group final: {len(paths)} python files collected"),
             depth=3,
         )
         modules: dict[Path, str] = {
@@ -1923,9 +1930,11 @@ class FinalConstantsRefactor:
         }
         trace(
             step=(
-                f"group final: {len(plans)} plans — "
-                f"{sum(len(plan.names) for plan in plans.values())} "
-                "constants"
+                f"group final: "
+                f"{len(plans)}"
+                f" plans — "
+                f"{sum(len(plan.names) for plan in plans.values())}"
+                f" constants"
             ),
             depth=3,
         )
@@ -1936,8 +1945,9 @@ class FinalConstantsRefactor:
         )
         trace(
             step=(
-                f"group final: {len(plans)} plans kept after "
-                "unsafe-import check"
+                f"group final: "
+                f"{len(plans)}"
+                f" plans kept after unsafe-import check"
             ),
             depth=3,
         )
@@ -1958,7 +1968,7 @@ class FinalConstantsRefactor:
                 for plan in plans.values()
             },
         }
-        if not plans and not existing_by_module:
+        if not plans and (not existing_by_module):
             trace(step="group final: no transformations required", depth=3)
             return RoundOutcome(
                 report=ScanReport(
@@ -1992,8 +2002,11 @@ class FinalConstantsRefactor:
                     transform_paths.append(path)
             trace(
                 step=(
-                    "group final: legacy-reference scope — "
-                    f"{len(transform_paths)} of {len(paths)} files"
+                    f"group final: legacy-reference scope — "
+                    f"{len(transform_paths)}"
+                    f" of "
+                    f"{len(paths)}"
+                    f" files"
                 ),
                 depth=3,
             )
@@ -2050,7 +2063,8 @@ class FinalConstantsRefactor:
         progress.close()
         for path in changed:
             _print(
-                f"{('WOULD UPDATE' if self._dry_run else 'UPDATE')} "
+                f"{('WOULD UPDATE' if self._dry_run else 'UPDATE')}"
+                f" "
                 f"{path.relative_to(self._root)}",
             )
         return RoundOutcome(
@@ -2228,7 +2242,7 @@ class FinalConstantsRefactor:
                 name
                 for name in dirnames
                 if not self._is_excluded(path=relative_dir / name)
-                and not is_reports_tree(directory=Path(directory) / name)
+                and (not is_reports_tree(directory=Path(directory) / name))
             ]
             found.extend(
                 self._root / relative_dir / name
@@ -2258,7 +2272,7 @@ class FinalConstantsRefactor:
         if (
             len(parts) > 1
             and parts[0] == Constants.source_directory
-            and not (self._root / parts[0] / "__init__.py").is_file()
+            and (not (self._root / parts[0] / "__init__.py").is_file())
         ):
             parts = parts[1:]
         if parts and parts[-1] == "__init__":
@@ -2563,16 +2577,12 @@ class FinalConstantsRefactor:
                     new_node=AnnAssign(
                         target=Name(id=member, ctx=Store()),
                         annotation=statement.annotation,
-                        value=(
-                            cast(
-                                typ="expr",
-                                val=member_transformer.visit(
-                                    node=statement.value,
-                                ),
-                            )
-                            if statement.value is not None
-                            else None
-                        ),
+                        value=cast(
+                            typ="expr",
+                            val=member_transformer.visit(node=statement.value),
+                        )
+                        if statement.value is not None
+                        else None,
                         simple=1,
                     ),
                     old_node=statement,
@@ -2645,7 +2655,7 @@ class FinalConstantsRefactor:
             if (
                 isinstance(statement, ImportFrom)
                 and statement.level == 0
-                and statement.module == "typing"
+                and (statement.module == "typing")
             ):
                 if any(item.name == "*" for item in statement.names):
                     return
@@ -2712,7 +2722,7 @@ class DirectImportReferenceTransformer(ScopedReferenceTransformer):
         if (
             isinstance(node, Name)
             and node.id in self._replacements
-            and not self._is_blocked(name=node.id)
+            and (not self._is_blocked(name=node.id))
             and isinstance(node.ctx, Load)
         ):
             qualifier, member = self._replacements[node.id]
@@ -2769,8 +2779,8 @@ class Cli:
         """
         parser: ArgumentParser = ExactusArgumentParser(
             description=(
-                "Group safely movable module-level Final constants "
-                "into Constants classes and update Python references."
+                "Group safely movable module-level Final constants into "
+                "Constants classes and update Python references."
             ),
         )
         _root: Action = parser.add_argument(
@@ -2814,14 +2824,14 @@ class Cli:
         rows: list[str] = [
             "",
             _paint(
-                text=f"{'metric'.ljust(width)}  count",
+                text=(f"{'metric'.ljust(width)}  count"),
                 color=Palette.bold,
                 enabled=enabled,
             ),
         ]
         rows.extend(
             (
-                f"{label:<{width}}  "
+                (f"{label:<{width}}  ")
                 + _paint(
                     text=f"{value:>5}",
                     color=Palette.cyan if value else Palette.dim,
