@@ -43,7 +43,15 @@ from fnmatch import fnmatch
 from os import environ, walk
 from pathlib import Path
 from sys import stdlib_module_names, stdout
-from typing import TYPE_CHECKING, ClassVar, TextIO, TypeVar, cast, final
+from typing import (
+    TYPE_CHECKING,
+    ClassVar,
+    Final,
+    TextIO,
+    TypeVar,
+    cast,
+    final,
+)
 
 from exactus.packages.argument_parser import ExactusArgumentParser
 
@@ -187,6 +195,37 @@ class ScanReport:
     constants: int
     changed: int
     dry_run: bool
+
+
+@dataclass(frozen=True, slots=True)
+class RoundOutcome:
+    """Summarize one grouping round for the fixpoint loop.
+
+    Attributes:
+        report: Statistics for the round.
+        planned: Source paths that received a ``Constants`` class.
+        changed: Source paths whose generated source differs.
+
+    """
+
+    report: ScanReport
+    planned: frozenset[Path]
+    changed: frozenset[Path]
+
+
+@final
+class Constants:
+    """Group module-level constants.
+
+    Attributes:
+        max_rounds: Upper bound on repeated grouping rounds per run.
+        source_directory: Conventional import-root directory name of a
+            ``src`` layout.
+
+    """
+
+    max_rounds: Final[int] = 64
+    source_directory: Final[str] = "src"
 
 
 def _print(*args: str, file: TextIO = stdout) -> None:
@@ -898,173 +937,38 @@ class FinalConstantsRefactor:
     def run(self) -> ScanReport:
         """Analyze the source tree and rewrite it unless dry-running.
 
+        One planning round moves only the first safe block of constants
+        per module, so a single round is not a fixpoint. Apply mode
+        therefore repeats rounds until nothing changes, bounded by
+        ``Constants.max_rounds``. Rounds after the first parse the files
+        from disk, because a caller-supplied reader may serve a snapshot
+        taken before the earlier rounds wrote. Dry-run analyzes a single
+        round, since nothing is written for later rounds to build on.
+
         Returns:
             Aggregated run statistics for the summary table.
 
         """
-        paths: tuple[Path, ...] = tuple(
-            path
-            for path in self._python_files()
-            if self._file_filter is None or self._file_filter(path)
-        )
-        trace(
-            step=f"group final: {len(paths)} python files collected",
-            depth=3,
-        )
-        modules: dict[Path, str] = {
-            path: self._module_name(path=path) for path in paths
-        }
-        trees: dict[Path, Module] = self._parse_trees(
-            paths=paths,
-            tree_reader=self._tree_reader,
-        )
-        trace(step=f"group final: parsed {len(trees)} modules", depth=3)
-        plans: dict[Path, ModulePlan] = {
-            path: plan
-            for path, tree in trees.items()
-            if (
-                plan := self._plan(
-                    path=path,
-                    module_name=modules[path],
-                    tree=tree,
-                )
-            )
-            is not None
-        }
-        trace(
-            step=(
-                f"group final: {len(plans)} plans — "
-                f"{sum(len(plan.names) for plan in plans.values())} "
-                "constants"
-            ),
-            depth=3,
-        )
-        plans = self._drop_unsafe_cross_module_plans(
-            plans=plans,
-            modules=modules,
-            trees=trees,
-        )
-        trace(
-            step=(
-                f"group final: {len(plans)} plans kept after "
-                "unsafe-import check"
-            ),
-            depth=3,
-        )
-        existing_by_module: dict[str, dict[str, str]] = {
-            modules[path]: members
-            for path, tree in trees.items()
-            if (members := self._existing_members(tree=tree))
-        }
-        moved_by_module: dict[str, frozenset[str]] = {
-            plan.module_name: plan.names for plan in plans.values()
-        }
-        members_by_module: dict[str, dict[str, str]] = {
-            **existing_by_module,
-            **{
-                plan.module_name: {
-                    name: _member_name(name=name) for name in plan.names
-                }
-                for plan in plans.values()
-            },
-        }
-        if not plans and not existing_by_module:
-            trace(step="group final: no transformations required", depth=3)
-            return ScanReport(
-                files=len(trees),
-                planned=0,
-                constants=0,
-                changed=0,
-                dry_run=self._dry_run,
-            )
-        transform_paths: list[Path] = list(trees)
-        if not plans:
-            transform_paths = []
-            for path, tree in trees.items():
-                current_module: str = modules[path]
-                class_aliases: dict[str, dict[str, str]]
-                module_aliases: dict[str, dict[str, str]]
-                class_aliases, module_aliases = self._constants_aliases(
-                    tree=tree,
-                    members_by_module=members_by_module,
-                    current_module=current_module,
-                    current_is_package=path.name == "__init__.py",
-                )
-                if (
-                    current_module in existing_by_module
-                    or class_aliases
-                    or module_aliases
-                ):
-                    transform_paths.append(path)
-            trace(
-                step=(
-                    "group final: legacy-reference scope — "
-                    f"{len(transform_paths)} of {len(paths)} files"
-                ),
-                depth=3,
-            )
-        progress: ProgressDisplay = ProgressDisplay(
-            label="files",
-            total=len(transform_paths),
-        )
-        progress.render()
-        changed: list[Path] = []
-        for path in transform_paths:
-            tree: Module = trees[path]
-            original_tree: str = dump(node=tree, include_attributes=False)
-            transformed: Module = self._transform_module(
-                tree=tree,
-                request=TransformRequest(
-                    plan=plans.get(path),
-                    moved_by_module=moved_by_module,
-                    members_by_module=members_by_module,
-                    current_module=modules[path],
-                    current_is_package=path.name == "__init__.py",
-                ),
-            )
-            if (
-                dump(node=transformed, include_attributes=False)
-                == original_tree
-            ):
-                progress.finish()
-                continue
-            try:
-                original: str = path.read_text(encoding="utf-8")
-            except OSError:
-                trace(step=f"group final: {path} vanished, skipped", depth=3)
-                progress.finish()
-                continue
-            relative: str = path.relative_to(self._root).as_posix()
-            rendered: str = (
-                unparse(ast_obj=fix_missing_locations(node=transformed))
-                + """\
-
-"""
-            )
-            source: str = self._leading_header(source=original) + rendered
-            changed.append(path)
-            if not self._dry_run:
-                path.write_text(
-                    data=source,
-                    encoding="utf-8",
-                    newline="""\
-
-""",
-                )
-            trace(step=f"group final: {relative} — rewritten", depth=4)
-            progress.finish()
-        progress.close()
-        for path in changed:
-            _print(
-                f"{('WOULD UPDATE' if self._dry_run else 'UPDATE')} "
-                f"{path.relative_to(self._root)}",
-            )
+        first: RoundOutcome = self._run_round(tree_reader=self._tree_reader)
+        if self._dry_run or not first.changed:
+            return first.report
+        planned: set[Path] = set(first.planned)
+        changed: set[Path] = set(first.changed)
+        constants: int = first.report.constants
+        for number in range(2, Constants.max_rounds + 1):
+            outcome: RoundOutcome = self._run_round(tree_reader=None)
+            if not outcome.changed:
+                break
+            trace(step=f"group final: round {number} converged", depth=3)
+            planned |= outcome.planned
+            changed |= outcome.changed
+            constants += outcome.report.constants
         return ScanReport(
-            files=len(trees),
-            planned=len(plans),
-            constants=sum(len(plan.names) for plan in plans.values()),
+            files=first.report.files,
+            planned=len(planned),
+            constants=constants,
             changed=len(changed),
-            dry_run=self._dry_run,
+            dry_run=False,
         )
 
     @classmethod
@@ -1199,6 +1103,86 @@ class FinalConstantsRefactor:
             constants.body[0].value = Constant(
                 value=cls._class_docstring(members=members),
             )
+
+    @classmethod
+    def _order_generated_members(cls, *, tree: Module) -> None:
+        """Order generated members after the members their values read.
+
+        Class bodies execute top to bottom, so a merge that appends a
+        member below one that reads it would fail at import time. The
+        sort is stable: a member moves only when something it reads sits
+        below it, and members caught in a cycle keep their order.
+
+        Args:
+            tree: Module containing the merged generated class.
+
+        """
+        constants: ClassDef | None = cls._generated_constants_class(tree=tree)
+        if constants is None:
+            return
+        members: list[AnnAssign] = [
+            statement
+            for statement in constants.body
+            if isinstance(statement, AnnAssign)
+            and isinstance(statement.target, Name)
+        ]
+        head: list[stmt] = [
+            statement
+            for statement in constants.body
+            if not isinstance(statement, AnnAssign)
+        ]
+        if len(head) + len(members) != len(constants.body):
+            return
+        names: frozenset[str] = frozenset(
+            member.target.id
+            for member in members
+            if isinstance(member.target, Name)
+        )
+        pending: list[AnnAssign] = list(members)
+        emitted: set[str] = set()
+        ordered: list[AnnAssign] = []
+        while pending:
+            ready: AnnAssign | None = next(
+                (
+                    member
+                    for member in pending
+                    if cls._member_dependencies(member=member, names=names)
+                    <= emitted
+                ),
+                None,
+            )
+            if ready is None:
+                ordered.extend(pending)
+                break
+            pending.remove(ready)
+            ordered.append(ready)
+            if isinstance(ready.target, Name):
+                emitted.add(ready.target.id)
+        constants.body = [*head, *ordered]
+
+    @classmethod
+    def _member_dependencies(
+        cls,
+        *,
+        member: AnnAssign,
+        names: frozenset[str],
+    ) -> frozenset[str]:
+        """Return the sibling members a generated member reads.
+
+        Args:
+            member: Generated class member being analyzed.
+            names: Every member name of the generated class.
+
+        Returns:
+            Sibling member names loaded by the member's value, excluding
+            the member itself.
+
+        """
+        if member.value is None or not isinstance(member.target, Name):
+            return frozenset()
+        return frozenset(
+            cls._loaded_names(node=member.value) & names,
+        ) - {member.target.id}
 
     @classmethod
     def _rewrite_imports(
@@ -1893,6 +1877,194 @@ class FinalConstantsRefactor:
             index = position + 1
         return index
 
+    def _run_round(
+        self,
+        *,
+        tree_reader: Callable[[Path], Module] | None,
+    ) -> RoundOutcome:
+        """Plan and apply one grouping round over the source tree.
+
+        Args:
+            tree_reader: Optional callable that parses a path into a
+                module; ``None`` parses the current file contents.
+
+        Returns:
+            Round statistics with the planned and rewritten paths.
+
+        """
+        paths: tuple[Path, ...] = tuple(
+            path
+            for path in self._python_files()
+            if self._file_filter is None or self._file_filter(path)
+        )
+        trace(
+            step=f"group final: {len(paths)} python files collected",
+            depth=3,
+        )
+        modules: dict[Path, str] = {
+            path: self._module_name(path=path) for path in paths
+        }
+        trees: dict[Path, Module] = self._parse_trees(
+            paths=paths,
+            tree_reader=tree_reader,
+        )
+        trace(step=f"group final: parsed {len(trees)} modules", depth=3)
+        plans: dict[Path, ModulePlan] = {
+            path: plan
+            for path, tree in trees.items()
+            if (
+                plan := self._plan(
+                    path=path,
+                    module_name=modules[path],
+                    tree=tree,
+                )
+            )
+            is not None
+        }
+        trace(
+            step=(
+                f"group final: {len(plans)} plans — "
+                f"{sum(len(plan.names) for plan in plans.values())} "
+                "constants"
+            ),
+            depth=3,
+        )
+        plans = self._drop_unsafe_cross_module_plans(
+            plans=plans,
+            modules=modules,
+            trees=trees,
+        )
+        trace(
+            step=(
+                f"group final: {len(plans)} plans kept after "
+                "unsafe-import check"
+            ),
+            depth=3,
+        )
+        existing_by_module: dict[str, dict[str, str]] = {
+            modules[path]: members
+            for path, tree in trees.items()
+            if (members := self._existing_members(tree=tree))
+        }
+        moved_by_module: dict[str, frozenset[str]] = {
+            plan.module_name: plan.names for plan in plans.values()
+        }
+        members_by_module: dict[str, dict[str, str]] = {
+            **existing_by_module,
+            **{
+                plan.module_name: {
+                    name: _member_name(name=name) for name in plan.names
+                }
+                for plan in plans.values()
+            },
+        }
+        if not plans and not existing_by_module:
+            trace(step="group final: no transformations required", depth=3)
+            return RoundOutcome(
+                report=ScanReport(
+                    files=len(trees),
+                    planned=0,
+                    constants=0,
+                    changed=0,
+                    dry_run=self._dry_run,
+                ),
+                planned=frozenset(),
+                changed=frozenset(),
+            )
+        transform_paths: list[Path] = list(trees)
+        if not plans:
+            transform_paths = []
+            for path, tree in trees.items():
+                current_module: str = modules[path]
+                class_aliases: dict[str, dict[str, str]]
+                module_aliases: dict[str, dict[str, str]]
+                class_aliases, module_aliases = self._constants_aliases(
+                    tree=tree,
+                    members_by_module=members_by_module,
+                    current_module=current_module,
+                    current_is_package=path.name == "__init__.py",
+                )
+                if (
+                    current_module in existing_by_module
+                    or class_aliases
+                    or module_aliases
+                ):
+                    transform_paths.append(path)
+            trace(
+                step=(
+                    "group final: legacy-reference scope — "
+                    f"{len(transform_paths)} of {len(paths)} files"
+                ),
+                depth=3,
+            )
+        progress: ProgressDisplay = ProgressDisplay(
+            label="files",
+            total=len(transform_paths),
+        )
+        progress.render()
+        changed: list[Path] = []
+        for path in transform_paths:
+            tree: Module = trees[path]
+            original_tree: str = dump(node=tree, include_attributes=False)
+            transformed: Module = self._transform_module(
+                tree=tree,
+                request=TransformRequest(
+                    plan=plans.get(path),
+                    moved_by_module=moved_by_module,
+                    members_by_module=members_by_module,
+                    current_module=modules[path],
+                    current_is_package=path.name == "__init__.py",
+                ),
+            )
+            if (
+                dump(node=transformed, include_attributes=False)
+                == original_tree
+            ):
+                progress.finish()
+                continue
+            try:
+                original: str = path.read_text(encoding="utf-8")
+            except OSError:
+                trace(step=f"group final: {path} vanished, skipped", depth=3)
+                progress.finish()
+                continue
+            relative: str = path.relative_to(self._root).as_posix()
+            rendered: str = (
+                unparse(ast_obj=fix_missing_locations(node=transformed))
+                + """\
+
+"""
+            )
+            source: str = self._leading_header(source=original) + rendered
+            changed.append(path)
+            if not self._dry_run:
+                path.write_text(
+                    data=source,
+                    encoding="utf-8",
+                    newline="""\
+
+""",
+                )
+            trace(step=f"group final: {relative} — rewritten", depth=4)
+            progress.finish()
+        progress.close()
+        for path in changed:
+            _print(
+                f"{('WOULD UPDATE' if self._dry_run else 'UPDATE')} "
+                f"{path.relative_to(self._root)}",
+            )
+        return RoundOutcome(
+            report=ScanReport(
+                files=len(trees),
+                planned=len(plans),
+                constants=sum(len(plan.names) for plan in plans.values()),
+                changed=len(changed),
+                dry_run=self._dry_run,
+            ),
+            planned=frozenset(plans),
+            changed=frozenset(changed),
+        )
+
     def _drop_unsafe_cross_module_plans(
         self,
         *,
@@ -2069,6 +2241,11 @@ class FinalConstantsRefactor:
     def _module_name(self, *, path: Path) -> str:
         """Resolve a source path to its import-style module name.
 
+        A top-level ``src`` directory that is not itself a package is
+        the import root of the conventional ``src`` layout, so it does
+        not belong in the module name; otherwise importers such as
+        ``from pkg import types`` could never be matched to ``types``.
+
         Args:
             path: Python source file.
 
@@ -2078,7 +2255,13 @@ class FinalConstantsRefactor:
         """
         relative: Path = path.relative_to(self._root).with_suffix(suffix="")
         parts: tuple[str, ...] = relative.parts
-        if parts[-1] == "__init__":
+        if (
+            len(parts) > 1
+            and parts[0] == Constants.source_directory
+            and not (self._root / parts[0] / "__init__.py").is_file()
+        ):
+            parts = parts[1:]
+        if parts and parts[-1] == "__init__":
             parts = parts[:-1]
         return ".".join(parts)
 
@@ -2133,6 +2316,20 @@ class FinalConstantsRefactor:
                 binding
                 for binding in candidates
                 if _member_name(name=binding.name) not in taken
+            )
+            class_index: int = tree.body.index(merge_class)
+            candidate_names: frozenset[str] = frozenset(
+                binding.name for binding in candidates
+            )
+            candidates = tuple(
+                binding
+                for binding in candidates
+                if self._required_insertion_index(
+                    binding=binding,
+                    tree=tree,
+                    candidate_names=candidate_names,
+                )
+                <= class_index
             )
             if not candidates:
                 return None
@@ -2303,6 +2500,8 @@ class FinalConstantsRefactor:
             class_aliases=class_aliases,
             module_aliases=constants_module_aliases,
         ).visit(node=tree)
+        if plan is not None and plan.merge:
+            self._order_generated_members(tree=tree)
         return tree
 
     def _move_local_constants(

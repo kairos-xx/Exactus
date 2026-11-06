@@ -1112,6 +1112,253 @@ def test_run_apply_rewrites_local_references(
     expect_in(member="UPDATE app.py", container=printed.messages)
 
 
+def separated_groups_source() -> str:
+    """Return a module whose constants form two separated blocks.
+
+    Returns:
+        Source with ``A`` apart from the ``B``/``C`` block.
+
+    """
+    return """\
+from typing import Final
+
+A: Final[int] = 1
+TOP = A
+
+
+def helper() -> int:
+    return 0
+
+
+B: Final[int] = 2
+C: Final[int] = 3
+"""
+
+
+def test_run_reaches_fixpoint_in_one_call(tmp_path: Path) -> None:
+    """One apply run groups every separated block, so a rerun is idle.
+
+    Constants split by an intervening statement used to need one run
+    per block, which made the lints transaction cascade across passes
+    until its pass budget was exhausted.
+
+    Args:
+        tmp_path: Per-test temporary directory.
+
+    """
+    target: Path = write_source(
+        root=tmp_path,
+        relative="app.py",
+        source=separated_groups_source(),
+    )
+    report: ScanReport = make_refactor(root=tmp_path, dry_run=False).run()
+    expect_equal(actual=report.constants, expected=3)
+    expect_equal(actual=report.changed, expected=1)
+    output: str = target.read_text(encoding="utf-8")
+    for member in ("a: Final[int] = 1", "b: Final[int] = 2", "c: "):
+        expect_in(member=member, container=output)
+    rerun: ScanReport = make_refactor(root=tmp_path, dry_run=False).run()
+    expect_equal(actual=rerun.planned, expected=0)
+    expect_equal(actual=rerun.changed, expected=0)
+    expect_equal(
+        actual=target.read_text(encoding="utf-8"),
+        expected=output,
+    )
+
+
+def test_run_never_merges_constant_above_its_dependency(
+    tmp_path: Path,
+) -> None:
+    """A later round keeps a constant that needs a later definition.
+
+    Merging ``B = helper()`` into the class created for ``A`` would
+    place it above ``helper`` and fail at import time.
+
+    Args:
+        tmp_path: Per-test temporary directory.
+
+    """
+    target: Path = write_source(
+        root=tmp_path,
+        relative="app.py",
+        source=(
+            dedent(
+                text=(
+                    """\
+    from typing import Final
+    A: Final[int] = 1
+    TOP = A
+    def helper() -> int:
+        return 0
+    B: Final[int] = helper()
+    """
+                ),
+            )
+        ),
+    )
+    report: ScanReport = make_refactor(root=tmp_path, dry_run=False).run()
+    expect_equal(actual=report.constants, expected=1)
+    output: str = target.read_text(encoding="utf-8")
+    expect_not_in(member="b: Final[int] = helper()", container=output)
+    expect_true(
+        condition=output.index("def helper")
+        < output.index("B: Final[int] = helper()"),
+    )
+
+
+def test_run_orders_merged_members_after_their_dependencies(
+    tmp_path: Path,
+) -> None:
+    """A merged constant lands above the existing members that read it.
+
+    The larger block is grouped first, so the smaller block that it
+    reads from is merged later and must not be appended below it.
+
+    Args:
+        tmp_path: Per-test temporary directory.
+
+    """
+    target: Path = write_source(
+        root=tmp_path,
+        relative="app.py",
+        source=(
+            dedent(
+                text=(
+                    """\
+    from typing import Final
+    BASE: Final[int] = 1
+    OTHER: Final[int] = 2
+    def helper(value: int) -> int:
+        return value
+    DERIVED: Final[int] = helper(BASE)
+    SECOND: Final[int] = helper(OTHER)
+    THIRD: Final[int] = helper(3)
+    """
+                ),
+            )
+        ),
+    )
+    report: ScanReport = make_refactor(root=tmp_path, dry_run=False).run()
+    expect_equal(actual=report.constants, expected=5)
+    output: str = target.read_text(encoding="utf-8")
+    expect_true(
+        condition=output.index("base: Final[int]")
+        < output.index("derived: Final[int]"),
+    )
+    namespace: dict[str, object] = run_path(path_name=str(object=target))
+    constants: object = namespace["Constants"]
+    expect_equal(actual=getattr(constants, "derived", None), expected=1)
+    expect_equal(actual=getattr(constants, "second", None), expected=2)
+
+
+def test_module_name_treats_src_directory_as_import_root(
+    tmp_path: Path,
+) -> None:
+    """A ``src`` layout names modules without the ``src`` prefix.
+
+    Args:
+        tmp_path: Per-test temporary directory.
+
+    """
+    refactor: FinalConstantsRefactor = make_refactor(root=tmp_path)
+    expect_equal(
+        actual=private_call(
+            owner=refactor,
+            name="_module_name",
+            path=tmp_path / "src" / "pkg" / "types.py",
+        ),
+        expected="pkg.types",
+    )
+    expect_equal(
+        actual=private_call(
+            owner=refactor,
+            name="_module_name",
+            path=tmp_path / "src" / "pkg" / "__init__.py",
+        ),
+        expected="pkg",
+    )
+    expect_equal(
+        actual=private_call(
+            owner=refactor,
+            name="_module_name",
+            path=tmp_path / "tools" / "run.py",
+        ),
+        expected="tools.run",
+    )
+
+
+def test_run_rewrites_cross_module_references_in_src_layout(
+    tmp_path: Path,
+) -> None:
+    """Importers of a moved constant are rewritten under ``src/``.
+
+    Args:
+        tmp_path: Per-test temporary directory.
+
+    """
+    write_source(root=tmp_path, relative="src/pkg/__init__.py", source="")
+    write_source(
+        root=tmp_path,
+        relative="src/pkg/types.py",
+        source="""\
+from typing import Final
+BOOL: Final[str] = "bool"
+INT: Final[str] = "int"
+""",
+    )
+    importer: Path = write_source(
+        root=tmp_path,
+        relative="src/pkg/use.py",
+        source="""\
+from pkg import types
+
+PAIR = (types.BOOL, types.INT)
+""",
+    )
+    make_refactor(root=tmp_path, dry_run=False).run()
+    output: str = importer.read_text(encoding="utf-8")
+    expect_in(member="types.Constants.bool", container=output)
+    expect_in(member="types.Constants.int", container=output)
+    expect_not_in(member="types.BOOL", container=output)
+
+
+def test_run_rounds_reread_sources_from_disk(tmp_path: Path) -> None:
+    """Later rounds ignore a caller snapshot made stale by round one.
+
+    Args:
+        tmp_path: Per-test temporary directory.
+
+    """
+    target: Path = write_source(
+        root=tmp_path,
+        relative="app.py",
+        source=separated_groups_source(),
+    )
+
+    def stale_reader(path: Path) -> Module:
+        """Parse the original snapshot, never the rewritten file.
+
+        Args:
+            path: Ignored source path.
+
+        Returns:
+            The tree of the original source.
+
+        """
+        _ = path
+        return parse(source=separated_groups_source())
+
+    report: ScanReport = FinalConstantsRefactor(
+        root=tmp_path,
+        dry_run=False,
+        tree_reader=stale_reader,
+    ).run()
+    expect_equal(actual=report.constants, expected=3)
+    output: str = target.read_text(encoding="utf-8")
+    expect_equal(actual=output.count("class Constants"), expected=1)
+    expect_equal(actual=output.count("a: Final[int] = 1"), expected=1)
+
+
 def test_run_apply_rewrites_cross_module_references(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
