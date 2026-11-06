@@ -12,7 +12,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "exactus"
-version = "0.8.0"
+version = "0.8.1"
 description = "Standalone, project-agnostic exactus for Python/JavaScript projects."
 readme = "README.md"
 requires-python = ">=3.13"
