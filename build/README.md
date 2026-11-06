@@ -13,7 +13,6 @@ the `__main__.py` entry stub, runnable without bundling:
 
 ### Files
 
-- [`.DS_Store`](.DS_Store) — Provide .DS Store project content.
 - [`__main__.py`](__main__.py) — Pyz entry point dispatching to the exactus.
 
 ### Subdirectories

@@ -1,17 +1,21 @@
-Exactus/                                                                                                             3.4GB  06 Nov 2026 03:42
+Exactus/                                                                                                             4.9GB  06 Nov 2026 07:35
 ├── AGENTS.md                                                                                                        1.1MB  31 Oct 2026 02:13
 ├── HANDOFF_lints_merge_stress.md                                                                                    9.3KB  05 Nov 2026 20:00
 ├── MANIFEST.in                                                                                                       160B  31 Oct 2026 02:13
 ├── README.md                                                                                                         23KB  05 Nov 2026 02:13
-├── TREE.txt                                                                                                       811.2KB  04 Nov 2026 14:58
-├── artifacts/                                                                                                       1.6MB  04 Nov 2026 22:16
-│   ├── README.md                                                                                                     476B  04 Nov 2026 22:16
+├── TREE.txt                                                                                                       836.9KB  06 Nov 2026 03:42
+├── artifacts/                                                                                                       1.5GB  06 Nov 2026 04:09
+│   ├── README.md                                                                                                     590B  06 Nov 2026 04:09
 │   ├── new-plan/                                                                                                  178.4KB  04 Nov 2026 04:56
 │   │   ├── README.md                                                                                                 591B  04 Nov 2026 04:46
 │   │   ├── final-source-manifest.json                                                                             169.6KB  04 Nov 2026 04:26
 │   │   ├── plan-consolidation.json                                                                                  2.7KB  04 Nov 2026 04:56
 │   │   ├── source-cache-benchmark.json                                                                               459B  04 Nov 2026 01:38
 │   │   └── validation.json                                                                                          5.1KB  04 Nov 2026 04:56
+│   ├── release-v0.8.0/                                                                                              1.5GB  06 Nov 2026 03:49
+│   │   ├── RELEASE_NOTES.md                                                                                         2.7KB  06 Nov 2026 03:49
+│   │   ├── SHA256SUMS.txt                                                                                            780B  06 Nov 2026 03:48
+│   │   └── exactus_all.part-aa                                                                                      1.5GB  06 Nov 2026 03:48
 │   └── zip-components/                                                                                              1.4MB  03 Nov 2026 20:33
 │       ├── README.md                                                                                                1.6KB  01 Nov 2026 12:43
 │       ├── exactus_kwargs_typehints/                                                                              231.4KB  15 Oct 2026 02:19
@@ -41,39 +45,39 @@ Exactus/                                                                        
 │       └── vendor_steps/                                                                                            6.6KB  15 Oct 2026 02:19
 │           ├── README.md                                                                                             705B  15 Oct 2026 02:19
 │           └── TREE.txt                                                                                             5.9KB  14 Oct 2026 13:08
-├── bin/                                                                                                            32.9KB  06 Nov 2026 03:42
+├── bin/                                                                                                            32.9KB  06 Nov 2026 07:35
 │   ├── README.md                                                                                                     881B  31 Oct 2026 02:13
 │   ├── __init__.py                                                                                                    73B  04 Nov 2026 12:33
 │   ├── _bootstrap.py                                                                                                1.1KB  04 Nov 2026 12:33
-│   ├── release/                                                                                                    24.1KB  06 Nov 2026 03:42
+│   ├── release/                                                                                                    24.1KB  06 Nov 2026 07:35
 │   │   ├── README.md                                                                                                1.5KB  31 Oct 2026 02:13
-│   │   ├── exactus_all/                                                                                             2.7KB  06 Nov 2026 03:42
-│   │   │   ├── MANIFEST.md                                                                                          2.3KB  06 Nov 2026 03:42
+│   │   ├── exactus_all/                                                                                             2.7KB  06 Nov 2026 07:35
+│   │   │   ├── MANIFEST.md                                                                                          2.3KB  06 Nov 2026 07:35
 │   │   │   └── README.md                                                                                             372B  31 Oct 2026 02:13
-│   │   ├── exactus_linux_amd64/                                                                                     2.5KB  04 Nov 2026 14:14
-│   │   │   ├── MANIFEST.md                                                                                          2.2KB  04 Nov 2026 14:14
-│   │   │   └── README.md                                                                                             337B  31 Oct 2026 02:13
-│   │   ├── exactus_linux_arm64/                                                                                     2.5KB  04 Nov 2026 14:15
-│   │   │   ├── MANIFEST.md                                                                                          2.2KB  04 Nov 2026 14:15
-│   │   │   └── README.md                                                                                             337B  31 Oct 2026 02:13
-│   │   ├── exactus_linux_musl_amd64/                                                                                2.5KB  04 Nov 2026 14:44
-│   │   │   ├── MANIFEST.md                                                                                          2.2KB  04 Nov 2026 14:44
-│   │   │   └── README.md                                                                                             347B  31 Oct 2026 02:13
-│   │   ├── exactus_linux_musl_arm64/                                                                                2.5KB  04 Nov 2026 14:56
-│   │   │   ├── MANIFEST.md                                                                                          2.2KB  04 Nov 2026 14:56
-│   │   │   └── README.md                                                                                             347B  31 Oct 2026 02:13
-│   │   ├── exactus_macos_amd64/                                                                                     2.5KB  04 Nov 2026 14:15
-│   │   │   ├── MANIFEST.md                                                                                          2.2KB  04 Nov 2026 14:15
-│   │   │   └── README.md                                                                                             337B  31 Oct 2026 02:13
-│   │   ├── exactus_macos_arm64/                                                                                     2.5KB  06 Nov 2026 03:06
-│   │   │   ├── MANIFEST.md                                                                                          2.2KB  06 Nov 2026 03:06
-│   │   │   └── README.md                                                                                             337B  06 Nov 2026 03:06
-│   │   ├── exactus_windows_amd64/                                                                                   2.5KB  04 Nov 2026 14:16
-│   │   │   ├── MANIFEST.md                                                                                          2.2KB  04 Nov 2026 14:16
-│   │   │   └── README.md                                                                                             341B  31 Oct 2026 02:13
-│   │   └── exactus_windows_arm64/                                                                                   2.5KB  04 Nov 2026 14:16
-│   │       ├── MANIFEST.md                                                                                          2.1KB  04 Nov 2026 14:16
-│   │       └── README.md                                                                                             341B  31 Oct 2026 02:13
+│   │   ├── exactus_linux_amd64/                                                                                     2.5KB  06 Nov 2026 03:42
+│   │   │   ├── MANIFEST.md                                                                                          2.2KB  06 Nov 2026 03:42
+│   │   │   └── README.md                                                                                             337B  06 Nov 2026 03:42
+│   │   ├── exactus_linux_arm64/                                                                                     2.5KB  06 Nov 2026 03:43
+│   │   │   ├── MANIFEST.md                                                                                          2.2KB  06 Nov 2026 03:43
+│   │   │   └── README.md                                                                                             337B  06 Nov 2026 03:43
+│   │   ├── exactus_linux_musl_amd64/                                                                                2.5KB  06 Nov 2026 03:43
+│   │   │   ├── MANIFEST.md                                                                                          2.2KB  06 Nov 2026 03:43
+│   │   │   └── README.md                                                                                             347B  06 Nov 2026 03:43
+│   │   ├── exactus_linux_musl_arm64/                                                                                2.5KB  06 Nov 2026 03:43
+│   │   │   ├── MANIFEST.md                                                                                          2.2KB  06 Nov 2026 03:43
+│   │   │   └── README.md                                                                                             347B  06 Nov 2026 03:43
+│   │   ├── exactus_macos_amd64/                                                                                     2.5KB  06 Nov 2026 03:43
+│   │   │   ├── MANIFEST.md                                                                                          2.2KB  06 Nov 2026 03:43
+│   │   │   └── README.md                                                                                             337B  06 Nov 2026 03:43
+│   │   ├── exactus_macos_arm64/                                                                                     2.5KB  06 Nov 2026 07:20
+│   │   │   ├── MANIFEST.md                                                                                          2.2KB  06 Nov 2026 07:20
+│   │   │   └── README.md                                                                                             337B  06 Nov 2026 07:20
+│   │   ├── exactus_windows_amd64/                                                                                   2.5KB  06 Nov 2026 03:44
+│   │   │   ├── MANIFEST.md                                                                                          2.2KB  06 Nov 2026 03:44
+│   │   │   └── README.md                                                                                             341B  06 Nov 2026 03:44
+│   │   └── exactus_windows_arm64/                                                                                   2.5KB  06 Nov 2026 03:44
+│   │       ├── MANIFEST.md                                                                                          2.1KB  06 Nov 2026 03:44
+│   │       └── README.md                                                                                             341B  06 Nov 2026 03:44
 │   ├── studio.py                                                                                                    5.9KB  04 Nov 2026 12:33
 │   └── zstd_portable/                                                                                                855B  08 Oct 2026 16:38
 │       └── README.md                                                                                                 855B  08 Oct 2026 16:38
@@ -148,9 +152,10 @@ Exactus/                                                                        
 │   │       └── stress.py                                                                                            4.5KB  05 Nov 2026 21:00
 │   ├── string_transform.py                                                                                         67.9KB  04 Nov 2026 12:33
 │   └── test_string_transform.py                                                                                    45.7KB  04 Nov 2026 12:33
-├── dist/                                                                                                            6.1MB  04 Nov 2026 13:07
+├── dist/                                                                                                            9.3MB  06 Nov 2026 03:45
 │   ├── exactus-0.7.0.tar.gz                                                                                           3MB  02 Nov 2026 05:52
-│   └── exactus-0.7.1.tar.gz                                                                                         3.1MB  04 Nov 2026 13:07
+│   ├── exactus-0.7.1.tar.gz                                                                                         3.1MB  04 Nov 2026 13:07
+│   └── exactus-0.8.0.tar.gz                                                                                         3.2MB  06 Nov 2026 03:45
 ├── docs/                                                                                                            7.8MB  04 Nov 2026 06:39
 │   ├── README.md                                                                                                    1.3KB  04 Nov 2026 04:21
 │   ├── flow_studio_mocks/                                                                                           3.1MB  31 Oct 2026 02:31
@@ -5248,7 +5253,7 @@ Exactus/                                                                        
 │       └── websocket.d.ts                                                                                           4.7KB  05 Oct 2026 00:36
 ├── package-lock.json                                                                                                4.2KB  05 Nov 2026 01:19
 ├── package.json                                                                                                      255B  05 Nov 2026 01:19
-├── pyproject.toml                                                                                                    36KB  06 Nov 2026 03:12
+├── pyproject.toml                                                                                                    36KB  06 Nov 2026 07:33
 ├── stylelint.config.mjs                                                                                             2.7KB  06 Nov 2026 00:16
 ├── uv.lock                                                                                                          314KB  04 Nov 2026 01:53
 └── wiki/                                                                                                          387.9KB  01 Nov 2026 12:36
